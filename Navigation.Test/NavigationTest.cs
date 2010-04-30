@@ -1,0 +1,250 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Navigation;
+
+namespace Navigation.Test
+{
+	[TestClass]
+	public class NavigationTest
+	{
+		public NavigationTest()
+		{
+		}
+
+		private TestContext testContextInstance;
+
+		public TestContext TestContext
+		{
+			get
+			{
+				return testContextInstance;
+			}
+			set
+			{
+				testContextInstance = value;
+			}
+		}
+
+		[TestMethod]
+		public void NavigateDialogTest()
+		{
+			StateController.Navigate("d0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].Initial, StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateInvalidDialogTest()
+		{
+			StateController.Navigate("d2");
+		}
+
+		[TestMethod]
+		public void NavigateCrossDialogTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d1");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d1"].Initial, StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateContext.PreviousState);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"], StateContext.PreviousDialog);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d1"].States["s0"], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d1"], StateContext.Dialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateDialogDialogTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("d0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].Initial, StateContext.State);
+			Assert.AreEqual(StateContext.State, StateContext.PreviousState);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateTransitionTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateContext.State);
+			Assert.AreEqual(StateContext.Dialog.Initial, StateContext.PreviousState);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
+			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+		}
+
+		[TestMethod]
+		public void NavigateTransitionTransitionTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t1");
+			StateController.Navigate("t1");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s4"], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s2"], StateContext.PreviousState);
+			Assert.AreEqual(2, StateController.Crumbs.Count);
+			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+			Assert.AreEqual(StateContext.PreviousState, StateController.Crumbs[1].State);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateInvalidActionTest()
+		{
+			StateController.Navigate("d1");
+			StateController.Navigate("t1");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NavigateNullActionTest()
+		{
+			StateController.Navigate("d1");
+			StateController.Navigate(null);
+		}
+
+		[TestMethod]
+		public void RefreshTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Refresh();
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
+			Assert.AreEqual(StateContext.State, StateContext.PreviousState);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
+			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+		}
+
+		[TestMethod]
+		public void NavigateBackOneTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t2");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[3], StateContext.PreviousState);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateBackTwoTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(2);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[2], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[4], StateContext.PreviousState);
+			Assert.AreEqual(2, StateController.Crumbs.Count);
+			int i = 0;
+			foreach (Crumb crumb in StateController.Crumbs)
+			{
+				Assert.AreEqual(StateInfoConfig.Dialogs[0].States[i], crumb.State);
+				i++;
+			}
+		}
+
+		[TestMethod]
+		public void NavigateBackOneByOneTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t1");
+			StateController.Navigate("t1");
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0].Parent, StateContext.Dialog);
+			Assert.AreEqual(StateContext.State.Transitions[1].To, StateContext.PreviousState);
+			Assert.AreEqual(StateContext.State.Transitions[1].To.Parent, StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateCanNavigateBackTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t1");
+			StateController.Navigate("t1");
+			Assert.AreEqual(false, StateController.CanNavigateBack(0));
+			Assert.AreEqual(true, StateController.CanNavigateBack(1));
+			Assert.AreEqual(true, StateController.CanNavigateBack(2));
+			Assert.AreEqual(false, StateController.CanNavigateBack(3));
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateBackInvalidTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(3);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateBackNavigateBackInvalidTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(2);
+		}
+
+		[TestMethod]
+		public void NavigateBackRefreshTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t3");
+			StateController.NavigateBack(1);
+			StateController.Refresh();
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].Initial, StateContext.State);
+			Assert.AreEqual(StateContext.State, StateContext.PreviousState);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateBackRefreshTransitionTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t2");
+			StateController.NavigateBack(1);
+			StateController.Refresh();
+			StateController.Navigate("t1");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s3"], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateContext.PreviousState);
+			Assert.AreEqual(2, StateController.Crumbs.Count);
+			int i = 0;
+			foreach (Crumb crumb in StateController.Crumbs)
+			{
+				Assert.AreEqual(StateInfoConfig.Dialogs[0].States[i], crumb.State);
+				Assert.AreEqual(StateInfoConfig.Dialogs[0].States[i].Title, crumb.Title);
+				i++;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void RestoreHistoryPointNullPageTest()
+		{
+			StateController.AddHistoryPoint(null, null);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void RestoreHistoryPointNullDataTest()
+		{
+			StateController.RestoreHistoryPoint(null);
+		}
+	}
+}
