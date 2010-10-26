@@ -10,9 +10,9 @@ using System.Resources;
 [assembly: AssemblyTitle("Navigation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Steria")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Navigation")]
-[assembly: AssemblyCopyright("Copyright © Steria 2010")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,4 +1,5 @@
-﻿using System.Web.UI;
+﻿using System;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Navigation
@@ -39,6 +40,8 @@ namespace Navigation
 			if (_View == null)
 			{
 				_View = new NavigationDataSourceView(this, Context);
+				if (IsTrackingViewState)
+					_View.TrackViewState();
 			}
 			return _View;
 		}
@@ -51,6 +54,71 @@ namespace Navigation
 		protected override DataSourceView GetView(string viewName)
 		{
 			return GetView();
+		}
+
+		/// <summary>
+		/// Adds a <see cref="System.Web.UI.Page.LoadComplete"/> event handler to the page that contains
+		/// the <see cref="Navigation.NavigationDataSource"/> control
+		/// </summary>
+		/// <param name="e">An <see cref="System.EventArgs"/> that contains event data</param>
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+			if (Page != null)
+				Page.LoadComplete += Page_LoadComplete;
+		}
+
+		private void Page_LoadComplete(object sender, EventArgs e)
+		{
+			SelectParameters.UpdateValues(Context, this);
+		}
+
+		/// <summary>
+		/// Loads the previously saved view state of the <see cref="Navigation.NavigationDataSource"/>
+		/// and its associated <see cref="Navigation.NavigationDataSourceView"/>
+		/// </summary>
+		/// <param name="savedState">The saved view state values for the control</param>
+		protected override void LoadViewState(object savedState)
+		{
+			if (savedState == null)
+			{
+				base.LoadViewState(null);
+			}
+			else
+			{
+				Pair pair = (Pair)savedState;
+				base.LoadViewState(pair.First);
+				GetView().LoadViewState(pair.Second);
+			}
+		}
+
+		/// <summary>
+		/// Saves the view state of the <see cref="Navigation.NavigationDataSource"/> and its
+		/// associated <see cref="Navigation.NavigationDataSourceView"/>
+		/// </summary>
+		/// <returns>Returns the view state of the <see cref="Navigation.NavigationDataSource"/>
+		/// and its associated <see cref="Navigation.NavigationDataSourceView"/></returns>
+		protected override object SaveViewState()
+		{
+			Pair pair = new Pair {
+				First = base.SaveViewState()
+			};
+			if (_View != null)
+				pair.Second = _View.SaveViewState();
+			if (pair.First == null && pair.Second == null)
+				return null;
+			return pair;
+		}
+
+		/// <summary>
+		/// Tracks view state changes of the <see cref="Navigation.NavigationDataSource"/> and its
+		/// associated <see cref="Navigation.NavigationDataSourceView"/>
+		/// </summary>
+		protected override void TrackViewState()
+		{
+			base.TrackViewState();
+			if (_View != null)
+				_View.TrackViewState();
 		}
 	}
 }

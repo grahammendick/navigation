@@ -11,7 +11,7 @@ namespace Navigation
 	/// interface for data bound controls to select and update <see cref="Navigation.NavigationData"/> 
 	/// contained in the <see cref="Navigation.StateContext.Data">State Context</see>
 	/// </summary>
-	public class NavigationDataSourceView : DataSourceView
+	public class NavigationDataSourceView : DataSourceView, IStateManager
 	{
 		private NavigationDataSource _Owner;
 		private HttpContext _Context;
@@ -52,6 +52,12 @@ namespace Navigation
 			}
 		}
 
+		private bool Tracking
+		{
+			get;
+			set;
+		}
+
 		/// <summary>
 		/// Gets the parameters collection used to set default values to help with binding to 
 		/// non-nullable <see cref="System.Web.UI.Control"/> properties
@@ -63,6 +69,9 @@ namespace Navigation
 				if (_SelectParameters == null)
 				{
 					_SelectParameters = new ParameterCollection();
+					_SelectParameters.ParametersChanged += SelectParameters_ParametersChanged;
+					if (Tracking)
+						((IStateManager)_SelectParameters).TrackViewState();
 				}
 				return _SelectParameters;
 			}
@@ -138,6 +147,54 @@ namespace Navigation
 				StateContext.Data[((string)entry.Key).Substring(1, ((string)entry.Key).Length - 2)] = entry.Value;
 			}
 			return 0;
+		}
+
+		private void SelectParameters_ParametersChanged(object sender, EventArgs e)
+		{
+			OnDataSourceViewChanged(EventArgs.Empty);
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the <see cref="Navigation.NavigationDataSourceView"/>
+		/// object is saving changes to its view state
+		/// </summary>
+		public bool IsTrackingViewState
+		{
+			get 
+			{
+				return Tracking;
+			}
+		}
+
+		/// <summary>
+		/// Loads the previously saved view state of the <see cref="SelectParameters"/>
+		/// </summary>
+		/// <param name="state">The saved view state values for the control</param>
+		public void LoadViewState(object state)
+		{
+			if (state != null)
+				((IStateManager)SelectParameters).LoadViewState(state);
+		}
+
+		/// <summary>
+		/// Saves the view state of the <see cref="SelectParameters"/>
+		/// </summary>
+		/// <returns>Returns the view state of the <see cref="SelectParameters"/></returns>
+		public object SaveViewState()
+		{
+			return _SelectParameters != null ? ((IStateManager)_SelectParameters).SaveViewState() : null;
+		}
+
+		/// <summary>
+		/// Causes the <see cref="Navigation.NavigationDataSourceView"/> object to track changes to its
+		/// view state so that the changes can be stored in the <see cref="System.Web.UI.Control.ViewState"/>
+		/// object for the control and persisted across requests for the same page
+		/// </summary>
+		public void TrackViewState()
+		{
+			Tracking = true;
+			if (_SelectParameters != null)
+				((IStateManager)_SelectParameters).TrackViewState();
 		}
 	}
 }
