@@ -76,7 +76,7 @@ namespace Navigation
         internal Crumb(string href, NavigationData data, State state)
         {
             _NavigationLink = href;
-            _Data = data;
+            _Data = data ?? new NavigationData();
 			_State = state;
         }
     }
