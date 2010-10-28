@@ -27,6 +27,7 @@ namespace Navigation
 		{
 			get
 			{
+				if (PreviousStateKey == null || !IsStateKeyValid(PreviousStateKey)) return null;
 				return GetState(PreviousStateKey);
 			}
 		}
@@ -42,34 +43,31 @@ namespace Navigation
 			}
 		}
 
-		private static bool StateKeyValid
+		private static bool IsStateKeyValid(string stateKey)
 		{
-			get
+			try
 			{
-				try
+				int divIndex = stateKey.IndexOf("-", StringComparison.Ordinal);
+				if (divIndex <= 0) return false;
+				Dialog dialog = StateInfoConfig.Dialogs[int.Parse(stateKey.Substring(0, divIndex), NumberFormatInfo.InvariantInfo)];
+				if (dialog != null && dialog.States.Count > int.Parse(stateKey.Substring(divIndex + 1), NumberFormatInfo.InvariantInfo))
 				{
-					int divIndex = StateKey.IndexOf("-", StringComparison.Ordinal);
-					if (divIndex <= 0) return false;
-					Dialog dialog = StateInfoConfig.Dialogs[int.Parse(StateKey.Substring(0, divIndex), NumberFormatInfo.InvariantInfo)];
-					if (dialog != null && dialog.States.Count > int.Parse(StateKey.Substring(divIndex + 1), NumberFormatInfo.InvariantInfo))
-					{
-						return true;
-					}
+					return true;
 				}
-				catch (FormatException)
-				{
-					return false;
-				}
-				catch (OverflowException)
-				{
-					return false;
-				}
-				catch (ArgumentOutOfRangeException)
-				{
-					return false;
-				}
+			}
+			catch (FormatException)
+			{
 				return false;
 			}
+			catch (OverflowException)
+			{
+				return false;
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				return false;
+			}
+			return false;
 		}
 
 		/// <summary>
@@ -79,7 +77,7 @@ namespace Navigation
 		{
 			get
 			{
-				if (StateKey == null || !StateKeyValid) return null;
+				if (StateKey == null || !IsStateKeyValid(StateKey)) return null;
 				return GetState(StateKey);
 			}
 		}
@@ -91,8 +89,7 @@ namespace Navigation
 		{
 			get
 			{
-				if (StateKey == null || !StateKeyValid) return null;
-				return State.Parent;
+				return State != null ? State.Parent : null;
 			}
 		}
 
