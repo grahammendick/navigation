@@ -1,3 +1,5 @@
+using System;
+
 namespace Navigation
 {
 	/// <summary>
@@ -5,7 +7,8 @@ namespace Navigation
 	/// of a <see cref="Navigation.State"/> element it represents a possible navigation from its 
 	/// <see cref="Parent"/> to a sibling <see cref="Navigation.State"/>
 	/// </summary>
-    public class Transition
+	[Serializable]
+	public class Transition
     {
         private State _To;
         private State _Parent;
