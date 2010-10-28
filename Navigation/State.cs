@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Web;
-using System.Collections.ObjectModel;
 
 namespace Navigation
 {
@@ -10,7 +10,8 @@ namespace Navigation
 	/// of a <see cref="Navigation.Dialog"/> element it represents a <see cref="System.Web.UI.Page"/>
 	/// that can be visisted
 	/// </summary>
-    public class State
+	[Serializable]
+	public class State
     {
         private StateInfoCollection<Transition> _Transitions = new StateInfoCollection<Transition>();
         private Dialog _Parent;

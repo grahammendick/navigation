@@ -1,9 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Navigation.Test
 {
@@ -163,7 +162,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void StateInfoCopyTo()
+		public void StateInfoCopyToTest()
 		{
 			Dialog[] dialogArr = new Dialog[2];
 			State[] stateArr = new State[5];
@@ -182,6 +181,21 @@ namespace Navigation.Test
 			Assert.AreEqual(transitionArr[2], StateInfoConfig.Dialogs[0].States[0].Transitions[1]);
 			Assert.AreEqual(transitionArr[3], StateInfoConfig.Dialogs[0].States[0].Transitions[2]);
 			Assert.AreEqual(transitionArr[4], StateInfoConfig.Dialogs[0].States[0].Transitions[3]);
+		}
+
+		[TestMethod]
+		public void StateInfoSerializeTest()
+		{
+			BinaryFormatter formatter = new BinaryFormatter();
+			MemoryStream stream = new MemoryStream();
+			formatter.Serialize(stream, StateInfoConfig.Dialogs);
+			stream.Seek(0, SeekOrigin.Begin);
+			StateInfoCollection<Dialog> dialogs = (StateInfoCollection<Dialog>)formatter.Deserialize(stream);
+			Assert.AreEqual(dialogs.Count, StateInfoConfig.Dialogs.Count);
+			Assert.AreEqual(dialogs[0].States.Count, StateInfoConfig.Dialogs[0].States.Count);
+			Assert.AreEqual(dialogs[0].States[0].Transitions.Count, StateInfoConfig.Dialogs[0].States[0].Transitions.Count);
+			Assert.AreEqual(dialogs[0].States[0].Parent, dialogs[0]);
+			Assert.AreEqual(dialogs[0].States[0].Transitions[0].Parent, dialogs[0].States[0]);
 		}
 
 		[TestMethod]

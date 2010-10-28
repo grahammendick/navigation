@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace Navigation
 	/// a logical grouping of child <see cref="Navigation.State"/> elements. Navigating across
 	/// different dialogs will initialise the crumb trail
 	/// </summary>
+	[Serializable]
     public class Dialog
     {
         private StateInfoCollection<State> _States = new StateInfoCollection<State>();
