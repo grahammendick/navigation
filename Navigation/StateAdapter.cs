@@ -49,7 +49,10 @@ namespace Navigation
 				throw new UrlException(Resources.InvalidUrl);
 			}
 			if (StateContext.State == null)
+			{
+				StateContext.StateKey = null;
 				throw new UrlException(Resources.InvalidUrl);
+			}
 
 			if (Page.PreviousPage == null)
 			{
