@@ -119,6 +119,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateContext.State, StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+			Assert.IsNotNull(StateController.RefreshLink);
 		}
 
 		[TestMethod]
