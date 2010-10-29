@@ -212,11 +212,27 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
+		public void InvalidRefreshDataTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Refresh(new NavigationData() { { "item", DateTimeOffset.MinValue } });
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void InvalidDataGetRefreshLinkTest()
 		{
 			StateController.Navigate("d0");
 			StateContext.Data["item"] = DateTimeOffset.MinValue;
 			string link = StateController.RefreshLink;
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void InvalidGetRefreshLinkDataTest()
+		{
+			StateController.Navigate("d0");
+			string link = StateController.GetRefreshLink(new NavigationData() { { "item", DateTimeOffset.MinValue } });
 		}
 
 		[TestMethod]
@@ -313,6 +329,42 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateRefreshDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateController.Navigate("t0");
+			StateController.Refresh(data);
+			Assert.AreEqual("Hello", StateContext.Data["s"]);
+		}
+
+		[TestMethod]
+		public void NavigateDataRefreshDataOverrideTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateController.Navigate("t0", data);
+			data = new NavigationData();
+			data["s"] = "World";
+			StateController.Refresh(data);
+			Assert.AreEqual("World", StateContext.Data["s"]);
+		}
+
+		[TestMethod]
+		public void NavigateDataRefreshDataClearTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateController.Navigate("t0", data);
+			data = new NavigationData();
+			StateController.Refresh(data);
+			Assert.IsNull(StateContext.Data["s"]);
+		}
+
+		[TestMethod]
 		public void ChangeDataRefreshTest()
 		{
 			StateController.Navigate("d0");
@@ -324,6 +376,44 @@ namespace Navigation.Test
 			StateController.Refresh();
 			Assert.AreEqual("World", StateContext.Data["s"]);
 			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Data["d"]);
+		}
+
+		[TestMethod]
+		public void ChangeRefreshDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			data["i"] = 3;
+			StateController.Navigate("t0", data);
+			data = new NavigationData();
+			data["s"] = "World";
+			data["d"] = new DateTime(2000, 1, 3);
+			StateController.Refresh(data);
+			Assert.AreEqual("World", StateContext.Data["s"]);
+			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Data["d"]);
+			Assert.IsNull(StateContext.Data["i"]);
+		}
+
+		[TestMethod]
+		public void ChangeDataRefreshDataOverrideTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateController.Navigate("t0", data);
+			StateContext.Data["s"] = "World";
+			StateContext.Data["d"] = new DateTime(2000, 1, 3);
+			StateContext.Data["i"] = 3;
+			data = new NavigationData(true);
+			data["s"] = "Hello World";
+			data["i"] = null;
+			data["n"] = 2;
+			StateController.Refresh(data);
+			Assert.AreEqual("Hello World", StateContext.Data["s"]);
+			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Data["d"]);
+			Assert.IsNull(StateContext.Data["i"]);
+			Assert.AreEqual(2, StateContext.Data["n"]);
 		}
 
 		[TestMethod]

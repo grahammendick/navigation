@@ -249,6 +249,17 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Navigates to the current <see cref="Navigation.State"/> passing a <see cref="Navigation.NavigationMode"/> of Client
+		/// </summary>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		public static void Refresh(NavigationData toData)
+		{
+			Refresh(toData, NavigationMode.Client);
+		}
+
+		/// <summary>
 		/// Navigates to the current <see cref="Navigation.State"/> passing the <see cref="Navigation.StateContext"/>
 		/// data
 		/// </summary>
@@ -256,7 +267,19 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static void Refresh(NavigationMode mode)
 		{
-			NavigateLink(RefreshLink, mode);
+			Refresh(StateContext.Data, mode);
+		}
+
+		/// <summary>
+		/// Navigates to the current <see cref="Navigation.State"/>
+		/// </summary>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <param name="mode">Redirect, Transfer or Mock</param>
+		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		public static void Refresh(NavigationData toData, NavigationMode mode)
+		{
+			NavigateLink(GetRefreshLink(toData), mode);
 		}
 
 		/// <summary>
@@ -268,8 +291,20 @@ namespace Navigation
 		{
 			get
 			{
-				return CrumbTrailManager.GetRefreshHref(StateContext.Data);
+				return GetRefreshLink(StateContext.Data);
 			}
+		}
+
+		/// <summary>
+		/// Gets a Url to navigate to the current <see cref="Navigation.State"/>
+		/// </summary>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <returns>Url that will navigate to the current <see cref="Navigation.State"/></returns>
+		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		public static string GetRefreshLink(NavigationData toData)
+		{
+			return CrumbTrailManager.GetRefreshHref(toData);
 		}
 
 		private static void NavigateLink(string url, NavigationMode mode)
