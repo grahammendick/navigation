@@ -207,7 +207,7 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d0");
 			StateContext.Data["item"] = DateTimeOffset.MinValue;
-			StateController.Refresh();
+			StateController.Refresh(new NavigationData(true));
 		}
 
 		[TestMethod]
@@ -224,7 +224,7 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d0");
 			StateContext.Data["item"] = DateTimeOffset.MinValue;
-			string link = StateController.RefreshLink;
+			string link = StateController.GetRefreshLink(new NavigationData(true));
 		}
 
 		[TestMethod]
@@ -324,7 +324,7 @@ namespace Navigation.Test
 			NavigationData data = new NavigationData();
 			data["s"] = "Hello";
 			StateController.Navigate("t0", data);
-			StateController.Refresh();
+			StateController.Refresh(new NavigationData(true));
 			Assert.AreEqual("Hello", StateContext.Data["s"]);
 		}
 
@@ -359,8 +359,7 @@ namespace Navigation.Test
 			NavigationData data = new NavigationData();
 			data["s"] = "Hello";
 			StateController.Navigate("t0", data);
-			data = new NavigationData();
-			StateController.Refresh(data);
+			StateController.Refresh();
 			Assert.IsNull(StateContext.Data["s"]);
 		}
 
@@ -373,7 +372,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0", data);
 			StateContext.Data["s"] = "World";
 			StateContext.Data["d"] = new DateTime(2000, 1, 3);
-			StateController.Refresh();
+			StateController.Refresh(new NavigationData(true));
 			Assert.AreEqual("World", StateContext.Data["s"]);
 			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Data["d"]);
 		}
