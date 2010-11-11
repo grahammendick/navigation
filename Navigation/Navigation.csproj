@@ -64,6 +64,8 @@
     <Compile Include="NavigationDataParameter.cs" />
     <Compile Include="NavigationDataSource.cs" />
     <Compile Include="NavigationDataSourceView.cs" />
+    <Compile Include="NavigationDirection.cs" />
+    <Compile Include="NavigationHyperLink.cs" />
     <Compile Include="NavigationMode.cs" />
     <Compile Include="NavigationShield.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

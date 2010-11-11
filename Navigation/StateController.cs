@@ -239,10 +239,9 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Navigates to the current <see cref="Navigation.State"/> passing the <see cref="Navigation.StateContext"/>
+		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
 		/// data and a <see cref="Navigation.NavigationMode"/> of Client
 		/// </summary>
-		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static void Refresh()
 		{
 			Refresh(NavigationMode.Client);
@@ -260,14 +259,13 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Navigates to the current <see cref="Navigation.State"/> passing the <see cref="Navigation.StateContext"/>
+		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
 		/// data
 		/// </summary>
 		/// <param name="mode">Redirect, Transfer or Mock</param>
-		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static void Refresh(NavigationMode mode)
 		{
-			Refresh(StateContext.Data, mode);
+			Refresh(null, mode);
 		}
 
 		/// <summary>
@@ -284,14 +282,13 @@ namespace Navigation
 
 		/// <summary>
 		/// Gets a Url to navigate to the current <see cref="Navigation.State"/> passing 
-		/// the <see cref="Navigation.StateContext"/> data
+		/// no <see cref="Navigation.NavigationData"/> data
 		/// </summary>
-		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static string RefreshLink
 		{
 			get
 			{
-				return GetRefreshLink(StateContext.Data);
+				return GetRefreshLink(null);
 			}
 		}
 
