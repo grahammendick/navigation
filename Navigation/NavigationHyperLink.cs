@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.ComponentModel;
 
 namespace Navigation
 {
@@ -16,6 +17,7 @@ namespace Navigation
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// or <see cref="Navigation.NavigationDirection.Refresh"/>
 		/// </summary>
+		[Browsable(false), Bindable(true)]
 		public NavigationData ToData
 		{
 			get;
@@ -26,6 +28,7 @@ namespace Navigation
 		/// Gets or sets the key of a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// </summary>
+		[Category("Navigation"), Description("The key of a child Transition or Dialog."), DefaultValue(""), Bindable(true)]
 		public string Action
 		{
 			get
@@ -42,6 +45,7 @@ namespace Navigation
 		/// Gets or sets the number of <see cref="Crumb"/> steps to go back, starting at 1.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Back"/>
 		/// </summary>
+		[Category("Navigation"), Description("The number of Crumb steps to go back."), DefaultValue(1), Bindable(true)]
 		public int Distance
 		{
 			get
@@ -57,6 +61,7 @@ namespace Navigation
 		/// <summary>
 		/// Gets or sets the direction of the navigation
 		/// </summary>
+		[Category("Navigation"), Description("The direction of the navigation."), DefaultValue(NavigationDirection.Forward), Bindable(true)]
 		public NavigationDirection Direction
 		{
 			get
@@ -74,6 +79,7 @@ namespace Navigation
 		///  This can be forward using an action parameter; backward via a <see cref="Navigation.Crumb"/>;
 		///  or refreshing the current <see cref="Navigation.State"/>
 		/// </summary>
+		[Browsable(false)]
 		public string Link
 		{
 			get
