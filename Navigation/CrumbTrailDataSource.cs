@@ -1,4 +1,5 @@
-﻿using System.Web.UI;
+﻿using System.ComponentModel;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Navigation
@@ -18,7 +19,7 @@ namespace Navigation
 		/// Gets the parameters collection used to set default values to help with binding to 
 		/// non-nullable <see cref="System.Web.UI.Control"/> properties
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Category("Data"), Description("Collection of parameters used to set default Control properties.")]
 		public ParameterCollection SelectParameters
 		{
 			get { return GetView().SelectParameters; }
