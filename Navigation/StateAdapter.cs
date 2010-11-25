@@ -62,7 +62,6 @@ namespace Navigation
 				}
 			}
 			Page.PreInit += Page_PreInit;
-			Page.PreLoad += Page_PreLoad;
 			return base.DeterminePostBackMode();
 		}
 
@@ -85,14 +84,7 @@ namespace Navigation
 				Page.Theme = StateContext.State.Theme;
 			}
 			Page.RegisterRequiresControlState(Page);
-		}
-
-		private void Page_PreLoad(object sender, EventArgs e)
-		{
-			if (!Page.IsPostBack)
-			{
-				StateController.ParseData(StateContext.ShieldDecode(HttpContext.Current.Request.QueryString, false));
-			}
+			StateController.ParseData(StateContext.ShieldDecode(HttpContext.Current.Request.QueryString, false), Page.IsPostBack);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
 		}
