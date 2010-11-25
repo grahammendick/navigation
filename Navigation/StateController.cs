@@ -29,17 +29,28 @@ namespace Navigation
 			}
 		}
 
-		internal static void ParseData(NameValueCollection data)
+		internal static void ParseData(NameValueCollection data, bool postBack)
 		{
 			try
 			{
+				StateContext.ReservedData.Clear();
 				StateContext.Data.Clear();
 				foreach (string key in data)
 				{
-					StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key]);
+					if (key == StateContext.STATE
+						|| key == StateContext.PREVIOUS_STATE
+						|| key == StateContext.CRUMB_TRAIL
+						|| key == StateContext.RETURN_DATA)
+					{
+						StateContext.ReservedData[key] = CrumbTrailManager.Parse(key, data[key]);
+					}
+					else
+					{
+						if (!postBack)
+							StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key]);
+					}
 				}
 				CrumbTrailManager.BuildCrumbTrail();
-				StateContext.Clear();
 			}
 			catch (ConfigurationErrorsException)
 			{
@@ -321,7 +332,7 @@ namespace Navigation
 					}
 				case (NavigationMode.Mock):
 					{
-						ParseData(StateContext.ShieldDecode(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))), false));
+						ParseData(StateContext.ShieldDecode(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))), false), false);
 						break;
 					}
 			}
@@ -365,17 +376,19 @@ namespace Navigation
 				throw new ArgumentNullException("data");
 			if (data.Count == 0)
 			{
-				ParseData(HttpContext.Current.Request.QueryString);
+				ParseData(HttpContext.Current.Request.QueryString, false);
 			}
 			else
 			{
 				data = StateContext.ShieldDecode(data, true);
 				data.Remove(StateContext.STATE);
+				data.Remove(StateContext.PREVIOUS_STATE);
+				data.Remove(StateContext.CRUMB_TRAIL);
+				data.Remove(StateContext.RETURN_DATA);
 				foreach (string key in data)
 				{
 					StateContext.Data[key] = CrumbTrailManager.ParseURLString(data[key]);
 				}
-				StateContext.Clear();
 			}
 		}
 

@@ -143,10 +143,7 @@ namespace Navigation
 		{
 			foreach(DictionaryEntry entry in Data)
 			{
-				if ((string) entry.Key != StateContext.STATE
-				&& (string)entry.Key != StateContext.PREVIOUS_STATE
-				&& (string)entry.Key != StateContext.CRUMB_TRAIL)
-					yield return new NavigationDataItem((string)entry.Key, ((StateItem)entry.Value).Value);
+				yield return new NavigationDataItem((string)entry.Key, ((StateItem)entry.Value).Value);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
@@ -120,15 +121,36 @@ namespace Navigation
 			}
 		}
 
+		[ThreadStatic]
+		private static Hashtable _ReservedData;
+		internal static Hashtable ReservedData
+		{
+			get
+			{
+				if (HttpContext.Current != null)
+				{
+					if (HttpContext.Current.Items["RD"] == null)
+						HttpContext.Current.Items["RD"] = new Hashtable();
+					return (Hashtable)HttpContext.Current.Items["RD"];
+				}
+				else
+				{
+					if (_ReservedData == null)
+						_ReservedData = new Hashtable();
+				}
+				return _ReservedData;
+			}
+		}
+
 		internal static string StateKey
 		{
 			get
 			{
-				return (string) Data[STATE];
+				return (string)ReservedData[STATE];
 			}
 			set
 			{
-				Data[STATE] = value;
+				ReservedData[STATE] = value;
 			}
 		}
 
@@ -136,7 +158,7 @@ namespace Navigation
 		{
 			get
 			{
-				return (string)Data[PREVIOUS_STATE];
+				return (string)ReservedData[PREVIOUS_STATE];
 			}
 		}
 
@@ -144,11 +166,11 @@ namespace Navigation
 		{
 			get
 			{
-				return (string)Data[CRUMB_TRAIL];
+				return (string)ReservedData[CRUMB_TRAIL];
 			}
 			set
 			{
-				Data[CRUMB_TRAIL] = value;
+				ReservedData[CRUMB_TRAIL] = value;
 			}
 		}
 
@@ -163,6 +185,14 @@ namespace Navigation
 						return persister.Load(CrumbTrailKey);
 				}
 				return CrumbTrailKey;
+			}
+		}
+
+		internal static NavigationData ReturnData
+		{
+			get
+			{
+				return (NavigationData)ReservedData[RETURN_DATA];
 			}
 		}
 
@@ -191,19 +221,6 @@ namespace Navigation
 			if (shield != null)
 				return shield.Decode(coll, historyPoint);
 			return coll;
-		}
-
-		internal static NavigationData ReturnData
-		{
-			get
-			{
-				return (NavigationData)Data[RETURN_DATA];
-			}
-		}
-
-		internal static void Clear()
-		{
-			Data[RETURN_DATA] = null;
 		}
 
 		internal static Dialog GetDialog(string stateKey)
