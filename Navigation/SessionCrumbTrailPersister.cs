@@ -88,18 +88,34 @@ namespace Navigation
 			}
 			if (crumbTrail != null && crumbTrail.Length > MaxLength)
 			{
-				string key = SESSION_PREFIX + Convert.ToString(DateTime.Now.Ticks, 0x10);
-				HttpContext.Current.Session[key] = crumbTrail;
-				Queue queue = HttpContext.Current.Session[CRUMB_TRAIL_QUEUE] as Queue;
-				if (queue == null)
+				long current = DateTime.Now.Ticks;
+				ArrayList list = HttpContext.Current.Session[CRUMB_TRAIL_QUEUE] as ArrayList;
+				if (list == null)
 				{
-					queue = new Queue();
-					HttpContext.Current.Session[CRUMB_TRAIL_QUEUE] = queue;
+					list = new ArrayList();
+					HttpContext.Current.Session[CRUMB_TRAIL_QUEUE] = list;
 				}
-				queue.Enqueue(key);
-				if (queue.Count > HistorySize)
+				if (list.Count > 0)
 				{
-					HttpContext.Current.Session.Remove((string) queue.Dequeue());
+					string latestKey = (string)list[list.Count - 1];
+					string latestCrumbTrail = (string)HttpContext.Current.Session[latestKey];
+					if (crumbTrail == latestCrumbTrail)
+					{
+						return latestKey;
+					}
+					long latest = Convert.ToInt64(latestKey.Substring(SESSION_PREFIX.Length), 16);
+					if (current <= latest)
+					{
+						current = latest + 1;
+					}
+				}
+				string key = SESSION_PREFIX + Convert.ToString(current, 16);
+				HttpContext.Current.Session[key] = crumbTrail;
+				list.Add(key);
+				if (list.Count > HistorySize)
+				{
+					HttpContext.Current.Session.Remove((string)list[0]);
+					list.RemoveAt(0);
 				}
 				return key;
 			}
