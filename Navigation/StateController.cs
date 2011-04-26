@@ -385,6 +385,7 @@ namespace Navigation
 				data.Remove(StateContext.PREVIOUS_STATE);
 				data.Remove(StateContext.CRUMB_TRAIL);
 				data.Remove(StateContext.RETURN_DATA);
+				StateContext.Data.Clear();
 				foreach (string key in data)
 				{
 					StateContext.Data[key] = CrumbTrailManager.ParseURLString(data[key]);
