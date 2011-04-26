@@ -75,6 +75,26 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets or sets whether to reset the <see cref="Navigation.NavigationData"/> item identified by 
+		/// the <see cref="Key"/>
+		/// </summary>
+		public bool Reset
+		{
+			get
+			{
+				return ViewState["Reset"] != null ? (bool)ViewState["Reset"] : false;
+			}
+			set
+			{
+				if (this.Reset != value)
+				{
+					ViewState["Reset"] = value;
+					OnParameterChanged();
+				}
+			}
+		}
+
+		/// <summary>
 		/// Returns the value of the <see cref="Navigation.NavigationData"/> item identified by 
 		/// the <see cref="Key"/>
 		/// </summary>
@@ -87,6 +107,8 @@ namespace Navigation
 		{
 			if (context == null || context.Request == null)
 				return null;
+			if (Reset)
+				StateContext.Data[Key ?? Name] = null;
 			return StateContext.Data[Key ?? Name];
 		}
 	}
