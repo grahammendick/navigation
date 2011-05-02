@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI;
 
 namespace Navigation
 {
@@ -10,26 +8,15 @@ namespace Navigation
 	/// representing the <see cref="Navigation.State"/> and <see cref="Navigation.NavigationData"/>
 	/// required to return to and recreate the <see cref="System.Web.UI.Page"/> as previously visited
 	/// </summary>
-	[ParseChildren(true)]
 	public class CrumbTrailDataSource : DataSourceControl
 	{
 		private CrumbTrailDataSourceView _View;
-
-		/// <summary>
-		/// Gets the parameters collection used to set default values to help with binding to 
-		/// non-nullable <see cref="System.Web.UI.Control"/> properties
-		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Category("Data"), Description("Collection of parameters used to set default Control properties.")]
-		public ParameterCollection SelectParameters
-		{
-			get { return GetView().SelectParameters; }
-		}
 
 		private CrumbTrailDataSourceView GetView()
 		{
 			if (_View == null)
 			{
-				_View = new CrumbTrailDataSourceView(this, Context);
+				_View = new CrumbTrailDataSourceView(this);
 			}
 			return _View;
 		}
