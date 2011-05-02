@@ -109,7 +109,7 @@ namespace Navigation
 
 		/// <summary>
 		/// Provides access to the current <see cref="Navigation.StateContext.Data">State Context</see>
-		/// set with any additional values specified in the <see cref="SelectParameters"/> collection
+		/// set with any values specified in the <see cref="SelectParameters"/> collection
 		/// </summary>
 		/// <param name="arguments">This parameter is ignored as <see cref="Navigation.NavigationData"/>
 		/// only supports getting values by key</param>
@@ -119,8 +119,7 @@ namespace Navigation
 			NavigationData data = new NavigationData(true);
 			foreach (DictionaryEntry entry in SelectParameters.GetValues(_Context, _Owner))
 			{
-				if (data[(string)entry.Key] == null)
-					data[(string)entry.Key] = entry.Value;
+				data[(string)entry.Key] = entry.Value;
 			}
 			yield return data;
 		}
