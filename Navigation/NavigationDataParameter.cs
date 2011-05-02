@@ -62,7 +62,7 @@ namespace Navigation
 		{
 			get
 			{
-				return (string)base.ViewState["Key"];
+				return (string)ViewState["Key"];
 			}
 			set
 			{
@@ -75,8 +75,8 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets or sets whether to reset the <see cref="Navigation.NavigationData"/> item identified by 
-		/// the <see cref="Key"/>
+		/// Gets or sets whether to reset the value of the parameter. If this is true the DefaultValue will always
+		/// be used
 		/// </summary>
 		public bool Reset
 		{
@@ -102,13 +102,11 @@ namespace Navigation
 		/// request</param>
 		/// <param name="control">This parameter is ignored as not relevant</param>
 		/// <returns>The current value of the <see cref="Navigation.NavigationData"/> item. If the
-		/// context or the request is null, it returns null</returns>
+		/// context or the request is null or <see cref="Reset"/> is true, it returns null</returns>
 		protected override object Evaluate(HttpContext context, Control control)
 		{
-			if (context == null || context.Request == null)
+			if (context == null || context.Request == null || Reset)
 				return null;
-			if (Reset)
-				StateContext.Data[Key ?? Name] = null;
 			return StateContext.Data[Key ?? Name];
 		}
 	}
