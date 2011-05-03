@@ -87,7 +87,8 @@ namespace Navigation
 
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
-			OnTotalRowCountAvailable(this, new PageEventArgs(_navigationPageableItemContainer.StartRowIndex, _navigationPageableItemContainer.MaximumRows, _navigationPageableItemContainer.TotalRowCount));
+			if (StateContext.Data[TotalRowCountKey] != null)
+				OnTotalRowCountAvailable(this, new PageEventArgs(_navigationPageableItemContainer.StartRowIndex, _navigationPageableItemContainer.MaximumRows, _navigationPageableItemContainer.TotalRowCount));
 		}
 
 		/// <summary>
