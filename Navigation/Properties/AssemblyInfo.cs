@@ -8,9 +8,9 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Navigation")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Navigation for ASP.NET Web Forms manages movement and data passing between aspx Pages in a unit testable manner. There is no Client-side logic, so it works in all browsers, and no Server-side cache, so it works with the browser back button.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Graham Mendick")]
 [assembly: AssemblyProduct("Navigation")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
@@ -34,8 +34,8 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguageAttribute("en-GB", UltimateResourceFallbackLocation.MainAssembly)]
