@@ -224,7 +224,7 @@ namespace Navigation
 				case (SortDirection.Descending):
 					return SortBy;
 				default:
-					return SortExpression = !DefaultDescending ? SortBy : SortBy + " DESC";
+					return !DefaultDescending ? SortBy : SortBy + " DESC";
 			}
 		}
 
