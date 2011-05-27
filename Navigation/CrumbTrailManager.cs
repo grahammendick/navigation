@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Routing;
 using Navigation.Properties;
 
 namespace Navigation
@@ -78,31 +79,25 @@ namespace Navigation
         }
 
 		private static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, string previousState, string crumbTrail)
-        {
-			string nextDialog = StateContext.GetState(nextState).Page;
-			StringBuilder href = new StringBuilder();
-			href.Append(nextDialog);
-			href.Append("?");
-			href.Append(HttpUtility.UrlEncode(StateContext.STATE));
-			href.Append("=");
-			href.Append(HttpUtility.UrlEncode(nextState));
+		{
+			State state = StateContext.GetState(nextState);
 			NameValueCollection coll = new NameValueCollection();
 			coll[StateContext.STATE] = nextState;
-			if (previousState != null)
-            {
+			if (previousState != null && state.TrackCrumbTrail)
+			{
 				coll[StateContext.PREVIOUS_STATE] = previousState;
-            }
-            if (navigationData != null)
-            {
+			}
+			if (navigationData != null)
+			{
 				foreach (NavigationDataItem item in navigationData)
 				{
 					coll[item.Key] = FormatURLObject(item.Value);
 				}
-            }
-            if (returnData != null)
-            {
+			}
+			if (returnData != null && state.TrackCrumbTrail)
+			{
 				StringBuilder returnDataBuilder = new StringBuilder();
-                string prefix = string.Empty;
+				string prefix = string.Empty;
 				foreach (NavigationDataItem item in returnData)
 				{
 					returnDataBuilder.Append(prefix);
@@ -113,24 +108,44 @@ namespace Navigation
 				}
 				if (returnDataBuilder.Length > 0)
 					coll[StateContext.RETURN_DATA] = returnDataBuilder.ToString();
-            }
-			if (crumbTrail != null)
-            {
-				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
-            }
-			coll = StateContext.ShieldEncode(coll, false);
-			foreach (string key in coll)
-			{
-				if (key != StateContext.STATE)
-				{
-					href.Append("&");
-					href.Append(HttpUtility.UrlEncode(key));
-					href.Append("=");
-					href.Append(HttpUtility.UrlEncode(coll[key]));
-				}
 			}
-			return href.ToString();
-        }
+			if (crumbTrail != null && state.TrackCrumbTrail)
+			{
+				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
+			}
+			coll = StateContext.ShieldEncode(coll, false);
+			if (StateContext.GetState(nextState).Route.Length == 0 || HttpContext.Current == null
+				|| RouteTable.Routes[nextState] == null)
+			{
+				StringBuilder href = new StringBuilder();
+				href.Append(state.Page);
+				href.Append("?");
+				href.Append(HttpUtility.UrlEncode(StateContext.STATE));
+				href.Append("=");
+				href.Append(HttpUtility.UrlEncode(nextState));
+				foreach (string key in coll)
+				{
+					if (key != StateContext.STATE)
+					{
+						href.Append("&");
+						href.Append(HttpUtility.UrlEncode(key));
+						href.Append("=");
+						href.Append(HttpUtility.UrlEncode(coll[key]));
+					}
+				}
+				return href.ToString();
+			}
+			else
+			{
+				RouteValueDictionary routeData = new RouteValueDictionary();
+				foreach (string key in coll.Keys)
+				{
+					if (key != StateContext.STATE)
+						routeData.Add(key, coll[key]);
+				}
+				return RouteTable.Routes.GetVirtualPath(null, nextState, routeData).VirtualPath;
+			}
+		}
 
 		private static string DecodeURLValue(string urlValue)
         {

@@ -64,6 +64,7 @@ namespace Navigation
 			XmlNode dialogChildNode;
 			string[] masters;
 			int i;
+			bool result;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
 			{
 				state = new State();
@@ -88,6 +89,23 @@ namespace Navigation
 						}
 						state.Masters = new ReadOnlyCollection<string>(masters);
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
+						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
+						state.TrackCrumbTrail = true;
+						if (dialogChildNode.Attributes["trackCrumbTrail"] != null)
+						{
+							if (bool.TryParse(dialogChildNode.Attributes["trackCrumbTrail"].Value, out result))
+								state.TrackCrumbTrail = result;
+							else
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "trackCrumbTrail"));
+						}
+						state.CheckPhysicalUrlAccess = true;
+						if (dialogChildNode.Attributes["checkPhysicalUrlAccess"] != null)
+						{
+							if (bool.TryParse(dialogChildNode.Attributes["checkPhysicalUrlAccess"].Value, out result))
+								state.CheckPhysicalUrlAccess = result;
+							else
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "checkPhysicalUrlAccess"));
+						}
 						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
 						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
 						state.Theme = dialogChildNode.Attributes["theme"] != null ? dialogChildNode.Attributes["theme"].Value : string.Empty;

@@ -187,6 +187,15 @@ namespace Navigation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} State&apos;s {1} attribute is invalid.
+        /// </summary>
+        internal static string StateAttributeInvalid {
+            get {
+                return ResourceManager.GetString("StateAttributeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is a mandatory attribute for a State.
         /// </summary>
         internal static string StateAttributeMissing {

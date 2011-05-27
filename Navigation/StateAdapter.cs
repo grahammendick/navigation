@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-using System.IO;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -16,6 +15,24 @@ namespace Navigation
 	/// </summary>
 	public class StateAdapter : PageAdapter
 	{
+		private NameValueCollection QueryData
+		{
+			get
+			{
+				NameValueCollection queryData = new NameValueCollection();
+				foreach (string key in Page.RouteData.Values.Keys)
+				{
+					if (Page.RouteData.Values[key] != null)
+						queryData.Add(key, (string)Page.RouteData.Values[key]);
+				}
+				foreach (string key in Page.Request.QueryString)
+				{
+					queryData.Add(key, Page.Request.QueryString[key]);
+				}
+				return queryData;
+			}
+		}
+
 		/// <summary>
 		/// Validates the incoming Url and if no state parameter c0 found will navigate to
 		/// the <see cref="Navigation.Dialog"/> whose path property matches the Url
@@ -28,17 +45,17 @@ namespace Navigation
 		public override NameValueCollection DeterminePostBackMode()
 		{
 			if (StringComparer.InvariantCultureIgnoreCase.Compare(Page.Request.Path, FormsAuthentication.LoginUrl) == 0
-				|| StringComparer.InvariantCultureIgnoreCase.Compare(Path.GetExtension(Page.Request.Path), ".aspx") != 0
+				|| !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
 				|| StateInfoConfig.Dialogs == null)
 				return base.DeterminePostBackMode();
-			StateContext.StateKey = HttpContext.Current.Request.QueryString[StateContext.STATE];
+			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.Values[StateContext.STATE];
 			if (StateContext.StateKey == null)
 			{
 				Dialog dialog;
 				for (int i = 0; i < StateInfoConfig.Dialogs.Count; i++)
 				{
 					dialog = StateInfoConfig.Dialogs[i];
-					if (dialog.Path.Length != 0 && StringComparer.InvariantCultureIgnoreCase.Compare(Page.Request.AppRelativeCurrentExecutionFilePath, dialog.Path) == 0)
+					if (dialog.Path.Length != 0 && StringComparer.InvariantCultureIgnoreCase.Compare(Page.AppRelativeVirtualPath, dialog.Path) == 0)
 					{
 						NavigationData data = new NavigationData();
 						foreach (string key in Page.Request.QueryString)
@@ -53,13 +70,9 @@ namespace Navigation
 				StateContext.StateKey = null;
 				throw new UrlException(Resources.InvalidUrl);
 			}
-
-			if (Page.PreviousPage == null)
+			if (StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0)
 			{
-				if (StateContext.State.Page != HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath)
-				{
-					throw new UrlException(Resources.InvalidUrl);
-				}
+				throw new UrlException(Resources.InvalidUrl);
 			}
 			Page.PreInit += Page_PreInit;
 			return base.DeterminePostBackMode();
@@ -84,7 +97,7 @@ namespace Navigation
 				Page.Theme = StateContext.State.Theme;
 			}
 			Page.RegisterRequiresControlState(Page);
-			StateController.ParseData(StateContext.ShieldDecode(HttpContext.Current.Request.QueryString, false), Page.IsPostBack);
+			StateController.ParseData(StateContext.ShieldDecode(QueryData, false), Page.IsPostBack);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
 		}

@@ -19,6 +19,9 @@ namespace Navigation
         private string _Key;
         private string _Page;
         private string _Title;
+		private string _Route;
+		private bool _TrackCrumbTrail;
+		private bool _CheckPhysicalUrlAccess;
 		private string _ResourceType;
 		private string _ResourceKey;
         private string _Theme;
@@ -116,6 +119,56 @@ namespace Navigation
                 _Title = value;
             }
         }
+
+		/// <summary>
+		/// Gets the route Url pattern. This is only relevant if routes are registered via the
+		/// <see cref="Navigation.StateInfoConfig.AddStateRoutes"/> method
+		/// </summary>
+		public string Route
+		{
+			get
+			{
+				return _Route;
+			}
+			internal set
+			{
+				_Route = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value that indicates whether to maintain crumb trail information 
+		/// e.g <see cref="Navigation.StateContext.PreviousState"/>. This can be used together 
+		/// with <see cref="Route"/> to produce user friendly Urls
+		/// </summary>
+		public bool TrackCrumbTrail
+		{
+			get
+			{
+				return _TrackCrumbTrail;
+			}
+			internal set
+			{
+				_TrackCrumbTrail = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value that indicates whether ASP.NET should validate that the user has authority to access the 
+		/// physical <see cref="Page"/>. This is only relevant if <see cref="Route"/> is set and routes registered
+		/// via the <see cref="Navigation.StateInfoConfig.AddStateRoutes"/> method
+		/// </summary>
+		public bool CheckPhysicalUrlAccess
+		{
+			get
+			{
+				return _CheckPhysicalUrlAccess;
+			}
+			internal set
+			{
+				_CheckPhysicalUrlAccess = value;
+			}
+		}
 
 		internal string ResourceType
 		{
