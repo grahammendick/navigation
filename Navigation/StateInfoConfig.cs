@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using System.Web.Routing;
 
 namespace Navigation
 {
@@ -30,6 +31,25 @@ namespace Navigation
 		internal static string GetDialogStateKey(State state)
 		{
 			return state.Parent.Index.ToString(NumberFormatInfo.InvariantInfo) + "-" + state.Index.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		/// <summary>
+		/// Registers all <see cref="Navigation.State.Route"/> configuration information
+		/// </summary>
+		/// <param name="routes">Route collection</param>
+		public static void AddStateRoutes(RouteCollection routes)
+		{
+			foreach (Dialog dialog in Dialogs)
+			{
+				foreach (State state in dialog.States)
+				{
+					if (state.Route.Length != 0)
+						routes.MapPageRoute(GetDialogStateKey(state), state.Route, state.Page, state.CheckPhysicalUrlAccess,
+							new RouteValueDictionary() { 
+								{ StateContext.STATE, GetDialogStateKey(state) }, 
+							});
+				}
+			}
 		}
 	}
 }
