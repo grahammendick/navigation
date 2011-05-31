@@ -78,7 +78,7 @@ namespace Navigation
 			StateContext.GenerateKey(trail);
         }
 
-		private static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, string previousState, string crumbTrail)
+		private static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, string previousState, string crumbTrail, NavigationMode mode)
 		{
 			State state = StateContext.GetState(nextState);
 			NameValueCollection coll = new NameValueCollection();
@@ -114,7 +114,7 @@ namespace Navigation
 				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
 			}
 			coll = StateContext.ShieldEncode(coll, false);
-			if (StateContext.GetState(nextState).Route.Length == 0 || HttpContext.Current == null
+			if (StateContext.GetState(nextState).Route.Length == 0 || mode == NavigationMode.Mock 
 				|| RouteTable.Routes[nextState] == null)
 			{
 				StringBuilder href = new StringBuilder();
@@ -195,7 +195,7 @@ namespace Navigation
 			return parsedVal;
 		}
 
-		internal static List<Crumb> GetCrumbTrailHrefArray()
+		internal static List<Crumb> GetCrumbTrailHrefArray(NavigationMode mode)
         {
             List<Crumb> crumbTrailArray = new List<Crumb>();
             int arrayCount = 0;
@@ -208,7 +208,7 @@ namespace Navigation
 				string nextState = StateInfoConfig.GetDialogStateKey(StateContext.GetState(GetCrumbTrailState(crumbTrail)));
                 navigationData = GetCrumbTrailData(crumbTrail);
                 crumbTrail = CropCrumbTrail(crumbTrail);
-				href = GetHref(nextState, navigationData, null, StateContext.StateKey, StateContext.CrumbTrailKey);
+				href = GetHref(nextState, navigationData, null, StateContext.StateKey, StateContext.CrumbTrailKey, mode);
 				Crumb crumb = new Crumb(href, navigationData, StateContext.GetState(nextState));
                 crumbTrailArray.Add(crumb);
                 arrayCount++;
@@ -254,14 +254,14 @@ namespace Navigation
             return navData;
         }
 
-		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)
+		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, NavigationMode mode)
         {
-			return GetHref(nextState, navigationData, returnData, StateContext.StateKey, StateContext.CrumbTrailKey);
+			return GetHref(nextState, navigationData, returnData, StateContext.StateKey, StateContext.CrumbTrailKey, mode);
         }
 
-		internal static string GetRefreshHref(NavigationData refreshData)
+		internal static string GetRefreshHref(NavigationData refreshData, NavigationMode mode)
         {
-			return GetHref(StateContext.StateKey, refreshData, null, StateContext.StateKey, StateContext.CrumbTrailKey);
+			return GetHref(StateContext.StateKey, refreshData, null, StateContext.StateKey, StateContext.CrumbTrailKey, mode);
         }
 
 		internal static object Parse(string key, string val)

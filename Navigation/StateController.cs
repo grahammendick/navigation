@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -25,8 +26,14 @@ namespace Navigation
 		{
 			get
 			{
-				return new ReadOnlyCollection<Crumb>(CrumbTrailManager.GetCrumbTrailHrefArray());
+				return new ReadOnlyCollection<Crumb>(GetCrumbs(NavigationMode.Client));
 			}
+		}
+
+		private static List<Crumb> GetCrumbs(NavigationMode mode)
+		{
+			if (HttpContext.Current == null) mode = NavigationMode.Mock;
+			return CrumbTrailManager.GetCrumbTrailHrefArray(mode);
 		}
 
 		internal static void ParseData(NameValueCollection data, bool postBack)
@@ -137,7 +144,7 @@ namespace Navigation
 
 		private static void Navigate(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
 		{
-			NavigateLink(GetNavigationLink(action, toData, returnData), mode);
+			NavigateLink(GetNavigationLink(action, toData, returnData, mode), mode);
 		}
 
 		/// <summary>
@@ -174,12 +181,13 @@ namespace Navigation
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static string GetNavigationLink(string action, NavigationData toData)
 		{
-			return GetNavigationLink(action, toData, StateContext.Data);
+			return GetNavigationLink(action, toData, StateContext.Data, NavigationMode.Client);
 		}
 
-		private static string GetNavigationLink(string action, NavigationData toData, NavigationData returnData)
+		private static string GetNavigationLink(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
 		{
-			return CrumbTrailManager.GetHref(GetNextState(action), toData, returnData);
+			if (HttpContext.Current == null) mode = NavigationMode.Mock;
+			return CrumbTrailManager.GetHref(GetNextState(action), toData, returnData, mode);
 		}
 
 		/// <summary>
@@ -226,7 +234,7 @@ namespace Navigation
 		/// this <paramref name="distance"/></exception>
 		public static void NavigateBack(int distance, NavigationMode mode)
 		{
-			NavigateLink(GetNavigationBackLink(distance), mode);
+			NavigateLink(GetNavigationBackLink(distance, mode), mode);
 		}
 
 		/// <summary>
@@ -241,7 +249,12 @@ namespace Navigation
 		/// this <paramref name="distance"/></exception>
 		public static string GetNavigationBackLink(int distance)
 		{
-			ReadOnlyCollection<Crumb> crumbs = Crumbs;
+			return GetNavigationBackLink(distance, NavigationMode.Client);
+		}
+
+		private static string GetNavigationBackLink(int distance, NavigationMode mode)
+		{
+			List<Crumb> crumbs = GetCrumbs(mode);
 			if (distance > crumbs.Count || distance <= 0)
 			{
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDistance, crumbs.Count), "distance");
@@ -288,7 +301,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static void Refresh(NavigationData toData, NavigationMode mode)
 		{
-			NavigateLink(GetRefreshLink(toData), mode);
+			NavigateLink(GetRefreshLink(toData, mode), mode);
 		}
 
 		/// <summary>
@@ -312,7 +325,13 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static string GetRefreshLink(NavigationData toData)
 		{
-			return CrumbTrailManager.GetRefreshHref(toData);
+			return GetRefreshLink(toData, NavigationMode.Client);
+		}
+
+		private static string GetRefreshLink(NavigationData toData, NavigationMode mode)
+		{
+			if (HttpContext.Current == null) mode = NavigationMode.Mock;
+			return CrumbTrailManager.GetRefreshHref(toData, mode);
 		}
 
 		private static void NavigateLink(string url, NavigationMode mode)
