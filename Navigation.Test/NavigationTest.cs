@@ -42,7 +42,7 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void NavigateInvalidDialogTest()
 		{
-			StateController.Navigate("d2");
+			StateController.Navigate("d3");
 		}
 
 		[TestMethod]

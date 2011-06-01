@@ -39,7 +39,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void DialogTest()
 		{
-			Assert.AreEqual(2, StateInfoConfig.Dialogs.Count);
+			Assert.AreEqual(3, StateInfoConfig.Dialogs.Count);
 			int i = 0;
 			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
@@ -83,10 +83,14 @@ namespace Navigation.Test
 					if (dialog.Index == 0)
 						Assert.AreEqual(4 - state.Index, state.Transitions.Count);
 					if (dialog.Index == 1)
+					{
 						if (state.Index != 5)
 							Assert.AreEqual(1, state.Transitions.Count);
 						else
 							Assert.AreEqual(5, state.Transitions.Count);
+					}
+					if (dialog.Index == 2)
+						Assert.AreEqual(1, state.Transitions.Count);
 					foreach (Transition transition in dialog.States[state.Key].Transitions)
 					{
 						Assert.AreEqual("t" + i, transition.Key);
@@ -162,9 +166,35 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void RouteTest()
+		{
+			Assert.AreEqual("d2/s0", StateInfoConfig.Dialogs[2].States[0].Route);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[0].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[0].CheckPhysicalUrlAccess);
+			Assert.AreEqual("s1", StateInfoConfig.Dialogs[2].States[1].Route);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[1].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[1].CheckPhysicalUrlAccess);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[2].Route);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[2].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[2].CheckPhysicalUrlAccess);
+			Assert.AreEqual("d2/{s3}", StateInfoConfig.Dialogs[2].States[3].Route);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[3].TrackCrumbTrail);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[3].CheckPhysicalUrlAccess);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[4].Route);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].TrackCrumbTrail);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].CheckPhysicalUrlAccess);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[5].Route);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[5].TrackCrumbTrail);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[5].CheckPhysicalUrlAccess);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[6].Route);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].CheckPhysicalUrlAccess);
+		}
+
+		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
-			Dialog[] dialogArr = new Dialog[2];
+			Dialog[] dialogArr = new Dialog[3];
 			State[] stateArr = new State[5];
 			Transition[] transitionArr = new Transition[5];
 			StateInfoConfig.Dialogs.CopyTo(dialogArr, 0);
@@ -172,6 +202,7 @@ namespace Navigation.Test
 			StateInfoConfig.Dialogs[0].States[0].Transitions.CopyTo(transitionArr, 1);
 			Assert.AreEqual(dialogArr[0], StateInfoConfig.Dialogs[0]);
 			Assert.AreEqual(dialogArr[1], StateInfoConfig.Dialogs[1]);
+			Assert.AreEqual(dialogArr[2], StateInfoConfig.Dialogs[2]);
 			Assert.AreEqual(stateArr[0], StateInfoConfig.Dialogs[0].States[0]);
 			Assert.AreEqual(stateArr[1], StateInfoConfig.Dialogs[0].States[1]);
 			Assert.AreEqual(stateArr[2], StateInfoConfig.Dialogs[0].States[2]);
@@ -315,6 +346,20 @@ namespace Navigation.Test
 		public void EmptyTransitionToTest()
 		{
 			ConfigurationManager.GetSection("Navigation/EmptyTransitionTo");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidTrackCrumbTrailTest()
+		{
+			ConfigurationManager.GetSection("Navigation/InvalidTrackCrumbTrail");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidCheckPhysicalUrlAccessTest()
+		{
+			ConfigurationManager.GetSection("Navigation/InvalidCheckPhysicalUrlAccess");
 		}
 	}
 }
