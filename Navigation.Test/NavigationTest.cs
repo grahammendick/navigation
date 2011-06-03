@@ -60,6 +60,20 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateCrossDialogWithoutTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d2");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].Initial, StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s0"], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"], StateContext.Dialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
 		public void NavigateDialogDialogTest()
 		{
 			StateController.Navigate("d0");
@@ -70,11 +84,33 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDialogDialogWithoutTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("d2");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].Initial, StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
 		public void NavigateTransitionTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateContext.State);
+			Assert.AreEqual(StateContext.Dialog.Initial, StateContext.PreviousState);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
+			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+		}
+
+		[TestMethod]
+		public void NavigateTransitionFromWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s1"], StateContext.State);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
@@ -91,6 +127,18 @@ namespace Navigation.Test
 			Assert.AreEqual(2, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
 			Assert.AreEqual(StateContext.PreviousState, StateController.Crumbs[1].State);
+		}
+
+		[TestMethod]
+		public void NavigateTransitionTransitionToWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s2"], StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -123,6 +171,20 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void RefreshWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Refresh();
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[2], StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+			Assert.IsNotNull(StateController.RefreshLink);
+		}
+
+		[TestMethod]
 		public void NavigateBackOneTest()
 		{
 			StateController.Navigate("d0");
@@ -130,6 +192,20 @@ namespace Navigation.Test
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0], StateContext.State);
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[3], StateContext.PreviousState);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateBackOneWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[2], StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
 			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 
@@ -154,6 +230,23 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateBackTwoWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(2);
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[4], StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
 		public void NavigateBackOneByOneTest()
 		{
 			StateController.Navigate("d0");
@@ -165,6 +258,24 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0].Parent, StateContext.Dialog);
 			Assert.AreEqual(StateContext.State.Transitions[1].To, StateContext.PreviousState);
 			Assert.AreEqual(StateContext.State.Transitions[1].To.Parent, StateContext.PreviousDialog);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateBackOneByOneWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[4], StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
 			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 
@@ -181,6 +292,16 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateWithoutTrailCanNavigateBackTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(false, StateController.CanNavigateBack(0));
+			Assert.AreEqual(false, StateController.CanNavigateBack(1));
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void NavigateBackInvalidTest()
 		{
@@ -192,13 +313,41 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateWithoutTrailBackInvalidTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NavigateBackNavigateBackInvalidTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			StateController.NavigateBack(1);
+			try{
+				StateController.NavigateBack(1);
+			}
+			catch (ArgumentException) { };
 			StateController.NavigateBack(2);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateBackNavigateBackWithoutTrailInvalidTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			try { 
+				StateController.NavigateBack(1); 
+			}catch (ArgumentException) { };
+			StateController.NavigateBack(1);
 		}
 
 		[TestMethod]
@@ -210,6 +359,19 @@ namespace Navigation.Test
 			StateController.Refresh();
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].Initial, StateContext.State);
 			Assert.AreEqual(StateContext.State, StateContext.PreviousState);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateBackWithoutTrailRefreshTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			StateController.Refresh();
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].Initial, StateContext.State);
+			Assert.IsNull(StateContext.PreviousState);
+			Assert.IsNull(StateContext.PreviousDialog);
 			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 
@@ -232,6 +394,23 @@ namespace Navigation.Test
 				Assert.AreEqual(StateInfoConfig.Dialogs[0].States[i].Title, crumb.Title);
 				i++;
 			}
+		}
+
+		[TestMethod]
+		public void NavigateBackWithoutTrailRefreshTransitionTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			StateController.Refresh();
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s3"], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s2"], StateContext.PreviousState);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[2], StateController.Crumbs[0].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[2].Title, StateController.Crumbs[0].Title);
 		}
 
 		[TestMethod]
