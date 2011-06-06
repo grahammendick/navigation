@@ -129,9 +129,26 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateIndividualDataWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0", IndividualNavigationData);
+			int i = 0;
+			foreach (NavigationDataItem item in StateContext.Data)
+			{
+				Assert.AreEqual(IndividualNavigationData[item.Key], item.Value);
+				i++;
+			}
+			Assert.AreEqual(15, i);
+		}
+
+		[TestMethod]
 		public void NavigateListDataTest()
 		{
 			StateController.Navigate("d0", ListNavigationData);
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
 			int i = 0;
 			foreach (NavigationDataItem item in (IEnumerable) StateContext.Data)
 			{
@@ -146,6 +163,8 @@ namespace Navigation.Test
 		public void NavigateArrayListDataTest()
 		{
 			StateController.Navigate("d0", ArrayListNavigationData);
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
 			int i = 0;
 			foreach (NavigationDataItem item in StateContext.Data)
 			{
@@ -169,9 +188,9 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void InvalidListDataTest()
 		{
-			NavigationData data = new NavigationData();
-			data["item"] = new List<DateTimeKind>() { DateTimeKind.Local };
-			StateController.Navigate("d0", data);
+			StateController.Navigate("d0");
+			StateContext.Data["item"] = new List<DateTimeKind>() { DateTimeKind.Local };
+			StateController.Navigate("t0");
 		}
 
 		[TestMethod]
@@ -187,9 +206,9 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void InvalidArrayListDataTest()
 		{
-			NavigationData data = new NavigationData();
-			data["item"] = new ArrayList() { DateTimeKind.Local };
-			StateController.Navigate("d0", data);
+			StateController.Navigate("d0");
+			StateContext.Data["item"] = new ArrayList() { DateTimeKind.Local };
+			StateController.Navigate("t0");
 		}
 
 		[TestMethod]
@@ -249,11 +268,45 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateInvalidContextDataWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateContext.Data["item"] = DateTimeOffset.MinValue;
+			StateController.Navigate("t0", data);
+			Assert.AreEqual("Hello", StateContext.Data["s"]);
+		}
+
+		[TestMethod]
+		public void RefreshInvalidContextDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateContext.Data["item"] = DateTimeOffset.MinValue;
+			StateController.Refresh(data);
+			Assert.AreEqual("Hello", StateContext.Data["s"]);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigateInvalidDataWithoutTrailTest()
+		{
+			NavigationData data = new NavigationData();
+			data["item"] = DateTimeOffset.MinValue;
+			StateController.Navigate("d2", data);
+		}
+
+		[TestMethod]
 		public void ReservedUrlCharacterDataTest()
 		{
 			NavigationData data = new NavigationData();
 			data["*()-_+~@:?><.;[]{}!£$%^&"] = "!£$%^&*()-_+~@:?><.;[]{}";
 			StateController.Navigate("d0", data);
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
 			Assert.AreEqual("!£$%^&*()-_+~@:?><.;[]{}", data["*()-_+~@:?><.;[]{}!£$%^&"]);
 		}
 
