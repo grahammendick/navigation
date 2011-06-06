@@ -414,6 +414,18 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateTransitionWithoutTrailTransitionTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s3"], StateContext.State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s2"], StateContext.PreviousState);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void RestoreHistoryPointNullPageTest()
 		{
