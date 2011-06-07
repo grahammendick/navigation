@@ -147,6 +147,9 @@
   <data name="InvalidEnumerableNavigationData" xml:space="preserve">
     <value>ArrayList and Generic List are the only valid enumerable types in NavigationData</value>
   </data>
+  <data name="InvalidExpression" xml:space="preserve">
+    <value>Invalid expression, NavigationDataExpressionBuilder expects a string with format: Key1=Value1,Key2?type=Value2</value>
+  </data>
   <data name="InvalidNavigationData" xml:space="preserve">
     <value>No TypeConverter found for {0}</value>
   </data>
