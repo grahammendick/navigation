@@ -97,7 +97,10 @@ namespace Navigation
 			}
 		}
 
-		internal void Clear()
+		/// <summary>
+		/// Removes all items from the <see cref="Navigation.NavigationData"/>
+		/// </summary>
+		public void Clear()
 		{
 			Data.Clear();
 		}
