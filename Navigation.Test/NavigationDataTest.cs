@@ -339,7 +339,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void ClearDataNavigateBackTest()
+		public void BlankDataNavigateBackTest()
 		{
 			NavigationData data = new NavigationData();
 			data["s"] = "Hello";
@@ -352,6 +352,21 @@ namespace Navigation.Test
 			StateController.NavigateBack(1);
 			Assert.AreEqual(null, StateContext.Data["s"]);
 			Assert.AreEqual(2, StateContext.Data["i"]);
+		}
+
+		[TestMethod]
+		public void ClearDataNavigateBackTest()
+		{
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateController.Navigate("d0", data);
+			StateContext.Data.Clear();
+			StateController.Navigate("t0");
+			Assert.IsNull(StateController.Crumbs[0].Data["s"]);
+			Assert.IsNull(StateController.Crumbs[0].Data["i"]);
+			StateController.NavigateBack(1);
+			Assert.AreEqual(null, StateContext.Data["s"]);
+			Assert.AreEqual(null, StateContext.Data["i"]);
 		}
 
 		[TestMethod]
@@ -406,13 +421,25 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDataRefreshDataClearTest()
+		public void NavigateDataRefreshDataBlankTest()
 		{
 			StateController.Navigate("d0");
 			NavigationData data = new NavigationData();
 			data["s"] = "Hello";
 			StateController.Navigate("t0", data);
 			StateController.Refresh();
+			Assert.IsNull(StateContext.Data["s"]);
+		}
+
+		[TestMethod]
+		public void NavigateDataRefreshDataClearTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			StateController.Navigate("t0", data);
+			StateContext.Data.Clear();
+			StateController.Refresh(new NavigationData(true));
 			Assert.IsNull(StateContext.Data["s"]);
 		}
 
