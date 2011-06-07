@@ -151,6 +151,15 @@ namespace Navigation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid expression, NavigationDataExpressionBuilder expects a string with format: Key1=Value1,Key2?type=Value2.
+        /// </summary>
+        internal static string InvalidExpression {
+            get {
+                return ResourceManager.GetString("InvalidExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No TypeConverter found for {0}.
         /// </summary>
         internal static string InvalidNavigationData {

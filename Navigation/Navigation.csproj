@@ -60,6 +60,7 @@
     <Compile Include="Dialog.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="NavigationData.cs" />
+    <Compile Include="NavigationDataExpressionBuilder.cs" />
     <Compile Include="NavigationDataItem.cs" />
     <Compile Include="NavigationDataParameter.cs" />
     <Compile Include="NavigationDataSource.cs" />
