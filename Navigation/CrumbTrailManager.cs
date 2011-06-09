@@ -143,7 +143,7 @@ namespace Navigation
 					if (key != StateContext.STATE)
 						routeData.Add(key, coll[key]);
 				}
-				return RouteTable.Routes.GetVirtualPath(null, nextState, routeData).VirtualPath;
+				return RouteTable.Routes.GetVirtualPath(null, nextState, routeData).VirtualPath.Insert(0, "~");
 			}
 		}
 
