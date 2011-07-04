@@ -44,7 +44,7 @@ namespace Navigation
 				foreach (State state in dialog.States)
 				{
 					if (state.Route.Length != 0)
-						routes.MapPageRoute(GetDialogStateKey(state), state.Route, state.Page, state.CheckPhysicalUrlAccess,
+						routes.MapPageRoute(GetDialogStateKey(state), state.Route, state.Page, state.CheckPhysicalUrlAccess, null, null,
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, GetDialogStateKey(state) }, 
 							});
