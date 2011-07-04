@@ -20,6 +20,10 @@ namespace Navigation
 			get
 			{
 				NameValueCollection queryData = new NameValueCollection();
+				foreach (string key in Page.RouteData.DataTokens.Keys)
+				{
+					queryData.Add(key, (string)Page.RouteData.DataTokens[key]);
+				}
 				foreach (string key in Page.RouteData.Values.Keys)
 				{
 					if (Page.RouteData.Values[key] != null)
@@ -48,7 +52,7 @@ namespace Navigation
 				|| !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
 				|| StateInfoConfig.Dialogs == null)
 				return base.DeterminePostBackMode();
-			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.Values[StateContext.STATE];
+			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.DataTokens[StateContext.STATE];
 			if (StateContext.StateKey == null)
 			{
 				Dialog dialog;
