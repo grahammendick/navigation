@@ -133,7 +133,7 @@ namespace Navigation
 						href.Append(HttpUtility.UrlEncode(coll[key]));
 					}
 				}
-				return href.ToString();
+				return href.Remove(0, 1).ToString();
 			}
 			else
 			{
@@ -143,7 +143,7 @@ namespace Navigation
 					if (key != StateContext.STATE)
 						routeData.Add(key, coll[key]);
 				}
-				return RouteTable.Routes.GetVirtualPath(null, nextState, routeData).VirtualPath.Insert(0, "~");
+				return RouteTable.Routes.GetVirtualPath(null, nextState, routeData).VirtualPath;
 			}
 		}
 
