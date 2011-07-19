@@ -133,7 +133,7 @@ namespace Navigation
 						href.Append(HttpUtility.UrlEncode(coll[key]));
 					}
 				}
-				return href.Remove(0, 1).ToString();
+				return mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(href.ToString()) : href.ToString();
 			}
 			else
 			{
