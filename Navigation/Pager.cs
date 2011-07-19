@@ -123,8 +123,12 @@ namespace Navigation
 						if (int.TryParse(pageNumber, out result))
 							startRowIndex = (result - 1) * MaximumRows;
 						NavigationData data = new NavigationData(true);
-						data[StartRowIndexKey] = startRowIndex;
-						data[MaximumRowsKey] = MaximumRows;
+						data[StartRowIndexKey] = null;
+						if (startRowIndex != 0)
+							data[StartRowIndexKey] = startRowIndex;
+						data[MaximumRowsKey] = null;
+						if (MaximumRows != 10)
+							data[MaximumRowsKey] = MaximumRows;
 						link.NavigateUrl = StateController.GetRefreshLink(data);
 					}
 				}
@@ -175,7 +179,9 @@ namespace Navigation
 				}
 				private set
 				{
-					StateContext.Data[Pager.MaximumRowsKey] = value;
+					StateContext.Data[Pager.MaximumRowsKey] = null;
+					if (value != 10)
+						StateContext.Data[Pager.MaximumRowsKey] = value;
 				}
 			}
 
@@ -187,7 +193,9 @@ namespace Navigation
 				}
 				private set
 				{
-					StateContext.Data[Pager.StartRowIndexKey] = value;
+					StateContext.Data[Pager.StartRowIndexKey] = null;
+					if (value != 0)
+						StateContext.Data[Pager.StartRowIndexKey] = value;
 				}
 			}
 

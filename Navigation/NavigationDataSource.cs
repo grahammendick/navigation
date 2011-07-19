@@ -17,6 +17,26 @@ namespace Navigation
 		private NavigationDataSourceView _View;
 
 		/// <summary>
+		/// Gets or sets a value indicating whether bound values passed during an update should 
+		/// be converted to null if they are <see cref="System.String.Empty"/>.
+		/// This is ignored for <see cref="UpdateParameters"/> as their own 
+		/// <see cref="System.Web.UI.WebControls.Parameter.ConvertEmptyStringToNull"/> value
+		/// will be used instead
+		/// </summary>
+		[DefaultValue(true), Category("Data"), Description("Specifies whether null bound values passed during an update will be converted to null.")]
+		public bool ConvertEmptyStringToNull
+		{
+			get
+			{
+				return GetView().ConvertEmptyStringToNull;
+			}
+			set
+			{
+				GetView().ConvertEmptyStringToNull = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets the parameters collection used to set default values to help with binding to 
 		/// non-nullable <see cref="System.Web.UI.Control"/> properties
 		/// </summary>

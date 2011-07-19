@@ -15,8 +15,28 @@ namespace Navigation
 	{
 		private NavigationDataSource _Owner;
 		private HttpContext _Context;
+		private bool _ConvertEmptyStringToNull = true;
 		private ParameterCollection _SelectParameters;
 		private ParameterCollection _UpdateParameters;
+
+		/// <summary>
+		/// Gets or sets a value indicating whether bound values passed during an update should 
+		/// be converted to null if they are <see cref="System.String.Empty"/>.
+		/// This is ignored for <see cref="UpdateParameters"/> as their own 
+		/// <see cref="System.Web.UI.WebControls.Parameter.ConvertEmptyStringToNull"/> value
+		/// will be used instead
+		/// </summary>
+		public bool ConvertEmptyStringToNull
+		{
+			get
+			{
+				return _ConvertEmptyStringToNull;
+			}
+			set
+			{
+				_ConvertEmptyStringToNull = value;
+			}
+		}
 
 		/// <summary>
 		/// Gets a value of false as only select and update functionality is supported
@@ -141,9 +161,18 @@ namespace Navigation
 			{
 				StateContext.Data[(string)entry.Key] = entry.Value;
 			}
+			object value;
+			string text;
 			foreach (DictionaryEntry entry in values)
 			{
-				StateContext.Data[((string)entry.Key).Substring(1, ((string)entry.Key).Length - 2)] = entry.Value;
+				value = entry.Value;
+				if (ConvertEmptyStringToNull)
+				{
+					text = value as string;
+					if (text != null && text.Length == 0)
+						value = null;
+				}
+				StateContext.Data[((string)entry.Key).Substring(1, ((string)entry.Key).Length - 2)] = value;
 			}
 			return 0;
 		}
