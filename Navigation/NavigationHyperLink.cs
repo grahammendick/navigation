@@ -17,7 +17,7 @@ namespace Navigation
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// or <see cref="Navigation.NavigationDirection.Refresh"/>
 		/// </summary>
-		[Browsable(false), Bindable(true)]
+		[Category("Navigation"), Description("The NavigationData to be passed."), DefaultValue(null), Bindable(true)]
 		public NavigationData ToData
 		{
 			get;
