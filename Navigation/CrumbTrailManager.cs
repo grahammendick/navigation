@@ -118,7 +118,7 @@ namespace Navigation
 				|| RouteTable.Routes[nextState] == null)
 			{
 				StringBuilder href = new StringBuilder();
-				href.Append(state.Page);
+				href.Append(mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(state.Page) : state.Page);
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(StateContext.STATE));
 				href.Append("=");
@@ -133,7 +133,7 @@ namespace Navigation
 						href.Append(HttpUtility.UrlEncode(coll[key]));
 					}
 				}
-				return mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(href.ToString()) : href.ToString();
+				return href.ToString();
 			}
 			else
 			{
