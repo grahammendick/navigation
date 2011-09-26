@@ -91,6 +91,24 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets or sets whether clicking the hyperlink will cause a PostBack if javascript is on. Can be used in conjunction with
+		/// ASP.NET Ajax History to implement the Single-Page Interface pattern that works with javascript off. 
+		/// This is only relevant if <see cref="Navigate"/> is true
+		/// </summary>
+		[Category("Navigation"), Description("Indicates whether clicking the hyperlink will cause a PostBack if javascript is on."), DefaultValue(false)]
+		public bool PostBackHyperLink
+		{
+			get
+			{
+				return ViewState["PostBackHyperLink"] != null ? (bool)ViewState["PostBackHyperLink"] : false;
+			}
+			set
+			{
+				ViewState["PostBackHyperLink"] = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets the button type.
 		/// This is only relevant if <see cref="Navigate"/> is false
 		/// </summary>
@@ -201,6 +219,10 @@ namespace Navigation
 			SortLinkButton.EnableTheming = false;
 			SortHyperLink.EnableTheming = false;
 			SortHyperLink.Direction = NavigationDirection.Refresh;
+			SortHyperLink.IncludeCurrentData = true;
+			SortHyperLink.PostBack = PostBackHyperLink;
+			SortHyperLink.ToData = new NavigationData();
+			SortHyperLink.ToData[SortExpressionKey] = GetSortExpression();
 			SortButton.Command += SortClicked;
 			SortImageButton.Command += SortClicked;
 			SortLinkButton.Command += SortClicked;
@@ -259,7 +281,6 @@ namespace Navigation
 			{
 				SortHyperLink.Text = Text;
 				SortHyperLink.ImageUrl = ImageUrl;
-				SortHyperLink.ToData = new NavigationData(true);
 				SortHyperLink.ToData[SortExpressionKey] = GetSortExpression();
 				control = SortHyperLink;
 			}

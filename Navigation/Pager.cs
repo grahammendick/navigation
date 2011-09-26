@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -10,7 +12,7 @@ namespace Navigation
 	/// Provides paging functionality for any data-bound controls, typically used in conjunction with the
 	/// <see cref="System.Web.UI.WebControls.ObjectDataSource"/> control.
 	/// </summary>
-	public class Pager : DataPager
+	public class Pager : DataPager, IPostBackEventHandler
 	{
 		NavigationPageableItemContainer _navigationPageableItemContainer = null;
 
@@ -63,6 +65,24 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets or sets whether clicking the hyperlink will cause a PostBack if javascript is on. Can be used in conjunction with
+		/// ASP.NET Ajax History to implement the Single-Page Interface pattern that works with javascript off. 
+		/// This is only relevant if QueryStringField is populated
+		/// </summary>
+		[Category("Navigation"), Description("Indicates whether clicking the hyperlink will cause a PostBack if javascript is on."), DefaultValue(false)]
+		public bool PostBackHyperLink
+		{
+			get
+			{
+				return ViewState["PostBackHyperLink"] != null ? (bool)ViewState["PostBackHyperLink"] : false;
+			}
+			set
+			{
+				ViewState["PostBackHyperLink"] = value;
+			}
+		}
+
+		/// <summary>
 		/// Returns a <see cref="System.Web.UI.WebControls.IPageableItemContainer"/> that gets and sets paging
 		/// information from <see cref="Navigation.StateContext.Data">Context Data</see>
 		/// </summary>
@@ -106,9 +126,9 @@ namespace Navigation
 		private void SetNavigationLinks(Control parent)
 		{
 			HyperLink link;
-			int startRowIndex;
-			int result;
-			string pageNumber;
+			int startRowIndex, result;
+			StringBuilder sb;
+			string pageNumber, onClick;
 			foreach (Control control in parent.Controls)
 			{
 				link = control as HyperLink;
@@ -130,10 +150,37 @@ namespace Navigation
 						if (MaximumRows != 10)
 							data[MaximumRowsKey] = MaximumRows;
 						link.NavigateUrl = StateController.GetRefreshLink(data);
+						if (link.Enabled && PostBackHyperLink)
+						{
+							sb = new StringBuilder();
+							onClick = link.Attributes["onclick"];
+							if (!string.IsNullOrEmpty(onClick))
+							{
+								sb.Append(onClick);
+								if (sb[sb.Length - 1] != ';')
+									sb.Append(";");
+								link.Attributes.Remove("onclick");
+							}
+							PostBackOptions postBackOptions = new PostBackOptions(this, startRowIndex.ToString(NumberFormatInfo.InvariantInfo));
+							postBackOptions.RequiresJavaScriptProtocol = sb.Length == 0;
+							sb.Append(Page.ClientScript.GetPostBackEventReference(postBackOptions));
+							sb.Append(";return false;");
+							link.Attributes.Add("onclick", sb.ToString());
+						}
 					}
 				}
 				SetNavigationLinks(control);
 			}
+		}
+
+		/// <summary>
+		/// Sets the paging data in <see cref="Navigation.StateContext.Data">State Context</see> when the
+		/// <see cref="Navigation.Pager"/>'s hyperlinks post back to the server
+		/// </summary>
+		/// <param name="eventArgument">The argument for the event</param>
+		public virtual void RaisePostBackEvent(string eventArgument)
+		{
+			StateContext.Data[StartRowIndexKey] = Convert.ToInt32(eventArgument, NumberFormatInfo.InvariantInfo);
 		}
 
 		private class NavigationPageableItemContainer : IPageableItemContainer
