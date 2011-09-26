@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -10,7 +11,7 @@ namespace Navigation
 	/// forward using an action parameter; backward via a <see cref="Navigation.Crumb"/>; or refreshing the
 	/// current <see cref="Navigation.State"/>.
 	/// </summary>
-	public class NavigationHyperLink : HyperLink
+	public class NavigationHyperLink : HyperLink, IPostBackEventHandler
 	{
 		/// <summary>
 		/// Gets or sets the <see cref="Navigation.NavigationData"/> to be passed to the next <see cref="Navigation.State"/>.
@@ -22,6 +23,25 @@ namespace Navigation
 		{
 			get;
 			set;
+		}
+
+		/// <summary>
+		/// Gets or sets whether to include the <see cref="Navigation.StateContext.Data">State Context</see> together
+		/// with the <see cref="ToData"/>. 
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
+		/// or <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// </summary>
+		[Category("Navigation"), Description("Specifies whether to include State Context together with the ToData."), DefaultValue(false), Bindable(true)]
+		public bool IncludeCurrentData
+		{
+			get
+			{
+				return ViewState["IncludeCurrentData"] != null ? (bool)ViewState["IncludeCurrentData"] : false;
+			}
+			set
+			{
+				ViewState["IncludeCurrentData"] = value;
+			}
 		}
 
 		/// <summary>
@@ -75,9 +95,29 @@ namespace Navigation
 		}
 
 		/// <summary>
-		///  Gets a Url to navigate to a <see cref="Navigation.State"/> depending on the <see cref="Direction"/>.
-		///  This can be forward using an action parameter; backward via a <see cref="Navigation.Crumb"/>;
-		///  or refreshing the current <see cref="Navigation.State"/>
+		/// Gets or sets whether clicking the hyperlink will cause a PostBack if javascript is on. Can be used in conjunction with
+		/// ASP.NET Ajax History to implement the Single-Page Interface pattern that works with javascript off. 
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>.
+		/// WARNING: With javascript off a GET request is issued, so only retrieval operations should follow from clicking 
+		/// the hyperlink. To this end the post back event is neither validated nor raised
+		/// </summary>
+		[Category("Navigation"), Description("Specifies whether clicking the hyperlink will cause a PostBack if javascript is on."), DefaultValue(false), Bindable(true)]
+		public bool PostBack
+		{
+			get
+			{
+				return ViewState["PostBack"] != null ? (bool)ViewState["PostBack"] : false;
+			}
+			set
+			{
+				ViewState["PostBack"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets a Url to navigate to a <see cref="Navigation.State"/> depending on the <see cref="Direction"/>.
+		/// This can be forward using an action parameter; backward via a <see cref="Navigation.Crumb"/>;
+		/// or refreshing the current <see cref="Navigation.State"/>
 		/// </summary>
 		[Browsable(false)]
 		public string Link
@@ -86,11 +126,13 @@ namespace Navigation
 			{
 				if (NavigateUrl.Length > 0)
 					return NavigateUrl;
+				NavigationData data = new NavigationData(IncludeCurrentData);
+				UpdateData(data);
 				switch (Direction)
 				{
 					case (NavigationDirection.Refresh):
 						{
-							return StateController.GetRefreshLink(ToData);
+							return StateController.GetRefreshLink(data);
 						}
 					case (NavigationDirection.Back):
 						{
@@ -100,8 +142,19 @@ namespace Navigation
 						{
 							if (Action.Length == 0)
 								return string.Empty;
-							return StateController.GetNavigationLink(Action, ToData);
+							return StateController.GetNavigationLink(Action, data);
 						}
+				}
+			}
+		}
+
+		private void UpdateData(NavigationData data)
+		{
+			if (ToData != null)
+			{
+				foreach (NavigationDataItem item in ToData)
+				{
+					data[item.Key] = item.Value;
 				}
 			}
 		}
@@ -113,8 +166,27 @@ namespace Navigation
 		/// <param name="writer">The output stream to render on the client</param>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
-			if (!DesignMode)
+			if (!DesignMode && Enabled && NavigateUrl.Length == 0)
+			{
 				NavigateUrl = Link;
+				if (Direction == NavigationDirection.Refresh && PostBack)
+				{
+					StringBuilder sb = new StringBuilder();
+					string onClick = Attributes["onclick"];
+					if (!string.IsNullOrEmpty(onClick))
+					{
+						sb.Append(onClick);
+						if (sb[sb.Length - 1] != ';')
+							sb.Append(";");
+						Attributes.Remove("onclick");
+					}
+					PostBackOptions postBackOptions = new PostBackOptions(this);
+					postBackOptions.RequiresJavaScriptProtocol = sb.Length == 0;
+					sb.Append(Page.ClientScript.GetPostBackEventReference(postBackOptions));
+					sb.Append(";return false;");
+					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, sb.ToString());
+				}
+			}
 			base.AddAttributesToRender(writer);
 		}
 
@@ -155,6 +227,18 @@ namespace Navigation
 			if (pair.First == null && pair.Second == null)
 				return null;
 			return pair;
+		}
+
+		/// <summary>
+		/// Updates <see cref="Navigation.StateContext.Data">State Context</see> when the <see cref="Navigation.NavigationHyperLink"/>
+		/// posts back to the server
+		/// </summary>
+		/// <param name="eventArgument">The argument for the event</param>
+		public virtual void RaisePostBackEvent(string eventArgument)
+		{
+			if (!IncludeCurrentData)
+				StateContext.Data.Clear();
+			UpdateData(StateContext.Data);
 		}
 	}
 }
