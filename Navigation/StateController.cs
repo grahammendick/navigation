@@ -69,6 +69,28 @@ namespace Navigation
 			}
 		}
 
+		internal static NameValueCollection QueryData
+		{
+			get
+			{
+				NameValueCollection queryData = new NameValueCollection();
+				foreach (string key in HttpContext.Current.Request.RequestContext.RouteData.DataTokens.Keys)
+				{
+					queryData.Add(key, (string)HttpContext.Current.Request.RequestContext.RouteData.DataTokens[key]);
+				}
+				foreach (string key in HttpContext.Current.Request.RequestContext.RouteData.Values.Keys)
+				{
+					if (HttpContext.Current.Request.RequestContext.RouteData.Values[key] != null)
+						queryData.Add(key, (string)HttpContext.Current.Request.RequestContext.RouteData.Values[key]);
+				}
+				foreach (string key in HttpContext.Current.Request.QueryString)
+				{
+					queryData.Add(key, HttpContext.Current.Request.QueryString[key]);
+				}
+				return queryData;
+			}
+		}
+
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
 		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
@@ -395,7 +417,7 @@ namespace Navigation
 				throw new ArgumentNullException("data");
 			if (data.Count == 0)
 			{
-				ParseData(HttpContext.Current.Request.QueryString, false);
+				ParseData(StateContext.ShieldDecode(StateController.QueryData, false), false);
 			}
 			else
 			{
