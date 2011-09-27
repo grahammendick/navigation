@@ -15,28 +15,6 @@ namespace Navigation
 	/// </summary>
 	public class StateAdapter : PageAdapter
 	{
-		private NameValueCollection QueryData
-		{
-			get
-			{
-				NameValueCollection queryData = new NameValueCollection();
-				foreach (string key in Page.RouteData.DataTokens.Keys)
-				{
-					queryData.Add(key, (string)Page.RouteData.DataTokens[key]);
-				}
-				foreach (string key in Page.RouteData.Values.Keys)
-				{
-					if (Page.RouteData.Values[key] != null)
-						queryData.Add(key, (string)Page.RouteData.Values[key]);
-				}
-				foreach (string key in Page.Request.QueryString)
-				{
-					queryData.Add(key, Page.Request.QueryString[key]);
-				}
-				return queryData;
-			}
-		}
-
 		/// <summary>
 		/// Validates the incoming Url and if no state parameter c0 found will navigate to
 		/// the <see cref="Navigation.Dialog"/> whose path property matches the Url
@@ -101,7 +79,7 @@ namespace Navigation
 				Page.Theme = StateContext.State.Theme;
 			}
 			Page.RegisterRequiresControlState(Page);
-			StateController.ParseData(StateContext.ShieldDecode(QueryData, false), Page.IsPostBack);
+			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false), Page.IsPostBack);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
 		}
