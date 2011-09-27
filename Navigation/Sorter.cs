@@ -91,8 +91,8 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets or sets whether clicking the hyperlink will cause a PostBack if javascript is on. Can be used in conjunction with
-		/// ASP.NET Ajax History to implement the Single-Page Interface pattern that works with javascript off. 
+		/// Gets or sets whether clicking the hyperlink will cause a PostBack if javascript is on. Can be used in conjunction
+		/// with ASP.NET Ajax to implement the Single-Page Interface pattern that works with javascript off. 
 		/// This is only relevant if <see cref="Navigate"/> is true
 		/// </summary>
 		[Category("Navigation"), Description("Indicates whether clicking the hyperlink will cause a PostBack if javascript is on."), DefaultValue(false)]
