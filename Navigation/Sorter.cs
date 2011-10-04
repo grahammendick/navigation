@@ -221,8 +221,7 @@ namespace Navigation
 			SortHyperLink.Direction = NavigationDirection.Refresh;
 			SortHyperLink.IncludeCurrentData = true;
 			SortHyperLink.PostBack = PostBackHyperLink;
-			SortHyperLink.ToData = new NavigationData();
-			SortHyperLink.ToData[SortExpressionKey] = GetSortExpression();
+			SortHyperLink.Command += SortClicked;
 			SortButton.Command += SortClicked;
 			SortImageButton.Command += SortClicked;
 			SortLinkButton.Command += SortClicked;
@@ -281,6 +280,7 @@ namespace Navigation
 			{
 				SortHyperLink.Text = Text;
 				SortHyperLink.ImageUrl = ImageUrl;
+				SortHyperLink.ToData = new NavigationData();
 				SortHyperLink.ToData[SortExpressionKey] = GetSortExpression();
 				control = SortHyperLink;
 			}

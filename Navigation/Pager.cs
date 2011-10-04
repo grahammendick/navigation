@@ -126,9 +126,9 @@ namespace Navigation
 		private void SetNavigationLinks(Control parent)
 		{
 			HyperLink link;
-			int startRowIndex, result;
-			StringBuilder sb;
-			string pageNumber, onClick;
+			int startRowIndex;
+			int result;
+			string pageNumber;
 			foreach (Control control in parent.Controls)
 			{
 				link = control as HyperLink;
@@ -152,20 +152,9 @@ namespace Navigation
 						link.NavigateUrl = StateController.GetRefreshLink(data);
 						if (link.Enabled && PostBackHyperLink)
 						{
-							sb = new StringBuilder();
-							onClick = link.Attributes["onclick"];
-							if (!string.IsNullOrEmpty(onClick))
-							{
-								sb.Append(onClick);
-								if (sb[sb.Length - 1] != ';')
-									sb.Append(";");
-								link.Attributes.Remove("onclick");
-							}
 							PostBackOptions postBackOptions = new PostBackOptions(this, startRowIndex.ToString(NumberFormatInfo.InvariantInfo));
-							postBackOptions.RequiresJavaScriptProtocol = sb.Length == 0;
-							sb.Append(Page.ClientScript.GetPostBackEventReference(postBackOptions));
-							sb.Append(";return false;");
-							link.Attributes.Add("onclick", sb.ToString());
+							postBackOptions.RequiresJavaScriptProtocol = true;
+							link.Attributes.Add("onclick", string.Format("{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
 						}
 					}
 				}
@@ -180,6 +169,7 @@ namespace Navigation
 		/// <param name="eventArgument">The argument for the event</param>
 		public virtual void RaisePostBackEvent(string eventArgument)
 		{
+			Page.ClientScript.ValidateEvent(UniqueID, eventArgument);
 			StateContext.Data[StartRowIndexKey] = Convert.ToInt32(eventArgument, NumberFormatInfo.InvariantInfo);
 		}
 
