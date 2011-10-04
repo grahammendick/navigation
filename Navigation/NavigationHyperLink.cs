@@ -13,12 +13,15 @@ namespace Navigation
 	/// </summary>
 	public class NavigationHyperLink : HyperLink, IPostBackEventHandler
 	{
+		private static readonly object EventClick = new object();
+		private static readonly object EventCommand = new object();
+
 		/// <summary>
 		/// Gets or sets the <see cref="Navigation.NavigationData"/> to be passed to the next <see cref="Navigation.State"/>.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// or <see cref="Navigation.NavigationDirection.Refresh"/>
 		/// </summary>
-		[Category("Navigation"), Description("The NavigationData to be passed."), DefaultValue(null), Bindable(true)]
+		[Category("Navigation"), Description("The NavigationData to be passed."), DefaultValue(null)]
 		public NavigationData ToData
 		{
 			get;
@@ -31,7 +34,7 @@ namespace Navigation
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// or <see cref="Navigation.NavigationDirection.Refresh"/>
 		/// </summary>
-		[Category("Navigation"), Description("Specifies whether to include State Context together with the ToData."), DefaultValue(false), Bindable(true)]
+		[Category("Navigation"), Description("Specifies whether to include State Context together with the ToData."), DefaultValue(false)]
 		public bool IncludeCurrentData
 		{
 			get
@@ -48,7 +51,7 @@ namespace Navigation
 		/// Gets or sets the key of a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// </summary>
-		[Category("Navigation"), Description("The key of a child Transition or Dialog."), DefaultValue(""), Bindable(true)]
+		[Category("Navigation"), Description("The key of a child Transition or Dialog."), DefaultValue("")]
 		public string Action
 		{
 			get
@@ -65,7 +68,7 @@ namespace Navigation
 		/// Gets or sets the number of <see cref="Crumb"/> steps to go back, starting at 1.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Back"/>
 		/// </summary>
-		[Category("Navigation"), Description("The number of Crumb steps to go back."), DefaultValue(1), Bindable(true)]
+		[Category("Navigation"), Description("The number of Crumb steps to go back."), DefaultValue(1)]
 		public int Distance
 		{
 			get
@@ -81,7 +84,7 @@ namespace Navigation
 		/// <summary>
 		/// Gets or sets the direction of the navigation
 		/// </summary>
-		[Category("Navigation"), Description("The direction of the navigation."), DefaultValue(NavigationDirection.Forward), Bindable(true)]
+		[Category("Navigation"), Description("The direction of the navigation."), DefaultValue(NavigationDirection.Forward)]
 		public NavigationDirection Direction
 		{
 			get
@@ -97,11 +100,10 @@ namespace Navigation
 		/// <summary>
 		/// Gets or sets whether clicking the hyperlink will cause a PostBack if javascript is on. Can be used in conjunction
 		/// with ASP.NET Ajax to implement the Single-Page Interface pattern that works with javascript off. 
-		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>.
-		/// WARNING: With javascript off a GET request is issued, so only retrieval operations should follow from clicking 
-		/// the hyperlink. To this end the post back event is neither validated nor raised
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and javascript is on
 		/// </summary>
-		[Category("Navigation"), Description("Specifies whether clicking the hyperlink will cause a PostBack if javascript is on."), DefaultValue(false), Bindable(true)]
+		[Category("Behavior"), Description("Specifies whether clicking the hyperlink will cause a PostBack if Direction is Refresh and javascript is on."), DefaultValue(false)]
 		public bool PostBack
 		{
 			get
@@ -111,6 +113,80 @@ namespace Navigation
 			set
 			{
 				ViewState["PostBack"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the command name. This value is passed to the <see cref="Command"/> event handler along with the
+		/// <see cref="CommandArgument"/>.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		[Category("Behavior"), Description("The command raised if Direction is Refresh, PostBack is true and javascript is on."), DefaultValue("")]
+		public string CommandName
+		{
+			get
+			{
+				return ViewState["CommandName"] != null ? (string)ViewState["CommandName"] : string.Empty;
+			}
+			set
+			{
+				ViewState["CommandName"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the command argument. This value is passed to the <see cref="Command"/> event handler along with the
+		/// <see cref="CommandName"/>.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		[Category("Behavior"), Description("The command argument passed if Direction is Refresh, PostBack is true and javascript is on."), DefaultValue("")]
+		public string CommandArgument
+		{
+			get
+			{
+				return ViewState["CommandArgument"] != null ? (string)ViewState["CommandArgument"] : string.Empty;
+			}
+			set
+			{
+				ViewState["CommandArgument"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when the <see cref="Navigation.NavigationHyperLink"/> is clicked.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		[Category("Action"), Description("Fires when the link is clicked if Direction is Refresh, PostBack is true and javascript is on.")]
+		public event EventHandler Click
+		{
+			add
+			{
+				Events.AddHandler(EventClick, value);
+			}
+			remove
+			{
+				Events.RemoveHandler(EventClick, value);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when the <see cref="Navigation.NavigationHyperLink"/> is clicked.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		[Category("Action"), Description("Fires when the link is clicked if Direction is Refresh, PostBack is true and javascript is on.")]
+		public event CommandEventHandler Command
+		{
+			add
+			{
+				Events.AddHandler(EventCommand, value);
+			}
+			remove
+			{
+				Events.RemoveHandler(EventCommand, value);
 			}
 		}
 
@@ -171,20 +247,9 @@ namespace Navigation
 				NavigateUrl = Link;
 				if (Direction == NavigationDirection.Refresh && PostBack)
 				{
-					StringBuilder sb = new StringBuilder();
-					string onClick = Attributes["onclick"];
-					if (!string.IsNullOrEmpty(onClick))
-					{
-						sb.Append(onClick);
-						if (sb[sb.Length - 1] != ';')
-							sb.Append(";");
-						Attributes.Remove("onclick");
-					}
 					PostBackOptions postBackOptions = new PostBackOptions(this);
-					postBackOptions.RequiresJavaScriptProtocol = sb.Length == 0;
-					sb.Append(Page.ClientScript.GetPostBackEventReference(postBackOptions));
-					sb.Append(";return false;");
-					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, sb.ToString());
+					postBackOptions.RequiresJavaScriptProtocol = true;
+					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, string.Format("{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
 				}
 			}
 			base.AddAttributesToRender(writer);
@@ -230,15 +295,45 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Raises the <see cref="Click"/> event.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		/// <param name="e"><see cref="System.EventArgs"/> containing the event data</param>
+		protected virtual void OnClick(EventArgs e)
+		{
+			EventHandler eventHandler = (EventHandler) Events[EventClick];
+			if (eventHandler != null)
+				eventHandler(this, e);
+		}
+
+		/// <summary>
+		/// Raises the <see cref="Command"/> event.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		/// <param name="e"><see cref="System.Web.UI.WebControls.CommandEventArgs"/> containing the event data</param>
+		protected virtual void OnCommand(CommandEventArgs e)
+		{
+			CommandEventHandler commandEventHandler = (CommandEventHandler)Events[EventCommand];
+			if (commandEventHandler != null)
+				commandEventHandler(this, e);
+			RaiseBubbleEvent(this, e);
+		}
+
+		/// <summary>
 		/// Updates <see cref="Navigation.StateContext.Data">State Context</see> when the <see cref="Navigation.NavigationHyperLink"/>
 		/// posts back to the server
 		/// </summary>
 		/// <param name="eventArgument">The argument for the event</param>
 		public virtual void RaisePostBackEvent(string eventArgument)
 		{
+			Page.ClientScript.ValidateEvent(UniqueID);
 			if (!IncludeCurrentData)
 				StateContext.Data.Clear();
 			UpdateData(StateContext.Data);
+			OnClick(EventArgs.Empty);
+			OnCommand(new CommandEventArgs(CommandName, CommandArgument));
 		}
 	}
 }
