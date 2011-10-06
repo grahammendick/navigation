@@ -381,7 +381,7 @@ namespace Navigation
 
 		/// <summary>
 		/// Wraps the ASP.NET <see cref="System.Web.UI.ScriptManager"/> history point functionality.
-		/// Adds a history point passing the <see cref="Navigation.StateContext"/> data 
+		/// Adds a history point passing no <see cref="Navigation.NavigationData"/>
 		/// </summary>
 		/// <param name="page">Current <see cref="System.Web.UI.Page"/></param>
 		/// <param name="title">Title for history point</param>
@@ -390,11 +390,25 @@ namespace Navigation
 		[SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.UI.ScriptManager.#AddHistoryPoint(System.Collections.Specialized.NameValueCollection,System.String)")]
 		public static void AddHistoryPoint(Page page, string title)
 		{
+			AddHistoryPoint(page, null, title);
+		}
+
+		/// <summary>
+		/// Wraps the ASP.NET <see cref="System.Web.UI.ScriptManager"/> history point functionality.
+		/// </summary>
+		/// <param name="page">Current <see cref="System.Web.UI.Page"/></param>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> used to create the history point</param>
+		/// <param name="title">Title for history point</param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="page"/> is null</exception>
+		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		[SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.UI.ScriptManager.#AddHistoryPoint(System.Collections.Specialized.NameValueCollection,System.String)")]
+		public static void AddHistoryPoint(Page page, NavigationData toData, string title)
+		{
 			if (page == null)
 				throw new ArgumentNullException("page");
 			NameValueCollection coll = new NameValueCollection();
 			coll[StateContext.STATE] = StateContext.StateKey;
-			foreach (NavigationDataItem item in StateContext.Data)
+			foreach (NavigationDataItem item in toData)
 			{
 				coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Value);
 			}
@@ -403,15 +417,15 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Responds to a <see cref="System.Web.UI.ScriptManager"/> history navigation handler
-		/// and restores the <paramref name="data"/> saved by <see cref="AddHistoryPoint"/> method to 
-		/// the <see cref="Navigation.StateContext"/>
+		/// Responds to a <see cref="System.Web.UI.ScriptManager"/> history navigation handler and restores the
+		/// <paramref name="data"/> saved by <see cref="AddHistoryPoint(System.Web.UI.Page, Navigation.NavigationData, string)"/> 
+		/// method to the <see cref="Navigation.StateContext"/>
 		/// </summary>
 		/// <param name="data">Saved <see cref="Navigation.StateContext"/> to restore</param>
 		/// <exception cref="System.ArgumentNullException"><paramref name="data"/> is null</exception>
 		/// <exception cref="Navigation.UrlException">There is data that cannot be converted from a <see cref="System.String"/>;
 		/// or the <see cref="Navigation.NavigationShield"/> detects tampering</exception>
-		public static void RestoreHistoryPoint(NameValueCollection data)
+		public static void NavigateHistory(NameValueCollection data)
 		{
 			if (data == null)
 				throw new ArgumentNullException("data");

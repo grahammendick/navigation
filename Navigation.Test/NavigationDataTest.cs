@@ -150,7 +150,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
 			int i = 0;
-			foreach (NavigationDataItem item in (IEnumerable) StateContext.Data)
+			foreach (NavigationDataItem item in (IEnumerable)StateContext.Data)
 			{
 				Assert.AreEqual(((IList)ListNavigationData[item.Key])[0], ((IList)item.Value)[0]);
 				Assert.AreEqual(((IList)ListNavigationData[item.Key])[1], ((IList)item.Value)[1]);
@@ -582,22 +582,22 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(UrlException))]
-		public void RestoreHistoryPointInvalidDataTest()
+		public void NavigateHistoryInvalidDataTest()
 		{
 			NameValueCollection coll = new NameValueCollection(){
 		        {"name","22!1"},
 		        {"cs","VLijzPeq"}
 		    };
-			StateController.RestoreHistoryPoint(coll);
+			StateController.NavigateHistory(coll);
 		}
 
 		[TestMethod]
-		public void RestoreHistoryPointIndividualDataTest()
+		public void NavigateHistoryIndividualDataTest()
 		{
 			StateController.Navigate("d0");
 			string url = StateController.GetNavigationLink("t0", IndividualNavigationData);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
-			StateController.RestoreHistoryPoint(coll);
+			StateController.NavigateHistory(coll);
 			int i = 0;
 			foreach (NavigationDataItem item in StateContext.Data)
 			{
@@ -608,14 +608,14 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void RestoreHistoryPointListDataTest()
+		public void NavigateHistoryListDataTest()
 		{
 			StateController.Navigate("d0");
 			string url = StateController.GetNavigationLink("t0", ListNavigationData);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
-			StateController.RestoreHistoryPoint(coll);
+			StateController.NavigateHistory(coll);
 			int i = 0;
-			foreach (NavigationDataItem item in (IEnumerable) StateContext.Data)
+			foreach (NavigationDataItem item in (IEnumerable)StateContext.Data)
 			{
 				Assert.AreEqual(((IList)ListNavigationData[item.Key])[0], ((IList)item.Value)[0]);
 				Assert.AreEqual(((IList)ListNavigationData[item.Key])[1], ((IList)item.Value)[1]);
@@ -625,12 +625,12 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void RestoreHistoryPointArrayListDataTest()
+		public void NavigateHistoryArrayListDataTest()
 		{
 			StateController.Navigate("d0");
 			string url = StateController.GetNavigationLink("t0", ArrayListNavigationData);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
-			StateController.RestoreHistoryPoint(coll);
+			StateController.NavigateHistory(coll);
 			int i = 0;
 			foreach (NavigationDataItem item in StateContext.Data)
 			{

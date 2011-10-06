@@ -77,12 +77,12 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(UrlException))]
-		public void RestoreHistoryPointChecksumInvalidTest()
+		public void NavigateHistoryChecksumInvalidTest()
 		{
 			NameValueCollection coll = new NameValueCollection(){
 		        {"name","test"}
 		    };
-			StateController.RestoreHistoryPoint(coll);
+			StateController.NavigateHistory(coll);
 		}
 	}
 }

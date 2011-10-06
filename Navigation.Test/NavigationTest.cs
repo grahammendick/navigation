@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Web.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Navigation;
 
@@ -328,7 +329,8 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			try{
+			try
+			{
 				StateController.NavigateBack(1);
 			}
 			catch (ArgumentException) { };
@@ -344,9 +346,11 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			try { 
-				StateController.NavigateBack(1); 
-			}catch (ArgumentException) { };
+			try
+			{
+				StateController.NavigateBack(1);
+			}
+			catch (ArgumentException) { };
 			StateController.NavigateBack(1);
 		}
 
@@ -427,16 +431,25 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void RestoreHistoryPointNullPageTest()
+		public void AddHistoryPointNullPageTest()
 		{
 			StateController.AddHistoryPoint(null, null);
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void RestoreHistoryPointNullDataTest()
+		[ExpectedException(typeof(ArgumentException))]
+		public void AddHistoryPointInvalidDataTest()
 		{
-			StateController.RestoreHistoryPoint(null);
+			NavigationData data = new NavigationData();
+			data["item"] = DateTimeOffset.MinValue;
+			StateController.AddHistoryPoint(new Page(), data, null);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NavigateHistoryNullDataTest()
+		{
+			StateController.NavigateHistory(null);
 		}
 	}
 }

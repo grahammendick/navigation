@@ -16,7 +16,7 @@ namespace Navigation
 		/// <param name="data">An unprotected set of key/value pairs prior to the formation
 		/// of the querty string</param>
 		/// <param name="historyPoint">Identifies if the Url is being built as a result of
-		/// a call to <see cref="StateController.AddHistoryPoint"/></param>
+		/// a call to <see cref="StateController.AddHistoryPoint(System.Web.UI.Page, Navigation.NavigationData, string)"/></param>
 		/// <returns>Protected set of query string parameters</returns>
 		public abstract NameValueCollection Encode(NameValueCollection data, bool historyPoint);
 
@@ -26,7 +26,7 @@ namespace Navigation
 		/// <param name="data">A protected set of key/value pairs produced by the <see cref="Encode"/>
 		/// method</param>
 		/// <param name="historyPoint">Identifies if the Url is being decoded as a result of
-		/// a call to <see cref="StateController.RestoreHistoryPoint"/></param>
+		/// a call to <see cref="StateController.NavigateHistory"/></param>
 		/// <returns>Unprotected set of query string parameters</returns>
 		public abstract NameValueCollection Decode(NameValueCollection data, bool historyPoint);
 	}
