@@ -437,9 +437,6 @@ namespace Navigation
 			{
 				data = StateContext.ShieldDecode(data, true);
 				data.Remove(StateContext.STATE);
-				data.Remove(StateContext.PREVIOUS_STATE);
-				data.Remove(StateContext.CRUMB_TRAIL);
-				data.Remove(StateContext.RETURN_DATA);
 				StateContext.Data.Clear();
 				foreach (string key in data)
 				{

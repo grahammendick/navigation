@@ -594,7 +594,8 @@ namespace Navigation.Test
 		[TestMethod]
 		public void NavigateHistoryIndividualDataTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
 			string url = StateController.GetNavigationLink("t0", IndividualNavigationData);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 			StateController.NavigateHistory(coll);
@@ -610,7 +611,8 @@ namespace Navigation.Test
 		[TestMethod]
 		public void NavigateHistoryListDataTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
 			string url = StateController.GetNavigationLink("t0", ListNavigationData);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 			StateController.NavigateHistory(coll);
@@ -627,7 +629,8 @@ namespace Navigation.Test
 		[TestMethod]
 		public void NavigateHistoryArrayListDataTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
 			string url = StateController.GetNavigationLink("t0", ArrayListNavigationData);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 			StateController.NavigateHistory(coll);
