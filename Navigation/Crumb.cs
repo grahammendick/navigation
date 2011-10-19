@@ -36,6 +36,17 @@ namespace Navigation
         }
 
 		/// <summary>
+		/// Gets the dynamic <see cref="Navigation.NavigationData.Bag"/> for the <see cref="Data"/>
+		/// </summary>
+		public dynamic Bag
+		{
+			get
+			{
+				return Data.Bag;
+			}
+		}
+
+		/// <summary>
 		/// Gets values from <see cref="Data"/> for the specified <paramref name="key"/>.
 		/// A convenience property used in conjunction with <see cref="Navigation.CrumbTrailDataSource"/> 
 		/// when data binding

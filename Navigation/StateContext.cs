@@ -121,6 +121,17 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets the dynamic <see cref="Navigation.NavigationData.Bag"/> for the <see cref="Data"/>
+		/// </summary>
+		public static dynamic Bag
+		{
+			get
+			{
+				return Data.Bag;
+			}
+		}
+
 		[ThreadStatic]
 		private static Hashtable _ReservedData;
 		internal static Hashtable ReservedData

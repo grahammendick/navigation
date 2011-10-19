@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Web.UI;
 
 namespace Navigation
@@ -15,7 +16,8 @@ namespace Navigation
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification="Navigation Data is more appropriate name")]
 	public sealed class NavigationData : IStateManager, IEnumerable, IEnumerable<NavigationDataItem>
 	{
-        private StateBag _Data;
+		private StateBag _Data;
+		private DynamicNavigationData _DynamicNavigationData;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Navigation.NavigationData"/> class
@@ -98,6 +100,19 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets the dynamic <see cref="Navigation.NavigationData"/>
+		/// </summary>
+		public dynamic Bag
+		{
+			get
+			{
+				if (_DynamicNavigationData == null)
+					_DynamicNavigationData = new DynamicNavigationData(this);
+				return _DynamicNavigationData;
+			}
+		}
+
+		/// <summary>
 		/// Removes all items from the <see cref="Navigation.NavigationData"/>
 		/// </summary>
 		public void Clear()
@@ -147,6 +162,32 @@ namespace Navigation
 			foreach(DictionaryEntry entry in Data)
 			{
 				yield return new NavigationDataItem((string)entry.Key, ((StateItem)entry.Value).Value);
+			}
+		}
+
+		private class DynamicNavigationData : DynamicObject
+		{
+			private NavigationData Data
+			{
+				get;
+				set;
+			}
+
+			public DynamicNavigationData(NavigationData data)
+			{
+				Data = data;
+			}
+
+			public override bool TryGetMember(GetMemberBinder binder, out object result)
+			{
+				result = Data[binder.Name];
+				return true;
+			}
+
+			public override bool TrySetMember(SetMemberBinder binder, object value)
+			{
+				Data[binder.Name] = value;
+				return true;
 			}
 		}
 	}
