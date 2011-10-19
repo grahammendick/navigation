@@ -46,14 +46,14 @@ namespace Navigation.Test
 					_IndividualNavigationData["float"] = (float)3;
 					_IndividualNavigationData["double"] = (double)4;
 					_IndividualNavigationData["decimal"] = (decimal)5;
-					_IndividualNavigationData["DateTime"] = new DateTime(1990, 3, 1, 12, 35, 47);
-					_IndividualNavigationData["TimeSpan"] = new TimeSpan(10, 5, 23);
+					_IndividualNavigationData.Bag.DateTime = new DateTime(1990, 3, 1, 12, 35, 47);
+					_IndividualNavigationData.Bag.TimeSpan = new TimeSpan(10, 5, 23);
 					_IndividualNavigationData["byte"] = (byte)6;
 					_IndividualNavigationData["char"] = (char)7;
 					_IndividualNavigationData["Guid"] = Guid.Empty;
-					_IndividualNavigationData["customData"] = new CustomData() { Name = "Bob", Age = 18 };
-					_IndividualNavigationData["custom2Data"] = new Custom2Data() { Name = "Bob", Age = 18 };
-					_IndividualNavigationData["dayOfWeek"] = DayOfWeek.Saturday;
+					_IndividualNavigationData.Bag.customData = new CustomData() { Name = "Bob", Age = 18 };
+					_IndividualNavigationData.Bag.custom2Data = new Custom2Data() { Name = "Bob", Age = 18 };
+					_IndividualNavigationData.Bag.dayOfWeek = DayOfWeek.Saturday;
 				}
 				return _IndividualNavigationData;
 			}
@@ -67,21 +67,21 @@ namespace Navigation.Test
 				if (_ListNavigationData == null)
 				{
 					_ListNavigationData = new NavigationData();
-					_ListNavigationData["List<string>"] = new List<string> { "Hello", "World" };
-					_ListNavigationData["List<bool>"] = new List<bool> { true, false };
-					_ListNavigationData["List<short>"] = new List<short> { 1, 2 };
-					_ListNavigationData["List<long>"] = new List<long> { 2, 3 };
-					_ListNavigationData["List<float>"] = new List<float> { 3, 4 };
-					_ListNavigationData["List<double>"] = new List<double> { 4, 5 };
-					_ListNavigationData["List<decimal>"] = new List<decimal> { 5, 6 };
-					_ListNavigationData["List<DateTime>"] = new List<DateTime>() { new DateTime(1990, 3, 1, 12, 35, 47), new DateTime(1971, 10, 5, 11, 1, 15) };
-					_ListNavigationData["List<TimeSpan>"] = new List<TimeSpan>() { new TimeSpan(10, 5, 23), new TimeSpan(8, 7, 6) };
-					_ListNavigationData["List<byte>"] = new List<byte>() { 6, 7 };
-					_ListNavigationData["List<char>"] = new List<char>() { '7', '8' };
-					_ListNavigationData["List<Guid>"] = new List<Guid>() { Guid.Empty, Guid.Empty };
-					_ListNavigationData["List<customData>"] = new List<CustomData>() { new CustomData() { Name = "Bob", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
-					_ListNavigationData["List<custom2Data>"] = new List<Custom2Data>() { new Custom2Data() { Name = "Bob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
-					_ListNavigationData["List<dayOfWeek>"] = new List<DayOfWeek>() { DayOfWeek.Saturday, DayOfWeek.Monday };
+					_ListNavigationData.Bag.List_string = new List<string> { "Hello", "World" };
+					_ListNavigationData.Bag.List_bool = new List<bool> { true, false };
+					_ListNavigationData.Bag.List_short = new List<short> { 1, 2 };
+					_ListNavigationData.Bag.List_long = new List<long> { 2, 3 };
+					_ListNavigationData.Bag.List_float = new List<float> { 3, 4 };
+					_ListNavigationData["List_double"] = new List<double> { 4, 5 };
+					_ListNavigationData["List_decimal"] = new List<decimal> { 5, 6 };
+					_ListNavigationData["List_DateTime"] = new List<DateTime>() { new DateTime(1990, 3, 1, 12, 35, 47), new DateTime(1971, 10, 5, 11, 1, 15) };
+					_ListNavigationData["List_TimeSpan"] = new List<TimeSpan>() { new TimeSpan(10, 5, 23), new TimeSpan(8, 7, 6) };
+					_ListNavigationData["List_byte"] = new List<byte>() { 6, 7 };
+					_ListNavigationData["List_char"] = new List<char>() { '7', '8' };
+					_ListNavigationData["List_Guid"] = new List<Guid>() { Guid.Empty, Guid.Empty };
+					_ListNavigationData["List_customData"] = new List<CustomData>() { new CustomData() { Name = "Bob", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
+					_ListNavigationData["List_custom2Data"] = new List<Custom2Data>() { new Custom2Data() { Name = "Bob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
+					_ListNavigationData["List_dayOfWeek"] = new List<DayOfWeek>() { DayOfWeek.Saturday, DayOfWeek.Monday };
 				}
 				return _ListNavigationData;
 			}
@@ -95,21 +95,21 @@ namespace Navigation.Test
 				if (_ArrayListNavigationData == null)
 				{
 					_ArrayListNavigationData = new NavigationData();
-					_ArrayListNavigationData["ArrayList(string)>"] = new ArrayList() { null, "World" };
-					_ArrayListNavigationData["ArrayList(bool)"] = new ArrayList() { true, false };
-					_ArrayListNavigationData["ArrayList(short)"] = new ArrayList() { 1, 2 };
-					_ArrayListNavigationData["ArrayList(long)"] = new ArrayList() { 2, 3 };
-					_ArrayListNavigationData["ArrayList(float)"] = new ArrayList() { 3, 4 };
-					_ArrayListNavigationData["ArrayList(double)"] = new ArrayList() { 4, 5 };
-					_ArrayListNavigationData["ArrayList(decimal)"] = new ArrayList() { 5, 6 };
-					_ArrayListNavigationData["ArrayList(DateTime)"] = new ArrayList() { new DateTime(1990, 3, 1, 12, 35, 47), new DateTime(1971, 10, 5, 11, 1, 15) };
-					_ArrayListNavigationData["ArrayList(TimeSpan)"] = new ArrayList() { new TimeSpan(10, 5, 23), new TimeSpan(8, 7, 6) };
-					_ArrayListNavigationData["ArrayList(byte)"] = new ArrayList() { 6, 7 };
-					_ArrayListNavigationData["ArrayList(char)"] = new ArrayList() { '7', '8' };
-					_ArrayListNavigationData["ArrayList(Guid)"] = new ArrayList() { Guid.Empty, Guid.Empty };
-					_ArrayListNavigationData["ArrayList(customData)"] = new ArrayList() { new CustomData() { Name = "Bob", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
-					_ArrayListNavigationData["ArrayList(custom2Data)"] = new ArrayList() { new Custom2Data() { Name = "Bob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
-					_ArrayListNavigationData["ArrayList(dayOfWeek)"] = new ArrayList() { DayOfWeek.Saturday, DayOfWeek.Monday };
+					_ArrayListNavigationData["ArrayList_string"] = new ArrayList() { null, "World" };
+					_ArrayListNavigationData["ArrayList_bool"] = new ArrayList() { true, false };
+					_ArrayListNavigationData["ArrayList_short"] = new ArrayList() { 1, 2 };
+					_ArrayListNavigationData["ArrayList_long"] = new ArrayList() { 2, 3 };
+					_ArrayListNavigationData["ArrayList_float"] = new ArrayList() { 3, 4 };
+					_ArrayListNavigationData.Bag.ArrayList_double = new ArrayList() { 4, 5 };
+					_ArrayListNavigationData.Bag.ArrayList_decimal = new ArrayList() { 5, 6 };
+					_ArrayListNavigationData["ArrayList_DateTime"] = new ArrayList() { new DateTime(1990, 3, 1, 12, 35, 47), new DateTime(1971, 10, 5, 11, 1, 15) };
+					_ArrayListNavigationData["ArrayList_TimeSpan"] = new ArrayList() { new TimeSpan(10, 5, 23), new TimeSpan(8, 7, 6) };
+					_ArrayListNavigationData.Bag.ArrayList_byte = new ArrayList() { 6, 7 };
+					_ArrayListNavigationData.Bag.ArrayList_char = new ArrayList() { '7', '8' };
+					_ArrayListNavigationData.Bag.ArrayList_Guid = new ArrayList() { Guid.Empty, Guid.Empty };
+					_ArrayListNavigationData["ArrayList_customData"] = new ArrayList() { new CustomData() { Name = "Bob", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
+					_ArrayListNavigationData["ArrayList_custom2Data"] = new ArrayList() { new Custom2Data() { Name = "Bob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
+					_ArrayListNavigationData["ArrayList_dayOfWeek"] = new ArrayList() { DayOfWeek.Saturday, DayOfWeek.Monday };
 				}
 				return _ArrayListNavigationData;
 			}
@@ -125,6 +125,7 @@ namespace Navigation.Test
 				Assert.AreEqual(IndividualNavigationData[item.Key], item.Value);
 				i++;
 			}
+			Assert.AreEqual(StateContext.Bag.dayOfWeek, DayOfWeek.Saturday);
 			Assert.AreEqual(15, i);
 		}
 
@@ -140,6 +141,8 @@ namespace Navigation.Test
 				Assert.AreEqual(IndividualNavigationData[item.Key], item.Value);
 				i++;
 			}
+			Assert.AreEqual(StateContext.Bag.DateTime, new DateTime(1990, 3, 1, 12, 35, 47));
+			Assert.AreEqual(StateContext.Bag.TimeSpan, new TimeSpan(10, 5, 23));
 			Assert.AreEqual(15, i);
 		}
 
@@ -156,6 +159,8 @@ namespace Navigation.Test
 				Assert.AreEqual(((IList)ListNavigationData[item.Key])[1], ((IList)item.Value)[1]);
 				i++;
 			}
+			Assert.AreEqual(StateContext.Bag.List_float[0], 3);
+			Assert.AreEqual(StateContext.Bag.List_double[1], 5);
 			Assert.AreEqual(15, i);
 		}
 
@@ -172,6 +177,10 @@ namespace Navigation.Test
 				Assert.AreEqual(((IList)ArrayListNavigationData[item.Key])[1], ((IList)item.Value)[1]);
 				i++;
 			}
+			Assert.AreEqual(StateContext.Bag.ArrayList_string[0], null);
+			Assert.AreEqual(StateContext.Bag.ArrayList_string.Count, 2);
+			Assert.AreEqual(StateContext.Bag.ArrayList_bool[1], false);
+			Assert.AreEqual(StateContext.Bag.ArrayList_Guid[0], Guid.Empty);
 			Assert.AreEqual(15, i);
 		}
 
@@ -189,7 +198,7 @@ namespace Navigation.Test
 		public void InvalidListDataTest()
 		{
 			StateController.Navigate("d0");
-			StateContext.Data["item"] = new List<DateTimeKind>() { DateTimeKind.Local };
+			StateContext.Data.Bag.item = new List<DateTimeKind>() { DateTimeKind.Local };
 			StateController.Navigate("t0");
 		}
 
@@ -198,7 +207,7 @@ namespace Navigation.Test
 		public void InvalidListTest()
 		{
 			NavigationData data = new NavigationData();
-			data["item"] = new HashSet<string>() { "1" };
+			data.Bag.item = new HashSet<string>() { "1" };
 			StateController.Navigate("d0", data);
 		}
 
@@ -225,7 +234,7 @@ namespace Navigation.Test
 		public void InvalidDataRefreshTest()
 		{
 			StateController.Navigate("d0");
-			StateContext.Data["item"] = DateTimeOffset.MinValue;
+			StateContext.Data.Bag.item = DateTimeOffset.MinValue;
 			StateController.Refresh(new NavigationData(true));
 		}
 
@@ -258,12 +267,12 @@ namespace Navigation.Test
 		public void InvalidTypesArrayListDataTest()
 		{
 			NavigationData data = new NavigationData();
-			data["item0"] = new ArrayList() { "0", 1 };
+			data.Bag.item0 = new ArrayList() { "0", 1 };
 			data["item1"] = new ArrayList() { 0, "1" };
 			StateController.Navigate("d0", data);
 			Assert.AreEqual(((ArrayList)StateContext.Data["item0"])[0], "0");
-			Assert.AreEqual(((ArrayList)StateContext.Data["item0"])[1], "1");
-			Assert.AreEqual(((ArrayList)StateContext.Data["item1"])[0], 0);
+			Assert.AreEqual(StateContext.Bag.item0[1], "1");
+			Assert.AreEqual(StateContext.Bag.item1[0], 0);
 			Assert.AreEqual(((ArrayList)StateContext.Data["item1"])[1], 1);
 		}
 
@@ -276,7 +285,7 @@ namespace Navigation.Test
 			data["s"] = "Hello";
 			StateContext.Data["item"] = DateTimeOffset.MinValue;
 			StateController.Navigate("t0", data);
-			Assert.AreEqual("Hello", StateContext.Data["s"]);
+			Assert.AreEqual("Hello", StateContext.Bag.s);
 		}
 
 		[TestMethod]
@@ -284,7 +293,7 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d0");
 			NavigationData data = new NavigationData();
-			data["s"] = "Hello";
+			data.Bag.s = "Hello";
 			StateContext.Data["item"] = DateTimeOffset.MinValue;
 			StateController.Refresh(data);
 			Assert.AreEqual("Hello", StateContext.Data["s"]);
@@ -314,10 +323,10 @@ namespace Navigation.Test
 		public void NavigateDataNavigateBackTest()
 		{
 			NavigationData data = new NavigationData();
-			data["s"] = "Hello";
+			data.Bag.s = "Hello";
 			StateController.Navigate("d0", data);
 			StateController.Navigate("t0");
-			Assert.AreEqual("Hello", StateController.Crumbs[0].Data["s"]);
+			Assert.AreEqual("Hello", StateController.Crumbs[0].Data.Bag.s);
 			StateController.NavigateBack(1);
 			Assert.AreEqual("Hello", StateContext.Data["s"]);
 		}
@@ -329,13 +338,13 @@ namespace Navigation.Test
 			data["s"] = "Hello";
 			StateController.Navigate("d0", data);
 			StateContext.Data["s"] = "World";
-			StateContext.Data["i"] = 2;
+			StateContext.Data.Bag.i = 2;
 			StateController.Navigate("t0");
-			Assert.AreEqual("World", StateController.Crumbs[0].Data["s"]);
+			Assert.AreEqual("World", StateController.Crumbs[0].Data.Bag.s);
 			Assert.AreEqual(2, StateController.Crumbs[0].Data["i"]);
 			StateController.NavigateBack(1);
 			Assert.AreEqual("World", StateContext.Data["s"]);
-			Assert.AreEqual(2, StateContext.Data["i"]);
+			Assert.AreEqual(2, StateContext.Data.Bag.i);
 		}
 
 		[TestMethod]
@@ -344,13 +353,13 @@ namespace Navigation.Test
 			NavigationData data = new NavigationData();
 			data["s"] = "Hello";
 			StateController.Navigate("d0", data);
-			StateContext.Data["s"] = null;
+			StateContext.Bag.s = null;
 			StateContext.Data["i"] = 2;
 			StateController.Navigate("t0");
 			Assert.IsNull(StateController.Crumbs[0].Data["s"]);
-			Assert.AreEqual(2, StateController.Crumbs[0].Data["i"]);
+			Assert.AreEqual(2, StateController.Crumbs[0].Bag.i);
 			StateController.NavigateBack(1);
-			Assert.AreEqual(null, StateContext.Data["s"]);
+			Assert.AreEqual(null, StateContext.Bag.s);
 			Assert.AreEqual(2, StateContext.Data["i"]);
 		}
 
@@ -362,7 +371,7 @@ namespace Navigation.Test
 			StateController.Navigate("d0", data);
 			StateContext.Data.Clear();
 			StateController.Navigate("t0");
-			Assert.IsNull(StateController.Crumbs[0].Data["s"]);
+			Assert.IsNull(StateController.Crumbs[0].Bag.s);
 			Assert.IsNull(StateController.Crumbs[0].Data["i"]);
 			StateController.NavigateBack(1);
 			Assert.AreEqual(null, StateContext.Data["s"]);
@@ -376,10 +385,10 @@ namespace Navigation.Test
 			data["s"] = "Hello";
 			StateController.Navigate("d0", data);
 			StateContext.Data.Remove("s");
-			StateContext.Data["i"] = 2;
+			StateContext.Bag.i = 2;
 			StateController.Navigate("t0");
 			Assert.IsNull(StateController.Crumbs[0].Data["s"]);
-			Assert.AreEqual(2, StateController.Crumbs[0].Data["i"]);
+			Assert.AreEqual(2, StateController.Crumbs[0].Bag.i);
 			StateController.NavigateBack(1);
 			Assert.IsNull(StateContext.Data["s"]);
 			Assert.AreEqual(2, StateContext.Data["i"]);
@@ -440,7 +449,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0", data);
 			StateContext.Data.Clear();
 			StateController.Refresh(new NavigationData(true));
-			Assert.IsNull(StateContext.Data["s"]);
+			Assert.IsNull(StateContext.Bag.s);
 		}
 
 		[TestMethod]
@@ -450,11 +459,11 @@ namespace Navigation.Test
 			NavigationData data = new NavigationData();
 			data["s"] = "Hello";
 			StateController.Navigate("t0", data);
-			StateContext.Data["s"] = "World";
+			StateContext.Bag.s = "World";
 			StateContext.Data["d"] = new DateTime(2000, 1, 3);
 			StateController.Refresh(new NavigationData(true));
 			Assert.AreEqual("World", StateContext.Data["s"]);
-			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Data["d"]);
+			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Bag.d);
 		}
 
 		[TestMethod]
@@ -475,24 +484,24 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void ChangeDataRefreshDataOverrideTest()
+		public void ChangeDynamicDataRefreshDataOverrideTest()
 		{
 			StateController.Navigate("d0");
 			NavigationData data = new NavigationData();
-			data["s"] = "Hello";
+			data.Bag.s = "Hello";
 			StateController.Navigate("t0", data);
-			StateContext.Data["s"] = "World";
-			StateContext.Data["d"] = new DateTime(2000, 1, 3);
-			StateContext.Data["i"] = 3;
+			StateContext.Bag.s = "World";
+			StateContext.Bag.d = new DateTime(2000, 1, 3);
+			StateContext.Bag.i = 3;
 			data = new NavigationData(true);
-			data["s"] = "Hello World";
-			data["i"] = null;
-			data["n"] = 2;
+			data.Bag.s = "Hello World";
+			data.Bag.i = null;
+			data.Bag.n = 2;
 			StateController.Refresh(data);
-			Assert.AreEqual("Hello World", StateContext.Data["s"]);
-			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Data["d"]);
-			Assert.IsNull(StateContext.Data["i"]);
-			Assert.AreEqual(2, StateContext.Data["n"]);
+			Assert.AreEqual("Hello World", StateContext.Bag.s);
+			Assert.AreEqual(new DateTime(2000, 1, 3), StateContext.Bag.d);
+			Assert.IsNull(StateContext.Data.Bag.i);
+			Assert.AreEqual(2, StateContext.Data.Bag.n);
 		}
 
 		[TestMethod]
@@ -538,6 +547,24 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDynamicDataNavigateTransitionTransitionTest()
+		{
+			NavigationData data = new NavigationData();
+			data.Bag.s = 1;
+			StateController.Navigate("d0", data);
+			Assert.AreEqual(1, StateContext.Bag.s);
+			data.Bag.s = "2";
+			StateController.Navigate("t1", data);
+			Assert.AreEqual(1, StateController.Crumbs[0].Bag.s);
+			Assert.AreEqual("2", StateContext.Bag.s);
+			data.Bag.s = '3';
+			StateController.Navigate("t1", data);
+			Assert.AreEqual(1, StateController.Crumbs[0].Data.Bag.s);
+			Assert.AreEqual("2", StateController.Crumbs[1].Bag.s);
+			Assert.AreEqual('3', StateContext.Data.Bag.s);
+		}
+
+		[TestMethod]
 		public void ChangeDataNavigateTransitionTransitionTest()
 		{
 			NavigationData data = new NavigationData();
@@ -546,7 +573,7 @@ namespace Navigation.Test
 			Assert.AreEqual(1, StateContext.Data["s"]);
 			StateContext.Data["s"] = 11;
 			Assert.IsNull(StateContext.Data["t"]);
-			data["s"] = 2;
+			data.Bag.s = 2;
 			data["t"] = "2";
 			StateController.Navigate("t1", data);
 			Assert.AreEqual(11, StateController.Crumbs[0]["s"]);
@@ -555,13 +582,13 @@ namespace Navigation.Test
 			Assert.AreEqual("2", StateContext.Data["t"]);
 			StateContext.Data["t"] = "22";
 			data["s"] = 3;
-			data["t"] = "3";
+			data.Bag.t = "3";
 			StateController.Navigate("t1", data);
 			Assert.AreEqual(11, StateController.Crumbs[0].Data["s"]);
-			Assert.IsNull(StateController.Crumbs[0].Data["t"]);
+			Assert.IsNull(StateController.Crumbs[0].Bag.t);
 			Assert.AreEqual(2, StateController.Crumbs[1].Data["s"]);
 			Assert.AreEqual("22", StateController.Crumbs[1].Data["t"]);
-			Assert.AreEqual(3, StateContext.Data["s"]);
+			Assert.AreEqual(3, StateContext.Bag.s);
 			Assert.AreEqual("3", StateContext.Data["t"]);
 		}
 
