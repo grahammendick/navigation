@@ -67,7 +67,7 @@ namespace Navigation
                         }
                         StringBuilder trailBuilder = new StringBuilder();
                         trailBuilder.Append(CRUMB_1_SEP);
-						trailBuilder.Append(StateInfoConfig.GetStateKey(StateContext.GetState(StateContext.PreviousStateKey)));
+						trailBuilder.Append(StateContext.GetState(StateContext.PreviousStateKey).StateKey);
                         trailBuilder.Append(CRUMB_2_SEP);
                         trailBuilder.Append(formattedReturnData.ToString());
                         trailBuilder.Append(trail);
@@ -114,11 +114,12 @@ namespace Navigation
 				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
 			}
 			coll = StateContext.ShieldEncode(coll, false);
-			if (StateContext.GetState(nextState).Route.Length == 0 || mode == NavigationMode.Mock 
-				|| RouteTable.Routes[nextState] == null)
+			bool mobile = HttpContext.Current != null && HttpContext.Current.Request.Browser.IsMobileDevice;
+			if (StateContext.GetState(nextState).GetRoute(mobile).Length == 0 || mode == NavigationMode.Mock
+				|| RouteTable.Routes[StateContext.GetState(nextState).GetRouteName(mobile)] == null)
 			{
 				StringBuilder href = new StringBuilder();
-				href.Append(mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(state.Page) : state.Page);
+				href.Append(mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(StateContext.GetState(nextState).GetPage(mobile)) : StateContext.GetState(nextState).GetPage(mobile));
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(StateContext.STATE));
 				href.Append("=");
@@ -143,7 +144,7 @@ namespace Navigation
 					if (key != StateContext.STATE)
 						routeData.Add(key, coll[key]);
 				}
-				return RouteTable.Routes.GetVirtualPath(null, nextState, routeData).VirtualPath;
+				return RouteTable.Routes.GetVirtualPath(null, StateContext.GetState(nextState).GetRouteName(mobile), routeData).VirtualPath;
 			}
 		}
 
@@ -205,7 +206,7 @@ namespace Navigation
 			NavigationData navigationData;
             while (arrayCount < crumbTrailSize)
             {
-				string nextState = StateInfoConfig.GetDialogStateKey(StateContext.GetState(GetCrumbTrailState(crumbTrail)));
+				string nextState = StateContext.GetState(GetCrumbTrailState(crumbTrail)).DialogStateKey;
                 navigationData = GetCrumbTrailData(crumbTrail);
                 crumbTrail = CropCrumbTrail(crumbTrail);
 				href = GetHref(nextState, navigationData, null, StateContext.StateKey, StateContext.CrumbTrailKey, mode);

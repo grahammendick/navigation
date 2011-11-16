@@ -462,7 +462,7 @@ namespace Navigation
 			{
 				throw new ArgumentException(Resources.InvalidAction, "action");
 			}
-			return StateInfoConfig.GetDialogStateKey(nextState);
+			return nextState.DialogStateKey;
 		}
 	}
 }

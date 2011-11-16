@@ -82,14 +82,22 @@ namespace Navigation
 						if (dialogChildNode.Attributes["page"] == null || dialogChildNode.Attributes["page"].Value.Length == 0)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "page"));
 						state.Page = dialogChildNode.Attributes["page"].Value;
+						state.MobilePage = dialogChildNode.Attributes["mobilePage"] != null ? dialogChildNode.Attributes["mobilePage"].Value : string.Empty;
 						masters = new string[] { };
 						if (dialogChildNode.Attributes["masters"] != null)
 						{
 							masters = Regex.Split(dialogChildNode.Attributes["masters"].Value, ",");
 						}
 						state.Masters = new ReadOnlyCollection<string>(masters);
+						masters = new string[] { };
+						if (dialogChildNode.Attributes["mobileMasters"] != null)
+						{
+							masters = Regex.Split(dialogChildNode.Attributes["mobileMasters"].Value, ",");
+						}
+						state.MobileMasters = new ReadOnlyCollection<string>(masters);
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
+						state.MobileRoute = dialogChildNode.Attributes["mobileRoute"] != null ? dialogChildNode.Attributes["mobileRoute"].Value : string.Empty;
 						state.TrackCrumbTrail = true;
 						if (dialogChildNode.Attributes["trackCrumbTrail"] != null)
 						{
@@ -109,6 +117,7 @@ namespace Navigation
 						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
 						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
 						state.Theme = dialogChildNode.Attributes["theme"] != null ? dialogChildNode.Attributes["theme"].Value : string.Empty;
+						state.MobileTheme = dialogChildNode.Attributes["mobileTheme"] != null ? dialogChildNode.Attributes["mobileTheme"].Value : string.Empty;
 						if (dialog.States[dialogChildNode.Attributes["key"].Value] != null)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateStateKey, dialogChildNode.Attributes["key"].Value, dialog.Key));
 						dialog.States[dialogChildNode.Attributes["key"].Value] = state;
