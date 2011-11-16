@@ -55,6 +55,7 @@ namespace Navigation.Test
 		public void StateTest()
 		{
 			string page = "~/{0}/{1}.aspx";
+			string mobilePage = "~/mobile/{0}/{1}.aspx";
 			int i = 0;
 			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
@@ -66,6 +67,8 @@ namespace Navigation.Test
 					Assert.AreEqual(state.Key, state.Title);
 					Assert.AreEqual(i, state.Index);
 					Assert.AreEqual(string.Format(page, dialog.Key, state.Key), state.Page);
+					if (i == 1)
+						Assert.AreEqual(string.Format(mobilePage, dialog.Key, state.Key), state.MobilePage);
 					i++;
 				}
 			}
@@ -166,27 +169,47 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void MobileMasterThemeTest()
+		{
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[0].States[0].MobileTheme);
+			Assert.AreEqual(0, StateInfoConfig.Dialogs[0].States[0].MobileMasters.Count);
+			Assert.AreEqual("test", StateInfoConfig.Dialogs[1].States[3].MobileTheme);
+			Assert.AreEqual("test1", StateInfoConfig.Dialogs[1].States[3].MobileMasters[0]);
+			Assert.AreEqual("test2", StateInfoConfig.Dialogs[1].States[3].MobileMasters[1]);
+			Assert.AreEqual("", StateInfoConfig.Dialogs[1].States[4].MobileMasters[0]);
+			Assert.AreEqual("", StateInfoConfig.Dialogs[1].States[4].MobileMasters[1]);
+			Assert.AreEqual("!@", StateInfoConfig.Dialogs[1].States[5].MobileMasters[0]);
+		}
+
+		[TestMethod]
 		public void RouteTest()
 		{
 			Assert.AreEqual("d2/s0", StateInfoConfig.Dialogs[2].States[0].Route);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[0].MobileRoute);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[0].TrackCrumbTrail);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[0].CheckPhysicalUrlAccess);
 			Assert.AreEqual("s1", StateInfoConfig.Dialogs[2].States[1].Route);
+			Assert.AreEqual("d2/s1", StateInfoConfig.Dialogs[2].States[1].MobileRoute);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[1].TrackCrumbTrail);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[1].CheckPhysicalUrlAccess);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[2].Route);
+			Assert.AreEqual("s2", StateInfoConfig.Dialogs[2].States[2].MobileRoute);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[2].TrackCrumbTrail);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[2].CheckPhysicalUrlAccess);
 			Assert.AreEqual("d2/{s3}", StateInfoConfig.Dialogs[2].States[3].Route);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[3].MobileRoute);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[3].TrackCrumbTrail);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[3].CheckPhysicalUrlAccess);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[4].Route);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[4].MobileRoute);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].TrackCrumbTrail);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].CheckPhysicalUrlAccess);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[5].Route);
+			Assert.AreEqual("d2/{s5}", StateInfoConfig.Dialogs[2].States[5].MobileRoute);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[5].TrackCrumbTrail);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[5].CheckPhysicalUrlAccess);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[6].Route);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[6].MobileRoute);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].TrackCrumbTrail);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].CheckPhysicalUrlAccess);
 		}
