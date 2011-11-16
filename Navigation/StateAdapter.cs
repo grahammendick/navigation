@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using System.Web.Routing;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.Adapters;
@@ -52,7 +53,8 @@ namespace Navigation
 				StateContext.StateKey = null;
 				throw new UrlException(Resources.InvalidUrl);
 			}
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0)
+			if (StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0
+				&& StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.MobilePage, Page.AppRelativeVirtualPath) != 0)
 			{
 				throw new UrlException(Resources.InvalidUrl);
 			}
@@ -62,24 +64,40 @@ namespace Navigation
 
 		private void Page_PreInit(object sender, EventArgs e)
 		{
-			if (StateContext.State.Masters.Count != 0)
+			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false), Page.IsPostBack);
+			bool mobile;
+			if (!Page.IsPostBack)
 			{
-				Page.MasterPageFile = StateContext.State.Masters[0];
+				mobile = Page.Request.Browser.IsMobileDevice;
+				Route route = Page.RouteData.Route as Route;
+				if ((route == null && (StateContext.State.GetRoute(mobile).Length != 0 && RouteTable.Routes[StateContext.State.GetRouteName(mobile)] != null))
+					|| (route != null && StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.GetRoute(mobile), route.Url) != 0)
+					|| StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.GetPage(mobile), Page.AppRelativeVirtualPath) != 0)
+					StateController.Refresh(new NavigationData(true));
+				if (mobile)
+					Page.ClientScript.RegisterHiddenField("MobileNavigation", string.Empty);
+			}
+			else
+			{
+				mobile = Page.Request.Form["MobileNavigation"] != null;
+			}
+			if (StateContext.State.GetMasters(mobile).Count != 0)
+			{
+				Page.MasterPageFile = StateContext.State.GetMasters(mobile)[0];
 				Page.Master.ID = "m";
 				MasterPage master = Page.Master;
-				for (int i = 1; i < StateContext.State.Masters.Count; i++)
+				for (int i = 1; i < StateContext.State.GetMasters(mobile).Count; i++)
 				{
-					master.MasterPageFile = StateContext.State.Masters[i];
+					master.MasterPageFile = StateContext.State.GetMasters(mobile)[i];
 					master.Master.ID = "m";
 					master = master.Master;
 				}
 			}
-			if (StateContext.State.Theme.Length != 0)
+			if (StateContext.State.GetTheme(mobile).Length != 0)
 			{
-				Page.Theme = StateContext.State.Theme;
+				Page.Theme = StateContext.State.GetTheme(mobile);
 			}
 			Page.RegisterRequiresControlState(Page);
-			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false), Page.IsPostBack);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
 		}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Threading;
 using System.Web;
 
@@ -17,15 +18,19 @@ namespace Navigation
         private Dialog _Parent;
 		private int _Index;
         private string _Key;
-        private string _Page;
-        private string _Title;
+		private string _Page;
+		private string _MobilePage;
+		private string _Title;
 		private string _Route;
+		private string _MobileRoute;
 		private bool _TrackCrumbTrail;
 		private bool _CheckPhysicalUrlAccess;
 		private string _ResourceType;
 		private string _ResourceKey;
-        private string _Theme;
+		private string _Theme;
+		private string _MobileTheme;
 		private ReadOnlyCollection<string> _Masters;
+		private ReadOnlyCollection<string> _MobileMasters;
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.Transition"/> children
@@ -101,6 +106,21 @@ namespace Navigation
         }
 
 		/// <summary>
+		/// Gets the aspx page to display for a mobile device navigating to this <see cref="Navigation.State"/>
+		/// </summary>
+		public string MobilePage
+		{
+			get
+			{
+				return _MobilePage;
+			}
+			internal set
+			{
+				_MobilePage = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets the textual description of the state. The resourceType and resourceKey attributes can be 
 		/// used for localization
 		/// </summary>
@@ -133,6 +153,22 @@ namespace Navigation
 			internal set
 			{
 				_Route = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the mobile device route Url pattern. This is only relevant if routes are registered via the
+		/// <see cref="Navigation.StateInfoConfig.AddStateRoutes"/> method
+		/// </summary>
+		public string MobileRoute
+		{
+			get
+			{
+				return _MobileRoute;
+			}
+			internal set
+			{
+				_MobileRoute = value;
 			}
 		}
 
@@ -210,6 +246,21 @@ namespace Navigation
         }
 
 		/// <summary>
+		/// Gets the theme to assign to the <see cref="Page"/> when displayed for a mobile device
+		/// </summary>
+		public string MobileTheme
+		{
+			get
+			{
+				return _MobileTheme;
+			}
+			internal set
+			{
+				_MobileTheme = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets the master pages to assign to the <see cref="Page"/> when displayed
 		/// </summary>
 		public ReadOnlyCollection<string> Masters
@@ -223,5 +274,61 @@ namespace Navigation
 				_Masters = value;
 			}
         }
-    }
+
+		/// <summary>
+		/// Gets the master pages to assign to the <see cref="Page"/> when displayed for a mobile device
+		/// </summary>
+		public ReadOnlyCollection<string> MobileMasters
+		{
+			get
+			{
+				return _MobileMasters;
+			}
+			internal set
+			{
+				_MobileMasters = value;
+			}
+		}
+
+		internal string StateKey
+		{
+			get
+			{
+				return Index.ToString(NumberFormatInfo.InvariantInfo);
+			}
+		}
+
+		internal string DialogStateKey
+		{
+			get
+			{
+				return Parent.Index.ToString(NumberFormatInfo.InvariantInfo) + "-" + Index.ToString(NumberFormatInfo.InvariantInfo);
+			}
+		}
+
+		internal string GetPage(bool mobile)
+		{
+			return (!mobile || MobilePage == string.Empty) ? Page : MobilePage;
+		}
+
+		internal string GetRoute(bool mobile)
+		{
+			return (!mobile || (MobilePage == string.Empty && MobileRoute == string.Empty)) ? Route : MobileRoute;
+		}
+
+		internal string GetRouteName(bool mobile)
+		{
+			return (!mobile || (MobilePage == string.Empty && MobileRoute == string.Empty)) ? DialogStateKey : "Mobile" + DialogStateKey;
+		}
+
+		internal ReadOnlyCollection<string> GetMasters(bool mobile)
+		{
+			return (!mobile || (MobilePage == string.Empty && MobileMasters.Count == 0)) ? Masters : MobileMasters;
+		}
+
+		internal string GetTheme(bool mobile)
+		{
+			return (!mobile || (MobilePage == string.Empty && MobileTheme == string.Empty)) ? Theme : MobileTheme;
+		}
+	}
 }

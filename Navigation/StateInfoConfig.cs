@@ -23,16 +23,6 @@ namespace Navigation
 			}
 		}
 
-		internal static string GetStateKey(State state)
-		{
-			return state.Index.ToString(NumberFormatInfo.InvariantInfo);
-		}
-
-		internal static string GetDialogStateKey(State state)
-		{
-			return state.Parent.Index.ToString(NumberFormatInfo.InvariantInfo) + "-" + state.Index.ToString(NumberFormatInfo.InvariantInfo);
-		}
-
 		/// <summary>
 		/// Registers all <see cref="Navigation.State.Route"/> configuration information
 		/// </summary>
@@ -44,9 +34,14 @@ namespace Navigation
 				foreach (State state in dialog.States)
 				{
 					if (state.Route.Length != 0)
-						routes.MapPageRoute(GetDialogStateKey(state), state.Route, state.Page, state.CheckPhysicalUrlAccess, null, null,
+						routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess, null, null,
 							new RouteValueDictionary() { 
-								{ StateContext.STATE, GetDialogStateKey(state) }, 
+								{ StateContext.STATE, state.DialogStateKey }, 
+							});
+					if (state.MobileRoute.Length != 0)
+						routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess, null, null,
+							new RouteValueDictionary() { 
+								{ StateContext.STATE, state.DialogStateKey }, 
 							});
 				}
 			}
