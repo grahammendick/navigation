@@ -91,7 +91,8 @@ namespace Navigation
 			{
 				foreach (NavigationDataItem item in navigationData)
 				{
-					coll[item.Key] = FormatURLObject(item.Value);
+					if (!item.Value.Equals(state.Defaults[item.Key]))
+						coll[item.Key] = FormatURLObject(item.Value);
 				}
 			}
 			if (returnData != null && state.TrackCrumbTrail)
@@ -100,11 +101,14 @@ namespace Navigation
 				string prefix = string.Empty;
 				foreach (NavigationDataItem item in returnData)
 				{
-					returnDataBuilder.Append(prefix);
-					returnDataBuilder.Append(item.Key);
-					returnDataBuilder.Append(RET_1_SEP);
-					returnDataBuilder.Append(FormatURLObject(item.Value));
-					prefix = RET_3_SEP;
+					if (StateContext.State == null || !item.Value.Equals(StateContext.State.Defaults[item.Key]))
+					{
+						returnDataBuilder.Append(prefix);
+						returnDataBuilder.Append(item.Key);
+						returnDataBuilder.Append(RET_1_SEP);
+						returnDataBuilder.Append(FormatURLObject(item.Value));
+						prefix = RET_3_SEP;
+					}
 				}
 				if (returnDataBuilder.Length > 0)
 					coll[StateContext.RETURN_DATA] = returnDataBuilder.ToString();

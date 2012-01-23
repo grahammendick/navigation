@@ -79,6 +79,7 @@ namespace Navigation.Test
 		[ExpectedException(typeof(UrlException))]
 		public void NavigateHistoryChecksumInvalidTest()
 		{
+			StateController.Navigate("d1");
 			NameValueCollection coll = new NameValueCollection(){
 		        {"name","test"}
 		    };

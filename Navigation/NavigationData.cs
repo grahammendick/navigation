@@ -18,6 +18,7 @@ namespace Navigation
 	{
 		private StateBag _Data;
 		private DynamicNavigationData _DynamicNavigationData;
+		private StateInfoCollection<object> _Defaults;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Navigation.NavigationData"/> class
@@ -58,6 +59,18 @@ namespace Navigation
             }
         }
 
+		private StateInfoCollection<object> Defaults
+		{
+			get
+			{
+				return _Defaults;
+			}
+			set
+			{
+				_Defaults = value;
+			}
+		}
+
 		/// <summary>
 		/// Adds a new item to the underlying <see cref="System.Web.UI.StateBag"/>, updating the item
 		/// if it already exists. If the <paramref name="value"/> is null the item is removed
@@ -67,7 +80,11 @@ namespace Navigation
 		public void Add(string key, object value)
 		{
 			if (value != null)
+			{
 				Data.Add(key, value);
+				if (Defaults != null && Data[key].Equals(Defaults[key]))
+					Data.SetItemDirty(key, false);
+			}
 			else
 				Remove(key);
 		}
@@ -79,7 +96,10 @@ namespace Navigation
 		/// <param name="key"></param>
 		public void Remove(string key)
 		{
-			Data.Remove(key);
+			if (Defaults != null && Defaults[key] != null)
+				Add(key, Defaults[key]);
+			else
+				Data.Remove(key);
 		}
 
 		/// <summary>
@@ -112,12 +132,30 @@ namespace Navigation
 			}
 		}
 
+		internal void SetDefaults(StateInfoCollection<object> defaults)
+		{
+			Defaults = defaults;
+			Reset();
+		}
+
+		private void Reset()
+		{
+			if (Defaults != null)
+			{
+				foreach (string key in Defaults.Keys)
+				{
+					this[key] = this[key];
+				}
+			}
+		}
+
 		/// <summary>
 		/// Removes all items from the <see cref="Navigation.NavigationData"/>
 		/// </summary>
 		public void Clear()
 		{
 			Data.Clear();
+			Reset();
 		}
 
         bool IStateManager.IsTrackingViewState

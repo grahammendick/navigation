@@ -89,6 +89,7 @@ namespace Navigation
             _NavigationLink = href;
             _Data = data ?? new NavigationData();
 			_State = state;
+			Data.SetDefaults(State.Defaults);
         }
     }
 }

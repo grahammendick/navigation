@@ -63,6 +63,8 @@ namespace Navigation
 		/// <param name="expression">The expression as specified in markup</param>
 		/// <returns>The <see cref="Navigation.NavigationData"/> that corresponds to specified key/value pairs</returns>
 		/// <exception cref="System.InvalidOperationException">The method was unable to parse the expression that was specified in markup</exception>
+		/// <exception cref="System.FormatException">A value was not in a format recognised by its corresponding type</exception>
+		/// <exception cref="System.OverflowException">A value represents a number that is out of the range of its corresponding type</exception>
 		public static NavigationData GetNavigationData(string expression)
 		{
 			NavigationData data = new NavigationData();

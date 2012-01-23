@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Globalization;
 using System.Web.Routing;
 
 namespace Navigation
@@ -10,6 +9,9 @@ namespace Navigation
 	/// </summary>
 	public static class StateInfoConfig
 	{
+		private const string PARAMETER = "{{{0}}}";
+		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
+
 		/// <summary>
 		/// Gets a collection of <see cref="Navigation.Dialog"/> information with their child
 		/// <see cref="Navigation.State"/> information and grandchild <see cref="Navigation.Transition"/>
@@ -34,17 +36,31 @@ namespace Navigation
 				foreach (State state in dialog.States)
 				{
 					if (state.Route.Length != 0)
-						routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess, null, null,
+						routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
+							GetDefaults(state, state.GetRoute(false)), null,
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
 					if (state.MobileRoute.Length != 0)
-						routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess, null, null,
+						routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
+							GetDefaults(state, state.GetRoute(true)), null,
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
 				}
 			}
+		}
+
+		private static RouteValueDictionary GetDefaults(State state, string route)
+		{
+			RouteValueDictionary defaults = new RouteValueDictionary();
+			foreach (string key in state.FormattedDefaults.Keys)
+			{
+				if (route.IndexOf(string.Format(PARAMETER, key)) >= 0
+					|| route.IndexOf(string.Format(OPTIONAL_PARAMETER, key)) >= 0)
+					defaults.Add(key, state.FormattedDefaults[key]);
+			}
+			return defaults;
 		}
 	}
 }

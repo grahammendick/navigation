@@ -611,6 +611,7 @@ namespace Navigation.Test
 		[ExpectedException(typeof(UrlException))]
 		public void NavigateHistoryInvalidDataTest()
 		{
+			StateController.Navigate("d0");
 			NameValueCollection coll = new NameValueCollection(){
 		        {"name","22!1"},
 		        {"cs","VLijzPeq"}
