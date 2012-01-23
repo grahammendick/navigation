@@ -440,6 +440,7 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void AddHistoryPointInvalidDataTest()
 		{
+			StateController.Navigate("d2");
 			NavigationData data = new NavigationData();
 			data["item"] = DateTimeOffset.MinValue;
 			StateController.AddHistoryPoint(new Page(), data, null);

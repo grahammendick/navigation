@@ -57,6 +57,7 @@ namespace Navigation
 							StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key]);
 					}
 				}
+				StateContext.Data.SetDefaults(StateContext.State.Defaults);
 				CrumbTrailManager.BuildCrumbTrail();
 			}
 			catch (ConfigurationErrorsException)
@@ -87,6 +88,7 @@ namespace Navigation
 				{
 					queryData.Add(key, HttpContext.Current.Request.QueryString[key]);
 				}
+				RemoveDefaults(queryData);
 				return queryData;
 			}
 		}
@@ -373,7 +375,10 @@ namespace Navigation
 					}
 				case (NavigationMode.Mock):
 					{
-						ParseData(StateContext.ShieldDecode(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))), false), false);
+						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+						StateContext.StateKey = queryData[StateContext.STATE];
+						RemoveDefaults(queryData);
+						ParseData(StateContext.ShieldDecode(queryData, false), false);
 						break;
 					}
 			}
@@ -410,7 +415,8 @@ namespace Navigation
 			coll[StateContext.STATE] = StateContext.StateKey;
 			foreach (NavigationDataItem item in toData)
 			{
-				coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Value);
+				if (!item.Value.Equals(StateContext.State.Defaults[item.Key]))
+					coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Value);
 			}
 			coll = StateContext.ShieldEncode(coll, true);
 			ScriptManager.GetCurrent(page).AddHistoryPoint(coll, title);
@@ -435,6 +441,7 @@ namespace Navigation
 			}
 			else
 			{
+				RemoveDefaults(data);
 				data = StateContext.ShieldDecode(data, true);
 				data.Remove(StateContext.STATE);
 				StateContext.Data.Clear();
@@ -442,6 +449,15 @@ namespace Navigation
 				{
 					StateContext.Data[key] = CrumbTrailManager.ParseURLString(data[key]);
 				}
+			}
+		}
+
+		private static void RemoveDefaults(NameValueCollection data)
+		{
+			foreach (string key in StateContext.State.FormattedDefaults.Keys)
+			{
+				if (data[key] == StateContext.State.FormattedDefaults[key])
+					data.Remove(key);
 			}
 		}
 

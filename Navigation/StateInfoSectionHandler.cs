@@ -1,10 +1,10 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Navigation.Properties;
-using System.Collections.ObjectModel;
 
 namespace Navigation
 {
@@ -65,6 +65,7 @@ namespace Navigation
 			string[] masters;
 			int i;
 			bool result;
+			NavigationData defaults;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
 			{
 				state = new State();
@@ -98,6 +99,32 @@ namespace Navigation
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
 						state.MobileRoute = dialogChildNode.Attributes["mobileRoute"] != null ? dialogChildNode.Attributes["mobileRoute"].Value : string.Empty;
+						state.Defaults = new StateInfoCollection<object>();
+						state.FormattedDefaults = new StateInfoCollection<string>();
+						if (dialogChildNode.Attributes["defaults"] != null)
+						{
+							try
+							{
+								defaults = NavigationDataExpressionBuilder.GetNavigationData(dialogChildNode.Attributes["defaults"].Value);
+							}
+							catch (InvalidOperationException ioe)
+							{
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), ioe);
+							}
+							catch (FormatException fe)
+							{
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), fe);
+							}
+							catch (OverflowException oe)
+							{
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), oe);
+							}
+							foreach (NavigationDataItem item in defaults)
+							{
+								state.Defaults[item.Key] = item.Value;
+								state.FormattedDefaults[item.Key] = CrumbTrailManager.FormatURLObject(item.Value);
+							}
+						}
 						state.TrackCrumbTrail = true;
 						if (dialogChildNode.Attributes["trackCrumbTrail"] != null)
 						{
