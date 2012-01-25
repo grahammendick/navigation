@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -215,6 +216,26 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void DefaultsTest()
+		{
+			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[0].Defaults.Count == 0);
+			Assert.AreEqual("Hello", StateInfoConfig.Dialogs[0].States[1].Defaults["string"]);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[0].States[1].Defaults["bool"]);
+			Assert.AreEqual(0, StateInfoConfig.Dialogs[0].States[1].Defaults["int"]);
+			Assert.AreEqual((short) 1, StateInfoConfig.Dialogs[0].States[1].Defaults["short"]);
+			Assert.AreEqual(2L, StateInfoConfig.Dialogs[0].States[1].Defaults["long"]);
+			Assert.AreEqual(3F, StateInfoConfig.Dialogs[0].States[1].Defaults["float"]);
+			Assert.AreEqual(null, StateInfoConfig.Dialogs[0].States[1].Defaults["another"]);
+			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[1].Defaults.Count == 6);
+			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[2].Defaults.Count == 5);
+			Assert.AreEqual(4D, StateInfoConfig.Dialogs[0].States[2].Defaults["double"]);
+			Assert.AreEqual(5m, StateInfoConfig.Dialogs[0].States[2].Defaults["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1), StateInfoConfig.Dialogs[0].States[2].Defaults["DateTime"]);
+			Assert.AreEqual((byte)6, StateInfoConfig.Dialogs[0].States[2].Defaults["byte"]);
+			Assert.AreEqual('7', StateInfoConfig.Dialogs[0].States[2].Defaults["char"]);
+		}
+
+		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
 			Dialog[] dialogArr = new Dialog[3];
@@ -250,6 +271,8 @@ namespace Navigation.Test
 			Assert.AreEqual(dialogs[0].States[0].Transitions.Count, StateInfoConfig.Dialogs[0].States[0].Transitions.Count);
 			Assert.AreEqual(dialogs[0].States[0].Parent, dialogs[0]);
 			Assert.AreEqual(dialogs[0].States[0].Transitions[0].Parent, dialogs[0].States[0]);
+			Assert.IsTrue(dialogs[0].States[1].Defaults.Count == 6);
+			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 5);
 		}
 
 		[TestMethod]
@@ -383,6 +406,58 @@ namespace Navigation.Test
 		public void InvalidCheckPhysicalUrlAccessTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidCheckPhysicalUrlAccess");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void EmptyDefaultsTest()
+		{
+			ConfigurationManager.GetSection("Navigation/EmptyDefaults");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidOperationException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidFormatDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidFormatDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(FormatException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void OverflowDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/OverflowDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(OverflowException));
+				throw;
+			}
 		}
 	}
 }
