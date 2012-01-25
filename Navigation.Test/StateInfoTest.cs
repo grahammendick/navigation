@@ -220,8 +220,8 @@ namespace Navigation.Test
 		{
 			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[0].Defaults.Count == 0);
 			Assert.AreEqual("Hello", StateInfoConfig.Dialogs[0].States[1].Defaults["string"]);
-			Assert.AreEqual(true, StateInfoConfig.Dialogs[0].States[1].Defaults["bool"]);
-			Assert.AreEqual(0, StateInfoConfig.Dialogs[0].States[1].Defaults["int"]);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[0].States[1].Defaults["_bool"]);
+			Assert.AreEqual(0, StateInfoConfig.Dialogs[0].States[1].Defaults["_int"]);
 			Assert.AreEqual((short) 1, StateInfoConfig.Dialogs[0].States[1].Defaults["short"]);
 			Assert.AreEqual(2L, StateInfoConfig.Dialogs[0].States[1].Defaults["long"]);
 			Assert.AreEqual(3F, StateInfoConfig.Dialogs[0].States[1].Defaults["float"]);
@@ -230,7 +230,7 @@ namespace Navigation.Test
 			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[2].Defaults.Count == 5);
 			Assert.AreEqual(4D, StateInfoConfig.Dialogs[0].States[2].Defaults["double"]);
 			Assert.AreEqual(5m, StateInfoConfig.Dialogs[0].States[2].Defaults["decimal"]);
-			Assert.AreEqual(new DateTime(1990, 3, 1), StateInfoConfig.Dialogs[0].States[2].Defaults["DateTime"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateInfoConfig.Dialogs[0].States[2].Defaults["DateTime"]);
 			Assert.AreEqual((byte)6, StateInfoConfig.Dialogs[0].States[2].Defaults["byte"]);
 			Assert.AreEqual('7', StateInfoConfig.Dialogs[0].States[2].Defaults["char"]);
 		}
