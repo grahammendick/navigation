@@ -41,6 +41,7 @@ namespace Navigation.Test
 					_IndividualNavigationData = new NavigationData();
 					_IndividualNavigationData["string"] = "Hello";
 					_IndividualNavigationData["bool"] = true;
+					_IndividualNavigationData["int"] = (int)0;
 					_IndividualNavigationData["short"] = (short)1;
 					_IndividualNavigationData["long"] = (long)2;
 					_IndividualNavigationData["float"] = (float)3;
@@ -49,7 +50,7 @@ namespace Navigation.Test
 					_IndividualNavigationData.Bag.DateTime = new DateTime(1990, 3, 1, 12, 35, 47);
 					_IndividualNavigationData.Bag.TimeSpan = new TimeSpan(10, 5, 23);
 					_IndividualNavigationData["byte"] = (byte)6;
-					_IndividualNavigationData["char"] = (char)7;
+					_IndividualNavigationData["char"] = '7';
 					_IndividualNavigationData["Guid"] = Guid.Empty;
 					_IndividualNavigationData.Bag.customData = new CustomData() { Name = "Bob", Age = 18 };
 					_IndividualNavigationData.Bag.custom2Data = new Custom2Data() { Name = "Bob", Age = 18 };
@@ -126,7 +127,7 @@ namespace Navigation.Test
 				i++;
 			}
 			Assert.AreEqual(StateContext.Bag.dayOfWeek, DayOfWeek.Saturday);
-			Assert.AreEqual(15, i);
+			Assert.AreEqual(16, i);
 		}
 
 		[TestMethod]
@@ -143,7 +144,7 @@ namespace Navigation.Test
 			}
 			Assert.AreEqual(StateContext.Bag.DateTime, new DateTime(1990, 3, 1, 12, 35, 47));
 			Assert.AreEqual(StateContext.Bag.TimeSpan, new TimeSpan(10, 5, 23));
-			Assert.AreEqual(15, i);
+			Assert.AreEqual(16, i);
 		}
 
 		[TestMethod]
@@ -633,7 +634,7 @@ namespace Navigation.Test
 				Assert.AreEqual(IndividualNavigationData[item.Key], item.Value);
 				i++;
 			}
-			Assert.AreEqual(15, i);
+			Assert.AreEqual(16, i);
 		}
 
 		[TestMethod]
