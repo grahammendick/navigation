@@ -41,6 +41,7 @@ namespace Navigation
 			try
 			{
 				StateContext.ReservedData.Clear();
+				StateContext.Data.SetDefaults(null);
 				StateContext.Data.Clear();
 				foreach (string key in data)
 				{
