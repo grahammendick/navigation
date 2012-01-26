@@ -78,8 +78,10 @@ namespace Navigation
 			StateContext.GenerateKey(trail);
         }
 
-		private static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, string previousState, string crumbTrail, NavigationMode mode)
+		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, NavigationMode mode)
 		{
+			string previousState = StateContext.StateKey;
+			string crumbTrail = StateContext.CrumbTrailKey;
 			State state = StateContext.GetState(nextState);
 			NameValueCollection coll = new NameValueCollection();
 			coll[StateContext.STATE] = nextState;
@@ -213,7 +215,7 @@ namespace Navigation
 				string nextState = StateContext.GetState(GetCrumbTrailState(crumbTrail)).DialogStateKey;
                 navigationData = GetCrumbTrailData(crumbTrail);
                 crumbTrail = CropCrumbTrail(crumbTrail);
-				href = GetHref(nextState, navigationData, null, StateContext.StateKey, StateContext.CrumbTrailKey, mode);
+				href = GetHref(nextState, navigationData, null, mode);
 				Crumb crumb = new Crumb(href, navigationData, StateContext.GetState(nextState));
                 crumbTrailArray.Add(crumb);
                 arrayCount++;
@@ -259,14 +261,9 @@ namespace Navigation
             return navData;
         }
 
-		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, NavigationMode mode)
-        {
-			return GetHref(nextState, navigationData, returnData, StateContext.StateKey, StateContext.CrumbTrailKey, mode);
-        }
-
 		internal static string GetRefreshHref(NavigationData refreshData, NavigationMode mode)
         {
-			return GetHref(StateContext.StateKey, refreshData, null, StateContext.StateKey, StateContext.CrumbTrailKey, mode);
+			return GetHref(StateContext.StateKey, refreshData, null, mode);
         }
 
 		internal static object Parse(string key, string val)
