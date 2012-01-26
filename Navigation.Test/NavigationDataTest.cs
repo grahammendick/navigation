@@ -686,6 +686,52 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigationDataDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(true);
+			Assert.AreEqual("Hello", data["string"]);
+			Assert.AreEqual(true, data.Bag._bool);
+			Assert.AreEqual(0, data.Bag._int);
+			Assert.AreEqual((short)1, data["short"]);
+			Assert.AreEqual(2L, data["long"]);
+			Assert.AreEqual(3F, data["float"]);
+		}
+
+		[TestMethod]
+		public void BlankNavigationDataDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData();
+			Assert.IsNull(data["string"]);
+			Assert.IsNull(data.Bag._bool);
+			Assert.IsNull(data.Bag._int);
+			Assert.IsNull(data["short"]);
+			Assert.IsNull(data["long"]);
+			Assert.IsNull(data["float"]);
+		}
+
+		[TestMethod]
+		public void RemoveDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateContext.Data["double"] = null;
+			StateContext.Data["decimal"] = null;
+			StateContext.Data["DateTime"] = null;
+			StateContext.Data["byte"] = null;
+			StateContext.Data["byte"] = null;
+			Assert.AreEqual(4D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Bag.DateTime);
+			Assert.AreEqual((byte)6, StateContext.Data["byte"]);
+			Assert.AreEqual('7', StateContext.Data["char"]);
+		}
+
+		[TestMethod]
 		public void NavigateDataAndDefaultsTest()
 		{
 			StateController.Navigate("d0");
@@ -709,11 +755,11 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			NavigationData data = new NavigationData(){
-				{ "double" , 1D }, { "decimal" , 2m}
+				{ "double" , 1D }, { "decimal" , 5m}
 			};
 			StateController.Navigate("t0", data);
 			Assert.AreEqual(1D, StateContext.Data["double"]);
-			Assert.AreEqual(2m, StateContext.Data["decimal"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
 		}
 
 		[TestMethod]
@@ -722,9 +768,9 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			StateContext.Data["double"] = 1D;
+			StateContext.Data["double"] = 4D;
 			StateContext.Bag.DateTime = new DateTime(2000, 4, 2);
-			Assert.AreEqual(1D, StateContext.Data["double"]);
+			Assert.AreEqual(4D, StateContext.Data["double"]);
 			Assert.AreEqual(new DateTime(2000, 4, 2), StateContext.Data["DateTime"]);
 			Assert.AreEqual('7', StateContext.Data["char"]);
 		}
@@ -746,6 +792,57 @@ namespace Navigation.Test
 			Assert.AreEqual('7', StateContext.Data["char"]);
 			Assert.IsNull(StateContext.Bag.s);
 			Assert.IsNull(StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual("Hello", StateContext.Data["string"]);
+			Assert.AreEqual(true, StateContext.Bag._bool);
+			Assert.AreEqual(0, StateContext.Bag._int);
+			Assert.AreEqual((short)1, StateContext.Data["short"]);
+			Assert.AreEqual(2L, StateContext.Data["long"]);
+			Assert.AreEqual(3F, StateContext.Data["float"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackDataAndDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(2);
+			Assert.AreEqual(4D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Bag.DateTime);
+			Assert.AreEqual((byte)6, StateContext.Data["byte"]);
+			Assert.AreEqual('7', StateContext.Data["char"]);
+			Assert.AreEqual(1, StateContext.Bag.s);
+			Assert.AreEqual("2", StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackOverrideDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(){
+				{ "double" , 1D }, { "decimal" , 5m}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(1D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
 		}
 
 		[TestMethod]
@@ -797,12 +894,12 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			NavigationData data = new NavigationData();
 			data["string"] = "World";
-			data.Bag._int = 1;
+			data.Bag._int = 0;
 			StateController.Navigate("t0", data);
 			StateController.Navigate("t0");
 			Assert.AreEqual("World", StateController.Crumbs[1].Data["string"]);
 			Assert.AreEqual(true, StateController.Crumbs[1].Data.Bag._bool);
-			Assert.AreEqual(1, StateController.Crumbs[1].Bag._int);
+			Assert.AreEqual(0, StateController.Crumbs[1].Bag._int);
 			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
 			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
 			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
@@ -816,9 +913,9 @@ namespace Navigation.Test
 			StateController.Navigate("t0", data);
 			StateController.Navigate("t0");
 			Crumb crumb = StateController.Crumbs[1];
-			crumb.Data["string"] = "World";
+			crumb.Data["string"] = "Hello";
 			crumb.Data.Bag._int = 1;
-			Assert.AreEqual("World", crumb.Data["string"]);
+			Assert.AreEqual("Hello", crumb.Data["string"]);
 			Assert.AreEqual(1, crumb.Bag._int);
 			Assert.AreEqual((short)1, crumb.Data["short"]);
 		}
@@ -894,6 +991,68 @@ namespace Navigation.Test
 			Assert.IsNull(data["char"]);
 			Assert.AreEqual("World", data["double"]);
 			Assert.AreEqual(5D, data.Bag.DateTime);
+		}
+
+		[TestMethod]
+		public void RefreshLinkDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Data["bool"] = null;
+			StateContext.Data["string"] = "Hello";
+			StateContext.Bag._int = 1D;
+			StateContext.Data["float"] = "World";
+			string link = StateController.GetRefreshLink(new NavigationData(true));
+			Assert.AreEqual(-1, link.IndexOf("string"));
+			Assert.AreEqual(-1, link.IndexOf("bool"));
+			Assert.AreEqual(-1, link.IndexOf("short"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreNotEqual(-1, link.IndexOf("float"));
+			Assert.AreNotEqual(-1, link.IndexOf("_int"));
+		}
+
+		[TestMethod]
+		public void CrumbLinkDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag._int = null;
+			StateContext.Data["string"] = 4F;
+			StateContext.Data["short"] = 1D;
+			StateContext.Data["float"] = 3F;
+			StateController.Navigate("t0");
+			string link = StateController.Crumbs[1].NavigationLink;
+			Assert.AreEqual(-1, link.IndexOf("bool"));
+			Assert.AreEqual(-1, link.IndexOf("_int"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreEqual(-1, link.IndexOf("float"));
+			Assert.AreNotEqual(-1, link.IndexOf("string"));
+			Assert.AreNotEqual(-1, link.IndexOf("short"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkTest()
+		{
+			StateController.Navigate("d2");
+			StateContext.Bag._int = 1;
+			StateContext.Data["string"] = "Hello";
+			string link = StateController.GetNavigationLink("t0");
+			Assert.AreNotEqual(-1, link.IndexOf("c1"));
+			Assert.AreNotEqual(-1, link.IndexOf("_int"));
+			Assert.AreNotEqual(-1, link.IndexOf("string"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkWithoutTrailTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			StateContext.Bag._int = 1;
+			StateContext.Data["string"] = "Hello";
+			string link = StateController.GetNavigationLink("t0");
+			Assert.AreEqual(-1, link.IndexOf("c1"));
+			Assert.AreEqual(-1, link.IndexOf("_int"));
+			Assert.AreEqual(-1, link.IndexOf("string"));
 		}
 
 		[TestMethod]
