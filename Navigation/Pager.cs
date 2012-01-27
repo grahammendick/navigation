@@ -154,7 +154,7 @@ namespace Navigation
 						{
 							PostBackOptions postBackOptions = new PostBackOptions(this, startRowIndex.ToString(NumberFormatInfo.InvariantInfo));
 							postBackOptions.RequiresJavaScriptProtocol = true;
-							link.Attributes.Add("onclick", string.Format("{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
+							link.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
 						}
 					}
 				}

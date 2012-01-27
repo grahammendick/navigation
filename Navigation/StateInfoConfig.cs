@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using System.Web.Routing;
 
 namespace Navigation
@@ -57,8 +58,8 @@ namespace Navigation
 			RouteValueDictionary defaults = new RouteValueDictionary();
 			foreach (string key in state.FormattedDefaults.Keys)
 			{
-				if (route.IndexOf(string.Format(PARAMETER, key), StringComparison.Ordinal) >= 0
-					|| route.IndexOf(string.Format(OPTIONAL_PARAMETER, key), StringComparison.Ordinal) >= 0)
+				if (route.IndexOf(string.Format(CultureInfo.InvariantCulture, PARAMETER, key), StringComparison.Ordinal) >= 0
+					|| route.IndexOf(string.Format(CultureInfo.InvariantCulture, OPTIONAL_PARAMETER, key), StringComparison.Ordinal) >= 0)
 					defaults.Add(key, state.FormattedDefaults[key]);
 			}
 			return defaults;
