@@ -994,6 +994,27 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void LoadViewStateTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateContext.Data["double"] = "World";
+			StateContext.Bag.DateTime = 5D;
+			StateContext.Data["char"] = null;
+			StateContext.Data["t"] = "1";
+			object viewState = ((IStateManager)StateContext.Data).SaveViewState();
+			StateContext.Data.Clear();
+			((IStateManager)StateContext.Data).LoadViewState(viewState);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+			Assert.AreEqual((byte) 6, StateContext.Data["byte"]);
+			Assert.AreEqual('7', StateContext.Data["char"]);
+			Assert.AreEqual("World", StateContext.Data["double"]);
+			Assert.AreEqual(5D, StateContext.Data.Bag.DateTime);
+			Assert.AreEqual("1", StateContext.Data.Bag.t);
+		}
+
+		[TestMethod]
 		public void RefreshLinkDefaultsTest()
 		{
 			StateController.Navigate("d0");
