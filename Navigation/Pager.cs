@@ -32,6 +32,14 @@ namespace Navigation
 			}
 		}
 
+		private int DefaultStartRowIndex
+		{
+			get
+			{
+				return StateContext.State.Defaults[StartRowIndexKey] != null ? (int)StateContext.State.Defaults[StartRowIndexKey] : 0;
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the MaximumRows <see cref="Navigation.NavigationData"/> key
 		/// </summary>
@@ -45,6 +53,14 @@ namespace Navigation
 			set
 			{
 				ViewState["MaximumRowsKey"] = value;
+			}
+		}
+
+		private int DefaultMaximumRows
+		{
+			get
+			{
+				return StateContext.State.Defaults[MaximumRowsKey] != null ? (int)StateContext.State.Defaults[MaximumRowsKey] : 10;
 			}
 		}
 
@@ -144,10 +160,10 @@ namespace Navigation
 							startRowIndex = (result - 1) * MaximumRows;
 						NavigationData data = new NavigationData(true);
 						data[StartRowIndexKey] = null;
-						if (startRowIndex != 0)
+						if (startRowIndex != DefaultStartRowIndex)
 							data[StartRowIndexKey] = startRowIndex;
 						data[MaximumRowsKey] = null;
-						if (MaximumRows != 10)
+						if (MaximumRows != DefaultMaximumRows)
 							data[MaximumRowsKey] = MaximumRows;
 						link.NavigateUrl = StateController.GetRefreshLink(data);
 						if (link.Enabled && PostBackHyperLink)
@@ -212,12 +228,12 @@ namespace Navigation
 			{
 				get
 				{
-					return StateContext.Data[Pager.MaximumRowsKey] != null ? (int)StateContext.Data[Pager.MaximumRowsKey] : 10;
+					return StateContext.Data[Pager.MaximumRowsKey] != null ? (int)StateContext.Data[Pager.MaximumRowsKey] : Pager.DefaultMaximumRows;
 				}
 				private set
 				{
 					StateContext.Data[Pager.MaximumRowsKey] = null;
-					if (value != 10)
+					if (value != Pager.DefaultMaximumRows)
 						StateContext.Data[Pager.MaximumRowsKey] = value;
 				}
 			}
@@ -226,12 +242,12 @@ namespace Navigation
 			{
 				get
 				{
-					return StateContext.Data[Pager.StartRowIndexKey] != null ? (int)StateContext.Data[Pager.StartRowIndexKey] : 0;
+					return StateContext.Data[Pager.StartRowIndexKey] != null ? (int)StateContext.Data[Pager.StartRowIndexKey] : Pager.DefaultStartRowIndex;
 				}
 				private set
 				{
 					StateContext.Data[Pager.StartRowIndexKey] = null;
-					if (value != 0)
+					if (value != Pager.DefaultStartRowIndex)
 						StateContext.Data[Pager.StartRowIndexKey] = value;
 				}
 			}
