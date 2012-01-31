@@ -40,7 +40,7 @@ namespace Navigation
 			{
 				foreach (NavigationDataItem item in StateContext.Data)
 				{
-					Data[item.Key] = item.Value;
+					this[item.Key] = item.Value;
 				}
 
 			}
