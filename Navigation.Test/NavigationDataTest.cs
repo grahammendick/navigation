@@ -691,9 +691,11 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			NavigationData data = new NavigationData(true);
-			Assert.AreEqual("Hello", data["string"]);
+			data["string"] = null;
+			data.Bag._int = "Hello";
+			Assert.IsNull(data["string"]);
 			Assert.AreEqual(true, data.Bag._bool);
-			Assert.AreEqual(0, data.Bag._int);
+			Assert.AreEqual("Hello", data.Bag._int);
 			Assert.AreEqual((short)1, data["short"]);
 			Assert.AreEqual(2L, data["long"]);
 			Assert.AreEqual(3F, data["float"]);
