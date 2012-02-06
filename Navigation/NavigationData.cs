@@ -81,8 +81,11 @@ namespace Navigation
 		{
 			if (value != null)
 			{
+				object defaultValue = Defaults != null ? Defaults[key] : null;
+				if (value.Equals(string.Empty) && defaultValue != null)
+					value = defaultValue;
 				Data.Add(key, value);
-				if (Defaults != null && Data[key].Equals(Defaults[key]))
+				if (Data[key].Equals(defaultValue))
 					Data.SetItemDirty(key, false);
 			}
 			else
