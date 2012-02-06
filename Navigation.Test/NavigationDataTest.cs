@@ -320,15 +320,52 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void EmptyStringDataNavigateTest()
+		{
+			NavigationData data = new NavigationData();
+			data.Bag.s = "";
+			data.Bag.t = "1";
+			StateController.Navigate("d0", data);
+			Assert.IsNull(StateContext.Data["s"]);
+			Assert.AreEqual("1", StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void EmptyStringDataTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Data["s"] = "";
+			StateContext.Data["t"] = "1";
+			Assert.AreEqual("", StateContext.Data["s"]);
+			Assert.AreEqual("1", StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void EmptyStringStateDataNavigateBackTest()
+		{
+			StateController.Navigate("d0");
+			StateContext.Data["s"] = "";
+			StateContext.Data["t"] = "1";
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.IsNull(StateContext.Data["s"]);
+			Assert.AreEqual("1", StateContext.Data["t"]);
+		}
+
+		[TestMethod]
 		public void NavigateDataNavigateBackTest()
 		{
 			NavigationData data = new NavigationData();
 			data.Bag.s = "Hello";
+			data.Bag.t = string.Empty;
 			StateController.Navigate("d0", data);
 			StateController.Navigate("t0");
 			Assert.AreEqual("Hello", StateController.Crumbs[0].Data.Bag.s);
+			Assert.IsNull(StateController.Crumbs[0].Data.Bag.t);
 			StateController.NavigateBack(1);
 			Assert.AreEqual("Hello", StateContext.Data["s"]);
+			Assert.IsNull(StateContext.Data["t"]);
 		}
 
 		[TestMethod]
@@ -725,7 +762,25 @@ namespace Navigation.Test
 			StateContext.Data["decimal"] = null;
 			StateContext.Data["DateTime"] = null;
 			StateContext.Data["byte"] = null;
-			StateContext.Data["byte"] = null;
+			StateContext.Data["char"] = null;
+			Assert.AreEqual(4D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Bag.DateTime);
+			Assert.AreEqual((byte)6, StateContext.Data["byte"]);
+			Assert.AreEqual('7', StateContext.Data["char"]);
+		}
+
+		[TestMethod]
+		public void EmptyStringDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateContext.Data["double"] = string.Empty;
+			StateContext.Data["decimal"] = string.Empty;
+			StateContext.Data["DateTime"] = string.Empty;
+			StateContext.Data["byte"] = string.Empty;
+			StateContext.Data["char"] = string.Empty;
 			Assert.AreEqual(4D, StateContext.Data["double"]);
 			Assert.AreEqual(5m, StateContext.Data["decimal"]);
 			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Bag.DateTime);
@@ -739,7 +794,7 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			NavigationData data = new NavigationData(){
-				{ "s" , 1 }, { "t" , "2"}
+				{ "s" , 1 }, { "t" , ""}, {"double", string.Empty}
 			};
 			StateController.Navigate("t0", data);
 			Assert.AreEqual(4D, StateContext.Data["double"]);
@@ -748,7 +803,7 @@ namespace Navigation.Test
 			Assert.AreEqual((byte) 6, StateContext.Data["byte"]);
 			Assert.AreEqual('7', StateContext.Data["char"]);
 			Assert.AreEqual(1, StateContext.Bag.s);
-			Assert.AreEqual("2", StateContext.Data["t"]);
+			Assert.IsNull(StateContext.Data["t"]);
 		}
 
 		[TestMethod]
