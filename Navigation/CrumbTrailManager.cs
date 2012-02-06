@@ -93,7 +93,7 @@ namespace Navigation
 			{
 				foreach (NavigationDataItem item in navigationData)
 				{
-					if (!item.Value.Equals(state.Defaults[item.Key]))
+					if (!item.Value.Equals(string.Empty) && !item.Value.Equals(state.Defaults[item.Key]))
 						coll[item.Key] = FormatURLObject(item.Value);
 				}
 			}
@@ -103,7 +103,7 @@ namespace Navigation
 				string prefix = string.Empty;
 				foreach (NavigationDataItem item in returnData)
 				{
-					if (StateContext.State == null || !item.Value.Equals(StateContext.State.Defaults[item.Key]))
+					if (!item.Value.Equals(string.Empty) && (StateContext.State == null || !item.Value.Equals(StateContext.State.Defaults[item.Key])))
 					{
 						returnDataBuilder.Append(prefix);
 						returnDataBuilder.Append(item.Key);
