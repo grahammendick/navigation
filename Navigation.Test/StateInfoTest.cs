@@ -227,7 +227,7 @@ namespace Navigation.Test
 			Assert.AreEqual(3F, StateInfoConfig.Dialogs[0].States[1].Defaults["float"]);
 			Assert.AreEqual(null, StateInfoConfig.Dialogs[0].States[1].Defaults["another"]);
 			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[1].Defaults.Count == 6);
-			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[2].Defaults.Count == 5);
+			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[2].Defaults.Count == 6);
 			Assert.AreEqual(4D, StateInfoConfig.Dialogs[0].States[2].Defaults["double"]);
 			Assert.AreEqual(5m, StateInfoConfig.Dialogs[0].States[2].Defaults["decimal"]);
 			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateInfoConfig.Dialogs[0].States[2].Defaults["DateTime"]);
@@ -272,7 +272,7 @@ namespace Navigation.Test
 			Assert.AreEqual(dialogs[0].States[0].Parent, dialogs[0]);
 			Assert.AreEqual(dialogs[0].States[0].Transitions[0].Parent, dialogs[0].States[0]);
 			Assert.IsTrue(dialogs[0].States[1].Defaults.Count == 6);
-			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 5);
+			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 6);
 		}
 
 		[TestMethod]
