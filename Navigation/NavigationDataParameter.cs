@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System;
+using System.Globalization;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -7,7 +9,7 @@ namespace Navigation
 	/// <summary>
 	/// Binds the value of a <see cref="Navigation.NavigationData"/> item to a parameter object
 	/// </summary>
-	public class NavigationDataParameter : Parameter
+	public class NavigationDataParameter : ControlParameter
 	{
 		/// <summary>
 		/// Initializes a new unnamed instance of the <see cref="Navigation.NavigationDataParameter"/> 
@@ -28,6 +30,7 @@ namespace Navigation
 			: base(original)
 		{
 			Key = original.Key;
+			Reset = original.Reset;
 		}
 
 		/// <summary>
@@ -40,7 +43,7 @@ namespace Navigation
 		/// <param name="key">The name of the <see cref="Navigation.NavigationData"/> item that the 
 		/// parameter object is bound to</param>
 		public NavigationDataParameter(string name, string key)
-			: base(name)
+			: base(name, null)
 		{
 			Key = key;
 		}
@@ -56,7 +59,9 @@ namespace Navigation
 
 		/// <summary>
 		/// Gets or sets the key of the <see cref="Navigation.NavigationData"/> item that the parameter 
-		/// binds to. If this is null the Name property is used instead
+		/// binds to. If this is null the Name property is used instead.
+		/// For scenarios where the key is only known at runtime, set the ControlID to point to the
+		/// Control holding the key
 		/// </summary>
 		public string Key
 		{
@@ -107,7 +112,10 @@ namespace Navigation
 		{
 			if (context == null || context.Request == null || Reset)
 				return null;
-			return StateContext.Data[Key ?? Name];
+			string key = null;
+			if (!string.IsNullOrEmpty(ControlID))
+				key = Convert.ToString(base.Evaluate(context, control), CultureInfo.CurrentCulture);
+			return StateContext.Data[key ?? (Key ?? Name)];
 		}
 	}
 }
