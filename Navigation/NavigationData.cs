@@ -161,6 +161,14 @@ namespace Navigation
 			Reset();
 		}
 
+		internal int Count
+		{
+			get
+			{
+				return Data.Count;
+			}
+		}
+
         bool IStateManager.IsTrackingViewState
         {
             get 
