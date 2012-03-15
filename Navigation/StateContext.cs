@@ -19,6 +19,7 @@ namespace Navigation
 		internal static string PREVIOUS_STATE = "c1";
 		internal static string RETURN_DATA = "c2";
 		internal static string CRUMB_TRAIL = "c3";
+		internal static string MOBILE = "n0";
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.State"/> navigated away from to reach the 

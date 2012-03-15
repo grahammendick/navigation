@@ -75,11 +75,11 @@ namespace Navigation
 					|| StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.GetPage(mobile), Page.AppRelativeVirtualPath) != 0)
 					StateController.Refresh(new NavigationData(true));
 				if (mobile)
-					Page.ClientScript.RegisterHiddenField("MobileNavigation", string.Empty);
+					Page.ClientScript.RegisterHiddenField(StateContext.MOBILE, string.Empty);
 			}
 			else
 			{
-				mobile = Page.Request.Form["MobileNavigation"] != null;
+				mobile = Page.Request.Form[StateContext.MOBILE] != null;
 			}
 			if (StateContext.State.GetMasters(mobile).Count != 0)
 			{
