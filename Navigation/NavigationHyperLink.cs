@@ -48,6 +48,25 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets or sets a value indicating whether <see cref="ToData"/> values should be converted to null 
+		/// if they are <see cref="System.String.Empty"/>.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		[Category("Navigation"), Description("Specifies whether empty string ToData values will be converted to null."), DefaultValue(true)]
+		public bool ConvertEmptyStringToNull
+		{
+			get
+			{
+				return ViewState["ConvertEmptyStringToNull"] != null ? (bool)ViewState["ConvertEmptyStringToNull"] : true;
+			}
+			set
+			{
+				ViewState["ConvertEmptyStringToNull"] = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets the key of a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
 		/// </summary>
@@ -113,6 +132,39 @@ namespace Navigation
 			set
 			{
 				ViewState["PostBack"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the CSS class to apply when the <see cref="Navigation.NavigationHyperLink"/> is <see cref="Inert"/>
+		/// </summary>
+		[Category("Behavior"), Description("The CSS class to apply when Inert."), DefaultValue("")]
+		public string InertCssClass
+		{
+			get
+			{
+				return ViewState["InertCssClass"] != null ? (string)ViewState["InertCssClass"] : string.Empty;
+			}
+			set
+			{
+				ViewState["InertCssClass"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether to disable the <see cref="Navigation.NavigationHyperLink"/> when
+		/// it is <see cref="Inert"/>
+		/// </summary>
+		[Category("Behavior"), Description("Specifies whether to disable when Inert."), DefaultValue(false)]
+		public bool DisableInert
+		{
+			get
+			{
+				return ViewState["DisableInert"] != null ? (bool)ViewState["DisableInert"] : false;
+			}
+			set
+			{
+				ViewState["DisableInert"] = value;
 			}
 		}
 
@@ -224,13 +276,38 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets a value indicating whether clicking the <see cref="Navigation.NavigationHyperLink"/> will leave
+		/// the state context <see cref="Navigation.StateContext.State"/> and <see cref="Navigation.StateContext.Data"/>
+		/// unchanged
+		/// </summary>
+		[Browsable(false)]
+		public bool Inert
+		{
+			get
+			{
+				if (Direction != NavigationDirection.Refresh) return false;
+				NavigationData data = new NavigationData(IncludeCurrentData);
+				data.SetDefaults(StateContext.State.Defaults);
+				UpdateData(data);
+				if (data.Count != StateContext.Data.Count)
+					return false;
+				foreach (NavigationDataItem item in data)
+				{
+					if (!item.Value.Equals(StateContext.Data[item.Key]))
+						return false;
+				}
+				return true;
+			}
+		}
+
 		private void UpdateData(NavigationData data)
 		{
 			if (ToData != null)
 			{
 				foreach (NavigationDataItem item in ToData)
 				{
-					data[item.Key] = item.Value;
+					data[item.Key] = (!item.Value.Equals(string.Empty) || !ConvertEmptyStringToNull) ? item.Value : null;
 				}
 			}
 		}
@@ -242,6 +319,18 @@ namespace Navigation
 		/// <param name="writer">The output stream to render on the client</param>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
+			if (!DesignMode && ((DisableInert && Enabled) || InertCssClass.Length != 0) && Inert)
+			{
+				if (DisableInert)
+					Enabled = false;
+				if (InertCssClass.Length != 0)
+				{
+					if (string.IsNullOrEmpty(CssClass))
+						CssClass = InertCssClass;
+					else
+						CssClass = InertCssClass + " " + CssClass;
+				}
+			} 
 			if (!DesignMode && Enabled && NavigateUrl.Length == 0)
 			{
 				NavigateUrl = Link;

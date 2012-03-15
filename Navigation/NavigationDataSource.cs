@@ -23,7 +23,7 @@ namespace Navigation
 		/// <see cref="System.Web.UI.WebControls.Parameter.ConvertEmptyStringToNull"/> value
 		/// will be used instead
 		/// </summary>
-		[DefaultValue(true), Category("Data"), Description("Specifies whether null bound values passed during an update will be converted to null.")]
+		[DefaultValue(true), Category("Data"), Description("Specifies whether empty string bound values passed during an update will be converted to null.")]
 		public bool ConvertEmptyStringToNull
 		{
 			get
