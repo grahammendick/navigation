@@ -104,6 +104,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateContext.Dialog.Initial, StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+			Assert.IsTrue(StateController.Crumbs[0].Last);
 		}
 
 		[TestMethod]
@@ -115,6 +116,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateContext.Dialog.Initial, StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+			Assert.IsTrue(StateController.Crumbs[0].Last);
 		}
 
 		[TestMethod]
@@ -128,6 +130,8 @@ namespace Navigation.Test
 			Assert.AreEqual(2, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
 			Assert.AreEqual(StateContext.PreviousState, StateController.Crumbs[1].State);
+			Assert.IsFalse(StateController.Crumbs[0].Last);
+			Assert.IsTrue(StateController.Crumbs[1].Last);
 		}
 
 		[TestMethod]
@@ -168,6 +172,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateContext.State, StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
 			Assert.AreEqual(StateContext.Dialog.Initial, StateController.Crumbs[0].State);
+			Assert.IsTrue(StateController.Crumbs[0].Last);
 			Assert.IsNotNull(StateController.RefreshLink);
 		}
 
@@ -222,6 +227,8 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[2], StateContext.State);
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[4], StateContext.PreviousState);
 			Assert.AreEqual(2, StateController.Crumbs.Count);
+			Assert.IsFalse(StateController.Crumbs[0].Last);
+			Assert.IsTrue(StateController.Crumbs[1].Last);
 			int i = 0;
 			foreach (Crumb crumb in StateController.Crumbs)
 			{
@@ -391,6 +398,8 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s3"], StateContext.State);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateContext.PreviousState);
 			Assert.AreEqual(2, StateController.Crumbs.Count);
+			Assert.IsFalse(StateController.Crumbs[0].Last);
+			Assert.IsTrue(StateController.Crumbs[1].Last);
 			int i = 0;
 			foreach (Crumb crumb in StateController.Crumbs)
 			{
@@ -413,6 +422,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s3"], StateContext.State);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s2"], StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
+			Assert.IsTrue(StateController.Crumbs[0].Last);
 			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[2], StateController.Crumbs[0].State);
 			Assert.AreEqual(StateInfoConfig.Dialogs[2].States[2].Title, StateController.Crumbs[0].Title);
 		}
@@ -427,6 +437,26 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s3"], StateContext.State);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s2"], StateContext.PreviousState);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
+			Assert.IsTrue(StateController.Crumbs[0].Last);
+		}
+
+		[TestMethod]
+		public void NavigateCrumbTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s0"], StateController.Crumbs[0].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateController.Crumbs[1].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s2"], StateController.Crumbs[2].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s3"], StateController.Crumbs[3].State);
+			Assert.AreEqual(4, StateController.Crumbs.Count);
+			Assert.IsFalse(StateController.Crumbs[0].Last);
+			Assert.IsFalse(StateController.Crumbs[1].Last);
+			Assert.IsFalse(StateController.Crumbs[2].Last);
+			Assert.IsTrue(StateController.Crumbs[3].Last);
 		}
 
 		[TestMethod]

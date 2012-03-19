@@ -10,6 +10,7 @@ namespace Navigation
         private string _NavigationLink;
         private NavigationData _Data;
 		private State _State;
+		private bool _Last;
 
 		/// <summary>
 		/// Gets the hyperlink navigation to return to the <see cref="State"/> and pass
@@ -84,11 +85,23 @@ namespace Navigation
 			}
 		}
 
-        internal Crumb(string href, NavigationData data, State state)
+		/// <summary>
+		/// Gets a value indicating whether the <see cref="Navigation.Crumb"/> is the last in the crumb trail
+		/// </summary>
+		public bool Last
+		{
+			get
+			{
+				return _Last;
+			}
+		}
+
+        internal Crumb(string href, NavigationData data, State state, bool last)
         {
             _NavigationLink = href;
             _Data = data ?? new NavigationData();
 			_State = state;
+			_Last = last;
 			Data.SetDefaults(State.Defaults);
         }
     }

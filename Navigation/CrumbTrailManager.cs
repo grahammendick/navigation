@@ -210,14 +210,16 @@ namespace Navigation
             int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
             string href = null;
 			NavigationData navigationData;
+			bool last = true;
             while (arrayCount < crumbTrailSize)
             {
 				string nextState = StateContext.GetState(GetCrumbTrailState(crumbTrail)).DialogStateKey;
                 navigationData = GetCrumbTrailData(crumbTrail);
                 crumbTrail = CropCrumbTrail(crumbTrail);
 				href = GetHref(nextState, navigationData, null, mode);
-				Crumb crumb = new Crumb(href, navigationData, StateContext.GetState(nextState));
+				Crumb crumb = new Crumb(href, navigationData, StateContext.GetState(nextState), last);
                 crumbTrailArray.Add(crumb);
+				last = false;
                 arrayCount++;
             }
             crumbTrailArray.Reverse();
