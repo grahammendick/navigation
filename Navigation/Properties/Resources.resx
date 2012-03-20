@@ -153,6 +153,9 @@
   <data name="InvalidNavigationData" xml:space="preserve">
     <value>No TypeConverter found for {0}</value>
   </data>
+  <data name="InvalidRouteData" xml:space="preserve">
+    <value>Invalid route data, a mandatory route parameter has not been supplied a value</value>
+  </data>
   <data name="InvalidTransitionToKey" xml:space="preserve">
     <value>{0} State's Transition to key of {1} does not match a sibling State key</value>
   </data>
