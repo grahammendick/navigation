@@ -150,7 +150,10 @@ namespace Navigation
 					if (key != StateContext.STATE)
 						routeData.Add(key, coll[key]);
 				}
-				return RouteTable.Routes.GetVirtualPath(null, StateContext.GetState(nextState).GetRouteName(mobile), routeData).VirtualPath;
+				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(null, StateContext.GetState(nextState).GetRouteName(mobile), routeData);
+				if (virtualPath == null)
+					return null;
+				return virtualPath.VirtualPath;
 			}
 		}
 

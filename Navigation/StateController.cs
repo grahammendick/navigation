@@ -106,6 +106,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Navigate(string action)
 		{
 			Navigate(action, NavigationMode.Client);
@@ -124,6 +125,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Navigate(string action, NavigationMode mode)
 		{
 			Navigate(action, null, mode);
@@ -143,6 +145,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Navigate(string action, NavigationData toData)
 		{
 			Navigate(action, toData, StateContext.Data, NavigationMode.Client);
@@ -162,6 +165,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Navigate(string action, NavigationData toData, NavigationMode mode)
 		{
 			Navigate(action, toData, StateContext.Data, mode);
@@ -169,7 +173,10 @@ namespace Navigation
 
 		private static void Navigate(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
 		{
-			NavigateLink(GetNavigationLink(action, toData, returnData, mode), mode);
+			string url = GetNavigationLink(action, toData, returnData, mode);
+			if (url == null)
+				throw new InvalidOperationException(Resources.InvalidRouteData);
+			NavigateLink(url, mode);
 		}
 
 		/// <summary>
@@ -242,6 +249,7 @@ namespace Navigation
 		/// <param name="distance">Starting at 1, the number of <see cref="Crumb"/> steps to go back</param>
 		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
 		/// this <paramref name="distance"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void NavigateBack(int distance)
 		{
 			NavigateBack(distance, NavigationMode.Client);
@@ -257,9 +265,13 @@ namespace Navigation
 		/// <param name="mode">Redirect, Transfer or Mock</param>
 		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
 		/// this <paramref name="distance"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void NavigateBack(int distance, NavigationMode mode)
 		{
-			NavigateLink(GetNavigationBackLink(distance, mode), mode);
+			string url = GetNavigationBackLink(distance, mode);
+			if (url == null)
+				throw new InvalidOperationException(Resources.InvalidRouteData);
+			NavigateLink(url, mode);
 		}
 
 		/// <summary>
@@ -291,6 +303,7 @@ namespace Navigation
 		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
 		/// data and a <see cref="Navigation.NavigationMode"/> of Client
 		/// </summary>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Refresh()
 		{
 			Refresh(NavigationMode.Client);
@@ -302,6 +315,7 @@ namespace Navigation
 		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
 		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Refresh(NavigationData toData)
 		{
 			Refresh(toData, NavigationMode.Client);
@@ -312,6 +326,7 @@ namespace Navigation
 		/// data
 		/// </summary>
 		/// <param name="mode">Redirect, Transfer or Mock</param>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Refresh(NavigationMode mode)
 		{
 			Refresh(null, mode);
@@ -324,9 +339,13 @@ namespace Navigation
 		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
 		/// <param name="mode">Redirect, Transfer or Mock</param>
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
 		public static void Refresh(NavigationData toData, NavigationMode mode)
 		{
-			NavigateLink(GetRefreshLink(toData, mode), mode);
+			string url = GetRefreshLink(toData, mode);
+			if (url == null)
+				throw new InvalidOperationException(Resources.InvalidRouteData);
+			NavigateLink(url, mode);
 		}
 
 		/// <summary>
