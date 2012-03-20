@@ -1148,6 +1148,26 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void BackLinkDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Data["_bool"] = null;
+			StateContext.Data["string"] = "Hello";
+			StateContext.Bag._int = 1D;
+			StateContext.Data["short"] = string.Empty;
+			StateContext.Data["float"] = "World";
+			StateController.Navigate("t0");
+			string link = StateController.GetNavigationBackLink(1);
+			Assert.AreEqual(-1, link.IndexOf("string"));
+			Assert.AreEqual(-1, link.IndexOf("_bool"));
+			Assert.AreEqual(-1, link.IndexOf("short"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreNotEqual(-1, link.IndexOf("float"));
+			Assert.AreNotEqual(-1, link.IndexOf("_int"));
+		}
+
+		[TestMethod]
 		public void CrumbLinkDefaultsTest()
 		{
 			StateController.Navigate("d0");
