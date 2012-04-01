@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using Navigation.Properties;
 
@@ -18,6 +19,8 @@ namespace Navigation
 	/// </summary>
 	public static class StateController
 	{
+		private const string HISTORY_URL_VAR = "var {0} = {1};";
+
 		/// <summary>
 		/// Gets a <see cref="Navigation.Crumb"/> collection representing the crumb trail, ordered
 		/// oldest <see cref="Navigation.Crumb"/> first
@@ -440,6 +443,7 @@ namespace Navigation
 			}
 			coll = StateContext.ShieldEncode(coll, true);
 			ScriptManager.GetCurrent(page).AddHistoryPoint(coll, title);
+			ScriptManager.RegisterClientScriptBlock(page, typeof(StateController), "historyUrl", string.Format(CultureInfo.InvariantCulture, HISTORY_URL_VAR, StateContext.HISTORY_URL, new JavaScriptSerializer().Serialize(GetRefreshLink(toData))), true);
 		}
 
 		/// <summary>
