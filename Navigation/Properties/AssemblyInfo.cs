@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System;
+﻿using System;
+using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
+using System.Web.UI;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -39,3 +39,5 @@ using System.Resources;
 
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguageAttribute("en-GB", UltimateResourceFallbackLocation.MainAssembly)]
+[assembly: WebResource("Navigation.HTML5History.js", "text/javascript")]
+[assembly: WebResource("Navigation.HTML5History.debug.js", "text/javascript")]

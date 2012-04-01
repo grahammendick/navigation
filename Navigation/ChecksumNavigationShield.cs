@@ -15,7 +15,7 @@ namespace Navigation
 	/// </summary>
 	public class ChecksumNavigationShield : NavigationShield
 	{
-		internal static string CHECK_SUM = "cs";
+		internal const string CHECK_SUM = "cs";
 
 		/// <summary>
 		/// Gets or sets key used in the checksum generation routine, should be kept secret to prevent

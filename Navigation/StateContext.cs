@@ -15,11 +15,12 @@ namespace Navigation
 	/// </summary>
 	public static class StateContext
 	{
-		internal static string STATE = "c0";
-		internal static string PREVIOUS_STATE = "c1";
-		internal static string RETURN_DATA = "c2";
-		internal static string CRUMB_TRAIL = "c3";
-		internal static string MOBILE = "n0";
+		internal const string STATE = "c0";
+		internal const string PREVIOUS_STATE = "c1";
+		internal const string RETURN_DATA = "c2";
+		internal const string CRUMB_TRAIL = "c3";
+		internal const string MOBILE = "n0";
+		internal const string HISTORY_URL = "n1";
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.State"/> navigated away from to reach the 
