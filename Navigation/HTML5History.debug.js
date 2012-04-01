@@ -16,10 +16,11 @@
             fixFormAction();
             app._currentEntry = entry;
             app._historyPointIsNew = false;
+            ready = true;
         }
     };
 
-    var ready = false || win.history.state;
+    var ready = win.history.state;
     $addHandler(win, 'popstate', function (evt) {
         if (ready) {
             fixFormAction();
