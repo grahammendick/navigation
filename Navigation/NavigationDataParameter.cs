@@ -106,16 +106,18 @@ namespace Navigation
 		/// <param name="context">The current <see cref="System.Web.HttpContext"/> instance of the
 		/// request</param>
 		/// <param name="control">This parameter is ignored as not relevant</param>
-		/// <returns>The current value of the <see cref="Navigation.NavigationData"/> item. If the
-		/// context or the request is null or <see cref="Reset"/> is true, it returns null</returns>
+		/// <returns>The current value of the <see cref="Navigation.NavigationData"/> item. If
+		/// <see cref="Reset"/> is true, it returns null</returns>
 		protected override object Evaluate(HttpContext context, Control control)
 		{
-			if (context == null || context.Request == null || Reset)
+			if (Reset)
 				return null;
-			string key = null;
+			string key = Key ?? Name;
 			if (!string.IsNullOrEmpty(ControlID))
 				key = Convert.ToString(base.Evaluate(context, control), CultureInfo.CurrentCulture);
-			return StateContext.Data[key ?? (Key ?? Name)];
+			if (string.IsNullOrEmpty(key))
+				return null;
+			return StateContext.Data[key];
 		}
 	}
 }
