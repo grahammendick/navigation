@@ -30,6 +30,12 @@ namespace Navigation.Test
 			}
 		}
 
+		[TestInitialize]
+		public void Initialize()
+		{
+			StateContext.Data.Clear();
+		}
+
 		private NavigationData _IndividualNavigationData;
 		private NavigationData IndividualNavigationData
 		{

@@ -34,8 +34,6 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d0");
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].Initial, StateContext.State);
-			Assert.IsNull(StateContext.PreviousState);
-			Assert.IsNull(StateContext.PreviousDialog);
 			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 

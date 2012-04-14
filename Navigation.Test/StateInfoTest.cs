@@ -29,15 +29,6 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void InitialTest()
-		{
-			Assert.IsNull(StateContext.State);
-			Assert.IsNull(StateContext.Dialog);
-			Assert.IsNull(StateContext.PreviousState);
-			Assert.IsNull(StateContext.PreviousDialog);
-		}
-
-		[TestMethod]
 		public void DialogTest()
 		{
 			Assert.AreEqual(3, StateInfoConfig.Dialogs.Count);
