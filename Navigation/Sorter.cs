@@ -305,6 +305,8 @@ namespace Navigation
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
 			SetChildProperties();
+			if (!string.IsNullOrEmpty(ID))
+				writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
 			base.RenderContents(writer);
 		}
 	}
