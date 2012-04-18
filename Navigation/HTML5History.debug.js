@@ -2,7 +2,7 @@
  * Adds HTLM5 history support to history navigation, with the following provisos:
  * - History points must be added using the StateController.
  * - The page must not have been navigated to using NavigationMode.Server.
- * - Cross page post backs not supported for States with route parameters.
+ * - Cross page posting not supported from a page with route parameters.
  */
 (function (app, prm, win) {
 
