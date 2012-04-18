@@ -319,6 +319,8 @@ namespace Navigation
 		/// <param name="writer">The output stream to render on the client</param>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
+			if (DesignMode && Enabled && string.IsNullOrEmpty(NavigateUrl))
+				writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 			if (!DesignMode && ((DisableInert && Enabled) || InertCssClass.Length != 0) && Inert)
 			{
 				if (DisableInert)
@@ -330,8 +332,8 @@ namespace Navigation
 					else
 						CssClass = InertCssClass + " " + CssClass;
 				}
-			} 
-			if (!DesignMode && Enabled && NavigateUrl.Length == 0)
+			}
+			if (!DesignMode && Enabled && string.IsNullOrEmpty(NavigateUrl))
 			{
 				NavigateUrl = Link;
 				if (Direction == NavigationDirection.Refresh && PostBack)
