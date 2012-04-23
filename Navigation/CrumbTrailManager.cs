@@ -59,9 +59,9 @@ namespace Navigation
 							foreach (NavigationDataItem item in StateContext.ReturnData)
 							{
 								formattedReturnData.Append(prefix);
-								formattedReturnData.Append(item.Key);
+								formattedReturnData.Append(EncodeURLValue(item.Key));
 								formattedReturnData.Append(RET_1_SEP);
-								formattedReturnData.Append(FormatURLObject(item.Value));
+								formattedReturnData.Append(FormatURLObject(item.Key, item.Value, StateContext.GetState(StateContext.PreviousStateKey)));
 								prefix = RET_3_SEP;
 							}
                         }
@@ -94,7 +94,7 @@ namespace Navigation
 				foreach (NavigationDataItem item in navigationData)
 				{
 					if (!item.Value.Equals(string.Empty) && !item.Value.Equals(state.Defaults[item.Key]))
-						coll[item.Key] = FormatURLObject(item.Value);
+						coll[item.Key] = FormatURLObject(item.Key, item.Value, state);
 				}
 			}
 			if (returnData != null && state.TrackCrumbTrail)
@@ -106,9 +106,9 @@ namespace Navigation
 					if (!item.Value.Equals(string.Empty) && (StateContext.State == null || !item.Value.Equals(StateContext.State.Defaults[item.Key])))
 					{
 						returnDataBuilder.Append(prefix);
-						returnDataBuilder.Append(item.Key);
+						returnDataBuilder.Append(EncodeURLValue(item.Key));
 						returnDataBuilder.Append(RET_1_SEP);
-						returnDataBuilder.Append(FormatURLObject(item.Value));
+						returnDataBuilder.Append(FormatURLObject(item.Key, item.Value, StateContext.State));
 						prefix = RET_3_SEP;
 					}
 				}
@@ -167,42 +167,36 @@ namespace Navigation
             return urlValue.Replace(SEPARATOR, "0" + SEPARATOR);
         }
 
-		internal static string FormatURLObject(object urlObject)
+		internal static string FormatURLObject(string key, object urlObject, State state)
         {
-            string formattedValue;
-			string urlObjectString = urlObject as string;
-			if (urlObjectString != null)
-            {
-				formattedValue = EncodeURLValue(urlObjectString);
-            }
-            else
-            {
-                formattedValue = (string) ConverterFactory.GetConverterFromObj(urlObject).ConvertToInvariantString(urlObject);
-                formattedValue = EncodeURLValue(formattedValue) + RET_2_SEP + ConverterFactory.GetKey(urlObject);
-            }
+			Type defaultType = state.DefaultTypes[key] ?? typeof(string);
+			string converterKey = ConverterFactory.GetKey(urlObject);
+			string formattedValue = ConverterFactory.GetConverter(converterKey).ConvertToInvariantString(urlObject);
+            formattedValue = EncodeURLValue(formattedValue);
+			if (urlObject.GetType() != defaultType)
+				formattedValue += RET_2_SEP + converterKey;
             return formattedValue;
         }
 
-		internal static object ParseURLString(string val)
+		internal static object ParseURLString(string key, string val, State state)
 		{
-			object parsedVal;
+			Type defaultType = state.DefaultTypes[key] ?? typeof(string);
+			string urlValue = val;
+			string converterKey = ConverterFactory.GetKey(defaultType);
 			if (val.IndexOf(RET_2_SEP, StringComparison.Ordinal) > -1)
 			{
 				string[] arr = Regex.Split(val, RET_2_SEP);
-				try
-				{
-					parsedVal = ConverterFactory.GetConverter(arr[1]).ConvertFromInvariantString(DecodeURLValue(arr[0]));
-				}
-				catch (Exception)
-				{
-					throw new UrlException(Resources.InvalidUrl);
-				}
+				urlValue = arr[0];
+				converterKey = arr[1];
 			}
-			else
+			try
 			{
-				parsedVal = DecodeURLValue(val);
+				return ConverterFactory.GetConverter(converterKey).ConvertFromInvariantString(DecodeURLValue(urlValue));
 			}
-			return parsedVal;
+			catch (Exception ex)
+			{
+				throw new UrlException(Resources.InvalidUrl, ex);
+			}
 		}
 
 		internal static List<Crumb> GetCrumbTrailHrefArray(NavigationMode mode)
@@ -214,14 +208,14 @@ namespace Navigation
             string href = null;
 			NavigationData navigationData;
 			bool last = true;
+			State state = null;
             while (arrayCount < crumbTrailSize)
             {
-				string nextState = StateContext.GetState(GetCrumbTrailState(crumbTrail)).DialogStateKey;
-                navigationData = GetCrumbTrailData(crumbTrail);
+				state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
+				navigationData = GetCrumbTrailData(crumbTrail, state);
                 crumbTrail = CropCrumbTrail(crumbTrail);
-				href = GetHref(nextState, navigationData, null, mode);
-				Crumb crumb = new Crumb(href, navigationData, StateContext.GetState(nextState), last);
-                crumbTrailArray.Add(crumb);
+				href = GetHref(state.DialogStateKey, navigationData, null, mode);
+				crumbTrailArray.Add(new Crumb(href, navigationData, state, last));
 				last = false;
                 arrayCount++;
             }
@@ -255,13 +249,13 @@ namespace Navigation
             return Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
         }
 
-		private static NavigationData GetCrumbTrailData(string trail)
+		private static NavigationData GetCrumbTrailData(string trail, State state)
         {
             NavigationData navData = null;
 			string data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
             if (data.Length != 0)
             {
-                navData = ParseReturnData(data);
+				navData = ParseReturnData(data, state);
             }
             return navData;
         }
@@ -271,12 +265,12 @@ namespace Navigation
 			return GetHref(StateContext.StateKey, refreshData, null, mode);
         }
 
-		internal static object Parse(string key, string val)
+		internal static object Parse(string key, string val, State state)
         {
             object parsedVal;
 			if (key == StateContext.RETURN_DATA)
             {
-                parsedVal = ParseReturnData(val);
+				parsedVal = ParseReturnData(val, state);
             }
             else
             {
@@ -286,13 +280,13 @@ namespace Navigation
                 }
                 else
                 {
-					parsedVal = ParseURLString(val);
+					parsedVal = ParseURLString(key, val, state);
                 }
             }
             return parsedVal;
         }
 
-		private static NavigationData ParseReturnData(string returnData)
+		private static NavigationData ParseReturnData(string returnData, State state)
         {
             NavigationData navData = new NavigationData();
             string[] nameValuePair;
@@ -300,7 +294,7 @@ namespace Navigation
             for (int i = 0; i < returnDataArray.Length; i++)
             {
                 nameValuePair = Regex.Split(returnDataArray[i], RET_1_SEP);
-                navData.Add(nameValuePair[0], ParseURLString(nameValuePair[1]));
+				navData.Add(DecodeURLValue(nameValuePair[0]), ParseURLString(DecodeURLValue(nameValuePair[0]), nameValuePair[1], state));
             }
             return navData;
         }

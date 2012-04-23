@@ -10,9 +10,9 @@ namespace Navigation
 	internal sealed class ListConverter<T> : TypeConverter where T : IEnumerable, IList, new()
 	{
 		private TypeConverter _Converter = null;
-		private const string separator = "_";
-		private const string separator1 = "1" + separator;
-		private const string separator2 = "2" + separator;
+		private const string SEPARATOR = "_";
+		private const string SEPARATOR1 = "1" + SEPARATOR;
+		private const string SEPARATOR2 = "2" + SEPARATOR;
 
 		internal ListConverter(TypeConverter parser)
 		{
@@ -35,11 +35,11 @@ namespace Navigation
 			string val = value as string;
 			if (val.Length != 0)
 			{
-				string[] vals = Regex.Split(val, separator1);
+				string[] vals = Regex.Split(val, SEPARATOR1);
 				for (int i = 0; i < vals.Length; i++)
 				{
 					if (vals[i].Length != 0)
-						obj.Add(_Converter.ConvertFromInvariantString(vals[i].Replace(separator2, separator)));
+						obj.Add(_Converter.ConvertFromInvariantString(vals[i].Replace(SEPARATOR2, SEPARATOR)));
 					else
 						obj.Add(null);
 				}
@@ -54,8 +54,8 @@ namespace Navigation
 			foreach (object item in objList)
 			{
 				if (item != null)
-					formatString.Append(_Converter.ConvertToInvariantString(item).Replace(separator, separator2));
-				formatString.Append(separator1);
+					formatString.Append(_Converter.ConvertToInvariantString(item).Replace(SEPARATOR, SEPARATOR2));
+				formatString.Append(SEPARATOR1);
 			}
 			if (formatString.Length > 0)
 				formatString.Remove(formatString.Length - 2, 2);
