@@ -118,13 +118,19 @@ namespace Navigation
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
+			Page.PreRenderComplete += Page_PreRenderComplete;
+			Page.SaveStateComplete += Page_SaveStateComplete;
 		}
 
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			if (StateContext.Data[TotalRowCountKey] != null)
 				OnTotalRowCountAvailable(this, new PageEventArgs(_navigationPageableItemContainer.StartRowIndex, _navigationPageableItemContainer.MaximumRows, _navigationPageableItemContainer.TotalRowCount));
+		}
+
+		private void Page_SaveStateComplete(object sender, EventArgs e)
+		{
+			StateContext.Data[TotalRowCountKey] = null;
 		}
 
 		/// <summary>
