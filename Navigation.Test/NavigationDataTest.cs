@@ -318,11 +318,22 @@ namespace Navigation.Test
 		public void ReservedUrlCharacterDataTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*()-_+~@:?><.;[]{}!£$%^&"] = "!£$%^&*()-_+~@:?><.;[]{}";
+			data["*=/()-_+~@:?><.;[]{}!£$%^&"] = "!=/£$%^&*()-_+~@:?><.;[]{}";
 			StateController.Navigate("d0", data);
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
-			Assert.AreEqual("!£$%^&*()-_+~@:?><.;[]{}", data["*()-_+~@:?><.;[]{}!£$%^&"]);
+			Assert.AreEqual("!=/£$%^&*()-_+~@:?><.;[]{}", StateContext.Data["*=/()-_+~@:?><.;[]{}!£$%^&"]);
+		}
+
+		[TestMethod]
+		public void SeparatorUrlCharacterDataTest()
+		{
+			NavigationData data = new NavigationData();
+			data["!0!1!2!3!4!5!"] = "!!00!!11!!22!!33!!44!!55!!";
+			StateController.Navigate("d0", data);
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual("!!00!!11!!22!!33!!44!!55!!", StateContext.Data["!0!1!2!3!4!5!"]);
 		}
 
 		[TestMethod]
@@ -1216,6 +1227,382 @@ namespace Navigation.Test
 			Assert.AreEqual(-1, link.IndexOf("c1"));
 			Assert.AreEqual(-1, link.IndexOf("_int"));
 			Assert.AreEqual(-1, link.IndexOf("string"));
+		}
+
+		[TestMethod]
+		public void NavigateDefaultTypesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0", IndividualNavigationData);
+			int i = 0;
+			foreach (NavigationDataItem item in StateContext.Data)
+			{
+				Assert.AreEqual(IndividualNavigationData[item.Key], item.Value);
+				i++;
+			}
+			Assert.AreEqual(16, i);
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesStringTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"s1","hello"},
+				{"s2","world"}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("s1=hello&"));
+			Assert.AreNotEqual(-1, url.IndexOf("s2=world2!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesBoolTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"b1",true},
+				{"b2",false}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("b1=True&"));
+			Assert.AreNotEqual(-1, url.IndexOf("b2=False2!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesIntTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"i1",0},
+				{"i2",1}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("i1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("i2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesShortTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"sh1",(short)0},
+				{"sh2",(short)1}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("sh1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("sh2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesLongTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"l2",(long)1},
+				{"l1",(long)2}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("l1=2&"));
+			Assert.AreNotEqual(-1, url.IndexOf("l2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesFloatTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"f1",(float)3},
+				{"f2",(float)4}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("f1=3&"));
+			Assert.AreNotEqual(-1, url.IndexOf("f2=42!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesDoubleTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"d2",(double)1},
+				{"d1",(double)0}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("d1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("d2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesDecimalTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"de1",(decimal)5},
+				{"de2",(decimal)5}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("de1=5&"));
+			Assert.AreNotEqual(-1, url.IndexOf("de2=52!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesDateTimeTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"dt1",new DateTime(1990, 3, 1, 12, 35, 47)},
+				{"dt2",new DateTime(1990, 3, 1, 12, 35, 47)}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("dt1=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("dt2=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "&"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesTimeSpanTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"t2",new TimeSpan(10, 5, 23)},
+				{"t1",new TimeSpan(10, 5, 23)}
+			};
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("t1=" + HttpUtility.UrlEncode("10:05:23") + "&"));
+			Assert.AreNotEqual(-1, url.IndexOf("t2=" + HttpUtility.UrlEncode("10:05:23") + "2!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesByteTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+		    {
+		        {"by1",(byte)0},
+		        {"by2",(byte)0}
+		    };
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("by1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("by2=02!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesCharTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+		    {
+		        {"ch1",'0'},
+		        {"ch2",'1'}
+		    };
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("ch1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("ch2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultTypesGuidTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+		    {
+		        {"g1",new Guid("01234567890123456789012345678901")},
+		    };
+			data.Bag.g2 = new Guid("01234567890123456789012345678901");
+			string url = StateController.GetNavigationLink("t0", data);
+			Assert.AreNotEqual(-1, url.IndexOf("g1=01234567-8901-2345-6789-012345678901&"));
+			Assert.AreNotEqual(-1, url.IndexOf("g2=01234567-8901-2345-6789-0123456789012!"));
+		}
+
+		[TestMethod]
+		public void NavigateBackLinkDefaultTypesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"s2","world"},
+				{"i1",0},
+				{"i2",1}
+			};
+			data.Bag.s1 = "hello";
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			string url = StateController.GetNavigationBackLink(1);
+			Assert.AreNotEqual(-1, url.IndexOf("s1=hello&"));
+			Assert.AreNotEqual(-1, url.IndexOf("s2=world2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("i1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("i2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateRefreshLinkDefaultTypesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData()
+			{
+				{"de1",(decimal)5},
+				{"de2",(decimal)5},
+		        {"ch1",'0'},
+			};
+			data.Bag.ch2 = '1';
+			StateController.Navigate("t0", data);
+			string url = StateController.GetRefreshLink(new NavigationData(true));
+			Assert.AreNotEqual(-1, url.IndexOf("de1=5&"));
+			Assert.AreNotEqual(-1, url.IndexOf("de2=52!"));
+			Assert.AreNotEqual(-1, url.IndexOf("ch1=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("ch2=12!"));
+		}
+
+		[TestMethod]
+		public void NavigateBack2LinkDefaultTypesTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData()
+			{
+				{"_bool",1},
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			string url = StateController.GetNavigationBackLink(2);
+			Assert.AreNotEqual(-1, url.IndexOf("_bool=1&"));
+		}
+
+		[TestMethod]
+		public void NavigateOverrideDefaultTypesTest()
+		{
+			StateController.Navigate("d1");
+			NavigationData data = new NavigationData();
+			data["s1"] = true;
+			data["b1"] = 0;
+			data["i1"] = (short)1;
+			data["sh1"] = (long)2;
+			StateController.Navigate("t0", data);
+			Assert.AreEqual(true, StateContext.Data["s1"]);
+			Assert.AreEqual(0, StateContext.Data["b1"]);
+			Assert.AreEqual((short)1, StateContext.Data["i1"]);
+			Assert.AreEqual((long)2, StateContext.Data["sh1"]);
+		}
+
+		[TestMethod]
+		public void NavigateRefreshOverrideDefaultTypesTest()
+		{
+			StateController.Navigate("d1");
+			NavigationData data = new NavigationData();
+			data["l1"] = (float)3;
+			data["f1"] = (double)4;
+			data["d1"] = (decimal)5;
+			data["de1"] = new DateTime(1990, 3, 1, 12, 35, 47);
+			StateController.Navigate("t0", data);
+			StateController.Refresh(new NavigationData(true));
+			Assert.AreEqual((float)3, StateContext.Data["l1"]);
+			Assert.AreEqual((double)4, StateContext.Data["f1"]);
+			Assert.AreEqual((decimal)5, StateContext.Data["d1"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Data["de1"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackOverrideDefaultTypesTest()
+		{
+			StateController.Navigate("d1");
+			NavigationData data = new NavigationData();
+			data["dt1"] = new TimeSpan(10, 5, 23);
+			data["t1"] = (byte)7;
+			data["by1"] = (char)8;
+			data["ch1"] = new Guid("01234567890123456789012345678901");
+			data["g1"] = "a";
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(2);
+			Assert.AreEqual(new TimeSpan(10, 5, 23), StateContext.Data["dt1"]);
+			Assert.AreEqual((byte)7, StateContext.Data["t1"]);
+			Assert.AreEqual((char)8, StateContext.Data["by1"]);
+			Assert.AreEqual(new Guid("01234567890123456789012345678901"), StateContext.Data["ch1"]);
+			Assert.AreEqual("a", StateContext.Data["g1"]);
+		}
+
+		[TestMethod]
+		public void ReservedUrlCharacterDefaultTypesTest()
+		{
+			NavigationData data = new NavigationData();
+			data["*/()-_+~@:?><.;[]{}!£$%^&"] = (short) 0;
+			data["**=/()-_+~@:?><.;[]{}!£$%^&&"] = (short) 1;
+			StateController.Navigate("d1", data);
+			string url = StateController.GetRefreshLink(new NavigationData(true));
+			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("=12!"));
+			Assert.AreEqual((short)0, StateContext.Data["*/()-_+~@:?><.;[]{}!£$%^&"]);
+			Assert.AreEqual((short)1, StateContext.Data["**=/()-_+~@:?><.;[]{}!£$%^&&"]);
+			StateController.Navigate("t0");
+			url = StateController.GetNavigationBackLink(1);
+			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
+			Assert.AreNotEqual(-1, url.IndexOf("=12!"));
+		}
+
+		[TestMethod]
+		public void SeparatorUrlCharacterDefaultTypesTest()
+		{
+			NavigationData data = new NavigationData();
+			data["!0!1!2!3!4!5!"] = 10;
+			data["!!0!1!2!3!4!5!"] = 20;
+			StateController.Navigate("d1", data);
+			string url = StateController.GetRefreshLink(new NavigationData(true));
+			Assert.AreNotEqual(-1, url.IndexOf("=10&"));
+			Assert.AreNotEqual(-1, url.IndexOf("=202!"));
+			Assert.AreEqual(10, StateContext.Data["!0!1!2!3!4!5!"]);
+			Assert.AreEqual(20, StateContext.Data["!!0!1!2!3!4!5!"]);
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			url = StateController.GetNavigationBackLink(2);
+			Assert.AreNotEqual(-1, url.IndexOf("=10&"));
+			Assert.AreNotEqual(-1, url.IndexOf("=202!"));
 		}
 
 		[TestMethod]
