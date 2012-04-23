@@ -9,9 +9,9 @@ namespace Navigation
 	/// </summary>
 	[Serializable]
 	public class Transition
-    {
-        private State _To;
-        private State _Parent;
+	{
+		private State _To;
+		private State _Parent;
 		private int _Index;
 		private string _Key;
 
@@ -19,32 +19,32 @@ namespace Navigation
 		/// Gets the state to navigate to if the <see cref="Key"/> is passed as an action parameter
 		/// to the <see cref="Navigation.StateController"/>
 		/// </summary>
-        public State To
-        {
-            get
-            {
-                return _To;
-            }
-            internal set
-            {
-                _To = value;
-            }
-        }
+		public State To
+		{
+			get
+			{
+				return _To;
+			}
+			internal set
+			{
+				_To = value;
+			}
+		}
 
 		/// <summary>
 		/// Gets the parent <see cref="Navigation.State"/> configuration item
 		/// </summary>
-        public State Parent
-        {
-            get
-            {
-                return _Parent;
-            }
-            internal set
-            {
-                _Parent = value;
-            }
-        }
+		public State Parent
+		{
+			get
+			{
+				return _Parent;
+			}
+			internal set
+			{
+				_Parent = value;
+			}
+		}
 
 		/// <summary>
 		/// Gets the number of the transition within its <see cref="Parent"/> as read
@@ -66,16 +66,16 @@ namespace Navigation
 		/// Gets the key, unique within a <see cref="Parent"/>, which is passed as the action
 		/// parameter to the <see cref="Navigation.StateController"/> when navigating
 		/// </summary>
-        public string Key
-        {
-            get
-            {
-                return _Key;
-            }
+		public string Key
+		{
+			get
+			{
+				return _Key;
+			}
 			internal set
-            {
-                _Key = value;
-            }
-        }
-    }
+			{
+				_Key = value;
+			}
+		}
+	}
 }

@@ -9,53 +9,53 @@ using Navigation.Properties;
 
 namespace Navigation
 {
-    internal static class CrumbTrailManager
-    {
-        private const string SEPARATOR = "!";
-        private const string RET_1_SEP = "1" + SEPARATOR;
-        private const string RET_2_SEP = "2" + SEPARATOR;
-        private const string RET_3_SEP = "3" + SEPARATOR;
-        private const string CRUMB_1_SEP = "4" + SEPARATOR;
-        private const string CRUMB_2_SEP = "5" + SEPARATOR;
+	internal static class CrumbTrailManager
+	{
+		private const string SEPARATOR = "!";
+		private const string RET_1_SEP = "1" + SEPARATOR;
+		private const string RET_2_SEP = "2" + SEPARATOR;
+		private const string RET_3_SEP = "3" + SEPARATOR;
+		private const string CRUMB_1_SEP = "4" + SEPARATOR;
+		private const string CRUMB_2_SEP = "5" + SEPARATOR;
 
 		internal static void BuildCrumbTrail()
-        {
+		{
 			string trail = StateContext.CrumbTrail;
 			if (StateContext.PreviousStateKey != null)
-            {
+			{
 				bool initialState = StateContext.GetDialog(StateContext.StateKey).Initial == StateContext.GetState(StateContext.StateKey);
 				if (initialState)
-                {
-                    trail = null;
-                }
-                else
-                {
-                    string croppedTrail = trail;
-                    int crumbTrailSize = GetCrumbTrailSize(trail);
-                    int count = 0;
-                    bool repeatedState = false;
+				{
+					trail = null;
+				}
+				else
+				{
+					string croppedTrail = trail;
+					int crumbTrailSize = GetCrumbTrailSize(trail);
+					int count = 0;
+					bool repeatedState = false;
 					if (StateContext.PreviousStateKey == StateContext.StateKey)
-                    {
-                        repeatedState = true;
-                    }
-                    while (!repeatedState && count < crumbTrailSize)
-                    {
-                        string trailState = GetCrumbTrailState(croppedTrail);
-                        croppedTrail = CropCrumbTrail(croppedTrail);
+					{
+						repeatedState = true;
+					}
+					while (!repeatedState && count < crumbTrailSize)
+					{
+						string trailState = GetCrumbTrailState(croppedTrail);
+						croppedTrail = CropCrumbTrail(croppedTrail);
 						if (StateContext.GetState(trailState) == StateContext.GetState(StateContext.StateKey))
-                        {
-                            trail = croppedTrail;
-                            repeatedState = true;
-                        }
-                        count++;
-                    }
+						{
+							trail = croppedTrail;
+							repeatedState = true;
+						}
+						count++;
+					}
 
-                    if (!repeatedState)
-                    {
-                        StringBuilder formattedReturnData = new StringBuilder();
+					if (!repeatedState)
+					{
+						StringBuilder formattedReturnData = new StringBuilder();
 						string prefix = string.Empty;
 						if (StateContext.ReturnData != null)
-                        {
+						{
 							foreach (NavigationDataItem item in StateContext.ReturnData)
 							{
 								formattedReturnData.Append(prefix);
@@ -64,19 +64,19 @@ namespace Navigation
 								formattedReturnData.Append(FormatURLObject(item.Key, item.Value, StateContext.GetState(StateContext.PreviousStateKey)));
 								prefix = RET_3_SEP;
 							}
-                        }
-                        StringBuilder trailBuilder = new StringBuilder();
-                        trailBuilder.Append(CRUMB_1_SEP);
+						}
+						StringBuilder trailBuilder = new StringBuilder();
+						trailBuilder.Append(CRUMB_1_SEP);
 						trailBuilder.Append(StateContext.GetState(StateContext.PreviousStateKey).StateKey);
-                        trailBuilder.Append(CRUMB_2_SEP);
-                        trailBuilder.Append(formattedReturnData.ToString());
-                        trailBuilder.Append(trail);
-                        trail = trailBuilder.ToString();
-                    }
-                }
-            }
+						trailBuilder.Append(CRUMB_2_SEP);
+						trailBuilder.Append(formattedReturnData.ToString());
+						trailBuilder.Append(trail);
+						trail = trailBuilder.ToString();
+					}
+				}
+			}
 			StateContext.GenerateKey(trail);
-        }
+		}
 
 		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, NavigationMode mode)
 		{
@@ -158,25 +158,25 @@ namespace Navigation
 		}
 
 		private static string DecodeURLValue(string urlValue)
-        {
-            return urlValue.Replace("0" + SEPARATOR, SEPARATOR);
-        }
+		{
+			return urlValue.Replace("0" + SEPARATOR, SEPARATOR);
+		}
 
 		private static string EncodeURLValue(string urlValue)
-        {
-            return urlValue.Replace(SEPARATOR, "0" + SEPARATOR);
-        }
+		{
+			return urlValue.Replace(SEPARATOR, "0" + SEPARATOR);
+		}
 
 		internal static string FormatURLObject(string key, object urlObject, State state)
-        {
+		{
 			Type defaultType = state.DefaultTypes[key] ?? typeof(string);
 			string converterKey = ConverterFactory.GetKey(urlObject);
 			string formattedValue = ConverterFactory.GetConverter(converterKey).ConvertToInvariantString(urlObject);
-            formattedValue = EncodeURLValue(formattedValue);
+			formattedValue = EncodeURLValue(formattedValue);
 			if (urlObject.GetType() != defaultType)
 				formattedValue += RET_2_SEP + converterKey;
-            return formattedValue;
-        }
+			return formattedValue;
+		}
 
 		internal static object ParseURLString(string key, string val, State state)
 		{
@@ -200,103 +200,103 @@ namespace Navigation
 		}
 
 		internal static List<Crumb> GetCrumbTrailHrefArray(NavigationMode mode)
-        {
-            List<Crumb> crumbTrailArray = new List<Crumb>();
-            int arrayCount = 0;
+		{
+			List<Crumb> crumbTrailArray = new List<Crumb>();
+			int arrayCount = 0;
 			string crumbTrail = StateContext.CrumbTrail;
-            int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
-            string href = null;
+			int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
+			string href = null;
 			NavigationData navigationData;
 			bool last = true;
 			State state = null;
-            while (arrayCount < crumbTrailSize)
-            {
+			while (arrayCount < crumbTrailSize)
+			{
 				state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
 				navigationData = GetCrumbTrailData(crumbTrail, state);
-                crumbTrail = CropCrumbTrail(crumbTrail);
+				crumbTrail = CropCrumbTrail(crumbTrail);
 				href = GetHref(state.DialogStateKey, navigationData, null, mode);
 				crumbTrailArray.Add(new Crumb(href, navigationData, state, last));
 				last = false;
-                arrayCount++;
-            }
-            crumbTrailArray.Reverse();
-            return crumbTrailArray;
-        }
+				arrayCount++;
+			}
+			crumbTrailArray.Reverse();
+			return crumbTrailArray;
+		}
 
 		private static int GetCrumbTrailSize(string trail)
-        {
-            int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
-            return crumbTrailSize;
-        }
+		{
+			int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
+			return crumbTrailSize;
+		}
 
 		private static string CropCrumbTrail(string trail)
-        {
-            string croppedTrail;
-            int nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
-            if (nextTrailStart != -1)
-            {
-                croppedTrail = trail.Substring(nextTrailStart);
-            }
-            else
-            {
-                croppedTrail = "";
-            }
-            return croppedTrail;
-        }
+		{
+			string croppedTrail;
+			int nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
+			if (nextTrailStart != -1)
+			{
+				croppedTrail = trail.Substring(nextTrailStart);
+			}
+			else
+			{
+				croppedTrail = "";
+			}
+			return croppedTrail;
+		}
 
 		private static string GetCrumbTrailState(string trail)
-        {
-            return Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
-        }
+		{
+			return Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
+		}
 
 		private static NavigationData GetCrumbTrailData(string trail, State state)
-        {
-            NavigationData navData = null;
+		{
+			NavigationData navData = null;
 			string data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
-            if (data.Length != 0)
-            {
+			if (data.Length != 0)
+			{
 				navData = ParseReturnData(data, state);
-            }
-            return navData;
-        }
+			}
+			return navData;
+		}
 
 		internal static string GetRefreshHref(NavigationData refreshData, NavigationMode mode)
-        {
+		{
 			return GetHref(StateContext.StateKey, refreshData, null, mode);
-        }
+		}
 
 		internal static object Parse(string key, string val, State state)
-        {
-            object parsedVal;
+		{
+			object parsedVal;
 			if (key == StateContext.RETURN_DATA)
-            {
+			{
 				parsedVal = ParseReturnData(val, state);
-            }
-            else
-            {
+			}
+			else
+			{
 				if (key == StateContext.CRUMB_TRAIL)
-                {
-                    parsedVal = val;
-                }
-                else
-                {
+				{
+					parsedVal = val;
+				}
+				else
+				{
 					parsedVal = ParseURLString(key, val, state);
-                }
-            }
-            return parsedVal;
-        }
+				}
+			}
+			return parsedVal;
+		}
 
 		private static NavigationData ParseReturnData(string returnData, State state)
-        {
-            NavigationData navData = new NavigationData();
-            string[] nameValuePair;
-            string[] returnDataArray = Regex.Split(returnData, RET_3_SEP);
-            for (int i = 0; i < returnDataArray.Length; i++)
-            {
-                nameValuePair = Regex.Split(returnDataArray[i], RET_1_SEP);
+		{
+			NavigationData navData = new NavigationData();
+			string[] nameValuePair;
+			string[] returnDataArray = Regex.Split(returnData, RET_3_SEP);
+			for (int i = 0; i < returnDataArray.Length; i++)
+			{
+				nameValuePair = Regex.Split(returnDataArray[i], RET_1_SEP);
 				navData.Add(DecodeURLValue(nameValuePair[0]), ParseURLString(DecodeURLValue(nameValuePair[0]), nameValuePair[1], state));
-            }
-            return navData;
-        }
-    }
+			}
+			return navData;
+		}
+	}
 }

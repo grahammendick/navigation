@@ -5,10 +5,10 @@ namespace Navigation
 	/// the <see cref="System.Web.UI.Page"/> as previously visited. In a single crumb trail no two crumbs
 	/// can have the same <see cref="State"/> but all must have the same <see cref="Navigation.Dialog"/>
 	/// </summary>
-    public class Crumb
-    {
-        private string _NavigationLink;
-        private NavigationData _Data;
+	public class Crumb
+	{
+		private string _NavigationLink;
+		private NavigationData _Data;
 		private State _State;
 		private bool _Last;
 
@@ -17,24 +17,24 @@ namespace Navigation
 		/// the associated <see cref="Data"/>
 		/// </summary>
 		public string NavigationLink
-        {
-            get
-            {
-                return _NavigationLink;
-            }
-        }
+		{
+			get
+			{
+				return _NavigationLink;
+			}
+		}
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.StateContext.Data">Context Data</see> held at the time of navigating
 		/// away from this <see cref="State"/>
 		/// </summary>
-        public NavigationData Data
-        {
-            get
-            {
-                return _Data;
-            }
-        }
+		public NavigationData Data
+		{
+			get
+			{
+				return _Data;
+			}
+		}
 
 		/// <summary>
 		/// Gets the dynamic <see cref="Navigation.NavigationData.Bag"/> for the <see cref="Data"/>
@@ -96,13 +96,13 @@ namespace Navigation
 			}
 		}
 
-        internal Crumb(string href, NavigationData data, State state, bool last)
-        {
-            _NavigationLink = href;
-            _Data = data ?? new NavigationData();
+		internal Crumb(string href, NavigationData data, State state, bool last)
+		{
+			_NavigationLink = href;
+			_Data = data ?? new NavigationData();
 			_State = state;
 			_Last = last;
 			Data.SetDefaults(State.Defaults);
-        }
-    }
+		}
+	}
 }

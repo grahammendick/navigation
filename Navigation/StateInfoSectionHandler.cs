@@ -13,48 +13,48 @@ namespace Navigation
 	/// of the Navigation framework
 	/// </summary>
 	public sealed class StateInfoSectionHandler : IConfigurationSectionHandler
-    {
+	{
 		object IConfigurationSectionHandler.Create(Object parent, Object configContext, XmlNode section)
-        {
-            StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();
-            Dialog dialog;
+		{
+			StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();
+			Dialog dialog;
 			int dialogIndex = 0;
 
-            XmlNode dialogNode;
-            int i;
-            string dialogInitial;
-            for (i = 0; i < section.ChildNodes.Count; i++)
-            {
-                dialog = new Dialog();
+			XmlNode dialogNode;
+			int i;
+			string dialogInitial;
+			for (i = 0; i < section.ChildNodes.Count; i++)
+			{
+				dialog = new Dialog();
 
-                dialogNode = section.ChildNodes[i];
-                if (dialogNode.NodeType != XmlNodeType.Comment)
-                {
+				dialogNode = section.ChildNodes[i];
+				if (dialogNode.NodeType != XmlNodeType.Comment)
+				{
 					if (dialogNode.Attributes["initial"] == null || dialogNode.Attributes["initial"].Value.Length == 0)
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DialogAttributeMissing, "initial"));
 					dialogInitial = dialogNode.Attributes["initial"].Value;
-                    dialog.Index = dialogIndex;
-                    dialogIndex++;
+					dialog.Index = dialogIndex;
+					dialogIndex++;
 					if (dialogNode.Attributes["key"] == null || dialogNode.Attributes["key"].Value.Length == 0)
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DialogAttributeMissing, "key"));
-                    dialog.Key = dialogNode.Attributes["key"].Value;
-                    dialog.Title = dialogNode.Attributes["title"] != null ? dialogNode.Attributes["title"].Value : string.Empty;
-                    dialog.ResourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
-                    dialog.ResourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
-                    dialog.Path = dialogNode.Attributes["path"] != null ? dialogNode.Attributes["path"].Value : string.Empty;
+					dialog.Key = dialogNode.Attributes["key"].Value;
+					dialog.Title = dialogNode.Attributes["title"] != null ? dialogNode.Attributes["title"].Value : string.Empty;
+					dialog.ResourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
+					dialog.ResourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
+					dialog.Path = dialogNode.Attributes["path"] != null ? dialogNode.Attributes["path"].Value : string.Empty;
 					if (dialogs[dialogNode.Attributes["key"].Value] != null)
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateDialogKey, dialogNode.Attributes["key"].Value));
-                    dialogs.Add(dialogNode.Attributes["key"].Value, dialog);
+					dialogs.Add(dialogNode.Attributes["key"].Value, dialog);
 
 					ProcessStates(dialog, dialogNode);
 					ProcessTransitions(dialog, dialogNode);
-                    dialog.Initial = dialog.States[dialogInitial];
-                    if (dialog.Initial == null)
+					dialog.Initial = dialog.States[dialogInitial];
+					if (dialog.Initial == null)
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDialogInitialKey, dialog.Key, dialogInitial));
-                }
-            }
-            return dialogs;
-        }
+				}
+			}
+			return dialogs;
+		}
 
 		private static void ProcessStates(Dialog dialog, XmlNode dialogNode)
 		{
@@ -160,12 +160,12 @@ namespace Navigation
 
 		private static void ProcessTransitions(Dialog dialog, XmlNode dialogNode)
 		{
-            State state;
-            Transition transition;
+			State state;
+			Transition transition;
 			int transitionIndex = 0;
 
-            XmlNode dialogChildNode, transitionNode;
-            int i, j;
+			XmlNode dialogChildNode, transitionNode;
+			int i, j;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
 			{
 				dialogChildNode = dialogNode.ChildNodes[i];
@@ -251,5 +251,5 @@ namespace Navigation
 			}
 			return true;
 		}
-    }
+	}
 }

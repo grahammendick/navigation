@@ -48,16 +48,16 @@ namespace Navigation
 
 		private StateBag Data
 		{
-            get
-            {
-                if (_Data == null)
-                {
-                    _Data = new StateBag();
-                    ((IStateManager)_Data).TrackViewState();
-                }
-                return _Data;
-            }
-        }
+			get
+			{
+				if (_Data == null)
+				{
+					_Data = new StateBag();
+					((IStateManager)_Data).TrackViewState();
+				}
+				return _Data;
+			}
+		}
 
 		private StateInfoCollection<object> Defaults
 		{
@@ -169,28 +169,28 @@ namespace Navigation
 			}
 		}
 
-        bool IStateManager.IsTrackingViewState
-        {
-            get 
-            {
-                return ((IStateManager)Data).IsTrackingViewState;
-            }
-        }
+		bool IStateManager.IsTrackingViewState
+		{
+			get
+			{
+				return ((IStateManager)Data).IsTrackingViewState;
+			}
+		}
 
-        void IStateManager.LoadViewState(object state)
-        {
-            ((IStateManager)Data).LoadViewState(state);
-        }
+		void IStateManager.LoadViewState(object state)
+		{
+			((IStateManager)Data).LoadViewState(state);
+		}
 
-        object IStateManager.SaveViewState()
-        {
-            return ((IStateManager)Data).SaveViewState();
-        }
+		object IStateManager.SaveViewState()
+		{
+			return ((IStateManager)Data).SaveViewState();
+		}
 
-        void IStateManager.TrackViewState()
-        {
-            ((IStateManager)Data).TrackViewState();
-        }
+		void IStateManager.TrackViewState()
+		{
+			((IStateManager)Data).TrackViewState();
+		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
