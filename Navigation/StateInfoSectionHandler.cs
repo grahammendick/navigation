@@ -14,7 +14,7 @@ namespace Navigation
 	/// </summary>
 	public sealed class StateInfoSectionHandler : IConfigurationSectionHandler
     {
-        object IConfigurationSectionHandler.Create(Object parent, Object configContext, XmlNode section)
+		object IConfigurationSectionHandler.Create(Object parent, Object configContext, XmlNode section)
         {
             StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();
             Dialog dialog;
@@ -65,7 +65,6 @@ namespace Navigation
 			string[] masters;
 			int i;
 			bool result;
-			NavigationData defaults;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
 			{
 				state = new State();
@@ -99,17 +98,28 @@ namespace Navigation
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
 						state.MobileRoute = dialogChildNode.Attributes["mobileRoute"] != null ? dialogChildNode.Attributes["mobileRoute"].Value : string.Empty;
+						state.DefaultTypes = new StateInfoCollection<Type>();
+						if (dialogChildNode.Attributes["defaultTypes"] != null)
+						{
+							if (!TryParseDefaultTypes(dialogChildNode.Attributes["defaultTypes"].Value, state))
+							{
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaultTypes"));
+							}
+						}
 						state.Defaults = new StateInfoCollection<object>();
 						state.FormattedDefaults = new StateInfoCollection<string>();
 						if (dialogChildNode.Attributes["defaults"] != null)
 						{
 							try
 							{
-								defaults = NavigationDataExpressionBuilder.GetNavigationData(dialogChildNode.Attributes["defaults"].Value);
+								if (!TryParseDefaults(dialogChildNode.Attributes["defaults"].Value, state))
+								{
+									throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"));
+								}
 							}
-							catch (InvalidOperationException ioe)
+							catch (InvalidCastException ice)
 							{
-								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), ioe);
+								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), ice);
 							}
 							catch (FormatException fe)
 							{
@@ -118,11 +128,6 @@ namespace Navigation
 							catch (OverflowException oe)
 							{
 								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), oe);
-							}
-							foreach (NavigationDataItem item in defaults)
-							{
-								state.Defaults[item.Key] = item.Value;
-								state.FormattedDefaults[item.Key] = CrumbTrailManager.FormatURLObject(item.Value);
 							}
 						}
 						state.TrackCrumbTrail = true;
@@ -195,6 +200,56 @@ namespace Navigation
 					}
 				}
 			}
+		}
+
+		private static bool TryParseDefaultTypes(string expression, State state)
+		{
+			string[] keyTypeValue;
+			string key, type;
+			foreach (string dataItem in expression.Split(new char[] { ',' }))
+			{
+				keyTypeValue = dataItem.Split(new char[] { '=' });
+				if (keyTypeValue.Length != 2)
+					return false;
+				type = keyTypeValue[1].Trim().ToUpperInvariant();
+				key = keyTypeValue[0].Trim();
+				if (StateInfoConfig.GetType(type) == null)
+					return false;
+				state.DefaultTypes[key] = StateInfoConfig.GetType(type);
+			}
+			return true;
+		}
+
+		private static bool TryParseDefaults(string expression, State state)
+		{
+			if (string.IsNullOrEmpty(expression))
+				return false;
+			string[] keyTypeValue, keyType;
+			string key, value;
+			Type type;
+			object obj;
+			foreach (string dataItem in expression.Split(new char[] { ',' }))
+			{
+				keyTypeValue = dataItem.Split(new char[] { '=' });
+				if (keyTypeValue.Length != 2)
+					return false;
+				keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
+				if (keyType.Length > 2)
+					return false;
+				value = keyTypeValue[1].Trim();
+				key = keyType[0].Trim();
+				if (string.IsNullOrEmpty(key))
+					return false;
+				type = state.DefaultTypes[key] ?? typeof(string);
+				if (keyType.Length == 2)
+					type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
+				if (type == null)
+					return false;
+				obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
+				state.Defaults[key] = obj;
+				state.FormattedDefaults[key] = CrumbTrailManager.FormatURLObject(key, obj, state);
+			}
+			return true;
 		}
     }
 }

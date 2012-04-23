@@ -20,6 +20,7 @@ namespace Navigation
         private string _Key;
 		private string _Page;
 		private string _MobilePage;
+		private StateInfoCollection<Type> _DefaultTypes;
 		private StateInfoCollection<object> _Defaults;
 		private StateInfoCollection<string> _FormattedDefaults;
 		private string _Title;
@@ -119,6 +120,22 @@ namespace Navigation
 			internal set
 			{
 				_MobilePage = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the default <see cref="Navigation.NavigationData"/> <see cref="System.Type"/>'s for 
+		/// this <see cref="Navigation.State"/>
+		/// </summary>
+		public StateInfoCollection<Type> DefaultTypes
+		{
+			get
+			{
+				return _DefaultTypes;
+			}
+			internal set
+			{
+				_DefaultTypes = value;
 			}
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Web.Routing;
@@ -13,6 +14,33 @@ namespace Navigation
 	{
 		private const string PARAMETER = "{{{0}}}";
 		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
+		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
+
+		private static Dictionary<string, Type> CreateKeyToTypeList()
+		{
+			Dictionary<string, Type> list = new Dictionary<string, Type>();
+			list.Add("STRING", typeof(string));
+			list.Add("BOOL", typeof(bool));
+			list.Add("SHORT", typeof(short));
+			list.Add("INT", typeof(int));
+			list.Add("LONG", typeof(long));
+			list.Add("FLOAT", typeof(float));
+			list.Add("DOUBLE", typeof(double));
+			list.Add("DECIMAL", typeof(decimal));
+			list.Add("DATETIME", typeof(DateTime));
+			list.Add("TIMESPAN", typeof(TimeSpan));
+			list.Add("BYTE", typeof(byte));
+			list.Add("CHAR", typeof(char));
+			list.Add("GUID", typeof(Guid));
+			return list;
+		}
+
+		internal static Type GetType(string key)
+		{
+			if (!_KeyToTypeList.ContainsKey(key))
+				return null;
+			return _KeyToTypeList[key];
+		}
 
 		/// <summary>
 		/// Gets a collection of <see cref="Navigation.Dialog"/> information with their child

@@ -46,6 +46,7 @@ namespace Navigation
 				StateContext.ReservedData.Clear();
 				StateContext.Data.SetDefaults(null);
 				StateContext.Data.Clear();
+				State state = StateContext.GetState(data[StateContext.STATE]);
 				foreach (string key in data)
 				{
 					if (key == StateContext.STATE
@@ -53,12 +54,13 @@ namespace Navigation
 						|| key == StateContext.CRUMB_TRAIL
 						|| key == StateContext.RETURN_DATA)
 					{
-						StateContext.ReservedData[key] = CrumbTrailManager.Parse(key, data[key]);
+						StateContext.ReservedData[key] = CrumbTrailManager.Parse(key, data[key],
+							key != StateContext.RETURN_DATA ? state : StateContext.GetState(data[StateContext.PREVIOUS_STATE]));
 					}
 					else
 					{
 						if (!postBack)
-							StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key]);
+							StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key], state);
 					}
 				}
 				StateContext.Data.SetDefaults(StateContext.State.Defaults);
@@ -68,9 +70,9 @@ namespace Navigation
 			{
 				throw;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				throw new UrlException(Resources.InvalidUrl);
+				throw new UrlException(Resources.InvalidUrl, ex);
 			}
 		}
 
@@ -439,7 +441,7 @@ namespace Navigation
 			foreach (NavigationDataItem item in toData)
 			{
 				if (!item.Value.Equals(string.Empty) && !item.Value.Equals(StateContext.State.Defaults[item.Key]))
-					coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Value);
+					coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Key, item.Value, StateContext.State);
 			}
 			coll = StateContext.ShieldEncode(coll, true);
 			ScriptManager.GetCurrent(page).AddHistoryPoint(coll, title);
@@ -471,7 +473,7 @@ namespace Navigation
 				StateContext.Data.Clear();
 				foreach (string key in data)
 				{
-					StateContext.Data[key] = CrumbTrailManager.ParseURLString(data[key]);
+					StateContext.Data[key] = CrumbTrailManager.ParseURLString(key, data[key], StateContext.State);
 				}
 			}
 		}

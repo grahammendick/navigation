@@ -97,6 +97,11 @@ namespace Navigation
 			return typeToKeyList;
 		}
 
+		internal static string GetKey(Type type)
+		{
+			return _TypeToKeyList[type.AssemblyQualifiedName];
+		}
+
 		internal static string GetKey(object obj)
 		{
 			string fullType = obj.GetType().AssemblyQualifiedName;
@@ -122,23 +127,15 @@ namespace Navigation
 							}
 						}
 					}
-					else
-					{
-						throw new ArgumentException(Resources.InvalidEnumerableNavigationData);
-					}
 				}
-				fullType = fullType + "#" + type2.AssemblyQualifiedName;
+				if (type2 != null)
+					fullType = fullType + "#" + type2.AssemblyQualifiedName;
 			}
 			if (!_TypeToKeyList.ContainsKey(fullType))
 			{
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidNavigationData, type2 == null ? obj.GetType().Name : type2.Name));
 			}
 			return _TypeToKeyList[fullType];
-		}
-
-		internal static TypeConverter GetConverterFromObj(object obj)
-		{
-			return GetConverter(GetKey(obj));
 		}
 
 		internal static TypeConverter GetConverter(string key)

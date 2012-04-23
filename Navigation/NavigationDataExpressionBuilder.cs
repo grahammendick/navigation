@@ -13,25 +13,6 @@ namespace Navigation
 	/// </summary>
 	public class NavigationDataExpressionBuilder : ExpressionBuilder
 	{
-		private static Dictionary<string, TypeCode> _KeyToTypeList = CreateKeyToTypeList();
-
-		private static Dictionary<string, TypeCode> CreateKeyToTypeList()
-		{
-			Dictionary<string, TypeCode> list = new Dictionary<string, TypeCode>();
-			list.Add("STRING", TypeCode.String);
-			list.Add("BOOL", TypeCode.Boolean);
-			list.Add("SHORT", TypeCode.Int16);
-			list.Add("INT", TypeCode.Int32);
-			list.Add("LONG", TypeCode.Int64);
-			list.Add("FLOAT", TypeCode.Single);
-			list.Add("DOUBLE", TypeCode.Double);
-			list.Add("DECIMAL", TypeCode.Decimal);
-			list.Add("DATETIME", TypeCode.DateTime);
-			list.Add("BYTE", TypeCode.Byte);
-			list.Add("CHAR", TypeCode.Char);
-			return list;
-		}
-
 		/// <summary>
 		/// Creates <see cref="Navigation.NavigationData"/> that corresponds to specified key/value pairs
 		/// </summary>
@@ -97,9 +78,9 @@ namespace Navigation
 				if (keyType.Length == 2)
 					type = keyType[1].Trim();
 				type = type.ToUpperInvariant();
-				if (!_KeyToTypeList.ContainsKey(type))
+				if (StateInfoConfig.GetType(type) == null)
 					return false;
-				data[key] = Convert.ChangeType(value, _KeyToTypeList[type], CultureInfo.CurrentCulture);
+				data[key] = Convert.ChangeType(value, StateInfoConfig.GetType(type), CultureInfo.CurrentCulture);
 			}
 			return true;
 		}
