@@ -227,6 +227,25 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void DefaultTypesTest()
+		{
+			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[0].DefaultTypes.Count == 0);
+			Assert.AreEqual(typeof(string), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["string"]);
+			Assert.AreEqual(typeof(bool), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["bool"]);
+			Assert.AreEqual(typeof(int), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["int"]);
+			Assert.AreEqual(typeof(short), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["short"]);
+			Assert.AreEqual(typeof(long), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["long"]);
+			Assert.AreEqual(typeof(float), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["float"]);
+			Assert.AreEqual(typeof(double), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["double"]);
+			Assert.AreEqual(typeof(decimal), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["decimal"]);
+			Assert.AreEqual(typeof(DateTime), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["DateTime"]);
+			Assert.AreEqual(typeof(TimeSpan), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["TimeSpan"]);
+			Assert.AreEqual(typeof(byte), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["byte"]);
+			Assert.AreEqual(typeof(char), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["char"]);
+			Assert.AreEqual(typeof(Guid), StateInfoConfig.Dialogs[0].States[4].DefaultTypes["Guid"]);
+		}
+
+		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
 			Dialog[] dialogArr = new Dialog[3];
@@ -264,6 +283,121 @@ namespace Navigation.Test
 			Assert.AreEqual(dialogs[0].States[0].Transitions[0].Parent, dialogs[0].States[0]);
 			Assert.IsTrue(dialogs[0].States[1].Defaults.Count == 6);
 			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 6);
+			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 3);
+			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 3);
+		}
+
+		[TestMethod]
+		public void DefaultTypesStringTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual("a", defaults["s1"]);
+			Assert.AreEqual("b", defaults["s2"]);
+			Assert.AreEqual("c", defaults["s3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesBoolTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual(true, defaults["b1"]);
+			Assert.AreEqual(false, defaults["b2"]);
+			Assert.AreEqual(true, defaults["b3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesIntTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual(0, defaults["i1"]);
+			Assert.AreEqual(1, defaults["i2"]);
+			Assert.AreEqual(2, defaults["i3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesShortTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual((short)3, defaults["sh1"]);
+			Assert.AreEqual((short)4, defaults["sh2"]);
+			Assert.AreEqual((short)5, defaults["sh3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesLongTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual((long)6, defaults["l1"]);
+			Assert.AreEqual((long)7, defaults["l2"]);
+			Assert.AreEqual((long)8, defaults["l3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesFloatTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual((float)9, defaults["f1"]);
+			Assert.AreEqual((float)10, defaults["f2"]);
+			Assert.AreEqual((float)11, defaults["f3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesDoubleTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual((double)12, defaults["d1"]);
+			Assert.AreEqual((double)13, defaults["d2"]);
+			Assert.AreEqual((double)14, defaults["d3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesDecimalTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual((decimal)15, defaults["de1"]);
+			Assert.AreEqual((decimal)16, defaults["de2"]);
+			Assert.AreEqual((decimal)17, defaults["de3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesDateTimeTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), defaults["dt1"]);
+			Assert.AreEqual(new DateTime(1991, 4, 2, 13, 36, 48), defaults["dt2"]);
+			Assert.AreEqual(new DateTime(1992, 5, 3, 14, 37, 49), defaults["dt3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesTimeSpanTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual("d", defaults["t1"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesByteTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual((byte)18, defaults["by1"]);
+			Assert.AreEqual((byte)19, defaults["by2"]);
+			Assert.AreEqual((byte)20, defaults["by3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesCharTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual('e', defaults["ch1"]);
+			Assert.AreEqual('f', defaults["ch2"]);
+			Assert.AreEqual('g', defaults["ch3"]);
+		}
+
+		[TestMethod]
+		public void DefaultTypesGuidTest()
+		{
+			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
+			Assert.AreEqual("h", defaults["g1"]);
 		}
 
 		[TestMethod]
@@ -410,13 +544,35 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void InvalidDefaultsTest()
 		{
+			ConfigurationManager.GetSection("Navigation/InvalidDefaults");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidCastGuidDefaultsTest()
+		{
 			try
 			{
-				ConfigurationManager.GetSection("Navigation/InvalidDefaults");
+				ConfigurationManager.GetSection("Navigation/InvalidCastGuidDefaults");
 			}
 			catch (Exception ex)
 			{
-				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidOperationException));
+				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidCastException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidCastTimeSpanDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidCastTimeSpanDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidCastException));
 				throw;
 			}
 		}
@@ -447,6 +603,57 @@ namespace Navigation.Test
 			catch (Exception ex)
 			{
 				Assert.IsInstanceOfType(ex.InnerException, typeof(OverflowException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void EmptyDefaultTypesTest()
+		{
+			ConfigurationManager.GetSection("Navigation/EmptyDefaultTypes");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidDefaultTypesTest()
+		{
+			ConfigurationManager.GetSection("Navigation/InvalidDefaultTypes");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidTypeDefaultTypesTest()
+		{
+			ConfigurationManager.GetSection("Navigation/InvalidTypeDefaultTypes");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidGuidDefaults()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidGuidDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidCastException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidTimeSpanDefaults()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidTimeSpanDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidCastException));
 				throw;
 			}
 		}
