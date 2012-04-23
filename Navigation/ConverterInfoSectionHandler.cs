@@ -12,20 +12,20 @@ namespace Navigation
 	/// Provides access to the Navigation/NavigationData section and is not intended to be used outside
 	/// of the Navigation framework
 	/// </summary>
-    public sealed class ConverterInfoSectionHandler : IConfigurationSectionHandler
-    {
+	public sealed class ConverterInfoSectionHandler : IConfigurationSectionHandler
+	{
 		object IConfigurationSectionHandler.Create(object parent, object configContext, XmlNode section)
-        {
+		{
 			List<Type[]> converterList = new List<Type[]>();
 			Type[] typeArray = null;
-            XmlNode converter;
+			XmlNode converter;
 			Type converterType;
 			TypeConverter typeConverter;
-            for (int i = 0; i < section.ChildNodes.Count; i++)
-            {
-                converter = section.ChildNodes[i];
-                if (converter.NodeType != XmlNodeType.Comment)
-                {
+			for (int i = 0; i < section.ChildNodes.Count; i++)
+			{
+				converter = section.ChildNodes[i];
+				if (converter.NodeType != XmlNodeType.Comment)
+				{
 					if (converter.Attributes["converter"] == null)
 					{
 						if (converter.Attributes["type"] == null)
@@ -57,9 +57,9 @@ namespace Navigation
 					}
 					typeArray = new Type[] { Type.GetType(converter.Attributes["type"].Value), converterType };
 					converterList.Add(typeArray);
-                }
-            }
-            return converterList;
-        }
-    }
+				}
+			}
+			return converterList;
+		}
+	}
 }
