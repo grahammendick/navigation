@@ -97,7 +97,8 @@ namespace Navigation
 		{
 			base.OnInit(e);
 			Page.PreLoad += Page_PreLoad;
-			ScriptManager.Navigate += HistoryNavigator_Navigate;
+			if (!DesignMode)
+				ScriptManager.Navigate += HistoryNavigator_Navigate;
 		}
 
 		private void Page_PreLoad(object sender, EventArgs e)
