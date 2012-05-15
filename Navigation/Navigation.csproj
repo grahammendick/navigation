@@ -59,6 +59,7 @@
     <Compile Include="CrumbTrailManager.cs" />
     <Compile Include="CrumbTrailPersister.cs" />
     <Compile Include="Dialog.cs" />
+    <Compile Include="HistoryNavigator.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="NavigationData.cs" />
     <Compile Include="NavigationDataExpressionBuilder.cs" />
