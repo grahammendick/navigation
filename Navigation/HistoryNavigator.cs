@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI;
 using Navigation.Properties;
@@ -18,6 +19,7 @@ namespace Navigation
 		/// Comma separated list of <see cref="Navigation.NavigationData"/> items to track
 		/// for changes
 		/// </summary>
+		[Category("Behavior"), Description("Comma separated list of NavigationData items to track for changes."), DefaultValue("")]
 		public string Keys
 		{
 			get
