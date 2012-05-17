@@ -65,12 +65,14 @@
     <Compile Include="HistoryNavigator.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="NavigationData.cs" />
+    <Compile Include="NavigationDataAttribute.cs" />
     <Compile Include="NavigationDataExpressionBuilder.cs" />
     <Compile Include="NavigationDataItem.cs" />
     <Compile Include="NavigationDataParameter.cs" />
     <Compile Include="NavigationDataSource.cs" />
     <Compile Include="NavigationDataSourceView.cs" />
     <Compile Include="NavigationDataTrigger.cs" />
+    <Compile Include="NavigationDataValueProvider.cs" />
     <Compile Include="NavigationDirection.cs" />
     <Compile Include="NavigationHyperLink.cs" />
     <Compile Include="NavigationMode.cs" />
