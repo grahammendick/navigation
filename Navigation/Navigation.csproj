@@ -49,6 +49,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <Compile Include="StateInfoSectionHandler.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="UrlException.cs" />
+    <Compile Include="ViewSwitcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sn.snk" />
