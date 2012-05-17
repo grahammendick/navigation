@@ -354,27 +354,27 @@ namespace Navigation
 
 		internal string GetPage(bool mobile)
 		{
-			return (!mobile || MobilePage == string.Empty) ? Page : MobilePage;
+			return (!mobile || MobilePage.Length == 0) ? Page : MobilePage;
 		}
 
 		internal string GetRoute(bool mobile)
 		{
-			return (!mobile || (MobilePage == string.Empty && MobileRoute == string.Empty)) ? Route : MobileRoute;
+			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? Route : MobileRoute;
 		}
 
 		internal string GetRouteName(bool mobile)
 		{
-			return (!mobile || (MobilePage == string.Empty && MobileRoute == string.Empty)) ? DialogStateKey : "Mobile" + DialogStateKey;
+			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? DialogStateKey : "Mobile" + DialogStateKey;
 		}
 
 		internal ReadOnlyCollection<string> GetMasters(bool mobile)
 		{
-			return (!mobile || (MobilePage == string.Empty && MobileMasters.Count == 0)) ? Masters : MobileMasters;
+			return (!mobile || (MobilePage.Length == 0 && MobileMasters.Count == 0)) ? Masters : MobileMasters;
 		}
 
 		internal string GetTheme(bool mobile)
 		{
-			return (!mobile || (MobilePage == string.Empty && MobileTheme == string.Empty)) ? Theme : MobileTheme;
+			return (!mobile || (MobilePage.Length == 0 && MobileTheme.Length == 0)) ? Theme : MobileTheme;
 		}
 	}
 }
