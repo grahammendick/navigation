@@ -5,6 +5,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.Adapters;
+using System.Web.WebPages;
 using Navigation.Properties;
 
 namespace Navigation
@@ -68,7 +69,7 @@ namespace Navigation
 			bool mobile;
 			if (!Page.IsPostBack)
 			{
-				mobile = Page.Request.Browser.IsMobileDevice;
+				mobile = new HttpContextWrapper(HttpContext.Current).GetOverriddenBrowser().IsMobileDevice;
 				Route route = Page.RouteData.Route as Route;
 				if ((route == null && (StateContext.State.GetRoute(mobile).Length != 0 && RouteTable.Routes[StateContext.State.GetRouteName(mobile)] != null))
 					|| (route != null && StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.GetRoute(mobile), route.Url) != 0)
