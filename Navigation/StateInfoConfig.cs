@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Web;
 using System.Web.Routing;
+using Navigation;
 
+[assembly: PreApplicationStartMethod(typeof(StateInfoConfig), "AddStateRoutes")]
 namespace Navigation
 {
 	/// <summary>
@@ -56,23 +59,23 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Registers all <see cref="Navigation.State.Route"/> configuration information
+		/// Registers all <see cref="Navigation.State.Route"/> configuration information.
+		/// This method is called automatically by ASP.NET and should not be called manually
 		/// </summary>
-		/// <param name="routes">Route collection</param>
-		public static void AddStateRoutes(RouteCollection routes)
+		public static void AddStateRoutes()
 		{
 			foreach (Dialog dialog in Dialogs)
 			{
 				foreach (State state in dialog.States)
 				{
 					if (state.Route.Length != 0)
-						routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
+						RouteTable.Routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
 							GetDefaults(state, state.GetRoute(false)), null,
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
 					if (state.MobileRoute.Length != 0)
-						routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
+						RouteTable.Routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
 							GetDefaults(state, state.GetRoute(true)), null,
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 

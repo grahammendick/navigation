@@ -187,8 +187,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets the route Url pattern. This is only relevant if routes are registered via the
-		/// <see cref="Navigation.StateInfoConfig.AddStateRoutes"/> method
+		/// Gets the route Url pattern
 		/// </summary>
 		public string Route
 		{
@@ -203,8 +202,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets the mobile device route Url pattern. This is only relevant if routes are registered via the
-		/// <see cref="Navigation.StateInfoConfig.AddStateRoutes"/> method
+		/// Gets the mobile device route Url pattern
 		/// </summary>
 		public string MobileRoute
 		{
@@ -237,8 +235,8 @@ namespace Navigation
 
 		/// <summary>
 		/// Gets a value that indicates whether ASP.NET should validate that the user has authority to access the 
-		/// physical <see cref="Page"/>. This is only relevant if <see cref="Route"/> is set and routes registered
-		/// via the <see cref="Navigation.StateInfoConfig.AddStateRoutes"/> method
+		/// physical <see cref="Page"/>. This is only relevant if <see cref="Route"/> or <see cref="MobileRoute"/>
+		/// is set
 		/// </summary>
 		public bool CheckPhysicalUrlAccess
 		{
