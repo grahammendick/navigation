@@ -5,7 +5,6 @@ namespace Navigation
 	/// <summary>
 	/// Provides the base functionality for crumb trail persistence mechanisms
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Persister", Justification = "Same naming convention as PageStatePersister")]
 	public abstract class CrumbTrailPersister : ConfigurationSection
 	{
 		/// <summary>

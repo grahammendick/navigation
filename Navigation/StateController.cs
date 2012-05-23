@@ -417,7 +417,6 @@ namespace Navigation
 		/// <param name="title">Title for history point</param>
 		/// <exception cref="System.ArgumentNullException"><paramref name="page"/> is null</exception>
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
-		[SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.UI.ScriptManager.#AddHistoryPoint(System.Collections.Specialized.NameValueCollection,System.String)")]
 		public static void AddHistoryPoint(Page page, string title)
 		{
 			AddHistoryPoint(page, null, title);
@@ -431,7 +430,6 @@ namespace Navigation
 		/// <param name="title">Title for history point</param>
 		/// <exception cref="System.ArgumentNullException"><paramref name="page"/> is null</exception>
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
-		[SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.UI.ScriptManager.#AddHistoryPoint(System.Collections.Specialized.NameValueCollection,System.String)")]
 		public static void AddHistoryPoint(Page page, NavigationData toData, string title)
 		{
 			if (page == null)

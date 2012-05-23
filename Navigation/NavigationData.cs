@@ -13,7 +13,6 @@ namespace Navigation
 	/// It is stored on each <see cref="Navigation.Crumb"/> in a crumb trail as it represents the data
 	/// required to recreate the <see cref="System.Web.UI.Page"/> as previously visited
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification="Navigation Data is more appropriate name")]
 	public sealed class NavigationData : IStateManager, IEnumerable, IEnumerable<NavigationDataItem>
 	{
 		private StateBag _Data;
