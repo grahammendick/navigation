@@ -9,7 +9,6 @@ namespace Navigation
 	/// Persists crumb trails, over a specified length, in <see cref="System.Web.HttpContext.Session"/> on
 	/// the Web server. Prevents the creation of unmanageably long Urls
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Persister", Justification="Same naming convention as PageStatePersister")]
 	public class SessionCrumbTrailPersister : CrumbTrailPersister
 	{
 		private const string SESSION_PREFIX = "0";
