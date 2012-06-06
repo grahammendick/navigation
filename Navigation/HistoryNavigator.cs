@@ -20,15 +20,32 @@ namespace Navigation
 		/// for changes
 		/// </summary>
 		[Category("Behavior"), Description("Comma separated list of NavigationData items to track for changes."), DefaultValue("")]
-		public string Keys
+		public string HistoryKeys
 		{
 			get
 			{
-				return ViewState["Keys"] != null ? (string)ViewState["Keys"] : string.Empty;
+				return ViewState["HistoryKeys"] != null ? (string)ViewState["HistoryKeys"] : string.Empty;
 			}
 			set
 			{
-				ViewState["Keys"] = value;
+				ViewState["HistoryKeys"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Comma separated list of <see cref="Navigation.NavigationData"/> items to retain
+		/// during a history navigation
+		/// </summary>
+		[Category("Behavior"), Description("Comma separated list of NavigationData items to retain during a history navigation."), DefaultValue("")]
+		public string StateKeys
+		{
+			get
+			{
+				return ViewState["StateKeys"] != null ? (string)ViewState["StateKeys"] : string.Empty;
+			}
+			set
+			{
+				ViewState["StateKeys"] = value;
 			}
 		}
 
@@ -43,10 +60,10 @@ namespace Navigation
 			get
 			{
 				List<string> keys = null;
-				if (Keys.Length != 0)
+				if (HistoryKeys.Length != 0)
 				{
 					keys = new List<string>();
-					foreach (string key in Keys.Split(','))
+					foreach (string key in HistoryKeys.Split(','))
 					{
 						keys.Add(key.Trim());
 					}
@@ -111,7 +128,25 @@ namespace Navigation
 		private void HistoryNavigator_Navigate(object sender, HistoryEventArgs e)
 		{
 			if (ScriptManager.IsInAsyncPostBack)
+			{
+				NavigationData data = null;
+				if (StateKeys.Length != 0)
+				{
+					data = new NavigationData();
+					foreach (string key in StateKeys.Split(','))
+					{
+						data[key.Trim()] = StateContext.Data[key.Trim()];
+					}
+				}
 				StateController.NavigateHistory(e.State);
+				if (data != null)
+				{
+					foreach (NavigationDataItem item in data)
+					{
+						StateContext.Data[item.Key] = item.Value;
+					}
+				}
+			}
 		}
 
 		/// <summary>
