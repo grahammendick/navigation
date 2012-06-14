@@ -23,9 +23,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets or sets whether to revert to using ! and _ as separators in the Url. The defaults now 
-		/// are _ and - because they are the only non alphanumeric characters that are not Url Encoded 
-		/// by either AntiXssEncoder, the default encoder as of VS 2012, and its predecessor
+		/// Gets or sets whether to revert to using ! and _ as separators in the Url
 		/// </summary>
 		[ConfigurationProperty("originalUrlSeparators", DefaultValue = false)]
 		public bool OriginalUrlSeparators
