@@ -10,9 +10,9 @@ namespace Navigation
 	internal sealed class ListConverter<T> : TypeConverter where T : IEnumerable, IList, new()
 	{
 		private TypeConverter _Converter = null;
-		private const string SEPARATOR = "_";
-		private const string SEPARATOR1 = "1" + SEPARATOR;
-		private const string SEPARATOR2 = "2" + SEPARATOR;
+		private static string SEPARATOR = !NavigationSettings.Config.OriginalUrlSeparators ? "-" : "_";
+		private static string SEPARATOR1 = "1" + SEPARATOR;
+		private static string SEPARATOR2 = "2" + SEPARATOR;
 
 		internal ListConverter(TypeConverter parser)
 		{
