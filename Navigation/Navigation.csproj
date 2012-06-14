@@ -76,6 +76,7 @@
     <Compile Include="NavigationDirection.cs" />
     <Compile Include="NavigationHyperLink.cs" />
     <Compile Include="NavigationMode.cs" />
+    <Compile Include="NavigationSettings.cs" />
     <Compile Include="NavigationShield.cs" />
     <Compile Include="Pager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

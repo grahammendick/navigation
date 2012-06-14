@@ -12,12 +12,12 @@ namespace Navigation
 {
 	internal static class CrumbTrailManager
 	{
-		private const string SEPARATOR = "!";
-		private const string RET_1_SEP = "1" + SEPARATOR;
-		private const string RET_2_SEP = "2" + SEPARATOR;
-		private const string RET_3_SEP = "3" + SEPARATOR;
-		private const string CRUMB_1_SEP = "4" + SEPARATOR;
-		private const string CRUMB_2_SEP = "5" + SEPARATOR;
+		private static string SEPARATOR = !NavigationSettings.Config.OriginalUrlSeparators ? "_" : "!";
+		private static string RET_1_SEP = "1" + SEPARATOR;
+		private static string RET_2_SEP = "2" + SEPARATOR;
+		private static string RET_3_SEP = "3" + SEPARATOR;
+		private static string CRUMB_1_SEP = "4" + SEPARATOR;
+		private static string CRUMB_2_SEP = "5" + SEPARATOR;
 
 		internal static void BuildCrumbTrail()
 		{

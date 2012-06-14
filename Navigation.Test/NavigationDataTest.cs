@@ -73,7 +73,7 @@ namespace Navigation.Test
 				if (_ListNavigationData == null)
 				{
 					_ListNavigationData = new NavigationData();
-					_ListNavigationData.Bag.List_string = new List<string> { "Hello", "World" };
+					_ListNavigationData.Bag.List_string = new List<string> { "He-llo", "World" };
 					_ListNavigationData.Bag.List_bool = new List<bool> { true, false };
 					_ListNavigationData.Bag.List_short = new List<short> { 1, 2 };
 					_ListNavigationData.Bag.List_long = new List<long> { 2, 3 };
@@ -86,7 +86,7 @@ namespace Navigation.Test
 					_ListNavigationData["List_char"] = new List<char>() { '7', '8' };
 					_ListNavigationData["List_Guid"] = new List<Guid>() { Guid.Empty, Guid.Empty };
 					_ListNavigationData["List_customData"] = new List<CustomData>() { new CustomData() { Name = "Bob", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
-					_ListNavigationData["List_custom2Data"] = new List<Custom2Data>() { new Custom2Data() { Name = "Bob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
+					_ListNavigationData["List_custom2Data"] = new List<Custom2Data>() { new Custom2Data() { Name = "B--ob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
 					_ListNavigationData["List_dayOfWeek"] = new List<DayOfWeek>() { DayOfWeek.Saturday, DayOfWeek.Monday };
 				}
 				return _ListNavigationData;
@@ -101,7 +101,7 @@ namespace Navigation.Test
 				if (_ArrayListNavigationData == null)
 				{
 					_ArrayListNavigationData = new NavigationData();
-					_ArrayListNavigationData["ArrayList_string"] = new ArrayList() { null, "World" };
+					_ArrayListNavigationData["ArrayList_string"] = new ArrayList() { null, "Wor-ld" };
 					_ArrayListNavigationData["ArrayList_bool"] = new ArrayList() { true, false };
 					_ArrayListNavigationData["ArrayList_short"] = new ArrayList() { 1, 2 };
 					_ArrayListNavigationData["ArrayList_long"] = new ArrayList() { 2, 3 };
@@ -113,7 +113,7 @@ namespace Navigation.Test
 					_ArrayListNavigationData.Bag.ArrayList_byte = new ArrayList() { 6, 7 };
 					_ArrayListNavigationData.Bag.ArrayList_char = new ArrayList() { '7', '8' };
 					_ArrayListNavigationData.Bag.ArrayList_Guid = new ArrayList() { Guid.Empty, Guid.Empty };
-					_ArrayListNavigationData["ArrayList_customData"] = new ArrayList() { new CustomData() { Name = "Bob", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
+					_ArrayListNavigationData["ArrayList_customData"] = new ArrayList() { new CustomData() { Name = "Bo-b", Age = 18 }, new CustomData() { Name = "Jane", Age = 20 } };
 					_ArrayListNavigationData["ArrayList_custom2Data"] = new ArrayList() { new Custom2Data() { Name = "Bob", Age = 18 }, new Custom2Data() { Name = "Jane", Age = 20 } };
 					_ArrayListNavigationData["ArrayList_dayOfWeek"] = new ArrayList() { DayOfWeek.Saturday, DayOfWeek.Monday };
 				}
@@ -329,11 +329,11 @@ namespace Navigation.Test
 		public void SeparatorUrlCharacterDataTest()
 		{
 			NavigationData data = new NavigationData();
-			data["!0!1!2!3!4!5!"] = "!!00!!11!!22!!33!!44!!55!!";
+			data["_0_1_2_3_4_5_"] = "__00__11__22__33__44__55__";
 			StateController.Navigate("d0", data);
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
-			Assert.AreEqual("!!00!!11!!22!!33!!44!!55!!", StateContext.Data["!0!1!2!3!4!5!"]);
+			Assert.AreEqual("__00__11__22__33__44__55__", StateContext.Data["_0_1_2_3_4_5_"]);
 		}
 
 		[TestMethod]
@@ -667,7 +667,7 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d0");
 			NameValueCollection coll = new NameValueCollection(){
-		        {"name","22!1"},
+		        {"name","22_1"},
 		        {"cs","VLijzPeq"}
 		    };
 			StateController.NavigateHistory(coll);
@@ -734,7 +734,7 @@ namespace Navigation.Test
 			Assert.AreEqual("Hello", StateContext.Data["string"]);
 			Assert.AreEqual(true, StateContext.Bag._bool);
 			Assert.AreEqual(0, StateContext.Bag._int);
-			Assert.AreEqual((short) 1, StateContext.Data["short"]);
+			Assert.AreEqual((short)1, StateContext.Data["short"]);
 			Assert.AreEqual(2L, StateContext.Data["long"]);
 			Assert.AreEqual(3F, StateContext.Data["float"]);
 		}
@@ -822,7 +822,7 @@ namespace Navigation.Test
 			Assert.AreEqual(4D, StateContext.Data["double"]);
 			Assert.AreEqual(5m, StateContext.Data["decimal"]);
 			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Bag.DateTime);
-			Assert.AreEqual((byte) 6, StateContext.Data["byte"]);
+			Assert.AreEqual((byte)6, StateContext.Data["byte"]);
 			Assert.AreEqual('7', StateContext.Data["char"]);
 			Assert.AreEqual(1, StateContext.Bag.s);
 			Assert.IsNull(StateContext.Data["t"]);
@@ -1153,7 +1153,7 @@ namespace Navigation.Test
 			StateContext.Data["_bool"] = null;
 			StateContext.Data["string"] = "Hello";
 			StateContext.Bag._int = 1D;
-			StateContext.Data["short"] = string.Empty; 
+			StateContext.Data["short"] = string.Empty;
 			StateContext.Data["float"] = "World";
 			string link = StateController.GetRefreshLink(new NavigationData(true));
 			Assert.AreEqual(-1, link.IndexOf("string"));
@@ -1259,7 +1259,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("s1=hello&"));
-			Assert.AreNotEqual(-1, url.IndexOf("s2=world2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("s2=world2_"));
 		}
 
 		[TestMethod]
@@ -1275,7 +1275,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("b1=True&"));
-			Assert.AreNotEqual(-1, url.IndexOf("b2=False2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("b2=False2_"));
 		}
 
 		[TestMethod]
@@ -1291,7 +1291,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("i1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("i2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("i2=12_"));
 		}
 
 		[TestMethod]
@@ -1307,7 +1307,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("sh1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("sh2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("sh2=12_"));
 		}
 
 		[TestMethod]
@@ -1323,7 +1323,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("l1=2&"));
-			Assert.AreNotEqual(-1, url.IndexOf("l2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("l2=12_"));
 		}
 
 		[TestMethod]
@@ -1339,7 +1339,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("f1=3&"));
-			Assert.AreNotEqual(-1, url.IndexOf("f2=42!"));
+			Assert.AreNotEqual(-1, url.IndexOf("f2=42_"));
 		}
 
 		[TestMethod]
@@ -1355,7 +1355,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("d1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("d2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("d2=12_"));
 		}
 
 		[TestMethod]
@@ -1371,7 +1371,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("de1=5&"));
-			Assert.AreNotEqual(-1, url.IndexOf("de2=52!"));
+			Assert.AreNotEqual(-1, url.IndexOf("de2=52_"));
 		}
 
 		[TestMethod]
@@ -1386,7 +1386,7 @@ namespace Navigation.Test
 				{"dt2",new DateTime(1990, 3, 1, 12, 35, 47)}
 			};
 			string url = StateController.GetNavigationLink("t0", data);
-			Assert.AreNotEqual(-1, url.IndexOf("dt1=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("dt1=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "2_"));
 			Assert.AreNotEqual(-1, url.IndexOf("dt2=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "&"));
 		}
 
@@ -1403,7 +1403,7 @@ namespace Navigation.Test
 			};
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("t1=" + HttpUtility.UrlEncode("10:05:23") + "&"));
-			Assert.AreNotEqual(-1, url.IndexOf("t2=" + HttpUtility.UrlEncode("10:05:23") + "2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("t2=" + HttpUtility.UrlEncode("10:05:23") + "2_"));
 		}
 
 		[TestMethod]
@@ -1419,7 +1419,7 @@ namespace Navigation.Test
 		    };
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("by1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("by2=02!"));
+			Assert.AreNotEqual(-1, url.IndexOf("by2=02_"));
 		}
 
 		[TestMethod]
@@ -1435,7 +1435,7 @@ namespace Navigation.Test
 		    };
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("ch1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("ch2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("ch2=12_"));
 		}
 
 		[TestMethod]
@@ -1451,7 +1451,7 @@ namespace Navigation.Test
 			data.Bag.g2 = new Guid("01234567890123456789012345678901");
 			string url = StateController.GetNavigationLink("t0", data);
 			Assert.AreNotEqual(-1, url.IndexOf("g1=01234567-8901-2345-6789-012345678901&"));
-			Assert.AreNotEqual(-1, url.IndexOf("g2=01234567-8901-2345-6789-0123456789012!"));
+			Assert.AreNotEqual(-1, url.IndexOf("g2=01234567-8901-2345-6789-0123456789012_"));
 		}
 
 		[TestMethod]
@@ -1471,9 +1471,9 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			string url = StateController.GetNavigationBackLink(1);
 			Assert.AreNotEqual(-1, url.IndexOf("s1=hello&"));
-			Assert.AreNotEqual(-1, url.IndexOf("s2=world2!"));
+			Assert.AreNotEqual(-1, url.IndexOf("s2=world2_"));
 			Assert.AreNotEqual(-1, url.IndexOf("i1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("i2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("i2=12_"));
 		}
 
 		[TestMethod]
@@ -1492,9 +1492,9 @@ namespace Navigation.Test
 			StateController.Navigate("t0", data);
 			string url = StateController.GetRefreshLink(new NavigationData(true));
 			Assert.AreNotEqual(-1, url.IndexOf("de1=5&"));
-			Assert.AreNotEqual(-1, url.IndexOf("de2=52!"));
+			Assert.AreNotEqual(-1, url.IndexOf("de2=52_"));
 			Assert.AreNotEqual(-1, url.IndexOf("ch1=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("ch2=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("ch2=12_"));
 		}
 
 		[TestMethod]
@@ -1570,39 +1570,39 @@ namespace Navigation.Test
 		public void ReservedUrlCharacterDefaultTypesTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*/()-_+~@:?><.;[]{}!£$%^&"] = (short) 0;
-			data["**=/()-_+~@:?><.;[]{}!£$%^&&"] = (short) 1;
+			data["*/()-_+~@:?><.;[]{}!£$%^&"] = (short)0;
+			data["**=/()-_+~@:?><.;[]{}!£$%^&&"] = (short)1;
 			StateController.Navigate("d1", data);
 			string url = StateController.GetRefreshLink(new NavigationData(true));
 			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("=12_"));
 			Assert.AreEqual((short)0, StateContext.Data["*/()-_+~@:?><.;[]{}!£$%^&"]);
 			Assert.AreEqual((short)1, StateContext.Data["**=/()-_+~@:?><.;[]{}!£$%^&&"]);
 			StateController.Navigate("t0");
 			url = StateController.GetNavigationBackLink(1);
 			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
-			Assert.AreNotEqual(-1, url.IndexOf("=12!"));
+			Assert.AreNotEqual(-1, url.IndexOf("=12_"));
 		}
 
 		[TestMethod]
 		public void SeparatorUrlCharacterDefaultTypesTest()
 		{
 			NavigationData data = new NavigationData();
-			data["!0!1!2!3!4!5!"] = 10;
-			data["!!0!1!2!3!4!5!"] = 20;
+			data["_0_1_2_3_4_5_"] = 10;
+			data["__0_1_2_3_4_5_"] = 20;
 			StateController.Navigate("d1", data);
 			string url = StateController.GetRefreshLink(new NavigationData(true));
 			Assert.AreNotEqual(-1, url.IndexOf("=10&"));
-			Assert.AreNotEqual(-1, url.IndexOf("=202!"));
-			Assert.AreEqual(10, StateContext.Data["!0!1!2!3!4!5!"]);
-			Assert.AreEqual(20, StateContext.Data["!!0!1!2!3!4!5!"]);
+			Assert.AreNotEqual(-1, url.IndexOf("=202_"));
+			Assert.AreEqual(10, StateContext.Data["_0_1_2_3_4_5_"]);
+			Assert.AreEqual(20, StateContext.Data["__0_1_2_3_4_5_"]);
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
 			url = StateController.GetNavigationBackLink(2);
 			Assert.AreNotEqual(-1, url.IndexOf("=10&"));
-			Assert.AreNotEqual(-1, url.IndexOf("=202!"));
+			Assert.AreNotEqual(-1, url.IndexOf("=202_"));
 		}
 
 		[TestMethod]
