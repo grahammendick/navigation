@@ -34,7 +34,7 @@
     });
 
     function fixFormAction() {
-        prm._form.action = location.href.indexOf('#') == -1 ? location.href : location.href.substr(0, str.indexOf('#'));
+        prm._form.action = location.href.indexOf('#') == -1 ? location.href : location.href.substr(0, location.href.indexOf('#'));
     };
 
 })(Sys.Application, Sys.WebForms.PageRequestManager.getInstance(), window);
