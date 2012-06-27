@@ -6,25 +6,29 @@
  */
 (function (app, prm, win) {
 
-    if (!(win.history && history.pushState)) return;
+    if (!(win.history && win.history.pushState)) return;
 
     app._onIdle = function () { };
 
     app._setState = function (entry, title) {
-        entry = entry || '';
-        if (app._enableHistory && entry !== app._currentEntry && app._historyPointIsNew) {
-            history.pushState(entry, title, n1);
-            fixFormAction();
-            app._currentEntry = entry;
-            app._historyPointIsNew = false;
-            ready = true;
+        if (app._enableHistory) {
+            entry = entry || '';
+            if (entry !== app._currentEntry) {
+                app._currentEntry = entry;
+                if (app._historyPointIsNew) {
+                    win.history.pushState(entry, title, n1);
+                    prm._form.action = win.location.href;
+                    ready = true;
+                }
+                app._historyPointIsNew = false;
+            }
         }
     };
 
     var ready = win.history.state;
     $addHandler(win, 'popstate', function (evt) {
         if (ready) {
-            fixFormAction();
+            prm._form.action = win.location.href;
             app._historyPointIsNew = false;
             if (!evt.rawEvent.state && !app._state.__s)
                 app.setServerState('0')
@@ -32,9 +36,5 @@
         }
         ready = true;
     });
-
-    function fixFormAction() {
-        prm._form.action = location.href.indexOf('#') == -1 ? location.href : location.href.substr(0, location.href.indexOf('#'));
-    };
 
 })(Sys.Application, Sys.WebForms.PageRequestManager.getInstance(), window);
