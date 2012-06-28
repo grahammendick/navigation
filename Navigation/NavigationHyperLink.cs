@@ -207,6 +207,22 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets or sets an anchor identifying a specific location within the HTML
+		/// </summary>
+		[Category("Behavior"), Description("Anchor identifying a specific location within the HTML."), DefaultValue("")]
+		public string FragmentIdentifier
+		{
+			get
+			{
+				return ViewState["FragmentIdentifier"] != null ? (string)ViewState["FragmentIdentifier"] : string.Empty;
+			}
+			set
+			{
+				ViewState["FragmentIdentifier"] = value;
+			}
+		}
+
+		/// <summary>
 		/// Occurs when the <see cref="Navigation.NavigationHyperLink"/> is clicked.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
 		/// and <see cref="PostBack"/> is set to true and javascript is on
@@ -252,7 +268,7 @@ namespace Navigation
 		{
 			get
 			{
-				if (NavigateUrl.Length > 0)
+				if (!string.IsNullOrEmpty(NavigateUrl))
 					return NavigateUrl;
 				NavigationData data = new NavigationData(IncludeCurrentData);
 				UpdateData(data);
@@ -260,17 +276,17 @@ namespace Navigation
 				{
 					case (NavigationDirection.Refresh):
 						{
-							return StateController.GetRefreshLink(data);
+							return AppendHash(StateController.GetRefreshLink(data));
 						}
 					case (NavigationDirection.Back):
 						{
-							return StateController.GetNavigationBackLink(Distance);
+							return AppendHash(StateController.GetNavigationBackLink(Distance));
 						}
 					default:
 						{
 							if (Action.Length == 0)
 								return string.Empty;
-							return StateController.GetNavigationLink(Action, data);
+							return AppendHash(StateController.GetNavigationLink(Action, data));
 						}
 				}
 			}
@@ -310,6 +326,13 @@ namespace Navigation
 					data[item.Key] = (!item.Value.Equals(string.Empty) || !ConvertEmptyStringToNull) ? item.Value : null;
 				}
 			}
+		}
+
+		private string AppendHash(string url)
+		{
+			if (FragmentIdentifier.Length != 0)
+				url += "#" + FragmentIdentifier;
+			return url;
 		}
 
 		/// <summary>
