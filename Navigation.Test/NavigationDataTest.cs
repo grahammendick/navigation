@@ -165,8 +165,8 @@ namespace Navigation.Test
 				Assert.AreEqual(((IList)ListNavigationData[item.Key])[1], ((IList)item.Value)[1]);
 				i++;
 			}
-			Assert.AreEqual(StateContext.Bag.List_float[0], 3);
-			Assert.AreEqual(StateContext.Bag.List_double[1], 5);
+			Assert.AreEqual(StateContext.Bag.List_float[0], 3f);
+			Assert.AreEqual(StateContext.Bag.List_double[1], 5d);
 			Assert.AreEqual(15, i);
 		}
 
