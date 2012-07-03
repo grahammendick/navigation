@@ -8,8 +8,7 @@ namespace Navigation
 	/// <summary>
 	/// Manages the data passed when navigating. It implements <see cref="System.Web.UI.IStateManager"/>
 	/// and so maintains this data across post backs (in control state). This data is accesssible from the
-	/// state context <see cref="Navigation.StateContext.Data"/> property and can take part in data binding
-	/// using the <see cref="Navigation.NavigationDataSource"/> and <see cref="Navigation.NavigationDataParameter"/>.
+	/// state context <see cref="Navigation.StateContext.Data"/> property and can take part in data binding.
 	/// It is stored on each <see cref="Navigation.Crumb"/> in a crumb trail as it represents the data
 	/// required to recreate the <see cref="System.Web.UI.Page"/> as previously visited
 	/// </summary>
