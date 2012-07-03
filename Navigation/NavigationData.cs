@@ -27,9 +27,7 @@ namespace Navigation
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Navigation.NavigationData"/> class containing
-		/// all the data currently in state context <see cref="Navigation.StateContext.Data"/>. Allows
-		/// wizard step navigation scenarios where each step is a <see cref="Navigation.State"/> and must 
-		/// pass on all its data to the next <see cref="Navigation.State"/>
+		/// all the current <see cref="Navigation.StateContext.Data"/>
 		/// </summary>
 		public NavigationData(bool includeCurrent)
 			: base()
