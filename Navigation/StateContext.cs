@@ -100,8 +100,7 @@ namespace Navigation
 		private static NavigationData _Data;
 		/// <summary>
 		/// Gets the <see cref="Navigation.NavigationData"/> for the current <see cref="State"/>.
-		/// It can be accessed directly or take part in data binding using the <see cref="Navigation.NavigationDataSource"/>
-		/// and <see cref="Navigation.NavigationDataParameter"/>. Will become the data stored in 
+		/// It can be accessed directly or take part in data binding. Will become the data stored in 
 		/// a <see cref="Navigation.Crumb"/> when part of a crumb trail
 		/// </summary>
 		public static NavigationData Data
