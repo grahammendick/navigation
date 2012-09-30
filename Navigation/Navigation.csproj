@@ -66,6 +66,7 @@
     <Compile Include="ListConverter.cs" />
     <Compile Include="NavigationData.cs" />
     <Compile Include="NavigationDataAttribute.cs" />
+    <Compile Include="NavigationDataControlBuilderInterceptor.cs" />
     <Compile Include="NavigationDataExpressionBuilder.cs" />
     <Compile Include="NavigationDataItem.cs" />
     <Compile Include="NavigationDataParameter.cs" />
