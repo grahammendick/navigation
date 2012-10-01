@@ -214,6 +214,15 @@ namespace Navigation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; property is read-only and cannot be set.
+        /// </summary>
+        internal static string PropertyReadOnly {
+            get {
+                return ResourceManager.GetString("PropertyReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The ScriptManager must appear on the Page before the HistoryNavigator.
         /// </summary>
         internal static string ScriptManagerMissing {
