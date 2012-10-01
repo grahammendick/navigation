@@ -168,6 +168,9 @@
   <data name="PropertyMissing" xml:space="preserve">
     <value>Type '{0}' does not have a public property named '{1}'</value>
   </data>
+  <data name="PropertyReadOnly" xml:space="preserve">
+    <value>The '{0}' property is read-only and cannot be set</value>
+  </data>
   <data name="ScriptManagerMissing" xml:space="preserve">
     <value>The ScriptManager must appear on the Page before the HistoryNavigator</value>
   </data>

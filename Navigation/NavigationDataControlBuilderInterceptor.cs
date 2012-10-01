@@ -41,10 +41,10 @@ namespace Navigation
 				Dictionary<string, string> navigationDataBindings = new Dictionary<string, string>();
 				foreach (DictionaryEntry entry in attributes)
 				{
-					navigationDataBindingMatch = _NavigationDataBindingExpression.Match((string) entry.Value);
+					navigationDataBindingMatch = _NavigationDataBindingExpression.Match((string)entry.Value);
 					if (navigationDataBindingMatch.Success)
 					{
-						navigationDataBindings.Add((string) entry.Key, navigationDataBindingMatch.Groups["key"].Value.Trim());
+						navigationDataBindings.Add((string)entry.Key, navigationDataBindingMatch.Groups["key"].Value.Trim());
 					}
 				}
 				if (navigationDataBindings.Count > 0)
@@ -92,7 +92,7 @@ namespace Navigation
 
 		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, string> navigationDataBindings)
 		{
-			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("@___NavigationData" + controlBuilder.ID);	
+			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("@___NavigationData" + controlBuilder.ID);
 			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute)));
 			CodeConstructor constructor = new CodeConstructor();
 			constructor.Attributes = MemberAttributes.Public;
@@ -142,6 +142,8 @@ namespace Navigation
 					}
 					else
 					{
+						if (controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
+							throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 						throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 					}
 				}
@@ -150,19 +152,19 @@ namespace Navigation
 
 		private static CodeAssignStatement GetNavigationDataAssign(ControlBuilder controlBuilder, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
 		{
-			PropertyInfo property = controlBuilder.ControlType.GetProperty(pair.Key);
-			if (property != null)
+			PropertyInfo property = controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+			if (property != null && property.CanWrite)
 			{
-				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), pair.Key);
+				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), property.Name);
 				CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
 				return new CodeAssignStatement(controlProperty, new CodeCastExpression(property.PropertyType, navigationDataIndexer));
 			}
 			else
 			{
-				FieldInfo field = controlBuilder.ControlType.GetField(pair.Key);
+				FieldInfo field = controlBuilder.ControlType.GetField(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 				if (field != null)
 				{
-					CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), pair.Key);
+					CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
 					CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
 					return new CodeAssignStatement(controlField, new CodeCastExpression(field.FieldType, navigationDataIndexer));
 				}
