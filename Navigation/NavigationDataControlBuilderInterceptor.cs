@@ -84,7 +84,7 @@ namespace Navigation
 			}
 			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, navigationDataBindings));
 			CodeObjectCreateExpression navigationDataCreate = new CodeObjectCreateExpression(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), new CodeExpression[] { new CodeVariableReferenceExpression("@__ctrl") });
-			CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(typeof(EventHandler)), navigationDataCreate, "Page_SaveStateComplete");
+			CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(typeof(EventHandler), CodeTypeReferenceOptions.GlobalReference), navigationDataCreate, "Page_SaveStateComplete");
 			CodeAttachEventStatement pageAttachEvent = new CodeAttachEventStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), "Page"), "SaveStateComplete", navigationDataDelegate);
 			pageAttachEvent.LinePragma = linePragma;
 			buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, pageAttachEvent);
@@ -93,21 +93,21 @@ namespace Navigation
 		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, string> navigationDataBindings)
 		{
 			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("@___NavigationData" + controlBuilder.ID);
-			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute)));
+			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute), CodeTypeReferenceOptions.GlobalReference));
 			CodeConstructor constructor = new CodeConstructor();
 			constructor.Attributes = MemberAttributes.Public;
 			constructor.CustomAttributes.Add(nonUserCodeAttribute);
-			constructor.Parameters.Add(new CodeParameterDeclarationExpression(controlBuilder.ControlType, "control"));
+			constructor.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(controlBuilder.ControlType, CodeTypeReferenceOptions.GlobalReference), "control"));
 			constructor.Statements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), new CodeVariableReferenceExpression("control")));
 			navigationDataClass.Members.Add(constructor);
-			CodeMemberField controlField = new CodeMemberField(controlBuilder.ControlType, "_Control");
+			CodeMemberField controlField = new CodeMemberField(new CodeTypeReference(controlBuilder.ControlType, CodeTypeReferenceOptions.GlobalReference), "_Control");
 			navigationDataClass.Members.Add(controlField);
 			CodeMemberMethod pageSaveStateListener = new CodeMemberMethod();
 			pageSaveStateListener.Name = "Page_SaveStateComplete";
 			pageSaveStateListener.Attributes = MemberAttributes.Public;
 			pageSaveStateListener.CustomAttributes.Add(nonUserCodeAttribute);
-			pageSaveStateListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(object)), "sender"));
-			pageSaveStateListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(EventArgs)), "e"));
+			pageSaveStateListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(object), CodeTypeReferenceOptions.GlobalReference), "sender"));
+			pageSaveStateListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(EventArgs), CodeTypeReferenceOptions.GlobalReference), "e"));
 			navigationDataClass.Members.Add(pageSaveStateListener);
 			BuildNavigationDataStatements(controlBuilder, navigationDataBindings, pageSaveStateListener, linePragma);
 			return navigationDataClass;
@@ -115,10 +115,9 @@ namespace Navigation
 
 		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, Dictionary<string, string> navigationDataBindings, CodeMemberMethod pageSaveStateListener, CodeLinePragma linePragma)
 		{
-			CodePropertyReferenceExpression navigationData = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(StateContext)), "Data");
+			CodePropertyReferenceExpression navigationData = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateContext), CodeTypeReferenceOptions.GlobalReference)), "Data");
 			CodeAssignStatement controlNavigationDataAssign;
 			CodeCastExpression attributeAccessor;
-			CodeIndexerExpression navigationDataIndexer;
 			CodeExpression[] setAttributeParams;
 			CodeExpressionStatement setAttributeInvoke;
 			foreach (KeyValuePair<string, string> pair in navigationDataBindings)
@@ -133,9 +132,8 @@ namespace Navigation
 				{
 					if (typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
 					{
-						attributeAccessor = new CodeCastExpression(typeof(IAttributeAccessor), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
-						navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
-						setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), new CodeCastExpression(typeof(string), navigationDataIndexer) };
+						attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
+						setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair) };
 						setAttributeInvoke = new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", setAttributeParams));
 						setAttributeInvoke.LinePragma = linePragma;
 						pageSaveStateListener.Statements.Add(setAttributeInvoke);
@@ -156,8 +154,7 @@ namespace Navigation
 			if (property != null && property.CanWrite)
 			{
 				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), property.Name);
-				CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
-				return new CodeAssignStatement(controlProperty, new CodeCastExpression(property.PropertyType, navigationDataIndexer));
+				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair));
 			}
 			else
 			{
@@ -165,11 +162,24 @@ namespace Navigation
 				if (field != null)
 				{
 					CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
-					CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
-					return new CodeAssignStatement(controlField, new CodeCastExpression(field.FieldType, navigationDataIndexer));
+					return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair));
 				}
 			}
 			return null;
+		}
+
+		private static CodeExpression GetNavigationDataAsType(Type type, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
+		{
+			CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
+			if (type == typeof(string))
+			{
+				CodePropertyReferenceExpression currentCulture = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(CultureInfo), CodeTypeReferenceOptions.GlobalReference)), "CurrentCulture");
+				return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(Convert), CodeTypeReferenceOptions.GlobalReference)), "ToString", new CodeExpression[] { navigationDataIndexer, currentCulture });
+			}
+			else
+			{
+				return new CodeCastExpression(type, navigationDataIndexer);
+			}
 		}
 	}
 }
