@@ -75,35 +75,26 @@ namespace Navigation
 			Dictionary<string, string> navigationDataBindings = additionalState["___NavigationData"] as Dictionary<string, string>;
 			if (navigationDataBindings == null)
 				return;
-
 			CodeLinePragma linePragma = null;
 			foreach (CodeStatement statement in buildMethod.Statements)
 			{
 				if (statement.LinePragma != null)
 					linePragma = statement.LinePragma;
 			}
+			CodeMemberMethod controlLoadListener = new CodeMemberMethod();
 			CodeMemberMethod pageLoadCompleteListener = new CodeMemberMethod();
-			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, pageLoadCompleteListener, navigationDataBindings));
+			CodeMemberMethod pagePreRenderCompleteListener = new CodeMemberMethod();
+			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, controlLoadListener, pageLoadCompleteListener, pagePreRenderCompleteListener, navigationDataBindings));
 			CodeObjectCreateExpression navigationDataCreate = new CodeObjectCreateExpression(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), new CodeExpression[] { new CodeVariableReferenceExpression("@__ctrl") });
 			CodeVariableDeclarationStatement navigationDataVariable = new CodeVariableDeclarationStatement(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), "@___navigationData", navigationDataCreate);
 			navigationDataVariable.LinePragma = linePragma;
 			buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, navigationDataVariable);
-			CodeDelegateCreateExpression navigationDataDelegate;
-			CodeAttachEventStatement pageAttachEvent;
-			if (pageLoadCompleteListener.Statements.Count > 0)
-			{
-				navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(typeof(EventHandler), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("@___navigationData"), "Page_PreLoadComplete");
-				pageAttachEvent = new CodeAttachEventStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), "Page"), "PreLoadComplete", navigationDataDelegate);
-				pageAttachEvent.LinePragma = linePragma;
-				buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, pageAttachEvent);
-			}
-			navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(typeof(EventHandler), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("@___navigationData"), "Page_PreRenderComplete");
-			pageAttachEvent = new CodeAttachEventStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), "Page"), "PreRenderComplete", navigationDataDelegate);
-			pageAttachEvent.LinePragma = linePragma;
-			buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, pageAttachEvent);
+			AttachEvent(false, controlLoadListener, "Load", linePragma, buildMethod);
+			AttachEvent(true, pageLoadCompleteListener, "LoadComplete", linePragma, buildMethod);
+			AttachEvent(true, pagePreRenderCompleteListener, "PreRenderComplete", linePragma, buildMethod);
 		}
 
-		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, CodeMemberMethod pageLoadCompleteListener, Dictionary<string, string> navigationDataBindings)
+		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, Dictionary<string, string> navigationDataBindings)
 		{
 			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("@___NavigationData" + controlBuilder.ID);
 			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute), CodeTypeReferenceOptions.GlobalReference));
@@ -115,39 +106,45 @@ namespace Navigation
 			navigationDataClass.Members.Add(constructor);
 			CodeMemberField controlField = new CodeMemberField(new CodeTypeReference(controlBuilder.ControlType, CodeTypeReferenceOptions.GlobalReference), "_Control");
 			navigationDataClass.Members.Add(controlField);
-			pageLoadCompleteListener.Name = "Page_LoadComplete";
-			pageLoadCompleteListener.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-			pageLoadCompleteListener.CustomAttributes.Add(nonUserCodeAttribute);
-			pageLoadCompleteListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(object), CodeTypeReferenceOptions.GlobalReference), "sender"));
-			pageLoadCompleteListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(EventArgs), CodeTypeReferenceOptions.GlobalReference), "e"));
-			navigationDataClass.Members.Add(pageLoadCompleteListener);
-			CodeMemberMethod pagePreRenderCompleteListener = new CodeMemberMethod();
-			pagePreRenderCompleteListener.Name = "Page_PreRenderComplete";
-			pagePreRenderCompleteListener.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-			pagePreRenderCompleteListener.CustomAttributes.Add(nonUserCodeAttribute);
-			pagePreRenderCompleteListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(object), CodeTypeReferenceOptions.GlobalReference), "sender"));
-			pagePreRenderCompleteListener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(EventArgs), CodeTypeReferenceOptions.GlobalReference), "e"));
-			navigationDataClass.Members.Add(pagePreRenderCompleteListener);
-			BuildNavigationDataStatements(controlBuilder, navigationDataBindings, pageLoadCompleteListener, pagePreRenderCompleteListener, linePragma);
+			ConfigureListener(controlLoadListener, "Control_Load", nonUserCodeAttribute, navigationDataClass);
+			ConfigureListener(pageLoadCompleteListener, "Page_LoadComplete", nonUserCodeAttribute, navigationDataClass);
+			ConfigureListener(pagePreRenderCompleteListener, "Page_PreRenderComplete", nonUserCodeAttribute, navigationDataClass);
+			BuildNavigationDataStatements(controlBuilder, navigationDataBindings, controlLoadListener, pageLoadCompleteListener, pagePreRenderCompleteListener, linePragma);
 			return navigationDataClass;
 		}
 
-		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, Dictionary<string, string> navigationDataBindings, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
+		private static void ConfigureListener(CodeMemberMethod listener, string name, CodeAttributeDeclaration nonUserCodeAttribute, CodeTypeDeclaration navigationDataClass)
+		{
+			listener.Name = name;
+			listener.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+			listener.CustomAttributes.Add(nonUserCodeAttribute);
+			listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(object), CodeTypeReferenceOptions.GlobalReference), "sender"));
+			listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(EventArgs), CodeTypeReferenceOptions.GlobalReference), "e"));
+			navigationDataClass.Members.Add(listener);
+		}
+
+		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, Dictionary<string, string> navigationDataBindings, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
 		{
 			CodePropertyReferenceExpression navigationData = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateContext), CodeTypeReferenceOptions.GlobalReference)), "Data");
 			CodeAssignStatement controlNavigationDataAssign;
 			CodeCastExpression attributeAccessor;
 			CodeExpression[] setAttributeParams;
 			CodeExpressionStatement setAttributeInvoke;
-			CodeMemberMethod listener;
+			bool enabledOrVisible;
 			foreach (KeyValuePair<string, string> pair in navigationDataBindings)
 			{
-				listener = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Visible") == 0 ? pageLoadCompleteListener : pagePreRenderCompleteListener;
+				enabledOrVisible = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Visible") == 0;
 				controlNavigationDataAssign = GetNavigationDataAssign(controlBuilder, navigationData, pair);
 				if (controlNavigationDataAssign != null)
 				{
 					controlNavigationDataAssign.LinePragma = linePragma;
-					listener.Statements.Add(controlNavigationDataAssign);
+					if (enabledOrVisible)
+					{
+						controlLoadListener.Statements.Add(controlNavigationDataAssign);
+						pageLoadCompleteListener.Statements.Add(controlNavigationDataAssign);
+					}
+					else
+						pagePreRenderCompleteListener.Statements.Add(controlNavigationDataAssign);
 				}
 				else
 				{
@@ -199,7 +196,23 @@ namespace Navigation
 			}
 			else
 			{
-				return new CodeCastExpression(type, navigationDataIndexer);
+				return new CodeCastExpression(new CodeTypeReference(type, CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer);
+			}
+		}
+
+		private static void AttachEvent(bool page, CodeMemberMethod listener, string name, CodeLinePragma linePragma, CodeMemberMethod buildMethod)
+		{
+			if (listener.Statements.Count > 0)
+			{
+				CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(typeof(EventHandler), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("@___navigationData"), (page ? "Page_" : "Control_") + name);
+				CodeExpression expression;
+				if (page)
+					expression = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), "Page");
+				else
+					expression = new CodeVariableReferenceExpression("@__ctrl");
+				CodeAttachEventStatement pageAttachEvent = new CodeAttachEventStatement(expression, name, navigationDataDelegate);
+				pageAttachEvent.LinePragma = linePragma;
+				buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, pageAttachEvent);
 			}
 		}
 	}
