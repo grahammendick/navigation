@@ -126,10 +126,7 @@ namespace Navigation
 		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, Dictionary<string, string> navigationDataBindings, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
 		{
 			CodePropertyReferenceExpression navigationData = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateContext), CodeTypeReferenceOptions.GlobalReference)), "Data");
-			CodeAssignStatement controlNavigationDataAssign;
-			CodeCastExpression attributeAccessor;
-			CodeExpression[] setAttributeParams;
-			CodeExpressionStatement setAttributeInvoke;
+			CodeStatement controlNavigationDataAssign;
 			bool enabledOrVisible;
 			foreach (KeyValuePair<string, string> pair in navigationDataBindings)
 			{
@@ -148,25 +145,14 @@ namespace Navigation
 				}
 				else
 				{
-					if (typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
-					{
-						attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
-						setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair) };
-						setAttributeInvoke = new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", setAttributeParams));
-						setAttributeInvoke.LinePragma = linePragma;
-						pagePreRenderCompleteListener.Statements.Add(setAttributeInvoke);
-					}
-					else
-					{
-						if (controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
-							throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
-						throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
-					}
+					if (controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
+						throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
+					throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 				}
 			}
 		}
 
-		private static CodeAssignStatement GetNavigationDataAssign(ControlBuilder controlBuilder, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
+		private static CodeStatement GetNavigationDataAssign(ControlBuilder controlBuilder, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
 		{
 			PropertyInfo property = controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 			if (property != null && property.CanWrite)
@@ -174,14 +160,17 @@ namespace Navigation
 				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), property.Name);
 				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair));
 			}
-			else
+			FieldInfo field = controlBuilder.ControlType.GetField(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+			if (field != null)
 			{
-				FieldInfo field = controlBuilder.ControlType.GetField(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
-				if (field != null)
-				{
-					CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
-					return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair));
-				}
+				CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
+				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair));
+			}
+			if (typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
+			{
+				CodeCastExpression attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
+				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair) };
+				return new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", setAttributeParams));
 			}
 			return null;
 		}
