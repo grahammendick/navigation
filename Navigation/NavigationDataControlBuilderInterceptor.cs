@@ -19,7 +19,7 @@ namespace Navigation
 	/// </summary>
 	public class NavigationDataControlBuilderInterceptor : ControlBuilderInterceptor
 	{
-		private static Regex _NavigationDataBindingExpression = new Regex(@"^\s*\{\s*NavigationData\s+(?<key>[^}]+)\}\s*$");
+		private static Regex _NavigationDataBindingExpression = new Regex(@"^\s*\{\s*NavigationData\s+(?<key>[^\s]+.*)\}\s*$");
 
 		/// <summary>
 		/// Called before the <see cref="System.Web.UI.ControlBuilder"/> of an element in the markup is initialized
@@ -177,11 +177,16 @@ namespace Navigation
 
 		private static CodeExpression GetNavigationDataAsType(Type type, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
 		{
-			CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(pair.Value));
+			int commaIndex = pair.Value.IndexOf(",");
+			string navigationDataKey = commaIndex <= 0 ? pair.Value : pair.Value.Substring(0, commaIndex).Trim();
+			CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
 			if (type == typeof(string))
 			{
 				CodePropertyReferenceExpression currentCulture = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(CultureInfo), CodeTypeReferenceOptions.GlobalReference)), "CurrentCulture");
-				return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(Convert), CodeTypeReferenceOptions.GlobalReference)), "ToString", new CodeExpression[] { navigationDataIndexer, currentCulture });
+				if (commaIndex <= 0)
+					return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(Convert), CodeTypeReferenceOptions.GlobalReference)), "ToString", new CodeExpression[] { navigationDataIndexer, currentCulture });
+				else
+					return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(string), CodeTypeReferenceOptions.GlobalReference)), "Format", new CodeExpression[] { currentCulture, new CodePrimitiveExpression(pair.Value.Substring(commaIndex + 1).Trim()), navigationDataIndexer });
 			}
 			else
 			{
