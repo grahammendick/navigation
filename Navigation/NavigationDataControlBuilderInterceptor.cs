@@ -81,20 +81,14 @@ namespace Navigation
 				if (statement.LinePragma != null)
 					linePragma = statement.LinePragma;
 			}
-			CodeMemberMethod controlLoadListener = new CodeMemberMethod();
-			CodeMemberMethod pageLoadCompleteListener = new CodeMemberMethod();
-			CodeMemberMethod pagePreRenderCompleteListener = new CodeMemberMethod();
-			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, controlLoadListener, pageLoadCompleteListener, pagePreRenderCompleteListener, navigationDataBindings));
 			CodeObjectCreateExpression navigationDataCreate = new CodeObjectCreateExpression(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), new CodeExpression[] { new CodeVariableReferenceExpression("@__ctrl") });
 			CodeVariableDeclarationStatement navigationDataVariable = new CodeVariableDeclarationStatement(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), "@___navigationData", navigationDataCreate);
 			navigationDataVariable.LinePragma = linePragma;
 			buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, navigationDataVariable);
-			AttachEvent(false, controlLoadListener, "Load", linePragma, buildMethod);
-			AttachEvent(true, pageLoadCompleteListener, "LoadComplete", linePragma, buildMethod);
-			AttachEvent(true, pagePreRenderCompleteListener, "PreRenderComplete", linePragma, buildMethod);
+			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, navigationDataBindings, buildMethod));
 		}
 
-		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, Dictionary<string, string> navigationDataBindings)
+		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, string> navigationDataBindings, CodeMemberMethod buildMethod)
 		{
 			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("@___NavigationData" + controlBuilder.ID);
 			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute), CodeTypeReferenceOptions.GlobalReference));
@@ -103,52 +97,81 @@ namespace Navigation
 			constructor.CustomAttributes.Add(nonUserCodeAttribute);
 			constructor.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(controlBuilder.ControlType, CodeTypeReferenceOptions.GlobalReference), "control"));
 			constructor.Statements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), new CodeVariableReferenceExpression("control")));
+			constructor.Statements[0].LinePragma = linePragma;
 			navigationDataClass.Members.Add(constructor);
 			CodeMemberField controlField = new CodeMemberField(new CodeTypeReference(controlBuilder.ControlType, CodeTypeReferenceOptions.GlobalReference), "_Control");
 			navigationDataClass.Members.Add(controlField);
-			ConfigureListener(controlLoadListener, "Control_Load", nonUserCodeAttribute, navigationDataClass);
-			ConfigureListener(pageLoadCompleteListener, "Page_LoadComplete", nonUserCodeAttribute, navigationDataClass);
-			ConfigureListener(pagePreRenderCompleteListener, "Page_PreRenderComplete", nonUserCodeAttribute, navigationDataClass);
-			BuildNavigationDataStatements(controlBuilder, navigationDataBindings, controlLoadListener, pageLoadCompleteListener, pagePreRenderCompleteListener, linePragma);
+			CodePropertyReferenceExpression navigationData = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateContext), CodeTypeReferenceOptions.GlobalReference)), "Data");
+			CodeMemberMethod controlLoadListener = ConfigureListener("Control_Load", nonUserCodeAttribute);
+			CodeMemberMethod pageLoadCompleteListener = ConfigureListener("Page_LoadComplete", nonUserCodeAttribute);
+			CodeMemberMethod pagePreRenderCompleteListener = ConfigureListener("Page_PreRenderComplete", nonUserCodeAttribute);
+			foreach (KeyValuePair<string, string> pair in navigationDataBindings)
+			{
+				if (!BuildNavigationDataEventListener(controlBuilder, pair, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
+					BuildNavigationDataStatements(controlBuilder, pair, navigationData, controlLoadListener, pageLoadCompleteListener, pagePreRenderCompleteListener, linePragma);
+			}
+			AttachEvent(false, controlLoadListener, "Load", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
+			AttachEvent(true, pageLoadCompleteListener, "LoadComplete", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
+			AttachEvent(true, pagePreRenderCompleteListener, "PreRenderComplete", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
 			return navigationDataClass;
 		}
 
-		private static void ConfigureListener(CodeMemberMethod listener, string name, CodeAttributeDeclaration nonUserCodeAttribute, CodeTypeDeclaration navigationDataClass)
+		private static CodeMemberMethod ConfigureListener(string name, CodeAttributeDeclaration nonUserCodeAttribute)
 		{
+			CodeMemberMethod listener = new CodeMemberMethod();
 			listener.Name = name;
 			listener.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 			listener.CustomAttributes.Add(nonUserCodeAttribute);
 			listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(object), CodeTypeReferenceOptions.GlobalReference), "sender"));
 			listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(EventArgs), CodeTypeReferenceOptions.GlobalReference), "e"));
-			navigationDataClass.Members.Add(listener);
+			return listener;
 		}
 
-		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, Dictionary<string, string> navigationDataBindings, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
+		private static bool BuildNavigationDataEventListener(ControlBuilder controlBuilder, KeyValuePair<string, string> pair, CodePropertyReferenceExpression navigationData, CodeTypeDeclaration navigationDataClass, CodeAttributeDeclaration nonUserCodeAttribute, CodeLinePragma linePragma, CodeMemberMethod buildMethod)
 		{
-			CodePropertyReferenceExpression navigationData = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateContext), CodeTypeReferenceOptions.GlobalReference)), "Data");
-			CodeStatement controlNavigationDataAssign;
-			bool enabledOrVisible;
-			foreach (KeyValuePair<string, string> pair in navigationDataBindings)
+			if (!pair.Key.StartsWith("On", StringComparison.OrdinalIgnoreCase))
+				return false;
+			EventInfo eventInfo = controlBuilder.ControlType.GetEvent(pair.Key.Substring(2), BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+			if (eventInfo != null)
 			{
-				enabledOrVisible = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Visible") == 0;
-				controlNavigationDataAssign = GetNavigationDataAssign(controlBuilder, navigationData, pair);
-				if (controlNavigationDataAssign != null)
+				CodeMemberMethod listener = new CodeMemberMethod();
+				listener.Name = "@__ctrl_" + eventInfo.Name;
+				listener.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+				listener.CustomAttributes.Add(nonUserCodeAttribute);
+				ParameterInfo[] parameters = eventInfo.EventHandlerType.GetMethod("Invoke").GetParameters();
+				foreach (ParameterInfo parameter in parameters)
 				{
-					controlNavigationDataAssign.LinePragma = linePragma;
-					if (enabledOrVisible)
-					{
-						controlLoadListener.Statements.Add(controlNavigationDataAssign);
-						pageLoadCompleteListener.Statements.Add(controlNavigationDataAssign);
-					}
-					else
-						pagePreRenderCompleteListener.Statements.Add(controlNavigationDataAssign);
+					listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(parameter.ParameterType, CodeTypeReferenceOptions.GlobalReference), parameter.Name));
+				}
+				CodeBinaryOperatorExpression navigationDataNegation = new CodeBinaryOperatorExpression(GetNavigationDataAsType(typeof(bool), navigationData, pair), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(false));
+				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, pair), navigationDataNegation));
+				listener.Statements[0].LinePragma = linePragma;
+				AttachEvent(false, listener, eventInfo.Name, eventInfo.EventHandlerType, linePragma, buildMethod, navigationDataClass);
+				return true;
+			}
+			return false;
+		}
+
+		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, KeyValuePair<string, string> pair, CodePropertyReferenceExpression navigationData, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
+		{
+			bool enabledOrVisible = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Visible") == 0;
+			CodeStatement controlNavigationDataAssign = GetNavigationDataAssign(controlBuilder, navigationData, pair);
+			if (controlNavigationDataAssign != null)
+			{
+				controlNavigationDataAssign.LinePragma = linePragma;
+				if (enabledOrVisible)
+				{
+					controlLoadListener.Statements.Add(controlNavigationDataAssign);
+					pageLoadCompleteListener.Statements.Add(controlNavigationDataAssign);
 				}
 				else
-				{
-					if (controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
-						throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
-					throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
-				}
+					pagePreRenderCompleteListener.Statements.Add(controlNavigationDataAssign);
+			}
+			else
+			{
+				if (controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
+					throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
+				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			}
 		}
 
@@ -190,15 +213,18 @@ namespace Navigation
 			}
 			else
 			{
-				return new CodeCastExpression(new CodeTypeReference(type, CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer);
+				if (type != null)
+					return new CodeCastExpression(new CodeTypeReference(type, CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer);
 			}
+			return navigationDataIndexer;
 		}
 
-		private static void AttachEvent(bool page, CodeMemberMethod listener, string name, CodeLinePragma linePragma, CodeMemberMethod buildMethod)
+		private static void AttachEvent(bool page, CodeMemberMethod listener, string name, Type eventHandlerType, CodeLinePragma linePragma, CodeMemberMethod buildMethod, CodeTypeDeclaration navigationDataClass)
 		{
 			if (listener.Statements.Count > 0)
 			{
-				CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(typeof(EventHandler), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("@___navigationData"), (page ? "Page_" : "Control_") + name);
+				navigationDataClass.Members.Add(listener);
+				CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(eventHandlerType, CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("@___navigationData"), listener.Name);
 				CodeExpression expression;
 				if (page)
 					expression = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), "Page");
