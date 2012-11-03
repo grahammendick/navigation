@@ -143,8 +143,7 @@ namespace Navigation
 				{
 					listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(parameter.ParameterType, CodeTypeReferenceOptions.GlobalReference), parameter.Name));
 				}
-				CodeBinaryOperatorExpression navigationDataNegation = new CodeBinaryOperatorExpression(GetNavigationDataAsType(typeof(bool), navigationData, pair), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(false));
-				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, pair), navigationDataNegation));
+				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, pair.Value), GetNavigationDataAsType(typeof(bool), navigationData, "!" + pair.Value)));
 				listener.Statements[0].LinePragma = linePragma;
 				AttachEvent(false, listener, eventInfo.Name, eventInfo.EventHandlerType, linePragma, buildMethod, navigationDataClass);
 				return true;
@@ -181,42 +180,46 @@ namespace Navigation
 			if (property != null && property.CanWrite)
 			{
 				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), property.Name);
-				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair));
+				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair.Value));
 			}
 			FieldInfo field = controlBuilder.ControlType.GetField(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 			if (field != null)
 			{
 				CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
-				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair));
+				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair.Value));
 			}
 			if (typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
 			{
 				CodeCastExpression attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
-				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair) };
+				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair.Value) };
 				return new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", setAttributeParams));
 			}
 			return null;
 		}
 
-		private static CodeExpression GetNavigationDataAsType(Type type, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
+		private static CodeExpression GetNavigationDataAsType(Type type, CodePropertyReferenceExpression navigationData, string key)
 		{
-			int commaIndex = pair.Value.IndexOf(",");
-			string navigationDataKey = commaIndex <= 0 ? pair.Value : pair.Value.Substring(0, commaIndex).Trim();
-			CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
+			int commaIndex = key.IndexOf(",");
+			bool negation = key.StartsWith("!", StringComparison.Ordinal);
+			string navigationDataKey = commaIndex <= 0 ? key : key.Substring(0, commaIndex).Trim();
+			navigationDataKey = !negation ? navigationDataKey : navigationDataKey.Substring(1).Trim();
+			CodeExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
+			if (negation)
+				navigationDataIndexer = new CodeBinaryOperatorExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(false));
+			if (type == null || (type == typeof(bool) && negation))
+				return navigationDataIndexer;
 			if (type == typeof(string))
 			{
 				CodePropertyReferenceExpression currentCulture = new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(CultureInfo), CodeTypeReferenceOptions.GlobalReference)), "CurrentCulture");
 				if (commaIndex <= 0)
 					return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(Convert), CodeTypeReferenceOptions.GlobalReference)), "ToString", new CodeExpression[] { navigationDataIndexer, currentCulture });
 				else
-					return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(string), CodeTypeReferenceOptions.GlobalReference)), "Format", new CodeExpression[] { currentCulture, new CodePrimitiveExpression(pair.Value.Substring(commaIndex + 1).Trim()), navigationDataIndexer });
+					return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(string), CodeTypeReferenceOptions.GlobalReference)), "Format", new CodeExpression[] { currentCulture, new CodePrimitiveExpression(key.Substring(commaIndex + 1).Trim()), navigationDataIndexer });
 			}
 			else
 			{
-				if (type != null)
-					return new CodeCastExpression(new CodeTypeReference(type, CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer);
+				return new CodeCastExpression(new CodeTypeReference(type, CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer);
 			}
-			return navigationDataIndexer;
 		}
 
 		private static void AttachEvent(bool page, CodeMemberMethod listener, string name, Type eventHandlerType, CodeLinePragma linePragma, CodeMemberMethod buildMethod, CodeTypeDeclaration navigationDataClass)
