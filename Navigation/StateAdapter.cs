@@ -75,13 +75,13 @@ namespace Navigation
 					|| (route != null && StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.GetRoute(mobile), route.Url) != 0)
 					|| StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.GetPage(mobile), Page.AppRelativeVirtualPath) != 0)
 					StateController.Refresh(new NavigationData(true));
-				if (mobile)
-					Page.ClientScript.RegisterHiddenField(StateContext.MOBILE, string.Empty);
 			}
 			else
 			{
 				mobile = Page.Request.Form[StateContext.MOBILE] != null;
 			}
+			if (mobile)
+				Page.ClientScript.RegisterHiddenField(StateContext.MOBILE, string.Empty);
 			if (StateContext.State.GetMasters(mobile).Count != 0)
 			{
 				Page.MasterPageFile = StateContext.State.GetMasters(mobile)[0];
