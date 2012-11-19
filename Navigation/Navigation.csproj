@@ -92,9 +92,11 @@
     <Compile Include="StateAdapter.cs" />
     <Compile Include="StateContext.cs" />
     <Compile Include="StateController.cs" />
+    <Compile Include="StateDisplayInfo.cs" />
     <Compile Include="StateInfoCollection.cs" />
     <Compile Include="StateInfoConfig.cs" />
     <Compile Include="StateInfoSectionHandler.cs" />
+    <Compile Include="StateRouteHandler.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="UrlException.cs" />
     <Compile Include="ViewSwitcher.cs" />
