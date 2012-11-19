@@ -64,16 +64,21 @@ namespace Navigation
 		/// </summary>
 		public static void AddStateRoutes()
 		{
+			Route route;
 			foreach (Dialog dialog in Dialogs)
 			{
 				foreach (State state in dialog.States)
 				{
 					if (state.Route.Length != 0)
-						RouteTable.Routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
+					{
+						route = RouteTable.Routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
 							GetDefaults(state, state.GetRoute(false)), null,
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
+						if (!state.MobileOverride)
+							route.RouteHandler = new StateRouteHandler(state);
+					}
 					if (state.MobileRoute.Length != 0)
 						RouteTable.Routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
 							GetDefaults(state, state.GetRoute(true)), null,

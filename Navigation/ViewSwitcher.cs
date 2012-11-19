@@ -148,8 +148,7 @@ namespace Navigation
 		{
 			get
 			{
-				return StateContext.State.MobilePage.Length != 0 || StateContext.State.MobileRoute.Length != 0
-					|| StateContext.State.MobileMasters.Count != 0 || StateContext.State.MobileTheme.Length != 0;
+				return StateContext.State.MobileOverride;
 			}
 		}
 

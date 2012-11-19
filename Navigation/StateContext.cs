@@ -19,7 +19,7 @@ namespace Navigation
 		internal const string PREVIOUS_STATE = "c1";
 		internal const string RETURN_DATA = "c2";
 		internal const string CRUMB_TRAIL = "c3";
-		internal const string MOBILE = "n0";
+		internal const string DISPLAY_MODES = "n0";
 		internal const string HISTORY_URL = "n1";
 
 		/// <summary>
