@@ -4,10 +4,13 @@
  * - The page must not have been navigated to using NavigationMode.Server.
  * - Cross page posting not supported from a page with route parameters.
  */
-(function (app, prm, win) {
+(function (sys, win) {
 
-    if (!(win.history && win.history.pushState)) return;
+    if (!(sys.WebForms && sys.WebForms.PageRequestManager) || !(win.history && win.history.pushState))
+        return;
 
+    var app = sys.Application,
+        prm = sys.WebForms.PageRequestManager.getInstance();
     app._onIdle = function () { };
 
     app._setState = function (entry, title) {
@@ -37,4 +40,4 @@
         ready = true;
     });
 
-})(Sys.Application, Sys.WebForms.PageRequestManager.getInstance(), window);
+})(Sys, window);
