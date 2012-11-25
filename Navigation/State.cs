@@ -350,14 +350,6 @@ namespace Navigation
 			}
 		}
 
-		internal bool MobileOverride
-		{
-			get
-			{
-				return MobilePage.Length != 0 || MobileRoute.Length != 0 || MobileMasters.Count != 0 || MobileTheme.Length != 0;
-			}
-		}
-
 		internal string GetPage(bool mobile)
 		{
 			return (!mobile || MobilePage.Length == 0) ? Page : MobilePage;

@@ -109,23 +109,6 @@ namespace Navigation
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets whether the <see cref="Navigation.ViewSwitcher"/> is hidden if there is no
-		/// mobile specific <see cref="Navigation.State"/> information
-		/// </summary>
-		[Category("Behavior"), Description("Indicates whether it's hidden if there's no mobile specific config."), DefaultValue(false)]
-		public bool HideNoOverride
-		{
-			get
-			{
-				return ViewState["HideNoOverride"] != null ? (bool)ViewState["HideNoOverride"] : false;
-			}
-			set
-			{
-				ViewState["HideNoOverride"] = value;
-			}
-		}
-
 		private bool Mobile
 		{
 			get
@@ -142,14 +125,6 @@ namespace Navigation
 		{
 			get;
 			set;
-		}
-
-		private static bool HasOverride
-		{
-			get
-			{
-				return StateContext.State.MobileOverride;
-			}
 		}
 
 		/// <summary>
@@ -220,7 +195,7 @@ namespace Navigation
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
 			if (!DesignMode){
-				if ((Page.IsPostBack && HideOnPostBack) || (!HasOverride && HideNoOverride))
+				if (Page.IsPostBack && HideOnPostBack)
 					return;
 			}
 			SetChildProperties();
