@@ -39,6 +39,7 @@ namespace Navigation.Test
 				Assert.AreEqual(dialog.Key, dialog.Title);
 				Assert.AreEqual(i, dialog.Index);
 				Assert.AreEqual("s0", dialog.Initial.Title);
+				Assert.AreEqual("d" + i, dialog.Path);
 				i++;
 			}
 		}
