@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -93,6 +94,8 @@ namespace Navigation
 			if (displayModes == null)
 			{
 				mobile = new HttpContextWrapper(HttpContext.Current).GetOverriddenBrowser().IsMobileDevice;
+				if (DisplayModeProvider.Instance.RequireConsistentDisplayMode && (!mobile || state.MobilePage.Length == 0))
+					stateDisplayInfo.DisplayMode = DisplayModeProvider.Instance.Modes.Last();
 				stateDisplayInfo.DisplayModes = mobile ? "Mobile" : string.Empty;
 				stateDisplayInfo.IsPostBack = false;
 			}
