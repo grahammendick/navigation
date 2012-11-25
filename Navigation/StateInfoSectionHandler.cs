@@ -81,18 +81,22 @@ namespace Navigation
 						state.Key = dialogChildNode.Attributes["key"].Value;
 						if (dialogChildNode.Attributes["page"] == null || dialogChildNode.Attributes["page"].Value.Length == 0)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "page"));
-						state.Page = dialogChildNode.Attributes["page"].Value;
-						state.MobilePage = dialogChildNode.Attributes["mobilePage"] != null ? dialogChildNode.Attributes["mobilePage"].Value : string.Empty;
+						state.Page = dialogChildNode.Attributes["page"].Value.Trim();
+						state.MobilePage = dialogChildNode.Attributes["mobilePage"] != null ? dialogChildNode.Attributes["mobilePage"].Value.Trim() : string.Empty;
 						masters = new string[] { };
 						if (dialogChildNode.Attributes["masters"] != null)
 						{
 							masters = Regex.Split(dialogChildNode.Attributes["masters"].Value, ",");
+							for (int j = 0; j < masters.Length; j++)
+								masters[j] = masters[j].Trim();
 						}
 						state.Masters = new ReadOnlyCollection<string>(masters);
 						masters = new string[] { };
 						if (dialogChildNode.Attributes["mobileMasters"] != null)
 						{
 							masters = Regex.Split(dialogChildNode.Attributes["mobileMasters"].Value, ",");
+							for (int j = 0; j < masters.Length; j++)
+								masters[j] = masters[j].Trim();
 						}
 						state.MobileMasters = new ReadOnlyCollection<string>(masters);
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
@@ -148,8 +152,8 @@ namespace Navigation
 						}
 						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
 						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
-						state.Theme = dialogChildNode.Attributes["theme"] != null ? dialogChildNode.Attributes["theme"].Value : string.Empty;
-						state.MobileTheme = dialogChildNode.Attributes["mobileTheme"] != null ? dialogChildNode.Attributes["mobileTheme"].Value : string.Empty;
+						state.Theme = dialogChildNode.Attributes["theme"] != null ? dialogChildNode.Attributes["theme"].Value.Trim() : string.Empty;
+						state.MobileTheme = dialogChildNode.Attributes["mobileTheme"] != null ? dialogChildNode.Attributes["mobileTheme"].Value.Trim() : string.Empty;
 						if (dialog.States[dialogChildNode.Attributes["key"].Value] != null)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateStateKey, dialogChildNode.Attributes["key"].Value, dialog.Key));
 						dialog.States[dialogChildNode.Attributes["key"].Value] = state;
