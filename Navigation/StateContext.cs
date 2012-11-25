@@ -15,6 +15,8 @@ namespace Navigation
 	/// </summary>
 	public static class StateContext
 	{
+		private static readonly object _NavigationDataKey = new object();
+		private static readonly object _ReservedDataKey = new object();
 		internal const string STATE = "c0";
 		internal const string PREVIOUS_STATE = "c1";
 		internal const string RETURN_DATA = "c2";
@@ -109,9 +111,9 @@ namespace Navigation
 			{
 				if (HttpContext.Current != null)
 				{
-					if (HttpContext.Current.Items["ND"] == null)
-						HttpContext.Current.Items["ND"] = new NavigationData();
-					return (NavigationData)HttpContext.Current.Items["ND"];
+					if (HttpContext.Current.Items[_NavigationDataKey] == null)
+						HttpContext.Current.Items[_NavigationDataKey] = new NavigationData();
+					return (NavigationData)HttpContext.Current.Items[_NavigationDataKey];
 				}
 				else
 				{
@@ -141,9 +143,9 @@ namespace Navigation
 			{
 				if (HttpContext.Current != null)
 				{
-					if (HttpContext.Current.Items["RD"] == null)
-						HttpContext.Current.Items["RD"] = new Hashtable();
-					return (Hashtable)HttpContext.Current.Items["RD"];
+					if (HttpContext.Current.Items[_ReservedDataKey] == null)
+						HttpContext.Current.Items[_ReservedDataKey] = new Hashtable();
+					return (Hashtable)HttpContext.Current.Items[_ReservedDataKey];
 				}
 				else
 				{
