@@ -33,7 +33,7 @@ namespace Navigation
 			if (requestContext == null)
 				throw new ArgumentNullException("requestContext");
 			StateDisplayInfo stateDisplayInfo;
-			string displayModes = requestContext.HttpContext.Request.Form[StateContext.DISPLAY_MODES];
+			string displayModes = HttpUtility.HtmlDecode(requestContext.HttpContext.Request.Form[StateContext.DISPLAY_MODES]);
 			if (displayModes == null)
 				stateDisplayInfo = GetStateDisplayInfo(requestContext.HttpContext);
 			else
@@ -89,7 +89,7 @@ namespace Navigation
 		private static StateDisplayInfo GetStateDisplayInfo(State state, HttpContextBase context)
 		{
 			bool mobile;
-			string displayModes = context.Request.Form[StateContext.DISPLAY_MODES];
+			string displayModes = HttpUtility.HtmlDecode(context.Request.Form[StateContext.DISPLAY_MODES]);
 			StateDisplayInfo stateDisplayInfo = new StateDisplayInfo();
 			if (displayModes == null)
 			{
