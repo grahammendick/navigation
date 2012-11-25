@@ -70,7 +70,7 @@ namespace Navigation
 			StateDisplayInfo stateDisplayInfo = StateRouteHandler.SetPageStateDisplay(Page, StateContext.State);
 			if (!Page.IsPostBack && !IsConsistent(stateDisplayInfo))
 				StateController.Refresh(new NavigationData(true));
-			Page.ClientScript.RegisterHiddenField(StateContext.DISPLAY_MODES, stateDisplayInfo.DisplayModes);
+			Page.ClientScript.RegisterHiddenField(StateContext.DISPLAY_MODES, HttpUtility.HtmlEncode(stateDisplayInfo.DisplayModes));
 			Page.RegisterRequiresControlState(Page);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
