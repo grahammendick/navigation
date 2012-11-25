@@ -76,7 +76,7 @@ namespace Navigation
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
-						if (!state.MobileOverride)
+						if (state.MobilePage.Length == 0 && state.MobileRoute.Length == 0 && state.MobileMasters.Count == 0 && state.MobileTheme.Length == 0)
 							route.RouteHandler = new StateRouteHandler(state);
 					}
 					if (state.MobileRoute.Length != 0)
