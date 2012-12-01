@@ -39,7 +39,7 @@ namespace Navigation
 			else
 				stateDisplayInfo = GetStateDisplayInfo(displayModes);
 			requestContext.HttpContext.Items[_StateDisplayInfoKey] = stateDisplayInfo;
-			return (Page)BuildManager.CreateInstanceFromVirtualPath(stateDisplayInfo.Page, typeof(Page));
+			return new PageRouteHandler(stateDisplayInfo.Page, State.CheckPhysicalUrlAccess).GetHttpHandler(requestContext);
 		}
 
 		private StateDisplayInfo GetStateDisplayInfo(HttpContextBase context)
