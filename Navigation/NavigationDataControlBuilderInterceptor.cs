@@ -49,7 +49,7 @@ namespace Navigation
 				}
 				if (navigationDataBindings.Count > 0)
 				{
-					additionalState.Add("___NavigationData", navigationDataBindings);
+					additionalState.Add("__NavigationData", navigationDataBindings);
 					foreach (string key in navigationDataBindings.Keys)
 						attributes.Remove(key);
 				}
@@ -72,7 +72,7 @@ namespace Navigation
 		{
 			if (buildMethod == null)
 				return;
-			Dictionary<string, string> navigationDataBindings = additionalState["___NavigationData"] as Dictionary<string, string>;
+			Dictionary<string, string> navigationDataBindings = additionalState["__NavigationData"] as Dictionary<string, string>;
 			if (navigationDataBindings == null)
 				return;
 			CodeLinePragma linePragma = null;
@@ -81,8 +81,8 @@ namespace Navigation
 				if (statement.LinePragma != null)
 					linePragma = statement.LinePragma;
 			}
-			CodeObjectCreateExpression navigationDataCreate = new CodeObjectCreateExpression(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), new CodeExpression[] { new CodeVariableReferenceExpression("@__ctrl") });
-			CodeVariableDeclarationStatement navigationDataVariable = new CodeVariableDeclarationStatement(new CodeTypeReference("@___NavigationData" + controlBuilder.ID), "@___navigationData", navigationDataCreate);
+			CodeObjectCreateExpression navigationDataCreate = new CodeObjectCreateExpression(new CodeTypeReference("__NavigationData" + controlBuilder.ID), new CodeExpression[] { new CodeVariableReferenceExpression("__ctrl") });
+			CodeVariableDeclarationStatement navigationDataVariable = new CodeVariableDeclarationStatement(new CodeTypeReference("__NavigationData" + controlBuilder.ID), "__navigationData", navigationDataCreate);
 			navigationDataVariable.LinePragma = linePragma;
 			buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, navigationDataVariable);
 			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, navigationDataBindings, buildMethod));
@@ -90,7 +90,7 @@ namespace Navigation
 
 		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, string> navigationDataBindings, CodeMemberMethod buildMethod)
 		{
-			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("@___NavigationData" + controlBuilder.ID);
+			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("__NavigationData" + controlBuilder.ID);
 			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute), CodeTypeReferenceOptions.GlobalReference));
 			CodeConstructor constructor = new CodeConstructor();
 			constructor.Attributes = MemberAttributes.Public;
@@ -135,7 +135,7 @@ namespace Navigation
 			if (eventInfo != null)
 			{
 				CodeMemberMethod listener = new CodeMemberMethod();
-				listener.Name = "@__ctrl_" + eventInfo.Name;
+				listener.Name = "__ctrl_" + eventInfo.Name;
 				listener.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 				listener.CustomAttributes.Add(nonUserCodeAttribute);
 				ParameterInfo[] parameters = eventInfo.EventHandlerType.GetMethod("Invoke").GetParameters();
@@ -205,7 +205,7 @@ namespace Navigation
 			navigationDataKey = !negation ? navigationDataKey : navigationDataKey.Substring(1).Trim();
 			CodeExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
 			if (negation)
-				navigationDataIndexer = new CodeBinaryOperatorExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(false));
+				navigationDataIndexer = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), "Equals"), new CodePrimitiveExpression(false));
 			if (type == null || (type == typeof(bool) && negation))
 				return navigationDataIndexer;
 			if (type == typeof(string))
@@ -227,12 +227,12 @@ namespace Navigation
 			if (listener.Statements.Count > 0)
 			{
 				navigationDataClass.Members.Add(listener);
-				CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(eventHandlerType, CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("@___navigationData"), listener.Name);
+				CodeDelegateCreateExpression navigationDataDelegate = new CodeDelegateCreateExpression(new CodeTypeReference(eventHandlerType, CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("__navigationData"), listener.Name);
 				CodeExpression expression;
 				if (page)
 					expression = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), "Page");
 				else
-					expression = new CodeVariableReferenceExpression("@__ctrl");
+					expression = new CodeVariableReferenceExpression("__ctrl");
 				CodeAttachEventStatement pageAttachEvent = new CodeAttachEventStatement(expression, name, navigationDataDelegate);
 				pageAttachEvent.LinePragma = linePragma;
 				buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, pageAttachEvent);
