@@ -545,7 +545,60 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void InvalidDefaultsTest()
 		{
-			ConfigurationManager.GetSection("Navigation/InvalidDefaults");
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(FormatException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidSeparatorDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidSeparatorDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(FormatException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidKeyDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidKeyDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(FormatException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidTypeDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidTypeDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(FormatException));
+				throw;
+			}
 		}
 
 		[TestMethod]
@@ -657,6 +710,27 @@ namespace Navigation.Test
 				Assert.IsInstanceOfType(ex.InnerException, typeof(InvalidCastException));
 				throw;
 			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ParseNavigationDataExpressionNullExpressionTest()
+		{
+			StateInfoConfig.ParseNavigationDataExpression(null, null);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionNullStateTest()
+		{
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("x=y", null);
+			Assert.AreEqual("y", data.Bag.x);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(FormatException))]
+		public void ParseNavigationDataExpressionEmptyExpressionTest()
+		{
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("", null);
 		}
 	}
 }

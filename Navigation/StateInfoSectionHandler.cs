@@ -116,9 +116,11 @@ namespace Navigation
 						{
 							try
 							{
-								if (!TryParseDefaults(dialogChildNode.Attributes["defaults"].Value, state))
+								NavigationData navigationData = StateInfoConfig.ParseNavigationDataExpression(dialogChildNode.Attributes["defaults"].Value, state);
+								foreach (NavigationDataItem item in navigationData)
 								{
-									throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"));
+									state.Defaults[item.Key] = item.Value;
+									state.FormattedDefaults[item.Key] = CrumbTrailManager.FormatURLObject(item.Key, item.Value, state);
 								}
 							}
 							catch (InvalidCastException ice)
@@ -220,38 +222,6 @@ namespace Navigation
 				if (StateInfoConfig.GetType(type) == null)
 					return false;
 				state.DefaultTypes[key] = StateInfoConfig.GetType(type);
-			}
-			return true;
-		}
-
-		private static bool TryParseDefaults(string expression, State state)
-		{
-			if (string.IsNullOrEmpty(expression))
-				return false;
-			string[] keyTypeValue, keyType;
-			string key, value;
-			Type type;
-			object obj;
-			foreach (string dataItem in expression.Split(new char[] { ',' }))
-			{
-				keyTypeValue = dataItem.Split(new char[] { '=' });
-				if (keyTypeValue.Length != 2)
-					return false;
-				keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
-				if (keyType.Length > 2)
-					return false;
-				value = keyTypeValue[1].Trim();
-				key = keyType[0].Trim();
-				if (string.IsNullOrEmpty(key))
-					return false;
-				type = state.DefaultTypes[key] ?? typeof(string);
-				if (keyType.Length == 2)
-					type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
-				if (type == null)
-					return false;
-				obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
-				state.Defaults[key] = obj;
-				state.FormattedDefaults[key] = CrumbTrailManager.FormatURLObject(key, obj, state);
 			}
 			return true;
 		}

@@ -23,7 +23,7 @@ namespace Navigation
 		/// <returns>The <see cref="Navigation.NavigationData"/> that corresponds to specified key/value pairs</returns>
 		public override object EvaluateExpression(object target, BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
 		{
-			return GetNavigationData(entry.Expression.Trim());
+			return StateInfoConfig.ParseNavigationDataExpression(entry.Expression.Trim(), null);
 		}
 
 		/// <summary>
@@ -35,54 +35,7 @@ namespace Navigation
 		/// <returns>A <see cref="System.CodeDom.CodeExpression"/> instance that is used in the property assignment</returns>
 		public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
 		{
-			return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(GetType()), "GetNavigationData", new CodeExpression[] { new CodePrimitiveExpression(entry.Expression.Trim()) });
-		}
-
-		/// <summary>
-		/// Creates <see cref="Navigation.NavigationData"/> that corresponds to specified key/value pairs
-		/// </summary>
-		/// <param name="expression">The expression as specified in markup</param>
-		/// <returns>The <see cref="Navigation.NavigationData"/> that corresponds to specified key/value pairs</returns>
-		/// <exception cref="System.InvalidOperationException">The method was unable to parse the expression that was specified in markup</exception>
-		/// <exception cref="System.FormatException">A value was not in a format recognised by its corresponding type</exception>
-		/// <exception cref="System.OverflowException">A value represents a number that is out of the range of its corresponding type</exception>
-		public static NavigationData GetNavigationData(string expression)
-		{
-			NavigationData data = new NavigationData();
-			if (!TryParseNavigationDataExpression(expression, data))
-			{
-				throw new InvalidOperationException(Resources.InvalidExpression);
-			}
-			return data;
-		}
-
-		internal static bool TryParseNavigationDataExpression(string expression, NavigationData data)
-		{
-			if (string.IsNullOrEmpty(expression))
-				return false;
-			string[] keyTypeValue, keyType;
-			string key, value, type;
-			foreach (string dataItem in expression.Split(new char[] { ',' }))
-			{
-				keyTypeValue = dataItem.Split(new char[] { '=' });
-				if (keyTypeValue.Length != 2)
-					return false;
-				keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
-				if (keyType.Length > 2)
-					return false;
-				value = keyTypeValue[1].Trim();
-				key = keyType[0].Trim();
-				if (string.IsNullOrEmpty(key))
-					return false;
-				type = "STRING";
-				if (keyType.Length == 2)
-					type = keyType[1].Trim();
-				type = type.ToUpperInvariant();
-				if (StateInfoConfig.GetType(type) == null)
-					return false;
-				data[key] = Convert.ChangeType(value, StateInfoConfig.GetType(type), CultureInfo.CurrentCulture);
-			}
-			return true;
+			return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression", new CodeExpression[] { new CodePrimitiveExpression(entry.Expression.Trim()), new CodePrimitiveExpression(null) });
 		}
 	}
 }
