@@ -223,7 +223,7 @@ namespace Navigation
 		private static string GetNavigationLink(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
 		{
 			if (HttpContext.Current == null) mode = NavigationMode.Mock;
-			return CrumbTrailManager.GetHref(GetNextState(action), toData, returnData, mode);
+			return CrumbTrailManager.GetHref(GetNextState(action).DialogStateKey, toData, returnData, mode);
 		}
 
 		/// <summary>
@@ -295,12 +295,7 @@ namespace Navigation
 
 		private static string GetNavigationBackLink(int distance, NavigationMode mode)
 		{
-			List<Crumb> crumbs = GetCrumbs(mode);
-			if (distance > crumbs.Count || distance <= 0)
-			{
-				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDistance, crumbs.Count), "distance");
-			}
-			return ((Crumb)crumbs[crumbs.Count - distance]).NavigationLink;
+			return GetCrumb(distance, mode).NavigationLink;
 		}
 
 		/// <summary>
@@ -484,7 +479,18 @@ namespace Navigation
 			}
 		}
 
-		internal static string GetNextState(string action)
+		/// <summary>
+		/// Gets the next <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
+		/// will either return the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
+		/// or the 'initial' <see cref="Navigation.State"/> of a <see cref="Navigation.Dialog"/>
+		/// </summary>
+		/// <param name="action">The key of a child <see cref="Navigation.Transition"/> or the key of 
+		/// a <see cref="Navigation.Dialog"/></param>
+		/// <returns>The next <see cref="Navigation.State"/></returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="action"/> is null</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
+		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/></exception>
+		public static State GetNextState(string action)
 		{
 			if (action == null)
 				throw new ArgumentNullException("action");
@@ -501,7 +507,31 @@ namespace Navigation
 			{
 				throw new ArgumentException(Resources.InvalidAction, "action");
 			}
-			return nextState.DialogStateKey;
+			return nextState;
+		}
+
+		/// <summary>
+		/// Gets the <see cref="Navigation.Crumb"/> contained in the crumb trail, represented by the <see cref="Crumbs"/>
+		/// collection, as specified by the <paramref name="distance"/>. In the crumb trail no two crumbs can have the same
+		/// <see cref="State"/> but all must have the same <see cref="Navigation.Dialog"/>
+		/// </summary>
+		/// <param name="distance">Starting at 1, the number of <see cref="Crumb"/> steps to go back</param>
+		/// <returns>The <see cref="Navigation.Crumb"/></returns>
+		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
+		/// this <paramref name="distance"/></exception>
+		public static Crumb GetCrumb(int distance)
+		{
+			return GetCrumb(distance, NavigationMode.Client);
+		}
+
+		private static Crumb GetCrumb(int distance, NavigationMode mode)
+		{
+			List<Crumb> crumbs = GetCrumbs(mode);
+			if (distance > crumbs.Count || distance <= 0)
+			{
+				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDistance, crumbs.Count), "distance");
+			}
+			return crumbs[crumbs.Count - distance];
 		}
 	}
 }

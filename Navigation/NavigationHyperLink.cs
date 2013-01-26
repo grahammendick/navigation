@@ -259,10 +259,39 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Gets the <see cref="Navigation.State"/> to navigate to depending on the <see cref="Direction"/>.
+		/// This can be forward using an action parameter; backward via a <see cref="Navigation.Crumb"/>;
+		/// or refreshing the current <see cref="Navigation.State"/>
+		/// </summary>
+		/// <exception cref="System.ArgumentException"><see cref="Action"/> is not the key of a child
+		/// <see cref="Navigation.Transition"/> or <see cref="Navigation.Dialog"/>; or <see cref="Distance"/>
+		/// is outside the bounds of the crumb trail; or there is <see cref="Navigation.NavigationData"/> that
+		/// cannot be converted to a <see cref="System.String"/></exception>
+		public State NextState
+		{
+			get
+			{
+				switch (Direction)
+				{
+					case (NavigationDirection.Refresh):
+						return StateContext.State;
+					case (NavigationDirection.Back):
+						return StateController.GetCrumb(Distance).State;
+					default:
+						return StateController.GetNextState(Action);
+				}
+			}
+		}
+
+		/// <summary>
 		/// Gets a Url to navigate to a <see cref="Navigation.State"/> depending on the <see cref="Direction"/>.
 		/// This can be forward using an action parameter; backward via a <see cref="Navigation.Crumb"/>;
 		/// or refreshing the current <see cref="Navigation.State"/>
 		/// </summary>
+		/// <exception cref="System.ArgumentException"><see cref="Action"/> is not the key of a child
+		/// <see cref="Navigation.Transition"/> or <see cref="Navigation.Dialog"/>; or <see cref="Distance"/>
+		/// is outside the bounds of the crumb trail; or there is <see cref="Navigation.NavigationData"/> that
+		/// cannot be converted to a <see cref="System.String"/></exception>
 		[Browsable(false)]
 		public string Link
 		{
@@ -416,7 +445,7 @@ namespace Navigation
 		/// <param name="e"><see cref="System.EventArgs"/> containing the event data</param>
 		protected virtual void OnClick(EventArgs e)
 		{
-			EventHandler eventHandler = (EventHandler) Events[EventClick];
+			EventHandler eventHandler = (EventHandler)Events[EventClick];
 			if (eventHandler != null)
 				eventHandler(this, e);
 		}

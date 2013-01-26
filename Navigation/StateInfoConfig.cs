@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Navigation;
+using Navigation.Properties;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Web;
 using System.Web.Routing;
-using Navigation;
 
 [assembly: PreApplicationStartMethod(typeof(StateInfoConfig), "AddStateRoutes")]
 namespace Navigation
@@ -43,6 +44,55 @@ namespace Navigation
 			if (!_KeyToTypeList.ContainsKey(key))
 				return null;
 			return _KeyToTypeList[key];
+		}
+
+		/// <summary>
+		/// Creates <see cref="Navigation.NavigationData"/> that corresponds to the key/value pairs
+		/// specified by the <paramref name="expression"/></summary>
+		/// <param name="expression">The key/value pairs with types optional</param>
+		/// <param name="state">Holds the <see cref="Navigation.State.DefaultTypes"/> of the keys</param>
+		/// <returns>The <see cref="Navigation.NavigationData"/> that corresponds to the specified
+		/// key/value pairs</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="expression"/> is null</exception>
+		/// <exception cref="System.FormatException">Either the <paramref name="expression"/> was not
+		/// in a recognised format or it contained an unrecognised type or a value was not in a format
+		/// recognised by its corresponding type</exception>
+		/// <exception cref="System.InvalidCastException">The <paramref name="expression"/> specifies types
+		/// of guid or timespan</exception>
+		/// <exception cref="System.OverflowException">A value represents a number that is out of the
+		/// range of its corresponding type</exception>
+		public static NavigationData ParseNavigationDataExpression(string expression, State state)
+		{
+			if (expression == null)
+				throw new ArgumentNullException("expression");
+			string[] keyTypeValue, keyType;
+			string key, value;
+			Type type;
+			object obj;
+			NavigationData navigationData = new NavigationData();
+			foreach (string dataItem in expression.Split(new char[] { ',' }))
+			{
+				keyTypeValue = dataItem.Split(new char[] { '=' });
+				if (keyTypeValue.Length != 2)
+					throw new FormatException(Resources.InvalidNavigationDataExpression);
+				keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
+				if (keyType.Length > 2)
+					throw new FormatException(Resources.InvalidNavigationDataExpression);
+				value = keyTypeValue[1].Trim();
+				key = keyType[0].Trim();
+				if (string.IsNullOrEmpty(key))
+					throw new FormatException(Resources.InvalidNavigationDataExpression);
+				type = typeof(string);
+				if (state != null && state.DefaultTypes[key] != null)
+					type = state.DefaultTypes[key];
+				if (keyType.Length == 2)
+					type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
+				if (type == null)
+					throw new FormatException(Resources.InvalidNavigationDataExpression);
+				obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
+				navigationData[key] = obj;
+			}
+			return navigationData;
 		}
 
 		/// <summary>
