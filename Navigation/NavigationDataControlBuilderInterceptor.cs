@@ -143,7 +143,7 @@ namespace Navigation
 				{
 					listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(parameter.ParameterType, CodeTypeReferenceOptions.GlobalReference), parameter.Name));
 				}
-				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, pair.Value), GetNavigationDataAsType(typeof(bool), navigationData, "!" + pair.Value)));
+				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, pair.Value, controlBuilder.ControlType, null), GetNavigationDataAsType(typeof(bool), navigationData, "!" + pair.Value, controlBuilder.ControlType, null)));
 				listener.Statements[0].LinePragma = linePragma;
 				AttachEvent(false, listener, eventInfo.Name, eventInfo.EventHandlerType, linePragma, buildMethod, navigationDataClass);
 				return true;
@@ -180,25 +180,27 @@ namespace Navigation
 			if (property != null && property.CanWrite)
 			{
 				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), property.Name);
-				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair.Value));
+				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair.Value, controlBuilder.ControlType, property.Name));
 			}
 			FieldInfo field = controlBuilder.ControlType.GetField(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 			if (field != null)
 			{
 				CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
-				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair.Value));
+				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair.Value, controlBuilder.ControlType, field.Name));
 			}
 			if (typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
 			{
 				CodeCastExpression attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
-				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair.Value) };
+				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair.Value, controlBuilder.ControlType, "SetAttribute") };
 				return new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", setAttributeParams));
 			}
 			return null;
 		}
 
-		private static CodeExpression GetNavigationDataAsType(Type type, CodePropertyReferenceExpression navigationData, string key)
+		private static CodeExpression GetNavigationDataAsType(Type type, CodePropertyReferenceExpression navigationData, string key, Type controlType, string name)
 		{
+			if (type == typeof(NavigationData))
+				return GetKeyAsNavigationData(key, controlType, name);
 			int commaIndex = key.IndexOf(",");
 			bool negation = key.StartsWith("!", StringComparison.Ordinal);
 			string navigationDataKey = commaIndex <= 0 ? key : key.Substring(0, commaIndex).Trim();
@@ -220,6 +222,18 @@ namespace Navigation
 			{
 				return new CodeCastExpression(new CodeTypeReference(type, CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer);
 			}
+		}
+
+		private static CodeExpression GetKeyAsNavigationData(string key, Type controlType, string name)
+		{
+			CodeMethodInvokeExpression parseNavigationData = new CodeMethodInvokeExpression();
+			parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
+			parseNavigationData.Parameters.Add(new CodePrimitiveExpression(key));
+			if (typeof(NavigationHyperLink).IsAssignableFrom(controlType) && StringComparer.InvariantCultureIgnoreCase.Compare(name, "ToData") == 0)
+				parseNavigationData.Parameters.Add(new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), "NextState"));
+			else
+				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(null));
+			return parseNavigationData;
 		}
 
 		private static void AttachEvent(bool page, CodeMemberMethod listener, string name, Type eventHandlerType, CodeLinePragma linePragma, CodeMemberMethod buildMethod, CodeTypeDeclaration navigationDataClass)
