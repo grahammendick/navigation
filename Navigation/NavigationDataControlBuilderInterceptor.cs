@@ -19,7 +19,7 @@ namespace Navigation
 	/// </summary>
 	public class NavigationDataControlBuilderInterceptor : ControlBuilderInterceptor
 	{
-		private static Regex _NavigationDataBindingExpression = new Regex(@"^\s*\{\s*NavigationData\s+(?<key>[^\s]+.*)\}\s*$");
+		private static Regex _NavigationDataBindingExpression = new Regex(@"^\s*\{\s*NavigationData(?<off>\*?)\s+(?<key>[^\s]+.*)\}\s*$");
 
 		/// <summary>
 		/// Called before the <see cref="System.Web.UI.ControlBuilder"/> of an element in the markup is initialized
@@ -38,13 +38,13 @@ namespace Navigation
 			if (attributes != null)
 			{
 				Match navigationDataBindingMatch;
-				Dictionary<string, string> navigationDataBindings = new Dictionary<string, string>();
+				Dictionary<string, Tuple<string, bool>> navigationDataBindings = new Dictionary<string, Tuple<string, bool>>();
 				foreach (DictionaryEntry entry in attributes)
 				{
 					navigationDataBindingMatch = _NavigationDataBindingExpression.Match((string)entry.Value);
 					if (navigationDataBindingMatch.Success)
 					{
-						navigationDataBindings.Add((string)entry.Key, navigationDataBindingMatch.Groups["key"].Value.Trim());
+						navigationDataBindings.Add((string)entry.Key, Tuple.Create(navigationDataBindingMatch.Groups["key"].Value.Trim(), navigationDataBindingMatch.Groups["off"].Value.Length != 0));
 					}
 				}
 				if (navigationDataBindings.Count > 0)
@@ -72,7 +72,7 @@ namespace Navigation
 		{
 			if (buildMethod == null)
 				return;
-			Dictionary<string, string> navigationDataBindings = additionalState["__NavigationData"] as Dictionary<string, string>;
+			Dictionary<string, Tuple<string, bool>> navigationDataBindings = additionalState["__NavigationData"] as Dictionary<string, Tuple<string, bool>>;
 			if (navigationDataBindings == null)
 				return;
 			CodeLinePragma linePragma = null;
@@ -88,7 +88,7 @@ namespace Navigation
 			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, navigationDataBindings, buildMethod));
 		}
 
-		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, string> navigationDataBindings, CodeMemberMethod buildMethod)
+		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, Tuple<string, bool>> navigationDataBindings, CodeMemberMethod buildMethod)
 		{
 			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("__NavigationData" + controlBuilder.ID);
 			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute), CodeTypeReferenceOptions.GlobalReference));
@@ -105,14 +105,16 @@ namespace Navigation
 			CodeMemberMethod controlLoadListener = ConfigureListener("Control_Load", nonUserCodeAttribute);
 			CodeMemberMethod pageLoadCompleteListener = ConfigureListener("Page_LoadComplete", nonUserCodeAttribute);
 			CodeMemberMethod pagePreRenderCompleteListener = ConfigureListener("Page_PreRenderComplete", nonUserCodeAttribute);
-			foreach (KeyValuePair<string, string> pair in navigationDataBindings)
+			CodeMemberMethod pageSaveStateCompleteListener = ConfigureListener("Page_SaveStateComplete", nonUserCodeAttribute);
+			foreach (KeyValuePair<string, Tuple<string, bool>> pair in navigationDataBindings)
 			{
-				if (!BuildNavigationDataEventListener(controlBuilder, pair, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
-					BuildNavigationDataStatements(controlBuilder, pair, navigationData, controlLoadListener, pageLoadCompleteListener, pagePreRenderCompleteListener, linePragma);
+				if (!BuildNavigationDataEventListener(controlBuilder, pair.Key, pair.Value.Item1, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
+					BuildNavigationDataStatements(controlBuilder, pair.Key, pair.Value.Item1, navigationData, controlLoadListener, pageLoadCompleteListener, !pair.Value.Item2 ? pagePreRenderCompleteListener : pageSaveStateCompleteListener, linePragma);
 			}
 			AttachEvent(false, controlLoadListener, "Load", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
 			AttachEvent(true, pageLoadCompleteListener, "LoadComplete", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
 			AttachEvent(true, pagePreRenderCompleteListener, "PreRenderComplete", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
+			AttachEvent(true, pageSaveStateCompleteListener, "SaveStateComplete", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
 			return navigationDataClass;
 		}
 
@@ -127,11 +129,11 @@ namespace Navigation
 			return listener;
 		}
 
-		private static bool BuildNavigationDataEventListener(ControlBuilder controlBuilder, KeyValuePair<string, string> pair, CodePropertyReferenceExpression navigationData, CodeTypeDeclaration navigationDataClass, CodeAttributeDeclaration nonUserCodeAttribute, CodeLinePragma linePragma, CodeMemberMethod buildMethod)
+		private static bool BuildNavigationDataEventListener(ControlBuilder controlBuilder, string key, string value, CodePropertyReferenceExpression navigationData, CodeTypeDeclaration navigationDataClass, CodeAttributeDeclaration nonUserCodeAttribute, CodeLinePragma linePragma, CodeMemberMethod buildMethod)
 		{
-			if (!pair.Key.StartsWith("On", StringComparison.OrdinalIgnoreCase))
+			if (!key.StartsWith("On", StringComparison.OrdinalIgnoreCase))
 				return false;
-			EventInfo eventInfo = controlBuilder.ControlType.GetEvent(pair.Key.Substring(2), BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+			EventInfo eventInfo = controlBuilder.ControlType.GetEvent(key.Substring(2), BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 			if (eventInfo != null)
 			{
 				CodeMemberMethod listener = new CodeMemberMethod();
@@ -143,7 +145,7 @@ namespace Navigation
 				{
 					listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(parameter.ParameterType, CodeTypeReferenceOptions.GlobalReference), parameter.Name));
 				}
-				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, pair.Value, controlBuilder.ControlType, null), GetNavigationDataAsType(typeof(bool), navigationData, "!" + pair.Value, controlBuilder.ControlType, null)));
+				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, value, controlBuilder.ControlType, null), GetNavigationDataAsType(typeof(bool), navigationData, "!" + value, controlBuilder.ControlType, null)));
 				listener.Statements[0].LinePragma = linePragma;
 				AttachEvent(false, listener, eventInfo.Name, eventInfo.EventHandlerType, linePragma, buildMethod, navigationDataClass);
 				return true;
@@ -151,10 +153,10 @@ namespace Navigation
 			return false;
 		}
 
-		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, KeyValuePair<string, string> pair, CodePropertyReferenceExpression navigationData, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
+		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, string key, string value, CodePropertyReferenceExpression navigationData, CodeMemberMethod controlLoadListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pagePreRenderCompleteListener, CodeLinePragma linePragma)
 		{
-			bool enabledOrVisible = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(pair.Key, "Visible") == 0;
-			CodeStatement controlNavigationDataAssign = GetNavigationDataAssign(controlBuilder, navigationData, pair);
+			bool enabledOrVisible = StringComparer.InvariantCultureIgnoreCase.Compare(key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(key, "Visible") == 0;
+			CodeStatement controlNavigationDataAssign = GetNavigationDataAssign(controlBuilder, navigationData, key, value);
 			if (controlNavigationDataAssign != null)
 			{
 				controlNavigationDataAssign.LinePragma = linePragma;
@@ -168,30 +170,30 @@ namespace Navigation
 			}
 			else
 			{
-				if (controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
-					throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
-				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, pair.Key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
+				if (controlBuilder.ControlType.GetProperty(key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public) != null)
+					throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyReadOnly, key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
+				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyMissing, controlBuilder.ControlType, key), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			}
 		}
 
-		private static CodeStatement GetNavigationDataAssign(ControlBuilder controlBuilder, CodePropertyReferenceExpression navigationData, KeyValuePair<string, string> pair)
+		private static CodeStatement GetNavigationDataAssign(ControlBuilder controlBuilder, CodePropertyReferenceExpression navigationData, string key, string value)
 		{
-			PropertyInfo property = controlBuilder.ControlType.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+			PropertyInfo property = controlBuilder.ControlType.GetProperty(key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 			if (property != null && property.CanWrite)
 			{
 				CodePropertyReferenceExpression controlProperty = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), property.Name);
-				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, pair.Value, controlBuilder.ControlType, property.Name));
+				return new CodeAssignStatement(controlProperty, GetNavigationDataAsType(property.PropertyType, navigationData, value, controlBuilder.ControlType, property.Name));
 			}
-			FieldInfo field = controlBuilder.ControlType.GetField(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+			FieldInfo field = controlBuilder.ControlType.GetField(key, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
 			if (field != null)
 			{
 				CodeFieldReferenceExpression controlField = new CodeFieldReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), field.Name);
-				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, pair.Value, controlBuilder.ControlType, field.Name));
+				return new CodeAssignStatement(controlField, GetNavigationDataAsType(field.FieldType, navigationData, value, controlBuilder.ControlType, field.Name));
 			}
 			if (typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
 			{
 				CodeCastExpression attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"));
-				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(pair.Key), GetNavigationDataAsType(typeof(string), navigationData, pair.Value, controlBuilder.ControlType, "SetAttribute") };
+				CodeExpression[] setAttributeParams = new CodeExpression[] { new CodePrimitiveExpression(key), GetNavigationDataAsType(typeof(string), navigationData, value, controlBuilder.ControlType, "SetAttribute") };
 				return new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", setAttributeParams));
 			}
 			return null;
