@@ -144,6 +144,9 @@
   <data name="InvalidDistance" xml:space="preserve">
     <value>The distance parameter must be greater than zero and less than or equal to the number of Crumbs ({0})</value>
   </data>
+  <data name="InvalidDistanceString" xml:space="preserve">
+    <value>The string '{0}' is not a valid value for the distance to go back</value>
+  </data>
   <data name="InvalidEnumerableNavigationData" xml:space="preserve">
     <value>ArrayList and Generic List are the only valid enumerable types in NavigationData</value>
   </data>
