@@ -142,6 +142,15 @@ namespace Navigation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The string &apos;{0}&apos; is not a valid value for the distance to go back.
+        /// </summary>
+        internal static string InvalidDistanceString {
+            get {
+                return ResourceManager.GetString("InvalidDistanceString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ArrayList and Generic List are the only valid enumerable types in NavigationData.
         /// </summary>
         internal static string InvalidEnumerableNavigationData {
