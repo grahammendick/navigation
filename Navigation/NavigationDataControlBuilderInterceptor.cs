@@ -214,16 +214,11 @@ namespace Navigation
 		{
 			if (direction.HasValue)
 			{
-				if (direction.Value == NavigationDirection.Forward)
-					return GetNavigationLink(key, direction.Value);
-				if (direction.Value == NavigationDirection.Back)
-					return GetNavigationBackLink(key, direction.Value, controlBuilder, linePragma);
-				if (direction.Value == NavigationDirection.Refresh)
-					return GetRefreshLink(key, direction.Value);
+				return GetLink(key, direction.Value, controlBuilder, linePragma);
 			}
 			if (type == typeof(NavigationData))
 				return GetKeyAsNavigationData(key, controlBuilder.ControlType, name);
-			int commaIndex = key.IndexOf(",");
+			int commaIndex = key.IndexOf(",", StringComparison.Ordinal);
 			bool negation = key.StartsWith("!", StringComparison.Ordinal);
 			string navigationDataKey = commaIndex <= 0 ? key : key.Substring(0, commaIndex).Trim();
 			navigationDataKey = !negation ? navigationDataKey : navigationDataKey.Substring(1).Trim();
@@ -246,23 +241,48 @@ namespace Navigation
 			}
 		}
 
+		private static CodeExpression GetLink(string key, NavigationDirection direction, ControlBuilder controlBuilder, CodeLinePragma linePragma)
+		{
+			int hashIndex = key.LastIndexOf("#", StringComparison.Ordinal);
+			string link = hashIndex < 0 ? key : key.Substring(0, hashIndex);
+			CodeExpression navigationLink = null;
+			if (direction == NavigationDirection.Forward)
+				navigationLink = GetNavigationLink(link, direction);
+			if (direction == NavigationDirection.Back)
+				navigationLink = GetNavigationBackLink(link, direction, controlBuilder, linePragma);
+			if (direction == NavigationDirection.Refresh)
+				navigationLink = GetRefreshLink(link, direction);
+			if (hashIndex >= 0)
+			{
+				CodeMethodInvokeExpression concat = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(string), CodeTypeReferenceOptions.GlobalReference)), "Concat");
+				concat.Parameters.Add(navigationLink);
+				concat.Parameters.Add(new CodePrimitiveExpression("#"));
+				concat.Parameters.Add(new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(HttpUtility), CodeTypeReferenceOptions.GlobalReference)), "UrlEncode", new CodePrimitiveExpression(key.Substring(hashIndex + 1))));
+				return concat;
+			}
+			return navigationLink;
+		}
+
 		private static CodeExpression GetNavigationLink(string key, NavigationDirection direction)
 		{
 			CodeMethodInvokeExpression navigationLink = new CodeMethodInvokeExpression();
 			navigationLink.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateController), CodeTypeReferenceOptions.GlobalReference)), "GetNavigationLink");
-			int commaIndex = key.IndexOf(",");
+			int commaIndex = key.IndexOf(",", StringComparison.Ordinal);
 			string action = commaIndex <= 0 ? key : key.Substring(0, commaIndex).Trim();
 			navigationLink.Parameters.Add(new CodePrimitiveExpression(action));
 			if (commaIndex > 0)
 			{
 				string data = key.Substring(commaIndex + 1).Trim();
-				CodeMethodInvokeExpression getNextState = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateController), CodeTypeReferenceOptions.GlobalReference)), "GetNextState");
-				getNextState.Parameters.Add(new CodePrimitiveExpression(action));
-				CodeMethodInvokeExpression parseNavigationData = new CodeMethodInvokeExpression();
-				parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
-				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(data));
-				parseNavigationData.Parameters.Add(getNextState);
-				navigationLink.Parameters.Add(parseNavigationData);
+				if (data.Length > 0)
+				{
+					CodeMethodInvokeExpression getNextState = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateController), CodeTypeReferenceOptions.GlobalReference)), "GetNextState");
+					getNextState.Parameters.Add(new CodePrimitiveExpression(action));
+					CodeMethodInvokeExpression parseNavigationData = new CodeMethodInvokeExpression();
+					parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
+					parseNavigationData.Parameters.Add(new CodePrimitiveExpression(data));
+					parseNavigationData.Parameters.Add(getNextState);
+					navigationLink.Parameters.Add(parseNavigationData);
+				}
 			}
 			return navigationLink;
 		}
