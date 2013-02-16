@@ -217,11 +217,13 @@ namespace Navigation
 				return GetLink(key, direction.Value, controlBuilder, linePragma);
 			}
 			if (type == typeof(NavigationData))
-				return GetKeyAsNavigationData(key, controlBuilder.ControlType, name);
+				return GetKeyAsNavigationData(key, name, controlBuilder, linePragma);
 			int commaIndex = key.IndexOf(",", StringComparison.Ordinal);
 			bool negation = key.StartsWith("!", StringComparison.Ordinal);
 			string navigationDataKey = commaIndex <= 0 ? key : key.Substring(0, commaIndex).Trim();
 			navigationDataKey = !negation ? navigationDataKey : navigationDataKey.Substring(1).Trim();
+			if (navigationDataKey.Length == 0)
+				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.NavigationDataKeyMissing), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			CodeExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
 			if (negation)
 				navigationDataIndexer = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), "Equals"), new CodePrimitiveExpression(false));
@@ -247,7 +249,7 @@ namespace Navigation
 			string link = hashIndex < 0 ? key : key.Substring(0, hashIndex);
 			CodeExpression navigationLink = null;
 			if (direction == NavigationDirection.Forward)
-				navigationLink = GetNavigationLink(link, direction);
+				navigationLink = GetNavigationLink(link, direction, controlBuilder, linePragma);
 			if (direction == NavigationDirection.Back)
 				navigationLink = GetNavigationBackLink(link, direction, controlBuilder, linePragma);
 			if (direction == NavigationDirection.Refresh)
@@ -263,12 +265,14 @@ namespace Navigation
 			return navigationLink;
 		}
 
-		private static CodeExpression GetNavigationLink(string key, NavigationDirection direction)
+		private static CodeExpression GetNavigationLink(string key, NavigationDirection direction, ControlBuilder controlBuilder, CodeLinePragma linePragma)
 		{
 			CodeMethodInvokeExpression navigationLink = new CodeMethodInvokeExpression();
 			navigationLink.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateController), CodeTypeReferenceOptions.GlobalReference)), "GetNavigationLink");
 			int commaIndex = key.IndexOf(",", StringComparison.Ordinal);
 			string action = commaIndex <= 0 ? key : key.Substring(0, commaIndex).Trim();
+			if (action.Length == 0)
+				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.NavigationLinkActionMissing), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			navigationLink.Parameters.Add(new CodePrimitiveExpression(action));
 			if (commaIndex > 0)
 			{
@@ -326,12 +330,14 @@ namespace Navigation
 			return navigationLink;
 		}
 
-		private static CodeExpression GetKeyAsNavigationData(string key, Type controlType, string name)
+		private static CodeExpression GetKeyAsNavigationData(string key, string name, ControlBuilder controlBuilder, CodeLinePragma linePragma)
 		{
+			if (key.Length == 0)
+				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.NavigationDataKeyMissing), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			CodeMethodInvokeExpression parseNavigationData = new CodeMethodInvokeExpression();
 			parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
 			parseNavigationData.Parameters.Add(new CodePrimitiveExpression(key));
-			if (typeof(NavigationHyperLink).IsAssignableFrom(controlType) && StringComparer.InvariantCultureIgnoreCase.Compare(name, "ToData") == 0)
+			if (typeof(NavigationHyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.InvariantCultureIgnoreCase.Compare(name, "ToData") == 0)
 				parseNavigationData.Parameters.Add(new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), "NextState"));
 			else
 				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(null));

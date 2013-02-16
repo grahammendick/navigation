@@ -168,6 +168,12 @@
   <data name="InvalidUrl" xml:space="preserve">
     <value>The Url is invalid</value>
   </data>
+  <data name="NavigationDataKeyMissing" xml:space="preserve">
+    <value>The Navigation Data key is mandatory</value>
+  </data>
+  <data name="NavigationLinkActionMissing" xml:space="preserve">
+    <value>The Navigation Link must have an action</value>
+  </data>
   <data name="PropertyMissing" xml:space="preserve">
     <value>Type '{0}' does not have a public property named '{1}'</value>
   </data>
