@@ -214,6 +214,24 @@ namespace Navigation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Navigation Data key is mandatory.
+        /// </summary>
+        internal static string NavigationDataKeyMissing {
+            get {
+                return ResourceManager.GetString("NavigationDataKeyMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Navigation Link must have an action.
+        /// </summary>
+        internal static string NavigationLinkActionMissing {
+            get {
+                return ResourceManager.GetString("NavigationLinkActionMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type &apos;{0}&apos; does not have a public property named &apos;{1}&apos;.
         /// </summary>
         internal static string PropertyMissing {
