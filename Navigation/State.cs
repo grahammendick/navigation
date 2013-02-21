@@ -404,5 +404,10 @@ namespace Navigation
 		{
 			return (!mobile || (MobilePage.Length == 0 && MobileTheme.Length == 0)) ? Theme : MobileTheme;
 		}
+
+		internal bool DefaultOrDerived(string key, object value)
+		{
+			return value.Equals(Defaults[key]) || DerivedInternal.ContainsKey(key);
+		}
 	}
 }
