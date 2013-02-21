@@ -1,10 +1,11 @@
+using Navigation.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Navigation.Properties;
 
 namespace Navigation
 {
@@ -62,7 +63,7 @@ namespace Navigation
 			int stateIndex = 0;
 
 			XmlNode dialogChildNode;
-			string[] masters;
+			string[] masters, derived;
 			int i;
 			bool result;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
@@ -136,6 +137,18 @@ namespace Navigation
 								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "defaults"), oe);
 							}
 						}
+						derived = new string[] { };
+						state.DerivedInternal = new Dictionary<string, string>();
+						if (dialogChildNode.Attributes["derived"] != null)
+						{
+							derived = Regex.Split(dialogChildNode.Attributes["derived"].Value, ",");
+							for (int j = 0; j < derived.Length; j++)
+							{
+								derived[j] = derived[j].Trim();
+								state.DerivedInternal.Add(derived[j], derived[j]);
+							}
+						}
+						state.Derived = new ReadOnlyCollection<string>(derived);
 						state.TrackCrumbTrail = true;
 						if (dialogChildNode.Attributes["trackCrumbTrail"] != null)
 						{

@@ -32,23 +32,6 @@ namespace Navigation
 			}
 		}
 
-		/// <summary>
-		/// Comma separated list of <see cref="Navigation.NavigationData"/> items to retain
-		/// during a history navigation
-		/// </summary>
-		[Category("Behavior"), Description("Comma separated list of NavigationData items to retain during a history navigation."), DefaultValue("")]
-		public string StateKeys
-		{
-			get
-			{
-				return ViewState["StateKeys"] != null ? (string)ViewState["StateKeys"] : string.Empty;
-			}
-			set
-			{
-				ViewState["StateKeys"] = value;
-			}
-		}
-
 		private NavigationData OriginalData
 		{
 			get;
@@ -129,23 +112,7 @@ namespace Navigation
 		{
 			if (ScriptManager.IsInAsyncPostBack)
 			{
-				NavigationData data = null;
-				if (StateKeys.Length != 0)
-				{
-					data = new NavigationData();
-					foreach (string key in StateKeys.Split(','))
-					{
-						data[key.Trim()] = StateContext.Data[key.Trim()];
-					}
-				}
 				StateController.NavigateHistory(e.State);
-				if (data != null)
-				{
-					foreach (NavigationDataItem item in data)
-					{
-						StateContext.Data[item.Key] = item.Value;
-					}
-				}
 			}
 		}
 
