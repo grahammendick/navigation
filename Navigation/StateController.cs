@@ -432,7 +432,7 @@ namespace Navigation
 			coll[StateContext.STATE] = StateContext.StateKey;
 			foreach (NavigationDataItem item in toData)
 			{
-				if (!item.Value.Equals(string.Empty) && !item.Value.Equals(StateContext.State.Defaults[item.Key]) && !StateContext.State.DerivedInternal.ContainsKey(item.Key))
+				if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
 					coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Key, item.Value, StateContext.State);
 			}
 			coll = StateContext.ShieldEncode(coll, true);
