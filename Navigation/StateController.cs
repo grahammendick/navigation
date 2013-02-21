@@ -93,7 +93,7 @@ namespace Navigation
 				{
 					queryData.Add(key, HttpContext.Current.Request.QueryString[key]);
 				}
-				RemoveDefaults(queryData);
+				RemoveDefaultsAndDerived(queryData);
 				return queryData;
 			}
 		}
@@ -396,7 +396,7 @@ namespace Navigation
 					{
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 						StateContext.StateKey = queryData[StateContext.STATE];
-						RemoveDefaults(queryData);
+						RemoveDefaultsAndDerived(queryData);
 						ParseData(StateContext.ShieldDecode(queryData, false), false);
 						break;
 					}
@@ -432,7 +432,7 @@ namespace Navigation
 			coll[StateContext.STATE] = StateContext.StateKey;
 			foreach (NavigationDataItem item in toData)
 			{
-				if (!item.Value.Equals(string.Empty) && !item.Value.Equals(StateContext.State.Defaults[item.Key]))
+				if (!item.Value.Equals(string.Empty) && !item.Value.Equals(StateContext.State.Defaults[item.Key]) && !StateContext.State.DerivedInternal.ContainsKey(item.Key))
 					coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Key, item.Value, StateContext.State);
 			}
 			coll = StateContext.ShieldEncode(coll, true);
@@ -459,10 +459,19 @@ namespace Navigation
 			}
 			else
 			{
-				RemoveDefaults(data);
+				RemoveDefaultsAndDerived(data);
 				data = StateContext.ShieldDecode(data, true);
 				data.Remove(StateContext.STATE);
+				Dictionary<string, object> derivedData = new Dictionary<string, object>();
+				foreach (string key in StateContext.State.Derived)
+				{
+					derivedData[key] = StateContext.Data[key];
+				}
 				StateContext.Data.Clear();
+				foreach (KeyValuePair<string, object> item in derivedData)
+				{
+					StateContext.Data[item.Key] = item.Value;
+				}
 				foreach (string key in data)
 				{
 					StateContext.Data[key] = CrumbTrailManager.ParseURLString(key, data[key], StateContext.State);
@@ -470,12 +479,16 @@ namespace Navigation
 			}
 		}
 
-		private static void RemoveDefaults(NameValueCollection data)
+		private static void RemoveDefaultsAndDerived(NameValueCollection data)
 		{
 			foreach (string key in StateContext.State.FormattedDefaults.Keys)
 			{
 				if (data[key] == StateContext.State.FormattedDefaults[key])
 					data.Remove(key);
+			}
+			foreach (string key in StateContext.State.Derived)
+			{
+				data.Remove(key);
 			}
 		}
 

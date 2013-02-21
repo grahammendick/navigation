@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
@@ -23,6 +24,8 @@ namespace Navigation
 		private StateInfoCollection<Type> _DefaultTypes;
 		private StateInfoCollection<object> _Defaults;
 		private StateInfoCollection<string> _FormattedDefaults;
+		private ReadOnlyCollection<string> _Derived;
+		private Dictionary<string, string> _DerivedInternal;
 		private string _Title;
 		private string _Route;
 		private string _MobileRoute;
@@ -163,6 +166,33 @@ namespace Navigation
 			set
 			{
 				_FormattedDefaults = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the derived <see cref="Navigation.NavigationData"/> for this <see cref="Navigation.State"/>
+		/// </summary>
+		public ReadOnlyCollection<string> Derived
+		{
+			get
+			{
+				return _Derived;
+			}
+			internal set
+			{
+				_Derived = value;
+			}
+		}
+
+		internal Dictionary<string, string> DerivedInternal
+		{
+			get
+			{
+				return _DerivedInternal;
+			}
+			set
+			{
+				_DerivedInternal = value;
 			}
 		}
 
