@@ -59,6 +59,8 @@
     <Compile Include="Custom4DataTypeConverter.cs" />
     <Compile Include="CustomData.cs" />
     <Compile Include="CustomDataTypeConverter.cs" />
+    <Compile Include="MockHttpContext.cs" />
+    <Compile Include="NavigationDataBindingTest.cs" />
     <Compile Include="NavigationDataTest.cs" />
     <Compile Include="NavigationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
