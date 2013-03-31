@@ -1606,6 +1606,143 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateLinkToDerivedTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["st1"] = "Hello";
+			data["bool"] = true;
+			data["long"] = (long)1;
+			data["st2"] = "World";
+			string link = StateController.GetNavigationLink("t0", data);
+			Assert.AreEqual(-1, link.IndexOf("st1"));
+			Assert.AreEqual(-1, link.IndexOf("bool"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreNotEqual(-1, link.IndexOf("st2"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkFromDerivedTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Data["st1"] = "Hello";
+			StateContext.Data["bool"] = true;
+			StateContext.Data["long"] = (long)1;
+			StateContext.Data["st2"] = "World";
+			StateController.Navigate("t0");
+			string link = StateController.GetNavigationLink("t0");
+			Assert.AreEqual(-1, link.IndexOf("st1"));
+			Assert.AreEqual(-1, link.IndexOf("bool"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreNotEqual(-1, link.IndexOf("st2"));
+		}
+
+		[TestMethod]
+		public void NavigateBackLinkDerivedTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.st1 = "Hello";
+			StateContext.Data["bool"] = true;
+			StateContext.Data["long"] = (long)1;
+			StateContext.Bag.st2 = "World";
+			StateController.Navigate("t0");
+			string link = StateController.GetNavigationBackLink(1);
+			Assert.AreEqual(-1, link.IndexOf("st1"));
+			Assert.AreEqual(-1, link.IndexOf("bool"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreNotEqual(-1, link.IndexOf("st2"));
+		}
+
+		[TestMethod]
+		public void RefreshLinkDerivedTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData();
+			data["st1"] = "Hello";
+			data["bool"] = true;
+			data["long"] = (long)1;
+			data["st2"] = "World";
+			string link = StateController.GetRefreshLink(data);
+			Assert.AreEqual(-1, link.IndexOf("st1"));
+			Assert.AreEqual(-1, link.IndexOf("bool"));
+			Assert.AreEqual(-1, link.IndexOf("long"));
+			Assert.AreNotEqual(-1, link.IndexOf("st2"));
+		}
+
+		[TestMethod]
+		public void NavigateDerivedTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.st1 = "Hello";
+			data["bool"] = true;
+			data["st2"] = "World";
+			StateController.Navigate("t0", data);
+			Assert.IsNull(StateContext.Data["st1"]);
+			Assert.IsNull(StateContext.Data["bool"]);
+			Assert.AreEqual("World", StateContext.Bag.st2);
+		}
+
+		[TestMethod]
+		public void NavigateDerivedDefaultTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData();
+			data["string"] = "Hello";
+			data["decimal"] = "World";
+			StateController.Navigate("t0", data);
+			Assert.IsNull(StateContext.Data["string"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackDerivedTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.st1 = "Hello";
+			StateContext.Data["bool"] = true;
+			StateContext.Data["st2"] = "World";
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.IsNull(StateContext.Data["st1"]);
+			Assert.IsNull(StateContext.Data["bool"]);
+			Assert.AreEqual("World", StateContext.Bag.st2);
+		}
+
+		[TestMethod]
+		public void NavigateBackDerivedDefaultTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateContext.Data["string"] = "Hello";
+			StateContext.Data["decimal"] = "World";
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.IsNull(StateContext.Data["string"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+		}
+
+		[TestMethod]
+		public void NavigateDerivedNonConvertibleTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData();
+			data["string"] = new Exception();
+			data["decimal"] = new Exception();
+			StateController.Refresh(data);
+			Assert.IsNull(StateContext.Data["string"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void EmptyNavigationDataType()
 		{
