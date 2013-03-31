@@ -247,6 +247,15 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void DerivedTest()
+		{
+			Assert.IsTrue(StateInfoConfig.Dialogs[0].States[0].Derived.Count == 0);
+			Assert.AreEqual("st1", StateInfoConfig.Dialogs[0].States[1].Derived[0]);
+			Assert.AreEqual("bool", StateInfoConfig.Dialogs[0].States[1].Derived[1]);
+			Assert.AreEqual("long", StateInfoConfig.Dialogs[0].States[1].Derived[2]);
+		}
+
+		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
 			Dialog[] dialogArr = new Dialog[3];
@@ -285,7 +294,9 @@ namespace Navigation.Test
 			Assert.IsTrue(dialogs[0].States[1].Defaults.Count == 6);
 			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 6);
 			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 3);
-			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 3);
+			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 4);
+			Assert.IsTrue(dialogs[0].States[1].Derived.Count == 3);
+			Assert.IsTrue(dialogs[0].States[2].Derived.Count == 2);
 		}
 
 		[TestMethod]
