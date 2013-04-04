@@ -1743,6 +1743,49 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void ParseNavigationDataExpressionCurrentDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			data = StateInfoConfig.ParseNavigationDataExpression("x=y,z,a?int=1", null, true);
+			Assert.AreEqual("y", data.Bag.x);
+			Assert.AreEqual("Hello", data.Bag.z);
+			Assert.AreEqual(1, data.Bag.a);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionNullCurrentDataTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("x=y,z", null, true);
+			Assert.AreEqual("y", data.Bag.x);
+			Assert.IsNull(data.Bag.z);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(FormatException))]
+		public void ParseNavigationDataExpressionInvalidEqualCurrentDataTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("x=y,z==", null, true);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionCurrentDataDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("_bool , x=y  , string ", null, true);
+			Assert.AreEqual(true, data.Bag._bool);
+			Assert.AreEqual("y", data.Bag.x);
+			Assert.AreEqual("Hello", data["string"]);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void EmptyNavigationDataType()
 		{
