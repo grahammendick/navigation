@@ -42,6 +42,15 @@ namespace Navigation
 			}
 		}
 
+		internal NavigationData(IEnumerable<string> currentDataKeys)
+			: base()
+		{
+			foreach (string key in currentDataKeys)
+			{
+				this[key] = StateContext.Data[key];
+			}
+		}
+
 		private StateBag Data
 		{
 			get
@@ -128,6 +137,14 @@ namespace Navigation
 				if (_DynamicNavigationData == null)
 					_DynamicNavigationData = new DynamicNavigationData(this);
 				return _DynamicNavigationData;
+			}
+		}
+
+		internal void Add(NavigationData data)
+		{
+			foreach (NavigationDataItem item in data)
+			{
+				this[item.Key] = item.Value;
 			}
 		}
 
