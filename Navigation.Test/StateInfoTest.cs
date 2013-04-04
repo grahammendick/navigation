@@ -584,6 +584,21 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void InvalidEqualDefaultsTest()
+		{
+			try
+			{
+				ConfigurationManager.GetSection("Navigation/InvalidEqualDefaults");
+			}
+			catch (Exception ex)
+			{
+				Assert.IsInstanceOfType(ex.InnerException, typeof(FormatException));
+				throw;
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void InvalidKeyDefaultsTest()
 		{
 			try
@@ -727,13 +742,13 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ParseNavigationDataExpressionNullExpressionTest()
 		{
-			StateInfoConfig.ParseNavigationDataExpression(null, null);
+			StateInfoConfig.ParseNavigationDataExpression(null, null, false);
 		}
 
 		[TestMethod]
 		public void ParseNavigationDataExpressionNullStateTest()
 		{
-			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("x=y", null);
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("x=y", null, false);
 			Assert.AreEqual("y", data.Bag.x);
 		}
 
@@ -741,7 +756,7 @@ namespace Navigation.Test
 		[ExpectedException(typeof(FormatException))]
 		public void ParseNavigationDataExpressionEmptyExpressionTest()
 		{
-			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("", null);
+			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("", null, false);
 		}
 	}
 }

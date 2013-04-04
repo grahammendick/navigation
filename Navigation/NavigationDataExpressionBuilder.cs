@@ -23,7 +23,7 @@ namespace Navigation
 		/// <returns>The <see cref="Navigation.NavigationData"/> that corresponds to specified key/value pairs</returns>
 		public override object EvaluateExpression(object target, BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
 		{
-			return StateInfoConfig.ParseNavigationDataExpression(entry.Expression.Trim(), null);
+			return StateInfoConfig.ParseNavigationDataExpression(entry.Expression.Trim(), null, false);
 		}
 
 		/// <summary>
@@ -35,7 +35,8 @@ namespace Navigation
 		/// <returns>A <see cref="System.CodeDom.CodeExpression"/> instance that is used in the property assignment</returns>
 		public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
 		{
-			return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression", new CodeExpression[] { new CodePrimitiveExpression(entry.Expression.Trim()), new CodePrimitiveExpression(null) });
+			CodeExpression[] parms = new CodeExpression[] { new CodePrimitiveExpression(entry.Expression.Trim()), new CodePrimitiveExpression(null), new CodePrimitiveExpression(false) };
+			return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression", parms);
 		}
 	}
 }

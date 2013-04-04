@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI;
@@ -26,6 +27,25 @@ namespace Navigation
 		{
 			get;
 			set;
+		}
+
+		/// <summary>
+		/// Gets or sets a comma separated list of <see cref="Navigation.StateContext.Data">State Context</see> items to
+		/// include together with the <see cref="ToData"/>. 
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Forward"/>
+		/// or <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// </summary>
+		[Category("Navigation"), Description("Comma separated list of State Context items to include together with the ToData."), DefaultValue("")]
+		public string CurrentDataKeys
+		{
+			get
+			{
+				return ViewState["CurrentDataKeys"] != null ? (string)ViewState["CurrentDataKeys"] : string.Empty;
+			}
+			set
+			{
+				ViewState["CurrentDataKeys"] = value;
+			}
 		}
 
 		/// <summary>
@@ -299,7 +319,7 @@ namespace Navigation
 			{
 				if (!string.IsNullOrEmpty(NavigateUrl))
 					return NavigateUrl;
-				NavigationData data = new NavigationData(IncludeCurrentData);
+				NavigationData data = IncludeCurrentData ? new NavigationData(IncludeCurrentData) : new NavigationData(CurrentDataKeyEnumerator);
 				UpdateData(data);
 				switch (Direction)
 				{
@@ -332,7 +352,7 @@ namespace Navigation
 			get
 			{
 				if (Direction != NavigationDirection.Refresh) return false;
-				NavigationData data = new NavigationData(IncludeCurrentData);
+				NavigationData data = IncludeCurrentData ? new NavigationData(IncludeCurrentData) : new NavigationData(CurrentDataKeyEnumerator);
 				data.SetDefaults(StateContext.State.Defaults);
 				UpdateData(data);
 				if (data.Count != StateContext.Data.Count)
@@ -343,6 +363,19 @@ namespace Navigation
 						return false;
 				}
 				return true;
+			}
+		}
+
+		private IEnumerable<string> CurrentDataKeyEnumerator
+		{
+			get
+			{
+				if (CurrentDataKeys.Length == 0)
+					yield break;
+				foreach (string key in CurrentDataKeys.Split(new char[] { ',' }))
+				{
+					yield return key.Trim();
+				}
 			}
 		}
 
@@ -473,7 +506,11 @@ namespace Navigation
 		{
 			Page.ClientScript.ValidateEvent(UniqueID);
 			if (!IncludeCurrentData)
+			{
+				NavigationData currentData = new NavigationData(CurrentDataKeyEnumerator);
 				StateContext.Data.Clear();
+				StateContext.Data.Add(currentData);
+			}
 			UpdateData(StateContext.Data);
 			OnClick(EventArgs.Empty);
 			OnCommand(new CommandEventArgs(CommandName, CommandArgument));

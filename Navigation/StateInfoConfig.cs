@@ -49,8 +49,11 @@ namespace Navigation
 		/// <summary>
 		/// Creates <see cref="Navigation.NavigationData"/> that corresponds to the key/value pairs
 		/// specified by the <paramref name="expression"/></summary>
-		/// <param name="expression">The key/value pairs with types optional</param>
+		/// <param name="expression">The key/value pairs with types optional. Values are optional if
+		/// <paramref name="useCurrentData"/> is true</param>
 		/// <param name="state">Holds the <see cref="Navigation.State.DefaultTypes"/> of the keys</param>
+		/// <param name="useCurrentData">Indicates whether values can be retrieved from the current
+		/// <see cref="Navigation.StateContext.Data"/></param>
 		/// <returns>The <see cref="Navigation.NavigationData"/> that corresponds to the specified
 		/// key/value pairs</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="expression"/> is null</exception>
@@ -61,7 +64,7 @@ namespace Navigation
 		/// of guid or timespan</exception>
 		/// <exception cref="System.OverflowException">A value represents a number that is out of the
 		/// range of its corresponding type</exception>
-		public static NavigationData ParseNavigationDataExpression(string expression, State state)
+		public static NavigationData ParseNavigationDataExpression(string expression, State state, bool useCurrentData)
 		{
 			if (expression == null)
 				throw new ArgumentNullException("expression");
@@ -73,24 +76,32 @@ namespace Navigation
 			foreach (string dataItem in expression.Split(new char[] { ',' }))
 			{
 				keyTypeValue = dataItem.Split(new char[] { '=' });
-				if (keyTypeValue.Length != 2)
-					throw new FormatException(Resources.InvalidNavigationDataExpression);
-				keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
-				if (keyType.Length > 2)
-					throw new FormatException(Resources.InvalidNavigationDataExpression);
-				value = keyTypeValue[1].Trim();
-				key = keyType[0].Trim();
-				if (string.IsNullOrEmpty(key))
-					throw new FormatException(Resources.InvalidNavigationDataExpression);
-				type = typeof(string);
-				if (state != null && state.DefaultTypes[key] != null)
-					type = state.DefaultTypes[key];
-				if (keyType.Length == 2)
-					type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
-				if (type == null)
-					throw new FormatException(Resources.InvalidNavigationDataExpression);
-				obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
-				navigationData[key] = obj;
+				if (keyTypeValue.Length == 2)
+				{
+					keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
+					if (keyType.Length > 2)
+						throw new FormatException(Resources.InvalidNavigationDataExpression);
+					value = keyTypeValue[1].Trim();
+					key = keyType[0].Trim();
+					if (string.IsNullOrEmpty(key))
+						throw new FormatException(Resources.InvalidNavigationDataExpression);
+					type = typeof(string);
+					if (state != null && state.DefaultTypes[key] != null)
+						type = state.DefaultTypes[key];
+					if (keyType.Length == 2)
+						type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
+					if (type == null)
+						throw new FormatException(Resources.InvalidNavigationDataExpression);
+					obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
+					navigationData[key] = obj;
+				}
+				else
+				{
+					if (keyTypeValue.Length == 1 && useCurrentData)
+						navigationData[keyTypeValue[0].Trim()] = StateContext.Data[keyTypeValue[0].Trim()];
+					else
+						throw new FormatException(Resources.InvalidNavigationDataExpression);
+				}
 			}
 			return navigationData;
 		}

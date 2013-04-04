@@ -285,6 +285,7 @@ namespace Navigation
 					parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
 					parseNavigationData.Parameters.Add(new CodePrimitiveExpression(data));
 					parseNavigationData.Parameters.Add(getNextState);
+					parseNavigationData.Parameters.Add(new CodePrimitiveExpression(true));
 					navigationLink.Parameters.Add(parseNavigationData);
 				}
 			}
@@ -321,6 +322,7 @@ namespace Navigation
 				parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
 				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(key));
 				parseNavigationData.Parameters.Add(state);
+				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(true));
 				navigationLink.Parameters.Add(parseNavigationData);
 			}
 			else
@@ -341,6 +343,7 @@ namespace Navigation
 				parseNavigationData.Parameters.Add(new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), "NextState"));
 			else
 				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(null));
+			parseNavigationData.Parameters.Add(new CodePrimitiveExpression(true));
 			return parseNavigationData;
 		}
 

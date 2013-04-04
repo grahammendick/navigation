@@ -117,7 +117,7 @@ namespace Navigation
 						{
 							try
 							{
-								NavigationData navigationData = StateInfoConfig.ParseNavigationDataExpression(dialogChildNode.Attributes["defaults"].Value, state);
+								NavigationData navigationData = StateInfoConfig.ParseNavigationDataExpression(dialogChildNode.Attributes["defaults"].Value, state, false);
 								foreach (NavigationDataItem item in navigationData)
 								{
 									state.Defaults[item.Key] = item.Value;
