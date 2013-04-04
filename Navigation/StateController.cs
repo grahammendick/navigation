@@ -455,23 +455,18 @@ namespace Navigation
 				throw new ArgumentNullException("data");
 			if (data.Count == 0)
 			{
+				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 				ParseData(StateContext.ShieldDecode(StateController.QueryData, false), false);
+				StateContext.Data.Add(derivedData);
 			}
 			else
 			{
 				RemoveDefaultsAndDerived(data);
 				data = StateContext.ShieldDecode(data, true);
 				data.Remove(StateContext.STATE);
-				Dictionary<string, object> derivedData = new Dictionary<string, object>();
-				foreach (string key in StateContext.State.Derived)
-				{
-					derivedData[key] = StateContext.Data[key];
-				}
+				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 				StateContext.Data.Clear();
-				foreach (KeyValuePair<string, object> item in derivedData)
-				{
-					StateContext.Data[item.Key] = item.Value;
-				}
+				StateContext.Data.Add(derivedData);
 				foreach (string key in data)
 				{
 					StateContext.Data[key] = CrumbTrailManager.ParseURLString(key, data[key], StateContext.State);
