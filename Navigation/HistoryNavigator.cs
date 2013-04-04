@@ -16,7 +16,7 @@ namespace Navigation
 		private ScriptManager _ScriptManager;
 
 		/// <summary>
-		/// Comma separated list of <see cref="Navigation.NavigationData"/> items to track
+		/// Gets or sets a comma separated list of <see cref="Navigation.NavigationData"/> items to track
 		/// for changes
 		/// </summary>
 		[Category("Behavior"), Description("Comma separated list of NavigationData items to track for changes."), DefaultValue("")]
@@ -46,7 +46,7 @@ namespace Navigation
 				if (HistoryKeys.Length != 0)
 				{
 					keys = new List<string>();
-					foreach (string key in HistoryKeys.Split(','))
+					foreach (string key in HistoryKeys.Split(new char[] { ',' }))
 					{
 						keys.Add(key.Trim());
 					}
