@@ -1786,6 +1786,54 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateRefreshCurrentDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			data.Bag.i = 1;
+			data["c"] = '1';
+			StateController.Navigate("t0", data);
+			List<string> currentDataKeys = new List<string>();
+			currentDataKeys.Add("s");
+			currentDataKeys.Add("c");
+			StateController.Refresh(new NavigationData(currentDataKeys));
+			Assert.AreEqual("Hello", StateContext.Data["s"]);
+			Assert.AreEqual('1', StateContext.Bag.c);
+			Assert.IsNull(StateContext.Data["i"]);
+		}
+
+		[TestMethod]
+		public void NavigateCurrentDataDefaultsTest()
+		{
+			NavigationData data = new NavigationData();
+			data["emptyString"] = "Hello";
+			data["double"] = 1D;
+			data["char"] = '6';
+			data["DateTime"] = new DateTime(2000, 1, 3);
+			StateController.Navigate("d0", data);
+			StateController.Navigate("t0", new NavigationData(true));
+			List<string> currentDataKeys = new List<string>();
+			currentDataKeys.Add("double");
+			currentDataKeys.Add("char");
+			StateController.Navigate("t0", new NavigationData(currentDataKeys));
+			Assert.AreEqual("", StateContext.Bag.emptyString);
+			Assert.AreEqual(1D, StateContext.Data["double"]);
+			Assert.AreEqual('6', StateContext.Data["char"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Bag.DateTime);
+		}
+
+		[TestMethod]
+		public void NavigateCurrentDataDerivedDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0", new NavigationData() { { "decimal", 3m } });
+			List<string> currentDataKeys = new List<string>() { "decimal" };
+			StateController.Navigate("t0", new NavigationData(currentDataKeys));
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void EmptyNavigationDataType()
 		{

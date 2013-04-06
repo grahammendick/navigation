@@ -29,6 +29,8 @@ namespace Navigation
 		/// Initializes a new instance of the <see cref="Navigation.NavigationData"/> class containing
 		/// all the current <see cref="Navigation.StateContext.Data"/>
 		/// </summary>
+		/// <param name="includeCurrent">Identifies whether the current <see cref="Navigation.StateContext.Data"/>
+		/// should be included</param>
 		public NavigationData(bool includeCurrent)
 			: base()
 		{
@@ -42,7 +44,13 @@ namespace Navigation
 			}
 		}
 
-		internal NavigationData(IEnumerable<string> currentDataKeys)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Navigation.NavigationData"/> class containing
+		/// a subset of the current <see cref="Navigation.StateContext.Data"/>
+		/// </summary>
+		/// <param name="currentDataKeys">The subset of the current <see cref="Navigation.StateContext.Data"/>
+		/// to include</param>
+		public NavigationData(IEnumerable<string> currentDataKeys)
 			: base()
 		{
 			foreach (string key in currentDataKeys)
