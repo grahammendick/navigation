@@ -14,6 +14,7 @@ namespace Navigation
 	/// </summary>
 	public class NavigationHyperLink : HyperLink, IPostBackEventHandler
 	{
+		private static readonly object EventPreNavigationDataChange = new object();
 		private static readonly object EventClick = new object();
 		private static readonly object EventCommand = new object();
 
@@ -239,6 +240,25 @@ namespace Navigation
 			set
 			{
 				ViewState["FragmentIdentifier"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when the <see cref="Navigation.NavigationHyperLink"/> is clicked prior to the <see cref="Navigation.StateContext.Data"/>
+		/// being updated.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		[Category("Action"), Description("Fires before the State Context Data is updated if Direction is Refresh, PostBack is true and javascript is on.")]
+		public event EventHandler PreNavigationDataChange
+		{
+			add
+			{
+				Events.AddHandler(EventPreNavigationDataChange, value);
+			}
+			remove
+			{
+				Events.RemoveHandler(EventPreNavigationDataChange, value);
 			}
 		}
 
@@ -471,6 +491,19 @@ namespace Navigation
 		}
 
 		/// <summary>
+		/// Raises the <see cref="PreNavigationDataChange"/> event.
+		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
+		/// and <see cref="PostBack"/> is set to true and javascript is on
+		/// </summary>
+		/// <param name="e"><see cref="System.EventArgs"/> containing the event data</param>
+		protected virtual void OnPreNavigationDataChange(EventArgs e)
+		{
+			EventHandler eventHandler = (EventHandler)Events[EventPreNavigationDataChange];
+			if (eventHandler != null)
+				eventHandler(this, e);
+		}
+
+		/// <summary>
 		/// Raises the <see cref="Click"/> event.
 		/// This is only relevant if the <see cref="Direction"/> is <see cref="Navigation.NavigationDirection.Refresh"/>
 		/// and <see cref="PostBack"/> is set to true and javascript is on
@@ -505,6 +538,7 @@ namespace Navigation
 		public virtual void RaisePostBackEvent(string eventArgument)
 		{
 			Page.ClientScript.ValidateEvent(UniqueID);
+			OnPreNavigationDataChange(EventArgs.Empty);
 			if (!IncludeCurrentData)
 			{
 				NavigationData currentData = new NavigationData(CurrentDataKeyEnumerator);
