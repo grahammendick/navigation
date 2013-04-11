@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Compilation;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Navigation
 {
@@ -19,7 +20,7 @@ namespace Navigation
 	/// </summary>
 	public class NavigationDataControlBuilderInterceptor : ControlBuilderInterceptor
 	{
-		private static Regex _NavigationDataBindingExpression = new Regex(@"^\{\s*(?<type>NavigationData|NavigationLink|NavigationBackLink|RefreshLink)(?<off>\*?)(\s+(?<key>[^\s]+.*)?)?\}$");
+		private static Regex _NavigationDataBindingExpression = new Regex(@"^\{\s*(?<type>NavigationData|NavigationLink|NavigationBackLink|RefreshLink|RefreshPostBack)(?<off>\*?)(\s+(?<key>[^\s]+.*)?)?\}$");
 
 		/// <summary>
 		/// Called before the <see cref="System.Web.UI.ControlBuilder"/> of an element in the markup is initialized
@@ -38,13 +39,13 @@ namespace Navigation
 			if (attributes != null)
 			{
 				Match navigationDataBindingMatch;
-				Dictionary<string, Tuple<string, bool, NavigationDirection?>> navigationDataBindings = new Dictionary<string, Tuple<string, bool, NavigationDirection?>>();
+				Dictionary<string, Tuple<string, bool, NavigationDirection?, bool>> navigationDataBindings = new Dictionary<string, Tuple<string, bool, NavigationDirection?, bool>>();
 				foreach (DictionaryEntry entry in attributes)
 				{
 					navigationDataBindingMatch = _NavigationDataBindingExpression.Match(((string)entry.Value).Trim());
 					if (navigationDataBindingMatch.Success)
 					{
-						navigationDataBindings.Add((string)entry.Key, Tuple.Create(navigationDataBindingMatch.Groups["key"].Value.Trim(), navigationDataBindingMatch.Groups["off"].Value.Length != 0, GetNavigationDirection(navigationDataBindingMatch.Groups["type"].Value)));
+						navigationDataBindings.Add((string)entry.Key, Tuple.Create(navigationDataBindingMatch.Groups["key"].Value.Trim(), navigationDataBindingMatch.Groups["off"].Value.Length != 0, GetNavigationDirection(navigationDataBindingMatch.Groups["type"].Value), StringComparer.InvariantCultureIgnoreCase.Compare(navigationDataBindingMatch.Groups["type"].Value, "RefreshPostBack") == 0));
 					}
 				}
 				if (navigationDataBindings.Count > 0)
@@ -83,7 +84,7 @@ namespace Navigation
 		{
 			if (buildMethod == null)
 				return;
-			Dictionary<string, Tuple<string, bool, NavigationDirection?>> navigationDataBindings = additionalState["__NavigationData"] as Dictionary<string, Tuple<string, bool, NavigationDirection?>>;
+			Dictionary<string, Tuple<string, bool, NavigationDirection?, bool>> navigationDataBindings = additionalState["__NavigationData"] as Dictionary<string, Tuple<string, bool, NavigationDirection?, bool>>;
 			if (navigationDataBindings == null)
 				return;
 			CodeLinePragma linePragma = null;
@@ -99,7 +100,7 @@ namespace Navigation
 			derivedType.Members.Add(BuildNavigationDataClass(controlBuilder, linePragma, navigationDataBindings, buildMethod));
 		}
 
-		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, Tuple<string, bool, NavigationDirection?>> navigationDataBindings, CodeMemberMethod buildMethod)
+		private static CodeTypeDeclaration BuildNavigationDataClass(ControlBuilder controlBuilder, CodeLinePragma linePragma, Dictionary<string, Tuple<string, bool, NavigationDirection?, bool>> navigationDataBindings, CodeMemberMethod buildMethod)
 		{
 			CodeTypeDeclaration navigationDataClass = new CodeTypeDeclaration("__NavigationData" + controlBuilder.ID);
 			CodeAttributeDeclaration nonUserCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute), CodeTypeReferenceOptions.GlobalReference));
@@ -118,10 +119,25 @@ namespace Navigation
 			CodeMemberMethod pageLoadCompleteListener = ConfigureListener("Page_LoadComplete", nonUserCodeAttribute);
 			CodeMemberMethod pagePreRenderCompleteListener = ConfigureListener("Page_PreRenderComplete", nonUserCodeAttribute);
 			CodeMemberMethod pageSaveStateCompleteListener = ConfigureListener("Page_SaveStateComplete", nonUserCodeAttribute);
-			foreach (KeyValuePair<string, Tuple<string, bool, NavigationDirection?>> tuple in navigationDataBindings)
+			CodeCastExpression attributeAccessor;
+			CodeExpressionStatement refreshPostBackAttribute;
+			foreach (KeyValuePair<string, Tuple<string, bool, NavigationDirection?, bool>> tuple in navigationDataBindings)
 			{
-				if (!BuildNavigationDataEventListener(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
-					BuildNavigationDataStatements(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, controlLoadListener, navigationHyperLinkPreNavigationDataChangeListener, pageLoadCompleteListener, !tuple.Value.Item2 ? pagePreRenderCompleteListener : pageSaveStateCompleteListener, linePragma);
+				if (!tuple.Value.Item4)
+				{
+					if (!BuildNavigationDataEventListener(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
+						BuildNavigationDataStatements(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, controlLoadListener, navigationHyperLinkPreNavigationDataChangeListener, pageLoadCompleteListener, !tuple.Value.Item2 ? pagePreRenderCompleteListener : pageSaveStateCompleteListener, linePragma);
+				}
+				else
+				{
+					if (typeof(HyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.InvariantCultureIgnoreCase.Compare(tuple.Key, "NavigateUrl") == 0)
+					{
+						attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("__ctrl"));
+						refreshPostBackAttribute = new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", new CodeExpression[] { new CodePrimitiveExpression("__ToData"), new CodePrimitiveExpression(tuple.Value.Item1.Trim()) }));
+						refreshPostBackAttribute.LinePragma = linePragma;
+						buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, refreshPostBackAttribute);
+					}
+				}
 			}
 			AttachEvent(false, controlLoadListener, "Load", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
 			AttachEvent(false, navigationHyperLinkPreNavigationDataChangeListener, "PreNavigationDataChange", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);

@@ -86,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RefreshHyperLinkAdapter.cs" />
     <Compile Include="SessionCrumbTrailPersister.cs" />
     <Compile Include="Sorter.cs" />
     <Compile Include="State.cs" />
