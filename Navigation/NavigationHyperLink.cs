@@ -375,6 +375,8 @@ namespace Navigation
 				NavigationData data = IncludeCurrentData ? new NavigationData(IncludeCurrentData) : new NavigationData(CurrentDataKeyEnumerator);
 				data.SetDefaults(StateContext.State.Defaults);
 				UpdateData(data);
+				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
+				data.Add(derivedData);
 				if (data.Count != StateContext.Data.Count)
 					return false;
 				foreach (NavigationDataItem item in data)
@@ -539,6 +541,7 @@ namespace Navigation
 		{
 			Page.ClientScript.ValidateEvent(UniqueID);
 			OnPreNavigationDataChange(EventArgs.Empty);
+			NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 			if (!IncludeCurrentData)
 			{
 				NavigationData currentData = new NavigationData(CurrentDataKeyEnumerator);
@@ -546,6 +549,7 @@ namespace Navigation
 				StateContext.Data.Add(currentData);
 			}
 			UpdateData(StateContext.Data);
+			StateContext.Data.Add(derivedData);
 			OnClick(EventArgs.Empty);
 			OnCommand(new CommandEventArgs(CommandName, CommandArgument));
 		}

@@ -58,9 +58,11 @@ namespace Navigation
 			if (StringComparer.InvariantCultureIgnoreCase.Compare(eventArgument, "RefreshPostBack") == 0)
 			{
 				Page.ClientScript.ValidateEvent(HyperLink.UniqueID, "RefreshPostBack");
+				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 				NavigationData toData = ToData;
 				StateContext.Data.Clear();
 				StateContext.Data.Add(toData);
+				StateContext.Data.Add(derivedData);
 			}
 			else
 			{
