@@ -1749,10 +1749,59 @@ namespace Navigation.Test
 			NavigationData data = new NavigationData();
 			data.Bag.z = "Hello";
 			StateController.Navigate("t0", data);
-			data = StateInfoConfig.ParseNavigationDataExpression("x=y,z,a?int=1", null, true);
+			data = StateInfoConfig.ParseNavigationDataExpression("x=y,z,a?int=1,byte=2  ", null, true);
 			Assert.AreEqual("y", data.Bag.x);
 			Assert.AreEqual("Hello", data.Bag.z);
 			Assert.AreEqual(1, data.Bag.a);
+			Assert.AreEqual("2", data["byte"]);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionCurrentDataAndStateTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			StateContext.Bag.y = 1;
+			data = StateInfoConfig.ParseNavigationDataExpression("x=y,y,z,a?int=1,byte=2", StateController.GetNextState("t0"), true);
+			Assert.AreEqual("y", data.Bag.x);
+			Assert.AreEqual(1, data.Bag.y);
+			Assert.AreEqual("Hello", data.Bag.z);
+			Assert.AreEqual(1, data.Bag.a);
+			Assert.AreEqual('2', data["byte"]);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionIncludeCurrentDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			StateContext.Bag.y = 1;
+			data = StateInfoConfig.ParseNavigationDataExpression(" &x=y,a?int=1,byte=2", null, true);
+			Assert.AreEqual("y", data.Bag.x);
+			Assert.AreEqual(1, data.Bag.y);
+			Assert.AreEqual("Hello", data.Bag.z);
+			Assert.AreEqual(1, data.Bag.a);
+			Assert.AreEqual("2", data["byte"]);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionIncludeCurrentDataAndStateTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.y = 1;
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			data = StateInfoConfig.ParseNavigationDataExpression("&x=y,a?int=1,byte=2  ", StateController.GetNextState("t0"), true);
+			Assert.AreEqual("y", data.Bag.x);
+			Assert.AreEqual(1, data.Bag.y);
+			Assert.AreEqual("Hello", data.Bag.z);
+			Assert.AreEqual(1, data.Bag.a);
+			Assert.AreEqual('2', data["byte"]);
 		}
 
 		[TestMethod]
