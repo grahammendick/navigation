@@ -458,6 +458,25 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateTransitionGetNextStateTest()
+		{
+			StateController.Navigate("d2");
+			StateController.Navigate("t0");
+			State state = StateController.GetNextState("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d2"].States["s2"], state);
+		}
+
+		[TestMethod]
+		public void NavigateTransitionTransitionGetCrumbTest()
+		{
+			StateController.Navigate("d1");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Crumb crumb = StateController.GetCrumb(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d1"].States["s1"], crumb.State);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void AddHistoryPointNullPageTest()
 		{

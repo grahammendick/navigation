@@ -72,7 +72,11 @@ namespace Navigation
 			string key, value;
 			Type type;
 			object obj;
-			NavigationData navigationData = new NavigationData();
+			expression = expression.TrimStart();
+			bool includeCurrentData = useCurrentData && expression.StartsWith("&", StringComparison.Ordinal);
+			if (includeCurrentData)
+				expression = expression.Substring(1);
+			NavigationData navigationData = new NavigationData(includeCurrentData);
 			foreach (string dataItem in expression.Split(new char[] { ',' }))
 			{
 				keyTypeValue = dataItem.Split(new char[] { '=' });

@@ -303,9 +303,10 @@ namespace Navigation.Test
 		public void DefaultTypesStringTest()
 		{
 			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
-			Assert.AreEqual("a", defaults["s1"]);
-			Assert.AreEqual("b", defaults["s2"]);
-			Assert.AreEqual("c", defaults["s3"]);
+			Assert.AreEqual("a", defaults["&s0"]);
+			Assert.AreEqual("b", defaults["s1"]);
+			Assert.AreEqual("c", defaults["s2"]);
+			Assert.AreEqual("d", defaults["s3"]);
 		}
 
 		[TestMethod]
