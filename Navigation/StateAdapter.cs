@@ -27,7 +27,7 @@ namespace Navigation
 		/// the <see cref="Navigation.State"/> does not match the Url path</exception>
 		public override NameValueCollection DeterminePostBackMode()
 		{
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(Page.Request.Path, FormsAuthentication.LoginUrl) == 0
+			if (StringComparer.OrdinalIgnoreCase.Compare(Page.Request.Path, FormsAuthentication.LoginUrl) == 0
 				|| !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
 				|| StateInfoConfig.Dialogs == null)
 				return base.DeterminePostBackMode();
@@ -38,7 +38,7 @@ namespace Navigation
 				for (int i = 0; i < StateInfoConfig.Dialogs.Count; i++)
 				{
 					dialog = StateInfoConfig.Dialogs[i];
-					if (dialog.Path.Length != 0 && StringComparer.InvariantCultureIgnoreCase.Compare(Page.AppRelativeVirtualPath, dialog.Path) == 0)
+					if (dialog.Path.Length != 0 && StringComparer.OrdinalIgnoreCase.Compare(Page.AppRelativeVirtualPath, dialog.Path) == 0)
 					{
 						NavigationData data = new NavigationData();
 						foreach (string key in Page.Request.QueryString)
@@ -54,9 +54,9 @@ namespace Navigation
 				throw new UrlException(Resources.InvalidUrl);
 			}
 			Route route = Page.RouteData.Route as Route;
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0
-				&& StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.MobilePage, Page.AppRelativeVirtualPath) != 0
-				&& (route == null || StringComparer.InvariantCultureIgnoreCase.Compare(StateContext.State.Route, route.Url) != 0))
+			if (StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0
+				&& StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.MobilePage, Page.AppRelativeVirtualPath) != 0
+				&& (route == null || StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.Route, route.Url) != 0))
 			{
 				throw new UrlException(Resources.InvalidUrl);
 			}
@@ -80,8 +80,8 @@ namespace Navigation
 		{
 			Route route = Page.RouteData.Route as Route;
 			if ((route == null && (stateDisplayInfo.Route.Length != 0 && RouteTable.Routes[stateDisplayInfo.RouteName] != null))
-				|| (route != null && StringComparer.InvariantCultureIgnoreCase.Compare(stateDisplayInfo.Route, route.Url) != 0)
-				|| StringComparer.InvariantCultureIgnoreCase.Compare(stateDisplayInfo.Page, Page.AppRelativeVirtualPath) != 0)
+				|| (route != null && StringComparer.OrdinalIgnoreCase.Compare(stateDisplayInfo.Route, route.Url) != 0)
+				|| StringComparer.OrdinalIgnoreCase.Compare(stateDisplayInfo.Page, Page.AppRelativeVirtualPath) != 0)
 				return false;
 			return true;
 		}

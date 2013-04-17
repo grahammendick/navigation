@@ -53,7 +53,7 @@ namespace Navigation
 			stateDisplayInfo.RouteName = State.GetRouteName(false);
 			stateDisplayInfo.Masters = State.Masters;
 			stateDisplayInfo.Theme = State.Theme;
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(State.Page, stateDisplayInfo.Page) != 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(State.Page, stateDisplayInfo.Page) != 0)
 			{
 				stateDisplayInfo.Masters = new ReadOnlyCollection<string>(new string[0]);
 				stateDisplayInfo.Theme = string.Empty;
@@ -100,7 +100,7 @@ namespace Navigation
 			}
 			else
 			{
-				mobile = StringComparer.InvariantCultureIgnoreCase.Compare(Regex.Split(displayModes, "\\|")[0], "Mobile") == 0;
+				mobile = StringComparer.OrdinalIgnoreCase.Compare(Regex.Split(displayModes, "\\|")[0], "Mobile") == 0;
 				stateDisplayInfo.DisplayModes = displayModes;
 				stateDisplayInfo.IsPostBack = true;
 			}
