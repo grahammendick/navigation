@@ -55,7 +55,7 @@ namespace Navigation
 		/// <param name="eventArgument">The argument for the event</param>
 		public void RaisePostBackEvent(string eventArgument)
 		{
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(eventArgument, "RefreshPostBack") == 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(eventArgument, "RefreshPostBack") == 0)
 			{
 				Page.ClientScript.ValidateEvent(HyperLink.UniqueID, "RefreshPostBack");
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);

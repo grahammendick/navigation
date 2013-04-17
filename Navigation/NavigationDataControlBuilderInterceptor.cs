@@ -45,7 +45,7 @@ namespace Navigation
 					navigationDataBindingMatch = _NavigationDataBindingExpression.Match(((string)entry.Value).Trim());
 					if (navigationDataBindingMatch.Success)
 					{
-						navigationDataBindings.Add((string)entry.Key, Tuple.Create(navigationDataBindingMatch.Groups["key"].Value.Trim(), navigationDataBindingMatch.Groups["off"].Value.Length != 0, GetNavigationDirection(navigationDataBindingMatch.Groups["type"].Value), StringComparer.InvariantCultureIgnoreCase.Compare(navigationDataBindingMatch.Groups["type"].Value, "RefreshPostBack") == 0));
+						navigationDataBindings.Add((string)entry.Key, Tuple.Create(navigationDataBindingMatch.Groups["key"].Value.Trim(), navigationDataBindingMatch.Groups["off"].Value.Length != 0, GetNavigationDirection(navigationDataBindingMatch.Groups["type"].Value), StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingMatch.Groups["type"].Value, "RefreshPostBack") == 0));
 					}
 				}
 				if (navigationDataBindings.Count > 0)
@@ -59,11 +59,11 @@ namespace Navigation
 
 		private static NavigationDirection? GetNavigationDirection(string navigationDataBindingType)
 		{
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(navigationDataBindingType, "NavigationLink") == 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "NavigationLink") == 0)
 				return NavigationDirection.Forward;
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(navigationDataBindingType, "NavigationBackLink") == 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "NavigationBackLink") == 0)
 				return NavigationDirection.Back;
-			if (StringComparer.InvariantCultureIgnoreCase.Compare(navigationDataBindingType, "RefreshLink") == 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "RefreshLink") == 0)
 				return NavigationDirection.Refresh;
 			return null;
 		}
@@ -130,7 +130,7 @@ namespace Navigation
 				}
 				else
 				{
-					if (typeof(HyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.InvariantCultureIgnoreCase.Compare(tuple.Key, "NavigateUrl") == 0)
+					if (typeof(HyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.OrdinalIgnoreCase.Compare(tuple.Key, "NavigateUrl") == 0)
 					{
 						attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("__ctrl"));
 						refreshPostBackAttribute = new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", new CodeExpression[] { new CodePrimitiveExpression("__ToData"), new CodePrimitiveExpression(tuple.Value.Item1.Trim()) }));
@@ -184,7 +184,7 @@ namespace Navigation
 
 		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, string key, string value, NavigationDirection? direction, CodePropertyReferenceExpression navigationData, CodeMemberMethod controlLoadListener, CodeMemberMethod navigationHyperLinkPreNavigationDataChangeListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pageCompleteListener, CodeLinePragma linePragma)
 		{
-			bool enabledOrVisible = StringComparer.InvariantCultureIgnoreCase.Compare(key, "Enabled") == 0 || StringComparer.InvariantCultureIgnoreCase.Compare(key, "Visible") == 0;
+			bool enabledOrVisible = StringComparer.OrdinalIgnoreCase.Compare(key, "Enabled") == 0 || StringComparer.OrdinalIgnoreCase.Compare(key, "Visible") == 0;
 			Tuple<CodeStatement, string> controlNavigationDataAssignTuple = GetNavigationDataAssign(controlBuilder, navigationData, key, value, direction, linePragma);
 			CodeStatement controlNavigationDataAssign = controlNavigationDataAssignTuple.Item1;
 			if (controlNavigationDataAssign != null)
@@ -197,7 +197,7 @@ namespace Navigation
 				}
 				else
 				{
-					if (typeof(NavigationHyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.InvariantCultureIgnoreCase.Compare(controlNavigationDataAssignTuple.Item2, "ToData") == 0)
+					if (typeof(NavigationHyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.OrdinalIgnoreCase.Compare(controlNavigationDataAssignTuple.Item2, "ToData") == 0)
 						navigationHyperLinkPreNavigationDataChangeListener.Statements.Add(controlNavigationDataAssign);
 					pageCompleteListener.Statements.Add(controlNavigationDataAssign);
 				}
@@ -362,7 +362,7 @@ namespace Navigation
 			CodeMethodInvokeExpression parseNavigationData = new CodeMethodInvokeExpression();
 			parseNavigationData.Method = new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(StateInfoConfig), CodeTypeReferenceOptions.GlobalReference)), "ParseNavigationDataExpression");
 			parseNavigationData.Parameters.Add(new CodePrimitiveExpression(key));
-			if (typeof(NavigationHyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.InvariantCultureIgnoreCase.Compare(name, "ToData") == 0)
+			if (typeof(NavigationHyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.OrdinalIgnoreCase.Compare(name, "ToData") == 0)
 				parseNavigationData.Parameters.Add(new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), "NextState"));
 			else
 				parseNavigationData.Parameters.Add(new CodePrimitiveExpression(null));
