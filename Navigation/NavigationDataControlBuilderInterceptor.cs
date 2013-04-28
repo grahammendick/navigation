@@ -63,7 +63,8 @@ namespace Navigation
 				return NavigationDirection.Forward;
 			if (StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "NavigationBackLink") == 0)
 				return NavigationDirection.Back;
-			if (StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "RefreshLink") == 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "RefreshLink") == 0
+				|| StringComparer.OrdinalIgnoreCase.Compare(navigationDataBindingType, "RefreshPostBack") == 0)
 				return NavigationDirection.Refresh;
 			return null;
 		}
@@ -123,20 +124,14 @@ namespace Navigation
 			CodeExpressionStatement refreshPostBackAttribute;
 			foreach (KeyValuePair<string, Tuple<string, bool, NavigationDirection?, bool>> tuple in navigationDataBindings)
 			{
-				if (!tuple.Value.Item4)
+				if (!BuildNavigationDataEventListener(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
+					BuildNavigationDataStatements(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, controlLoadListener, navigationHyperLinkPreNavigationDataChangeListener, pageLoadCompleteListener, !tuple.Value.Item2 ? pagePreRenderCompleteListener : pageSaveStateCompleteListener, linePragma);
+				if (tuple.Value.Item4 && typeof(IAttributeAccessor).IsAssignableFrom(controlBuilder.ControlType))
 				{
-					if (!BuildNavigationDataEventListener(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, navigationDataClass, nonUserCodeAttribute, linePragma, buildMethod))
-						BuildNavigationDataStatements(controlBuilder, tuple.Key, tuple.Value.Item1, tuple.Value.Item3, navigationData, controlLoadListener, navigationHyperLinkPreNavigationDataChangeListener, pageLoadCompleteListener, !tuple.Value.Item2 ? pagePreRenderCompleteListener : pageSaveStateCompleteListener, linePragma);
-				}
-				else
-				{
-					if (typeof(HyperLink).IsAssignableFrom(controlBuilder.ControlType) && StringComparer.OrdinalIgnoreCase.Compare(tuple.Key, "NavigateUrl") == 0)
-					{
-						attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("__ctrl"));
-						refreshPostBackAttribute = new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", new CodeExpression[] { new CodePrimitiveExpression("__ToData"), new CodePrimitiveExpression(tuple.Value.Item1.Trim()) }));
-						refreshPostBackAttribute.LinePragma = linePragma;
-						buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, refreshPostBackAttribute);
-					}
+					attributeAccessor = new CodeCastExpression(new CodeTypeReference(typeof(IAttributeAccessor), CodeTypeReferenceOptions.GlobalReference), new CodeVariableReferenceExpression("__ctrl"));
+					refreshPostBackAttribute = new CodeExpressionStatement(new CodeMethodInvokeExpression(attributeAccessor, "SetAttribute", new CodeExpression[] { new CodePrimitiveExpression("__ToData"), new CodePrimitiveExpression(tuple.Value.Item1.Trim()) }));
+					refreshPostBackAttribute.LinePragma = linePragma;
+					buildMethod.Statements.Insert(buildMethod.Statements.Count - 1, refreshPostBackAttribute);
 				}
 			}
 			AttachEvent(false, controlLoadListener, "Load", typeof(EventHandler), linePragma, buildMethod, navigationDataClass);
