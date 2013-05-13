@@ -12,21 +12,42 @@ using System.Web.WebPages;
 
 namespace Navigation
 {
-	internal class StateRouteHandler : IRouteHandler
+	/// <summary>
+	/// Allows a <see cref="Navigation.State"/>'s page, masters and theme to be determined
+	/// based on the browser, using the Display Modes support provided by ASP.NET.
+	/// </summary>
+	public class StateRouteHandler : IRouteHandler
 	{
 		private static readonly object _StateDisplayInfoKey = new object();
 
-		internal StateRouteHandler(State state)
+		internal StateRouteHandler()
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Navigation.StateRouteHandler"/> class
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> this route handler is
+		/// associated with</param>
+		protected internal StateRouteHandler(State state)
 		{
 			State = state;
 		}
 
-		private State State
+		/// <summary>
+		/// Gets the <see cref="Navigation.State"/> this route handler is associated with
+		/// </summary>
+		public State State
 		{
 			get;
-			set;
+			private set;
 		}
 
+		/// <summary>
+		/// Returns the object that processes the request
+		/// </summary>
+		/// <param name="requestContext">An object that encapsulates information about the request</param>
+		/// <returns>The object that processes the request</returns>
 		public IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{
 			if (requestContext == null)
@@ -36,7 +57,7 @@ namespace Navigation
 			if (displayModes == null)
 				stateDisplayInfo = GetStateDisplayInfo(requestContext.HttpContext);
 			else
-				stateDisplayInfo = GetStateDisplayInfo(displayModes);
+				stateDisplayInfo = GetStateDisplayInfo(displayModes, requestContext.HttpContext);
 			requestContext.HttpContext.Items[_StateDisplayInfoKey] = stateDisplayInfo;
 			return new PageRouteHandler(stateDisplayInfo.Page, State.CheckPhysicalUrlAccess).GetHttpHandler(requestContext);
 		}
@@ -45,7 +66,7 @@ namespace Navigation
 		{
 			StateDisplayInfo stateDisplayInfo = new StateDisplayInfo();
 			stateDisplayInfo.IsPostBack = false;
-			DisplayInfo displayInfo = DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(State.Page, context, v => HostingEnvironment.VirtualPathProvider.FileExists(v), null);
+			DisplayInfo displayInfo = GetDisplayInfoForPage(State.Page, context);
 			stateDisplayInfo.DisplayMode = displayInfo.DisplayMode;
 			stateDisplayInfo.Page = displayInfo.FilePath;
 			stateDisplayInfo.DisplayModes = displayInfo.DisplayMode.DisplayModeId;
@@ -61,7 +82,7 @@ namespace Navigation
 			return stateDisplayInfo;
 		}
 
-		private StateDisplayInfo GetStateDisplayInfo(string displayModes)
+		private StateDisplayInfo GetStateDisplayInfo(string displayModes, HttpContextBase context)
 		{
 			StateDisplayInfo stateDisplayInfo = new StateDisplayInfo();
 			stateDisplayInfo.IsPostBack = true;
@@ -72,17 +93,41 @@ namespace Navigation
 			stateDisplayInfo.Masters = State.Masters;
 			stateDisplayInfo.Theme = State.Theme;
 			string[] displayModeIds = Regex.Split(displayModes, "\\|");
-			if (displayModeIds[0].Length > 0)
+			DisplayInfo displayInfo = new DisplayInfo(State.Page, DisplayModeProvider.Instance.Modes.Where(m => m.DisplayModeId == displayModeIds[0]).First());
+			stateDisplayInfo.Page = GetPageForDisplayInfo(displayInfo, context);
+			if (StringComparer.OrdinalIgnoreCase.Compare(State.Page, stateDisplayInfo.Page) != 0)
 			{
-				string page = State.Page.Substring(0, State.Page.Length - 4) + displayModeIds[0] + ".aspx";
-				if (HostingEnvironment.VirtualPathProvider.FileExists(page))
-				{
-					stateDisplayInfo.Masters = new ReadOnlyCollection<string>(new string[0]);
-					stateDisplayInfo.Theme = string.Empty;
-					stateDisplayInfo.Page = page;
-				}
+				stateDisplayInfo.Masters = new ReadOnlyCollection<string>(new string[0]);
+				stateDisplayInfo.Theme = string.Empty;
 			}
 			return stateDisplayInfo;
+		}
+
+		/// <summary>
+		/// Gets the browser specific page and <see cref="System.Web.WebPages.IDisplayMode"/> and is
+		/// called when the page first loads
+		/// </summary>
+		/// <param name="page">The page for the associated <see cref="State"/></param>
+		/// <param name="context">The current <see cref="System.Web.HttpContextBase"/></param>
+		/// <returns>The browser specific <see cref="System.Web.WebPages.DisplayInfo"/></returns>
+		protected virtual DisplayInfo GetDisplayInfoForPage(string page, HttpContextBase context)
+		{
+			return DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(page, context, v => HostingEnvironment.VirtualPathProvider.FileExists(v), null);
+		}
+
+		/// <summary>
+		/// Gets the browser specific page from the given <paramref name="displayInfo"/> and is called
+		/// when the page posts back
+		/// </summary>
+		/// <param name="displayInfo">Contains the page for the associated <see cref="State"/> and the
+		/// browser specific <see cref="System.Web.WebPages.IDisplayMode"/></param>
+		/// <param name="context">The current <see cref="System.Web.HttpContextBase"/></param>
+		/// <returns>The browser specific page</returns>
+		protected virtual string GetPageForDisplayInfo(DisplayInfo displayInfo, HttpContextBase context)
+		{
+			if (displayInfo.DisplayMode.DisplayModeId.Length != 0)
+				return displayInfo.FilePath.Substring(0, displayInfo.FilePath.Length - 4) + displayInfo.DisplayMode.DisplayModeId + ".aspx";
+			return displayInfo.FilePath;
 		}
 
 		private static StateDisplayInfo GetStateDisplayInfo(State state, HttpContextBase context)
@@ -112,7 +157,7 @@ namespace Navigation
 			return stateDisplayInfo;
 		}
 
-		internal static StateDisplayInfo SetPageStateDisplay(Page page, State state)
+		internal StateDisplayInfo SetPageStateDisplay(Page page, State state)
 		{
 			HttpContextBase context = page.Request.RequestContext.HttpContext;
 			StateDisplayInfo stateDisplayInfo = (StateDisplayInfo)context.Items[_StateDisplayInfoKey];
@@ -129,11 +174,11 @@ namespace Navigation
 			if (!stateDisplayInfo.IsPostBack)
 				UpdateStateDisplayInfo(stateDisplayInfo, context, page);
 			else
-				UpdateStateDisplayInfo(stateDisplayInfo, page);
+				UpdateStateDisplayInfo(stateDisplayInfo, page, context);
 			return stateDisplayInfo;
 		}
 
-		private static void UpdateStateDisplayInfo(StateDisplayInfo stateDisplayInfo, HttpContextBase context, Page page)
+		private void UpdateStateDisplayInfo(StateDisplayInfo stateDisplayInfo, HttpContextBase context, Page page)
 		{
 			DisplayInfo displayInfo;
 			StringBuilder keyBuilder = new StringBuilder();
@@ -142,7 +187,7 @@ namespace Navigation
 			bool masterSwitch = false;
 			if (stateDisplayInfo.Masters.Count != 0)
 			{
-				displayInfo = DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(stateDisplayInfo.Masters[0], context, v => HostingEnvironment.VirtualPathProvider.FileExists(v), stateDisplayInfo.DisplayMode);
+				displayInfo = GetDisplayInfoForMaster(stateDisplayInfo.Masters[0], stateDisplayInfo.DisplayMode, context);
 				keyBuilder.Append("|");
 				keyBuilder.Append(displayInfo.DisplayMode.DisplayModeId);
 				page.MasterPageFile = displayInfo.FilePath;
@@ -156,7 +201,7 @@ namespace Navigation
 			int i = 2;
 			while (master != null && !string.IsNullOrEmpty(master.MasterPageFile))
 			{
-				displayInfo = DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(master.MasterPageFile, context, v => HostingEnvironment.VirtualPathProvider.FileExists(v), stateDisplayInfo.DisplayMode);
+				displayInfo = GetDisplayInfoForMaster(master.MasterPageFile, stateDisplayInfo.DisplayMode, context);
 				keyBuilder.Append("|");
 				keyBuilder.Append(displayInfo.DisplayMode.DisplayModeId);
 				master.MasterPageFile = displayInfo.FilePath;
@@ -170,25 +215,25 @@ namespace Navigation
 			}
 			if (stateDisplayInfo.Theme.Length != 0)
 			{
-				displayInfo = DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(stateDisplayInfo.Theme + ".Theme", context, v => HostingEnvironment.VirtualPathProvider.DirectoryExists("~/App_Themes/" + v.Substring(0, v.Length - 6)), stateDisplayInfo.DisplayMode);
+				displayInfo = GetDisplayInfoForTheme(stateDisplayInfo.Theme, stateDisplayInfo.DisplayMode, context);
 				keyBuilder.Append("|");
 				keyBuilder.Append(displayInfo.DisplayMode.DisplayModeId);
-				page.Theme = displayInfo.FilePath.Substring(0, displayInfo.FilePath.Length - 6);
+				page.Theme = displayInfo.FilePath;
 			}
 			stateDisplayInfo.DisplayModes = keyBuilder.ToString();
 		}
 
-		private static void UpdateStateDisplayInfo(StateDisplayInfo stateDisplayInfo, Page page)
+		private void UpdateStateDisplayInfo(StateDisplayInfo stateDisplayInfo, Page page, HttpContextBase context)
 		{
 			string[] displayModeIds = Regex.Split(stateDisplayInfo.DisplayModes, "\\|");
 			int i = 1;
 			MasterPage master = null;
 			bool masterSwitch = false;
+			DisplayInfo displayInfo;
 			if (stateDisplayInfo.Masters.Count != 0 && displayModeIds.Length > i)
 			{
-				page.MasterPageFile = stateDisplayInfo.Masters[0];
-				if (displayModeIds[i].Length != 0)
-					page.MasterPageFile = stateDisplayInfo.Masters[0].Substring(0, stateDisplayInfo.Masters[0].Length - 6) + displayModeIds[i] + ".Master";
+				displayInfo = new DisplayInfo(stateDisplayInfo.Masters[0], DisplayModeProvider.Instance.Modes.Where(m => m.DisplayModeId == displayModeIds[i]).First());
+				page.MasterPageFile = GetMasterForDisplayInfo(displayInfo, context);
 				page.Master.ID = "m";
 				master = page.Master;
 				if (stateDisplayInfo.Masters.Count > 1 && displayModeIds[i].Length == 0)
@@ -199,9 +244,8 @@ namespace Navigation
 			}
 			while (master != null && !string.IsNullOrEmpty(master.MasterPageFile) && displayModeIds.Length > i)
 			{
-				master.MasterPageFile = master.MasterPageFile;
-				if (displayModeIds[i].Length != 0)
-					master.MasterPageFile = master.MasterPageFile.Substring(0, master.MasterPageFile.Length - 6) + displayModeIds[i] + ".Master";
+				displayInfo = new DisplayInfo(master.MasterPageFile, DisplayModeProvider.Instance.Modes.Where(m => m.DisplayModeId == displayModeIds[i]).First());
+				master.MasterPageFile = GetMasterForDisplayInfo(displayInfo, context);
 				master.Master.ID = "m";
 				master = master.Master;
 				if (!masterSwitch && stateDisplayInfo.Masters.Count > i && displayModeIds[i].Length == 0)
@@ -212,10 +256,68 @@ namespace Navigation
 			}
 			if (stateDisplayInfo.Theme.Length != 0 && displayModeIds.Length > i)
 			{
-				page.Theme = stateDisplayInfo.Theme;
-				if (displayModeIds[i].Length > 0)
-					page.Theme = stateDisplayInfo.Theme + "." + displayModeIds[i];
+				displayInfo = new DisplayInfo(stateDisplayInfo.Theme, DisplayModeProvider.Instance.Modes.Where(m => m.DisplayModeId == displayModeIds[i]).First());
+				page.Theme = GetThemeForDisplayInfo(displayInfo, context);
 			}
+		}
+
+		/// <summary>
+		/// Gets the browser specific master and <see cref="System.Web.WebPages.IDisplayMode"/> and is
+		/// called when the page first loads
+		/// </summary>
+		/// <param name="master">The master for the browser specific page or master</param>
+		/// <param name="displayMode">The browser specific page's <see cref="System.Web.WebPages.IDisplayMode"/>,
+		/// used in conjunction with <see cref="System.Web.WebPages.DisplayModeProvider.RequireConsistentDisplayMode"/></param>
+		/// <param name="context">The current <see cref="System.Web.HttpContextBase"/></param>
+		/// <returns>The browser specific <see cref="System.Web.WebPages.DisplayInfo"/></returns>
+		protected virtual DisplayInfo GetDisplayInfoForMaster(string master, IDisplayMode displayMode, HttpContextBase context)
+		{
+			return DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(master, context, v => HostingEnvironment.VirtualPathProvider.FileExists(v), displayMode);
+		}
+
+		/// <summary>
+		/// Gets the browser specific master from the given <paramref name="displayInfo"/> and is called
+		/// when the page posts back
+		/// </summary>
+		/// <param name="displayInfo">Contains the master for the browser specific page or master and the
+		/// browser specific <see cref="System.Web.WebPages.IDisplayMode"/></param>
+		/// <param name="context">The current <see cref="System.Web.HttpContextBase"/></param>
+		/// <returns>The browser specific master</returns>
+		protected virtual string GetMasterForDisplayInfo(DisplayInfo displayInfo, HttpContextBase context)
+		{
+			if (displayInfo.DisplayMode.DisplayModeId.Length != 0)
+				return displayInfo.FilePath.Substring(0, displayInfo.FilePath.Length - 6) + displayInfo.DisplayMode.DisplayModeId + ".Master";
+			return displayInfo.FilePath;
+		}
+
+		/// <summary>
+		/// Gets the browser specific theme and <see cref="System.Web.WebPages.IDisplayMode"/> and is
+		/// called when the page first loads
+		/// </summary>
+		/// <param name="theme">The theme for the browser specific page or master</param>
+		/// <param name="displayMode">The browser specific page's <see cref="System.Web.WebPages.IDisplayMode"/>,
+		/// used in conjunction with <see cref="System.Web.WebPages.DisplayModeProvider.RequireConsistentDisplayMode"/></param>
+		/// <param name="context">The current <see cref="System.Web.HttpContextBase"/></param>
+		/// <returns>The browser specific <see cref="System.Web.WebPages.DisplayInfo"/></returns>
+		protected virtual DisplayInfo GetDisplayInfoForTheme(string theme, IDisplayMode displayMode, HttpContextBase context)
+		{
+			DisplayInfo displayInfo = DisplayModeProvider.Instance.GetDisplayInfoForVirtualPath(theme + ".Theme", context, v => HostingEnvironment.VirtualPathProvider.DirectoryExists("~/App_Themes/" + v.Substring(0, v.Length - 6)), displayMode);
+			return new DisplayInfo(displayInfo.FilePath.Substring(0, displayInfo.FilePath.Length - 6), displayInfo.DisplayMode);
+		}
+
+		/// <summary>
+		/// Gets the browser specific theme from the given <paramref name="displayInfo"/> and is called
+		/// when the page posts back
+		/// </summary>
+		/// <param name="displayInfo">Contains the theme for the browser specific page and the browser
+		/// specific <see cref="System.Web.WebPages.IDisplayMode"/></param>
+		/// <param name="context">The current <see cref="System.Web.HttpContextBase"/></param>
+		/// <returns>The browser specific theme</returns>
+		protected virtual string GetThemeForDisplayInfo(DisplayInfo displayInfo, HttpContextBase context)
+		{
+			if (displayInfo.DisplayMode.DisplayModeId.Length != 0)
+				return displayInfo.FilePath + "." + displayInfo.DisplayMode.DisplayModeId;
+			return displayInfo.FilePath;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Reflection;
 using System.Web;
 using System.Web.Routing;
 
@@ -142,7 +143,8 @@ namespace Navigation
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
 						if (state.MobilePage.Length == 0 && state.MobileRoute.Length == 0 && state.MobileMasters.Count == 0 && state.MobileTheme.Length == 0)
-							route.RouteHandler = new StateRouteHandler(state);
+							route.RouteHandler = (StateRouteHandler)Activator.CreateInstance(NavigationSettings.Config.StateRouteHandlerType, 
+								BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] { state }, null);
 					}
 					if (state.MobileRoute.Length != 0)
 						RouteTable.Routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
