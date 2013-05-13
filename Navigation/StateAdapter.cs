@@ -67,7 +67,10 @@ namespace Navigation
 		private void Page_PreInit(object sender, EventArgs e)
 		{
 			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false), Page.IsPostBack);
-			StateDisplayInfo stateDisplayInfo = StateRouteHandler.SetPageStateDisplay(Page, StateContext.State);
+			StateRouteHandler stateRouteHandler = Page.RouteData.RouteHandler as StateRouteHandler;
+			if (stateRouteHandler == null)
+				stateRouteHandler = new StateRouteHandler();
+			StateDisplayInfo stateDisplayInfo = stateRouteHandler.SetPageStateDisplay(Page, StateContext.State);
 			if (!Page.IsPostBack && !IsConsistent(stateDisplayInfo))
 				StateController.Refresh(new NavigationData(true));
 			Page.ClientScript.RegisterHiddenField(StateContext.DISPLAY_MODES, HttpUtility.HtmlEncode(stateDisplayInfo.DisplayModes));

@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace Navigation
 {
@@ -30,6 +31,30 @@ namespace Navigation
 			set
 			{
 				this["originalUrlSeparators"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the custom <see cref="Navigation.StateRouteHandler"/>
+		/// </summary>
+		[ConfigurationProperty("stateRouteHandler", DefaultValue = "")]
+		public string StateRouteHandler
+		{
+			get
+			{
+				return (string)this["stateRouteHandler"];
+			}
+			set
+			{
+				this["stateRouteHandler"] = value;
+			}
+		}
+
+		internal Type StateRouteHandlerType
+		{
+			get
+			{
+				return StateRouteHandler.Length == 0 ? typeof(StateRouteHandler) : Type.GetType(StateRouteHandler);
 			}
 		}
 	}
