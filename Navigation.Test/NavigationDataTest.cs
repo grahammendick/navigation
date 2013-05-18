@@ -1773,6 +1773,19 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void ParseNavigationDataExpressionOnlyCurrentDataTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			StateContext.Bag.y = 1;
+			data = StateInfoConfig.ParseNavigationDataExpression(" &  ", null, true);
+			Assert.AreEqual(1, data.Bag.y);
+			Assert.AreEqual("Hello", data.Bag.z);
+		}
+
+		[TestMethod]
 		public void ParseNavigationDataExpressionIncludeCurrentDataTest()
 		{
 			StateController.Navigate("d0");

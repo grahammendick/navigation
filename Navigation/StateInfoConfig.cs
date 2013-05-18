@@ -73,11 +73,15 @@ namespace Navigation
 			string key, value;
 			Type type;
 			object obj;
-			expression = expression.TrimStart();
+			expression = expression.Trim();
 			bool includeCurrentData = useCurrentData && expression.StartsWith("&", StringComparison.Ordinal);
-			if (includeCurrentData)
-				expression = expression.Substring(1);
 			NavigationData navigationData = new NavigationData(includeCurrentData);
+			if (includeCurrentData)
+			{
+				expression = expression.Substring(1);
+				if (expression.Length == 0)
+					return navigationData;
+			}
 			foreach (string dataItem in expression.Split(new char[] { ',' }))
 			{
 				keyTypeValue = dataItem.Split(new char[] { '=' });
