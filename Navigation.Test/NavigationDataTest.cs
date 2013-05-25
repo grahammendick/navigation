@@ -1848,6 +1848,63 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void ParseNavigationDataExpressionIncludeCurrentDataExcludeTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.y = 1;
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			data = StateInfoConfig.ParseNavigationDataExpression("& y , - z , a ? int = 1 ", StateController.GetNextState("t0"), true);
+			Assert.AreEqual(1, data.Bag.a);
+			Assert.IsNull(data.Bag.y);
+			Assert.IsNull(data.Bag.z);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionIncludeCurrentDataIncludeTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.y = 1;
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			data = StateInfoConfig.ParseNavigationDataExpression("& + y , + z , a ? int = 1 ", StateController.GetNextState("t0"), true);
+			Assert.AreEqual(1, data.Bag.a);
+			Assert.AreEqual(1, data.Bag.y);
+			Assert.AreEqual("Hello", data.Bag.z);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionUseCurrentDataIncludeTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.x = true;
+			data.Bag.y = 1;
+			data.Bag.z = "Hello";
+			StateController.Navigate("t0", data);
+			data = StateInfoConfig.ParseNavigationDataExpression(" x , + y , a ? int = 1 , +b=0", StateController.GetNextState("t0"), true);
+			Assert.AreEqual(1, data.Bag.a);
+			Assert.AreEqual(true, data.Bag.x);
+			Assert.AreEqual(1, data.Bag.y);
+			Assert.AreEqual("0", data["+b"]);
+			Assert.IsNull(data.Bag.z);
+		}
+
+		[TestMethod]
+		public void ParseNavigationDataExpressionUseCurrentDataExcludeTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data.Bag.y = 1;
+			StateController.Navigate("t0", data);
+			data = StateInfoConfig.ParseNavigationDataExpression(" a ? int = 1, -a ", StateController.GetNextState("t0"), true);
+			Assert.IsNull(data.Bag.a);
+			Assert.IsNull(data.Bag.y);
+		}
+
+		[TestMethod]
 		public void NavigateRefreshCurrentDataTest()
 		{
 			StateController.Navigate("d0");

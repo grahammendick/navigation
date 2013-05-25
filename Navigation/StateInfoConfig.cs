@@ -69,10 +69,7 @@ namespace Navigation
 		{
 			if (expression == null)
 				throw new ArgumentNullException("expression");
-			string[] keyTypeValue, keyType;
-			string key, value;
-			Type type;
-			object obj;
+			string[] keyTypeValue;
 			expression = expression.Trim();
 			bool includeCurrentData = useCurrentData && expression.StartsWith("&", StringComparison.Ordinal);
 			NavigationData navigationData = new NavigationData(includeCurrentData);
@@ -86,33 +83,51 @@ namespace Navigation
 			{
 				keyTypeValue = dataItem.Split(new char[] { '=' });
 				if (keyTypeValue.Length == 2)
-				{
-					keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
-					if (keyType.Length > 2)
-						throw new FormatException(Resources.InvalidNavigationDataExpression);
-					value = keyTypeValue[1].Trim();
-					key = keyType[0].Trim();
-					if (string.IsNullOrEmpty(key))
-						throw new FormatException(Resources.InvalidNavigationDataExpression);
-					type = typeof(string);
-					if (state != null && state.DefaultTypes[key] != null)
-						type = state.DefaultTypes[key];
-					if (keyType.Length == 2)
-						type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
-					if (type == null)
-						throw new FormatException(Resources.InvalidNavigationDataExpression);
-					obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
-					navigationData[key] = obj;
-				}
+					SetNavigationKeyValue(navigationData, keyTypeValue, state);
 				else
-				{
-					if (keyTypeValue.Length == 1 && useCurrentData)
-						navigationData[keyTypeValue[0].Trim()] = StateContext.Data[keyTypeValue[0].Trim()];
-					else
-						throw new FormatException(Resources.InvalidNavigationDataExpression);
-				}
+					SetNavigationKey(navigationData, keyTypeValue, useCurrentData, includeCurrentData);
 			}
 			return navigationData;
+		}
+
+		private static void SetNavigationKeyValue(NavigationData navigationData, string[] keyTypeValue, State state)
+		{
+			string[] keyType = keyTypeValue[0].Trim().Split(new char[] { '?' });
+			if (keyType.Length > 2)
+				throw new FormatException(Resources.InvalidNavigationDataExpression);
+			string value = keyTypeValue[1].Trim();
+			string key = keyType[0].Trim();
+			if (string.IsNullOrEmpty(key))
+				throw new FormatException(Resources.InvalidNavigationDataExpression);
+			Type type = typeof(string);
+			if (state != null && state.DefaultTypes[key] != null)
+				type = state.DefaultTypes[key];
+			if (keyType.Length == 2)
+				type = StateInfoConfig.GetType(keyType[1].Trim().ToUpperInvariant());
+			if (type == null)
+				throw new FormatException(Resources.InvalidNavigationDataExpression);
+			object obj = Convert.ChangeType(value, type, CultureInfo.CurrentCulture);
+			navigationData[key] = obj;
+		}
+
+		private static void SetNavigationKey(NavigationData navigationData, string[] keyTypeValue, bool useCurrentData, bool includeCurrentData)
+		{
+			if (keyTypeValue.Length == 1 && useCurrentData)
+			{
+				string key = keyTypeValue[0].Trim();
+				bool retain = key.StartsWith("+", StringComparison.Ordinal);
+				bool remove = key.StartsWith("-", StringComparison.Ordinal);
+				if (retain || remove)
+					key = key.Substring(1).Trim();
+				else
+					remove = includeCurrentData;
+				if (remove)
+					navigationData[key] = null;
+				else
+					navigationData[key] = StateContext.Data[key];
+			}
+			else
+				throw new FormatException(Resources.InvalidNavigationDataExpression);
 		}
 
 		/// <summary>
