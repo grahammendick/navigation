@@ -169,7 +169,7 @@ namespace Navigation
 				{
 					listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(parameter.ParameterType, CodeTypeReferenceOptions.GlobalReference), parameter.Name));
 				}
-				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, value, null, controlBuilder, null, linePragma), GetNavigationDataAsType(typeof(bool), navigationData, "!" + value, null, controlBuilder, null, linePragma)));
+				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, value, null, controlBuilder, null, linePragma), GetNavigationDataAsType(typeof(bool), navigationData, value.StartsWith("!", StringComparison.OrdinalIgnoreCase) ? value : "!" + value, null, controlBuilder, null, linePragma)));
 				listener.Statements[0].LinePragma = linePragma;
 				AttachEvent(false, listener, eventInfo.Name, eventInfo.EventHandlerType, linePragma, buildMethod, navigationDataClass);
 				return true;
@@ -243,7 +243,7 @@ namespace Navigation
 			if (navigationDataKey.Length == 0)
 				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.NavigationDataKeyMissing), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			CodeExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
-			if (negation)
+			if (type != null && negation)
 				navigationDataIndexer = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), "Equals"), new CodePrimitiveExpression(false));
 			if (type == null || (type == typeof(bool) && negation))
 				return navigationDataIndexer;
