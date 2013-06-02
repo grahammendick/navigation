@@ -181,9 +181,9 @@ namespace Navigation
 		{
 			bool enabledOrVisible = StringComparer.OrdinalIgnoreCase.Compare(key, "Enabled") == 0 || StringComparer.OrdinalIgnoreCase.Compare(key, "Visible") == 0;
 			Tuple<CodeStatement, string> controlNavigationDataAssignTuple = GetNavigationDataAssign(controlBuilder, navigationData, key, value, direction, linePragma);
-			CodeStatement controlNavigationDataAssign = controlNavigationDataAssignTuple.Item1;
-			if (controlNavigationDataAssign != null)
+			if (controlNavigationDataAssignTuple != null)
 			{
+				CodeStatement controlNavigationDataAssign = controlNavigationDataAssignTuple.Item1;
 				controlNavigationDataAssign.LinePragma = linePragma;
 				if (enabledOrVisible)
 				{
