@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -10,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Compilation;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Navigation
 {
@@ -169,12 +169,45 @@ namespace Navigation
 				{
 					listener.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(parameter.ParameterType, CodeTypeReferenceOptions.GlobalReference), parameter.Name));
 				}
-				listener.Statements.Add(new CodeAssignStatement(GetNavigationDataAsType(null, navigationData, value, null, controlBuilder, null, linePragma), GetNavigationDataAsType(typeof(bool), navigationData, value.StartsWith("!", StringComparison.OrdinalIgnoreCase) ? value : "!" + value, null, controlBuilder, null, linePragma)));
-				listener.Statements[0].LinePragma = linePragma;
+				CodeIndexerExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(value));
+				CodeAssignStatement navigationDataControlAssign = new CodeAssignStatement();
+				navigationDataControlAssign.LinePragma = linePragma;
+				navigationDataControlAssign.Left = navigationDataIndexer;
+				listener.Statements.Add(GetAssignNavigationData(controlBuilder, value, eventInfo, navigationData, navigationDataControlAssign, navigationDataIndexer));
 				AttachEvent(false, listener, eventInfo.Name, eventInfo.EventHandlerType, linePragma, buildMethod, navigationDataClass);
 				return true;
 			}
 			return false;
+		}
+
+		private static CodeStatement GetAssignNavigationData(ControlBuilder controlBuilder, string key, EventInfo eventInfo, CodePropertyReferenceExpression navigationData, CodeAssignStatement navigationDataControlAssign, CodeIndexerExpression navigationDataIndexer)
+		{
+			ControlValuePropertyAttribute attr = controlBuilder.ControlType.GetCustomAttribute<ControlValuePropertyAttribute>();
+			if (attr != null)
+			{
+				navigationDataControlAssign.Right = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), attr.Name);
+				bool autoPostBack = controlBuilder.ControlType.GetProperty("AutoPostBack", BindingFlags.Instance | BindingFlags.Public) != null;
+				DefaultEventAttribute eventAttr = controlBuilder.ControlType.GetCustomAttribute<DefaultEventAttribute>();
+				if (autoPostBack && eventAttr != null && StringComparer.OrdinalIgnoreCase.Compare(eventAttr.Name, eventInfo.Name) == 0)
+				{
+					CodeFieldReferenceExpression control = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control");
+					CodeConditionStatement autoPostBackCondition = new CodeConditionStatement();
+					CodeMethodInvokeExpression notAutoPostBack = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(control, "AutoPostBack"), "Equals"), new CodePrimitiveExpression(false));
+					CodeBinaryOperatorExpression autoPostBackControl = new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodePropertyReferenceExpression(control, "Page"), "AutoPostBackControl"), CodeBinaryOperatorType.IdentityEquality, control);
+					autoPostBackCondition.Condition = new CodeBinaryOperatorExpression(notAutoPostBack, CodeBinaryOperatorType.BooleanOr, autoPostBackControl);
+					autoPostBackCondition.TrueStatements.Add(navigationDataControlAssign);
+					return autoPostBackCondition;
+				}
+				else
+				{
+					return navigationDataControlAssign;
+				}
+			}
+			else
+			{
+				navigationDataControlAssign.Right = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), "Equals"), new CodePrimitiveExpression(false));
+				return navigationDataControlAssign;
+			}
 		}
 
 		private static void BuildNavigationDataStatements(ControlBuilder controlBuilder, string key, string value, NavigationDirection? direction, CodePropertyReferenceExpression navigationData, CodeMemberMethod controlLoadListener, CodeMemberMethod navigationHyperLinkPreNavigationDataChangeListener, CodeMemberMethod pageLoadCompleteListener, CodeMemberMethod pageCompleteListener, CodeLinePragma linePragma)
@@ -243,9 +276,9 @@ namespace Navigation
 			if (navigationDataKey.Length == 0)
 				throw new HttpParseException(string.Format(CultureInfo.CurrentCulture, Resources.NavigationDataKeyMissing), null, controlBuilder.PageVirtualPath, null, linePragma.LineNumber);
 			CodeExpression navigationDataIndexer = new CodeIndexerExpression(navigationData, new CodePrimitiveExpression(navigationDataKey));
-			if (type != null && negation)
+			if (negation)
 				navigationDataIndexer = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeCastExpression(new CodeTypeReference(typeof(bool), CodeTypeReferenceOptions.GlobalReference), navigationDataIndexer), "Equals"), new CodePrimitiveExpression(false));
-			if (type == null || (type == typeof(bool) && negation))
+			if (type == typeof(bool) && negation)
 				return navigationDataIndexer;
 			if (type == typeof(string))
 			{
