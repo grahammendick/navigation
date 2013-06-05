@@ -186,15 +186,22 @@ namespace Navigation
 			if (attr != null)
 			{
 				navigationDataControlAssign.Right = new CodePropertyReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control"), attr.Name);
-				bool autoPostBack = controlBuilder.ControlType.GetProperty("AutoPostBack", BindingFlags.Instance | BindingFlags.Public) != null;
+				PropertyInfo autoPostBack = controlBuilder.ControlType.GetProperty("AutoPostBack", BindingFlags.Instance | BindingFlags.Public);
 				DefaultEventAttribute eventAttr = controlBuilder.ControlType.GetCustomAttribute<DefaultEventAttribute>();
-				if (autoPostBack && eventAttr != null && StringComparer.OrdinalIgnoreCase.Compare(eventAttr.Name, eventInfo.Name) == 0)
+				if (autoPostBack != null && autoPostBack.PropertyType == typeof(bool) && eventAttr != null && StringComparer.OrdinalIgnoreCase.Compare(eventAttr.Name, eventInfo.Name) == 0)
 				{
+					PropertyInfo causesValidation = controlBuilder.ControlType.GetProperty("CausesValidation", BindingFlags.Instance | BindingFlags.Public);
 					CodeFieldReferenceExpression control = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_Control");
 					CodeConditionStatement autoPostBackCondition = new CodeConditionStatement();
 					CodeMethodInvokeExpression notAutoPostBack = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(control, "AutoPostBack"), "Equals"), new CodePrimitiveExpression(false));
 					CodeBinaryOperatorExpression autoPostBackControl = new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodePropertyReferenceExpression(control, "Page"), "AutoPostBackControl"), CodeBinaryOperatorType.IdentityEquality, control);
 					autoPostBackCondition.Condition = new CodeBinaryOperatorExpression(notAutoPostBack, CodeBinaryOperatorType.BooleanOr, autoPostBackControl);
+					if (causesValidation != null && causesValidation.PropertyType == typeof(bool))
+					{
+						CodeMethodInvokeExpression notCausesValidation = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(control, "CausesValidation"), "Equals"), new CodePrimitiveExpression(false));
+						CodePropertyReferenceExpression isValid = new CodePropertyReferenceExpression(new CodePropertyReferenceExpression(control, "Page"), "IsValid");
+						autoPostBackCondition.Condition = new CodeBinaryOperatorExpression(autoPostBackCondition.Condition, CodeBinaryOperatorType.BooleanAnd, new CodeBinaryOperatorExpression(notCausesValidation, CodeBinaryOperatorType.BooleanOr, isValid));
+					}
 					autoPostBackCondition.TrueStatements.Add(navigationDataControlAssign);
 					return autoPostBackCondition;
 				}
