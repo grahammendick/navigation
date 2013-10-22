@@ -5,12 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation", "Navigation\Na
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Test", "Navigation.Test\Navigation.Test.csproj", "{61805D4A-567A-49E8-9F36-83EBB1FFD8FE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE7007B0-DDC6-479B-ACB5-0A2FC3BCC39A}"
-	ProjectSection(SolutionItems) = preProject
-		Navigation.testsettings = Navigation.testsettings
-		Navigation.vsmdi = Navigation.vsmdi
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Navigation.vsmdi
