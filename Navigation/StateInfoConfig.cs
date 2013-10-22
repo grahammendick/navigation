@@ -161,9 +161,11 @@ namespace Navigation
 							new RouteValueDictionary() { 
 								{ StateContext.STATE, state.DialogStateKey }, 
 							});
+#if NET45Plus
 						if (state.MobilePage.Length == 0 && state.MobileRoute.Length == 0 && state.MobileMasters.Count == 0 && state.MobileTheme.Length == 0)
 							route.RouteHandler = (StateRouteHandler)Activator.CreateInstance(NavigationSettings.Config.StateRouteHandlerType, 
 								BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] { state }, null);
+#endif
 					}
 					if (state.MobileRoute.Length != 0)
 						RouteTable.Routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,

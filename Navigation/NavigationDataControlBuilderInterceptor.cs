@@ -1,4 +1,5 @@
-﻿using Navigation.Properties;
+﻿#if NET45Plus
+using Navigation.Properties;
 using System;
 using System.CodeDom;
 using System.Collections;
@@ -423,3 +424,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

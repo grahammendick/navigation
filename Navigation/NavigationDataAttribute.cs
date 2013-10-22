@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET45Plus
+using System;
 using System.Web.ModelBinding;
 
 namespace Navigation
@@ -129,3 +130,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

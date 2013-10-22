@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET45Plus
+using System;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -60,3 +61,4 @@ namespace Navigation
 		}
 	}
 }
+#endif
