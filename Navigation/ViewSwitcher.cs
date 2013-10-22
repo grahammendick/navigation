@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿#if NET45Plus
+using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -205,3 +206,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

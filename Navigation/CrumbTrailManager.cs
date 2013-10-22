@@ -5,7 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Routing;
+#if NET45Plus
 using System.Web.WebPages;
+#endif
 using Navigation.Properties;
 
 namespace Navigation
@@ -121,7 +123,11 @@ namespace Navigation
 				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
 			}
 			coll = StateContext.ShieldEncode(coll, false);
+#if NET45Plus
 			bool mobile = HttpContext.Current != null && new HttpContextWrapper(HttpContext.Current).GetOverriddenBrowser().IsMobileDevice;
+#else
+			bool mobile = HttpContext.Current != null && HttpContext.Current.Request.Browser.IsMobileDevice;
+#endif
 			if (StateContext.GetState(nextState).GetRoute(mobile).Length == 0 || mode == NavigationMode.Mock
 				|| RouteTable.Routes[StateContext.GetState(nextState).GetRouteName(mobile)] == null)
 			{

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+#if NET45Plus
 using System.Web.WebPages;
+#endif
 
 namespace Navigation
 {
@@ -11,11 +13,13 @@ namespace Navigation
 			set;
 		}
 
+#if NET45Plus
 		internal IDisplayMode DisplayMode
 		{
 			get;
 			set;
 		}
+#endif
 
 		internal string Page
 		{
