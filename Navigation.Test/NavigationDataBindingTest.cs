@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿#if NET45Plus
+using System.Web;
 using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -159,3 +160,4 @@ namespace Navigation.Test
 		}
 	}
 }
+#endif
