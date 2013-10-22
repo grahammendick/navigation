@@ -80,6 +80,7 @@ namespace Navigation
 			get
 			{
 				NameValueCollection queryData = new NameValueCollection();
+#if NET40Plus
 				foreach (string key in HttpContext.Current.Request.RequestContext.RouteData.DataTokens.Keys)
 				{
 					queryData.Add(key, (string)HttpContext.Current.Request.RequestContext.RouteData.DataTokens[key]);
@@ -89,6 +90,7 @@ namespace Navigation
 					if (HttpContext.Current.Request.RequestContext.RouteData.Values[key] != null)
 						queryData.Add(key, (string)HttpContext.Current.Request.RequestContext.RouteData.Values[key]);
 				}
+#endif
 				foreach (string key in HttpContext.Current.Request.QueryString)
 				{
 					queryData.Add(key, HttpContext.Current.Request.QueryString[key]);
@@ -98,6 +100,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
 		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
@@ -111,11 +114,26 @@ namespace Navigation
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
+		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
+		/// or the 'initial' <see cref="Navigation.State"/> of a <see cref="Navigation.Dialog"/>. It passes
+		/// no <see cref="Navigation.NavigationData"/> and a <see cref="Navigation.NavigationMode"/> of Client
+		/// </summary>
+		/// <param name="action">The key of a child <see cref="Navigation.Transition"/> or the key of 
+		/// a <see cref="Navigation.Dialog"/></param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="action"/> is null</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
+		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
+		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+#endif
 		public static void Navigate(string action)
 		{
 			Navigate(action, NavigationMode.Client);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
 		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
@@ -130,11 +148,27 @@ namespace Navigation
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
+		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
+		/// or the 'initial' <see cref="Navigation.State"/> of a <see cref="Navigation.Dialog"/>. It passes
+		/// no <see cref="Navigation.NavigationData"/>
+		/// </summary>
+		/// <param name="action">The key of a child <see cref="Navigation.Transition"/> or the key of 
+		/// a <see cref="Navigation.Dialog"/></param>
+		/// <param name="mode">Redirect, Transfer or Mock</param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="action"/> is null</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
+		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
+		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+#endif
 		public static void Navigate(string action, NavigationMode mode)
 		{
 			Navigate(action, null, mode);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
 		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
@@ -150,11 +184,28 @@ namespace Navigation
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
+		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
+		/// or the 'initial' <see cref="Navigation.State"/> of a <see cref="Navigation.Dialog"/>. It passes
+		/// a <see cref="Navigation.NavigationMode"/> of Client
+		/// </summary>
+		/// <param name="action">The key of a child <see cref="Navigation.Transition"/> or the key of 
+		/// a <see cref="Navigation.Dialog"/></param>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// next <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="action"/> is null</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
+		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
+		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+#endif
 		public static void Navigate(string action, NavigationData toData)
 		{
 			Navigate(action, toData, StateContext.Data, NavigationMode.Client);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
 		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
@@ -170,6 +221,22 @@ namespace Navigation
 		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
+		/// will either navigate to the 'to' <see cref="Navigation.State"/> of a <see cref="Navigation.Transition"/>
+		/// or the 'initial' <see cref="Navigation.State"/> of a <see cref="Navigation.Dialog"/>
+		/// </summary>
+		/// <param name="action">The key of a child <see cref="Navigation.Transition"/> or the key of 
+		/// a <see cref="Navigation.Dialog"/></param>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// next <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <param name="mode">Redirect, Transfer or Mock</param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="action"/> is null</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
+		/// a child <see cref="Navigation.Transition"/> or the key of a <see cref="Navigation.Dialog"/>; or
+		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+#endif
 		public static void Navigate(string action, NavigationData toData, NavigationMode mode)
 		{
 			Navigate(action, toData, StateContext.Data, mode);
@@ -178,8 +245,10 @@ namespace Navigation
 		private static void Navigate(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
 		{
 			string url = GetNavigationLink(action, toData, returnData, mode);
+#if NET40Plus
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
+#endif
 			NavigateLink(url, mode);
 		}
 
@@ -244,6 +313,7 @@ namespace Navigation
 			return canNavigate;
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates back to the <see cref="Navigation.Crumb"/> contained in the crumb trail, represented by
 		/// the <see cref="Crumbs"/> collection, as specified by the <paramref name="distance"/>.
@@ -254,11 +324,23 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
 		/// this <paramref name="distance"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates back to the <see cref="Navigation.Crumb"/> contained in the crumb trail, represented by
+		/// the <see cref="Crumbs"/> collection, as specified by the <paramref name="distance"/>.
+		/// In the crumb trail no two crumbs can have the same <see cref="State"/> but all must
+		/// have the same <see cref="Navigation.Dialog"/>. It passes a <see cref="Navigation.NavigationMode"/> of Client
+		/// </summary>
+		/// <param name="distance">Starting at 1, the number of <see cref="Crumb"/> steps to go back</param>
+		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
+		/// this <paramref name="distance"/></exception>
+#endif
 		public static void NavigateBack(int distance)
 		{
 			NavigateBack(distance, NavigationMode.Client);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates back to the <see cref="Navigation.Crumb"/> contained in the crumb trail, represented by
 		/// the <see cref="Crumbs"/> collection, as specified by the <paramref name="distance"/>.
@@ -270,11 +352,25 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
 		/// this <paramref name="distance"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates back to the <see cref="Navigation.Crumb"/> contained in the crumb trail, represented by
+		/// the <see cref="Crumbs"/> collection, as specified by the <paramref name="distance"/>.
+		/// In the crumb trail no two crumbs can have the same <see cref="State"/> but all must
+		/// have the same <see cref="Navigation.Dialog"/>
+		/// </summary>
+		/// <param name="distance">Starting at 1, the number of <see cref="Crumb"/> steps to go back</param>
+		/// <param name="mode">Redirect, Transfer or Mock</param>
+		/// <exception cref="System.ArgumentException"><see cref="CanNavigateBack"/> returns false for
+		/// this <paramref name="distance"/></exception>
+#endif
 		public static void NavigateBack(int distance, NavigationMode mode)
 		{
 			string url = GetNavigationBackLink(distance, mode);
+#if NET40Plus
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
+#endif
 			NavigateLink(url, mode);
 		}
 
@@ -298,16 +394,24 @@ namespace Navigation
 			return GetCrumb(distance, mode).NavigationLink;
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
 		/// data and a <see cref="Navigation.NavigationMode"/> of Client
 		/// </summary>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
+		/// data and a <see cref="Navigation.NavigationMode"/> of Client
+		/// </summary>
+#endif
 		public static void Refresh()
 		{
 			Refresh(NavigationMode.Client);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to the current <see cref="Navigation.State"/> passing a <see cref="Navigation.NavigationMode"/> of Client
 		/// </summary>
@@ -315,22 +419,39 @@ namespace Navigation
 		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to the current <see cref="Navigation.State"/> passing a <see cref="Navigation.NavigationMode"/> of Client
+		/// </summary>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+#endif
 		public static void Refresh(NavigationData toData)
 		{
 			Refresh(toData, NavigationMode.Client);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
 		/// data
 		/// </summary>
 		/// <param name="mode">Redirect, Transfer or Mock</param>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to the current <see cref="Navigation.State"/> passing no <see cref="Navigation.NavigationData"/>
+		/// data
+		/// </summary>
+		/// <param name="mode">Redirect, Transfer or Mock</param>
+#endif
 		public static void Refresh(NavigationMode mode)
 		{
 			Refresh(null, mode);
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Navigates to the current <see cref="Navigation.State"/>
 		/// </summary>
@@ -339,11 +460,22 @@ namespace Navigation
 		/// <param name="mode">Redirect, Transfer or Mock</param>
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been supplied a value</exception>
+#else
+		/// <summary>
+		/// Navigates to the current <see cref="Navigation.State"/>
+		/// </summary>
+		/// <param name="toData">The <see cref="Navigation.NavigationData"/> to be passed to the 
+		/// current <see cref="Navigation.State"/> and stored in the <see cref="Navigation.StateContext"/></param>
+		/// <param name="mode">Redirect, Transfer or Mock</param>
+		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
+#endif
 		public static void Refresh(NavigationData toData, NavigationMode mode)
 		{
 			string url = GetRefreshLink(toData, mode);
+#if NET40Plus
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
+#endif
 			NavigateLink(url, mode);
 		}
 

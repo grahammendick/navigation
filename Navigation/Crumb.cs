@@ -36,6 +36,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Gets the dynamic <see cref="Navigation.NavigationData.Bag"/> for the <see cref="Data"/>
 		/// </summary>
@@ -46,6 +47,7 @@ namespace Navigation
 				return Data.Bag;
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Gets values from <see cref="Data"/> for the specified <paramref name="key"/>.

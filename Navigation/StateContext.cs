@@ -125,6 +125,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Gets the dynamic <see cref="Navigation.NavigationData.Bag"/> for the <see cref="Data"/>
 		/// </summary>
@@ -135,6 +136,7 @@ namespace Navigation
 				return Data.Bag;
 			}
 		}
+#endif
 
 		[ThreadStatic]
 		private static Hashtable _ReservedData;

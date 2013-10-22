@@ -6,9 +6,13 @@ using System.Configuration;
 using System.Globalization;
 using System.Reflection;
 using System.Web;
+#if NET40Plus
 using System.Web.Routing;
+#endif
 
+#if NET40Plus
 [assembly: PreApplicationStartMethod(typeof(StateInfoConfig), "AddStateRoutes")]
+#endif
 namespace Navigation
 {
 	/// <summary>
@@ -143,6 +147,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Registers all <see cref="Navigation.State.Route"/> configuration information.
 		/// This method is called automatically by ASP.NET and should not be called manually
@@ -188,5 +193,6 @@ namespace Navigation
 			}
 			return defaults;
 		}
+#endif
 	}
 }

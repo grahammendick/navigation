@@ -366,8 +366,10 @@ namespace Navigation
 				stateDisplayInfo.IsPostBack = true;
 			}
 			stateDisplayInfo.Page = state.GetPage(mobile);
+#if NET40Plus
 			stateDisplayInfo.Route = state.GetRoute(mobile);
 			stateDisplayInfo.RouteName = state.GetRouteName(mobile);
+#endif
 			stateDisplayInfo.Masters = state.GetMasters(mobile);
 			stateDisplayInfo.Theme = state.GetTheme(mobile);
 			return stateDisplayInfo;
