@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿#if NET45Plus
+using System.Web;
 
 namespace Navigation.Test
 {
@@ -6,3 +7,4 @@ namespace Navigation.Test
 	{
 	}
 }
+#endif

@@ -34,6 +34,7 @@ namespace Navigation
 			}
 		}
 
+#if NET45Plus
 		/// <summary>
 		/// Gets or sets the custom <see cref="Navigation.StateRouteHandler"/>
 		/// </summary>
@@ -57,5 +58,6 @@ namespace Navigation
 				return StateRouteHandler.Length == 0 ? typeof(StateRouteHandler) : Type.GetType(StateRouteHandler);
 			}
 		}
+#endif
 	}
 }
