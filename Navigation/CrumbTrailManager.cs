@@ -128,9 +128,11 @@ namespace Navigation
 #else
 			bool mobile = HttpContext.Current != null && HttpContext.Current.Request.Browser.IsMobileDevice;
 #endif
+#if NET40Plus
 			if (StateContext.GetState(nextState).GetRoute(mobile).Length == 0 || mode == NavigationMode.Mock
 				|| RouteTable.Routes[StateContext.GetState(nextState).GetRouteName(mobile)] == null)
 			{
+#endif
 				StringBuilder href = new StringBuilder();
 				href.Append(mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(StateContext.GetState(nextState).GetPage(mobile)) : StateContext.GetState(nextState).GetPage(mobile));
 				href.Append("?");
@@ -148,6 +150,7 @@ namespace Navigation
 					}
 				}
 				return href.ToString();
+#if NET40Plus
 			}
 			else
 			{
@@ -162,6 +165,7 @@ namespace Navigation
 					return null;
 				return virtualPath.VirtualPath;
 			}
+#endif
 		}
 
 		private static string DecodeURLValue(string urlValue)

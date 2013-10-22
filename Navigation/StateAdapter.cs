@@ -2,7 +2,9 @@ using Navigation.Properties;
 using System;
 using System.Collections.Specialized;
 using System.Web;
+#if NET40Plus
 using System.Web.Routing;
+#endif
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.Adapters;
@@ -31,7 +33,11 @@ namespace Navigation
 				|| !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
 				|| StateInfoConfig.Dialogs == null)
 				return base.DeterminePostBackMode();
+#if NET40Plus
 			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.DataTokens[StateContext.STATE];
+#else
+			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE];
+#endif
 			if (StateContext.StateKey == null)
 			{
 				Dialog dialog;
@@ -53,10 +59,15 @@ namespace Navigation
 				StateContext.StateKey = null;
 				throw new UrlException(Resources.InvalidUrl);
 			}
+#if NET40Plus
 			Route route = Page.RouteData.Route as Route;
 			if (StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0
 				&& StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.MobilePage, Page.AppRelativeVirtualPath) != 0
 				&& (route == null || StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.Route, route.Url) != 0))
+#else
+			if (StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.Page, Page.AppRelativeVirtualPath) != 0
+				&& StringComparer.OrdinalIgnoreCase.Compare(StateContext.State.MobilePage, Page.AppRelativeVirtualPath) != 0)
+#endif
 			{
 				throw new UrlException(Resources.InvalidUrl);
 			}
@@ -85,11 +96,16 @@ namespace Navigation
 
 		private bool IsConsistent(StateDisplayInfo stateDisplayInfo)
 		{
+#if NET40Plus
 			Route route = Page.RouteData.Route as Route;
 			if ((route == null && (stateDisplayInfo.Route.Length != 0 && RouteTable.Routes[stateDisplayInfo.RouteName] != null))
 				|| (route != null && StringComparer.OrdinalIgnoreCase.Compare(stateDisplayInfo.Route, route.Url) != 0)
 				|| StringComparer.OrdinalIgnoreCase.Compare(stateDisplayInfo.Page, Page.AppRelativeVirtualPath) != 0)
 				return false;
+#else
+			if (StringComparer.OrdinalIgnoreCase.Compare(stateDisplayInfo.Page, Page.AppRelativeVirtualPath) != 0)
+				return false;
+#endif
 			return true;
 		}
 

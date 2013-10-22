@@ -101,8 +101,10 @@ namespace Navigation
 						}
 						state.MobileMasters = new ReadOnlyCollection<string>(masters);
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
+#if NET40Plus
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
 						state.MobileRoute = dialogChildNode.Attributes["mobileRoute"] != null ? dialogChildNode.Attributes["mobileRoute"].Value : string.Empty;
+#endif
 						state.DefaultTypes = new StateInfoCollection<Type>();
 						if (dialogChildNode.Attributes["defaultTypes"] != null)
 						{
@@ -157,6 +159,7 @@ namespace Navigation
 							else
 								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "trackCrumbTrail"));
 						}
+#if NET40Plus
 						state.CheckPhysicalUrlAccess = true;
 						if (dialogChildNode.Attributes["checkPhysicalUrlAccess"] != null)
 						{
@@ -165,6 +168,7 @@ namespace Navigation
 							else
 								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "checkPhysicalUrlAccess"));
 						}
+#endif
 						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
 						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
 						state.Theme = dialogChildNode.Attributes["theme"] != null ? dialogChildNode.Attributes["theme"].Value.Trim() : string.Empty;

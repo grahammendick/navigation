@@ -27,10 +27,14 @@ namespace Navigation
 		private ReadOnlyCollection<string> _Derived;
 		private Dictionary<string, string> _DerivedInternal;
 		private string _Title;
+#if NET40Plus
 		private string _Route;
 		private string _MobileRoute;
+#endif
 		private bool _TrackCrumbTrail;
+#if NET40Plus
 		private bool _CheckPhysicalUrlAccess;
+#endif
 		private string _ResourceType;
 		private string _ResourceKey;
 		private string _Theme;
@@ -216,6 +220,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Gets the route Url pattern
 		/// </summary>
@@ -245,12 +250,20 @@ namespace Navigation
 				_MobileRoute = value;
 			}
 		}
+#endif
 
+#if NET40Plus
 		/// <summary>
 		/// Gets a value that indicates whether to maintain crumb trail information 
 		/// e.g <see cref="Navigation.StateContext.PreviousState"/>. This can be used together 
 		/// with <see cref="Route"/> to produce user friendly Urls
 		/// </summary>
+#else
+		/// <summary>
+		/// Gets a value that indicates whether to maintain crumb trail information 
+		/// e.g <see cref="Navigation.StateContext.PreviousState"/>
+		/// </summary>
+#endif
 		public bool TrackCrumbTrail
 		{
 			get
@@ -263,6 +276,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Gets a value that indicates whether ASP.NET should validate that the user has authority to access the 
 		/// physical <see cref="Page"/>. This is only relevant if <see cref="Route"/> or <see cref="MobileRoute"/>
@@ -279,6 +293,7 @@ namespace Navigation
 				_CheckPhysicalUrlAccess = value;
 			}
 		}
+#endif
 
 		internal string ResourceType
 		{
@@ -385,6 +400,7 @@ namespace Navigation
 			return (!mobile || MobilePage.Length == 0) ? Page : MobilePage;
 		}
 
+#if NET40Plus
 		internal string GetRoute(bool mobile)
 		{
 			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? Route : MobileRoute;
@@ -394,6 +410,7 @@ namespace Navigation
 		{
 			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? DialogStateKey : "Mobile" + DialogStateKey;
 		}
+#endif
 
 		internal ReadOnlyCollection<string> GetMasters(bool mobile)
 		{

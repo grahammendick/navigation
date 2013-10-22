@@ -27,6 +27,7 @@ namespace Navigation
 			set;
 		}
 
+#if NET40Plus
 		internal string Route
 		{
 			get;
@@ -38,6 +39,7 @@ namespace Navigation
 			get;
 			set;
 		}
+#endif
 
 		internal string Theme
 		{

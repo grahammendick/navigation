@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+#if NET40Plus
 using System.Dynamic;
+#endif
 using System.Web.UI;
 
 namespace Navigation
@@ -15,7 +17,9 @@ namespace Navigation
 	public sealed class NavigationData : IStateManager, IEnumerable, IEnumerable<NavigationDataItem>
 	{
 		private StateBag _Data;
+#if NET40Plus
 		private DynamicNavigationData _DynamicNavigationData;
+#endif
 		private StateInfoCollection<object> _Defaults;
 
 		/// <summary>
@@ -135,6 +139,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Gets the dynamic <see cref="Navigation.NavigationData"/>
 		/// </summary>
@@ -147,6 +152,7 @@ namespace Navigation
 				return _DynamicNavigationData;
 			}
 		}
+#endif
 
 		internal void Add(NavigationData data)
 		{
@@ -235,6 +241,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		private class DynamicNavigationData : DynamicObject
 		{
 			private NavigationData Data
@@ -260,5 +267,6 @@ namespace Navigation
 				return true;
 			}
 		}
+#endif
 	}
 }
