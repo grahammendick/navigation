@@ -177,6 +177,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void RouteTest()
 		{
+#if NET40Plus
 			Assert.AreEqual("d2/s0", StateInfoConfig.Dialogs[2].States[0].Route);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[0].MobileRoute);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[0].TrackCrumbTrail);
@@ -205,6 +206,15 @@ namespace Navigation.Test
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[6].MobileRoute);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].TrackCrumbTrail);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].CheckPhysicalUrlAccess);
+#else
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[0].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[1].TrackCrumbTrail);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[2].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[3].TrackCrumbTrail);
+			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[5].TrackCrumbTrail);
+			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[6].TrackCrumbTrail);
+#endif
 		}
 
 		[TestMethod]
@@ -539,12 +549,14 @@ namespace Navigation.Test
 			ConfigurationManager.GetSection("Navigation/InvalidTrackCrumbTrail");
 		}
 
+#if NET40Plus
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void InvalidCheckPhysicalUrlAccessTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidCheckPhysicalUrlAccess");
 		}
+#endif
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
