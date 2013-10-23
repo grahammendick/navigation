@@ -34,7 +34,11 @@ namespace Navigation.Test
 		{
 			string url = StateController.GetNavigationLink("d0");
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+#if NET35Plus
 			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length= 8 }.Decode(coll, false));
+#else
+			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length= 8 }.Decode(coll));
+#endif
 		}
 
 		[TestMethod]
@@ -43,7 +47,11 @@ namespace Navigation.Test
 			StateController.Navigate("d0");
 			string url = StateController.GetNavigationLink("t0");
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+#if NET35Plus
 			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll, false));
+#else
+			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll));
+#endif
 		}
 
 		[TestMethod]
@@ -53,7 +61,11 @@ namespace Navigation.Test
 			string url = StateController.GetNavigationLink("d0");
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 			coll["c0"] = "0-1";
+#if NET35Plus
 			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll, false));
+#else
+			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll));
+#endif
 		}
 
 		[TestMethod]
@@ -64,7 +76,11 @@ namespace Navigation.Test
 			string url = StateController.GetNavigationLink("t0");
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 			coll["cs"] = coll["cs"].Substring(0, 7);
+#if NET35Plus
 			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll, false));
+#else
+			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll));
+#endif
 		}
 
 		[TestMethod]
@@ -72,9 +88,14 @@ namespace Navigation.Test
 		public void ChecksumInvalidKeyTest()
 		{
 			NameValueCollection coll = new NameValueCollection(){{null,""}};
+#if NET35Plus
 			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll, false));
+#else
+			Assert.IsNotNull(new ChecksumNavigationShield() { Key = "checksumkey", Length = 8 }.Decode(coll));
+#endif
 		}
 
+#if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(UrlException))]
 		public void NavigateHistoryChecksumInvalidTest()
@@ -85,5 +106,6 @@ namespace Navigation.Test
 		    };
 			StateController.NavigateHistory(coll);
 		}
+#endif
 	}
 }

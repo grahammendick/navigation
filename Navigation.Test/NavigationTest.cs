@@ -476,6 +476,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d1"].States["s1"], crumb.State);
 		}
 
+#if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void AddHistoryPointNullPageTest()
@@ -499,5 +500,6 @@ namespace Navigation.Test
 		{
 			StateController.NavigateHistory(null);
 		}
+#endif
 	}
 }
