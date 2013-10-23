@@ -750,7 +750,7 @@ namespace Navigation.Test
 		public void ParseNavigationDataExpressionNullStateTest()
 		{
 			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("x=y", null, false);
-			Assert.AreEqual("y", data.Bag.x);
+			Assert.AreEqual("y", data["x"]);
 		}
 
 		[TestMethod]

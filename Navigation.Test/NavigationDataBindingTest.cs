@@ -65,7 +65,7 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
-			StateContext.Bag.i = 1;
+			StateContext.Data["i"] = 1;
 			ModelBindingExecutionContext context = new ModelBindingExecutionContext(new MockHttpContext(), new ModelStateDictionary());
 			Page page = new Page();
 			TextBox textBox = new TextBox();
@@ -98,7 +98,7 @@ namespace Navigation.Test
 		public void InvalidPropertyControlDataValueProviderTest()
 		{
 			StateController.Navigate("d0");
-			StateContext.Bag.i = 1;
+			StateContext.Data["i"] = 1;
 			ModelBindingExecutionContext context = new ModelBindingExecutionContext(new MockHttpContext(), new ModelStateDictionary());
 			Page page = new Page();
 			TextBox textBox = new TextBox();
@@ -131,7 +131,7 @@ namespace Navigation.Test
 		public void BlankDefaultPropertyControlDataValueProviderTest()
 		{
 			StateController.Navigate("d0");
-			StateContext.Bag.i = 1;
+			StateContext.Data["i"] = 1;
 			ModelBindingExecutionContext context = new ModelBindingExecutionContext(new MockHttpContext(), new ModelStateDictionary());
 			Page page = new Page();
 			TextBox textBox = new TextBox();
