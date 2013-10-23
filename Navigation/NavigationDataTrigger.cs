@@ -1,4 +1,5 @@
-﻿using System.Web.UI;
+﻿#if NET35Plus
+using System.Web.UI;
 
 namespace Navigation
 {
@@ -43,3 +44,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

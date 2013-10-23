@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET35Plus
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
@@ -256,3 +257,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

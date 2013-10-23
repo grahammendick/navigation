@@ -122,7 +122,11 @@ namespace Navigation
 			{
 				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
 			}
+#if NET35Plus
 			coll = StateContext.ShieldEncode(coll, false);
+#else
+			coll = StateContext.ShieldEncode(coll);
+#endif
 #if NET45Plus
 			bool mobile = HttpContext.Current != null && new HttpContextWrapper(HttpContext.Current).GetOverriddenBrowser().IsMobileDevice;
 #else

@@ -39,5 +39,7 @@ using System.Web.UI;
 
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguageAttribute("en-GB", UltimateResourceFallbackLocation.MainAssembly)]
+#if NET35Plus
 [assembly: WebResource("Navigation.HTML5History.js", "text/javascript")]
 [assembly: WebResource("Navigation.HTML5History.debug.js", "text/javascript")]
+#endif

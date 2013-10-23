@@ -10,6 +10,7 @@ namespace Navigation
 	/// </summary>
 	public abstract class NavigationShield : ConfigurationSection
 	{
+#if NET35Plus
 		/// <summary>
 		/// Overridden by derived classes to return a protected set of query string parameters
 		/// </summary>
@@ -19,7 +20,17 @@ namespace Navigation
 		/// a call to <see cref="StateController.AddHistoryPoint(System.Web.UI.Page, Navigation.NavigationData, string)"/></param>
 		/// <returns>Protected set of query string parameters</returns>
 		public abstract NameValueCollection Encode(NameValueCollection data, bool historyPoint);
+#else
+		/// <summary>
+		/// Overridden by derived classes to return a protected set of query string parameters
+		/// </summary>
+		/// <param name="data">An unprotected set of key/value pairs prior to the formation
+		/// of the querty string</param>
+		/// <returns>Protected set of query string parameters</returns>
+		public abstract NameValueCollection Encode(NameValueCollection data);
+#endif
 
+#if NET35Plus
 		/// <summary>
 		/// Overridden by derived classes to return an unprotected set of query string parameters
 		/// </summary>
@@ -29,5 +40,14 @@ namespace Navigation
 		/// a call to <see cref="StateController.NavigateHistory"/></param>
 		/// <returns>Unprotected set of query string parameters</returns>
 		public abstract NameValueCollection Decode(NameValueCollection data, bool historyPoint);
+#else
+		/// <summary>
+		/// Overridden by derived classes to return an unprotected set of query string parameters
+		/// </summary>
+		/// <param name="data">A protected set of key/value pairs produced by the <see cref="Encode"/>
+		/// method</param>
+		/// <returns>Unprotected set of query string parameters</returns>
+		public abstract NameValueCollection Decode(NameValueCollection data);
+#endif
 	}
 }
