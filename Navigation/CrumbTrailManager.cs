@@ -4,7 +4,9 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+#if NET40Plus
 using System.Web.Routing;
+#endif
 #if NET45Plus
 using System.Web.WebPages;
 #endif
