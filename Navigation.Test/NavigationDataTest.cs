@@ -667,6 +667,7 @@ namespace Navigation.Test
 			Assert.AreEqual("Hello", StateContext.Data["s"]);
 		}
 
+#if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(UrlException))]
 		public void NavigateHistoryInvalidDataTest()
@@ -731,6 +732,7 @@ namespace Navigation.Test
 			}
 			Assert.AreEqual(15, i);
 		}
+#endif
 
 		[TestMethod]
 		public void NavigateDefaultsTest()
