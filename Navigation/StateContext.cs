@@ -224,6 +224,7 @@ namespace Navigation
 			}
 		}
 
+#if NET35Plus
 		internal static NameValueCollection ShieldEncode(NameValueCollection coll, bool historyPoint)
 		{
 			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
@@ -231,7 +232,17 @@ namespace Navigation
 				return shield.Encode(coll, historyPoint);
 			return coll;
 		}
+#else
+		internal static NameValueCollection ShieldEncode(NameValueCollection coll)
+		{
+			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
+			if (shield != null)
+				return shield.Encode(coll);
+			return coll;
+		}
+#endif
 
+#if NET35Plus
 		internal static NameValueCollection ShieldDecode(NameValueCollection coll, bool historyPoint)
 		{
 			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
@@ -239,6 +250,15 @@ namespace Navigation
 				return shield.Decode(coll, historyPoint);
 			return coll;
 		}
+#else
+		internal static NameValueCollection ShieldDecode(NameValueCollection coll)
+		{
+			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
+			if (shield != null)
+				return shield.Decode(coll);
+			return coll;
+		}
+#endif
 
 		internal static Dialog GetDialog(string stateKey)
 		{

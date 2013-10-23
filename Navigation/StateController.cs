@@ -5,17 +5,26 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
 using System.Web;
+#if NET35Plus
 using System.Web.Script.Serialization;
+#endif
 using System.Web.UI;
 using Navigation.Properties;
 
 namespace Navigation
 {
+#if NET35Plus
 	/// <summary>
 	/// Manages all navigation. These can be forward using an action parameter; backward via
 	/// a <see cref="Navigation.Crumb"/>; refreshing the current <see cref="Navigation.State"/>;
 	/// or adding/restoring a history point.
 	/// </summary>
+#else
+	/// <summary>
+	/// Manages all navigation. These can be forward using an action parameter; backward via
+	/// a <see cref="Navigation.Crumb"/>; or refreshing the current <see cref="Navigation.State"/>.
+	/// </summary>
+#endif
 	public static class StateController
 	{
 		private const string HISTORY_URL_VAR = "var {0} = {1};";
@@ -529,12 +538,17 @@ namespace Navigation
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 						StateContext.StateKey = queryData[StateContext.STATE];
 						RemoveDefaultsAndDerived(queryData);
+#if NET35Plus
 						ParseData(StateContext.ShieldDecode(queryData, false), false);
+#else
+						ParseData(StateContext.ShieldDecode(queryData), false);
+#endif
 						break;
 					}
 			}
 		}
 
+#if NET35Plus
 		/// <summary>
 		/// Wraps the ASP.NET <see cref="System.Web.UI.ScriptManager"/> history point functionality.
 		/// Adds a history point passing no <see cref="Navigation.NavigationData"/>
@@ -605,6 +619,7 @@ namespace Navigation
 				}
 			}
 		}
+#endif
 
 		private static void RemoveDefaultsAndDerived(NameValueCollection data)
 		{
