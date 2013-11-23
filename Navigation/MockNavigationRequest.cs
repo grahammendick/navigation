@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET40Plus
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
@@ -117,3 +118,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

@@ -4,7 +4,9 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
 using System.Web;
+#if NET40Plus
 using System.Web.Routing;
+#endif
 #if NET35Plus
 using System.Web.Script.Serialization;
 #endif
@@ -29,6 +31,7 @@ namespace Navigation
 	{
 		private const string HISTORY_URL_VAR = "var {0} = {1};";
 
+#if NET40Plus
 		static StateController()
 		{
 			if (HttpContext.Current == null)
@@ -36,6 +39,7 @@ namespace Navigation
 				StateInfoConfig.AddStateRoutes();
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Gets a <see cref="Navigation.Crumb"/> collection representing the crumb trail, ordered
@@ -90,11 +94,19 @@ namespace Navigation
 		{
 			get
 			{
+#if NET40Plus
 				return GetQueryData(new HttpContextWrapper(HttpContext.Current));
+#else
+				return GetQueryData(HttpContext.Current);
+#endif
 			}
 		}
 
+#if NET40Plus
 		private static NameValueCollection GetQueryData(HttpContextBase context)
+#else
+		private static NameValueCollection GetQueryData(HttpContext context)
+#endif
 		{
 			NameValueCollection queryData = new NameValueCollection();
 #if NET40Plus
@@ -532,9 +544,15 @@ namespace Navigation
 					}
 				case (NavigationMode.Mock):
 					{
+#if NET40Plus
 						MockNavigationContext context = new MockNavigationContext(url);
 						StateContext.StateKey = context.Request.QueryString[StateContext.STATE] ?? (string)context.Request.RequestContext.RouteData.DataTokens[StateContext.STATE];
 						NameValueCollection queryData = GetQueryData(context);
+#else
+						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+						StateContext.StateKey = queryData[StateContext.STATE];
+						RemoveDefaultsAndDerived(queryData);
+#endif
 #if NET35Plus
 						ParseData(StateContext.ShieldDecode(queryData, false), false);
 #else
