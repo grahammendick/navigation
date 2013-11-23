@@ -65,6 +65,9 @@
     <Compile Include="Dialog.cs" />
     <Compile Include="HistoryNavigator.cs" />
     <Compile Include="ListConverter.cs" />
+    <Compile Include="MockNavigationContext.cs" />
+    <Compile Include="MockNavigationRequest.cs" />
+    <Compile Include="MockNavigationResponse.cs" />
     <Compile Include="NavigationData.cs" />
     <Compile Include="NavigationDataAttribute.cs" />
     <Compile Include="NavigationDataControlBuilderInterceptor.cs" />

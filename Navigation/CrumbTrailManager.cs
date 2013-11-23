@@ -23,6 +23,33 @@ namespace Navigation
 		private static string CRUMB_1_SEP = "4" + SEPARATOR;
 		private static string CRUMB_2_SEP = "5" + SEPARATOR;
 
+		internal static List<Crumb> CrumbTrailHrefArray
+		{
+			get
+			{
+				List<Crumb> crumbTrailArray = new List<Crumb>();
+				int arrayCount = 0;
+				string crumbTrail = StateContext.CrumbTrail;
+				int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
+				string href = null;
+				NavigationData navigationData;
+				bool last = true;
+				State state = null;
+				while (arrayCount < crumbTrailSize)
+				{
+					state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
+					navigationData = GetCrumbTrailData(crumbTrail, state);
+					crumbTrail = CropCrumbTrail(crumbTrail);
+					href = GetHref(state.DialogStateKey, navigationData, null);
+					crumbTrailArray.Add(new Crumb(href, navigationData, state, last));
+					last = false;
+					arrayCount++;
+				}
+				crumbTrailArray.Reverse();
+				return crumbTrailArray;
+			}
+		}
+
 		internal static void BuildCrumbTrail()
 		{
 			string trail = StateContext.CrumbTrail;
@@ -83,7 +110,7 @@ namespace Navigation
 			StateContext.GenerateKey(trail);
 		}
 
-		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData, NavigationMode mode)
+		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)
 		{
 			string previousState = StateContext.StateKey;
 			string crumbTrail = StateContext.CrumbTrailKey;
@@ -135,12 +162,12 @@ namespace Navigation
 			bool mobile = HttpContext.Current != null && HttpContext.Current.Request.Browser.IsMobileDevice;
 #endif
 #if NET40Plus
-			if (StateContext.GetState(nextState).GetRoute(mobile).Length == 0 || mode == NavigationMode.Mock
+			if (StateContext.GetState(nextState).GetRoute(mobile).Length == 0
 				|| RouteTable.Routes[StateContext.GetState(nextState).GetRouteName(mobile)] == null)
 			{
 #endif
 				StringBuilder href = new StringBuilder();
-				href.Append(mode != NavigationMode.Mock ? VirtualPathUtility.ToAbsolute(StateContext.GetState(nextState).GetPage(mobile)) : StateContext.GetState(nextState).GetPage(mobile));
+				href.Append(HttpContext.Current != null ? VirtualPathUtility.ToAbsolute(StateContext.GetState(nextState).GetPage(mobile)) : StateContext.GetState(nextState).GetPage(mobile));
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(StateContext.STATE));
 				href.Append("=");
@@ -166,7 +193,8 @@ namespace Navigation
 					if (key != StateContext.STATE)
 						routeData.Add(key, coll[key]);
 				}
-				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(null, StateContext.GetState(nextState).GetRouteName(mobile), routeData);
+				RequestContext context = HttpContext.Current != null ? null : new RequestContext(new MockNavigationContext(null), new RouteData());
+				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(context, StateContext.GetState(nextState).GetRouteName(mobile), routeData);
 				if (virtualPath == null)
 					return null;
 				return virtualPath.VirtualPath;
@@ -216,30 +244,6 @@ namespace Navigation
 			}
 		}
 
-		internal static List<Crumb> GetCrumbTrailHrefArray(NavigationMode mode)
-		{
-			List<Crumb> crumbTrailArray = new List<Crumb>();
-			int arrayCount = 0;
-			string crumbTrail = StateContext.CrumbTrail;
-			int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
-			string href = null;
-			NavigationData navigationData;
-			bool last = true;
-			State state = null;
-			while (arrayCount < crumbTrailSize)
-			{
-				state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
-				navigationData = GetCrumbTrailData(crumbTrail, state);
-				crumbTrail = CropCrumbTrail(crumbTrail);
-				href = GetHref(state.DialogStateKey, navigationData, null, mode);
-				crumbTrailArray.Add(new Crumb(href, navigationData, state, last));
-				last = false;
-				arrayCount++;
-			}
-			crumbTrailArray.Reverse();
-			return crumbTrailArray;
-		}
-
 		private static int GetCrumbTrailSize(string trail)
 		{
 			int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
@@ -277,9 +281,9 @@ namespace Navigation
 			return navData;
 		}
 
-		internal static string GetRefreshHref(NavigationData refreshData, NavigationMode mode)
+		internal static string GetRefreshHref(NavigationData refreshData)
 		{
-			return GetHref(StateContext.StateKey, refreshData, null, mode);
+			return GetHref(StateContext.StateKey, refreshData, null);
 		}
 
 		internal static object Parse(string key, string val, State state)
