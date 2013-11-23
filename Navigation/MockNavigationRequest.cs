@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 using System.Web.Routing;
 
@@ -11,11 +12,19 @@ namespace Navigation
 		private string _RawUrl;
 		private int? _QueryStringIndex;
 		private NameValueCollection _QueryString;
+		private RequestContext _RequestContext;
 
-		internal MockNavigationRequest(string url)
+		internal MockNavigationRequest(HttpContextBase context, string url)
 			: base()
 		{
+			Context = context;
 			_RawUrl = url;
+		}
+
+		private HttpContextBase Context
+		{
+			get;
+			set;
 		}
 
 		private int QueryStringIndex
@@ -85,8 +94,26 @@ namespace Navigation
 
 		public override RequestContext RequestContext
 		{
-			get;
-			set;
+			get
+			{
+				if (_RequestContext == null)
+				{
+					if (RawUrl != null)
+					{
+						RouteData routeData = RouteTable.Routes.GetRouteData(Context) ?? new RouteData();
+						foreach (string key in routeData.Values.Keys.ToArray())
+						{
+							routeData.Values[key] = HttpUtility.UrlDecode((string)routeData.Values[key]);
+						}
+						_RequestContext = new RequestContext(Context, routeData);
+					}
+					else
+					{
+						_RequestContext = new RequestContext(Context, new RouteData());
+					}
+				}
+				return _RequestContext;
+			}
 		}
 	}
 }

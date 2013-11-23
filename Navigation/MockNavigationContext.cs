@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Routing;
 
 namespace Navigation
@@ -26,22 +25,7 @@ namespace Navigation
 			get
 			{
 				if (_Request == null)
-				{
-					_Request = new MockNavigationRequest(Url);
-					if (Url != null)
-					{
-						RouteData routeData = RouteTable.Routes.GetRouteData(this) ?? new RouteData();
-						foreach (string key in routeData.Values.Keys.ToArray())
-						{
-							routeData.Values[key] = HttpUtility.UrlDecode((string)routeData.Values[key]);
-						}
-						_Request.RequestContext = new RequestContext(this, routeData);
-					}
-					else
-					{
-						_Request.RequestContext = new RequestContext(this, new RouteData());
-					}
-				}
+					_Request = new MockNavigationRequest(this, Url);
 				return _Request;
 			}
 		}
