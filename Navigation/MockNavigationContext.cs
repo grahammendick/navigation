@@ -37,6 +37,10 @@ namespace Navigation
 						}
 						_Request.RequestContext = new RequestContext(this, routeData);
 					}
+					else
+					{
+						_Request.RequestContext = new RequestContext(this, new RouteData());
+					}
 				}
 				return _Request;
 			}

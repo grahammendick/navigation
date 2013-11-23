@@ -193,7 +193,7 @@ namespace Navigation
 					if (key != StateContext.STATE)
 						routeData.Add(key, coll[key]);
 				}
-				RequestContext context = HttpContext.Current != null ? null : new RequestContext(new MockNavigationContext(null), new RouteData());
+				RequestContext context = HttpContext.Current != null ? null : new MockNavigationContext(null).Request.RequestContext;
 				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(context, StateContext.GetState(nextState).GetRouteName(mobile), routeData);
 				if (virtualPath == null)
 					return null;
