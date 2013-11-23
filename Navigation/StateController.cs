@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
 using System.Web;
+using System.Web.Routing;
 #if NET35Plus
 using System.Web.Script.Serialization;
 #endif
@@ -29,6 +29,14 @@ namespace Navigation
 	{
 		private const string HISTORY_URL_VAR = "var {0} = {1};";
 
+		static StateController()
+		{
+			if (HttpContext.Current == null)
+			{
+				StateInfoConfig.AddStateRoutes();
+			}
+		}
+
 		/// <summary>
 		/// Gets a <see cref="Navigation.Crumb"/> collection representing the crumb trail, ordered
 		/// oldest <see cref="Navigation.Crumb"/> first
@@ -37,14 +45,8 @@ namespace Navigation
 		{
 			get
 			{
-				return new ReadOnlyCollection<Crumb>(GetCrumbs(NavigationMode.Client));
+				return new ReadOnlyCollection<Crumb>(CrumbTrailManager.CrumbTrailHrefArray);
 			}
-		}
-
-		private static List<Crumb> GetCrumbs(NavigationMode mode)
-		{
-			if (HttpContext.Current == null) mode = NavigationMode.Mock;
-			return CrumbTrailManager.GetCrumbTrailHrefArray(mode);
 		}
 
 		internal static void ParseData(NameValueCollection data, bool postBack)
@@ -88,25 +90,32 @@ namespace Navigation
 		{
 			get
 			{
-				NameValueCollection queryData = new NameValueCollection();
-#if NET40Plus
-				foreach (string key in HttpContext.Current.Request.RequestContext.RouteData.DataTokens.Keys)
-				{
-					queryData.Add(key, (string)HttpContext.Current.Request.RequestContext.RouteData.DataTokens[key]);
-				}
-				foreach (string key in HttpContext.Current.Request.RequestContext.RouteData.Values.Keys)
-				{
-					if (HttpContext.Current.Request.RequestContext.RouteData.Values[key] != null)
-						queryData.Add(key, (string)HttpContext.Current.Request.RequestContext.RouteData.Values[key]);
-				}
-#endif
-				foreach (string key in HttpContext.Current.Request.QueryString)
-				{
-					queryData.Add(key, HttpContext.Current.Request.QueryString[key]);
-				}
-				RemoveDefaultsAndDerived(queryData);
-				return queryData;
+				return GetQueryData(new HttpContextWrapper(HttpContext.Current));
 			}
+		}
+
+		private static NameValueCollection GetQueryData(HttpContextBase context)
+		{
+			NameValueCollection queryData = new NameValueCollection();
+#if NET40Plus
+			foreach (string key in context.Request.RequestContext.RouteData.DataTokens.Keys)
+			{
+				queryData.Add(key, (string)context.Request.RequestContext.RouteData.DataTokens[key]);
+			}
+			foreach (string key in context.Request.RequestContext.RouteData.Values.Keys)
+			{
+				if (context.Request.RequestContext.RouteData.Values[key] != null)
+				{
+					queryData.Add(key, (string)context.Request.RequestContext.RouteData.Values[key]);
+				}
+			}
+#endif
+			foreach (string key in context.Request.QueryString)
+			{
+				queryData.Add(key, context.Request.QueryString[key]);
+			}
+			RemoveDefaultsAndDerived(queryData);
+			return queryData;
 		}
 
 #if NET40Plus
@@ -253,7 +262,7 @@ namespace Navigation
 
 		private static void Navigate(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
 		{
-			string url = GetNavigationLink(action, toData, returnData, mode);
+			string url = GetNavigationLink(action, toData, returnData);
 #if NET40Plus
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
@@ -295,13 +304,12 @@ namespace Navigation
 		/// there is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static string GetNavigationLink(string action, NavigationData toData)
 		{
-			return GetNavigationLink(action, toData, StateContext.Data, NavigationMode.Client);
+			return GetNavigationLink(action, toData, StateContext.Data);
 		}
 
-		private static string GetNavigationLink(string action, NavigationData toData, NavigationData returnData, NavigationMode mode)
+		private static string GetNavigationLink(string action, NavigationData toData, NavigationData returnData)
 		{
-			if (HttpContext.Current == null) mode = NavigationMode.Mock;
-			return CrumbTrailManager.GetHref(GetNextState(action).DialogStateKey, toData, returnData, mode);
+			return CrumbTrailManager.GetHref(GetNextState(action).DialogStateKey, toData, returnData);
 		}
 
 		/// <summary>
@@ -375,7 +383,7 @@ namespace Navigation
 #endif
 		public static void NavigateBack(int distance, NavigationMode mode)
 		{
-			string url = GetNavigationBackLink(distance, mode);
+			string url = GetNavigationBackLink(distance);
 #if NET40Plus
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
@@ -395,12 +403,7 @@ namespace Navigation
 		/// this <paramref name="distance"/></exception>
 		public static string GetNavigationBackLink(int distance)
 		{
-			return GetNavigationBackLink(distance, NavigationMode.Client);
-		}
-
-		private static string GetNavigationBackLink(int distance, NavigationMode mode)
-		{
-			return GetCrumb(distance, mode).NavigationLink;
+			return GetCrumb(distance).NavigationLink;
 		}
 
 #if NET40Plus
@@ -480,7 +483,7 @@ namespace Navigation
 #endif
 		public static void Refresh(NavigationData toData, NavigationMode mode)
 		{
-			string url = GetRefreshLink(toData, mode);
+			string url = GetRefreshLink(toData);
 #if NET40Plus
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
@@ -509,13 +512,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException">There is <see cref="Navigation.NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static string GetRefreshLink(NavigationData toData)
 		{
-			return GetRefreshLink(toData, NavigationMode.Client);
-		}
-
-		private static string GetRefreshLink(NavigationData toData, NavigationMode mode)
-		{
-			if (HttpContext.Current == null) mode = NavigationMode.Mock;
-			return CrumbTrailManager.GetRefreshHref(toData, mode);
+			return CrumbTrailManager.GetRefreshHref(toData);
 		}
 
 		private static void NavigateLink(string url, NavigationMode mode)
@@ -535,9 +532,9 @@ namespace Navigation
 					}
 				case (NavigationMode.Mock):
 					{
-						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
-						StateContext.StateKey = queryData[StateContext.STATE];
-						RemoveDefaultsAndDerived(queryData);
+						MockNavigationContext context = new MockNavigationContext(url);
+						StateContext.StateKey = context.Request.QueryString[StateContext.STATE] ?? (string)context.Request.RequestContext.RouteData.DataTokens[StateContext.STATE];
+						NameValueCollection queryData = GetQueryData(context);
 #if NET35Plus
 						ParseData(StateContext.ShieldDecode(queryData, false), false);
 #else
@@ -676,12 +673,7 @@ namespace Navigation
 		/// this <paramref name="distance"/></exception>
 		public static Crumb GetCrumb(int distance)
 		{
-			return GetCrumb(distance, NavigationMode.Client);
-		}
-
-		private static Crumb GetCrumb(int distance, NavigationMode mode)
-		{
-			List<Crumb> crumbs = GetCrumbs(mode);
+			ReadOnlyCollection<Crumb> crumbs = Crumbs;
 			if (distance > crumbs.Count || distance <= 0)
 			{
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDistance, crumbs.Count), "distance");
