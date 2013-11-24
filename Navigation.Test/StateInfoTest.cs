@@ -199,7 +199,7 @@ namespace Navigation.Test
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].TrackCrumbTrail);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[4].CheckPhysicalUrlAccess);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[5].Route);
-			Assert.AreEqual("d2/{s5}", StateInfoConfig.Dialogs[2].States[5].MobileRoute);
+			Assert.AreEqual("d2/s5", StateInfoConfig.Dialogs[2].States[5].MobileRoute);
 			Assert.AreEqual(true, StateInfoConfig.Dialogs[2].States[5].TrackCrumbTrail);
 			Assert.AreEqual(false, StateInfoConfig.Dialogs[2].States[5].CheckPhysicalUrlAccess);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[2].States[6].Route);
