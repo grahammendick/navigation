@@ -13,6 +13,7 @@ namespace Navigation
 		private string _RawUrl;
 		private int? _QueryStringIndex;
 		private NameValueCollection _QueryString;
+		private string _AppRelativeCurrentExecutionFilePath;
 		private RequestContext _RequestContext;
 
 		internal MockNavigationRequest(HttpContextBase context, string url)
@@ -71,7 +72,9 @@ namespace Navigation
 		{
 			get
 			{
-				return "~" + Path;
+				if (_AppRelativeCurrentExecutionFilePath == null)
+					_AppRelativeCurrentExecutionFilePath = VirtualPathUtility.ToAppRelative(Path, ApplicationPath);
+				return _AppRelativeCurrentExecutionFilePath;
 			}
 		}
 
