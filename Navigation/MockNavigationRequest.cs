@@ -102,7 +102,7 @@ namespace Navigation
 			{
 				if (_RequestContext == null)
 				{
-					if (RawUrl != null)
+					if (RawUrl != null && QueryString[StateContext.STATE] == null)
 					{
 						RouteData routeData = RouteTable.Routes.GetRouteData(Context) ?? new RouteData();
 						foreach (string key in routeData.Values.Keys.ToArray())
