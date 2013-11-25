@@ -59,5 +59,21 @@ namespace Navigation
 			}
 		}
 #endif
+
+		/// <summary>
+		/// Gets or sets the application path to use outside of a web context
+		/// </summary>
+		[ConfigurationProperty("applicationPath", DefaultValue = "/")]
+		public string ApplicationPath
+		{
+			get
+			{
+				return (string)this["applicationPath"];
+			}
+			set
+			{
+				this["applicationPath"] = value;
+			}
+		}
 	}
 }

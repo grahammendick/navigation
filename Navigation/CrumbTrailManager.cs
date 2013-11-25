@@ -167,7 +167,7 @@ namespace Navigation
 			{
 #endif
 				StringBuilder href = new StringBuilder();
-				string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : "/";
+				string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
 				href.Append(VirtualPathUtility.ToAbsolute(StateContext.GetState(nextState).GetPage(mobile), applicationPath));
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(StateContext.STATE));

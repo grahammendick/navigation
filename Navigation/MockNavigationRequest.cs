@@ -56,7 +56,7 @@ namespace Navigation
 		{
 			get
 			{
-				return HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : "/";
+				return HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
 			}
 		}
 
