@@ -511,38 +511,38 @@ namespace Navigation.Test
 		public void ReservedUrlCharacterDataTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*=\"/()'-_+~@:?><.;[]{}!£$%^#&"] = "!#=\"/£$%^&*()'-_+~@:?><.;[]{}";
+			data["*=\"/()'-_+~@:?><.;[],{}!£$%^#&"] = "!#=\"/£$%^&*()'-_+~@:?><.;[],{}";
 			StateController.Navigate("d0", data);
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
-			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[]{}", StateContext.Data["*=\"/()'-_+~@:?><.;[]{}!£$%^#&"]);
+			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["*=\"/()'-_+~@:?><.;[],{}!£$%^#&"]);
 		}
 
 		[TestMethod]
 		public void ReservedUrlCharacterDataRouteTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*=\"/()'-_+~@:?><.;[]{}!£$%^#&"] = "!#=\"/£$%^&*()'-_+~@:?><.;[]{}";
+			data["*=\"/()'-_+~@:?><.;[],{}!£$%^#&"] = "!#=\"/£$%^&*()'-_+~@:?><.;[],{}";
 			StateController.Navigate("d3", data);
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
-			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[]{}", StateContext.Data["*=\"/()'-_+~@:?><.;[]{}!£$%^#&"]);
+			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["*=\"/()'-_+~@:?><.;[],{}!£$%^#&"]);
 		}
 
 		[TestMethod]
 		public void ReservedUrlCharacterRouteDataTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*=\"/()'-_+~@:?><.;[]{}!£$%^#&"] = "!#=\"/£$%^&*()'-_+~@:?><.;[]{}";
-			data["string"] = "!#=\"£$%^&*()'-_+~@:?><.;[]{}";
-			data["_bool"] = "!#=\"/£$%^&*()'-_+~@:?><.;[]{}";
-			data["short"] = "!#=\"£$%^&*()'-_+~@:?><.;[]{}";
+			data["*=\"/()'-_+~@:?><.;[],{}!£$%^#&"] = "!#=\"/£$%^&*()'-_+~@:?><.;[],{}";
+			data["string"] = "!#=\"£$%^&*()'-_+~@:?><.;[],{}";
+			data["_bool"] = "!#=\"/£$%^&*()'-_+~@:?><.;[],{}";
+			data["short"] = "!#=\"£$%^&*()'-_+~@:?><.;[],{}";
 			StateController.Navigate("d3");
 			StateController.Navigate("t0", data);
-			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[]{}", StateContext.Data["*=\"/()'-_+~@:?><.;[]{}!£$%^#&"]);
-			Assert.AreEqual("!#=\"£$%^&*()'-_+~@:?><.;[]{}", StateContext.Data["string"]);
-			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[]{}", StateContext.Data["_bool"]);
-			Assert.AreEqual("!#=\"£$%^&*()'-_+~@:?><.;[]{}", StateContext.Data["short"]);
+			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["*=\"/()'-_+~@:?><.;[],{}!£$%^#&"]);
+			Assert.AreEqual("!#=\"£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["string"]);
+			Assert.AreEqual("!#=\"/£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["_bool"]);
+			Assert.AreEqual("!#=\"£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["short"]);
 		}
 
 		[TestMethod]
