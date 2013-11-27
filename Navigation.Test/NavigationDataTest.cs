@@ -545,6 +545,7 @@ namespace Navigation.Test
 			Assert.AreEqual("!#=\"£$%^&*()'-_+~@:?><.;[],{}", StateContext.Data["short"]);
 		}
 
+#if NET40Plus
 		[TestMethod]
 		[ExpectedException(typeof(UrlException))]
 		public void InvalidRouteParameterTest()
@@ -554,6 +555,7 @@ namespace Navigation.Test
 			StateController.Navigate("d3");
 			StateController.Navigate("t0", data);
 		}
+#endif
 
 		[TestMethod]
 		public void SeparatorUrlCharacterDataTest()
@@ -2547,8 +2549,13 @@ namespace Navigation.Test
 				{"dt2",new DateTime(1990, 3, 1, 12, 35, 47)}
 			};
 			string url = StateController.GetNavigationLink("t0", data);
+#if NET40Plus
 			Assert.AreNotEqual(-1, url.IndexOf("dt1=" + Uri.EscapeDataString("03/01/1990 12:35:47") + "2_"));
 			Assert.AreNotEqual(-1, url.IndexOf("dt2=" + Uri.EscapeDataString("03/01/1990 12:35:47") + "&"));
+#else
+			Assert.AreNotEqual(-1, url.IndexOf("dt1=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "2_"));
+			Assert.AreNotEqual(-1, url.IndexOf("dt2=" + HttpUtility.UrlEncode("03/01/1990 12:35:47") + "&"));
+#endif
 		}
 
 		[TestMethod]
@@ -2579,8 +2586,13 @@ namespace Navigation.Test
 				{"t1",new TimeSpan(10, 5, 23)}
 			};
 			string url = StateController.GetNavigationLink("t0", data);
+#if NET40Plus
 			Assert.AreNotEqual(-1, url.IndexOf("t1=" + Uri.EscapeDataString("10:05:23") + "&"));
 			Assert.AreNotEqual(-1, url.IndexOf("t2=" + Uri.EscapeDataString("10:05:23") + "2_"));
+#else
+			Assert.AreNotEqual(-1, url.IndexOf("t1=" + HttpUtility.UrlEncode("10:05:23") + "&"));
+			Assert.AreNotEqual(-1, url.IndexOf("t2=" + HttpUtility.UrlEncode("10:05:23") + "2_"));
+#endif
 		}
 
 		[TestMethod]
