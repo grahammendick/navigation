@@ -107,7 +107,7 @@ namespace Navigation
 						RouteData routeData = RouteTable.Routes.GetRouteData(Context) ?? new RouteData();
 						foreach (string key in routeData.Values.Keys.ToArray())
 						{
-							routeData.Values[key] = HttpUtility.UrlDecode((string)routeData.Values[key]);
+							routeData.Values[key] = Uri.UnescapeDataString((string)routeData.Values[key]);
 						}
 						_RequestContext = new RequestContext(Context, routeData);
 					}
