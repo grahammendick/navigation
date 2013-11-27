@@ -2881,14 +2881,14 @@ namespace Navigation.Test
 		public void ReservedUrlCharacterDefaultTypesTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*/()-_+~@:?><.;[]{}!£$%^&"] = (short)0;
-			data["**=/()-_+~@:?><.;[]{}!£$%^&&"] = (short)1;
+			data["*/()-_+~@:?><.;[]{}!£$%^#&"] = (short)0;
+			data["**=/()-_+~@:?><.;[]{}!£$%^#&&"] = (short)1;
 			StateController.Navigate("d1", data);
 			string url = StateController.GetRefreshLink(new NavigationData(true));
 			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
 			Assert.AreNotEqual(-1, url.IndexOf("=12_"));
-			Assert.AreEqual((short)0, StateContext.Data["*/()-_+~@:?><.;[]{}!£$%^&"]);
-			Assert.AreEqual((short)1, StateContext.Data["**=/()-_+~@:?><.;[]{}!£$%^&&"]);
+			Assert.AreEqual((short)0, StateContext.Data["*/()-_+~@:?><.;[]{}!£$%^#&"]);
+			Assert.AreEqual((short)1, StateContext.Data["**=/()-_+~@:?><.;[]{}!£$%^#&&"]);
 			StateController.Navigate("t0");
 			url = StateController.GetNavigationBackLink(1);
 			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
@@ -2899,14 +2899,14 @@ namespace Navigation.Test
 		public void ReservedUrlCharacterDefaultTypesRouteTest()
 		{
 			NavigationData data = new NavigationData();
-			data["*/()-_+~@:?><.;[]{}!£$%^&"] = (short)0;
-			data["**=/()-_+~@:?><.;[]{}!£$%^&&"] = (short)1;
+			data["*/()-_+~@:?><.;[]{}!£$%^#&"] = (short)0;
+			data["**=/()-_+~@:?><.;[]{}!£$%^#&&"] = (short)1;
 			StateController.Navigate("d4", data);
 			string url = StateController.GetRefreshLink(new NavigationData(true));
 			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
 			Assert.AreNotEqual(-1, url.IndexOf("=12_"));
-			Assert.AreEqual((short)0, StateContext.Data["*/()-_+~@:?><.;[]{}!£$%^&"]);
-			Assert.AreEqual((short)1, StateContext.Data["**=/()-_+~@:?><.;[]{}!£$%^&&"]);
+			Assert.AreEqual((short)0, StateContext.Data["*/()-_+~@:?><.;[]{}!£$%^#&"]);
+			Assert.AreEqual((short)1, StateContext.Data["**=/()-_+~@:?><.;[]{}!£$%^#&&"]);
 			StateController.Navigate("t0");
 			url = StateController.GetNavigationBackLink(1);
 			Assert.AreNotEqual(-1, url.IndexOf("=0&"));
