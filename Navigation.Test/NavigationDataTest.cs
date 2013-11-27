@@ -546,6 +546,16 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(UrlException))]
+		public void InvalidRouteParameterTest()
+		{
+			NavigationData data = new NavigationData();
+			data["string"] = "/";
+			StateController.Navigate("d3");
+			StateController.Navigate("t0", data);
+		}
+
+		[TestMethod]
 		public void SeparatorUrlCharacterDataTest()
 		{
 			NavigationData data = new NavigationData();
