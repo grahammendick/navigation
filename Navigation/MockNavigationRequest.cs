@@ -104,7 +104,7 @@ namespace Navigation
 				{
 					if (RawUrl != null && QueryString[StateContext.STATE] == null)
 					{
-						RouteData routeData = RouteTable.Routes.GetRouteData(Context) ?? new RouteData();
+						RouteData routeData = RouteTable.Routes.GetRouteData(Context);
 						foreach (string key in routeData.Values.Keys.ToArray())
 						{
 							routeData.Values[key] = HttpUtility.UrlDecode((string)routeData.Values[key]);
