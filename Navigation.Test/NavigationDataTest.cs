@@ -3527,56 +3527,56 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void EmptyNavigationDataType()
+		public void EmptyNavigationDataTypeTest()
 		{
 			ConfigurationManager.GetSection("Navigation/EmptyNavigationDataType");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidNavigationDataType()
+		public void InvalidNavigationDataTypeTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidNavigationDataType");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidConversionFrom()
+		public void InvalidConversionFromTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidConversionFrom");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidConversionTo()
+		public void InvalidConversionToTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidConversionTo");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidNavigationDataConverter()
+		public void InvalidNavigationDataConverterTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidNavigationDataConverter");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidNavigationDataConverterType()
+		public void InvalidNavigationDataConverterTypeTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidNavigationDataConverterType");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidConversionFromConverter()
+		public void InvalidConversionFromConverterTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidConversionFromConverter");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidConversionToConverter()
+		public void InvalidConversionToConverterTest()
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidConversionToConverter");
 		}
