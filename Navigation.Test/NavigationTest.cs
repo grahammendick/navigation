@@ -900,6 +900,47 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d4"].States["s1"], crumb.State);
 		}
 
+#if NET40Plus
+		[TestMethod]
+		public void NavigateLinkRouteTest()
+		{
+			string link = StateController.GetNavigationLink("d3");
+			Assert.IsTrue(link.Contains("/d3s0?"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultsRouteTest()
+		{
+			StateController.Navigate("d3");
+			string link = StateController.GetNavigationLink("t0");
+			Assert.IsTrue(link.Contains("/d3s1?"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkOptionalRouteTest()
+		{
+			StateController.Navigate("d3");
+			string link = StateController.GetNavigationLink("t2");
+			Assert.IsTrue(link.Contains("/d3s3?"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultsOptionalRouteTest()
+		{
+			StateController.Navigate("d3");
+			string link = StateController.GetNavigationLink("t1");
+			Assert.IsTrue(link.Contains("/d3s2/7/?"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkDefaultsAndOptionalRouteTest()
+		{
+			StateController.Navigate("d4");
+			string link = StateController.GetNavigationLink("t0");
+			Assert.IsTrue(link.Contains("/d4s1?"));
+		}
+#endif
+
 #if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
