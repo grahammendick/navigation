@@ -3525,6 +3525,39 @@ namespace Navigation.Test
 			Assert.AreEqual(5m, StateContext.Data["decimal"]);
 		}
 
+#if NET40Plus
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void NavigateMissingRouteDataTest()
+		{
+			try
+			{
+				StateController.Navigate("d4");
+				StateController.Navigate("t0");
+				StateController.Navigate("t0");
+				StateController.Navigate("t0");
+			}
+			catch (InvalidOperationException) { };
+			StateController.Navigate("t0");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void NavigateRefreshMissingRouteDataTest()
+		{
+			try
+			{
+				StateController.Navigate("d4");
+				StateController.Navigate("t0");
+				StateController.Navigate("t0");
+				StateController.Navigate("t0");
+				StateController.Navigate("t0", new NavigationData { { "s1", 1 }, { "s2", 2 } });
+			}
+			catch (InvalidOperationException) { };
+			StateController.Refresh();
+		}
+#endif
+
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void EmptyNavigationDataTypeTest()
