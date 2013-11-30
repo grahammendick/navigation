@@ -705,7 +705,7 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidGuidDefaults()
+		public void InvalidGuidDefaultsTest()
 		{
 			try
 			{
@@ -720,7 +720,7 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidTimeSpanDefaults()
+		public void InvalidTimeSpanDefaultsTest()
 		{
 			try
 			{
