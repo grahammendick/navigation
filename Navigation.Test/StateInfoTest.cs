@@ -234,6 +234,19 @@ namespace Navigation.Test
 			Assert.AreEqual("long", StateInfoConfig.Dialogs[0].States[1].Derived[2]);
 		}
 
+#if NET40Plus
+		[TestMethod]
+		public void RouteTest()
+		{
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[0].States[0].Route);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[0].States[0].MobileRoute);
+			Assert.AreEqual("d3s0", StateInfoConfig.Dialogs[3].States[0].Route);
+			Assert.AreEqual("m/d3s0", StateInfoConfig.Dialogs[3].States[0].MobileRoute);
+			Assert.AreEqual("d3s1/{string}/{short}", StateInfoConfig.Dialogs[3].States[1].Route);
+			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[3].States[1].MobileRoute);
+		}
+#endif
+
 		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
