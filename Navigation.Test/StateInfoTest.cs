@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+#if NET40Plus
+using System.Web.Routing;
+#endif
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -244,6 +247,46 @@ namespace Navigation.Test
 			Assert.AreEqual("m/d3s0", StateInfoConfig.Dialogs[3].States[0].MobileRoute);
 			Assert.AreEqual("d3s1/{string}/{short}", StateInfoConfig.Dialogs[3].States[1].Route);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[3].States[1].MobileRoute);
+		}
+
+		[TestMethod]
+		public void PageRouteMapTest()
+		{
+			StateController.Navigate("d0");
+			Assert.AreEqual(19, RouteTable.Routes.Count);
+			Assert.IsNotNull(RouteTable.Routes["3-0"]);
+			Assert.IsNotNull(RouteTable.Routes["Mobile3-0"]);
+			Assert.IsNotNull(RouteTable.Routes["3-1"]);
+			Assert.IsNull(RouteTable.Routes["Mobile3-1"]);
+		}
+
+		[TestMethod]
+		public void PageRouteDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			Route route = RouteTable.Routes["3-0"] as Route;
+			Assert.AreEqual(0, route.Defaults.Count);
+			route = RouteTable.Routes["3-1"] as Route;
+			Assert.AreEqual(2, route.Defaults.Count);
+			route = RouteTable.Routes["3-2"] as Route;
+			Assert.AreEqual(2, route.Defaults.Count);
+		}
+
+		[TestMethod]
+		public void PageRouteHandlerTest()
+		{
+			StateController.Navigate("d0");
+			StateRouteHandler handler = ((Route)RouteTable.Routes["3-0"]).RouteHandler as StateRouteHandler;
+			Assert.IsNull(handler);
+			handler = ((Route)RouteTable.Routes["3-1"]).RouteHandler as StateRouteHandler;
+			Assert.IsNotNull(handler);
+			Assert.AreEqual(StateInfoConfig.Dialogs[3].States[1], handler.State);
+			handler = ((Route)RouteTable.Routes["3-2"]).RouteHandler as StateRouteHandler;
+			Assert.IsNull(handler);
+			handler = ((Route)RouteTable.Routes["3-3"]).RouteHandler as StateRouteHandler;
+			Assert.IsNull(handler);
+			handler = ((Route)RouteTable.Routes["3-4"]).RouteHandler as StateRouteHandler;
+			Assert.IsNull(handler);
 		}
 #endif
 
