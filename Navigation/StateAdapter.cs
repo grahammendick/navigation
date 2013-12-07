@@ -31,7 +31,7 @@ namespace Navigation
 		{
 			if (StringComparer.OrdinalIgnoreCase.Compare(Page.Request.Path, FormsAuthentication.LoginUrl) == 0
 				|| !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
-				|| StateInfoConfig.Dialogs == null)
+				|| StateInfoConfig.Dialogs == null || StateInfoConfig.Dialogs.Count == 0)
 				return base.DeterminePostBackMode();
 #if NET40Plus
 			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.DataTokens[StateContext.STATE];

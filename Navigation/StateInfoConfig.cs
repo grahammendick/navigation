@@ -154,6 +154,8 @@ namespace Navigation
 		/// </summary>
 		public static void AddStateRoutes()
 		{
+			if (Dialogs == null)
+				return;
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
 			{
