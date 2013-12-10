@@ -554,9 +554,9 @@ namespace Navigation
 						RemoveDefaultsAndDerived(queryData);
 #endif
 #if NET35Plus
-						ParseData(StateContext.ShieldDecode(queryData, false), false);
+						ParseData(StateContext.ShieldDecode(queryData, false, StateContext.State), false);
 #else
-						ParseData(StateContext.ShieldDecode(queryData), false);
+						ParseData(StateContext.ShieldDecode(queryData, StateContext.State), false);
 #endif
 						break;
 					}
@@ -596,7 +596,7 @@ namespace Navigation
 				if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
 					coll[item.Key] = CrumbTrailManager.FormatURLObject(item.Key, item.Value, StateContext.State);
 			}
-			coll = StateContext.ShieldEncode(coll, true);
+			coll = StateContext.ShieldEncode(coll, true, StateContext.State);
 			ScriptManager.GetCurrent(page).AddHistoryPoint(coll, title);
 			ScriptManager.RegisterClientScriptBlock(page, typeof(StateController), "historyUrl", string.Format(CultureInfo.InvariantCulture, HISTORY_URL_VAR, StateContext.HISTORY_URL, new JavaScriptSerializer().Serialize(GetRefreshLink(toData))), true);
 		}
@@ -617,13 +617,13 @@ namespace Navigation
 			if (data.Count == 0)
 			{
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
-				ParseData(StateContext.ShieldDecode(StateController.QueryData, false), false);
+				ParseData(StateContext.ShieldDecode(StateController.QueryData, false, StateContext.State), false);
 				StateContext.Data.Add(derivedData);
 			}
 			else
 			{
 				RemoveDefaultsAndDerived(data);
-				data = StateContext.ShieldDecode(data, true);
+				data = StateContext.ShieldDecode(data, true, StateContext.State);
 				data.Remove(StateContext.STATE);
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 				StateContext.Data.Clear();
