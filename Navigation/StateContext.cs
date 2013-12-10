@@ -225,37 +225,37 @@ namespace Navigation
 		}
 
 #if NET35Plus
-		internal static NameValueCollection ShieldEncode(NameValueCollection coll, bool historyPoint)
+		internal static NameValueCollection ShieldEncode(NameValueCollection coll, bool historyPoint, State state)
 		{
 			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
 			if (shield != null)
-				return shield.Encode(coll, historyPoint);
+				return shield.Encode(coll, historyPoint, state);
 			return coll;
 		}
 #else
-		internal static NameValueCollection ShieldEncode(NameValueCollection coll)
+		internal static NameValueCollection ShieldEncode(NameValueCollection coll, State state)
 		{
 			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
 			if (shield != null)
-				return shield.Encode(coll);
+				return shield.Encode(coll, state);
 			return coll;
 		}
 #endif
 
 #if NET35Plus
-		internal static NameValueCollection ShieldDecode(NameValueCollection coll, bool historyPoint)
+		internal static NameValueCollection ShieldDecode(NameValueCollection coll, bool historyPoint, State state)
 		{
 			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
 			if (shield != null)
-				return shield.Decode(coll, historyPoint);
+				return shield.Decode(coll, historyPoint, state);
 			return coll;
 		}
 #else
-		internal static NameValueCollection ShieldDecode(NameValueCollection coll)
+		internal static NameValueCollection ShieldDecode(NameValueCollection coll, State state)
 		{
 			NavigationShield shield = (NavigationShield)ConfigurationManager.GetSection("Navigation/NavigationShield");
 			if (shield != null)
-				return shield.Decode(coll);
+				return shield.Decode(coll, state);
 			return coll;
 		}
 #endif

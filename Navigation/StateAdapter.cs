@@ -78,9 +78,9 @@ namespace Navigation
 		private void Page_PreInit(object sender, EventArgs e)
 		{
 #if NET35Plus
-			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false), Page.IsPostBack);
+			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false, StateContext.State), Page.IsPostBack);
 #else
-			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData), Page.IsPostBack);
+			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, StateContext.State), Page.IsPostBack);
 #endif
 #if NET45Plus
 			StateRouteHandler stateRouteHandler = Page.RouteData.RouteHandler as StateRouteHandler;

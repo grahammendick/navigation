@@ -271,7 +271,9 @@ namespace Navigation.Test
 			route = RouteTable.Routes["3-2"] as Route;
 			Assert.AreEqual(2, route.Defaults.Count);
 		}
+#endif
 
+#if NET45Plus
 		[TestMethod]
 		public void PageRouteHandlerTest()
 		{
