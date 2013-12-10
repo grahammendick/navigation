@@ -10,6 +10,7 @@
 		<NET30Folder>NET Framework 3.0</NET30Folder>
 		<NET20Folder>NET Framework 2.0</NET20Folder>
 		<XMLFile>Navigation.xml</XMLFile>
+		<CodeAnalysis>true</CodeAnalysis>
 	</PropertyGroup>
 	<!-- Delete previous files from target folder -->
 	<Target Name="DeleteAll">
@@ -22,23 +23,23 @@
 	<Target Name="BuildNavigation">
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v4.5; OutputPath=..\$(BuildDir)\$(NET45Folder);
-				 Configuration=Release; DefineConstants=NET35Plus;NET40Plus;NET45Plus; RunCodeAnalysis=true;
+				 Configuration=Release; DefineConstants=NET35Plus;NET40Plus;NET45Plus; RunCodeAnalysis=$(CodeAnalysis);
 				 TreatWarningsAsErrors=true; DocumentationFile=..\$(BuildDir)\$(NET45Folder)\$(XMLFile);" />
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v4.0; OutputPath=..\$(BuildDir)\$(NET40Folder);
-				 Configuration=Release; DefineConstants=NET35Plus;NET40Plus; RunCodeAnalysis=true;
+				 Configuration=Release; DefineConstants=NET35Plus;NET40Plus; RunCodeAnalysis=$(CodeAnalysis);
 				 TreatWarningsAsErrors=true; DocumentationFile=..\$(BuildDir)\$(NET40Folder)\$(XMLFile);" />
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v3.5; OutputPath=..\$(BuildDir)\$(NET35Folder);
-				 Configuration=Release; DefineConstants=NET35Plus; RunCodeAnalysis=true;
+				 Configuration=Release; DefineConstants=NET35Plus; RunCodeAnalysis=$(CodeAnalysis);
 				 TreatWarningsAsErrors=true; DocumentationFile=..\$(BuildDir)\$(NET35Folder)\$(XMLFile);" />
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v3.0; OutputPath=..\$(BuildDir)\$(NET30Folder);
-				 Configuration=Release; RunCodeAnalysis=true; TreatWarningsAsErrors=true;
+				 Configuration=Release; RunCodeAnalysis=$(CodeAnalysis); TreatWarningsAsErrors=true;
 				 DocumentationFile=..\$(BuildDir)\$(NET30Folder)\$(XMLFile);" />
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v2.0; OutputPath=..\$(BuildDir)\$(NET20Folder);
-				 Configuration=Release; RunCodeAnalysis=true; TreatWarningsAsErrors=true;
+				 Configuration=Release; RunCodeAnalysis=$(CodeAnalysis); TreatWarningsAsErrors=true;
 				 DocumentationFile=..\$(BuildDir)\$(NET20Folder)\$(XMLFile);" />
 	</Target>
 	<!-- Release build Navigation.Test passing fixed framework 4.5, because MSTest doesn't
