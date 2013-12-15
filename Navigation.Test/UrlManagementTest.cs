@@ -107,5 +107,161 @@ namespace Navigation.Test
 			StateController.NavigateHistory(coll);
 		}
 #endif
+
+		[TestMethod]
+		public void ChecksumNavigateDialogTest()
+		{
+			string url = StateController.GetNavigationLink("d0");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumNavigateDialogRouteTest()
+		{
+			string url = StateController.GetNavigationLink("d3");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedNavigateDialogTest()
+		{
+			string url = StateController.GetNavigationLink("d2");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedNavigateDialogRouteTest()
+		{
+			string url = StateController.GetNavigationLink("d5");
+#if NET40Plus
+			Assert.AreEqual(-1, url.IndexOf("?", StringComparison.Ordinal));
+#else
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+#endif
+		}
+
+		[TestMethod]
+		public void ChecksumNavigateTransitionTest()
+		{
+			StateController.Navigate("d0");
+			string url = StateController.GetNavigationLink("t0");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumNavigateTransitionRouteTest()
+		{
+			StateController.Navigate("d3");
+			string url = StateController.GetNavigationLink("t0");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedNavigateTransitionTest()
+		{
+			StateController.Navigate("d0");
+			string url = StateController.GetNavigationLink("t1");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedNavigateTransitionRouteTest()
+		{
+			StateController.Navigate("d3");
+			string url = StateController.GetNavigationLink("t1");
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumRefreshTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			string url = StateController.RefreshLink;
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumRefreshRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			string url = StateController.RefreshLink;
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedRefreshTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t1");
+			string url = StateController.RefreshLink;
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedRefreshRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t1");
+			string url = StateController.RefreshLink;
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumNavigateBackTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			string url = StateController.GetNavigationBackLink(1);
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumNavigateBackRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			string url = StateController.GetNavigationBackLink(1);
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNotNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedNavigateBackTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t1");
+			StateController.Navigate("t0");
+			string url = StateController.GetNavigationBackLink(1);
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		public void ChecksumSkippedNavigateBackRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t1");
+			StateController.Navigate("t0");
+			string url = StateController.GetNavigationBackLink(1);
+			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
+			Assert.IsNull(coll["cs"]);
+		}
 	}
 }
