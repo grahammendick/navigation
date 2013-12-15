@@ -939,6 +939,13 @@ namespace Navigation.Test
 			string link = StateController.GetNavigationLink("t0");
 			Assert.IsTrue(link.Contains("/d4s1?"));
 		}
+
+		[TestMethod]
+		public void NavigateLinkWithoutTrailChecksumSkippedRouteTest()
+		{
+			string link = StateController.GetNavigationLink("d5");
+			Assert.AreEqual("/d5s0", link);
+		}
 #endif
 
 #if NET35Plus
