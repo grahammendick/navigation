@@ -50,14 +50,6 @@ namespace Navigation
 				this["stateRouteHandler"] = value;
 			}
 		}
-
-		internal Type StateRouteHandlerType
-		{
-			get
-			{
-				return StateRouteHandler.Length == 0 ? typeof(StateRouteHandler) : Type.GetType(StateRouteHandler);
-			}
-		}
 #endif
 
 		/// <summary>
@@ -73,6 +65,39 @@ namespace Navigation
 			set
 			{
 				this["applicationPath"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the Url for the login page that the authentication provider will redirect to
+		/// </summary>
+		[ConfigurationProperty("loginPath", DefaultValue = "")]
+		public string LoginPath
+		{
+			get
+			{
+				return (string)this["loginPath"];
+			}
+			set
+			{
+				this["loginPath"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the query string key that identifies the Url the authentication provider will
+		/// redirect to after a successful login
+		/// </summary>
+		[ConfigurationProperty("returnUrlKey", DefaultValue = "ReturnUrl")]
+		public string ReturnUrlKey
+		{
+			get
+			{
+				return (string)this["returnUrlKey"];
+			}
+			set
+			{
+				this["returnUrlKey"] = value;
 			}
 		}
 	}

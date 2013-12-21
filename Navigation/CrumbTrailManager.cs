@@ -129,13 +129,13 @@ namespace Navigation
 						coll[item.Key] = FormatURLObject(item.Key, item.Value, state);
 				}
 			}
-			if (returnData != null && state.TrackCrumbTrail)
+			if (returnData != null && state.TrackCrumbTrail && StateContext.State != null)
 			{
 				StringBuilder returnDataBuilder = new StringBuilder();
 				string prefix = string.Empty;
 				foreach (NavigationDataItem item in returnData)
 				{
-					if (!item.Value.Equals(string.Empty) && (StateContext.State == null || !StateContext.State.DefaultOrDerived(item.Key, item.Value)))
+					if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
 					{
 						returnDataBuilder.Append(prefix);
 						returnDataBuilder.Append(EncodeURLValue(item.Key));

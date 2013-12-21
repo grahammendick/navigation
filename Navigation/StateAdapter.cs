@@ -2,6 +2,7 @@ using Navigation.Properties;
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using System.Web.Configuration;
 #if NET40Plus
 using System.Web.Routing;
 #endif
@@ -29,8 +30,7 @@ namespace Navigation
 		/// the <see cref="Navigation.State"/> does not match the Url path</exception>
 		public override NameValueCollection DeterminePostBackMode()
 		{
-			if (StringComparer.OrdinalIgnoreCase.Compare(Page.Request.Path, FormsAuthentication.LoginUrl) == 0
-				|| !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
+			if (IsLogin() || !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
 				|| StateInfoConfig.Dialogs == null || StateInfoConfig.Dialogs.Count == 0)
 				return base.DeterminePostBackMode();
 #if NET40Plus
@@ -96,6 +96,19 @@ namespace Navigation
 			Page.RegisterRequiresControlState(Page);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
+		}
+
+		private bool IsLogin()
+		{
+			string loginPath = FormsAuthentication.LoginUrl;
+			if (NavigationSettings.Config.LoginPath.Length != 0)
+				loginPath = NavigationSettings.Config.LoginPath;
+			if (StringComparer.OrdinalIgnoreCase.Compare(Page.Request.Path, loginPath) == 0)
+			{
+				StateContext.Data[NavigationSettings.Config.ReturnUrlKey] = Page.Request.QueryString[NavigationSettings.Config.ReturnUrlKey];
+				return true;
+			}
+			return false;
 		}
 
 		private bool IsConsistent(StateDisplayInfo stateDisplayInfo)

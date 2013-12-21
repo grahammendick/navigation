@@ -159,6 +159,9 @@ namespace Navigation
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
 			{
+				Type stateRouteHandlerType = typeof(StateRouteHandler);
+				if (NavigationSettings.Config.StateRouteHandler.Length != 0)
+					stateRouteHandlerType = Type.GetType(NavigationSettings.Config.StateRouteHandler);
 				foreach (Dialog dialog in Dialogs)
 				{
 					foreach (State state in dialog.States)
@@ -172,7 +175,7 @@ namespace Navigation
 							});
 #if NET45Plus
 							if (state.MobilePage.Length == 0 && state.MobileRoute.Length == 0 && state.MobileMasters.Count == 0 && state.MobileTheme.Length == 0)
-								route.RouteHandler = (StateRouteHandler)Activator.CreateInstance(NavigationSettings.Config.StateRouteHandlerType,
+								route.RouteHandler = (StateRouteHandler)Activator.CreateInstance(stateRouteHandlerType,
 									BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] { state }, null);
 #endif
 						}
