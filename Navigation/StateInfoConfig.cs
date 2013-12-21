@@ -159,9 +159,11 @@ namespace Navigation
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
 			{
+#if NET45Plus
 				Type stateRouteHandlerType = typeof(StateRouteHandler);
 				if (NavigationSettings.Config.StateRouteHandler.Length != 0)
 					stateRouteHandlerType = Type.GetType(NavigationSettings.Config.StateRouteHandler);
+#endif
 				foreach (Dialog dialog in Dialogs)
 				{
 					foreach (State state in dialog.States)
