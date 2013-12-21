@@ -18,7 +18,7 @@ namespace Navigation
 		/// of the querty string</param>
 		/// <param name="historyPoint">Identifies if the Url is being built as a result of
 		/// a call to <see cref="StateController.AddHistoryPoint(System.Web.UI.Page, Navigation.NavigationData, string)"/></param>
-		/// <param name="state">The <see cref="Navigation.State"/> to which the Url will navigate.</param>
+		/// <param name="state">The <see cref="Navigation.State"/> the Url will navigate to</param>
 		/// <returns>Protected set of query string parameters</returns>
 		public virtual NameValueCollection Encode(NameValueCollection data, bool historyPoint, State state)
 		{
@@ -40,7 +40,7 @@ namespace Navigation
 		/// </summary>
 		/// <param name="data">An unprotected set of key/value pairs prior to the formation
 		/// of the querty string</param>
-		/// <param name="state">The <see cref="Navigation.State"/> to which the Url will navigate.</param>
+		/// <param name="state">The <see cref="Navigation.State"/> the Url will navigate to</param>
 		/// <returns>Protected set of query string parameters</returns>
 		public virtual NameValueCollection Encode(NameValueCollection data, State state)
 		{
@@ -63,7 +63,7 @@ namespace Navigation
 		/// <param name="data">A protected set of key/value pairs produced by the Encode method</param>
 		/// <param name="historyPoint">Identifies if the Url is being decoded as a result of
 		/// a call to <see cref="StateController.NavigateHistory"/></param>
-		/// <param name="state">The <see cref="Navigation.State"/> to which the Url has navigated.</param>
+		/// <param name="state">The <see cref="Navigation.State"/> the Url has navigated to</param>
 		/// <returns>Unprotected set of query string parameters</returns>
 		public virtual NameValueCollection Decode(NameValueCollection data, bool historyPoint, State state)
 		{
@@ -83,7 +83,7 @@ namespace Navigation
 		/// Overridden by derived classes to return an unprotected set of query string parameters
 		/// </summary>
 		/// <param name="data">A protected set of key/value pairs produced by the Encode method</param>
-		/// <param name="state">The <see cref="Navigation.State"/> to which the Url has navigated.</param>
+		/// <param name="state">The <see cref="Navigation.State"/> the Url has navigated to</param>
 		/// <returns>Unprotected set of query string parameters</returns>
 		public virtual NameValueCollection Decode(NameValueCollection data, State state)
 		{
