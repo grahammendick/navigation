@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Web;
 using System.Web.UI;
@@ -9,6 +10,7 @@ namespace Navigation
 	/// <summary>
 	/// Binds the value of a <see cref="Navigation.NavigationData"/> item to a parameter object
 	/// </summary>
+	[DefaultProperty("Key")]
 	public class NavigationDataParameter : ControlParameter
 	{
 		/// <summary>
