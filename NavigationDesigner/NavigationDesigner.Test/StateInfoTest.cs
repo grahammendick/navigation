@@ -67,7 +67,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnC_Makes_1_Dialog()
+		public void AnBnCMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnC.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -77,7 +77,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void A_B_C_Makes_3_Dialogs()
+		public void A_B_CMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/A_B_C.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -87,7 +87,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnB_CnD_Makes_2_Dialogs()
+		public void AnB_CnDMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnB_CnD.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -97,7 +97,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnB_An1C_Makes_1_Dialog()
+		public void AnB_An1CMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnB_An1C.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -107,7 +107,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnB_CnB_Makes_3_Dialogs()
+		public void AnB_CnBMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnB_CnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -117,7 +117,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnB_Makes_2_Dialogs()
+		public void AnbB_CnBMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -127,7 +127,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnbB_Makes_2_Dialogs()
+		public void AnbB_CnbBMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnbB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -137,7 +137,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnbB_Bi_Makes_3_Dialogs()
+		public void AnbB_CnbB_BiMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnbB_Bi.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -147,7 +147,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnA_Makes_1_Dialog_A()
+		public void AnBnCnAMakes1DialogATest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnA.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -158,7 +158,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnA_Bi_Makes_1_Dialog_B()
+		public void AnBnCnA_BiMakes1DialogBTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnA_Bi.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -169,7 +169,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnDnB_Makes_1_Dialog()
+		public void AnBnCnDnBMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnDnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -179,7 +179,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnA_DnB_Makes_1_Dialog()
+		public void AnBnCnA_DnBMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnA_DnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -189,7 +189,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnbCnA_DnbB_Makes_1_Dialog()
+		public void AnBnbCnA_DnbBMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnbCnA_DnbB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -199,7 +199,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnB_CnB_BnD_EnDnF_Makes_5_Dialogs()
+		public void AnB_CnB_BnD_EnDnFMakes5DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnB_CnB_BnD_EnDnF.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -209,7 +209,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnB_CnBnDnB_Makes_3_Dialogs_Not_D()
+		public void AnB_CnBnDnBMakes3DialogsNotDTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnB_CnBnDnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -220,7 +220,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnBnDnB_Makes_3_Dialogs_Not_B()
+		public void AnbB_CnBnDnBMakes3DialogsNotBTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnDnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -231,7 +231,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnBnDnB_Makes_3_Dialogs()
+		public void AnbB_CnBnDnBMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnDnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -241,7 +241,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnBnbDnB_Makes_2_Dialogs()
+		public void AnbB_CnBnbDnBMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnbDnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -251,7 +251,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnDnB_Cn1EnFnGnHnF_Makes_1_Dialog()
+		public void AnBnCnDnB_Cn1EnFnGnHnFMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnDnB_Cn1EnFnGnHnF.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -261,7 +261,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnAn1Cn1Bn1A_Makes_1_Dialog()
+		public void AnBnCnAn1Cn1Bn1AMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnAn1Cn1Bn1A.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -271,7 +271,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnC_AiBi_Makes_2_Dialogs()
+		public void AnBnC_AiBiMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnC_AiBi.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -281,7 +281,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnC_AiBiCi_Makes_3_Dialogs()
+		public void AnBnC_AiBiCiMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnC_AiBiCi.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -291,7 +291,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnDnB_CnbD_Di_Makes_4_Dialogs()
+		public void AnBnDnB_CnbD_DiMakes4DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnDnB_CnbD_Di.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -301,7 +301,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbBnbCnbDnbC_Bi_Makes_2_Dialogs()
+		public void AnbBnbCnbDnbC_BiMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbBnbCnbDnbC_Bi.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -311,7 +311,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnAn1Cn1Bn1An1C_Makes_1_Dialog()
+		public void AnBnCnAn1Cn1Bn1An1CMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnAn1Cn1Bn1An1C.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -321,7 +321,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnAn1Cn1B_Ci_Makes_1_Dialog()
+		public void AnBnCnAn1Cn1B_CiMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnAn1Cn1B_Ci.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -331,7 +331,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void BnCnBn1A_Makes_1_Dialog()
+		public void BnCnBn1AMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BnCnBn1A.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -341,7 +341,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void BnCnBn1bA_DnA_EnA_Makes_4_Dialogs()
+		public void BnCnBn1bA_DnA_EnAMakes4DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BnCnBn1bA_DnA_EnA.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -351,7 +351,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnC_Makes_1_Dialog()
+		public void AnBnCnCMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnC.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -361,7 +361,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnCn1A_Makes_1_Dialog()
+		public void AnBnCnCn1AMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnCn1A.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -371,7 +371,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbBnB_CnB_Makes_2_Dialogs()
+		public void AnbBnB_CnBMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbBnB_CnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -381,7 +381,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnB_CnB_Makes_3_Dialogs()
+		public void AnBnB_CnBMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnB_CnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -391,7 +391,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnbB_CnB_Makes_3_Dialogs()
+		public void AnBnbB_CnBMakes3DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnbB_CnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -401,7 +401,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnBnCnDnBn1B_Cn1C_Makes_1_Dialog()
+		public void AnBnCnDnBn1B_Cn1CMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnBnCnDnBn1B_Cn1C.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -411,7 +411,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnA_Makes_1_Dialog()
+		public void AnAMakes1DialogTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnA.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
