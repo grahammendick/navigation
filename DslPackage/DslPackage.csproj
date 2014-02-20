@@ -14,9 +14,8 @@
     <ApplicationIcon>Resources\File.ico</ApplicationIcon>
     <RootNamespace>Navigation.Designer</RootNamespace>
     <AssemblyName>Navigation.Designer.DslPackage</AssemblyName>
-    <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ClearToolboxCacheInExpHive>true</ClearToolboxCacheInExpHive>
     <StartupObject>
@@ -225,9 +224,6 @@
     <None Include="Resources\File.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Key.snk">
-      <Link>Key.snk</Link>
-    </None>
     <VSCTCompile Include="Commands.vsct">
       <ResourceName>1000.ctmenu</ResourceName>
     </VSCTCompile>
@@ -261,9 +257,6 @@
     <StartArguments>/rootsuffix Exp "..\..\..\Debugging\Debugging.sln"</StartArguments>
   </PropertyGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
-      <Link>CodeAnalysisDictionary.xml</Link>
-    </CodeAnalysisDictionary>
     <Content Include="Resources\ModelExplorerToolWindowBitmaps.bmp" />
     <Content Include="StateInfoGenerator.pkgdef">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
