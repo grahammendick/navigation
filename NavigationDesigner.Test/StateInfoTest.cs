@@ -502,5 +502,17 @@ namespace NavigationDesigner.Test
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateResourceInvalid", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "DialogResourceInvalid", state));
 		}
+
+		[TestMethod]
+		public void DefaultsStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DefaultsState.nav");
+			State state = navigationConfiguration.States[0];
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDefaultsInvalid", state));
+		}
 	}
 }
