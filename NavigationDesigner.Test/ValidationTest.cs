@@ -145,10 +145,22 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/NoBackToInitialTransition.nav");
 			Transition transition = Transition.GetLink(navigationConfiguration.States[1], navigationConfiguration.States[0]);
 			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionWithoutBackToInitialState", transition));
+		}
+
+		[TestMethod]
+		public void FromNoTrackBackTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/FromNoTrackBackTransition.nav");
+			Transition transition = Transition.GetLink(navigationConfiguration.States[0], navigationConfiguration.States[1]);
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionWithBackToNoTrackState", transition));
 		}
 	}
 }
