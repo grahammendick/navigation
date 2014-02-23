@@ -483,7 +483,7 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/TitleAndResourceState.nav");
 			State state = navigationConfiguration.States[0];
 			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(2, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateTitleAndResourceInvalid", state));
@@ -496,7 +496,7 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/ResourceState.nav");
 			State state = navigationConfiguration.States[0];
 			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(2, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateResourceInvalid", state));
