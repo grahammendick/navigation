@@ -439,8 +439,7 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankState.nav");
 			State state = navigationConfiguration.States[1];
 			ValidationController validator = new ValidationController();
-			bool valid = validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
-			Assert.IsFalse(valid);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(2, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateKeyEmpty", state));
@@ -453,8 +452,7 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankInitialState.nav");
 			State state = navigationConfiguration.States[0];
 			ValidationController validator = new ValidationController();
-			bool valid = validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
-			Assert.IsFalse(valid);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(4, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "PathAndRouteEmpty", state));
