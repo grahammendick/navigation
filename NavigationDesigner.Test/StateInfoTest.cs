@@ -491,7 +491,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void ResourceStateStateTest()
+		public void ResourceStateTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/ResourceState.nav");
 			State state = navigationConfiguration.States[0];
