@@ -476,5 +476,18 @@ namespace NavigationDesigner.Test
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[3], "StateMobilePageInvalid", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[4], "StateMobileMastersInvalid", state));
 		}
+
+		[TestMethod]
+		public void TitleAndResourceStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/TitleAndResourceState.nav");
+			State state = navigationConfiguration.States[0];
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(2, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateTitleAndResourceInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "DialogTitleAndResourceInvalid", state));
+		}
 	}
 }
