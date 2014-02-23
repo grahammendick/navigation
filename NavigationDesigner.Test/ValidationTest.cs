@@ -128,6 +128,16 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
+		public void DuplicateTransitionAcrossStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicateTransitionAcrossState.nav");
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.ErrorMessages.Count);
+		}
+
+		[TestMethod]
 		public void BlankTransitionTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankTransition.nav");
