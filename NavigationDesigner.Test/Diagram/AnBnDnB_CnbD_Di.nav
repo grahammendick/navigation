@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<navigationDiagram xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="da8cedb8-8185-483a-a36c-d7be9e049628" xmlns="http://schemas.microsoft.com/dsltools/NavigationDesigner">
+<navigationDiagram xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="da8cedb8-8185-483a-a36c-d7be9e049628" xmlns="http://schemas.microsoft.com/dsltools/NavigationLanguage">
   <states>
     <state Id="f68a09a2-dd4f-4188-8601-5de91aca53b1" key="B" initial="false" order="1" dialogOrder="0">
       <successors>
