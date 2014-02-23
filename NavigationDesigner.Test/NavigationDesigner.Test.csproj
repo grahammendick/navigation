@@ -160,6 +160,12 @@
     <None Include="Diagram\A_B_C.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\BlankInitialState.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Diagram\BlankState.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\BnCnBn1A.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

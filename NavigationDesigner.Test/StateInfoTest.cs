@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Navigation.Designer;
 using System.Collections.Generic;
@@ -64,6 +65,18 @@ namespace NavigationDesigner.Test
 				   from s in d.States
 				   where s.State == state
 				   select s;
+		}
+
+		private bool ValidateValidationMessages<T>(ValidationMessage message, string code, params T[] elements) where T : ModelElement
+		{
+			bool valid = message.Code == code && message.ReferencedModelElements.Count == elements.Length;
+			int i = 0;
+			foreach (T element in elements)
+			{
+				valid = valid && message.ReferencedModelElements[i] == element;
+				i++;
+			}
+			return valid;
 		}
 
 		[TestMethod]
@@ -418,6 +431,36 @@ namespace NavigationDesigner.Test
 			Assert.IsTrue(ValidateNavigation(navigationConfiguration, dialogs));
 			Assert.IsTrue(ValidateTransition(navigationConfiguration, dialogs));
 			Assert.AreEqual(1, dialogs.Count());
+		}
+
+		[TestMethod]
+		public void BlankStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankState.nav");
+			State state = navigationConfiguration.States[1];
+			ValidationController validator = new ValidationController();
+			bool valid = validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			Assert.IsFalse(valid);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(2, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateKeyEmpty", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StatePageEmpty", state));
+		}
+
+		[TestMethod]
+		public void BlankInitialStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankInitialState.nav");
+			State state = navigationConfiguration.States[0];
+			ValidationController validator = new ValidationController();
+			bool valid = validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
+			Assert.IsFalse(valid);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(4, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "PathAndRouteEmpty", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateKeyEmpty", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[2], "StatePageEmpty", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[3], "DialogKeyEmpty", state));
 		}
 	}
 }
