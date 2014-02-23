@@ -179,6 +179,9 @@
     <None Include="Diagram\DefaultsState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\DuplicateDialog.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\DuplicateTransition.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

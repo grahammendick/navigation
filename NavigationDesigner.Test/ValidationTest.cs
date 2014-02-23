@@ -162,5 +162,18 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionWithBackToNoTrackState", transition));
 		}
+
+		[TestMethod]
+		public void DuplicateDialogTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicateDialog.nav");
+			State state1 = navigationConfiguration.States[0];
+			State state2 = navigationConfiguration.States[1];
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "DuplicateDialogKey", state1, state2));
+		}
 	}
 }
