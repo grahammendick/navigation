@@ -460,5 +460,21 @@ namespace NavigationDesigner.Test
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[2], "StatePageEmpty", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[3], "DialogKeyEmpty", state));
 		}
+
+		[TestMethod]
+		public void PathsFormatStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/PathsFormatState.nav");
+			State state = navigationConfiguration.States[0];
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(5, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StatePageInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateMastersInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[2], "DialogPathInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[3], "StateMobilePageInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[4], "StateMobileMastersInvalid", state));
+		}
 	}
 }
