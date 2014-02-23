@@ -509,10 +509,23 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DefaultsState.nav");
 			State state = navigationConfiguration.States[0];
 			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDefaultsInvalid", state));
+		}
+
+		[TestMethod]
+		public void DuplicateTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicateTransition.nav");
+			Transition transition1 = Transition.GetLink(navigationConfiguration.States[0], navigationConfiguration.States[1]);
+			Transition transition2 = Transition.GetLink(navigationConfiguration.States[0], navigationConfiguration.States[2]);
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "DuplicateTransitionKey", transition1, transition2));
 		}
 	}
 }
