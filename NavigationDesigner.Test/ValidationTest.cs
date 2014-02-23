@@ -216,7 +216,7 @@ namespace NavigationDesigner.Test
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicateStateAcrossDialog.nav");
 			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
 		}
