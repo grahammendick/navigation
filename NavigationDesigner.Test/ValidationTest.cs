@@ -187,5 +187,18 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDialogNotInitial", state));
 		}
+
+		[TestMethod]
+		public void DuplicateStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicateState.nav");
+			State state1 = navigationConfiguration.States[0];
+			State state2 = navigationConfiguration.States[1];
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "DuplicateStateKey", state1, state2));
+		}
 	}
 }
