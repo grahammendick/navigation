@@ -172,6 +172,9 @@
     <None Include="Diagram\BnCnBn1bA_DnA_EnA.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\DefaultsState.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\PathsFormatState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
