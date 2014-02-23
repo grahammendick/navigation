@@ -185,6 +185,9 @@
     <None Include="Diagram\DuplicateState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\DuplicateStateAcrossDialog.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\DuplicateTransition.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
