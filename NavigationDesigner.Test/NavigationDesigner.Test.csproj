@@ -182,6 +182,9 @@
     <None Include="Diagram\DuplicateTransition.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\NoBackToInitialTransition.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\PathsFormatState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
