@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="StateInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CoherenceTest.cs" />
     <Compile Include="ValidationTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +199,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Diagram\FromNoTrackBackTransition.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Diagram\InitialDialogCoherence.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Diagram\NoBackToInitialTransition.nav">
