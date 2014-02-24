@@ -220,5 +220,17 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
 		}
+
+		[TestMethod]
+		public void DuplicatedRoutedStateTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicatedRoutedState.nav");
+			State state = navigationConfiguration.States[2];
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateRouteInvalid", state));
+		}
 	}
 }
