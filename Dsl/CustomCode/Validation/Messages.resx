@@ -145,7 +145,7 @@
     <value>Defaults is invalid for State '{0}' as it must be in the format Key1=Value1,Key2?type=Value2.</value>
   </data>
   <data name="StateDialogNotInitial" xml:space="preserve">
-    <value>Initial should be set to true for State '{0}' as the StateInfo conversion has made it a Dialog.</value>
+    <value>Initial should be set to true for State '{0}' because the StateInfo conversion has made it a Dialog.</value>
   </data>
   <data name="StateKeyEmpty" xml:space="preserve">
     <value>Key is mandatory for State as it is used by Dialog and Transition elements to specify configuration.</value>
@@ -167,6 +167,9 @@
   </data>
   <data name="StateResourceInvalid" xml:space="preserve">
     <value>ResourceType and ResourceKey are invalid for State '{0}'. They must either both be populated or both be blank as these are used to localize the State Title.</value>
+  </data>
+  <data name="StateRouteInvalid" xml:space="preserve">
+    <value>Route should be blank for State '{0}' because the StateInfo conversion has added it to multiple Dialogs.</value>
   </data>
   <data name="StateTitleAndResourceInvalid" xml:space="preserve">
     <value>ResourceType, ResourceKey and Title are invalid for State '{0}'. If ResourceType or ResourceKey are populated then Title should be blank and vice versa.</value>

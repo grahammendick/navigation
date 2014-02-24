@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Modeling.Validation;
+using Navigation.Designer.CustomCode.Validation;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.Modeling.Validation;
-using Navigation.Designer.CustomCode.Validation;
 
 namespace Navigation.Designer
 {
@@ -15,20 +13,38 @@ namespace Navigation.Designer
 		{
 			StateInfo stateInfo = new StateInfo();
 			List<Dialog> dialogs = stateInfo.Convert(this);
-			var qd = from d in dialogs
+			ValidateDialogKey(context, dialogs);
+			ValidateInitial(context, dialogs);
+			ValidateStateKey(context, dialogs);
+			ValidatePathAndRoute(context, dialogs);
+			ValidateRoute(context, dialogs);
+		}
+
+		private void ValidateDialogKey(ValidationContext context, List<Dialog> dialogs)
+		{
+			var q = from d in dialogs
 					 where !string.IsNullOrEmpty(d.Key)
 					 group d.Initial by d.Key into g
 					 where g.Count() > 1
 					 select g;
-			foreach (var d in qd)
+			foreach (var d in q)
 			{
 				context.LogError(string.Format(Messages.DuplicateDialogKey, d.Key), "DuplicateDialogKey", d.ToArray());
 			}
+		}
+
+		private void ValidateInitial(ValidationContext context, List<Dialog> dialogs)
+		{
+			foreach (Dialog dialog in dialogs.Where(d => !d.Initial.Initial))
+			{
+				context.LogError(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
+			}
+		}
+
+		private void ValidateStateKey(ValidationContext context, List<Dialog> dialogs)
+		{
 			foreach (Dialog dialog in dialogs)
 			{
-				if (!dialog.Initial.Initial)
-					context.LogError(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
-
 				var q = from s in dialog.States
 						where !string.IsNullOrEmpty(s.Key)
 						group s.State by s.Key into g
@@ -39,6 +55,10 @@ namespace Navigation.Designer
 					context.LogError(string.Format(Messages.DuplicateStateKey, dialog.Key, s.Key), "DuplicateStateKey", s.ToArray());
 				}
 			}
+		}
+
+		private void ValidatePathAndRoute(ValidationContext context, List<Dialog> dialogs)
+		{
 			if (dialogs.Count > 0)
 			{
 				bool noPathOrRoute = dialogs.Where(d => !string.IsNullOrEmpty(d.Path + d.Initial.Route)).FirstOrDefault() == null;
@@ -46,6 +66,20 @@ namespace Navigation.Designer
 				{
 					context.LogError(Messages.PathAndRouteEmpty, "PathAndRouteEmpty", (dialogs.Select(d => d.Initial).ToArray()));
 				}
+			}
+		}
+
+		private void ValidateRoute(ValidationContext context, List<Dialog> dialogs)
+		{
+			var q = from d in dialogs
+					from s in d.States
+					where !string.IsNullOrEmpty(s.Route)
+					group s.State by new { s.Key, s.Route } into g
+					where g.Count() > 1
+					select g;
+			foreach (var s in q)
+			{
+				context.LogError(string.Format(Messages.StateRouteInvalid, s.Key.Key), "StateRouteInvalid", s.First());
 			}
 		}
 	}
