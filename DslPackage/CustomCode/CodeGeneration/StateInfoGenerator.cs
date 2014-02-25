@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TextTemplating.VSHost;
+using Navigation.Designer.CustomCode.CodeGeneration;
+using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.VisualStudio.TextTemplating.VSHost;
-using Navigation.Designer.CustomCode.CodeGeneration;
 
 namespace Navigation.Designer
 {
