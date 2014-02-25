@@ -10,8 +10,12 @@ namespace Navigation.Designer
 	{
 		private static Regex pageExp = new Regex(@"^~/.+\.aspx$");
 		private static Regex masterExp = new Regex(@"^~/.+\.master$");
-		private const string KEY_VALUE = @"(\s*[^\s?=,][^?=,]*(\?\s*(string|bool|short|int|long|float|double|decimal|datetime|byte|char)\s*)?=[^?=,]*)";
-		private static Regex defaultsExp = new Regex(string.Format(@"^({0})(,{0})*$", KEY_VALUE), RegexOptions.IgnoreCase);
+		private static string typesExp = @"(string|bool|short|int|long|float|double|decimal|datetime|byte|char)";
+		private static string defaultsKeyValueExp = string.Format(@"\s*[^\s?=,][^?=,]*(\?\s*{0}\s*)?=[^?=,]*", typesExp);
+		private static string defaultTypesKeyValueExp = string.Format(@"\s*[^\s=,][^=,]*=\s*{0}\s*", typesExp);
+		private static string commaSeparatedListExp = @"^({0})(,{0})*$";
+		private static Regex defaultsExp = new Regex(string.Format(commaSeparatedListExp, defaultsKeyValueExp), RegexOptions.IgnoreCase);
+		private static Regex defaultTypesExp = new Regex(string.Format(commaSeparatedListExp, defaultTypesKeyValueExp), RegexOptions.IgnoreCase);
 
 		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
 		private void ValidateKey(ValidationContext context)
@@ -137,6 +141,15 @@ namespace Navigation.Designer
 			if (!string.IsNullOrEmpty(Defaults) && !defaultsExp.IsMatch(Defaults))
 			{
 				context.LogError(string.Format(Messages.StateDefaultsInvalid, Key), "StateDefaultsInvalid", this);
+			}
+		}
+
+		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
+		private void ValidateDefaultTypes(ValidationContext context)
+		{
+			if (!string.IsNullOrEmpty(DefaultTypes) && !defaultTypesExp.IsMatch(DefaultTypes))
+			{
+				context.LogError(string.Format(Messages.StateDefaultTypesInvalid, Key), "StateDefaultTypesInvalid", this);
 			}
 		}
 

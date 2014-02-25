@@ -121,10 +121,10 @@
     <value>DialogKey is mandatory for State '{0}'. Any State marked as Initial becomes a Dialog during StateInfo conversion.</value>
   </data>
   <data name="DialogPathInvalid" xml:space="preserve">
-    <value>Path is invalid for State '{0}' as it must end with '.aspx' and be made relative using the tilde (~) notation for the application root e.g. '~/Page.aspx'.</value>
+    <value>Path is invalid for State '{0}' because it must end with '.aspx' and be made relative using the tilde (~) notation for the application root e.g. '~/Page.aspx'.</value>
   </data>
   <data name="DialogResourceInvalid" xml:space="preserve">
-    <value>DialogResourceType and DialogResourceKey are invalid for State '{0}'. They must either both be populated or both be blank as these are used to localize the Dialog Title.</value>
+    <value>DialogResourceType and DialogResourceKey are invalid for State '{0}'. They must either both be populated or both be blank because these are used to localize the Dialog Title.</value>
   </data>
   <data name="DialogTitleAndResourceInvalid" xml:space="preserve">
     <value>DialogResourceType, DialogResourceKey and DialogTitle are invalid for State '{0}'. If DialogResourceType or DialogResourceKey are populated then DialogTitle should be blank and vice versa.</value>
@@ -142,13 +142,16 @@
     <value>Either Path or Route must be set for at least one Dialog/Initial State otherwise a start page or url cannot be specified.</value>
   </data>
   <data name="StateDefaultsInvalid" xml:space="preserve">
-    <value>Defaults is invalid for State '{0}' as it must be in the format Key1=Value1,Key2?type=Value2.</value>
+    <value>Defaults is invalid for State '{0}' because it must be in the format Key1=Value1,Key2?type=Value2.</value>
+  </data>
+  <data name="StateDefaultTypesInvalid" xml:space="preserve">
+    <value>DefaultTypes is invalid for State '{0}' because it must be in the format Key1=type1,Key2=type2.</value>
   </data>
   <data name="StateDialogNotInitial" xml:space="preserve">
     <value>Initial should be set to true for State '{0}' because the StateInfo conversion has made it a Dialog.</value>
   </data>
   <data name="StateKeyEmpty" xml:space="preserve">
-    <value>Key is mandatory for State as it is used by Dialog and Transition elements to specify configuration.</value>
+    <value>Key is mandatory for State because it is used by Dialog and Transition elements to specify configuration.</value>
   </data>
   <data name="StateMastersInvalid" xml:space="preserve">
     <value>Masters is invalid for State '{0}'. It must be a comma separated list of master pages, each must end with '.master' and be made relative using the tilde (~) notation for the application root e.g. 'Site1.master,Site2.master'</value>
@@ -157,16 +160,16 @@
     <value>MobileMasters is invalid for State '{0}'. It must be a comma separated list of master pages, each must end with '.master' and be made relative using the tilde (~) notation for the application root e.g. 'Site1.master,Site2.master'</value>
   </data>
   <data name="StateMobilePageInvalid" xml:space="preserve">
-    <value>MobilePage  is invalid for State '{0}' as it must end with '.aspx' and be made relative using the tilde (~) notation for the application root e.g. '~/Page.aspx'.</value>
+    <value>MobilePage  is invalid for State '{0}' because it must end with '.aspx' and be made relative using the tilde (~) notation for the application root e.g. '~/Page.aspx'.</value>
   </data>
   <data name="StatePageEmpty" xml:space="preserve">
-    <value>Page is mandatory for State '{0}' as it is the aspx page to display when navigating.</value>
+    <value>Page is mandatory for State '{0}' because it is the aspx page to display when navigating.</value>
   </data>
   <data name="StatePageInvalid" xml:space="preserve">
-    <value>Page  is invalid for State '{0}' as it must end with '.aspx' and be made relative using the tilde (~) notation for the application root e.g. '~/Page.aspx'.</value>
+    <value>Page  is invalid for State '{0}' because it must end with '.aspx' and be made relative using the tilde (~) notation for the application root e.g. '~/Page.aspx'.</value>
   </data>
   <data name="StateResourceInvalid" xml:space="preserve">
-    <value>ResourceType and ResourceKey are invalid for State '{0}'. They must either both be populated or both be blank as these are used to localize the State Title.</value>
+    <value>ResourceType and ResourceKey are invalid for State '{0}'. They must either both be populated or both be blank because these are used to localize the State Title.</value>
   </data>
   <data name="StateRouteInvalid" xml:space="preserve">
     <value>Route should be blank for State '{0}' because the StateInfo conversion has added it to multiple Dialogs.</value>
