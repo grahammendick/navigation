@@ -70,7 +70,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Path is invalid for State &apos;{0}&apos; as it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
+        ///   Looks up a localized string similar to Path is invalid for State &apos;{0}&apos; because it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
         /// </summary>
         internal static string DialogPathInvalid {
             get {
@@ -79,7 +79,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DialogResourceType and DialogResourceKey are invalid for State &apos;{0}&apos;. They must either both be populated or both be blank as these are used to localize the Dialog Title..
+        ///   Looks up a localized string similar to DialogResourceType and DialogResourceKey are invalid for State &apos;{0}&apos;. They must either both be populated or both be blank because these are used to localize the Dialog Title..
         /// </summary>
         internal static string DialogResourceInvalid {
             get {
@@ -133,11 +133,20 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Defaults is invalid for State &apos;{0}&apos; as it must be in the format Key1=Value1,Key2?type=Value2..
+        ///   Looks up a localized string similar to Defaults is invalid for State &apos;{0}&apos; because it must be in the format Key1=Value1,Key2?type=Value2..
         /// </summary>
         internal static string StateDefaultsInvalid {
             get {
                 return ResourceManager.GetString("StateDefaultsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DefaultTypes is invalid for State &apos;{0}&apos; because it must be in the format Key1=type1,Key2=type2..
+        /// </summary>
+        internal static string StateDefaultTypesInvalid {
+            get {
+                return ResourceManager.GetString("StateDefaultTypesInvalid", resourceCulture);
             }
         }
         
@@ -151,7 +160,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Key is mandatory for State as it is used by Dialog and Transition elements to specify configuration..
+        ///   Looks up a localized string similar to Key is mandatory for State because it is used by Dialog and Transition elements to specify configuration..
         /// </summary>
         internal static string StateKeyEmpty {
             get {
@@ -178,7 +187,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MobilePage  is invalid for State &apos;{0}&apos; as it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
+        ///   Looks up a localized string similar to MobilePage  is invalid for State &apos;{0}&apos; because it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
         /// </summary>
         internal static string StateMobilePageInvalid {
             get {
@@ -187,7 +196,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page is mandatory for State &apos;{0}&apos; as it is the aspx page to display when navigating..
+        ///   Looks up a localized string similar to Page is mandatory for State &apos;{0}&apos; because it is the aspx page to display when navigating..
         /// </summary>
         internal static string StatePageEmpty {
             get {
@@ -196,7 +205,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page  is invalid for State &apos;{0}&apos; as it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
+        ///   Looks up a localized string similar to Page  is invalid for State &apos;{0}&apos; because it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
         /// </summary>
         internal static string StatePageInvalid {
             get {
@@ -205,7 +214,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResourceType and ResourceKey are invalid for State &apos;{0}&apos;. They must either both be populated or both be blank as these are used to localize the State Title..
+        ///   Looks up a localized string similar to ResourceType and ResourceKey are invalid for State &apos;{0}&apos;. They must either both be populated or both be blank because these are used to localize the State Title..
         /// </summary>
         internal static string StateResourceInvalid {
             get {
