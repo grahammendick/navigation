@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.Modeling.Validation;
-using System.Text.RegularExpressions;
+﻿using Microsoft.VisualStudio.Modeling.Validation;
 using Navigation.Designer.CustomCode.Validation;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Navigation.Designer
 {
