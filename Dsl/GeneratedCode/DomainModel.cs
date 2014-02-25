@@ -112,6 +112,8 @@ namespace Navigation.Designer
 				new DomainMemberInfo(typeof(State), "MobileTheme", State.MobileThemeDomainPropertyId, typeof(State.MobileThemePropertyHandler)),
 				new DomainMemberInfo(typeof(State), "MobileMasters", State.MobileMastersDomainPropertyId, typeof(State.MobileMastersPropertyHandler)),
 				new DomainMemberInfo(typeof(State), "Defaults", State.DefaultsDomainPropertyId, typeof(State.DefaultsPropertyHandler)),
+				new DomainMemberInfo(typeof(State), "DefaultTypes", State.DefaultTypesDomainPropertyId, typeof(State.DefaultTypesPropertyHandler)),
+				new DomainMemberInfo(typeof(State), "Derived", State.DerivedDomainPropertyId, typeof(State.DerivedPropertyHandler)),
 				new DomainMemberInfo(typeof(Transition), "Key", Transition.KeyDomainPropertyId, typeof(Transition.KeyPropertyHandler)),
 				new DomainMemberInfo(typeof(Transition), "CanNavigateBack", Transition.CanNavigateBackDomainPropertyId, typeof(Transition.CanNavigateBackPropertyHandler)),
 				new DomainMemberInfo(typeof(Transition), "Order", Transition.OrderDomainPropertyId, typeof(Transition.OrderPropertyHandler)),

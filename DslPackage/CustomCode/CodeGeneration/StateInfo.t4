@@ -47,6 +47,8 @@
 			AddAttribute("mobileTheme", state.MobileTheme);
 			AddAttribute("mobileMasters", state.MobileMasters);
 			AddAttribute("defaults", state.Defaults);
+			AddAttribute("defaultTypes", state.DefaultTypes);
+			AddAttribute("derived", state.Derived);
 			if (state.Transitions.Count == 0) Write("/");
 			WriteLine(">");
 			PushIndent("\t");

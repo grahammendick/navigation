@@ -235,6 +235,18 @@
             <xsd:documentation>The default NavigationData for this State.</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+        <!-- Property: DefaultTypes -->
+        <xsd:attribute name="defaultTypes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The default types of NavigationData for this State.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Derived -->
+        <xsd:attribute name="derived" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The derived NavigationData for this State.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>

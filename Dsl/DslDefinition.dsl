@@ -131,6 +131,16 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="e328f1c5-4344-4f4f-be2f-23f328169164" Description="The default types of NavigationData for this State." Name="DefaultTypes" DisplayName="Default Types" Category="Definition">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="1e7e5ad7-50e2-45da-a2af-7d932adcd8e0" Description="The derived NavigationData for this State." Name="Derived" DisplayName="Derived" Category="Definition">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
       </Properties>
     </DomainClass>
   </Classes>
@@ -310,6 +320,12 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="defaults">
             <DomainPropertyMoniker Name="State/Defaults" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="defaultTypes">
+            <DomainPropertyMoniker Name="State/DefaultTypes" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="derived">
+            <DomainPropertyMoniker Name="State/Derived" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
