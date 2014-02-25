@@ -2238,6 +2238,182 @@ namespace Navigation.Designer
 		}
 		
 		#endregion
+		#region DefaultTypes domain property code
+		
+		/// <summary>
+		/// DefaultTypes domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultTypesDomainPropertyId = new global::System.Guid(0xe328f1c5, 0x4344, 0x4f4f, 0xbe, 0x2f, 0x23, 0xf3, 0x28, 0x16, 0x91, 0x64);
+		
+		/// <summary>
+		/// Storage for DefaultTypes
+		/// </summary>
+		private global::System.String defaultTypesPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultTypes domain property.
+		/// The default types of NavigationData for this State.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Navigation.Designer.State/DefaultTypes.DisplayName", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("Navigation.Designer.State/DefaultTypes.Category", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Navigation.Designer.State/DefaultTypes.Description", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("e328f1c5-4344-4f4f-be2f-23f328169164")]
+		public global::System.String DefaultTypes
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return defaultTypesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultTypesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the State.DefaultTypes domain property.
+		/// </summary>
+		internal sealed partial class DefaultTypesPropertyHandler : DslModeling::DomainPropertyValueHandler<State, global::System.String>
+		{
+			private DefaultTypesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the State.DefaultTypes domain property value handler.
+			/// </summary>
+			public static readonly DefaultTypesPropertyHandler Instance = new DefaultTypesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the State.DefaultTypes domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultTypesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(State element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.defaultTypesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(State element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.defaultTypesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Derived domain property code
+		
+		/// <summary>
+		/// Derived domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivedDomainPropertyId = new global::System.Guid(0x1e7e5ad7, 0x50e2, 0x45da, 0xa2, 0xaf, 0x7d, 0x93, 0x2a, 0xdc, 0xd8, 0xe0);
+		
+		/// <summary>
+		/// Storage for Derived
+		/// </summary>
+		private global::System.String derivedPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Derived domain property.
+		/// The derived NavigationData for this State.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Navigation.Designer.State/Derived.DisplayName", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("Navigation.Designer.State/Derived.Category", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Navigation.Designer.State/Derived.Description", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("1e7e5ad7-50e2-45da-a2af-7d932adcd8e0")]
+		public global::System.String Derived
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return derivedPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the State.Derived domain property.
+		/// </summary>
+		internal sealed partial class DerivedPropertyHandler : DslModeling::DomainPropertyValueHandler<State, global::System.String>
+		{
+			private DerivedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the State.Derived domain property value handler.
+			/// </summary>
+			public static readonly DerivedPropertyHandler Instance = new DerivedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the State.Derived domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(State element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.derivedPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(State element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.derivedPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region NavigationDiagram opposite domain role accessor
 		/// <summary>
 		/// Gets or sets NavigationDiagram.

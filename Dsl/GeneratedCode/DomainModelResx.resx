@@ -417,6 +417,30 @@
     <value>Definition</value>
     <comment>Category for DomainProperty &apos;Defaults&apos; on DomainClass &apos;State&apos;</comment>
   </data>
+  <data name="Navigation.Designer.State/DefaultTypes.Description" xml:space="preserve">
+    <value>The default types of NavigationData for this State.</value>
+    <comment>Description for DomainProperty &apos;DefaultTypes&apos; on DomainClass &apos;State&apos;</comment>
+  </data>
+  <data name="Navigation.Designer.State/DefaultTypes.DisplayName" xml:space="preserve">
+    <value>Default Types</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultTypes&apos; on DomainClass &apos;State&apos;</comment>
+  </data>
+  <data name="Navigation.Designer.State/DefaultTypes.Category" xml:space="preserve">
+    <value>Definition</value>
+    <comment>Category for DomainProperty &apos;DefaultTypes&apos; on DomainClass &apos;State&apos;</comment>
+  </data>
+  <data name="Navigation.Designer.State/Derived.Description" xml:space="preserve">
+    <value>The derived NavigationData for this State.</value>
+    <comment>Description for DomainProperty &apos;Derived&apos; on DomainClass &apos;State&apos;</comment>
+  </data>
+  <data name="Navigation.Designer.State/Derived.DisplayName" xml:space="preserve">
+    <value>Derived</value>
+    <comment>DisplayName for DomainProperty &apos;Derived&apos; on DomainClass &apos;State&apos;</comment>
+  </data>
+  <data name="Navigation.Designer.State/Derived.Category" xml:space="preserve">
+    <value>Definition</value>
+    <comment>Category for DomainProperty &apos;Derived&apos; on DomainClass &apos;State&apos;</comment>
+  </data>
   <data name="Navigation.Designer.NavigationDiagramHasStates.Description" xml:space="preserve">
     <value>Embedding relationship between the Diagram and States</value>
     <comment>Description for DomainClass &apos;NavigationDiagramHasStates&apos;</comment>

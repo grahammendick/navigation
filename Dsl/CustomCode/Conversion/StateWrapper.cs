@@ -148,6 +148,22 @@ namespace Navigation.Designer
 			}
 		}
 
+		public string DefaultTypes
+		{
+			get
+			{
+				return State.DefaultTypes;
+			}
+		}
+
+		public string Derived
+		{
+			get
+			{
+				return State.Derived;
+			}
+		}
+
 		public int Order
 		{
 			get

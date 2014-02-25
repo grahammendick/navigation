@@ -1316,6 +1316,40 @@ namespace Navigation.Designer
 					}
 				}
 			}
+			// DefaultTypes
+			if (!serializationContext.Result.Failed)
+			{
+				string attribDefaultTypes = NavigationLanguageSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "defaultTypes");
+				if (attribDefaultTypes != null)
+				{
+					global::System.String valueOfDefaultTypes;
+					if (DslModeling::SerializationUtilities.TryGetValue<global::System.String>(serializationContext, attribDefaultTypes, out valueOfDefaultTypes))
+					{
+						instanceOfState.DefaultTypes = valueOfDefaultTypes;
+					}
+					else
+					{	// Invalid property value, ignored.
+						NavigationLanguageSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "defaultTypes", typeof(global::System.String), attribDefaultTypes);
+					}
+				}
+			}
+			// Derived
+			if (!serializationContext.Result.Failed)
+			{
+				string attribDerived = NavigationLanguageSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "derived");
+				if (attribDerived != null)
+				{
+					global::System.String valueOfDerived;
+					if (DslModeling::SerializationUtilities.TryGetValue<global::System.String>(serializationContext, attribDerived, out valueOfDerived))
+					{
+						instanceOfState.Derived = valueOfDerived;
+					}
+					else
+					{	// Invalid property value, ignored.
+						NavigationLanguageSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "derived", typeof(global::System.String), attribDerived);
+					}
+				}
+			}
 		}
 	
 		/// <summary>
@@ -2081,6 +2115,28 @@ namespace Navigation.Designer
 				{
 					if (!string.IsNullOrEmpty(propValue))
 						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "defaults", propValue);
+	
+				}
+			}
+			// DefaultTypes
+			if (!serializationContext.Result.Failed)
+			{
+				global::System.String propValue = instanceOfState.DefaultTypes;
+				if (!serializationContext.Result.Failed)
+				{
+					if (!string.IsNullOrEmpty(propValue))
+						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "defaultTypes", propValue);
+	
+				}
+			}
+			// Derived
+			if (!serializationContext.Result.Failed)
+			{
+				global::System.String propValue = instanceOfState.Derived;
+				if (!serializationContext.Result.Failed)
+				{
+					if (!string.IsNullOrEmpty(propValue))
+						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "derived", propValue);
 	
 				}
 			}
