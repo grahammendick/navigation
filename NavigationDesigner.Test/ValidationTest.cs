@@ -108,12 +108,14 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DefaultsState.nav");
 			State state1 = navigationConfiguration.States[0];
 			State state2 = navigationConfiguration.States[1];
+			State state3 = navigationConfiguration.States[2];
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(2, validator.ErrorMessages.Count);
+			Assert.AreEqual(3, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDefaultsInvalid", state1));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateDefaultsInvalid", state2));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[2], "StateDefaultsInvalid", state3));
 		}
 
 		[TestMethod]
@@ -122,12 +124,14 @@ namespace NavigationDesigner.Test
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DefaultTypesState.nav");
 			State state1 = navigationConfiguration.States[0];
 			State state2 = navigationConfiguration.States[1];
+			State state3 = navigationConfiguration.States[2];
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(2, validator.ErrorMessages.Count);
+			Assert.AreEqual(3, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDefaultTypesInvalid", state1));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateDefaultTypesInvalid", state2));
+			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[2], "StateDefaultTypesInvalid", state3));
 		}
 
 		[TestMethod]
