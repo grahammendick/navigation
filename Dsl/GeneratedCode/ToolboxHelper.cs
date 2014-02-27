@@ -46,11 +46,11 @@ namespace Navigation.Designer
 		/// See the MSDN documentation for the ToolboxItemFilterAttribute class for more information on toolbox
 		/// item filters.
 		/// </remarks>
-		public const string ToolboxFilterString = "NavigationLanguage.1.0";
+		public const string ToolboxFilterString = "NavigationLanguage.1.4";
 		/// <summary>
 		/// Toolbox item filter string used to identify Transition connector tool.
 		/// </summary>
-		public const string TransitionFilterString = "Transition.1.0";
+		public const string TransitionFilterString = "Transition.1.4";
 
 	
 		private global::System.Collections.Generic.Dictionary<string, DslDesign::ModelingToolboxItem> toolboxItemCache = new global::System.Collections.Generic.Dictionary<string, DslDesign::ModelingToolboxItem>();
