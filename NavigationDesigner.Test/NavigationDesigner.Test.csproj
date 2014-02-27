@@ -204,6 +204,9 @@
     <None Include="Diagram\FromNoTrackBackTransition.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\FullState.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\InitialDialogCoherence.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
