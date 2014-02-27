@@ -18,7 +18,7 @@ namespace Navigation.Designer
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
 		public const string CompanyName = @"Navigation";
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-		public const string ProductVersion = "1.0.0.0";
+		public const string ProductVersion = "1.4.0.0";
 
 		// Menu definitions
 		public static readonly global::System.ComponentModel.Design.CommandID NavigationLanguageDiagramMenu = new global::System.ComponentModel.Design.CommandID(new global::System.Guid(NavigationLanguageCommandSetId), 0x10000);
