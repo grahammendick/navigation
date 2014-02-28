@@ -19,6 +19,11 @@ namespace Navigation.Designer
 					state.Path = string.Empty;
 					state.DialogOrder = 0;
 				}
+				else
+				{
+					state.DialogKey = state.Key;
+					state.Route = state.Key;
+				}
 			}
 			else
 			{
