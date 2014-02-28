@@ -504,7 +504,7 @@ namespace Navigation.Designer
 		/// <summary>
 		/// Storage for CanNavigateBack
 		/// </summary>
-		private global::System.Boolean canNavigateBackPropertyStorage;
+		private global::System.Boolean canNavigateBackPropertyStorage = true;
 		
 		/// <summary>
 		/// Gets or sets the value of CanNavigateBack domain property.
@@ -513,6 +513,7 @@ namespace Navigation.Designer
 		[DslDesign::DisplayNameResource("Navigation.Designer.Transition/CanNavigateBack.DisplayName", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::CategoryResource("Navigation.Designer.Transition/CanNavigateBack.Category", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Navigation.Designer.Transition/CanNavigateBack.Description", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
 		[DslModeling::DomainObjectId("bddda6ac-4739-4ff5-ac13-0c7120873adb")]
 		public global::System.Boolean CanNavigateBack
 		{

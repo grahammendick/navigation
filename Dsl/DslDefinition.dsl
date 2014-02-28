@@ -168,7 +168,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="bddda6ac-4739-4ff5-ac13-0c7120873adb" Description="Set to true to ensure the linked States always have the same parent Dialog." Name="CanNavigateBack" DisplayName="Can Navigate Back" Category="Definition">
+        <DomainProperty Id="bddda6ac-4739-4ff5-ac13-0c7120873adb" Description="Set to true to ensure the linked States always have the same parent Dialog." Name="CanNavigateBack" DisplayName="Can Navigate Back" DefaultValue="true" Category="Definition">
           <Type>
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>

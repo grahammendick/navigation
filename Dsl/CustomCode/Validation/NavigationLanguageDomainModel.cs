@@ -8,7 +8,9 @@ namespace Navigation.Designer
 		{
 			return new Type[]{
 				typeof(StateDialogCoherence),
-				typeof(StateCreation)
+				typeof(StateCreation),
+				typeof(TransitionDialogCoherence.TransitionCreation),
+				typeof(TransitionDialogCoherence.TransitionDeletion)
 			};
 		}
 	}
