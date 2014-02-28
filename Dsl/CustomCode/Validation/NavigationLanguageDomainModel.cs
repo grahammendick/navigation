@@ -7,7 +7,8 @@ namespace Navigation.Designer
 		protected override Type[] GetCustomDomainModelTypes()
 		{
 			return new Type[]{
-				typeof(StateDialogCoherence)
+				typeof(StateDialogCoherence),
+				typeof(StateCreation)
 			};
 		}
 	}

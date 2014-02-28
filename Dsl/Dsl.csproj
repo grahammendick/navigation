@@ -89,6 +89,7 @@
     <Compile Include="CustomCode\Validation\NavigationDiagram.cs" />
     <Compile Include="CustomCode\Validation\NavigationLanguageDomainModel.cs" />
     <Compile Include="CustomCode\Validation\State.cs" />
+    <Compile Include="CustomCode\Validation\StateCreation.cs" />
     <Compile Include="CustomCode\Validation\StateDialogCoherence.cs" />
     <Compile Include="CustomCode\Validation\Transition.cs" />
     <Compile Include="CustomCode\Validation\TransitionBuilder.cs" />
