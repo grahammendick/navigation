@@ -3739,7 +3739,10 @@ namespace Navigation.Designer
 				string serializedPropValue = DslModeling::SerializationUtilities.GetString<global::System.Boolean>(serializationContext, propValue);
 				if (!serializationContext.Result.Failed)
 				{
-					NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "canNavigateBack", serializedPropValue);
+					if (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(serializedPropValue, "true") != 0)
+					{	// No need to write the value out if it's the same as default value.
+						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "canNavigateBack", serializedPropValue);
+					}
 				}
 			}
 			// Order

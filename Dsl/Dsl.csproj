@@ -93,6 +93,7 @@
     <Compile Include="CustomCode\Validation\StateDialogCoherence.cs" />
     <Compile Include="CustomCode\Validation\Transition.cs" />
     <Compile Include="CustomCode\Validation\TransitionBuilder.cs" />
+    <Compile Include="CustomCode\Validation\TransitionDialogCoherence.cs" />
     <Compile Include="GeneratedCode\ConnectionBuilders.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
