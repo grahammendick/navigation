@@ -393,7 +393,7 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void StatePageKeyChangeTest()
+		public void StateChangeKeyChangeTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankModel.nav");
 			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
@@ -407,11 +407,13 @@ namespace NavigationDesigner.Test
 			{
 				State state = navigationConfiguration.States[0];
 				state.Page = "~/Page.aspx";
+				state.DialogKey = "Dialog";
+				state.Route = "Route";
 				state.Key = "State2";
 				t.Commit();
 				Assert.AreEqual("~/Page.aspx", state.Page);
-				Assert.AreEqual("State2Dialog", state.DialogKey);
-				Assert.AreEqual("State2Route", state.Route);
+				Assert.AreEqual("Dialog", state.DialogKey);
+				Assert.AreEqual("Route", state.Route);
 			}
 		}
 
