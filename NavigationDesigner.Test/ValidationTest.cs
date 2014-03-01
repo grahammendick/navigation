@@ -369,5 +369,78 @@ namespace NavigationDesigner.Test
 				Assert.IsFalse(to.Initial);
 			}
 		}
+
+		[TestMethod]
+		public void StateKeyChangeTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankModel.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = new State(navigationConfiguration.Store);
+				state.Key = "State1";
+				navigationConfiguration.States.Add(state);
+				t.Commit();
+			}
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = navigationConfiguration.States[0];
+				state.Key = "State2";
+				t.Commit();
+				Assert.AreEqual("~/State2Page.aspx", state.Page);
+				Assert.AreEqual("State2Dialog", state.DialogKey);
+				Assert.AreEqual("State2Route", state.Route);
+			}
+		}
+
+		[TestMethod]
+		public void StatePageKeyChangeTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankModel.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = new State(navigationConfiguration.Store);
+				state.Key = "State1";
+				navigationConfiguration.States.Add(state);
+				t.Commit();
+			}
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = navigationConfiguration.States[0];
+				state.Page = "~/Page.aspx";
+				state.Key = "State2";
+				t.Commit();
+				Assert.AreEqual("~/Page.aspx", state.Page);
+				Assert.AreEqual("State2Dialog", state.DialogKey);
+				Assert.AreEqual("State2Route", state.Route);
+			}
+		}
+
+		[TestMethod]
+		public void StateKeyChangeChangeTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankModel.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = new State(navigationConfiguration.Store);
+				state.Key = "State1";
+				navigationConfiguration.States.Add(state);
+				t.Commit();
+			}
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = navigationConfiguration.States[0];
+				state.Key = "A";
+				t.Commit();
+			}
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State state = navigationConfiguration.States[0];
+				state.Key = "B";
+				t.Commit();
+				Assert.AreEqual("~/APage.aspx", state.Page);
+				Assert.AreEqual("ADialog", state.DialogKey);
+				Assert.AreEqual("ARoute", state.Route);
+			}
+		}
 	}
 }
