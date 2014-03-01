@@ -10,10 +10,11 @@ namespace Navigation.Designer
 			State state = (State)e.ModelElement;
 			if (!state.Store.TransactionManager.CurrentTransaction.IsSerializing)
 			{
+				int stateCount = state.Partition.ElementDirectory.FindElements<State>().Count;
 				state.Page = string.Format("~/{0}.aspx", state.Key);
 				state.Initial = true;
-				state.DialogKey = state.Key;
-				state.Route = state.Key;
+				state.DialogKey = "Dialog" + stateCount;
+				state.Route = "Route" + stateCount;
 			}
 		}
 	}
