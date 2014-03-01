@@ -13,7 +13,7 @@ namespace NavigationDesigner.Test
 		{
 			Store store = new Store(typeof(NavigationLanguageDomainModel));
 			NavigationDiagram navigationConfiguration;
-			using (Transaction t = store.TransactionManager.BeginTransaction())
+			using (Transaction t = store.TransactionManager.BeginTransaction("test", true))
 			{
 				navigationConfiguration = NavigationLanguageSerializationHelper.Instance.LoadModel(store, navigationModel, null, null, null);
 				t.Commit();
