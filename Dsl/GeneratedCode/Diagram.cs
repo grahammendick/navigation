@@ -239,6 +239,9 @@ namespace Navigation.Designer
 				
 				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::Navigation.Designer.State.PageDomainPropertyId);
 				DslDiagrams::ShapeElement.FindDecorator(shape.Decorators, "PageDecorator").AssociateValueWith(shape.Store, propertyInfo);
+				
+				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::Navigation.Designer.State.RouteDomainPropertyId);
+				DslDiagrams::ShapeElement.FindDecorator(shape.Decorators, "RouteDecorator").AssociateValueWith(shape.Store, propertyInfo);
 			}
 		}
 		

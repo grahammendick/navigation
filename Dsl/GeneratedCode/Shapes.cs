@@ -199,6 +199,15 @@ namespace Navigation.Designer
 			field3.DefaultImage = DslDiagrams::ImageHelper.GetImage(global::Navigation.Designer.NavigationLanguageDomainModel.SingletonResourceManager.GetObject("StateShapeInitialDecoratorDefaultImage"));
 			shapeFields.Add(field3);
 			
+			DslDiagrams::TextField field4 = new DslDiagrams::TextField("RouteDecorator");
+			field4.DefaultText = global::Navigation.Designer.NavigationLanguageDomainModel.SingletonResourceManager.GetString("StateShapeRouteDecoratorDefaultText");
+			field4.DefaultFocusable = true;
+			field4.DefaultAutoSize = true;
+			field4.AnchoringBehavior.MinimumHeightInLines = 1;
+			field4.AnchoringBehavior.MinimumWidthInCharacters = 1;
+			field4.DefaultAccessibleState = global::System.Windows.Forms.AccessibleStates.Invisible;
+			shapeFields.Add(field4);
+			
 		}
 		
 		/// <summary>
@@ -221,6 +230,10 @@ namespace Navigation.Designer
 			DslDiagrams::ShapeField field3 = DslDiagrams::ShapeElement.FindShapeField(shapeFields, "InitialDecorator");
 			DslDiagrams::Decorator decorator3 = new DslDiagrams::ShapeDecorator(field3, DslDiagrams::ShapeDecoratorPosition.InnerTopLeft, DslDiagrams::PointD.Empty);
 			decorators.Add(decorator3);
+				
+			DslDiagrams::ShapeField field4 = DslDiagrams::ShapeElement.FindShapeField(shapeFields, "RouteDecorator");
+			DslDiagrams::Decorator decorator4 = new DslDiagrams::ShapeDecorator(field4, DslDiagrams::ShapeDecoratorPosition.InnerBottomCenter, DslDiagrams::PointD.Empty);
+			decorators.Add(decorator4);
 				
 		}
 		

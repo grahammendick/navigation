@@ -224,6 +224,9 @@
       <ShapeHasDecorators Position="InnerTopLeft" HorizontalOffset="0" VerticalOffset="0">
         <IconDecorator Name="InitialDecorator" DisplayName="Initial Decorator" DefaultIcon="Resources\Start.emf" />
       </ShapeHasDecorators>
+      <ShapeHasDecorators Position="InnerBottomCenter" HorizontalOffset="0" VerticalOffset="0">
+        <TextDecorator Name="RouteDecorator" DisplayName="Route Decorator" DefaultText="RouteDecorator" />
+      </ShapeHasDecorators>
     </GeometryShape>
   </Shapes>
   <Connectors>
@@ -420,6 +423,14 @@
           <PropertyDisplayed>
             <PropertyPath>
               <DomainPropertyMoniker Name="State/Page" />
+            </PropertyPath>
+          </PropertyDisplayed>
+        </DecoratorMap>
+        <DecoratorMap>
+          <TextDecoratorMoniker Name="StateShape/RouteDecorator" />
+          <PropertyDisplayed>
+            <PropertyPath>
+              <DomainPropertyMoniker Name="State/Route" />
             </PropertyPath>
           </PropertyDisplayed>
         </DecoratorMap>

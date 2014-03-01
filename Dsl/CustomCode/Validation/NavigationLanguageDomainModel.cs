@@ -9,7 +9,8 @@ namespace Navigation.Designer
 			return new Type[]{
 				typeof(StateCreation),
 				typeof(TransitionCreation),
-				typeof(TransitionDeletion)
+				typeof(TransitionDeletion),
+				typeof(StateKeyChange)
 			};
 		}
 	}

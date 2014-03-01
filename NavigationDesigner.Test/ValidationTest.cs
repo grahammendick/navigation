@@ -310,8 +310,8 @@ namespace NavigationDesigner.Test
 				t.Commit();
 				Assert.AreEqual("~/State1.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
-				Assert.AreEqual("Dialog1", state.DialogKey);
-				Assert.AreEqual("Route1", state.Route);
+				Assert.AreEqual("State1Dialog", state.DialogKey);
+				Assert.AreEqual("State1Route", state.Route);
 			}
 		}
 
