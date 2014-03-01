@@ -355,5 +355,19 @@ namespace NavigationDesigner.Test
 				Assert.IsFalse(to.Initial);
 			}
 		}
+
+		[TestMethod]
+		public void DeleteOneToTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DeleteOneToTransition.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State from = navigationConfiguration.States[0];
+				State to = navigationConfiguration.States[1];
+				from.Successors.Remove(to);
+				t.Commit();
+				Assert.IsFalse(to.Initial);
+			}
+		}
 	}
 }
