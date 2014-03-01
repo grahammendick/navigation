@@ -40,6 +40,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(2, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateKeyEmpty", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StatePageEmpty", state));
@@ -53,6 +55,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(4, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "PathAndRouteEmpty", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateKeyEmpty", state));
@@ -68,6 +72,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(5, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StatePageInvalid", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateMastersInvalid", state));
@@ -84,6 +90,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(2, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateTitleAndResourceInvalid", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "DialogTitleAndResourceInvalid", state));
@@ -97,6 +105,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(2, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateResourceInvalid", state));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "DialogResourceInvalid", state));
@@ -112,6 +122,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(3, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDefaultsInvalid", state1));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateDefaultsInvalid", state2));
@@ -128,6 +140,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(3, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDefaultTypesInvalid", state1));
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateDefaultTypesInvalid", state2));
@@ -143,6 +157,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "DuplicateTransitionKey", transition1, transition2));
 		}
@@ -154,6 +170,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
 		}
 
@@ -165,6 +183,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionKeyEmpty", transition));
 		}
@@ -177,6 +197,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionWithoutBackToInitialState", transition));
 		}
@@ -189,6 +211,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionWithBackToNoTrackState", transition));
 		}
@@ -202,6 +226,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "DuplicateDialogKey", state1, state2));
 		}
@@ -214,6 +240,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDialogNotInitial", state));
 		}
@@ -227,6 +255,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "DuplicateStateKey", state1, state2));
 		}
@@ -238,6 +268,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
 		}
 
@@ -249,6 +281,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateRouteInvalid", state));
 		}
@@ -260,6 +294,8 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
 		}
 	}
