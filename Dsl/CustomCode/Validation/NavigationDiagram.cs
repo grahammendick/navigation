@@ -37,7 +37,7 @@ namespace Navigation.Designer
 		{
 			foreach (Dialog dialog in dialogs.Where(d => !d.Initial.Initial))
 			{
-				context.LogError(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
+				context.LogMessage(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
 			}
 		}
 
