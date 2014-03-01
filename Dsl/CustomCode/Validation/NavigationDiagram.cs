@@ -74,7 +74,7 @@ namespace Navigation.Designer
 			var q = from d in dialogs
 					from s in d.States
 					where !string.IsNullOrEmpty(s.Route)
-					group s.State by new { s.Key, s.Route } into g
+					group s.State by s.State into g
 					where g.Count() > 1
 					select g;
 			foreach (var s in q)
