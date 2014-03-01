@@ -8,7 +8,8 @@ namespace Navigation.Designer
 		public override void ElementDeleted(ElementDeletedEventArgs e)
 		{
 			Transition transition = (Transition)e.ModelElement;
-			if (transition.Successor.Predecessors.Count == 0 && !transition.Store.TransactionManager.CurrentTransaction.IsSerializing)
+			if (!transition.Successor.IsDeleted && transition.Successor.Predecessors.Count == 0
+				&& !transition.Store.TransactionManager.CurrentTransaction.IsSerializing)
 				transition.Successor.Initial = true;
 		}
 	}

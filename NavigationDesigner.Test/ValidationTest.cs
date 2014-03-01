@@ -310,8 +310,8 @@ namespace NavigationDesigner.Test
 				t.Commit();
 				Assert.AreEqual("~/State1.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
-				Assert.AreEqual("State1", state.DialogKey);
-				Assert.AreEqual("State1", state.Route);
+				Assert.AreEqual("Dialog1", state.DialogKey);
+				Assert.AreEqual("Route1", state.Route);
 			}
 		}
 
@@ -340,6 +340,19 @@ namespace NavigationDesigner.Test
 				from.Successors.Remove(to);
 				t.Commit();
 				Assert.IsTrue(to.Initial);
+			}
+		}
+
+		[TestMethod]
+		public void DeleteStateWithOneToTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DeleteLastToTransition.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State to = navigationConfiguration.States[1];
+				navigationConfiguration.States.Remove(to);
+				t.Commit();
+				Assert.IsFalse(to.Initial);
 			}
 		}
 	}
