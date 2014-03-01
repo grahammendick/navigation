@@ -12,7 +12,7 @@ namespace NavigationDesigner.Test
 		{
 			Store store = new Store(typeof(NavigationLanguageDomainModel));
 			NavigationDiagram navigationConfiguration;
-			using (Transaction t = store.TransactionManager.BeginTransaction())
+			using (Transaction t = store.TransactionManager.BeginTransaction("test", true))
 			{
 				navigationConfiguration = NavigationLanguageSerializationHelper.Instance.LoadModel(store, navigationModel, null, null, null);
 				t.Commit();
@@ -297,6 +297,22 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
+		}
+
+		[TestMethod]
+		public void StateCreationTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankModel.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction())
+			{
+				State state = new State(navigationConfiguration.Store);
+				state.Key = "State1";
+				t.Commit();
+				Assert.AreEqual("~/State1.aspx", state.Page);
+				Assert.IsTrue(state.Initial);
+				Assert.AreEqual("State1", state.DialogKey);
+				Assert.AreEqual("State1", state.Route);
+			}
 		}
 	}
 }

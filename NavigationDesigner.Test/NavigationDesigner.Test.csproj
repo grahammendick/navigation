@@ -164,6 +164,9 @@
     <None Include="Diagram\BlankInitialState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\BlankModel.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\BlankState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

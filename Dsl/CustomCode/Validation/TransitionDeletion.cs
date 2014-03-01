@@ -2,13 +2,13 @@
 
 namespace Navigation.Designer
 {
-	[RuleOn(typeof(Transition))]
+	[RuleOn(typeof(Transition), FireTime = TimeToFire.TopLevelCommit)]
 	public class TransitionDeletion : DeleteRule
 	{
 		public override void ElementDeleted(ElementDeletedEventArgs e)
 		{
 			Transition transition = (Transition)e.ModelElement;
-			if (transition.Successor != null && transition.Successor.Predecessors.Count == 0)
+			if (transition.Successor.Predecessors.Count == 0 && !transition.Store.TransactionManager.CurrentTransaction.IsSerializing)
 				transition.Successor.Initial = true;
 		}
 	}

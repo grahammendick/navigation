@@ -2,13 +2,13 @@
 
 namespace Navigation.Designer
 {
-	[RuleOn(typeof(State))]
+	[RuleOn(typeof(State), FireTime = TimeToFire.TopLevelCommit)]
 	public sealed class StateCreation : AddRule
 	{
 		public override void ElementAdded(ElementAddedEventArgs e)
 		{
 			State state = (State)e.ModelElement;
-			if (!string.IsNullOrEmpty(state.Key))
+			if (!state.Store.TransactionManager.CurrentTransaction.IsSerializing)
 			{
 				state.Page = string.Format("~/{0}.aspx", state.Key);
 				state.Initial = true;
