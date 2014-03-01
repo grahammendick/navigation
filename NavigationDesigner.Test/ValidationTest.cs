@@ -308,7 +308,7 @@ namespace NavigationDesigner.Test
 				State state = new State(navigationConfiguration.Store);
 				state.Key = "State1";
 				t.Commit();
-				Assert.AreEqual("~/State1.aspx", state.Page);
+				Assert.AreEqual("~/State1Page.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
 				Assert.AreEqual("State1Dialog", state.DialogKey);
 				Assert.AreEqual("State1Route", state.Route);
