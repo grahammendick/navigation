@@ -12,6 +12,8 @@ namespace Navigation.Designer
 			{
 				state.Page = string.Format("~/{0}.aspx", state.Key);
 				state.Initial = true;
+				state.DialogKey = state.Key;
+				state.Route = state.Key;
 			}
 		}
 	}
