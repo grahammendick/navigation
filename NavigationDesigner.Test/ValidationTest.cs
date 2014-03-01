@@ -303,7 +303,7 @@ namespace NavigationDesigner.Test
 		public void StateCreationTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankModel.nav");
-			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction())
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
 			{
 				State state = new State(navigationConfiguration.Store);
 				state.Key = "State1";
@@ -312,6 +312,34 @@ namespace NavigationDesigner.Test
 				Assert.IsTrue(state.Initial);
 				Assert.AreEqual("State1", state.DialogKey);
 				Assert.AreEqual("State1", state.Route);
+			}
+		}
+
+		[TestMethod]
+		public void CreateFirstToTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/CreateFirstToTransition.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State from = navigationConfiguration.States[0];
+				State to = navigationConfiguration.States[1];
+				from.Successors.Add(to);
+				t.Commit();
+				Assert.IsFalse(to.Initial);
+			}
+		}
+
+		[TestMethod]
+		public void DeleteLastToTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DeleteLastToTransition.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State from = navigationConfiguration.States[0];
+				State to = navigationConfiguration.States[1];
+				from.Successors.Remove(to);
+				t.Commit();
+				Assert.IsTrue(to.Initial);
 			}
 		}
 	}
