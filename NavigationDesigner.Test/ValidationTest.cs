@@ -197,10 +197,10 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(1, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(1, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "TransitionWithoutBackToInitialState", transition));
+			Assert.AreEqual(0, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "TransitionWithoutBackToInitialState", transition));
 		}
 
 		[TestMethod]
@@ -240,10 +240,10 @@ namespace NavigationDesigner.Test
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
 			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(1, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(1, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateDialogNotInitial", state));
+			Assert.AreEqual(0, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "StateDialogNotInitial", state));
 		}
 
 		[TestMethod]
