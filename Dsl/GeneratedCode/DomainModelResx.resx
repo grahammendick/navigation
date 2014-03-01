@@ -557,6 +557,10 @@
     <value>PageDecorator</value>
     <comment>Text decorator default text</comment>
   </data>
+  <data name="StateShapeRouteDecoratorDefaultText" xml:space="preserve">
+    <value>RouteDecorator</value>
+    <comment>Text decorator default text</comment>
+  </data>
   <data name="Navigation.Designer.TransitionConnector.Description" xml:space="preserve">
     <value>Connector between the ExampleShapes. Represents ExampleRelationships on the Diagram.</value>
     <comment>Description for DomainClass &apos;TransitionConnector&apos;</comment>
