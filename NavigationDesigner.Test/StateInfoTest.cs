@@ -419,5 +419,14 @@ namespace NavigationDesigner.Test
 			Assert.IsTrue(ValidateTransition(navigationConfiguration, dialogs));
 			Assert.AreEqual(1, dialogs.Count());
 		}
+
+		[TestMethod]
+		public void AnbBirKeepsOnlyInitialRoute()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbBir.nav");
+			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
+			Assert.AreEqual(string.Empty, dialogs.First(d => d.Initial.Key == "A").States.First(s => s.Key == "B").Route);
+			Assert.AreEqual("B", dialogs.First(d => d.Initial.Key == "B").States.First(s => s.Key == "B").Route);
+		}
 	}
 }

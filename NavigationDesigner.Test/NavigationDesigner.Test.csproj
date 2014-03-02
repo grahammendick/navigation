@@ -74,6 +74,9 @@
     <None Include="Diagram\AnbBnB_CnB.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\AnbBir.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\AnbB_CnB.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
