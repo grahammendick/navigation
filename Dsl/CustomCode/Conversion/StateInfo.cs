@@ -199,14 +199,25 @@ namespace Navigation.Designer
 
 		private void CleanStates()
 		{
-			var invalidStateRoutes =
+			var routedStates =
 				from d in Dialogs
 				from s in d.States
-				where GetStateWrappers(s.State).Count() > 1
-				select s;
-			foreach(StateWrapper s in invalidStateRoutes)
+				where !string.IsNullOrEmpty(s.Route)
+				group s by s.State into g
+				select g;
+			foreach (var r in routedStates)
 			{
-				s.Route = string.Empty;
+				bool clear = false;
+				var routedState = from s in r
+								  let initial = s.Parent.Initial == s.State
+								  orderby initial descending, s.Parent.Order
+								  select s;
+				foreach (StateWrapper s in routedState)
+				{
+					if (clear)
+						s.Route = string.Empty;
+					clear = true;
+				}
 			}
 		}
 
