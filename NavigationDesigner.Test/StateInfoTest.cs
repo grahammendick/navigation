@@ -428,5 +428,14 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(string.Empty, dialogs.First(d => d.Initial.Key == "A").States.First(s => s.Key == "B").Route);
 			Assert.AreEqual("B", dialogs.First(d => d.Initial.Key == "B").States.First(s => s.Key == "B").Route);
 		}
+
+		[TestMethod]
+		public void A1nbB_CnbBKeepsOnlyCRoute()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/A1nbB_CnbB.nav");
+			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
+			Assert.AreEqual(string.Empty, dialogs.First(d => d.Initial.Key == "A").States.First(s => s.Key == "B").Route);
+			Assert.AreEqual("B", dialogs.First(d => d.Initial.Key == "C").States.First(s => s.Key == "B").Route);
+		}
 	}
 }
