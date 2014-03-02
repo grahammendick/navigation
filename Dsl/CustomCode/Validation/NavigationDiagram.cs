@@ -72,9 +72,9 @@ namespace Navigation.Designer
 		private void ValidateRoute(ValidationContext context, List<Dialog> dialogs)
 		{
 			var q = (from d in dialogs
-					from s in d.States
-					where s.Route != s.State.Route
-					select s.State).Distinct();
+					 from s in d.States
+					 where s.Route != s.State.Route
+					 select s.State).Distinct();
 			foreach (var s in q)
 			{
 				context.LogMessage(string.Format(Messages.StateRouteInvalid, s.Key), "StateRouteInvalid", s);
