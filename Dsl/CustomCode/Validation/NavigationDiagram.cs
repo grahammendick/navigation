@@ -23,10 +23,10 @@ namespace Navigation.Designer
 		private void ValidateDialogKey(ValidationContext context, List<Dialog> dialogs)
 		{
 			var q = from d in dialogs
-					 where !string.IsNullOrEmpty(d.Key)
-					 group d.Initial by d.Key into g
-					 where g.Count() > 1
-					 select g;
+					where !string.IsNullOrEmpty(d.Key)
+					group d.Initial by d.Key into g
+					where g.Count() > 1
+					select g;
 			foreach (var d in q)
 			{
 				context.LogError(string.Format(Messages.DuplicateDialogKey, d.Key), "DuplicateDialogKey", d.ToArray());
