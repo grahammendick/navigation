@@ -223,7 +223,7 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Route should be set to blank for State &apos;{0}&apos; because the StateInfo conversion has added it to multiple Dialogs..
+        ///   Looks up a localized string similar to State &apos;{0}&apos; has been added to multiple Dialogs by the StateInfo conversion, but its Route has only been used in one of them..
         /// </summary>
         internal static string StateRouteInvalid {
             get {

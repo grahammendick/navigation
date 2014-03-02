@@ -172,7 +172,7 @@
     <value>ResourceType and ResourceKey are invalid for State '{0}'. They must either both be populated or both be blank because these are used to localize the State Title.</value>
   </data>
   <data name="StateRouteInvalid" xml:space="preserve">
-    <value>Route should be set to blank for State '{0}' because the StateInfo conversion has added it to multiple Dialogs.</value>
+    <value>State '{0}' has been added to multiple Dialogs by the StateInfo conversion, but its Route has only been used in one of them.</value>
   </data>
   <data name="StateTitleAndResourceInvalid" xml:space="preserve">
     <value>ResourceType, ResourceKey and Title are invalid for State '{0}'. If ResourceType or ResourceKey are populated then Title should be blank and vice versa.</value>
