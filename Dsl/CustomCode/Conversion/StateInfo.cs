@@ -51,6 +51,7 @@ namespace Navigation.Designer
 				RemovedTransitions.AddRange(removed);
 			}
 			CleanDialogs();
+			CleanStates();
 			return Dialogs;
 		}
 
@@ -193,6 +194,19 @@ namespace Navigation.Designer
 				}
 				if (remove)
 					Dialogs.Remove(dialog);
+			}
+		}
+
+		private void CleanStates()
+		{
+			var invalidStateRoutes =
+				from d in Dialogs
+				from s in d.States
+				where GetStateWrappers(s.State).Count() > 1
+				select s;
+			foreach(StateWrapper s in invalidStateRoutes)
+			{
+				s.Route = string.Empty;
 			}
 		}
 
