@@ -65,6 +65,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Diagram\A1nbB_CnbB.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\AnA.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
