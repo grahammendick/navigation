@@ -48,7 +48,7 @@
 			if (state.Transitions.Count == 0) Write("/");
 			WriteLine(">");
 			PushIndent("\t");
-			foreach (TransitionWrapper transition in state.Transitions.OrderBy(t => t.Order))
+			foreach (TransitionWrapper transition in state.Transitions.OrderBy(t => t.Order).ThenBy(t => t.To.Order))
 			{
 				Write("<transition");
 				AddAttribute("key", transition.Key);
