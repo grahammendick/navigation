@@ -52,10 +52,8 @@ namespace Navigation.Designer
 
 		public string Route
 		{
-			get
-			{
-				return State.Route;
-			}
+			get;
+			set;
 		}
 
 		public bool TrackCrumbTrail
@@ -174,6 +172,7 @@ namespace Navigation.Designer
 		{
 			State = state;
 			Parent = parent;
+			Route = state.Route;
 		}
 
 		public bool AddTransition(string key, State to, int order)
