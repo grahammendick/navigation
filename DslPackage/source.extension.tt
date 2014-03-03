@@ -39,7 +39,7 @@
         <Edition>Pro</Edition>
       </VisualStudio>
     </SupportedProducts>
-    <SupportedFrameworkRuntimeEdition MinVersion="4.5" />
+    <SupportedFrameworkRuntimeEdition MinVersion="4.0" />
   </Identifier>
   <References/>
   <Content>
