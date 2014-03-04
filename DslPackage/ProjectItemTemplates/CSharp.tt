@@ -10,7 +10,7 @@
 		<ProjectType>CSharp</ProjectType>
 		<ProjectSubType>Web</ProjectSubType>
 		<SortOrder>360</SortOrder>
-		<DefaultName><#=  this.Dsl.Name #>.<#=this.Dsl.Editor.FileExtension#></DefaultName>
+		<DefaultName>NavigationDiagram.<#=this.Dsl.Editor.FileExtension#></DefaultName>
 	</TemplateData>
 	<TemplateContent>
 		<ProjectItem TargetFileName="$fileinputname$.<#=this.Dsl.Editor.FileExtension#>"><#=this.Dsl.Editor.FileExtension#>.<#=this.Dsl.Editor.FileExtension#></ProjectItem>

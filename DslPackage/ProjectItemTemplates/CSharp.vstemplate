@@ -7,7 +7,7 @@
 		<ProjectType>CSharp</ProjectType>
 		<ProjectSubType>Web</ProjectSubType>
 		<SortOrder>360</SortOrder>
-		<DefaultName>NavigationLanguage.nav</DefaultName>
+		<DefaultName>NavigationDiagram.nav</DefaultName>
 	</TemplateData>
 	<TemplateContent>
 		<ProjectItem TargetFileName="$fileinputname$.nav">nav.nav</ProjectItem>

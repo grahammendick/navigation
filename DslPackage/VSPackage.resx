@@ -121,7 +121,7 @@
     <value>NavigationLanguage</value>
   </data>
   <data name="102" xml:space="preserve">
-    <value>Adds a Navigation Diagram file to the project.</value>
+    <value>A Navigation Diagram for generating the StateInfo configuration file required by the Navigation framework</value>
   </data>
   <data name="103" xml:space="preserve">
     <value>Navigation Diagram</value>
