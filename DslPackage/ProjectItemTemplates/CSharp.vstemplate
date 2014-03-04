@@ -5,6 +5,7 @@
 		<Description Package="{c37cb6a6-6192-4282-a9c6-37f88ffdf037}" ID="102"/>
 		<Icon Package="{c37cb6a6-6192-4282-a9c6-37f88ffdf037}" ID="201" />
 		<ProjectType>CSharp</ProjectType>
+		<ProjectSubType>Web</ProjectSubType>
 		<SortOrder>360</SortOrder>
 		<DefaultName>NavigationLanguage.nav</DefaultName>
 	</TemplateData>

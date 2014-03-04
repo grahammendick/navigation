@@ -8,6 +8,7 @@
 		<Description Package="{<#= this.Dsl.PackageGuid #>}" ID="102"/>
 		<Icon Package="{<#= this.Dsl.PackageGuid #>}" ID="201" />
 		<ProjectType>VisualBasic</ProjectType>
+		<ProjectSubType>Web</ProjectSubType>
 		<SortOrder>360</SortOrder>
 		<DefaultName><#=  this.Dsl.Name #>.<#=this.Dsl.Editor.FileExtension#></DefaultName>
 	</TemplateData>
