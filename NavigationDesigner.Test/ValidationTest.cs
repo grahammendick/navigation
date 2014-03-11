@@ -280,11 +280,11 @@ namespace NavigationDesigner.Test
 			State state = navigationConfiguration.States[2];
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(1, validator.InformationalMessages.Count);
+			Assert.AreEqual(1, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "StateRouteInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "StateRouteInvalid", state));
 		}
 
 		[TestMethod]
@@ -308,10 +308,10 @@ namespace NavigationDesigner.Test
 				State state = new State(navigationConfiguration.Store);
 				state.Key = "State1";
 				t.Commit();
-				Assert.AreEqual("~/State1Page.aspx", state.Page);
+				Assert.AreEqual("~/State1.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
-				Assert.AreEqual("State1Dialog", state.DialogKey);
-				Assert.AreEqual("State1Route", state.Route);
+				Assert.AreEqual("State1", state.DialogKey);
+				Assert.AreEqual("State1", state.Route);
 			}
 		}
 
@@ -386,9 +386,9 @@ namespace NavigationDesigner.Test
 				State state = navigationConfiguration.States[0];
 				state.Key = "State2";
 				t.Commit();
-				Assert.AreEqual("~/State2Page.aspx", state.Page);
-				Assert.AreEqual("State2Dialog", state.DialogKey);
-				Assert.AreEqual("State2Route", state.Route);
+				Assert.AreEqual("~/State2.aspx", state.Page);
+				Assert.AreEqual("State2", state.DialogKey);
+				Assert.AreEqual("State2", state.Route);
 			}
 		}
 
@@ -439,9 +439,9 @@ namespace NavigationDesigner.Test
 				State state = navigationConfiguration.States[0];
 				state.Key = "B";
 				t.Commit();
-				Assert.AreEqual("~/APage.aspx", state.Page);
-				Assert.AreEqual("ADialog", state.DialogKey);
-				Assert.AreEqual("ARoute", state.Route);
+				Assert.AreEqual("~/A.aspx", state.Page);
+				Assert.AreEqual("A", state.DialogKey);
+				Assert.AreEqual("A", state.Route);
 			}
 		}
 	}

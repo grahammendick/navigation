@@ -77,7 +77,7 @@ namespace Navigation.Designer
 					 select s.State).Distinct();
 			foreach (var s in q)
 			{
-				context.LogMessage(string.Format(Messages.StateRouteInvalid, s.Key), "StateRouteInvalid", s);
+				context.LogWarning(string.Format(Messages.StateRouteInvalid, s.Key), "StateRouteInvalid", s);
 			}
 		}
 	}
