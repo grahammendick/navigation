@@ -13,9 +13,9 @@ namespace Navigation.Designer
 			if (!state.Store.TransactionManager.CurrentTransaction.IsSerializing)
 			{
 				state.Initial = true;
-				state.Page = string.Format("~/{0}Page.aspx", state.Key);
-				state.Route = string.Format("{0}Route", state.Key);
-				state.DialogKey = string.Format("{0}Dialog", state.Key);
+				state.Page = string.Format("~/{0}.aspx", state.Key);
+				state.Route = state.Key;
+				state.DialogKey = state.Key;
 			}
 		}
 	}
