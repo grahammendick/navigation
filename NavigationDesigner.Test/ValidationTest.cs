@@ -48,23 +48,6 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void BlankInitialStateTest()
-		{
-			NavigationDiagram navigationConfiguration = LoadModel("Diagram/BlankInitialState.nav");
-			State state = navigationConfiguration.States[0];
-			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Save);
-			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(0, validator.InformationalMessages.Count);
-			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(4, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "PathAndRouteEmpty", state));
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StateKeyEmpty", state));
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[2], "StatePageEmpty", state));
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[3], "DialogKeyEmpty", state));
-		}
-
-		[TestMethod]
 		public void PathsFormatStateTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/PathsFormatState.nav");
@@ -310,7 +293,6 @@ namespace NavigationDesigner.Test
 				t.Commit();
 				Assert.AreEqual("~/State1.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
-				Assert.AreEqual("State1", state.DialogKey);
 				Assert.AreEqual("State1", state.Route);
 			}
 		}
@@ -387,7 +369,6 @@ namespace NavigationDesigner.Test
 				state.Key = "State2";
 				t.Commit();
 				Assert.AreEqual("~/State2.aspx", state.Page);
-				Assert.AreEqual("State2", state.DialogKey);
 				Assert.AreEqual("State2", state.Route);
 			}
 		}
@@ -440,7 +421,6 @@ namespace NavigationDesigner.Test
 				state.Key = "B";
 				t.Commit();
 				Assert.AreEqual("~/A.aspx", state.Page);
-				Assert.AreEqual("A", state.DialogKey);
 				Assert.AreEqual("A", state.Route);
 			}
 		}

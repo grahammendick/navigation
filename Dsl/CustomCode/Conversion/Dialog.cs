@@ -25,7 +25,7 @@ namespace Navigation.Designer
 		{
 			get
 			{
-				return Initial.DialogKey;
+				return !string.IsNullOrEmpty(Initial.DialogKey) ? Initial.DialogKey : Initial.Key;
 			}
 		}
 
