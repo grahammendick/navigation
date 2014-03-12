@@ -11,17 +11,12 @@ namespace Navigation.Designer
 		public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 		{
 			State state = (State)e.ModelElement;
-			if (e.DomainProperty.Id == State.KeyDomainPropertyId)
+			if (e.DomainProperty.Id == State.KeyDomainPropertyId && defaultKeyExp.Match((string)e.OldValue).Success)
 			{
-				string oldValue = (string)e.OldValue;
-				string newValue = (string)e.NewValue;
-				if (defaultKeyExp.Match(oldValue).Success)
-				{
-					if (state.Page == string.Format("~/{0}.aspx", e.OldValue))
-						state.Page = string.Format("~/{0}.aspx", e.NewValue);
-					if (state.Route == oldValue)
-						state.Route = newValue;
-				}
+				if (state.Page == string.Format("~/{0}Page.aspx", e.OldValue))
+					state.Page = string.Format("~/{0}Page.aspx", e.NewValue);
+				if (state.Route == string.Format("{0}Route", e.OldValue))
+					state.Route = string.Format("{0}Route", e.NewValue);
 			}
 		}
 	}

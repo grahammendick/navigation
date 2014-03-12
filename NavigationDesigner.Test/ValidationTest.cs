@@ -291,9 +291,9 @@ namespace NavigationDesigner.Test
 				State state = new State(navigationConfiguration.Store);
 				state.Key = "State1";
 				t.Commit();
-				Assert.AreEqual("~/State1.aspx", state.Page);
+				Assert.AreEqual("~/State1Page.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
-				Assert.AreEqual("State1", state.Route);
+				Assert.AreEqual("State1Route", state.Route);
 			}
 		}
 
@@ -368,8 +368,8 @@ namespace NavigationDesigner.Test
 				State state = navigationConfiguration.States[0];
 				state.Key = "State2";
 				t.Commit();
-				Assert.AreEqual("~/State2.aspx", state.Page);
-				Assert.AreEqual("State2", state.Route);
+				Assert.AreEqual("~/State2Page.aspx", state.Page);
+				Assert.AreEqual("State2Route", state.Route);
 			}
 		}
 
@@ -420,8 +420,8 @@ namespace NavigationDesigner.Test
 				State state = navigationConfiguration.States[0];
 				state.Key = "B";
 				t.Commit();
-				Assert.AreEqual("~/A.aspx", state.Page);
-				Assert.AreEqual("A", state.Route);
+				Assert.AreEqual("~/APage.aspx", state.Page);
+				Assert.AreEqual("ARoute", state.Route);
 			}
 		}
 	}
