@@ -61,15 +61,6 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DialogKey is mandatory for State &apos;{0}&apos;. Any State marked as Initial becomes a Dialog during StateInfo conversion..
-        /// </summary>
-        internal static string DialogKeyEmpty {
-            get {
-                return ResourceManager.GetString("DialogKeyEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Path is invalid for State &apos;{0}&apos; because it must end with &apos;.aspx&apos; and be made relative using the tilde (~) notation for the application root e.g. &apos;~/Page.aspx&apos;..
         /// </summary>
         internal static string DialogPathInvalid {

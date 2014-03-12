@@ -21,8 +21,6 @@ namespace Navigation.Designer
 						state.Page = string.Format("~/{0}.aspx", e.NewValue);
 					if (state.Route == oldValue)
 						state.Route = newValue;
-					if (state.DialogKey == oldValue)
-						state.DialogKey = newValue;
 				}
 			}
 		}

@@ -93,15 +93,6 @@ namespace Navigation.Designer
 		}
 
 		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
-		private void ValidateDialogKey(ValidationContext context)
-		{
-			if (Initial && string.IsNullOrEmpty(DialogKey))
-			{
-				context.LogError(string.Format(Messages.DialogKeyEmpty, Key), "DialogKeyEmpty", this);
-			}
-		}
-
-		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
 		private void ValidatePath(ValidationContext context)
 		{
 			if (!string.IsNullOrEmpty(Path) && !pageExp.IsMatch(Path))
