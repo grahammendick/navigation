@@ -19,7 +19,7 @@ namespace Navigation.Designer
 		private void ValidateNoTransitionWithoutBackToInitialState(ValidationContext context)
 		{
 			if (!CanNavigateBack && Successor.Initial)
-				context.LogMessage(string.Format(Messages.TransitionWithoutBackToInitialState, Key, Successor.Key), "TransitionWithoutBackToInitialState", this);
+				context.LogWarning(string.Format(Messages.TransitionWithoutBackToInitialState, Key, Successor.Key), "TransitionWithoutBackToInitialState", this);
 		}
 
 		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
