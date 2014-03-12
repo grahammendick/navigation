@@ -179,11 +179,11 @@ namespace NavigationDesigner.Test
 			Transition transition = Transition.GetLink(navigationConfiguration.States[1], navigationConfiguration.States[0]);
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(1, validator.InformationalMessages.Count);
+			Assert.AreEqual(1, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "TransitionWithoutBackToInitialState", transition));
+			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "TransitionWithoutBackToInitialState", transition));
 		}
 
 		[TestMethod]
@@ -222,11 +222,11 @@ namespace NavigationDesigner.Test
 			State state = navigationConfiguration.States[0];
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(1, validator.InformationalMessages.Count);
+			Assert.AreEqual(1, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "StateDialogNotInitial", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "StateDialogNotInitial", state));
 		}
 
 		[TestMethod]
@@ -263,11 +263,11 @@ namespace NavigationDesigner.Test
 			State state = navigationConfiguration.States[2];
 			ValidationController validator = new ValidationController();
 			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(1, validator.WarningMessages.Count);
-			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.WarningMessages.Count);
+			Assert.AreEqual(1, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "StateRouteInvalid", state));
+			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "StateRouteInvalid", state));
 		}
 
 		[TestMethod]

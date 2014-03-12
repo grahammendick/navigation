@@ -37,7 +37,7 @@ namespace Navigation.Designer
 		{
 			foreach (Dialog dialog in dialogs.Where(d => !d.Initial.Initial))
 			{
-				context.LogMessage(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
+				context.LogWarning(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace Navigation.Designer
 					 select s.State).Distinct();
 			foreach (var s in q)
 			{
-				context.LogWarning(string.Format(Messages.StateRouteInvalid, s.Key), "StateRouteInvalid", s);
+				context.LogMessage(string.Format(Messages.StateRouteInvalid, s.Key), "StateRouteInvalid", s);
 			}
 		}
 	}
