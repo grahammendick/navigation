@@ -15,6 +15,6 @@
                 </transition>
             </successors>
         </state>
-        <state Id="b2b014df-3545-4341-8318-185932bcef03" key="C" page="~/C.aspx" route="C" order="0" dialogOrder="0" />
+        <state Id="b2b014df-3545-4341-8318-185932bcef03" key="C" page="~/C.aspx" initial="false" route="C" order="0" dialogOrder="0" />
     </states>
 </navigationDiagram>

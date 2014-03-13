@@ -8,6 +8,6 @@
         </transition>
       </successors>
     </state>
-    <state Id="2d3183c6-e851-40d3-8e7c-edaad37eea96" order="0" dialogOrder="0" />
+    <state Id="2d3183c6-e851-40d3-8e7c-edaad37eea96" initial="false" order="0" dialogOrder="0" />
   </states>
 </navigationDiagram>

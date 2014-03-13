@@ -42,9 +42,8 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(0, validator.WarningMessages.Count);
 			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(2, validator.ErrorMessages.Count);
+			Assert.AreEqual(1, validator.ErrorMessages.Count);
 			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[0], "StateKeyEmpty", state));
-			Assert.IsTrue(ValidateValidationMessages(validator.ErrorMessages[1], "StatePageEmpty", state));
 		}
 
 		[TestMethod]
@@ -291,9 +290,9 @@ namespace NavigationDesigner.Test
 				State state = new State(navigationConfiguration.Store);
 				state.Key = "State1";
 				t.Commit();
-				Assert.AreEqual("~/State1Page.aspx", state.Page);
+				Assert.AreEqual("~/Page.aspx", state.Page);
 				Assert.IsTrue(state.Initial);
-				Assert.AreEqual("State1Route", state.Route);
+				Assert.AreEqual("Route", state.Route);
 			}
 		}
 
