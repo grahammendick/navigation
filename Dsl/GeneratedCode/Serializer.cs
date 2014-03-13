@@ -1878,9 +1878,10 @@ namespace Navigation.Designer
 				global::System.String propValue = instanceOfState.Page;
 				if (!serializationContext.Result.Failed)
 				{
-					if (!string.IsNullOrEmpty(propValue))
+					if (propValue != null && (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(propValue, "~/Page.aspx") != 0))
+					{	// No need to write the value out if it's the same as default value.
 						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "page", propValue);
-	
+					}
 				}
 			}
 			// Title
@@ -1900,9 +1901,10 @@ namespace Navigation.Designer
 				global::System.String propValue = instanceOfState.Route;
 				if (!serializationContext.Result.Failed)
 				{
-					if (!string.IsNullOrEmpty(propValue))
+					if (propValue != null && (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(propValue, "Route") != 0))
+					{	// No need to write the value out if it's the same as default value.
 						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "route", propValue);
-	
+					}
 				}
 			}
 			// TrackCrumbTrail
@@ -1992,7 +1994,7 @@ namespace Navigation.Designer
 				string serializedPropValue = DslModeling::SerializationUtilities.GetString<global::System.Boolean>(serializationContext, propValue);
 				if (!serializationContext.Result.Failed)
 				{
-					if (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(serializedPropValue, "false") != 0)
+					if (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(serializedPropValue, "true") != 0)
 					{	// No need to write the value out if it's the same as default value.
 						NavigationLanguageSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "initial", serializedPropValue);
 					}

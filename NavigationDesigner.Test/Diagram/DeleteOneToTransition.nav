@@ -8,7 +8,7 @@
         </transition>
       </successors>
     </state>
-    <state Id="26ef6965-82ab-483c-8201-9ab621de78f2" key="B" page="~/B.aspx" route="Route2" order="0" dialogKey="Dialog2" dialogOrder="0" />
+    <state Id="26ef6965-82ab-483c-8201-9ab621de78f2" key="B" page="~/B.aspx" route="Route2" order="0" initial="false" dialogKey="Dialog2" dialogOrder="0" />
     <state Id="1694c6ac-27ea-41ba-a765-ab2e444d287d" key="C" page="~/C.aspx" route="Route3" order="0" initial="true" dialogKey="Dialog3" dialogOrder="0">
       <successors>
         <transition Id="3252d190-c6ae-451f-a7e6-dc92e829335f" key="Transition1" canNavigateBack="false" order="0">

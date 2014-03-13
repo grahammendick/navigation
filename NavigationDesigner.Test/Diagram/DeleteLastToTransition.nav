@@ -8,6 +8,6 @@
         </transition>
       </successors>
     </state>
-    <state Id="4b023149-d847-4e15-b56c-c37162699260" key="B" page="~/B.aspx" route="State2" order="0" dialogKey="State2" dialogOrder="0" />
+    <state Id="4b023149-d847-4e15-b56c-c37162699260" key="B" page="~/B.aspx" route="State2" order="0" initial="false" dialogKey="State2" dialogOrder="0" />
   </states>
 </navigationDiagram>

@@ -301,7 +301,7 @@ namespace Navigation.Designer
 		/// <summary>
 		/// Storage for Page
 		/// </summary>
-		private global::System.String pagePropertyStorage = string.Empty;
+		private global::System.String pagePropertyStorage = "~/Page.aspx";
 		
 		/// <summary>
 		/// Gets or sets the value of Page domain property.
@@ -310,6 +310,7 @@ namespace Navigation.Designer
 		[DslDesign::DisplayNameResource("Navigation.Designer.State/Page.DisplayName", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::CategoryResource("Navigation.Designer.State/Page.Category", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Navigation.Designer.State/Page.Description", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("~/Page.aspx")]
 		[DslModeling::DomainObjectId("bc51c31b-e9b1-4068-9d87-2b2f7770fc74")]
 		public global::System.String Page
 		{
@@ -478,7 +479,7 @@ namespace Navigation.Designer
 		/// <summary>
 		/// Storage for Route
 		/// </summary>
-		private global::System.String routePropertyStorage = string.Empty;
+		private global::System.String routePropertyStorage = "Route";
 		
 		/// <summary>
 		/// Gets or sets the value of Route domain property.
@@ -487,6 +488,7 @@ namespace Navigation.Designer
 		[DslDesign::DisplayNameResource("Navigation.Designer.State/Route.DisplayName", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::CategoryResource("Navigation.Designer.State/Route.Category", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Navigation.Designer.State/Route.Description", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("Route")]
 		[DslModeling::DomainObjectId("da673d43-18df-4880-9630-d40a256d4e18")]
 		public global::System.String Route
 		{
@@ -1187,7 +1189,7 @@ namespace Navigation.Designer
 		/// <summary>
 		/// Storage for Initial
 		/// </summary>
-		private global::System.Boolean initialPropertyStorage;
+		private global::System.Boolean initialPropertyStorage = true;
 		
 		/// <summary>
 		/// Gets or sets the value of Initial domain property.
@@ -1196,6 +1198,7 @@ namespace Navigation.Designer
 		[DslDesign::DisplayNameResource("Navigation.Designer.State/Initial.DisplayName", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::CategoryResource("Navigation.Designer.State/Initial.Category", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Navigation.Designer.State/Initial.Description", typeof(global::Navigation.Designer.NavigationLanguageDomainModel), "Navigation.Designer.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
 		[DslModeling::DomainObjectId("d9753c6c-ebd7-4869-b761-3ceeb3e83b7f")]
 		public global::System.Boolean Initial
 		{

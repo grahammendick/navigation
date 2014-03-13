@@ -21,7 +21,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="bc51c31b-e9b1-4068-9d87-2b2f7770fc74" Description="The aspx Page to display when navigating to this State." Name="Page" DisplayName="Page" Category="Definition">
+        <DomainProperty Id="bc51c31b-e9b1-4068-9d87-2b2f7770fc74" Description="The aspx Page to display when navigating to this State." Name="Page" DisplayName="Page" DefaultValue="~/Page.aspx" Category="Definition">
           <Type>
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
@@ -31,7 +31,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="da673d43-18df-4880-9630-d40a256d4e18" Description="The route Url pattern." Name="Route" DisplayName="Route" Category="Definition">
+        <DomainProperty Id="da673d43-18df-4880-9630-d40a256d4e18" Description="The route Url pattern." Name="Route" DisplayName="Route" DefaultValue="Route" Category="Definition">
           <Type>
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
@@ -71,7 +71,7 @@
             <ExternalTypeMoniker Name="/System/Int32" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="d9753c6c-ebd7-4869-b761-3ceeb3e83b7f" Description="Set to true to indicate the start of a Dialog." Name="Initial" DisplayName="Initial" DefaultValue="false" Category="Definition">
+        <DomainProperty Id="d9753c6c-ebd7-4869-b761-3ceeb3e83b7f" Description="Set to true to indicate the start of a Dialog." Name="Initial" DisplayName="Initial" DefaultValue="true" Category="Definition">
           <Type>
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>

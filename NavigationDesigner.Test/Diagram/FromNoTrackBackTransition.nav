@@ -8,6 +8,6 @@
         </transition>
       </successors>
     </state>
-    <state Id="b9a77301-3e42-450f-aa6f-1813b5ca62b0" key="B" page="~/B.aspx" trackCrumbTrail="false" order="0" dialogOrder="0" />
+    <state Id="b9a77301-3e42-450f-aa6f-1813b5ca62b0" key="B" page="~/B.aspx" initial="false" trackCrumbTrail="false" order="0" dialogOrder="0" />
   </states>
 </navigationDiagram>

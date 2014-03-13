@@ -8,13 +8,13 @@
                 </transition>
             </successors>
         </state>
-        <state Id="fe4a8ed7-8a3d-46c0-9974-1dde8e18c6c4" key="B" page="~/B.aspx" order="0" dialogOrder="0" defaults="a=true? b=">
+        <state Id="fe4a8ed7-8a3d-46c0-9974-1dde8e18c6c4" key="B" page="~/B.aspx" initial="false" order="0" dialogOrder="0" defaults="a=true? b=">
             <successors>
                 <transition Id="aac38784-498e-4fe0-8d57-75e408aaec30" key="n" canNavigateBack="false" order="0">
                     <stateMoniker Id="ac4e30eb-efc0-44a5-b683-a8f4b11adcca" />
                 </transition>
             </successors>
         </state>
-        <state Id="ac4e30eb-efc0-44a5-b683-a8f4b11adcca" key="C" page="~/C.aspx" order="0" dialogOrder="0" defaults=" =true" />
+        <state Id="ac4e30eb-efc0-44a5-b683-a8f4b11adcca" key="C" page="~/C.aspx" initial="false" order="0" dialogOrder="0" defaults=" =true" />
     </states>
 </navigationDiagram>
