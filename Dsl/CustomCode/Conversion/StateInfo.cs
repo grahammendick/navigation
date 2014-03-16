@@ -8,6 +8,7 @@ namespace Navigation.Designer
 		List<State> _AssignedStates = new List<State>();
 		List<Dialog> _Dialogs = new List<Dialog>();
 		List<Transition> _RemovedTransitions = new List<Transition>();
+		HashSet<State> _Initials = new HashSet<State>();
 
 		private List<State> AssignedStates
 		{
@@ -33,6 +34,18 @@ namespace Navigation.Designer
 			}
 		}
 
+		private HashSet<State> Initials
+		{
+			get
+			{
+				return _Initials;
+			}
+			set
+			{
+				_Initials = value;
+			}
+		}
+
 		private bool TransitionCreated
 		{
 			get;
@@ -41,17 +54,27 @@ namespace Navigation.Designer
 
 		public List<Dialog> Convert(NavigationDiagram navigationDiagram)
 		{
-			AssignStates(navigationDiagram);
-			List<Transition> removed = RemovedTransitions.ToList();
-			TransitionCreated = true;
-			while (TransitionCreated)
+			int dialogCount = -1;
+			Initials = new HashSet<State>(navigationDiagram.States.Where(s => s.Initial));
+			while (dialogCount != Dialogs.Count)
 			{
-				TransitionCreated = false;
-				RestoreNavigations(navigationDiagram);
-				RemovedTransitions.AddRange(removed);
+				AssignedStates.Clear();
+				RemovedTransitions.Clear();
+				dialogCount = Dialogs.Count;
+				Dialogs.Clear();
+				AssignStates(navigationDiagram);
+				List<Transition> removed = RemovedTransitions.ToList();
+				TransitionCreated = true;
+				while (TransitionCreated)
+				{
+					TransitionCreated = false;
+					RestoreNavigations(navigationDiagram);
+					RemovedTransitions.AddRange(removed);
+				}
+				CleanDialogs();
+				CleanStates();
+				Initials = new HashSet<State>(Dialogs.Select(d => d.Initial));
 			}
-			CleanDialogs();
-			CleanStates();
 			return Dialogs;
 		}
 
@@ -69,11 +92,11 @@ namespace Navigation.Designer
 				var notBackPredecessors =
 					from p in GetPredecessors(state, true)
 					where !Transition.GetLink(p, state).CanNavigateBack
-					&& !state.Initial
+					&& !Initials.Contains(state)
 					select p;
 				if (notBackPredecessors.Count() == 0)
 				{
-					if (!canNavigateBack || state.Initial)
+					if (!canNavigateBack || Initials.Contains(state))
 						CreateDialog(state);
 				}
 				else
@@ -152,7 +175,7 @@ namespace Navigation.Designer
 					select sp
 				)
 				where !AssignedStates.Contains(s)
-				orderby s.Initial descending, p.Count(), s.Predecessors.Count descending, s.Order
+				orderby Initials.Contains(s) descending, p.Count(), s.Predecessors.Count descending, s.Order
 				select new { state = s, unassignedPredecessors = p };
 			var navigation = removableNavigations.First();
 			RemovedTransitions.Add(Transition.GetLink(navigation.unassignedPredecessors.First(), navigation.state));

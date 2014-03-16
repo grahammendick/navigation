@@ -220,24 +220,13 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void AnbB_CnBnDnBMakes3DialogsNotBTest()
+		public void AnbB_CnBnDnBMakes4DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnDnB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
 			Assert.IsTrue(ValidateNavigation(navigationConfiguration, dialogs));
 			Assert.IsTrue(ValidateTransition(navigationConfiguration, dialogs));
-			Assert.AreEqual(3, dialogs.Count());
-			Assert.IsNull(dialogs.Where(d => d.Initial.Key == "B").FirstOrDefault());
-		}
-
-		[TestMethod]
-		public void AnbB_CnBnDnBMakes3DialogsTest()
-		{
-			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnDnB.nav");
-			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
-			Assert.IsTrue(ValidateNavigation(navigationConfiguration, dialogs));
-			Assert.IsTrue(ValidateTransition(navigationConfiguration, dialogs));
-			Assert.AreEqual(3, dialogs.Count());
+			Assert.AreEqual(4, dialogs.Count());
 		}
 
 		[TestMethod]
