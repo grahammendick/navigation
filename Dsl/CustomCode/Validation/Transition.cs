@@ -16,13 +16,6 @@ namespace Navigation.Designer
 		}
 
 		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
-		private void ValidateNoTransitionWithoutBackToInitialState(ValidationContext context)
-		{
-			if (!CanNavigateBack && Successor.Initial)
-				context.LogWarning(string.Format(Messages.TransitionWithoutBackToInitialState, Key, Successor.Key), "TransitionWithoutBackToInitialState", this);
-		}
-
-		[ValidationMethod(ValidationCategories.Open | ValidationCategories.Save | ValidationCategories.Menu)]
 		private void ValidateNoTransitionWithBackToNoTrackState(ValidationContext context)
 		{
 			if (CanNavigateBack && !Successor.TrackCrumbTrail)

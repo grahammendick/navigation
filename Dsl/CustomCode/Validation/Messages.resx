@@ -144,9 +144,6 @@
   <data name="StateDefaultTypesInvalid" xml:space="preserve">
     <value>DefaultTypes is invalid for State '{0}' because it must be in the format Key1=type1,Key2=type2.</value>
   </data>
-  <data name="StateDialogNotInitial" xml:space="preserve">
-    <value>Initial should be set to true for State '{0}' because the StateInfo conversion has made it a Dialog.</value>
-  </data>
   <data name="StateKeyEmpty" xml:space="preserve">
     <value>Key is mandatory for State because it is used by Dialog and Transition elements to specify configuration.</value>
   </data>
@@ -168,9 +165,6 @@
   <data name="StateResourceInvalid" xml:space="preserve">
     <value>ResourceType and ResourceKey are invalid for State '{0}'. They must either both be populated or both be blank because these are used to localize the State Title.</value>
   </data>
-  <data name="StateRouteInvalid" xml:space="preserve">
-    <value>State '{0}' has been added to multiple Dialogs by the StateInfo conversion, but its Route has only been used in one of them.</value>
-  </data>
   <data name="StateTitleAndResourceInvalid" xml:space="preserve">
     <value>ResourceType, ResourceKey and Title are invalid for State '{0}'. If ResourceType or ResourceKey are populated then Title should be blank and vice versa.</value>
   </data>
@@ -179,8 +173,5 @@
   </data>
   <data name="TransitionWithBackToNoTrackState" xml:space="preserve">
     <value>CanNavigateBack is invalid for Transition '{0}' to State '{1}'. A State with TrackCrumbTrail set to false does not support back navigation.</value>
-  </data>
-  <data name="TransitionWithoutBackToInitialState" xml:space="preserve">
-    <value>Transition '{0}' to State '{1}' is not required. A State marked as Initial becomes a Dialog during StateInfo conversion so a Transition with CanNavigateBack set to false is redundant.</value>
   </data>
 </root>
