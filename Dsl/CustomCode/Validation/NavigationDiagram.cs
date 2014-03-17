@@ -14,10 +14,8 @@ namespace Navigation.Designer
 			StateInfo stateInfo = new StateInfo();
 			List<Dialog> dialogs = stateInfo.Convert(this);
 			ValidateDialogKey(context, dialogs);
-			ValidateInitial(context, dialogs);
 			ValidateStateKey(context, dialogs);
 			ValidatePathAndRoute(context, dialogs);
-			ValidateRoute(context, dialogs);
 		}
 
 		private void ValidateDialogKey(ValidationContext context, List<Dialog> dialogs)
@@ -30,14 +28,6 @@ namespace Navigation.Designer
 			foreach (var d in q)
 			{
 				context.LogError(string.Format(Messages.DuplicateDialogKey, d.Key), "DuplicateDialogKey", d.ToArray());
-			}
-		}
-
-		private void ValidateInitial(ValidationContext context, List<Dialog> dialogs)
-		{
-			foreach (Dialog dialog in dialogs.Where(d => !d.Initial.Initial))
-			{
-				context.LogWarning(string.Format(Messages.StateDialogNotInitial, dialog.Initial.Key), "StateDialogNotInitial", dialog.Initial);
 			}
 		}
 
@@ -66,18 +56,6 @@ namespace Navigation.Designer
 				{
 					context.LogError(Messages.PathAndRouteEmpty, "PathAndRouteEmpty", (dialogs.Select(d => d.Initial).ToArray()));
 				}
-			}
-		}
-
-		private void ValidateRoute(ValidationContext context, List<Dialog> dialogs)
-		{
-			var q = (from d in dialogs
-					 from s in d.States
-					 where s.Route != s.State.Route
-					 select s.State).Distinct();
-			foreach (var s in q)
-			{
-				context.LogMessage(string.Format(Messages.StateRouteInvalid, s.Key), "StateRouteInvalid", s);
 			}
 		}
 	}

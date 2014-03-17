@@ -172,20 +172,6 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void NoBackToInitialTransitionTest()
-		{
-			NavigationDiagram navigationConfiguration = LoadModel("Diagram/NoBackToInitialTransition.nav");
-			Transition transition = Transition.GetLink(navigationConfiguration.States[1], navigationConfiguration.States[0]);
-			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(1, validator.WarningMessages.Count);
-			Assert.AreEqual(0, validator.InformationalMessages.Count);
-			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "TransitionWithoutBackToInitialState", transition));
-		}
-
-		[TestMethod]
 		public void FromNoTrackBackTransitionTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/FromNoTrackBackTransition.nav");
@@ -215,20 +201,6 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
-		public void NotInitialDialogTest()
-		{
-			NavigationDiagram navigationConfiguration = LoadModel("Diagram/NotInitialDialog.nav");
-			State state = navigationConfiguration.States[0];
-			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(1, validator.WarningMessages.Count);
-			Assert.AreEqual(0, validator.InformationalMessages.Count);
-			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "StateDialogNotInitial", state));
-		}
-
-		[TestMethod]
 		public void DuplicateStateTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicateState.nav");
@@ -253,20 +225,6 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
-		}
-
-		[TestMethod]
-		public void DuplicatedRoutedStateTest()
-		{
-			NavigationDiagram navigationConfiguration = LoadModel("Diagram/DuplicatedRoutedState.nav");
-			State state = navigationConfiguration.States[2];
-			ValidationController validator = new ValidationController();
-			validator.Validate(navigationConfiguration.Store, ValidationCategories.Menu);
-			Assert.AreEqual(0, validator.WarningMessages.Count);
-			Assert.AreEqual(1, validator.InformationalMessages.Count);
-			Assert.AreEqual(0, validator.FatalMessages.Count);
-			Assert.AreEqual(0, validator.ErrorMessages.Count);
-			Assert.IsTrue(ValidateValidationMessages(validator.InformationalMessages[0], "StateRouteInvalid", state));
 		}
 
 		[TestMethod]

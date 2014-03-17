@@ -194,9 +194,6 @@
     <None Include="Diagram\DuplicateDialog.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Diagram\DuplicatedRoutedState.nav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Diagram\DuplicateState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -216,12 +213,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Diagram\FullState.nav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Diagram\NoBackToInitialTransition.nav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Diagram\NotInitialDialog.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Diagram\PathsFormatState.nav">

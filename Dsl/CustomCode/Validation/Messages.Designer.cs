@@ -142,15 +142,6 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial should be set to true for State &apos;{0}&apos; because the StateInfo conversion has made it a Dialog..
-        /// </summary>
-        internal static string StateDialogNotInitial {
-            get {
-                return ResourceManager.GetString("StateDialogNotInitial", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Key is mandatory for State because it is used by Dialog and Transition elements to specify configuration..
         /// </summary>
         internal static string StateKeyEmpty {
@@ -214,15 +205,6 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to State &apos;{0}&apos; has been added to multiple Dialogs by the StateInfo conversion, but its Route has only been used in one of them..
-        /// </summary>
-        internal static string StateRouteInvalid {
-            get {
-                return ResourceManager.GetString("StateRouteInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ResourceType, ResourceKey and Title are invalid for State &apos;{0}&apos;. If ResourceType or ResourceKey are populated then Title should be blank and vice versa..
         /// </summary>
         internal static string StateTitleAndResourceInvalid {
@@ -246,15 +228,6 @@ namespace Navigation.Designer.CustomCode.Validation {
         internal static string TransitionWithBackToNoTrackState {
             get {
                 return ResourceManager.GetString("TransitionWithBackToNoTrackState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transition &apos;{0}&apos; to State &apos;{1}&apos; is not required. A State marked as Initial becomes a Dialog during StateInfo conversion so a Transition with CanNavigateBack set to false is redundant..
-        /// </summary>
-        internal static string TransitionWithoutBackToInitialState {
-            get {
-                return ResourceManager.GetString("TransitionWithoutBackToInitialState", resourceCulture);
             }
         }
     }
