@@ -297,6 +297,20 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
+		public void CreateTransitionTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/CreateFirstToTransition.nav");
+			using (Transaction t = navigationConfiguration.Store.TransactionManager.BeginTransaction("test"))
+			{
+				State from = navigationConfiguration.States[0];
+				State to = navigationConfiguration.States[1];
+				from.Successors.Add(to);
+				t.Commit();
+				Assert.AreEqual("B", to.Key);
+			}
+		}
+
+		[TestMethod]
 		public void CreateFirstToTransitionTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/CreateFirstToTransition.nav");
