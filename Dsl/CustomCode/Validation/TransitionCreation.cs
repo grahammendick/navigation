@@ -8,8 +8,13 @@ namespace Navigation.Designer
 		public override void ElementAdded(ElementAddedEventArgs e)
 		{
 			Transition transition = (Transition)e.ModelElement;
-			if (transition.Successor.Predecessors.Count == 1 && !transition.Store.TransactionManager.CurrentTransaction.IsSerializing)
-				transition.Successor.Initial = false;
+			if (!transition.Store.TransactionManager.CurrentTransaction.IsSerializing)
+			{
+				if (!string.IsNullOrEmpty(transition.Successor.Key))
+					transition.Key = transition.Successor.Key;
+				if (transition.Successor.Predecessors.Count == 1)
+					transition.Successor.Initial = false;
+			}
 		}
 	}
 }
