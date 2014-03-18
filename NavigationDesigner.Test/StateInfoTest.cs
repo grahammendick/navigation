@@ -230,6 +230,19 @@ namespace NavigationDesigner.Test
 		}
 
 		[TestMethod]
+		public void AnbB_CnBnDnBMakesACBDDialogsTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnDnB.nav");
+			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
+			Assert.IsTrue(ValidateNavigation(navigationConfiguration, dialogs));
+			Assert.IsTrue(ValidateTransition(navigationConfiguration, dialogs));
+			Assert.AreEqual("A", dialogs[0].Key);
+			Assert.AreEqual("C", dialogs[1].Key);
+			Assert.AreEqual("B", dialogs[2].Key);
+			Assert.AreEqual("D", dialogs[3].Key);
+		}
+
+		[TestMethod]
 		public void AnbB_CnBnbDnBMakes2DialogsTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbB_CnBnbDnB.nav");
