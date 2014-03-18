@@ -56,27 +56,24 @@ namespace Navigation.Designer
 		{
 			Initials = new HashSet<State>(navigationDiagram.States.Where(s => s.Initial));
 			for (int i = 0; i < 3; i++)
-				Run(navigationDiagram);
-			return Dialogs;
-		}
-
-		private void Run(NavigationDiagram navigationDiagram)
-		{
-			AssignedStates.Clear();
-			RemovedTransitions.Clear();
-			Dialogs.Clear();
-			AssignStates(navigationDiagram);
-			List<Transition> removed = RemovedTransitions.ToList();
-			TransitionCreated = true;
-			while (TransitionCreated)
 			{
-				TransitionCreated = false;
-				RestoreNavigations(navigationDiagram);
-				RemovedTransitions.AddRange(removed);
+				AssignedStates.Clear();
+				RemovedTransitions.Clear();
+				Dialogs.Clear();
+				AssignStates(navigationDiagram);
+				List<Transition> removed = RemovedTransitions.ToList();
+				TransitionCreated = true;
+				while (TransitionCreated)
+				{
+					TransitionCreated = false;
+					RestoreNavigations(navigationDiagram);
+					RemovedTransitions.AddRange(removed);
+				}
+				CleanDialogs();
+				CleanStates();
+				Initials = new HashSet<State>(Dialogs.Select(d => d.Initial));
 			}
-			CleanDialogs();
-			CleanStates();
-			Initials = new HashSet<State>(Dialogs.Select(d => d.Initial));
+			return Dialogs;
 		}
 
 		private void CreateNavigations(List<State> stateList)
