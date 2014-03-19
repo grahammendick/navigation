@@ -15,6 +15,7 @@ namespace Navigation.Designer
 			List<Dialog> dialogs = stateInfo.Convert(this);
 			ValidateDialogKey(context, dialogs);
 			ValidateStateKey(context, dialogs);
+			ValidateTransitionKey(context, dialogs);
 			ValidatePathAndRoute(context, dialogs);
 		}
 
@@ -44,6 +45,22 @@ namespace Navigation.Designer
 				{
 					context.LogError(string.Format(Messages.DuplicateStateKey, dialog.Key, s.Key), "DuplicateStateKey", s.ToArray());
 				}
+			}
+		}
+
+		private void ValidateTransitionKey(ValidationContext context, List<Dialog> dialogs)
+		{
+			var q = from d in dialogs
+					from s in d.States
+					from t in Transition.GetLinksToPredecessors(s.State)
+					where d.Initial == s.State
+					&& t.Key != d.Key
+					&& !t.CanNavigateBack
+					select new { t, d };
+			foreach(var t in q)
+			{
+				context.LogWarning(string.Format(Messages.TransitionKeyRename, t.t.Key, t.d.Key), "TransitionKeyRename", t.t);
+
 			}
 		}
 
