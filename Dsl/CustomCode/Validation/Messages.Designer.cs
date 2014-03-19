@@ -223,6 +223,15 @@ namespace Navigation.Designer.CustomCode.Validation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transition &apos;{0}&apos; has been renamed to &apos;{1}&apos;..
+        /// </summary>
+        internal static string TransitionKeyRename {
+            get {
+                return ResourceManager.GetString("TransitionKeyRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CanNavigateBack is invalid for Transition &apos;{0}&apos; to State &apos;{1}&apos;. A State with TrackCrumbTrail set to false does not support back navigation..
         /// </summary>
         internal static string TransitionWithBackToNoTrackState {
