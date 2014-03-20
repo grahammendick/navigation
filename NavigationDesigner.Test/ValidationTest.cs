@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Modeling.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Navigation.Designer;
+using System.Linq;
 
 namespace NavigationDesigner.Test
 {
@@ -237,6 +238,25 @@ namespace NavigationDesigner.Test
 			Assert.AreEqual(0, validator.InformationalMessages.Count);
 			Assert.AreEqual(0, validator.FatalMessages.Count);
 			Assert.AreEqual(0, validator.ErrorMessages.Count);
+		}
+
+		[TestMethod]
+		public void RenameTransitionKeyTest()
+		{
+			NavigationDiagram navigationConfiguration = LoadModel("Diagram/RenameTransitionKey.nav");
+			State stateA = navigationConfiguration.States.First(s => s.Key == "A");
+			State stateB = navigationConfiguration.States.First(s => s.Key == "B");
+			State stateC = navigationConfiguration.States.First(s => s.Key == "C");
+			Transition transitionAB = Transition.GetLink(stateA, stateB);
+			Transition transitionBC = Transition.GetLink(stateB, stateC);
+			ValidationController validator = new ValidationController();
+			validator.Validate(navigationConfiguration.Store, ValidationCategories.Open);
+			Assert.AreEqual(2, validator.WarningMessages.Count);
+			Assert.AreEqual(0, validator.InformationalMessages.Count);
+			Assert.AreEqual(0, validator.FatalMessages.Count);
+			Assert.AreEqual(0, validator.ErrorMessages.Count);
+			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[0], "TransitionKeyRename", transitionAB));
+			Assert.IsTrue(ValidateValidationMessages(validator.WarningMessages[1], "TransitionKeyRename", transitionBC));
 		}
 
 		[TestMethod]
