@@ -218,6 +218,9 @@
     <None Include="Diagram\PathsFormatState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Diagram\RenameTransitionKey.nav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Diagram\ResourceState.nav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
