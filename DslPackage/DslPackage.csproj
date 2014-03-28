@@ -259,6 +259,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Resources\ModelExplorerToolWindowBitmaps.bmp" />
+    <Content Include="Resources\NavIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="StateInfoGenerator.pkgdef">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
