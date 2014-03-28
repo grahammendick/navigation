@@ -8,7 +8,7 @@
     <Locale>1033</Locale>
     <MoreInfoUrl>http://navigation.codeplex.com/</MoreInfoUrl>
     <GettingStartedGuide>http://navigationdesigner.codeplex.com/</GettingStartedGuide>
-    <Icon></Icon>
+    <Icon>Resources\NavIcon.png</Icon>
     <PreviewImage></PreviewImage>
     <SupportedProducts>
       <VisualStudio Version="12.0">
