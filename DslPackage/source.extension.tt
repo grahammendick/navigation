@@ -29,7 +29,7 @@
     <Description><#= this.Dsl.Description #></Description>
     <Locale><#= localeId #></Locale>
     <MoreInfoUrl>http://navigation.codeplex.com/</MoreInfoUrl>
-    <GettingStartedGuide>http://navigationdesigner.codeplex.com/</GettingStartedGuide>
+    <GettingStartedGuide>http://visualstudiogallery.msdn.microsoft.com/2a4598e9-9bad-434d-93ee-e9d77aa72533</GettingStartedGuide>
     <Icon>Resources\NavIcon.png</Icon>
     <PreviewImage>Resources\NavPreview.png</PreviewImage>
     <SupportedProducts>
