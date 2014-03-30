@@ -31,7 +31,7 @@
     <MoreInfoUrl>http://navigation.codeplex.com/</MoreInfoUrl>
     <GettingStartedGuide>http://navigationdesigner.codeplex.com/</GettingStartedGuide>
     <Icon>Resources\NavIcon.png</Icon>
-    <PreviewImage>Resources\NavLogo.png</PreviewImage>
+    <PreviewImage>Resources\NavPreview.png</PreviewImage>
     <SupportedProducts>
       <VisualStudio Version="12.0">
         <Edition>Ultimate</Edition>
