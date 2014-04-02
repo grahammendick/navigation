@@ -13,6 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DslPackage", "DslPackage\Ds
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationDesigner.Test", "NavigationDesigner.Test\NavigationDesigner.Test.csproj", "{EA607C30-3CB1-4414-9315-7456A7231DA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationGlimpse", "NavigationGlimpse\NavigationGlimpse.csproj", "{661DE0E9-E01C-40E9-9FF4-262592FBE945}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{064D6A1D-380D-4DA1-BC92-DD167B569716}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +48,10 @@ Global
 		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
