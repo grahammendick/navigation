@@ -30,6 +30,7 @@ syntax: glob
 [Db]ebug*/
 obj/
 [Rr]elease*/
+packages/
 _ReSharper*/
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*
