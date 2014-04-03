@@ -3,7 +3,7 @@ using NavigationGlimpse.Resource;
 
 namespace NavigationGlimpse.ClientScript
 {
-	class Script : IDynamicClientScript
+	public class Script : IDynamicClientScript
 	{
 		public string GetResourceName()
 		{
