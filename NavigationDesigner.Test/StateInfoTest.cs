@@ -4,7 +4,7 @@ using Navigation.Designer;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NavigationDesigner.Test
+namespace Navigation.Designer.Test
 {
 	[TestClass]
 	public class StateInfoTest

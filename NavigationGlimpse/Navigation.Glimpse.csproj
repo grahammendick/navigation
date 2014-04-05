@@ -7,8 +7,8 @@
     <ProjectGuid>{661DE0E9-E01C-40E9-9FF4-262592FBE945}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NavigationGlimpse</RootNamespace>
-    <AssemblyName>NavigationGlimpse</AssemblyName>
+    <RootNamespace>Navigation.Glimpse</RootNamespace>
+    <AssemblyName>Navigation.Glimpse</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

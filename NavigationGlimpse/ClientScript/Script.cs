@@ -1,7 +1,7 @@
 ﻿using Glimpse.Core.Extensibility;
-using NavigationGlimpse.Resource;
+using Navigation.Glimpse.Resource;
 
-namespace NavigationGlimpse.ClientScript
+namespace Navigation.Glimpse.ClientScript
 {
 	public class Script : IDynamicClientScript
 	{

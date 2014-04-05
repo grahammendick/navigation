@@ -1,14 +1,14 @@
 ﻿using Glimpse.Core.Extensibility;
-using NavigationGlimpse.AlternateType;
+using Navigation.Glimpse.AlternateType;
 using System.Web.Routing;
 
-namespace NavigationGlimpse.Inspector
+namespace Navigation.Glimpse.Inspector
 {
 	public class StateRouteHandlerInspector : IInspector
 	{
 		public void Setup(IInspectorContext context)
 		{
-			StateRouteHandler alternateBaseImplementation = new StateRouteHandler(context.ProxyFactory);
+			AlternateType.StateRouteHandler alternateBaseImplementation = new AlternateType.StateRouteHandler(context.ProxyFactory);
 			RouteCollection currentRoutes = RouteTable.Routes;
 			Navigation.StateRouteHandler originalHandler = null;
 			Route stateRoute;

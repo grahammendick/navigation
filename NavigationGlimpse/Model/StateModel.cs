@@ -1,7 +1,7 @@
 ﻿using Navigation;
 using System.Collections.Generic;
 
-namespace NavigationGlimpse.Model
+namespace Navigation.Glimpse.Model
 {
 	public class StateModel
 	{

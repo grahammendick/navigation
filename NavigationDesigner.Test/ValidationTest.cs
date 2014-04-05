@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Navigation.Designer;
 using System.Linq;
 
-namespace NavigationDesigner.Test
+namespace Navigation.Designer.Test
 {
 	[TestClass]
 	public class ValidationTest

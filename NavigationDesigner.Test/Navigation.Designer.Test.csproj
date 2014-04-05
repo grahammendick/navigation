@@ -6,8 +6,8 @@
     <ProjectGuid>{EA607C30-3CB1-4414-9315-7456A7231DA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NavigationDesigner.Test</RootNamespace>
-    <AssemblyName>NavigationDesigner.Test</AssemblyName>
+    <RootNamespace>Navigation.Designer.Test</RootNamespace>
+    <AssemblyName>Navigation.Designer.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
