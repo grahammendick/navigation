@@ -1,7 +1,7 @@
-﻿using NavigationGlimpse.Model;
+﻿using Navigation.Glimpse.Model;
 using System.Collections.Generic;
 
-namespace NavigationGlimpse.Support
+namespace Navigation.Glimpse.Support
 {
 	public class CanvasData
 	{

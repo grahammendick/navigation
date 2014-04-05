@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NavigationGlimpse.Support
+namespace Navigation.Glimpse.Support
 {
 	internal class StateDisplayInfo
 	{

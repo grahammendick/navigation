@@ -1,14 +1,14 @@
 ﻿using Glimpse.Core.Extensibility;
 using Glimpse.Core.Extensions;
 using Navigation;
-using NavigationGlimpse.Support;
+using Navigation.Glimpse.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.WebPages;
 
-namespace NavigationGlimpse.Tab
+namespace Navigation.Glimpse.Tab
 {
 	public class NavigationTab : TabBase, ITabSetup, IKey
 	{
@@ -31,8 +31,8 @@ namespace NavigationGlimpse.Tab
 		private string GetCurrentPage(ITabContext context, bool mobile)
 		{
 			string page = null;
-			var getDisplayInfoForPageMessage = context.GetMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetDisplayInfoForPage.Message>().FirstOrDefault();
-			var getPageForDisplayInfoMessage = context.GetMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetPageForDisplayInfo.Message>().FirstOrDefault();
+			var getDisplayInfoForPageMessage = context.GetMessages<AlternateType.StateRouteHandler.GetDisplayInfoForPage.Message>().FirstOrDefault();
+			var getPageForDisplayInfoMessage = context.GetMessages<AlternateType.StateRouteHandler.GetPageForDisplayInfo.Message>().FirstOrDefault();
 			if (getDisplayInfoForPageMessage != null)
 				page = getDisplayInfoForPageMessage.Page;
 			if (getPageForDisplayInfoMessage != null)
@@ -51,8 +51,8 @@ namespace NavigationGlimpse.Tab
 		private string GetCurrentTheme(ITabContext context, bool mobile)
 		{
 			string theme = null;
-			var getDisplayInfoForThemeMessage = context.GetMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>().FirstOrDefault();
-			var getThemeForDisplayInfoMessage = context.GetMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>().FirstOrDefault();
+			var getDisplayInfoForThemeMessage = context.GetMessages<AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>().FirstOrDefault();
+			var getThemeForDisplayInfoMessage = context.GetMessages<AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>().FirstOrDefault();
 			if (getDisplayInfoForThemeMessage != null)
 				theme = getDisplayInfoForThemeMessage.Theme;
 			if (getThemeForDisplayInfoMessage != null)
@@ -66,8 +66,8 @@ namespace NavigationGlimpse.Tab
 		private List<string> GetCurrentMasters(ITabContext context, bool mobile)
 		{
 			var masters = new List<string>();
-			var getDisplayInfoForMasterMessages = context.GetMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetDisplayInfoForMaster.Message>();
-			var getMasterForDisplayInfoMessages = context.GetMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetMasterForDisplayInfo.Message>();
+			var getDisplayInfoForMasterMessages = context.GetMessages<AlternateType.StateRouteHandler.GetDisplayInfoForMaster.Message>();
+			var getMasterForDisplayInfoMessages = context.GetMessages<AlternateType.StateRouteHandler.GetMasterForDisplayInfo.Message>();
 			foreach (var getDisplayInfoForMasterMessage in getDisplayInfoForMasterMessages)
 				masters.Add(getDisplayInfoForMasterMessage.Master);
 			foreach (var getMasterForDisplayInfoMessage in getMasterForDisplayInfoMessages)
@@ -96,12 +96,12 @@ namespace NavigationGlimpse.Tab
 
 		public void Setup(ITabSetupContext context)
 		{
-			context.PersistMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetDisplayInfoForPage.Message>();
-			context.PersistMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetPageForDisplayInfo.Message>();
-			context.PersistMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetDisplayInfoForMaster.Message>();
-			context.PersistMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetMasterForDisplayInfo.Message>();
-			context.PersistMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>();
-			context.PersistMessages<NavigationGlimpse.AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>();
+			context.PersistMessages<AlternateType.StateRouteHandler.GetDisplayInfoForPage.Message>();
+			context.PersistMessages<AlternateType.StateRouteHandler.GetPageForDisplayInfo.Message>();
+			context.PersistMessages<AlternateType.StateRouteHandler.GetDisplayInfoForMaster.Message>();
+			context.PersistMessages<AlternateType.StateRouteHandler.GetMasterForDisplayInfo.Message>();
+			context.PersistMessages<AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>();
+			context.PersistMessages<AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>();
 		}
 	}
 }

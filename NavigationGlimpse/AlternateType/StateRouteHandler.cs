@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.WebPages;
 
-namespace NavigationGlimpse.AlternateType
+namespace Navigation.Glimpse.AlternateType
 {
 	public class StateRouteHandler : AlternateType<Navigation.StateRouteHandler>
 	{

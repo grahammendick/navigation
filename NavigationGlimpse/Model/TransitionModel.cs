@@ -1,6 +1,6 @@
 ﻿using Navigation;
 
-namespace NavigationGlimpse.Model
+namespace Navigation.Glimpse.Model
 {
 	public class TransitionModel
 	{

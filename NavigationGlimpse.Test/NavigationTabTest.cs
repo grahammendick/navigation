@@ -2,14 +2,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Navigation;
-using NavigationGlimpse.Model;
-using NavigationGlimpse.Support;
-using NavigationGlimpse.Tab;
+using Navigation.Glimpse.Model;
+using Navigation.Glimpse.Support;
+using Navigation.Glimpse.Tab;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NavigationGlimpse.Test
+namespace Navigation.Glimpse.Test
 {
 	[TestClass]
 	public class NavigationTabTest

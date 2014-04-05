@@ -1,7 +1,7 @@
 ﻿using Glimpse.Core.Extensibility;
 using Glimpse.Core.Resource;
 
-namespace NavigationGlimpse.Resource
+namespace Navigation.Glimpse.Resource
 {
 	public class ScriptResource : FileResource, IKey
 	{
@@ -14,7 +14,7 @@ namespace NavigationGlimpse.Resource
 			Name = InternalName;
 			GlimpseClientEmbeddedResourceInfo = new EmbeddedResourceInfo(
 				this.GetType().Assembly,
-				"NavigationGlimpse.navigation.glimpse.js",
+				"Navigation.Glimpse.navigation.glimpse.js",
 				"application/x-javascript");
 		}
 

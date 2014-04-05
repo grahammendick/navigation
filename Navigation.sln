@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dsl", "Dsl\Dsl.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DslPackage", "DslPackage\DslPackage.csproj", "{31B85516-ADF3-4749-AF51-C0B95884C5B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationDesigner.Test", "NavigationDesigner.Test\NavigationDesigner.Test.csproj", "{EA607C30-3CB1-4414-9315-7456A7231DA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Designer.Test", "NavigationDesigner.Test\Navigation.Designer.Test.csproj", "{EA607C30-3CB1-4414-9315-7456A7231DA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationGlimpse", "NavigationGlimpse\NavigationGlimpse.csproj", "{661DE0E9-E01C-40E9-9FF4-262592FBE945}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Glimpse", "NavigationGlimpse\Navigation.Glimpse.csproj", "{661DE0E9-E01C-40E9-9FF4-262592FBE945}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{064D6A1D-380D-4DA1-BC92-DD167B569716}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{064D6A
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationGlimpse.Test", "NavigationGlimpse.Test\NavigationGlimpse.Test.csproj", "{AA8EA8FF-3CDC-4BC7-AFB3-53E81E1C33D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Glimpse.Test", "NavigationGlimpse.Test\Navigation.Glimpse.Test.csproj", "{AA8EA8FF-3CDC-4BC7-AFB3-53E81E1C33D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

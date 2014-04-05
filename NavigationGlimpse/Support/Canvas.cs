@@ -1,10 +1,10 @@
 ﻿using Navigation;
-using NavigationGlimpse.Model;
+using Navigation.Glimpse.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NavigationGlimpse.Support
+namespace Navigation.Glimpse.Support
 {
 	internal class Canvas
 	{

@@ -1,7 +1,7 @@
 ﻿using Glimpse.Core.Extensibility;
-using NavigationGlimpse.Model;
+using Navigation.Glimpse.Model;
 
-namespace NavigationGlimpse.SerializationConverter
+namespace Navigation.Glimpse.SerializationConverter
 {
 	public class TransitionModelConverter : SerializationConverter<TransitionModel>
 	{

@@ -6,8 +6,8 @@
     <ProjectGuid>{AA8EA8FF-3CDC-4BC7-AFB3-53E81E1C33D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NavigationGlimpse.Test</RootNamespace>
-    <AssemblyName>NavigationGlimpse.Test</AssemblyName>
+    <RootNamespace>Navigation.Glimpse.Test</RootNamespace>
+    <AssemblyName>Navigation.Glimpse.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -64,9 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NavigationGlimpse\NavigationGlimpse.csproj">
+    <ProjectReference Include="..\NavigationGlimpse\Navigation.Glimpse.csproj">
       <Project>{661de0e9-e01c-40e9-9ff4-262592fbe945}</Project>
-      <Name>NavigationGlimpse</Name>
+      <Name>Navigation.Glimpse</Name>
     </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{4ab8290d-41d9-4bc0-b7b5-a430b067be65}</Project>

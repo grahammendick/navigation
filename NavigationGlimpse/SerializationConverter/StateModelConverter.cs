@@ -1,11 +1,11 @@
 ﻿using Glimpse.Core.Extensibility;
 using Navigation;
-using NavigationGlimpse.Model;
+using Navigation.Glimpse.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NavigationGlimpse.SerializationConverter
+namespace Navigation.Glimpse.SerializationConverter
 {
 	public class StateModelConverter : SerializationConverter<StateModel>
 	{
