@@ -255,7 +255,7 @@
   <PropertyGroup>
     <StartProgram>$(DevEnvDir)\devenv.exe</StartProgram>
     <StartAction>Program</StartAction>
-    <StartArguments>/rootsuffix Exp "..\..\..\Debugging\Debugging.sln"</StartArguments>
+    <StartArguments>/rootsuffix Exp "..\..\..\NavigationDesigner.Debug\Navigation.Designer.Debug.sln"</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Resources\ModelExplorerToolWindowBitmaps.bmp" />
