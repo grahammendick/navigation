@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<navigationLanguageDiagram dslVersion="1.0.0.0" Id="74a83759-ac57-43b8-8f29-2ce631bfd846" absoluteBounds="0, 0, 11, 8.5" name="NerdDinner">
+  <navigationDiagramMoniker Id="27e6ee9b-a6ff-4341-bab1-17e5d5321249" />
+  <nestedChildShapes>
+    <stateShape Id="5ca1b1a9-a15e-4150-a982-74017b939a0a" absoluteBounds="0.5, 1, 2, 0.75">
+      <stateMoniker Id="1f846b1c-b7f3-47db-a4fd-de9f3c3de83d" />
+    </stateShape>
+    <stateShape Id="5aa75173-e17d-45c8-8146-65ea3aacf938" absoluteBounds="0.5, 2, 2, 0.75">
+      <stateMoniker Id="02a579d5-5169-4737-8301-8670542414c8" />
+    </stateShape>
+    <stateShape Id="253e13ba-9cf4-473b-9e2b-7b4bc850db9d" absoluteBounds="3, 0.5, 2, 0.75">
+      <stateMoniker Id="a351b55d-aa48-4e8d-a1c1-d64c81eae0d9" />
+    </stateShape>
+  </nestedChildShapes>
+</navigationLanguageDiagram>

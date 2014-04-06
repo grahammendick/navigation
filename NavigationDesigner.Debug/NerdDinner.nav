@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<navigationDiagram xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="27e6ee9b-a6ff-4341-bab1-17e5d5321249" xmlns="http://schemas.microsoft.com/dsltools/NavigationLanguage">
+  <states>
+    <state Id="1f846b1c-b7f3-47db-a4fd-de9f3c3de83d" key="State1" order="0" dialogOrder="0" />
+    <state Id="02a579d5-5169-4737-8301-8670542414c8" key="State2" order="0" dialogOrder="0" />
+    <state Id="a351b55d-aa48-4e8d-a1c1-d64c81eae0d9" key="State3" order="0" dialogOrder="0" />
+  </states>
+</navigationDiagram>
