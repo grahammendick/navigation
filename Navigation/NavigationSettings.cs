@@ -10,7 +10,7 @@ namespace Navigation
 	{
 		private static NavigationSettings _Config = (NavigationSettings) ConfigurationManager.GetSection("Navigation/Settings") ?? new NavigationSettings();
 
-		internal static NavigationSettings Config
+		public static NavigationSettings Config
 		{
 			get
 			{
@@ -98,6 +98,19 @@ namespace Navigation
 			set
 			{
 				this["returnUrlKey"] = value;
+			}
+		}
+
+		[ConfigurationProperty("stateKey", DefaultValue = "c0")]
+		public string StateKey
+		{
+			get
+			{
+				return (string)this["stateKey"];
+			}
+			set
+			{
+				this["stateKey"] = value;
 			}
 		}
 	}

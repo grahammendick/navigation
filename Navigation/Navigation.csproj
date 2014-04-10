@@ -23,7 +23,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\Navigation.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
@@ -64,6 +65,7 @@
     <Compile Include="CrumbTrailPersister.cs" />
     <Compile Include="Dialog.cs" />
     <Compile Include="HistoryNavigator.cs" />
+    <Compile Include="IStateHandler.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="MockNavigationContext.cs" />
     <Compile Include="MockNavigationRequest.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="StateContext.cs" />
     <Compile Include="StateController.cs" />
     <Compile Include="StateDisplayInfo.cs" />
+    <Compile Include="StateHandler.cs" />
     <Compile Include="StateInfoCollection.cs" />
     <Compile Include="StateInfoConfig.cs" />
     <Compile Include="StateInfoSectionHandler.cs" />
