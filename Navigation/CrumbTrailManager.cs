@@ -156,7 +156,8 @@ namespace Navigation
 #else
 			coll = StateContext.ShieldEncode(coll, state);
 #endif
-			return state.StateHandler.GetNavigationLink(state, coll);
+			HttpContextBase context = HttpContext.Current != null ? new HttpContextWrapper(HttpContext.Current) : null;
+			return state.StateHandler.GetNavigationLink(state, coll, context);
 		}
 
 		private static string DecodeURLValue(string urlValue)
