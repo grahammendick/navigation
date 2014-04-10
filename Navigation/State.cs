@@ -41,6 +41,8 @@ namespace Navigation
 		private string _MobileTheme;
 		private ReadOnlyCollection<string> _Masters;
 		private ReadOnlyCollection<string> _MobileMasters;
+		[NonSerialized]
+		private IStateHandler _StateHandler = new StateHandler();
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.Transition"/> children
@@ -376,6 +378,21 @@ namespace Navigation
 			internal set
 			{
 				_MobileMasters = value;
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public IStateHandler StateHandler
+		{
+			get
+			{
+				return _StateHandler;
+			}
+			set
+			{
+				_StateHandler = value;
 			}
 		}
 

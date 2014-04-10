@@ -156,50 +156,7 @@ namespace Navigation
 #else
 			coll = StateContext.ShieldEncode(coll, state);
 #endif
-#if NET45Plus
-			bool mobile = HttpContext.Current != null && new HttpContextWrapper(HttpContext.Current).GetOverriddenBrowser().IsMobileDevice;
-#else
-			bool mobile = HttpContext.Current != null && HttpContext.Current.Request.Browser.IsMobileDevice;
-#endif
-#if NET40Plus
-			if (state.GetRoute(mobile).Length == 0 || RouteTable.Routes[state.GetRouteName(mobile)] == null)
-			{
-#endif
-				StringBuilder href = new StringBuilder();
-				string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
-				href.Append(VirtualPathUtility.ToAbsolute(state.GetPage(mobile), applicationPath));
-				href.Append("?");
-				href.Append(HttpUtility.UrlEncode(StateContext.STATE));
-				href.Append("=");
-				href.Append(HttpUtility.UrlEncode(nextState));
-				foreach (string key in coll)
-				{
-					if (key != StateContext.STATE)
-					{
-						href.Append("&");
-						href.Append(HttpUtility.UrlEncode(key));
-						href.Append("=");
-						href.Append(HttpUtility.UrlEncode(coll[key]));
-					}
-				}
-				return href.ToString();
-#if NET40Plus
-			}
-			else
-			{
-				RouteValueDictionary routeData = new RouteValueDictionary();
-				foreach (string key in coll.Keys)
-				{
-					if (key != StateContext.STATE)
-						routeData.Add(key, coll[key]);
-				}
-				RequestContext context = HttpContext.Current != null ? null : new MockNavigationContext(null).Request.RequestContext;
-				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(context, state.GetRouteName(mobile), routeData);
-				if (virtualPath == null)
-					return null;
-				return virtualPath.VirtualPath;
-			}
-#endif
+			return state.StateHandler.GetNavigationLink(state, coll);
 		}
 
 		private static string DecodeURLValue(string urlValue)
