@@ -14,6 +14,6 @@ namespace Navigation
 	{
 		string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context);
 
-		NameValueCollection GetNavigationData(State state, string navigationLink, HttpContextBase context);
+		NameValueCollection GetNavigationData(State state, HttpContextBase context);
 	}
 }
