@@ -17,7 +17,8 @@ namespace Navigation
 	{
 		public string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
-			bool mobile = context != null && context.GetOverriddenBrowser().IsMobileDevice;
+			//Should IsMobileDevice be mocked - means mocking a lot of properties on Context?
+			bool mobile = HttpContext.Current != null ? context.GetOverriddenBrowser().IsMobileDevice : false;
 			string route = GetRoute(state, context);
 			if (route != null)
 			{
@@ -27,8 +28,7 @@ namespace Navigation
 					if (key != NavigationSettings.Config.StateKey)
 						routeData.Add(key, data[key]);
 				}
-				RequestContext requestContext = context != null ? null : new MockNavigationContext(null).Request.RequestContext;
-				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(requestContext, route, routeData);
+				VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(context.Request.RequestContext, route, routeData);
 				if (virtualPath == null)
 					return null;
 				return virtualPath.VirtualPath;
@@ -36,8 +36,7 @@ namespace Navigation
 			else
 			{
 				StringBuilder href = new StringBuilder();
-				string applicationPath = context != null ? context.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
-				href.Append(VirtualPathUtility.ToAbsolute(state.GetPage(mobile), applicationPath));
+				href.Append(VirtualPathUtility.ToAbsolute(state.GetPage(mobile), context.Request.ApplicationPath));
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(NavigationSettings.Config.StateKey));
 				href.Append("=");
@@ -56,7 +55,7 @@ namespace Navigation
 			}
 		}
 
-		public NameValueCollection GetNavigationData(State state, string navigationLink, HttpContextBase context)
+		public NameValueCollection GetNavigationData(State state, HttpContextBase context)
 		{
 			//called from Mock Navigation - it's the reverse of GetNavigationLink so
 			//could call it from StateAdapter if wanted?
@@ -65,7 +64,7 @@ namespace Navigation
 
 		protected virtual string GetRoute(State state, HttpContextBase context)
 		{
-			bool mobile = context != null && context.GetOverriddenBrowser().IsMobileDevice;
+			bool mobile = HttpContext.Current != null ? context.GetOverriddenBrowser().IsMobileDevice : false;
 			if (state.GetRoute(mobile).Length == 0 || RouteTable.Routes[state.GetRouteName(mobile)] == null)
 				return null;
 			else
