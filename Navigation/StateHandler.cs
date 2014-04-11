@@ -57,8 +57,8 @@ namespace Navigation
 
 		public NameValueCollection GetNavigationData(State state, HttpContextBase context)
 		{
-			//called from Mock Navigation - it's the reverse of GetNavigationLink so
-			//could call it from StateAdapter if wanted?
+			//Call from Mock Navigation and StateAdapter
+			//Move GetQueryData logic into here
 			return null;
 		}
 
