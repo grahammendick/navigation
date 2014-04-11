@@ -279,7 +279,7 @@ namespace Navigation
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
 #endif
-			NavigateLink(url, mode);
+			NavigateLink(url, GetNextState(action), mode);
 		}
 
 		/// <summary>
@@ -400,7 +400,7 @@ namespace Navigation
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
 #endif
-			NavigateLink(url, mode);
+			NavigateLink(url, GetCrumb(distance).State, mode);
 		}
 
 		/// <summary>
@@ -500,7 +500,7 @@ namespace Navigation
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
 #endif
-			NavigateLink(url, mode);
+			NavigateLink(url, StateContext.State, mode);
 		}
 
 		/// <summary>
@@ -527,7 +527,7 @@ namespace Navigation
 			return CrumbTrailManager.GetRefreshHref(toData);
 		}
 
-		private static void NavigateLink(string url, NavigationMode mode)
+		private static void NavigateLink(string url, State state, NavigationMode mode)
 		{
 			if (HttpContext.Current == null) mode = NavigationMode.Mock;
 			switch (mode)
@@ -546,7 +546,7 @@ namespace Navigation
 					{
 #if NET40Plus
 						MockNavigationContext context = new MockNavigationContext(url);
-						StateContext.StateKey = context.Request.QueryString[StateContext.STATE] ?? (string)context.Request.RequestContext.RouteData.DataTokens[StateContext.STATE];
+						StateContext.StateKey = state.DialogStateKey;
 						NameValueCollection queryData = GetQueryData(context);
 #else
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
