@@ -59,44 +59,44 @@
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="ConverterInfoSectionHandler.cs" />
     <Compile Include="Crumb.cs" />
-    <Compile Include="CrumbTrailDataSource.cs" />
-    <Compile Include="CrumbTrailDataSourceView.cs" />
+    <Compile Include="WebForms\CrumbTrailDataSource.cs" />
+    <Compile Include="WebForms\CrumbTrailDataSourceView.cs" />
     <Compile Include="CrumbTrailManager.cs" />
     <Compile Include="CrumbTrailPersister.cs" />
     <Compile Include="Dialog.cs" />
-    <Compile Include="HistoryNavigator.cs" />
+    <Compile Include="WebForms\HistoryNavigator.cs" />
     <Compile Include="IStateHandler.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="MockNavigationContext.cs" />
     <Compile Include="MockNavigationRequest.cs" />
     <Compile Include="MockNavigationResponse.cs" />
     <Compile Include="NavigationData.cs" />
-    <Compile Include="NavigationDataAttribute.cs" />
-    <Compile Include="NavigationDataControlBuilderInterceptor.cs" />
-    <Compile Include="NavigationDataExpressionBuilder.cs" />
+    <Compile Include="WebForms\NavigationDataAttribute.cs" />
+    <Compile Include="WebForms\NavigationDataControlBuilderInterceptor.cs" />
+    <Compile Include="WebForms\NavigationDataExpressionBuilder.cs" />
     <Compile Include="NavigationDataItem.cs" />
-    <Compile Include="NavigationDataParameter.cs" />
-    <Compile Include="NavigationDataSource.cs" />
-    <Compile Include="NavigationDataSourceView.cs" />
-    <Compile Include="NavigationDataTrigger.cs" />
-    <Compile Include="NavigationDataValueProvider.cs" />
+    <Compile Include="WebForms\NavigationDataParameter.cs" />
+    <Compile Include="WebForms\NavigationDataSource.cs" />
+    <Compile Include="WebForms\NavigationDataSourceView.cs" />
+    <Compile Include="WebForms\NavigationDataTrigger.cs" />
+    <Compile Include="WebForms\NavigationDataValueProvider.cs" />
     <Compile Include="NavigationDirection.cs" />
-    <Compile Include="NavigationHyperLink.cs" />
+    <Compile Include="WebForms\NavigationHyperLink.cs" />
     <Compile Include="NavigationMode.cs" />
     <Compile Include="NavigationSettings.cs" />
     <Compile Include="NavigationShield.cs" />
-    <Compile Include="Pager.cs" />
+    <Compile Include="WebForms\Pager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RefreshHyperLinkAdapter.cs" />
+    <Compile Include="WebForms\RefreshHyperLinkAdapter.cs" />
     <Compile Include="SessionCrumbTrailPersister.cs" />
-    <Compile Include="Sorter.cs" />
+    <Compile Include="WebForms\Sorter.cs" />
     <Compile Include="State.cs" />
-    <Compile Include="StateAdapter.cs" />
+    <Compile Include="WebForms\StateAdapter.cs" />
     <Compile Include="StateContext.cs" />
     <Compile Include="StateController.cs" />
     <Compile Include="StateDisplayInfo.cs" />
@@ -104,10 +104,10 @@
     <Compile Include="StateInfoCollection.cs" />
     <Compile Include="StateInfoConfig.cs" />
     <Compile Include="StateInfoSectionHandler.cs" />
-    <Compile Include="StateRouteHandler.cs" />
+    <Compile Include="WebForms\StateRouteHandler.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="UrlException.cs" />
-    <Compile Include="ViewSwitcher.cs" />
+    <Compile Include="WebForms\ViewSwitcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -116,8 +116,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="HTML5History.debug.js" />
-    <EmbeddedResource Include="HTML5History.js" />
+    <EmbeddedResource Include="WebForms\HTML5History.debug.js" />
+    <EmbeddedResource Include="WebForms\HTML5History.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
