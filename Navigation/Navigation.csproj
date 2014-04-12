@@ -106,7 +106,7 @@
     <Compile Include="StateInfoConfig.cs" />
     <Compile Include="StateInfoSectionHandler.cs" />
     <Compile Include="WebForms\StateController.cs" />
-    <Compile Include="WebForms\StateInfoConfig.cs" />
+    <Compile Include="WebForms\PageRouteConfig.cs" />
     <Compile Include="WebForms\StateRouteHandler.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="UrlException.cs" />

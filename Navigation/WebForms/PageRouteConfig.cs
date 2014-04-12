@@ -7,7 +7,7 @@ using System.Web.Routing;
 
 namespace Navigation
 {
-	public partial class StateInfoConfig
+	public class PageRouteConfig
 	{
 		private const string PARAMETER = "{{{0}}}";
 		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
@@ -19,7 +19,7 @@ namespace Navigation
 		/// </summary>
 		public static void AddStateRoutes()
 		{
-			if (Dialogs == null)
+			if (StateInfoConfig.Dialogs == null)
 				return;
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
@@ -29,7 +29,7 @@ namespace Navigation
 				if (NavigationSettings.Config.StateRouteHandler.Length != 0)
 					stateRouteHandlerType = Type.GetType(NavigationSettings.Config.StateRouteHandler);
 #endif
-				foreach (Dialog dialog in Dialogs)
+				foreach (Dialog dialog in StateInfoConfig.Dialogs)
 				{
 					foreach (State state in dialog.States)
 					{

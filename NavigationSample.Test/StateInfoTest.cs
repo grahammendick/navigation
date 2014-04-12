@@ -8,7 +8,7 @@ namespace Navigation.Sample.Test
 		[AssemblyInitialize]
 		public static void AddStateRoutes(TestContext context)
 		{
-			StateInfoConfig.AddStateRoutes();
+			PageRouteConfig.AddStateRoutes();
 		}
 
 		[TestMethod]
