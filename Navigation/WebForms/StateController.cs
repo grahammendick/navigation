@@ -75,7 +75,7 @@ namespace Navigation
 				HttpContextBase context = new HttpContextWrapper(HttpContext.Current);
 				NameValueCollection navigationData = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
 				RemoveDefaultsAndDerived(navigationData);
-				ParseData(StateContext.ShieldDecode(navigationData, false, StateContext.State), false);
+				SetStateContext(navigationData);
 				StateContext.Data.Add(derivedData);
 			}
 			else
