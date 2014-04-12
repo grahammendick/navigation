@@ -16,8 +16,6 @@ namespace Navigation
 #endif
 	public static partial class StateController
 	{
-		private const string HISTORY_URL_VAR = "var {0} = {1};";
-
 		/// <summary>
 		/// Gets a <see cref="Navigation.Crumb"/> collection representing the crumb trail, ordered
 		/// oldest <see cref="Navigation.Crumb"/> first

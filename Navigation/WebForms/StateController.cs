@@ -16,6 +16,8 @@ namespace Navigation
 #endif
 	public partial class StateController
 	{
+		private const string HISTORY_URL_VAR = "var {0} = {1};";
+
 #if NET35Plus
 		/// <summary>
 		/// Wraps the ASP.NET <see cref="System.Web.UI.ScriptManager"/> history point functionality.
