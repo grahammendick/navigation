@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 
@@ -69,7 +70,10 @@ namespace Navigation
 			if (data.Count == 0)
 			{
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
-				ParseData(StateContext.ShieldDecode(StateController.QueryData, false, StateContext.State), false);
+				HttpContextBase context = new HttpContextWrapper(HttpContext.Current);
+				NameValueCollection navigationData = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
+				RemoveDefaultsAndDerived(navigationData);
+				ParseData(StateContext.ShieldDecode(navigationData, false, StateContext.State), false);
 				StateContext.Data.Add(derivedData);
 			}
 			else

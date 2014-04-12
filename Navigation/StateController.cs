@@ -522,16 +522,17 @@ namespace Navigation
 				case (NavigationMode.Mock):
 					{
 #if NET40Plus
-						MockNavigationContext context = new MockNavigationContext(url);
+						HttpContextBase context = new MockNavigationContext(url);
 						StateContext.StateKey = state.DialogStateKey;
-						NameValueCollection queryData = GetQueryData(context);
+						NameValueCollection navigationData = state.StateHandler.GetNavigationData(state, context);
+						RemoveDefaultsAndDerived(navigationData);
 #else
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 						StateContext.StateKey = queryData[StateContext.STATE];
 						RemoveDefaultsAndDerived(queryData);
 #endif
 #if NET35Plus
-						ParseData(StateContext.ShieldDecode(queryData, false, StateContext.State), false);
+						ParseData(StateContext.ShieldDecode(navigationData, false, StateContext.State), false);
 #else
 						ParseData(StateContext.ShieldDecode(queryData, StateContext.State), false);
 #endif

@@ -22,9 +22,23 @@ namespace Navigation
 
 		public virtual NameValueCollection GetNavigationData(State state, HttpContextBase context)
 		{
-			//Call from Mock Navigation and StateAdapter
-			//Move GetQueryData logic into here
-			return null;
+			NameValueCollection queryData = new NameValueCollection();
+			foreach (string key in context.Request.RequestContext.RouteData.DataTokens.Keys)
+			{
+				queryData.Add(key, (string)context.Request.RequestContext.RouteData.DataTokens[key]);
+			}
+			foreach (string key in context.Request.RequestContext.RouteData.Values.Keys)
+			{
+				if (context.Request.RequestContext.RouteData.Values[key] != null)
+				{
+					queryData.Add(key, (string)context.Request.RequestContext.RouteData.Values[key]);
+				}
+			}
+			foreach (string key in context.Request.QueryString)
+			{
+				queryData.Add(key, context.Request.QueryString[key]);
+			}
+			return queryData;
 		}
 
 		protected virtual string GetRoute(State state, HttpContextBase context)
