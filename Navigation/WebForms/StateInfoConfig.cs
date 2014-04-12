@@ -10,6 +10,8 @@ namespace Navigation
 {
 	public partial class StateInfoConfig
 	{
+		private const string PARAMETER = "{{{0}}}";
+		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
 
 #if NET40Plus
 		/// <summary>
