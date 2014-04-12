@@ -59,7 +59,7 @@
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="ConverterInfoSectionHandler.cs" />
     <Compile Include="Crumb.cs" />
-    <Compile Include="MockHttpBrowserCapabilities.cs" />
+    <Compile Include="Mock\MockHttpBrowserCapabilities.cs" />
     <Compile Include="WebForms\CrumbTrailDataSource.cs" />
     <Compile Include="WebForms\CrumbTrailDataSourceView.cs" />
     <Compile Include="CrumbTrailManager.cs" />
@@ -68,9 +68,9 @@
     <Compile Include="WebForms\HistoryNavigator.cs" />
     <Compile Include="IStateHandler.cs" />
     <Compile Include="ListConverter.cs" />
-    <Compile Include="MockNavigationContext.cs" />
-    <Compile Include="MockNavigationRequest.cs" />
-    <Compile Include="MockNavigationResponse.cs" />
+    <Compile Include="Mock\MockNavigationContext.cs" />
+    <Compile Include="Mock\MockNavigationRequest.cs" />
+    <Compile Include="Mock\MockNavigationResponse.cs" />
     <Compile Include="NavigationData.cs" />
     <Compile Include="WebForms\NavigationDataAttribute.cs" />
     <Compile Include="WebForms\NavigationDataControlBuilderInterceptor.cs" />
