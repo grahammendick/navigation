@@ -6,6 +6,13 @@ using System.Web.UI;
 
 namespace Navigation
 {
+#if NET35Plus
+	/// <summary>
+	/// Manages all navigation. These can be forward using an action parameter; backward via
+	/// a <see cref="Navigation.Crumb"/>; refreshing the current <see cref="Navigation.State"/>;
+	/// or adding/restoring a history point.
+	/// </summary>
+#endif
 	public partial class StateController
 	{
 #if NET35Plus
