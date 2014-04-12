@@ -93,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\PageStateHandler.cs" />
     <Compile Include="WebForms\RefreshHyperLinkAdapter.cs" />
     <Compile Include="SessionCrumbTrailPersister.cs" />
     <Compile Include="WebForms\Sorter.cs" />

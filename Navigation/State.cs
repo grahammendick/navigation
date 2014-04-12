@@ -42,7 +42,7 @@ namespace Navigation
 		private ReadOnlyCollection<string> _Masters;
 		private ReadOnlyCollection<string> _MobileMasters;
 		[NonSerialized]
-		private IStateHandler _StateHandler = new StateHandler();
+		private IStateHandler _StateHandler = new PageStateHandler();
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.Transition"/> children
