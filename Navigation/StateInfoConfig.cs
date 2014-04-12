@@ -12,8 +12,6 @@ namespace Navigation
 	/// </summary>
 	public static partial class StateInfoConfig
 	{
-		private const string PARAMETER = "{{{0}}}";
-		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
 		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
 
 		private static Dictionary<string, Type> CreateKeyToTypeList()
