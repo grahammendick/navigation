@@ -17,8 +17,6 @@ namespace Navigation
 	{
 		public string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
-			//Should IsMobileDevice be mocked - means mocking a lot of properties on Context?
-			bool mobile = HttpContext.Current != null ? context.GetOverriddenBrowser().IsMobileDevice : false;
 			string route = GetRoute(state, context);
 			if (route != null)
 			{
@@ -36,7 +34,7 @@ namespace Navigation
 			else
 			{
 				StringBuilder href = new StringBuilder();
-				href.Append(VirtualPathUtility.ToAbsolute(state.GetPage(mobile), context.Request.ApplicationPath));
+				href.Append(VirtualPathUtility.ToAbsolute(state.GetPage(context.GetOverriddenBrowser().IsMobileDevice), context.Request.ApplicationPath));
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(NavigationSettings.Config.StateKey));
 				href.Append("=");
@@ -64,7 +62,7 @@ namespace Navigation
 
 		protected virtual string GetRoute(State state, HttpContextBase context)
 		{
-			bool mobile = HttpContext.Current != null ? context.GetOverriddenBrowser().IsMobileDevice : false;
+			bool mobile = context.GetOverriddenBrowser().IsMobileDevice;
 			if (state.GetRoute(mobile).Length == 0 || RouteTable.Routes[state.GetRouteName(mobile)] == null)
 				return null;
 			else

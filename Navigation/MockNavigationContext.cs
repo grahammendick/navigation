@@ -1,4 +1,5 @@
 ﻿#if NET40Plus
+using System.Collections;
 using System.Web;
 using System.Web.Routing;
 
@@ -8,6 +9,7 @@ namespace Navigation
 	{
 		private MockNavigationRequest _Request;
 		private MockNavigationResponse _Response;
+		private Hashtable _Items;
 
 		internal MockNavigationContext(string url)
 			: base()
@@ -38,6 +40,16 @@ namespace Navigation
 				if (_Response == null)
 					_Response = new MockNavigationResponse();
 				return _Response;
+			}
+		}
+
+		public override IDictionary Items
+		{
+			get
+			{
+				if (_Items == null)
+					_Items = new Hashtable();
+				return _Items;
 			}
 		}
 	}
