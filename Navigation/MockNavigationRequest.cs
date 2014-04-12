@@ -9,6 +9,7 @@ namespace Navigation
 {
 	internal class MockNavigationRequest : HttpRequestBase
 	{
+		private HttpCookieCollection _Cookies;
 		private string _Path;
 		private string _RawUrl;
 		private int? _QueryStringIndex;
@@ -27,6 +28,32 @@ namespace Navigation
 		{
 			get;
 			set;
+		}
+
+		public override HttpCookieCollection Cookies
+		{
+			get
+			{
+				if (_Cookies == null)
+					_Cookies = new HttpCookieCollection();
+				return _Cookies;
+			}
+		}
+
+		public override string UserAgent
+		{
+			get
+			{
+				return string.Empty;
+			}
+		}
+
+		public override HttpBrowserCapabilitiesBase Browser
+		{
+			get
+			{
+				return new MockHttpBrowserCapabilities();
+			}
 		}
 
 		private int QueryStringIndex

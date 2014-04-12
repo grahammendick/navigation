@@ -59,6 +59,7 @@
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="ConverterInfoSectionHandler.cs" />
     <Compile Include="Crumb.cs" />
+    <Compile Include="MockHttpBrowserCapabilities.cs" />
     <Compile Include="WebForms\CrumbTrailDataSource.cs" />
     <Compile Include="WebForms\CrumbTrailDataSourceView.cs" />
     <Compile Include="CrumbTrailManager.cs" />
