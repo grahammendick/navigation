@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Navigation;
+using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
+using System.Web;
 using System.Web.UI;
 
 // General Information about an assembly is controlled through the following 
@@ -43,3 +45,4 @@ using System.Web.UI;
 [assembly: WebResource("Navigation.HTML5History.js", "text/javascript")]
 [assembly: WebResource("Navigation.HTML5History.debug.js", "text/javascript")]
 #endif
+[assembly: PreApplicationStartMethod(typeof(StateInfoConfig), "AddStateRoutes")]

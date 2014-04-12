@@ -119,8 +119,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="WebForms\HTML5History.debug.js" />
-    <EmbeddedResource Include="WebForms\HTML5History.js" />
+    <EmbeddedResource Include="HTML5History.debug.js" />
+    <EmbeddedResource Include="HTML5History.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

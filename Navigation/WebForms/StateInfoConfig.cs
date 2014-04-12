@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Web;
 using System.Web.Routing;
 
-[assembly: PreApplicationStartMethod(typeof(StateInfoConfig), "AddStateRoutes")]
 namespace Navigation
 {
 	public partial class StateInfoConfig
