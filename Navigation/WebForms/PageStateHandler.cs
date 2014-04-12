@@ -36,13 +36,6 @@ namespace Navigation
 			}
 		}
 
-		public override NameValueCollection GetNavigationData(State state, HttpContextBase context)
-		{
-			//Call from Mock Navigation and StateAdapter
-			//Move GetQueryData logic into here
-			return null;
-		}
-
 		protected override string GetRoute(State state, HttpContextBase context)
 		{
 			bool mobile = context.GetOverriddenBrowser().IsMobileDevice;
