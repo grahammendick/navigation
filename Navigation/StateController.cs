@@ -28,10 +28,12 @@ namespace Navigation
 			}
 		}
 
-		internal static void ParseData(NameValueCollection data, bool postBack)
+		public static void SetStateContext(NameValueCollection data)
 		{
 			try
 			{
+				RemoveDefaultsAndDerived(data);
+				data = StateContext.ShieldDecode(data, false, StateContext.State);
 				StateContext.ReservedData.Clear();
 				StateContext.Data.SetDefaults(null);
 				StateContext.Data.Clear();
@@ -48,8 +50,7 @@ namespace Navigation
 					}
 					else
 					{
-						if (!postBack)
-							StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key], state);
+						StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key], state);
 					}
 				}
 				StateContext.Data.SetDefaults(StateContext.State.Defaults);
@@ -63,46 +64,6 @@ namespace Navigation
 			{
 				throw new UrlException(Resources.InvalidUrl, ex);
 			}
-		}
-
-		internal static NameValueCollection QueryData
-		{
-			get
-			{
-#if NET40Plus
-				return GetQueryData(new HttpContextWrapper(HttpContext.Current));
-#else
-				return GetQueryData(HttpContext.Current);
-#endif
-			}
-		}
-
-#if NET40Plus
-		private static NameValueCollection GetQueryData(HttpContextBase context)
-#else
-		private static NameValueCollection GetQueryData(HttpContext context)
-#endif
-		{
-			NameValueCollection queryData = new NameValueCollection();
-#if NET40Plus
-			foreach (string key in context.Request.RequestContext.RouteData.DataTokens.Keys)
-			{
-				queryData.Add(key, (string)context.Request.RequestContext.RouteData.DataTokens[key]);
-			}
-			foreach (string key in context.Request.RequestContext.RouteData.Values.Keys)
-			{
-				if (context.Request.RequestContext.RouteData.Values[key] != null)
-				{
-					queryData.Add(key, (string)context.Request.RequestContext.RouteData.Values[key]);
-				}
-			}
-#endif
-			foreach (string key in context.Request.QueryString)
-			{
-				queryData.Add(key, context.Request.QueryString[key]);
-			}
-			RemoveDefaultsAndDerived(queryData);
-			return queryData;
 		}
 
 #if NET40Plus
@@ -523,14 +484,13 @@ namespace Navigation
 						HttpContextBase context = new MockNavigationContext(url);
 						StateContext.StateKey = state.DialogStateKey;
 						NameValueCollection navigationData = state.StateHandler.GetNavigationData(state, context);
-						RemoveDefaultsAndDerived(navigationData);
 #else
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 						StateContext.StateKey = queryData[StateContext.STATE];
 						RemoveDefaultsAndDerived(queryData);
 #endif
 #if NET35Plus
-						ParseData(StateContext.ShieldDecode(navigationData, false, StateContext.State), false);
+						SetStateContext(navigationData);
 #else
 						ParseData(StateContext.ShieldDecode(queryData, StateContext.State), false);
 #endif

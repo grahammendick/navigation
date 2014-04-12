@@ -78,7 +78,11 @@ namespace Navigation
 		private void Page_PreInit(object sender, EventArgs e)
 		{
 #if NET35Plus
-			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, false, StateContext.State), Page.IsPostBack);
+			HttpContextBase context = new HttpContextWrapper(HttpContext.Current);
+			NameValueCollection navigationData = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
+			StateController.SetStateContext(navigationData);
+			if (Page.IsPostBack)
+				StateContext.Data.Clear();
 #else
 			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, StateContext.State), Page.IsPostBack);
 #endif
