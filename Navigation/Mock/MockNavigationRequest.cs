@@ -129,19 +129,14 @@ namespace Navigation
 			{
 				if (_RequestContext == null)
 				{
-					if (RawUrl != null && QueryString[StateContext.STATE] == null)
+					RouteData routeData = new RouteData();
+					if (RawUrl != null)
+						routeData = RouteTable.Routes.GetRouteData(Context) ?? new RouteData();
+					foreach (string key in routeData.Values.Keys.ToArray())
 					{
-						RouteData routeData = RouteTable.Routes.GetRouteData(Context);
-						foreach (string key in routeData.Values.Keys.ToArray())
-						{
-							routeData.Values[key] = HttpUtility.UrlDecode((string)routeData.Values[key]);
-						}
-						_RequestContext = new RequestContext(Context, routeData);
+						routeData.Values[key] = HttpUtility.UrlDecode((string)routeData.Values[key]);
 					}
-					else
-					{
-						_RequestContext = new RequestContext(Context, new RouteData());
-					}
+					_RequestContext = new RequestContext(Context, routeData);
 				}
 				return _RequestContext;
 			}
