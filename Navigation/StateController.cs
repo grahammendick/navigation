@@ -4,24 +4,11 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
 using System.Web;
-#if NET40Plus
-using System.Web.Routing;
-#endif
-#if NET35Plus
-using System.Web.Script.Serialization;
-#endif
-using System.Web.UI;
 using Navigation.Properties;
 
 namespace Navigation
 {
-#if NET35Plus
-	/// <summary>
-	/// Manages all navigation. These can be forward using an action parameter; backward via
-	/// a <see cref="Navigation.Crumb"/>; refreshing the current <see cref="Navigation.State"/>;
-	/// or adding/restoring a history point.
-	/// </summary>
-#else
+#if !NET35Plus
 	/// <summary>
 	/// Manages all navigation. These can be forward using an action parameter; backward via
 	/// a <see cref="Navigation.Crumb"/>; or refreshing the current <see cref="Navigation.State"/>.
