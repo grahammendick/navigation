@@ -45,4 +45,4 @@ using System.Web.UI;
 [assembly: WebResource("Navigation.HTML5History.js", "text/javascript")]
 [assembly: WebResource("Navigation.HTML5History.debug.js", "text/javascript")]
 #endif
-[assembly: PreApplicationStartMethod(typeof(StateInfoConfig), "AddStateRoutes")]
+[assembly: PreApplicationStartMethod(typeof(PageRouteConfig), "AddStateRoutes")]
