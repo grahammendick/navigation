@@ -29,12 +29,6 @@ namespace Navigation.Test
 			}
 		}
 
-		[AssemblyInitialize]
-		public static void AddStateRoutes(TestContext context)
-		{
-			PageRouteConfig.AddStateRoutes();
-		}
-
 		[TestMethod]
 		public void NavigateDialogTest()
 		{
