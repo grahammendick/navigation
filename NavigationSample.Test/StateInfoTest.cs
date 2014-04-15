@@ -5,12 +5,6 @@ namespace Navigation.Sample.Test
 	[TestClass]
 	public class StateInfoTest
 	{
-		[AssemblyInitialize]
-		public static void AddStateRoutes(TestContext context)
-		{
-			PageRouteConfig.AddStateRoutes();
-		}
-
 		[TestMethod]
 		public void NavigatePersonTest()
 		{
