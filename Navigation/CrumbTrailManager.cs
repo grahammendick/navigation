@@ -155,6 +155,7 @@ namespace Navigation
 				context = new HttpContextWrapper(HttpContext.Current);
 			else
 				context = new MockNavigationContext(null);
+			//TODO - if StateHandler is null, throw ConfigurationErrorsException
 			return state.StateHandler.GetNavigationLink(state, coll, context);
 		}
 

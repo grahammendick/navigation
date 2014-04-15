@@ -98,6 +98,7 @@
     <Compile Include="SessionCrumbTrailPersister.cs" />
     <Compile Include="WebForms\Sorter.cs" />
     <Compile Include="State.cs" />
+    <Compile Include="WebForms\State.cs" />
     <Compile Include="WebForms\StateAdapter.cs" />
     <Compile Include="StateContext.cs" />
     <Compile Include="StateController.cs" />

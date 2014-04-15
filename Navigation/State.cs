@@ -13,14 +13,12 @@ namespace Navigation
 	/// that can be visisted
 	/// </summary>
 	[Serializable]
-	public class State
+	public partial class State
 	{
 		private StateInfoCollection<Transition> _Transitions = new StateInfoCollection<Transition>();
 		private Dialog _Parent;
 		private int _Index;
 		private string _Key;
-		private string _Page;
-		private string _MobilePage;
 		private StateInfoCollection<Type> _DefaultTypes;
 		private StateInfoCollection<object> _Defaults;
 		private StateInfoCollection<string> _FormattedDefaults;
@@ -29,20 +27,18 @@ namespace Navigation
 		private string _Title;
 #if NET40Plus
 		private string _Route;
-		private string _MobileRoute;
 #endif
 		private bool _TrackCrumbTrail;
-#if NET40Plus
-		private bool _CheckPhysicalUrlAccess;
-#endif
 		private string _ResourceType;
 		private string _ResourceKey;
-		private string _Theme;
-		private string _MobileTheme;
-		private ReadOnlyCollection<string> _Masters;
-		private ReadOnlyCollection<string> _MobileMasters;
+		private StateInfoCollection<string> _Attributes;
 		[NonSerialized]
-		private IStateHandler _StateHandler = new PageStateHandler();
+		private IStateHandler _StateHandler;
+
+		public State()
+		{
+			SetStateHandler();
+		}
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.Transition"/> children
@@ -99,36 +95,6 @@ namespace Navigation
 			internal set
 			{
 				_Key = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the aspx page to display when navigating to this <see cref="Navigation.State"/>
-		/// </summary>
-		public string Page
-		{
-			get
-			{
-				return _Page;
-			}
-			internal set
-			{
-				_Page = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the aspx page to display for a mobile device navigating to this <see cref="Navigation.State"/>
-		/// </summary>
-		public string MobilePage
-		{
-			get
-			{
-				return _MobilePage;
-			}
-			internal set
-			{
-				_MobilePage = value;
 			}
 		}
 
@@ -237,21 +203,6 @@ namespace Navigation
 				_Route = value;
 			}
 		}
-
-		/// <summary>
-		/// Gets the mobile device route Url pattern
-		/// </summary>
-		public string MobileRoute
-		{
-			get
-			{
-				return _MobileRoute;
-			}
-			internal set
-			{
-				_MobileRoute = value;
-			}
-		}
 #endif
 
 #if NET40Plus
@@ -278,25 +229,6 @@ namespace Navigation
 			}
 		}
 
-#if NET40Plus
-		/// <summary>
-		/// Gets a value that indicates whether ASP.NET should validate that the user has authority to access the 
-		/// physical <see cref="Page"/>. This is only relevant if <see cref="Route"/> or <see cref="MobileRoute"/>
-		/// is set
-		/// </summary>
-		public bool CheckPhysicalUrlAccess
-		{
-			get
-			{
-				return _CheckPhysicalUrlAccess;
-			}
-			internal set
-			{
-				_CheckPhysicalUrlAccess = value;
-			}
-		}
-#endif
-
 		internal string ResourceType
 		{
 			get
@@ -321,66 +253,17 @@ namespace Navigation
 			}
 		}
 
-		/// <summary>
-		/// Gets the theme to assign to the <see cref="Page"/> when displayed
-		/// </summary>
-		public string Theme
+		public StateInfoCollection<string> Attributes
 		{
 			get
 			{
-				return _Theme;
+				return _Attributes;
 			}
 			internal set
 			{
-				_Theme = value;
+				_Attributes = value;
 			}
 		}
-
-		/// <summary>
-		/// Gets the theme to assign to the <see cref="Page"/> when displayed for a mobile device
-		/// </summary>
-		public string MobileTheme
-		{
-			get
-			{
-				return _MobileTheme;
-			}
-			internal set
-			{
-				_MobileTheme = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the master pages to assign to the <see cref="Page"/> when displayed
-		/// </summary>
-		public ReadOnlyCollection<string> Masters
-		{
-			get
-			{
-				return _Masters;
-			}
-			internal set
-			{
-				_Masters = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the master pages to assign to the <see cref="Page"/> when displayed for a mobile device
-		/// </summary>
-		public ReadOnlyCollection<string> MobileMasters
-		{
-			get
-			{
-				return _MobileMasters;
-			}
-			internal set
-			{
-				_MobileMasters = value;
-			}
-		}
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -412,36 +295,11 @@ namespace Navigation
 			}
 		}
 
-		internal string GetPage(bool mobile)
-		{
-			return (!mobile || MobilePage.Length == 0) ? Page : MobilePage;
-		}
-
-#if NET40Plus
-		internal string GetRoute(bool mobile)
-		{
-			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? Route : MobileRoute;
-		}
-
-		internal string GetRouteName(bool mobile)
-		{
-			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? DialogStateKey : "Mobile" + DialogStateKey;
-		}
-#endif
-
-		internal ReadOnlyCollection<string> GetMasters(bool mobile)
-		{
-			return (!mobile || (MobilePage.Length == 0 && MobileMasters.Count == 0)) ? Masters : MobileMasters;
-		}
-
-		internal string GetTheme(bool mobile)
-		{
-			return (!mobile || (MobilePage.Length == 0 && MobileTheme.Length == 0)) ? Theme : MobileTheme;
-		}
-
 		internal bool DefaultOrDerived(string key, object value)
 		{
 			return value.Equals(Defaults[key]) || DerivedInternal.ContainsKey(key);
 		}
+
+		partial void SetStateHandler();
 	}
 }
