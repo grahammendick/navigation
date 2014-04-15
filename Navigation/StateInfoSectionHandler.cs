@@ -80,30 +80,10 @@ namespace Navigation
 						if (dialogChildNode.Attributes["key"] == null || dialogChildNode.Attributes["key"].Value.Length == 0)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "key"));
 						state.Key = dialogChildNode.Attributes["key"].Value;
-						if (dialogChildNode.Attributes["page"] == null || dialogChildNode.Attributes["page"].Value.Length == 0)
-							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "page"));
-						state.Page = dialogChildNode.Attributes["page"].Value.Trim();
-						state.MobilePage = dialogChildNode.Attributes["mobilePage"] != null ? dialogChildNode.Attributes["mobilePage"].Value.Trim() : string.Empty;
 						masters = new string[] { };
-						if (dialogChildNode.Attributes["masters"] != null)
-						{
-							masters = Regex.Split(dialogChildNode.Attributes["masters"].Value, ",");
-							for (int j = 0; j < masters.Length; j++)
-								masters[j] = masters[j].Trim();
-						}
-						state.Masters = new ReadOnlyCollection<string>(masters);
-						masters = new string[] { };
-						if (dialogChildNode.Attributes["mobileMasters"] != null)
-						{
-							masters = Regex.Split(dialogChildNode.Attributes["mobileMasters"].Value, ",");
-							for (int j = 0; j < masters.Length; j++)
-								masters[j] = masters[j].Trim();
-						}
-						state.MobileMasters = new ReadOnlyCollection<string>(masters);
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
 #if NET40Plus
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
-						state.MobileRoute = dialogChildNode.Attributes["mobileRoute"] != null ? dialogChildNode.Attributes["mobileRoute"].Value : string.Empty;
 #endif
 						state.DefaultTypes = new StateInfoCollection<Type>();
 						if (dialogChildNode.Attributes["defaultTypes"] != null)
@@ -159,22 +139,13 @@ namespace Navigation
 							else
 								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "trackCrumbTrail"));
 						}
-#if NET40Plus
-						state.CheckPhysicalUrlAccess = true;
-						if (dialogChildNode.Attributes["checkPhysicalUrlAccess"] != null)
-						{
-							if (bool.TryParse(dialogChildNode.Attributes["checkPhysicalUrlAccess"].Value, out result))
-								state.CheckPhysicalUrlAccess = result;
-							else
-								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "checkPhysicalUrlAccess"));
-						}
-#endif
 						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
 						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
-						state.Theme = dialogChildNode.Attributes["theme"] != null ? dialogChildNode.Attributes["theme"].Value.Trim() : string.Empty;
-						state.MobileTheme = dialogChildNode.Attributes["mobileTheme"] != null ? dialogChildNode.Attributes["mobileTheme"].Value.Trim() : string.Empty;
 						if (dialog.States[dialogChildNode.Attributes["key"].Value] != null)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateStateKey, dialogChildNode.Attributes["key"].Value, dialog.Key));
+						state.Attributes = new StateInfoCollection<string>();
+						foreach (XmlAttribute attribute in dialogChildNode.Attributes)
+							state.Attributes[attribute.Name] = attribute.Value;
 						dialog.States[dialogChildNode.Attributes["key"].Value] = state;
 					}
 				}
