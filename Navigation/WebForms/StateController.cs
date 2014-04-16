@@ -82,10 +82,7 @@ namespace Navigation
 			if (data.Count == 0)
 			{
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
-				HttpContextBase context = new HttpContextWrapper(HttpContext.Current);
-				NameValueCollection navigationData = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
-				RemoveDefaultsAndDerived(navigationData);
-				SetStateContext(navigationData);
+				SetStateContext(new HttpContextWrapper(HttpContext.Current));
 				StateContext.Data.Add(derivedData);
 			}
 			else

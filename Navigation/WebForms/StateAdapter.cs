@@ -78,9 +78,7 @@ namespace Navigation
 		private void Page_PreInit(object sender, EventArgs e)
 		{
 #if NET35Plus
-			HttpContextBase context = new HttpContextWrapper(HttpContext.Current);
-			NameValueCollection navigationData = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
-			StateController.SetStateContext(navigationData);
+			StateController.SetStateContext(new HttpContextWrapper(HttpContext.Current));
 			if (Page.IsPostBack)
 				StateContext.Data.Clear();
 #else
