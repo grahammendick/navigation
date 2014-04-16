@@ -33,8 +33,8 @@ namespace Navigation
 		{
 			get
 			{
-				if (PreviousStateKey == null || !IsStateKeyValid(PreviousStateKey)) return null;
-				return GetState(PreviousStateKey);
+				if (PreviousStateId == null || !IsStateKeyValid(PreviousStateId)) return null;
+				return GetState(PreviousStateId);
 			}
 		}
 
@@ -171,7 +171,7 @@ namespace Navigation
 			}
 		}
 
-		internal static string PreviousStateKey
+		internal static string PreviousStateId
 		{
 			get
 			{

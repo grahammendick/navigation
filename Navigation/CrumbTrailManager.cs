@@ -47,7 +47,7 @@ namespace Navigation
 		internal static void BuildCrumbTrail()
 		{
 			string trail = StateContext.CrumbTrail;
-			if (StateContext.PreviousStateKey != null)
+			if (StateContext.PreviousStateId != null)
 			{
 				bool initialState = StateContext.GetDialog(StateContext.StateId).Initial == StateContext.GetState(StateContext.StateId);
 				if (initialState)
@@ -60,7 +60,7 @@ namespace Navigation
 					int crumbTrailSize = GetCrumbTrailSize(trail);
 					int count = 0;
 					bool repeatedState = false;
-					if (StateContext.PreviousStateKey == StateContext.StateId)
+					if (StateContext.PreviousStateId == StateContext.StateId)
 					{
 						repeatedState = true;
 					}
@@ -87,13 +87,13 @@ namespace Navigation
 								formattedReturnData.Append(prefix);
 								formattedReturnData.Append(EncodeURLValue(item.Key));
 								formattedReturnData.Append(RET_1_SEP);
-								formattedReturnData.Append(FormatURLObject(item.Key, item.Value, StateContext.GetState(StateContext.PreviousStateKey)));
+								formattedReturnData.Append(FormatURLObject(item.Key, item.Value, StateContext.GetState(StateContext.PreviousStateId)));
 								prefix = RET_3_SEP;
 							}
 						}
 						StringBuilder trailBuilder = new StringBuilder();
 						trailBuilder.Append(CRUMB_1_SEP);
-						trailBuilder.Append(StateContext.GetState(StateContext.PreviousStateKey).StateKey);
+						trailBuilder.Append(StateContext.GetState(StateContext.PreviousStateId).StateKey);
 						trailBuilder.Append(CRUMB_2_SEP);
 						trailBuilder.Append(formattedReturnData.ToString());
 						trailBuilder.Append(trail);
