@@ -34,11 +34,11 @@ namespace Navigation
 				|| StateInfoConfig.Dialogs == null || StateInfoConfig.Dialogs.Count == 0)
 				return base.DeterminePostBackMode();
 #if NET40Plus
-			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.DataTokens[StateContext.STATE];
+			StateContext.StateId = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.DataTokens[StateContext.STATE];
 #else
 			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE];
 #endif
-			if (StateContext.StateKey == null)
+			if (StateContext.StateId == null)
 			{
 				Dialog dialog;
 				for (int i = 0; i < StateInfoConfig.Dialogs.Count; i++)
@@ -56,7 +56,7 @@ namespace Navigation
 			}
 			if (StateContext.State == null)
 			{
-				StateContext.StateKey = null;
+				StateContext.StateId = null;
 				throw new UrlException(Resources.InvalidUrl);
 			}
 #if NET40Plus
