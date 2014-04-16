@@ -153,7 +153,7 @@ namespace Navigation
 
 		internal string GetRouteName(bool mobile)
 		{
-			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? DialogStateKey : "Mobile" + DialogStateKey;
+			return (!mobile || (MobilePage.Length == 0 && MobileRoute.Length == 0)) ? Id : "Mobile" + Id;
 		}
 #endif
 

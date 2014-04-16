@@ -21,7 +21,7 @@ namespace Navigation
 				href.Append("?");
 				href.Append(HttpUtility.UrlEncode(NavigationSettings.Config.StateKey));
 				href.Append("=");
-				href.Append(HttpUtility.UrlEncode(state.DialogStateKey));
+				href.Append(HttpUtility.UrlEncode(state.Id));
 				foreach (string key in data)
 				{
 					if (key != NavigationSettings.Config.StateKey)
