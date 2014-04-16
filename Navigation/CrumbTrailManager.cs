@@ -34,7 +34,7 @@ namespace Navigation
 					state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
 					navigationData = GetCrumbTrailData(crumbTrail, state);
 					crumbTrail = CropCrumbTrail(crumbTrail);
-					href = GetHref(state.DialogStateKey, navigationData, null);
+					href = GetHref(state.Id, navigationData, null);
 					crumbTrailArray.Add(new Crumb(href, navigationData, state, last));
 					last = false;
 					arrayCount++;

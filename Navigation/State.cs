@@ -287,7 +287,7 @@ namespace Navigation
 			}
 		}
 
-		internal string DialogStateKey
+		internal string Id
 		{
 			get
 			{

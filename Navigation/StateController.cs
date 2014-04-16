@@ -258,7 +258,7 @@ namespace Navigation
 
 		private static string GetNavigationLink(string action, NavigationData toData, NavigationData returnData)
 		{
-			return CrumbTrailManager.GetHref(GetNextState(action).DialogStateKey, toData, returnData);
+			return CrumbTrailManager.GetHref(GetNextState(action).Id, toData, returnData);
 		}
 
 		/// <summary>
@@ -482,7 +482,7 @@ namespace Navigation
 				case (NavigationMode.Mock):
 					{
 #if NET40Plus
-						StateContext.StateKey = state.DialogStateKey;
+						StateContext.StateKey = state.Id;
 #else
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 						StateContext.StateKey = queryData[StateContext.STATE];
