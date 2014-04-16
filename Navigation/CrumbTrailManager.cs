@@ -49,7 +49,7 @@ namespace Navigation
 			string trail = StateContext.CrumbTrail;
 			if (StateContext.PreviousStateKey != null)
 			{
-				bool initialState = StateContext.GetDialog(StateContext.StateKey).Initial == StateContext.GetState(StateContext.StateKey);
+				bool initialState = StateContext.GetDialog(StateContext.StateId).Initial == StateContext.GetState(StateContext.StateId);
 				if (initialState)
 				{
 					trail = null;
@@ -60,7 +60,7 @@ namespace Navigation
 					int crumbTrailSize = GetCrumbTrailSize(trail);
 					int count = 0;
 					bool repeatedState = false;
-					if (StateContext.PreviousStateKey == StateContext.StateKey)
+					if (StateContext.PreviousStateKey == StateContext.StateId)
 					{
 						repeatedState = true;
 					}
@@ -68,7 +68,7 @@ namespace Navigation
 					{
 						string trailState = GetCrumbTrailState(croppedTrail);
 						croppedTrail = CropCrumbTrail(croppedTrail);
-						if (StateContext.GetState(trailState) == StateContext.GetState(StateContext.StateKey))
+						if (StateContext.GetState(trailState) == StateContext.GetState(StateContext.StateId))
 						{
 							trail = croppedTrail;
 							repeatedState = true;
@@ -106,7 +106,7 @@ namespace Navigation
 
 		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)
 		{
-			string previousState = StateContext.StateKey;
+			string previousState = StateContext.StateId;
 			string crumbTrail = StateContext.CrumbTrailKey;
 			State state = StateContext.GetState(nextState);
 			NameValueCollection coll = new NameValueCollection();
@@ -240,7 +240,7 @@ namespace Navigation
 
 		internal static string GetRefreshHref(NavigationData refreshData)
 		{
-			return GetHref(StateContext.StateKey, refreshData, null);
+			return GetHref(StateContext.StateId, refreshData, null);
 		}
 
 		internal static object Parse(string key, string val, State state)

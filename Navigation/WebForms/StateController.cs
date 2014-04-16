@@ -55,7 +55,7 @@ namespace Navigation
 			if (page == null)
 				throw new ArgumentNullException("page");
 			NameValueCollection coll = new NameValueCollection();
-			coll[StateContext.STATE] = StateContext.StateKey;
+			coll[StateContext.STATE] = StateContext.StateId;
 			foreach (NavigationDataItem item in toData)
 			{
 				if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
