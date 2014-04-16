@@ -28,10 +28,11 @@ namespace Navigation
 			}
 		}
 
-		public static void SetStateContext(NameValueCollection data)
+		public static void SetStateContext(HttpContextBase context)
 		{
 			try
 			{
+				NameValueCollection data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
 				RemoveDefaultsAndDerived(data);
 				data = StateContext.ShieldDecode(data, false, StateContext.State);
 				StateContext.ReservedData.Clear();
@@ -481,16 +482,14 @@ namespace Navigation
 				case (NavigationMode.Mock):
 					{
 #if NET40Plus
-						HttpContextBase context = new MockNavigationContext(url);
 						StateContext.StateKey = state.DialogStateKey;
-						NameValueCollection navigationData = state.StateHandler.GetNavigationData(state, context);
 #else
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 						StateContext.StateKey = queryData[StateContext.STATE];
 						RemoveDefaultsAndDerived(queryData);
 #endif
 #if NET35Plus
-						SetStateContext(navigationData);
+						SetStateContext(new MockNavigationContext(url));
 #else
 						ParseData(StateContext.ShieldDecode(queryData, StateContext.State), false);
 #endif
