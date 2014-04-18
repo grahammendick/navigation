@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET35Plus
+using System;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
@@ -7,13 +8,11 @@ using System.Web.UI;
 
 namespace Navigation
 {
-#if NET35Plus
 	/// <summary>
 	/// Manages all navigation. These can be forward using an action parameter; backward via
 	/// a <see cref="Navigation.Crumb"/>; refreshing the current <see cref="Navigation.State"/>;
 	/// or adding/restoring a history point.
 	/// </summary>
-#endif
 	public partial class StateController
 	{
 		private const string HISTORY_URL_VAR = "var {0} = {1};";
@@ -29,7 +28,6 @@ namespace Navigation
 		}
 #endif
 
-#if NET35Plus
 		/// <summary>
 		/// Wraps the ASP.NET <see cref="System.Web.UI.ScriptManager"/> history point functionality.
 		/// Adds a history point passing no <see cref="Navigation.NavigationData"/>
@@ -104,6 +102,6 @@ namespace Navigation
 				}
 			}
 		}
-#endif
 	}
 }
+#endif

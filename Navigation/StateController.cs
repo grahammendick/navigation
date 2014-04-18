@@ -38,7 +38,11 @@ namespace Navigation
 			{
 				NameValueCollection data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
 				RemoveDefaultsAndDerived(data);
+#if NET35Plus
 				data = StateContext.ShieldDecode(data, false, StateContext.State);
+#else
+				data = StateContext.ShieldDecode(data, StateContext.State);
+#endif
 				StateContext.ReservedData.Clear();
 				StateContext.Data.SetDefaults(null);
 				StateContext.Data.Clear();
