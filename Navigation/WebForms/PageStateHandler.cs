@@ -3,8 +3,11 @@ using System.Text;
 using System.Web;
 #if NET40Plus
 using System.Web.Routing;
+#endif
+#if NET45Plus
 using System.Web.WebPages;
 #endif
+
 namespace Navigation
 {
 	public class PageStateHandler : StateHandler
@@ -18,14 +21,13 @@ namespace Navigation
 			}
 			else
 			{
-				bool mobile = context.GetOverriddenBrowser().IsMobileDevice;
-				return GetLink(state, data, mobile, context.Request.ApplicationPath);
+				return GetLink(state, data, GetMobile(context), context.Request.ApplicationPath);
 			}
 		}
 
 		protected override string GetRoute(State state, HttpContextBase context)
 		{
-			bool mobile = context.GetOverriddenBrowser().IsMobileDevice;
+			bool mobile = GetMobile(context);
 			if (state.GetRoute(mobile).Length == 0 || RouteTable.Routes[state.GetRouteName(mobile)] == null)
 				return null;
 			else
@@ -49,6 +51,19 @@ namespace Navigation
 			return queryData;
 		}
 #endif
+#if NET40Plus
+		private bool GetMobile(HttpContextBase context)
+#else
+		private bool GetMobile(HttpContext context)
+#endif
+		{
+#if NET45Plus
+			return context.GetOverriddenBrowser().IsMobileDevice;
+#else
+			return context != null && context.Request.Browser.IsMobileDevice;
+#endif
+		}
+
 		private string GetLink(State state, NameValueCollection data, bool mobile, string applicationPath)
 		{
 			StringBuilder link = new StringBuilder();
