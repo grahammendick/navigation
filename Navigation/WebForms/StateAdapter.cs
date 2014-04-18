@@ -36,7 +36,7 @@ namespace Navigation
 #if NET40Plus
 			StateContext.StateId = Page.Request.QueryString[NavigationSettings.Config.StateIdKey] ?? (string)Page.RouteData.DataTokens[NavigationSettings.Config.StateIdKey];
 #else
-			StateContext.StateKey = Page.Request.QueryString[NavigationSettings.Config.StateIdKey];
+			StateContext.StateId = Page.Request.QueryString[NavigationSettings.Config.StateIdKey];
 #endif
 			if (StateContext.StateId == null)
 			{
@@ -77,13 +77,13 @@ namespace Navigation
 
 		private void Page_PreInit(object sender, EventArgs e)
 		{
-#if NET35Plus
+#if NET40Plus
 			StateController.SetStateContext(new HttpContextWrapper(HttpContext.Current));
+#else
+			StateController.SetStateContext(HttpContext.Current);
+#endif
 			if (Page.IsPostBack)
 				StateContext.Data.Clear();
-#else
-			StateController.ParseData(StateContext.ShieldDecode(StateController.QueryData, StateContext.State), Page.IsPostBack);
-#endif
 #if NET45Plus
 			StateRouteHandler stateRouteHandler = Page.RouteData.RouteHandler as StateRouteHandler;
 			if (stateRouteHandler == null)

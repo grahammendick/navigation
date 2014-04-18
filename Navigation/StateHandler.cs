@@ -1,11 +1,13 @@
 ﻿using System.Collections.Specialized;
 using System.Web;
+#if NET40Plus
 using System.Web.Routing;
-
+#endif
 namespace Navigation
 {
 	public class StateHandler : IStateHandler
 	{
+#if NET40Plus
 		public virtual string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
 			RouteValueDictionary routeData = new RouteValueDictionary();
@@ -44,6 +46,17 @@ namespace Navigation
 		protected virtual string GetRoute(State state, HttpContextBase context)
 		{
 			return state.Route;
+		}
+#else
+#endif
+		public virtual string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
+		{
+			return null;
+		}
+
+		public virtual NameValueCollection GetNavigationData(State state, HttpContext context)
+		{
+			return null;
 		}
 	}
 }

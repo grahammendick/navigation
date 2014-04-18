@@ -150,11 +150,15 @@ namespace Navigation
 #else
 			coll = StateContext.ShieldEncode(coll, state);
 #endif
+#if NET40Plus
 			HttpContextBase context = null;
 			if (HttpContext.Current != null)
 				context = new HttpContextWrapper(HttpContext.Current);
 			else
 				context = new MockNavigationContext(null);
+#else
+			HttpContext context = HttpContext.Current;
+#endif
 			return state.StateHandler.GetNavigationLink(state, coll, context);
 		}
 
