@@ -529,20 +529,6 @@ namespace Navigation.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void MissingStatePageTest()
-		{
-			ConfigurationManager.GetSection("Navigation/MissingStatePage");
-		}
-
-		[TestMethod]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void EmptyStatePageTest()
-		{
-			ConfigurationManager.GetSection("Navigation/EmptyStatePage");
-		}
-
-		[TestMethod]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
 		public void MissingTransitionKeyTest()
 		{
 			ConfigurationManager.GetSection("Navigation/MissingTransitionKey");
@@ -575,15 +561,6 @@ namespace Navigation.Test
 		{
 			ConfigurationManager.GetSection("Navigation/InvalidTrackCrumbTrail");
 		}
-
-#if NET40Plus
-		[TestMethod]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
-		public void InvalidCheckPhysicalUrlAccessTest()
-		{
-			ConfigurationManager.GetSection("Navigation/InvalidCheckPhysicalUrlAccess");
-		}
-#endif
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]
