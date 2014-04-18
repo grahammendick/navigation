@@ -13,6 +13,8 @@ namespace Navigation
 	/// </summary>
 	public class RefreshHyperLinkAdapter : WebControlAdapter, IPostBackEventHandler
 	{
+		private const string REFRESH_POST_BACK = "n2";
+
 		private HyperLink HyperLink
 		{
 			get
@@ -31,7 +33,7 @@ namespace Navigation
 			{
 				PostBackOptions postBackOptions = new PostBackOptions(HyperLink);
 				postBackOptions.RequiresJavaScriptProtocol = true;
-				postBackOptions.Argument = StateContext.REFRESH_POST_BACK;
+				postBackOptions.Argument = REFRESH_POST_BACK;
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, string.Format(CultureInfo.InvariantCulture, "{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
 			}
 			HyperLink.Attributes.Remove("__ToData");
@@ -45,9 +47,9 @@ namespace Navigation
 		/// <param name="eventArgument">The argument for the event</param>
 		public void RaisePostBackEvent(string eventArgument)
 		{
-			if (StringComparer.OrdinalIgnoreCase.Compare(eventArgument, StateContext.REFRESH_POST_BACK) == 0)
+			if (StringComparer.OrdinalIgnoreCase.Compare(eventArgument, REFRESH_POST_BACK) == 0)
 			{
-				Page.ClientScript.ValidateEvent(HyperLink.UniqueID, StateContext.REFRESH_POST_BACK);
+				Page.ClientScript.ValidateEvent(HyperLink.UniqueID, REFRESH_POST_BACK);
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 				NavigationData toData = StateInfoConfig.ParseNavigationDataExpression(HyperLink.Attributes["__ToData"], StateContext.State, true);
 				StateContext.Data.Clear();

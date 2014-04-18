@@ -19,6 +19,7 @@ namespace Navigation
 	/// </summary>
 	public class StateRouteHandler : IRouteHandler
 	{
+		internal const string DISPLAY_MODES = "n0";
 		private static readonly object _StateDisplayInfoKey = new object();
 
 		internal StateRouteHandler()
@@ -54,7 +55,7 @@ namespace Navigation
 			if (requestContext == null)
 				throw new ArgumentNullException("requestContext");
 			StateDisplayInfo stateDisplayInfo;
-			string displayModes = HttpUtility.HtmlDecode(requestContext.HttpContext.Request.Form[StateContext.DISPLAY_MODES]);
+			string displayModes = HttpUtility.HtmlDecode(requestContext.HttpContext.Request.Form[DISPLAY_MODES]);
 			if (displayModes == null)
 				stateDisplayInfo = GetStateDisplayInfo(requestContext.HttpContext);
 			else
@@ -134,7 +135,7 @@ namespace Navigation
 		private static StateDisplayInfo GetStateDisplayInfo(State state, HttpContextBase context)
 		{
 			bool mobile;
-			string displayModes = HttpUtility.HtmlDecode(context.Request.Form[StateContext.DISPLAY_MODES]);
+			string displayModes = HttpUtility.HtmlDecode(context.Request.Form[DISPLAY_MODES]);
 			StateDisplayInfo stateDisplayInfo = new StateDisplayInfo();
 			if (displayModes == null)
 			{

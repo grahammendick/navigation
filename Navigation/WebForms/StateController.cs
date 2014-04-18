@@ -17,6 +17,7 @@ namespace Navigation
 	public partial class StateController
 	{
 		private const string HISTORY_URL_VAR = "var {0} = {1};";
+		private const string HISTORY_URL = "n1";
 
 #if NET40Plus
 		static StateController()
@@ -63,7 +64,7 @@ namespace Navigation
 			}
 			coll = StateContext.ShieldEncode(coll, true, StateContext.State);
 			ScriptManager.GetCurrent(page).AddHistoryPoint(coll, title);
-			ScriptManager.RegisterClientScriptBlock(page, typeof(StateController), "historyUrl", string.Format(CultureInfo.InvariantCulture, HISTORY_URL_VAR, StateContext.HISTORY_URL, new JavaScriptSerializer().Serialize(GetRefreshLink(toData))), true);
+			ScriptManager.RegisterClientScriptBlock(page, typeof(StateController), "historyUrl", string.Format(CultureInfo.InvariantCulture, HISTORY_URL_VAR, HISTORY_URL, new JavaScriptSerializer().Serialize(GetRefreshLink(toData))), true);
 		}
 
 		/// <summary>

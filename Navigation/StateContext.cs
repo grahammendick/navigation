@@ -17,9 +17,6 @@ namespace Navigation
 	{
 		private static readonly object _NavigationDataKey = new object();
 		private static readonly object _ReservedDataKey = new object();
-		internal const string DISPLAY_MODES = "n0";
-		internal const string HISTORY_URL = "n1";
-		internal const string REFRESH_POST_BACK = "n2";
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.State"/> navigated away from to reach the 
