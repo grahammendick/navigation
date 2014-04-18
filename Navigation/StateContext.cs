@@ -17,10 +17,6 @@ namespace Navigation
 	{
 		private static readonly object _NavigationDataKey = new object();
 		private static readonly object _ReservedDataKey = new object();
-		internal const string STATE = "c0";
-		internal const string PREVIOUS_STATE = "c1";
-		internal const string RETURN_DATA = "c2";
-		internal const string CRUMB_TRAIL = "c3";
 		internal const string DISPLAY_MODES = "n0";
 		internal const string HISTORY_URL = "n1";
 		internal const string REFRESH_POST_BACK = "n2";
@@ -163,11 +159,11 @@ namespace Navigation
 		{
 			get
 			{
-				return (string)ReservedData[STATE];
+				return (string)ReservedData[NavigationSettings.Config.StateIdKey];
 			}
 			set
 			{
-				ReservedData[STATE] = value;
+				ReservedData[NavigationSettings.Config.StateIdKey] = value;
 			}
 		}
 
@@ -175,7 +171,7 @@ namespace Navigation
 		{
 			get
 			{
-				return (string)ReservedData[PREVIOUS_STATE];
+				return (string)ReservedData[NavigationSettings.Config.PreviousStateIdKey];
 			}
 		}
 
@@ -183,11 +179,11 @@ namespace Navigation
 		{
 			get
 			{
-				return (string)ReservedData[CRUMB_TRAIL];
+				return (string)ReservedData[NavigationSettings.Config.CrumbTrailKey];
 			}
 			set
 			{
-				ReservedData[CRUMB_TRAIL] = value;
+				ReservedData[NavigationSettings.Config.CrumbTrailKey] = value;
 			}
 		}
 
@@ -209,7 +205,7 @@ namespace Navigation
 		{
 			get
 			{
-				return (NavigationData)ReservedData[RETURN_DATA];
+				return (NavigationData)ReservedData[NavigationSettings.Config.ReturnDataKey];
 			}
 		}
 

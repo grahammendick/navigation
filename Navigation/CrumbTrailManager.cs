@@ -110,10 +110,10 @@ namespace Navigation
 			string crumbTrail = StateContext.CrumbTrailKey;
 			State state = StateContext.GetState(nextState);
 			NameValueCollection coll = new NameValueCollection();
-			coll[StateContext.STATE] = nextState;
+			coll[NavigationSettings.Config.StateIdKey] = nextState;
 			if (previousState != null && state.TrackCrumbTrail)
 			{
-				coll[StateContext.PREVIOUS_STATE] = previousState;
+				coll[NavigationSettings.Config.PreviousStateIdKey] = previousState;
 			}
 			if (navigationData != null)
 			{
@@ -139,11 +139,11 @@ namespace Navigation
 					}
 				}
 				if (returnDataBuilder.Length > 0)
-					coll[StateContext.RETURN_DATA] = returnDataBuilder.ToString();
+					coll[NavigationSettings.Config.ReturnDataKey] = returnDataBuilder.ToString();
 			}
 			if (crumbTrail != null && state.TrackCrumbTrail)
 			{
-				coll[StateContext.CRUMB_TRAIL] = crumbTrail;
+				coll[NavigationSettings.Config.CrumbTrailKey] = crumbTrail;
 			}
 #if NET35Plus
 			coll = StateContext.ShieldEncode(coll, false, state);
@@ -246,13 +246,13 @@ namespace Navigation
 		internal static object Parse(string key, string val, State state)
 		{
 			object parsedVal;
-			if (key == StateContext.RETURN_DATA)
+			if (key == NavigationSettings.Config.ReturnDataKey)
 			{
 				parsedVal = ParseReturnData(val, state);
 			}
 			else
 			{
-				if (key == StateContext.CRUMB_TRAIL)
+				if (key == NavigationSettings.Config.CrumbTrailKey)
 				{
 					parsedVal = val;
 				}

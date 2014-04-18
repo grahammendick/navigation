@@ -38,7 +38,7 @@ namespace Navigation
 							route = RouteTable.Routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
 								GetDefaults(state, state.GetRoute(false)), null,
 								new RouteValueDictionary() { 
-								{ StateContext.STATE, state.Id }, 
+								{ NavigationSettings.Config.StateIdKey, state.Id }, 
 							});
 #if NET45Plus
 							if (state.MobilePage.Length == 0 && state.MobileRoute.Length == 0 && state.MobileMasters.Count == 0 && state.MobileTheme.Length == 0)
@@ -50,7 +50,7 @@ namespace Navigation
 							RouteTable.Routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
 								GetDefaults(state, state.GetRoute(true)), null,
 								new RouteValueDictionary() { 
-								{ StateContext.STATE, state.Id }, 
+								{ NavigationSettings.Config.StateIdKey, state.Id }, 
 							});
 					}
 				}
