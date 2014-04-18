@@ -169,7 +169,6 @@ namespace Navigation
 
 		partial void SetStateHandler()
 		{
-			//TODO - only set if Page.Length != 0
 			StateHandler = new PageStateHandler();
 		}
 	}
