@@ -121,11 +121,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="WebForms\HTML5History.debug.js" >
-        <LogicalName>Navigation.HTML5History.debug.js</LogicalName>
+    <EmbeddedResource Include="WebForms\HTML5History.debug.js">
+      <LogicalName>Navigation.HTML5History.debug.js</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="WebForms\HTML5History.js" >
-        <LogicalName>Navigation.HTML5History.js</LogicalName>
+    <EmbeddedResource Include="WebForms\HTML5History.js">
+      <LogicalName>Navigation.HTML5History.js</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
