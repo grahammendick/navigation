@@ -80,7 +80,7 @@ namespace Navigation
 #if NET40Plus
 			StateController.SetStateContext(new HttpContextWrapper(HttpContext.Current));
 #else
-			StateController.SetStateContext(HttpContext.Current);
+			StateController.SetStateContext(HttpContext.Current.Request.QueryString);
 #endif
 			if (Page.IsPostBack)
 				StateContext.Data.Clear();

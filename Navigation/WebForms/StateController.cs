@@ -84,7 +84,7 @@ namespace Navigation
 #if NET40Plus
 				SetStateContext(new HttpContextWrapper(HttpContext.Current));
 #else
-				SetStateContext(HttpContext.Current);
+				SetStateContext(HttpContext.Current.Request.QueryString);
 #endif
 				StateContext.Data.Add(derivedData);
 			}

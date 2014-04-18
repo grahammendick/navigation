@@ -40,14 +40,9 @@ namespace Navigation
 			return GetLink(state, data, GetMobile(context), applicationPath);
 		}
 
-		public override NameValueCollection GetNavigationData(State state, HttpContext context)
+		public override NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
-			NameValueCollection queryData = new NameValueCollection();
-			foreach (string key in context.Request.QueryString)
-			{
-				queryData.Add(key, context.Request.QueryString[key]);
-			}
-			return queryData;
+			return new NameValueCollection(data);
 		}
 #endif
 #if NET40Plus

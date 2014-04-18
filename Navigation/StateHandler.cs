@@ -55,7 +55,7 @@ namespace Navigation
 			return null;
 		}
 
-		public virtual NameValueCollection GetNavigationData(State state, HttpContext context)
+		public virtual NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
 			return null;
 		}
