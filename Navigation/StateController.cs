@@ -28,7 +28,11 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		public static void SetStateContext(HttpContextBase context)
+#else
+		public static void SetStateContext(HttpContext context)
+#endif
 		{
 			try
 			{
@@ -481,17 +485,11 @@ namespace Navigation
 					}
 				case (NavigationMode.Mock):
 					{
-#if NET40Plus
 						StateContext.StateId = state.Id;
-#else
-						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
-						StateContext.StateKey = queryData[NavigationSettings.Config.StateIdKey];
-						RemoveDefaultsAndDerived(queryData);
-#endif
-#if NET35Plus
+#if NET40Plus
 						SetStateContext(new MockNavigationContext(url));
 #else
-						ParseData(StateContext.ShieldDecode(queryData, StateContext.State), false);
+						SetStateContext(null);
 #endif
 						break;
 					}

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿#if NET40Plus
+using System.Web;
 
 namespace Navigation
 {
@@ -13,3 +14,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

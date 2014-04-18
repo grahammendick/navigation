@@ -83,7 +83,11 @@ namespace Navigation
 			if (data.Count == 0)
 			{
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
+#if NET40Plus
 				SetStateContext(new HttpContextWrapper(HttpContext.Current));
+#else
+				SetStateContext(HttpContext.Current);
+#endif
 				StateContext.Data.Add(derivedData);
 			}
 			else
