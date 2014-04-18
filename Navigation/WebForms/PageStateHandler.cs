@@ -36,9 +36,8 @@ namespace Navigation
 #else
 		public override string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
 		{
-			bool mobile = HttpContext.Current != null && HttpContext.Current.Request.Browser.IsMobileDevice;
 			string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
-			return GetLink(state, data, mobile, applicationPath);
+			return GetLink(state, data, GetMobile(context), applicationPath);
 		}
 
 		public override NameValueCollection GetNavigationData(State state, HttpContext context)
