@@ -18,23 +18,8 @@ namespace Navigation
 			}
 			else
 			{
-				StringBuilder href = new StringBuilder();
-				href.Append(VirtualPathUtility.ToAbsolute(state.GetPage(context.GetOverriddenBrowser().IsMobileDevice), context.Request.ApplicationPath));
-				href.Append("?");
-				href.Append(HttpUtility.UrlEncode(NavigationSettings.Config.StateIdKey));
-				href.Append("=");
-				href.Append(HttpUtility.UrlEncode(state.Id));
-				foreach (string key in data)
-				{
-					if (key != NavigationSettings.Config.StateIdKey)
-					{
-						href.Append("&");
-						href.Append(HttpUtility.UrlEncode(key));
-						href.Append("=");
-						href.Append(HttpUtility.UrlEncode(data[key]));
-					}
-				}
-				return href.ToString();
+				bool mobile = context.GetOverriddenBrowser().IsMobileDevice;
+				return GetLink(state, data, mobile, context.Request.ApplicationPath);
 			}
 		}
 
