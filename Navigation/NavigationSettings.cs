@@ -101,16 +101,55 @@ namespace Navigation
 			}
 		}
 
-		[ConfigurationProperty("stateKey", DefaultValue = "c0")]
-		public string StateKey
+		[ConfigurationProperty("stateIdKey", DefaultValue = "c0")]
+		public string StateIdKey
 		{
 			get
 			{
-				return (string)this["stateKey"];
+				return (string)this["stateIdKey"];
 			}
 			set
 			{
-				this["stateKey"] = value;
+				this["stateIdKey"] = value;
+			}
+		}
+
+		[ConfigurationProperty("previousStateIdKey", DefaultValue = "c1")]
+		public string PreviousStateIdKey
+		{
+			get
+			{
+				return (string)this["previousStateIdKey"];
+			}
+			set
+			{
+				this["previousStateIdKey"] = value;
+			}
+		}
+
+		[ConfigurationProperty("returnDataKey", DefaultValue = "c2")]
+		public string ReturnDataKey
+		{
+			get
+			{
+				return (string)this["returnDataKey"];
+			}
+			set
+			{
+				this["returnDataKey"] = value;
+			}
+		}
+
+		[ConfigurationProperty("crumbTrailKey", DefaultValue = "c3")]
+		public string CrumbTrailKey
+		{
+			get
+			{
+				return (string)this["crumbTrailKey"];
+			}
+			set
+			{
+				this["crumbTrailKey"] = value;
 			}
 		}
 	}

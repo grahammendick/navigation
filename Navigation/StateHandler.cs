@@ -11,7 +11,7 @@ namespace Navigation
 			RouteValueDictionary routeData = new RouteValueDictionary();
 			foreach (string key in data.Keys)
 			{
-				if (key != NavigationSettings.Config.StateKey)
+				if (key != NavigationSettings.Config.StateIdKey)
 					routeData.Add(key, data[key]);
 			}
 			VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(context.Request.RequestContext, GetRoute(state, context), routeData);

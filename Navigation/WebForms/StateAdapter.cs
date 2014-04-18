@@ -34,9 +34,9 @@ namespace Navigation
 				|| StateInfoConfig.Dialogs == null || StateInfoConfig.Dialogs.Count == 0)
 				return base.DeterminePostBackMode();
 #if NET40Plus
-			StateContext.StateId = Page.Request.QueryString[StateContext.STATE] ?? (string)Page.RouteData.DataTokens[StateContext.STATE];
+			StateContext.StateId = Page.Request.QueryString[NavigationSettings.Config.StateIdKey] ?? (string)Page.RouteData.DataTokens[NavigationSettings.Config.StateIdKey];
 #else
-			StateContext.StateKey = Page.Request.QueryString[StateContext.STATE];
+			StateContext.StateKey = Page.Request.QueryString[NavigationSettings.Config.StateIdKey];
 #endif
 			if (StateContext.StateId == null)
 			{

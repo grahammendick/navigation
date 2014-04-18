@@ -38,16 +38,16 @@ namespace Navigation
 				StateContext.ReservedData.Clear();
 				StateContext.Data.SetDefaults(null);
 				StateContext.Data.Clear();
-				State state = StateContext.GetState(data[StateContext.STATE]);
+				State state = StateContext.GetState(data[NavigationSettings.Config.StateIdKey]);
 				foreach (string key in data)
 				{
-					if (key == StateContext.STATE
-						|| key == StateContext.PREVIOUS_STATE
-						|| key == StateContext.CRUMB_TRAIL
-						|| key == StateContext.RETURN_DATA)
+					if (key == NavigationSettings.Config.StateIdKey
+						|| key == NavigationSettings.Config.PreviousStateIdKey
+						|| key == NavigationSettings.Config.CrumbTrailKey
+						|| key == NavigationSettings.Config.ReturnDataKey)
 					{
 						StateContext.ReservedData[key] = CrumbTrailManager.Parse(key, data[key],
-							key != StateContext.RETURN_DATA ? state : StateContext.GetState(data[StateContext.PREVIOUS_STATE]));
+							key != NavigationSettings.Config.ReturnDataKey ? state : StateContext.GetState(data[NavigationSettings.Config.PreviousStateIdKey]));
 					}
 					else
 					{
@@ -485,7 +485,7 @@ namespace Navigation
 						StateContext.StateId = state.Id;
 #else
 						NameValueCollection queryData = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
-						StateContext.StateKey = queryData[StateContext.STATE];
+						StateContext.StateKey = queryData[NavigationSettings.Config.StateIdKey];
 						RemoveDefaultsAndDerived(queryData);
 #endif
 #if NET35Plus

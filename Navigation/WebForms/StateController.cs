@@ -55,7 +55,7 @@ namespace Navigation
 			if (page == null)
 				throw new ArgumentNullException("page");
 			NameValueCollection coll = new NameValueCollection();
-			coll[StateContext.STATE] = StateContext.StateId;
+			coll[NavigationSettings.Config.StateIdKey] = StateContext.StateId;
 			foreach (NavigationDataItem item in toData)
 			{
 				if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
@@ -89,7 +89,7 @@ namespace Navigation
 			{
 				RemoveDefaultsAndDerived(data);
 				data = StateContext.ShieldDecode(data, true, StateContext.State);
-				data.Remove(StateContext.STATE);
+				data.Remove(NavigationSettings.Config.StateIdKey);
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 				StateContext.Data.Clear();
 				StateContext.Data.Add(derivedData);
