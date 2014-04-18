@@ -94,7 +94,7 @@ namespace Navigation
 #endif
 			if (!Page.IsPostBack && !IsConsistent(stateDisplayInfo))
 				StateController.Refresh(new NavigationData(true));
-			Page.ClientScript.RegisterHiddenField(StateContext.DISPLAY_MODES, HttpUtility.HtmlEncode(stateDisplayInfo.DisplayModes));
+			Page.ClientScript.RegisterHiddenField(StateRouteHandler.DISPLAY_MODES, HttpUtility.HtmlEncode(stateDisplayInfo.DisplayModes));
 			Page.RegisterRequiresControlState(Page);
 			if (StateContext.State.Title.Length != 0)
 				Page.Title = HttpUtility.HtmlEncode(StateContext.State.Title);
