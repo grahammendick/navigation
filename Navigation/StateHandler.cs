@@ -49,7 +49,6 @@ namespace Navigation
 			return state.Route;
 		}
 #else
-#endif
 		public virtual string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
 		{
 			return null;
@@ -59,5 +58,6 @@ namespace Navigation
 		{
 			return null;
 		}
+#endif
 	}
 }
