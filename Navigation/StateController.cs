@@ -31,12 +31,16 @@ namespace Navigation
 #if NET40Plus
 		public static void SetStateContext(HttpContextBase context)
 #else
-		public static void SetStateContext(HttpContext context)
+		public static void SetStateContext(NameValueCollection data)
 #endif
 		{
 			try
 			{
+#if NET40Plus
 				NameValueCollection data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
+#else
+				data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, data);
+#endif
 				RemoveDefaultsAndDerived(data);
 #if NET35Plus
 				data = StateContext.ShieldDecode(data, false, StateContext.State);
@@ -493,7 +497,7 @@ namespace Navigation
 #if NET40Plus
 						SetStateContext(new MockNavigationContext(url));
 #else
-						SetStateContext(null);
+						SetStateContext(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
 #endif
 						break;
 					}
