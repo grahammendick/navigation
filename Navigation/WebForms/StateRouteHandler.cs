@@ -336,6 +336,7 @@ namespace Navigation
 {
 	internal class StateRouteHandler
 	{
+		internal const string DISPLAY_MODES = "n0";
 		private static readonly object _StateDisplayInfoKey = new object();
 
 		internal StateRouteHandler(State state)
@@ -352,7 +353,7 @@ namespace Navigation
 		private static StateDisplayInfo GetStateDisplayInfo(State state, HttpRequest request)
 		{
 			bool mobile;
-			string displayModes = HttpUtility.HtmlDecode(request.Form[StateContext.DISPLAY_MODES]);
+			string displayModes = HttpUtility.HtmlDecode(request.Form[DISPLAY_MODES]);
 			StateDisplayInfo stateDisplayInfo = new StateDisplayInfo();
 			if (displayModes == null)
 			{
