@@ -14,7 +14,7 @@ namespace Navigation
 				if (key != NavigationSettings.Config.StateIdKey)
 					routeData.Add(key, data[key]);
 			}
-			VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(context.Request.RequestContext, GetRoute(state, context), routeData);
+			VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(context, new RouteData()), GetRoute(state, context), routeData);
 			if (virtualPath == null)
 				return null;
 			return virtualPath.VirtualPath;
