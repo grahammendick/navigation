@@ -11,18 +11,19 @@ using System.Web.WebPages;
 namespace Navigation
 {
 	/// <summary>
-	/// 
+	/// Implementation of <see cref="Navigation.IStateHandler"/> that builds and parses
+	/// navigation links for a WebForms <see cref="Navigation.State"/>
 	/// </summary>
 	public class PageStateHandler : StateHandler
 	{
 #if NET40Plus
 		/// <summary>
-		/// 
+		/// Gets a link that navigates to the <paramref name="state"/> passing the <paramref name="data"/>.
 		/// </summary>
-		/// <param name="state"></param>
-		/// <param name="data"></param>
-		/// <param name="context"></param>
-		/// <returns></returns>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="data">The data to pass when navigating</param>
+		/// <param name="context">The current context</param>
+		/// <returns>The navigation link</returns>
 		public override string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
 			if (GetRoute(state, context) != null)
@@ -36,11 +37,11 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// 
+		/// Returns the route of the <paramref name="state"/>
 		/// </summary>
-		/// <param name="state"></param>
-		/// <param name="context"></param>
-		/// <returns></returns>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="context">The current context</param>
+		/// <returns>The route name</returns>
 		protected override string GetRoute(State state, HttpContextBase context)
 		{
 			bool mobile = GetMobile(context);
