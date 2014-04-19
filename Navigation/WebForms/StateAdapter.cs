@@ -15,7 +15,7 @@ namespace Navigation
 	/// <summary>
 	/// Plugs the navigation framework into the ASP.NET <see cref="System.Web.UI.Page"/> processing
 	/// and must be configured as the <see cref="System.Web.UI.Adapters.PageAdapter"/> in the
-	/// Browser.config file. This class is not used in a Unit Test environment.
+	/// Browser.config file. This class is not used in a Unit Test environment
 	/// </summary>
 	public class StateAdapter : PageAdapter
 	{

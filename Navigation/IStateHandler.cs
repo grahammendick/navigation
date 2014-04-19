@@ -4,7 +4,7 @@ using System.Web;
 namespace Navigation
 {
 	/// <summary>
-	/// Defines a contract a class must implement in order to build and parse navigation links.
+	/// Defines a contract a class must implement in order to build and parse navigation links
 	/// </summary>
 	public interface IStateHandler
 	{

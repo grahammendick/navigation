@@ -12,7 +12,7 @@ namespace Navigation
 {
 	/// <summary>
 	/// Implementation of <see cref="Navigation.IStateHandler"/> that builds and parses
-	/// navigation links for a WebForms <see cref="Navigation.State"/>
+	/// navigation links for a Web Forms <see cref="Navigation.State"/>
 	/// </summary>
 #if NET40Plus
 	public class PageStateHandler : StateHandler

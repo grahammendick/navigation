@@ -11,7 +11,7 @@ namespace Navigation
 	/// <summary>
 	/// Manages all navigation. These can be forward using an action parameter; backward via
 	/// a <see cref="Navigation.Crumb"/>; refreshing the current <see cref="Navigation.State"/>;
-	/// or adding/restoring a history point.
+	/// or adding/restoring a history point
 	/// </summary>
 	public partial class StateController
 	{
