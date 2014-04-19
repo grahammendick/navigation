@@ -1,8 +1,7 @@
-﻿using System.Collections.Specialized;
+﻿#if NET40Plus
+using System.Collections.Specialized;
 using System.Web;
-#if NET40Plus
 using System.Web.Routing;
-#endif
 
 namespace Navigation
 {
@@ -12,7 +11,6 @@ namespace Navigation
 	/// </summary>
 	public class StateHandler : IStateHandler
 	{
-#if NET40Plus
 		/// <summary>
 		/// Gets a routed link that navigates to the <paramref name="state"/> passing 
 		/// the <paramref name="data"/>
@@ -72,16 +70,7 @@ namespace Navigation
 		{
 			return state.Route;
 		}
-#else
-		public virtual string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
-		{
-			return null;
-		}
 
-		public virtual NameValueCollection GetNavigationData(State state, NameValueCollection data)
-		{
-			return null;
-		}
-#endif
 	}
 }
+#endif

@@ -14,7 +14,11 @@ namespace Navigation
 	/// Implementation of <see cref="Navigation.IStateHandler"/> that builds and parses
 	/// navigation links for a WebForms <see cref="Navigation.State"/>
 	/// </summary>
+#if NET40Plus
 	public class PageStateHandler : StateHandler
+#else
+	public class PageStateHandler : IStateHandler
+#endif
 	{
 #if NET40Plus
 		/// <summary>
@@ -51,13 +55,26 @@ namespace Navigation
 				return state.GetRouteName(mobile);
 		}
 #else
-		public override string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
+		/// <summary>
+		/// Gets a link that navigates to the <paramref name="state"/> passing the <paramref name="data"/>
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="data">The data to pass when navigating</param>
+		/// <param name="context">The current context</param>
+		/// <returns>The navigation link</returns>
+		public string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
 		{
 			string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
 			return GetLink(state, data, GetMobile(context), applicationPath);
 		}
 
-		public override NameValueCollection GetNavigationData(State state, NameValueCollection data)
+		/// <summary>
+		/// Gets the data parsed from the <paramref name="data">context data</paramref>
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> navigated to</param>
+		/// <param name="data">The current context data</param>
+		/// <returns>The navigation data</returns>
+		public NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
 			return new NameValueCollection(data);
 		}

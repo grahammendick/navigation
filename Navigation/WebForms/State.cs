@@ -7,8 +7,10 @@ namespace Navigation
 	{
 		private string _Page;
 		private string _MobilePage;
+#if NET40Plus
 		private string _MobileRoute;
 		private bool? _CheckPhysicalUrlAccess;
+#endif
 		private string _Theme;
 		private string _MobileTheme;
 		private ReadOnlyCollection<string> _Masters;
@@ -40,6 +42,7 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		/// <summary>
 		/// Gets the mobile device route Url pattern
 		/// </summary>
@@ -75,6 +78,7 @@ namespace Navigation
 				return _CheckPhysicalUrlAccess.Value;
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Gets the theme to assign to the <see cref="Page"/> when displayed
