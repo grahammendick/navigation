@@ -20,13 +20,13 @@ namespace Navigation
 	public class StateAdapter : PageAdapter
 	{
 		/// <summary>
-		/// Validates the incoming Url and if no state parameter c0 found will navigate to
-		/// the <see cref="Navigation.Dialog"/> whose path property matches the Url
+		/// Validates the incoming Url and if no <see cref="Navigation.NavigationSettings.StateIdKey"/> 
+		/// found will navigate to the <see cref="Navigation.Dialog"/> whose path property matches the Url
 		/// </summary>
 		/// <returns>A <see cref="System.Collections.Specialized.NameValueCollection"/> of the 
 		/// postback variables, if any; otherwise null</returns>
-		/// <exception cref="Navigation.UrlException">There is no query string state parameter, c0, and
-		/// the Url does not match the path of any <see cref="Navigation.Dialog"/>; the page of 
+		/// <exception cref="Navigation.UrlException">The <see cref="Navigation.NavigationSettings.StateIdKey"/>
+		/// is not found and the Url does not match the path of any <see cref="Navigation.Dialog"/>; the page of 
 		/// the <see cref="Navigation.State"/> does not match the Url path</exception>
 		public override NameValueCollection DeterminePostBackMode()
 		{

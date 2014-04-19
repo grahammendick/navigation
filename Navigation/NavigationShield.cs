@@ -5,8 +5,8 @@ namespace Navigation
 {
 	/// <summary>
 	/// Provides the base functionality for Url protection mechanisms e.g. to prevent tampering or
-	/// to obfuscate query string parameters. Regardless of the mechanism the state query string
-	/// parameter, c0, is always present
+	/// to obfuscate query string parameters. Regardless of the mechanism the state id parameter,
+	/// <see cref="Navigation.NavigationSettings.StateIdKey"/>, is always present
 	/// </summary>
 	public abstract class NavigationShield : ConfigurationSection
 	{
