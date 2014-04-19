@@ -10,7 +10,7 @@ namespace Navigation
 	{
 #if NET40Plus
 		/// <summary>
-		/// Returns a link that navigates to the <paramref name="state"/> passing the <paramref name="data"/>
+		/// Gets a link that navigates to the <paramref name="state"/> passing the <paramref name="data"/>
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="data">The data to pass when navigating</param>
@@ -19,7 +19,7 @@ namespace Navigation
 		string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context);
 
 		/// <summary>
-		/// Returns the data parsed from the <paramref name="context"/>
+		/// Gets the data parsed from the <paramref name="context"/>
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> navigated to</param>
 		/// <param name="context">The current context</param>

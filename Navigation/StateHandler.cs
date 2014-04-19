@@ -14,7 +14,7 @@ namespace Navigation
 	{
 #if NET40Plus
 		/// <summary>
-		/// Returns a routed link that navigates to the <paramref name="state"/> passing 
+		/// Gets a routed link that navigates to the <paramref name="state"/> passing 
 		/// the <paramref name="data"/>
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
@@ -36,7 +36,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Returns the data parsed from the Route and QueryString of the <paramref name="context"/>
+		/// Gets the data parsed from the Route and QueryString of the <paramref name="context"/>
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> navigated to</param>
 		/// <param name="context">The current context</param>
