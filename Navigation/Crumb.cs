@@ -2,7 +2,7 @@ namespace Navigation
 {
 	/// <summary>
 	/// Represents one piece of the crumb trail and holds the information need to return to and recreate 
-	/// the <see cref="System.Web.UI.Page"/> as previously visited. In a single crumb trail no two crumbs
+	/// the <see cref="Navigation.State"/> as previously visited. In a single crumb trail no two crumbs
 	/// can have the same <see cref="State"/> but all must have the same <see cref="Navigation.Dialog"/>
 	/// </summary>
 	public class Crumb

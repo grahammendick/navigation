@@ -14,7 +14,7 @@
 		/// </summary>
 		Server,
 		/// <summary>
-		/// Navigates without executing a request for the new <see cref="System.Web.UI.Page"/>. This mode is 
+		/// Navigates without executing a request for the new <see cref="Navigation.State"/>. This mode is 
 		/// automatically used in a Unit Test environment but can be manually used in a Web environment
 		/// </summary>
 		Mock
