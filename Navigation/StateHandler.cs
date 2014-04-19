@@ -6,9 +6,19 @@ using System.Web.Routing;
 
 namespace Navigation
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class StateHandler : IStateHandler
 	{
 #if NET40Plus
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="data"></param>
+		/// <param name="context"></param>
+		/// <returns></returns>
 		public virtual string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
 			RouteValueDictionary routeData = new RouteValueDictionary();
@@ -23,6 +33,12 @@ namespace Navigation
 			return virtualPath.VirtualPath;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="context"></param>
+		/// <returns></returns>
 		public virtual NameValueCollection GetNavigationData(State state, HttpContextBase context)
 		{
 			NameValueCollection queryData = new NameValueCollection();
@@ -44,6 +60,12 @@ namespace Navigation
 			return queryData;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="context"></param>
+		/// <returns></returns>
 		protected virtual string GetRoute(State state, HttpContextBase context)
 		{
 			return state.Route;

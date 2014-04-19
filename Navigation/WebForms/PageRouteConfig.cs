@@ -8,6 +8,10 @@ using System.Web.Routing;
 
 namespace Navigation
 {
+	/// <summary>
+	/// Registers <see cref="Navigation.State.Route"/> information for any <see cref="Navigation.State"/>
+	/// with a <see cref="Navigation.State.Page"/>
+	/// </summary>
 	public class PageRouteConfig
 	{
 		private const string PARAMETER = "{{{0}}}";
@@ -33,6 +37,7 @@ namespace Navigation
 				{
 					foreach (State state in dialog.States)
 					{
+						//TODO - add Page.Length check
 						if (state.Route.Length != 0)
 						{
 							route = RouteTable.Routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
