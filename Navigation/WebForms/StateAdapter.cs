@@ -2,7 +2,6 @@ using Navigation.Properties;
 using System;
 using System.Collections.Specialized;
 using System.Web;
-using System.Web.Configuration;
 #if NET40Plus
 using System.Web.Routing;
 #endif
