@@ -9,10 +9,10 @@ namespace Navigation
 {
 	/// <summary>
 	/// Manages the data passed when navigating. It implements <see cref="System.Web.UI.IStateManager"/>
-	/// and so maintains this data across post backs (in control state). This data is accesssible from the
-	/// state context <see cref="Navigation.StateContext.Data"/> property and can take part in data binding.
-	/// It is stored on each <see cref="Navigation.Crumb"/> in a crumb trail as it represents the data
-	/// required to recreate the <see cref="Navigation.State"/> as previously visited
+	/// and so maintains this data across post backs (in Web Forms). This data is accesssible from the
+	/// state context <see cref="Navigation.StateContext.Data"/> property. It is stored on each
+	/// <see cref="Navigation.Crumb"/> in a crumb trail as it represents the data required to recreate
+	/// the <see cref="Navigation.State"/> as previously visited
 	/// </summary>
 	public sealed class NavigationData : IStateManager, IEnumerable, IEnumerable<NavigationDataItem>
 	{
