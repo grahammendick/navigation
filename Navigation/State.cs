@@ -36,8 +36,7 @@ namespace Navigation
 		private IStateHandler _StateHandler;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Navigation.State"/> class and sets the default
-		/// <see cref="IStateHandler"/>
+		/// Initializes a new instance of the <see cref="Navigation.State"/> class
 		/// </summary>
 		public State()
 		{
