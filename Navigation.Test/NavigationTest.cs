@@ -29,6 +29,12 @@ namespace Navigation.Test
 			}
 		}
 
+		[TestInitialize]
+		public void Initialize()
+		{
+			StateContext.Data.Clear();
+		}
+
 		[TestMethod]
 		public void NavigateDialogTest()
 		{
