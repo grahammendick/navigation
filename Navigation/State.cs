@@ -35,6 +35,10 @@ namespace Navigation
 		[NonSerialized]
 		private IStateHandler _StateHandler;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Navigation.State"/> class and sets the default
+		/// <see cref="IStateHandler"/>
+		/// </summary>
 		public State()
 		{
 			SetStateHandler();
@@ -253,6 +257,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets the list of attributes as read from the configuration section
+		/// </summary>
 		public StateInfoCollection<string> Attributes
 		{
 			get
@@ -264,8 +271,10 @@ namespace Navigation
 				_Attributes = value;
 			}
 		}
+
 		/// <summary>
-		/// 
+		/// Gets or sets the <see cref="Navigation.IStateHandler"/> responsible for building and parsing
+		/// navigation links to this <see cref="Navigation.State"/>
 		/// </summary>
 		public IStateHandler StateHandler
 		{
@@ -287,7 +296,10 @@ namespace Navigation
 			}
 		}
 
-		internal string Id
+		/// <summary>
+		/// Gets the unique identifier for this <see cref="Navigation.State"/>
+		/// </summary>
+		public string Id
 		{
 			get
 			{

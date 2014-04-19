@@ -10,9 +10,19 @@ using System.Web.WebPages;
 
 namespace Navigation
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class PageStateHandler : StateHandler
 	{
 #if NET40Plus
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="data"></param>
+		/// <param name="context"></param>
+		/// <returns></returns>
 		public override string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
 			if (GetRoute(state, context) != null)
@@ -25,6 +35,12 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="context"></param>
+		/// <returns></returns>
 		protected override string GetRoute(State state, HttpContextBase context)
 		{
 			bool mobile = GetMobile(context);

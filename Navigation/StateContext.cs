@@ -152,6 +152,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets of sets the identifier of the current <see cref="State"/>
+		/// </summary>
 		public static string StateId
 		{
 			get

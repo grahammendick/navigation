@@ -10,6 +10,9 @@ namespace Navigation
 	{
 		private static NavigationSettings _Config = (NavigationSettings) ConfigurationManager.GetSection("Navigation/Settings") ?? new NavigationSettings();
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public static NavigationSettings Config
 		{
 			get
@@ -101,6 +104,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the key that identifies the StateId
+		/// </summary>
 		[ConfigurationProperty("stateIdKey", DefaultValue = "c0")]
 		public string StateIdKey
 		{
@@ -114,6 +120,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the key that identifies the PreviousStateId
+		/// </summary>
 		[ConfigurationProperty("previousStateIdKey", DefaultValue = "c1")]
 		public string PreviousStateIdKey
 		{
@@ -127,6 +136,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the key that identifies the ReturnData
+		/// </summary>
 		[ConfigurationProperty("returnDataKey", DefaultValue = "c2")]
 		public string ReturnDataKey
 		{
@@ -140,6 +152,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the key that identifies the CrumbTrail
+		/// </summary>
 		[ConfigurationProperty("crumbTrailKey", DefaultValue = "c3")]
 		public string CrumbTrailKey
 		{
