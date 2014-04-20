@@ -18,14 +18,13 @@ namespace Navigation.Test
 #endif
 		public string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
 		{
-			return state.Attributes["handler"].Substring(1) + "?checksum=" + data["cs"];
+			return state.Attributes["handler"].Substring(1);
 		}
 
 		public NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
 			NameValueCollection navigationData = new NameValueCollection();
 			navigationData[NavigationSettings.Config.StateIdKey] = state.Id;
-			navigationData["cs"] = data["checksum"];
 			return navigationData;
 		}
 	}

@@ -12,7 +12,8 @@ namespace Navigation.Test
 		private bool Skip(State state)
 		{
 			return state == StateInfoConfig.Dialogs["d0"].States["s2"] || state == StateInfoConfig.Dialogs["d3"].States["s2"]
-				|| state == StateInfoConfig.Dialogs["d2"].States["s0"] || state == StateInfoConfig.Dialogs["d5"].States["s0"];
+				|| state == StateInfoConfig.Dialogs["d2"].States["s0"] || state == StateInfoConfig.Dialogs["d5"].States["s0"]
+				|| state.Parent.Key == "d6";
 		}
 
 #if NET35Plus
