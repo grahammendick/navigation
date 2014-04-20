@@ -423,7 +423,7 @@ namespace Navigation.Designer.Test
 		}
 
 		[TestMethod]
-		public void AnbBirKeepsOnlyInitialRoute()
+		public void AnbBirKeepsOnlyInitialRouteTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/AnbBir.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
@@ -432,7 +432,7 @@ namespace Navigation.Designer.Test
 		}
 
 		[TestMethod]
-		public void A1nbB_CnbBKeepsOnlyCRoute()
+		public void A1nbB_CnbBKeepsOnlyCRouteTest()
 		{
 			NavigationDiagram navigationConfiguration = LoadModel("Diagram/A1nbB_CnbB.nav");
 			List<Dialog> dialogs = new StateInfo().Convert(navigationConfiguration);
