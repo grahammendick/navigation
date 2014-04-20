@@ -47,7 +47,8 @@ namespace Navigation
 		/// the <see cref="Navigation.State"/> does not match the Url path</exception>
 		public override NameValueCollection DeterminePostBackMode()
 		{
-			if (IsLogin() || !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page)) || StateInfoConfig.Dialogs == null)
+			if (IsLogin() || !HttpContext.Current.Handler.GetType().IsSubclassOf(typeof(Page))
+				|| StateInfoConfig.Dialogs == null || StateInfoConfig.Dialogs.Count == 0)
 				return base.DeterminePostBackMode();
 #if NET40Plus
 			StateContext.StateId = Page.Request.QueryString[NavigationSettings.Config.StateIdKey] ?? (string)Page.RouteData.DataTokens[NavigationSettings.Config.StateIdKey];
@@ -66,15 +67,8 @@ namespace Navigation
 							data.Add(key, Page.Request.QueryString[key]);
 						StateController.Navigate(dialog.Key, data);
 					}
-					else
-					{
-#if NET40Plus
-						if (Page.RouteData.Route == null)
-#endif
-							throw new UrlException(Resources.InvalidUrl);
-					}
 				}
-				return base.DeterminePostBackMode();
+				throw new UrlException(Resources.InvalidUrl);
 			}
 			if (StateContext.State == null)
 			{
