@@ -61,6 +61,10 @@ namespace Navigation
 						data.Add(key, Page.Request.QueryString[key]);
 					StateController.Navigate(_DialogPaths[Page.AppRelativeVirtualPath.ToUpperInvariant()].Key, data);
 				}
+#if NET40Plus
+				if (Page.RouteData.Route != null)
+					return base.DeterminePostBackMode();
+#endif
 				throw new UrlException(Resources.InvalidUrl);
 			}
 			if (StateContext.State == null)
