@@ -57,13 +57,16 @@ namespace Navigation
 #endif
 			if (StateContext.StateId == null)
 			{
-				Dialog dialog = _StatePaths[Page.AppRelativeVirtualPath.ToUpperInvariant()];
-				if (dialog != null)
+				if (_StatePaths.ContainsKey(Page.AppRelativeVirtualPath.ToUpperInvariant()))
 				{
-					NavigationData data = new NavigationData();
-					foreach (string key in Page.Request.QueryString)
-						data.Add(key, Page.Request.QueryString[key]);
-					StateController.Navigate(dialog.Key, data);
+					Dialog dialog = _StatePaths[Page.AppRelativeVirtualPath.ToUpperInvariant()];
+					if (dialog != null)
+					{
+						NavigationData data = new NavigationData();
+						foreach (string key in Page.Request.QueryString)
+							data.Add(key, Page.Request.QueryString[key]);
+						StateController.Navigate(dialog.Key, data);
+					}
 				}
 				throw new UrlException(Resources.InvalidUrl);
 			}
