@@ -23,13 +23,16 @@ namespace Navigation
 		static StateAdapter()
 		{
 			_StatePaths = new Dictionary<string, Dialog>();
-			foreach (Dialog dialog in StateInfoConfig.Dialogs)
+			if (StateInfoConfig.Dialogs != null)
 			{
-				if (dialog.Path.Length != 0)
-					_StatePaths[dialog.Path.ToUpperInvariant()] = dialog;
-				foreach (State state in dialog.States)
-					if (state.Page.Length != 0 && !_StatePaths.ContainsKey(state.Page.ToUpperInvariant()))
-						_StatePaths[state.Page.ToUpperInvariant()] = null;
+				foreach (Dialog dialog in StateInfoConfig.Dialogs)
+				{
+					if (dialog.Path.Length != 0)
+						_StatePaths[dialog.Path.ToUpperInvariant()] = dialog;
+					foreach (State state in dialog.States)
+						if (state.Page.Length != 0 && !_StatePaths.ContainsKey(state.Page.ToUpperInvariant()))
+							_StatePaths[state.Page.ToUpperInvariant()] = null;
+				}
 			}
 		}
 
