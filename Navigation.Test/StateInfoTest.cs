@@ -270,6 +270,13 @@ namespace Navigation.Test
 			Assert.AreEqual("~/d6/s1.aspx", StateInfoConfig.Dialogs[6].States[1].Attributes["handler"]);
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void StateHandlerNullTest()
+		{
+			StateInfoConfig.Dialogs[0].States[0].StateHandler = null;
+		}
+
 #if NET40Plus
 		[TestMethod]
 		public void RouteTest()

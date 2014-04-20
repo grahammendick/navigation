@@ -232,6 +232,15 @@ namespace Navigation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to StateHandler cannot be null.
+        /// </summary>
+        internal static string NullStateHandler {
+            get {
+                return ResourceManager.GetString("NullStateHandler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type &apos;{0}&apos; does not have a public property named &apos;{1}&apos;.
         /// </summary>
         internal static string PropertyMissing {
