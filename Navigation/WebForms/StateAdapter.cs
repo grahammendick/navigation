@@ -1,5 +1,6 @@
 using Navigation.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 #if NET40Plus
@@ -18,6 +19,29 @@ namespace Navigation
 	/// </summary>
 	public class StateAdapter : PageAdapter
 	{
+		private Dictionary<string, string> StatePaths
+		{
+			get
+			{
+				string key = this.GetType().AssemblyQualifiedName;
+				Dictionary<string, string> paths = (Dictionary<string, string>)HttpContext.Current.Cache[key];
+				if (paths == null)
+				{
+					paths = new Dictionary<string, string>();
+					foreach (Dialog dialog in StateInfoConfig.Dialogs)
+					{
+						if (dialog.Path.Length != 0)
+							paths[dialog.Path.ToUpperInvariant()] = dialog.Key;
+						foreach (State state in dialog.States)
+							if (state.Page.Length != 0 && !paths.ContainsKey(state.Page.ToUpperInvariant()))
+								paths[state.Page.ToUpperInvariant()] = null;
+					}
+					HttpContext.Current.Cache[key] = paths;
+				}
+				return paths;
+			}
+		}
+
 		/// <summary>
 		/// Validates the incoming Url and if no <see cref="Navigation.NavigationSettings.StateIdKey"/> 
 		/// found will navigate to the <see cref="Navigation.Dialog"/> whose path property matches the Url
@@ -39,17 +63,13 @@ namespace Navigation
 #endif
 			if (StateContext.StateId == null)
 			{
-				Dialog dialog;
-				for (int i = 0; i < StateInfoConfig.Dialogs.Count; i++)
+				string dialogKey = StatePaths[Page.AppRelativeVirtualPath.ToUpperInvariant()];
+				if (dialogKey != null)
 				{
-					dialog = StateInfoConfig.Dialogs[i];
-					if (dialog.Path.Length != 0 && StringComparer.OrdinalIgnoreCase.Compare(Page.AppRelativeVirtualPath, dialog.Path) == 0)
-					{
-						NavigationData data = new NavigationData();
-						foreach (string key in Page.Request.QueryString)
-							data.Add(key, Page.Request.QueryString[key]);
-						StateController.Navigate(dialog.Key, data);
-					}
+					NavigationData data = new NavigationData();
+					foreach (string key in Page.Request.QueryString)
+						data.Add(key, Page.Request.QueryString[key]);
+					StateController.Navigate(dialogKey, data);
 				}
 				throw new UrlException(Resources.InvalidUrl);
 			}

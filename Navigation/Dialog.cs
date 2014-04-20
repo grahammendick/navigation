@@ -10,7 +10,7 @@ namespace Navigation
 	/// different dialogs will initialise the crumb trail
 	/// </summary>
 	[Serializable]
-	public class Dialog
+	public partial class Dialog
 	{
 		private StateInfoCollection<State> _States = new StateInfoCollection<State>();
 		private int _Index;
@@ -19,7 +19,7 @@ namespace Navigation
 		private string _Title;
 		private string _ResourceType;
 		private string _ResourceKey;
-		private string _Path;
+		private StateInfoCollection<string> _Attributes;
 
 		/// <summary>
 		/// Gets the <see cref="Navigation.State"/> children
@@ -124,19 +124,17 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets the Url that will cause a navigation to the <see cref="Initial"/> state. It should not
-		/// contain a query string although browsing to the Url with a query string will work and will pass
-		/// the query string data as per normal <see cref="Navigation.NavigationData"/>
+		/// Gets the list of attributes as read from the configuration section
 		/// </summary>
-		public string Path
+		public StateInfoCollection<string> Attributes
 		{
 			get
 			{
-				return _Path;
+				return _Attributes;
 			}
 			internal set
 			{
-				_Path = value;
+				_Attributes = value;
 			}
 		}
 	}
