@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Navigation.Properties;
 
 namespace Navigation
 {

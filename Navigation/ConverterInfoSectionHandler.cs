@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
 using System.Xml;
-using Navigation.Properties;
 
 namespace Navigation
 {

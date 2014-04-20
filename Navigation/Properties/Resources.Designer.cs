@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Navigation.Properties {
+namespace Navigation {
     using System;
     
     

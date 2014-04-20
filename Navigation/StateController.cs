@@ -1,4 +1,3 @@
-using Navigation.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
