@@ -55,7 +55,7 @@ namespace Navigation.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void NavigateInvalidDialogTest()
 		{
-			StateController.Navigate("d6");
+			StateController.Navigate("d7");
 		}
 
 		[TestMethod]
@@ -953,6 +953,21 @@ namespace Navigation.Test
 			Assert.AreEqual("/d5s0", link);
 		}
 #endif
+
+		[TestMethod]
+		public void NavigateDialogCustomStateHandler()
+		{
+			StateController.Navigate("d6");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States["s0"], StateContext.State);
+		}
+
+		[TestMethod]
+		public void NavigateTransitionCustomStateHandler()
+		{
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[1], StateContext.State);
+		}
 
 #if NET35Plus
 		[TestMethod]

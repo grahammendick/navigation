@@ -31,10 +31,17 @@ namespace Navigation.Test
 			}
 		}
 
+		[AssemblyInitialize]
+		public static void SetCustomHandler(TestContext context)
+		{
+			StateInfoConfig.Dialogs[6].States[0].StateHandler = new CustomStateHandler();
+			StateInfoConfig.Dialogs[6].States[1].StateHandler = new CustomStateHandler();
+		}
+
 		[TestMethod]
 		public void DialogTest()
 		{
-			Assert.AreEqual(6, StateInfoConfig.Dialogs.Count);
+			Assert.AreEqual(7, StateInfoConfig.Dialogs.Count);
 			int i = 0;
 			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
@@ -55,14 +62,16 @@ namespace Navigation.Test
 			int i = 0;
 			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
-				Assert.AreEqual(5 + dialog.Index % 3, dialog.States.Count);
+				if (dialog.Index < 6)
+					Assert.AreEqual(5 + dialog.Index % 3, dialog.States.Count);
 				i = 0;
 				foreach (State state in StateInfoConfig.Dialogs[dialog.Key].States)
 				{
 					Assert.AreEqual("s" + i, state.Key);
 					Assert.AreEqual(state.Key, state.Title);
 					Assert.AreEqual(i, state.Index);
-					Assert.AreEqual(string.Format(page, dialog.Key, state.Key), state.Page);
+					if (dialog.Index < 6)
+						Assert.AreEqual(string.Format(page, dialog.Key, state.Key), state.Page);
 					if (i == 1 && dialog.Index < 3)
 						Assert.AreEqual(string.Format(mobilePage, dialog.Key, state.Key), state.MobilePage);
 					i++;
@@ -112,13 +121,12 @@ namespace Navigation.Test
 		[TestMethod]
 		public void DialogAttributesTest()
 		{
-			Assert.AreEqual(6, StateInfoConfig.Dialogs[0].Attributes.Count);
-			Assert.AreEqual("d0", StateInfoConfig.Dialogs[0].Attributes["key"]);
-			Assert.AreEqual("s0", StateInfoConfig.Dialogs[0].Attributes[1]);
-			Assert.AreEqual("d0", StateInfoConfig.Dialogs[0].Attributes["title"]);
-			Assert.AreEqual(" d0 ", StateInfoConfig.Dialogs[0].Attributes["path"]);
-			Assert.AreEqual("", StateInfoConfig.Dialogs[0].Attributes["attr1"]);
-			Assert.AreEqual(" a ", StateInfoConfig.Dialogs[0].Attributes["attr2"]);
+			Assert.AreEqual(5, StateInfoConfig.Dialogs[6].Attributes.Count);
+			Assert.AreEqual("d6", StateInfoConfig.Dialogs[6].Attributes["key"]);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].Attributes[1]);
+			Assert.AreEqual("d6", StateInfoConfig.Dialogs[6].Attributes["title"]);
+			Assert.AreEqual("true", StateInfoConfig.Dialogs[6].Attributes["other"]);
+			Assert.AreEqual(" d6", StateInfoConfig.Dialogs[6].Attributes["path"]);
 		}
 
 		[TestMethod]
@@ -252,12 +260,16 @@ namespace Navigation.Test
 		[TestMethod]
 		public void AttributesTest()
 		{
-			Assert.AreEqual(5, StateInfoConfig.Dialogs[0].States[0].Attributes.Count);
-			Assert.AreEqual("s0", StateInfoConfig.Dialogs[0].States[0].Attributes["key"]);
-			Assert.AreEqual("~/d0/s0.aspx", StateInfoConfig.Dialogs[0].States[0].Attributes[1]);
-			Assert.AreEqual("s0", StateInfoConfig.Dialogs[0].States[0].Attributes["title"]);
-			Assert.AreEqual("", StateInfoConfig.Dialogs[0].States[0].Attributes["attr3"]);
-			Assert.AreEqual(" a ", StateInfoConfig.Dialogs[0].States[0].Attributes["attr4"]);
+			Assert.AreEqual(4, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["key"]);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["title"]);
+			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[2]);
+			Assert.AreEqual("false", StateInfoConfig.Dialogs[6].States[0].Attributes[3]);
+			Assert.AreEqual(4, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
+			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["key"]);
+			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["title"]);
+			Assert.AreEqual("~/d6/s1.aspx", StateInfoConfig.Dialogs[6].States[1].Attributes["handler"]);
+			Assert.AreEqual("false", StateInfoConfig.Dialogs[6].States[1].Attributes[3]);
 		}
 
 #if NET40Plus
@@ -318,7 +330,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
-			Dialog[] dialogArr = new Dialog[6];
+			Dialog[] dialogArr = new Dialog[7];
 			State[] stateArr = new State[5];
 			Transition[] transitionArr = new Transition[5];
 			StateInfoConfig.Dialogs.CopyTo(dialogArr, 0);
@@ -357,6 +369,7 @@ namespace Navigation.Test
 			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 4);
 			Assert.IsTrue(dialogs[0].States[1].Derived.Count == 3);
 			Assert.IsTrue(dialogs[0].States[2].Derived.Count == 2);
+			Assert.IsTrue(dialogs[6].Attributes.Count == 5);
 		}
 
 		[TestMethod]
