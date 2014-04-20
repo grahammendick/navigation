@@ -18,26 +18,18 @@ namespace Navigation
 	/// </summary>
 	public class StateAdapter : PageAdapter
 	{
-		private Dictionary<string, string> StatePaths
+		private static Dictionary<string, Dialog> _StatePaths;
+
+		static StateAdapter()
 		{
-			get
+			_StatePaths = new Dictionary<string, Dialog>();
+			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
-				string key = this.GetType().AssemblyQualifiedName;
-				Dictionary<string, string> paths = (Dictionary<string, string>)HttpContext.Current.Cache[key];
-				if (paths == null)
-				{
-					paths = new Dictionary<string, string>();
-					foreach (Dialog dialog in StateInfoConfig.Dialogs)
-					{
-						if (dialog.Path.Length != 0)
-							paths[dialog.Path.ToUpperInvariant()] = dialog.Key;
-						foreach (State state in dialog.States)
-							if (state.Page.Length != 0 && !paths.ContainsKey(state.Page.ToUpperInvariant()))
-								paths[state.Page.ToUpperInvariant()] = null;
-					}
-					HttpContext.Current.Cache[key] = paths;
-				}
-				return paths;
+				if (dialog.Path.Length != 0)
+					_StatePaths[dialog.Path.ToUpperInvariant()] = dialog;
+				foreach (State state in dialog.States)
+					if (state.Page.Length != 0 && !_StatePaths.ContainsKey(state.Page.ToUpperInvariant()))
+						_StatePaths[state.Page.ToUpperInvariant()] = null;
 			}
 		}
 
@@ -62,13 +54,13 @@ namespace Navigation
 #endif
 			if (StateContext.StateId == null)
 			{
-				string dialogKey = StatePaths[Page.AppRelativeVirtualPath.ToUpperInvariant()];
-				if (dialogKey != null)
+				Dialog dialog = _StatePaths[Page.AppRelativeVirtualPath.ToUpperInvariant()];
+				if (dialog != null)
 				{
 					NavigationData data = new NavigationData();
 					foreach (string key in Page.Request.QueryString)
 						data.Add(key, Page.Request.QueryString[key]);
-					StateController.Navigate(dialogKey, data);
+					StateController.Navigate(dialog.Key, data);
 				}
 				throw new UrlException(Resources.InvalidUrl);
 			}
