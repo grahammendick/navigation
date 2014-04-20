@@ -283,6 +283,8 @@ namespace Navigation
 			}
 			set
 			{
+				if (value == null)
+					throw new InvalidOperationException(Resources.NullStateHandler);
 				_StateHandler = value;
 			}
 		}
