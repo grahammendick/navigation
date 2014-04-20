@@ -260,16 +260,14 @@ namespace Navigation.Test
 		[TestMethod]
 		public void AttributesTest()
 		{
-			Assert.AreEqual(4, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
+			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
 			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["key"]);
 			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["title"]);
 			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[2]);
-			Assert.AreEqual("false", StateInfoConfig.Dialogs[6].States[0].Attributes[3]);
-			Assert.AreEqual(4, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
+			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
 			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["key"]);
 			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["title"]);
 			Assert.AreEqual("~/d6/s1.aspx", StateInfoConfig.Dialogs[6].States[1].Attributes["handler"]);
-			Assert.AreEqual("false", StateInfoConfig.Dialogs[6].States[1].Attributes[3]);
 		}
 
 #if NET40Plus
