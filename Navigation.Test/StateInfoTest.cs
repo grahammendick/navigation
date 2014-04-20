@@ -110,6 +110,18 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void DialogAttributesTest()
+		{
+			Assert.AreEqual(6, StateInfoConfig.Dialogs[0].Attributes.Count);
+			Assert.AreEqual("d0", StateInfoConfig.Dialogs[0].Attributes["key"]);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[0].Attributes[1]);
+			Assert.AreEqual("d0", StateInfoConfig.Dialogs[0].Attributes["title"]);
+			Assert.AreEqual(" d0 ", StateInfoConfig.Dialogs[0].Attributes["path"]);
+			Assert.AreEqual("", StateInfoConfig.Dialogs[0].Attributes["attr1"]);
+			Assert.AreEqual(" a ", StateInfoConfig.Dialogs[0].Attributes["attr2"]);
+		}
+
+		[TestMethod]
 		public void StateParentTest()
 		{
 			foreach (Dialog dialog in (IEnumerable<Dialog>) StateInfoConfig.Dialogs)
@@ -235,6 +247,17 @@ namespace Navigation.Test
 			Assert.AreEqual("st1", StateInfoConfig.Dialogs[0].States[1].Derived[0]);
 			Assert.AreEqual("bool", StateInfoConfig.Dialogs[0].States[1].Derived[1]);
 			Assert.AreEqual("long", StateInfoConfig.Dialogs[0].States[1].Derived[2]);
+		}
+
+		[TestMethod]
+		public void AttributesTest()
+		{
+			Assert.AreEqual(5, StateInfoConfig.Dialogs[0].States[0].Attributes.Count);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[0].States[0].Attributes["key"]);
+			Assert.AreEqual("~/d0/s0.aspx", StateInfoConfig.Dialogs[0].States[0].Attributes[1]);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[0].States[0].Attributes["title"]);
+			Assert.AreEqual("", StateInfoConfig.Dialogs[0].States[0].Attributes["attr3"]);
+			Assert.AreEqual(" a ", StateInfoConfig.Dialogs[0].States[0].Attributes["attr4"]);
 		}
 
 #if NET40Plus
