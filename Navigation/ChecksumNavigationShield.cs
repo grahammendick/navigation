@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Security.Cryptography;
 using System.Text;
-using Navigation.Properties;
 
 namespace Navigation
 {

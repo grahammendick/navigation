@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
 using System.Reflection;
-using Navigation.Properties;
 
 namespace Navigation
 {

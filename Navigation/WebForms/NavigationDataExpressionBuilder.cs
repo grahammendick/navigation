@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Compilation;
 using System.Web.UI;
-using Navigation.Properties;
 
 namespace Navigation
 {
