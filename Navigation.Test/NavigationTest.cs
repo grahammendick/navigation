@@ -955,14 +955,14 @@ namespace Navigation.Test
 #endif
 
 		[TestMethod]
-		public void NavigateDialogCustomStateHandler()
+		public void NavigateDialogCustomStateHandlerTest()
 		{
 			StateController.Navigate("d6");
 			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States["s0"], StateContext.State);
 		}
 
 		[TestMethod]
-		public void NavigateTransitionCustomStateHandler()
+		public void NavigateTransitionCustomStateHandlerTest()
 		{
 			StateController.Navigate("d6");
 			StateController.Navigate("t0");
@@ -970,7 +970,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateBackCustomStateHandler()
+		public void NavigateBackCustomStateHandlerTest()
 		{
 			StateController.Navigate("d6");
 			StateController.Navigate("t0");
@@ -979,7 +979,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void RefreshCustomStateHandler()
+		public void RefreshCustomStateHandlerTest()
 		{
 			StateController.Navigate("d6");
 			StateController.Navigate("t0");
@@ -988,7 +988,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateLinkCustomStateHandler()
+		public void NavigateLinkCustomStateHandlerTest()
 		{
 			StateController.Navigate("d6");
 			string link = StateController.GetNavigationLink("t0");
