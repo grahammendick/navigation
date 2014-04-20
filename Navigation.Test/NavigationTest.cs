@@ -969,6 +969,32 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[1], StateContext.State);
 		}
 
+		[TestMethod]
+		public void NavigateBackCustomStateHandler()
+		{
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[0], StateContext.State);
+		}
+
+		[TestMethod]
+		public void RefreshCustomStateHandler()
+		{
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.Refresh();
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[1], StateContext.State);
+		}
+
+		[TestMethod]
+		public void NavigateLinkCustomStateHandler()
+		{
+			StateController.Navigate("d6");
+			string link = StateController.GetNavigationLink("t0");
+			Assert.IsTrue(link.EndsWith("custom"));
+		}
+
 #if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]

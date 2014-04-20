@@ -18,13 +18,14 @@ namespace Navigation.Test
 #endif
 		public string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
 		{
-			return state.Attributes["handler"].Substring(1);
+			return state.Attributes["handler"].Substring(1) + "?previous=" + data[NavigationSettings.Config.PreviousStateIdKey] + "&custom";
 		}
 
 		public NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
 			NameValueCollection navigationData = new NameValueCollection();
 			navigationData[NavigationSettings.Config.StateIdKey] = state.Id;
+			navigationData[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
 			return navigationData;
 		}
 	}
