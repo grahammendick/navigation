@@ -64,6 +64,7 @@
     <Compile Include="CrumbTrailManager.cs" />
     <Compile Include="CrumbTrailPersister.cs" />
     <Compile Include="Dialog.cs" />
+    <Compile Include="WebForms\Dialog.cs" />
     <Compile Include="WebForms\HistoryNavigator.cs" />
     <Compile Include="IStateHandler.cs" />
     <Compile Include="ListConverter.cs" />

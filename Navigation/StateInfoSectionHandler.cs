@@ -42,7 +42,9 @@ namespace Navigation
 					dialog.Title = dialogNode.Attributes["title"] != null ? dialogNode.Attributes["title"].Value : string.Empty;
 					dialog.ResourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
 					dialog.ResourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
-					dialog.Path = dialogNode.Attributes["path"] != null ? dialogNode.Attributes["path"].Value.Trim() : string.Empty;
+					dialog.Attributes = new StateInfoCollection<string>();
+					foreach (XmlAttribute attribute in dialogNode.Attributes)
+						dialog.Attributes[attribute.Name] = attribute.Value;
 					if (dialogs[dialogNode.Attributes["key"].Value] != null)
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateDialogKey, dialogNode.Attributes["key"].Value));
 					dialogs.Add(dialogNode.Attributes["key"].Value, dialog);
