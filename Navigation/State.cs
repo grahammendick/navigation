@@ -9,8 +9,7 @@ namespace Navigation
 {
 	/// <summary>
 	/// Configures state information contained in the Navigation/StateInfo section. A child
-	/// of a <see cref="Navigation.Dialog"/> element it represents a <see cref="System.Web.UI.Page"/>
-	/// that can be visisted
+	/// of a <see cref="Navigation.Dialog"/> element, it represents the endpoint of a navigation
 	/// </summary>
 	[Serializable]
 	public partial class State
