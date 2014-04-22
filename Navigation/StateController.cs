@@ -46,7 +46,8 @@ namespace Navigation
 			try
 			{
 #if NET40Plus
-				NameValueCollection data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, context);
+				State state = StateContext.State;
+				NameValueCollection data = StateContext.State.StateHandler.GetNavigationData(state, context);
 #else
 				data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, data);
 #endif
@@ -59,7 +60,7 @@ namespace Navigation
 				StateContext.ReservedData.Clear();
 				StateContext.Data.SetDefaults(null);
 				StateContext.Data.Clear();
-				State state = StateContext.GetState(data[NavigationSettings.Config.StateIdKey]);
+				StateContext.StateId = state.Id;
 				foreach (string key in data)
 				{
 					if (key == NavigationSettings.Config.StateIdKey
