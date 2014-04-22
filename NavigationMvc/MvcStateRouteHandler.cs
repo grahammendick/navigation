@@ -25,6 +25,8 @@ namespace Navigation.Mvc
 		{
 			StateContext.StateId = State.Id;
 			StateController.SetStateContext(requestContext.HttpContext);
+			StateContext.Data["controller"] = null;
+			StateContext.Data["action"] = null;
 			return base.GetHttpHandler(requestContext);
 		}
 	}
