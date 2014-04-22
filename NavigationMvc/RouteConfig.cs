@@ -10,7 +10,6 @@ namespace Navigation.Mvc
 			if (StateInfoConfig.Dialogs == null)
 				return;
 			string controller, action;
-			RouteValueDictionary defaults;
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
 			{
@@ -23,11 +22,11 @@ namespace Navigation.Mvc
 						if (controller.Length != 0 && action.Length != 0 && state.Route.Length != 0)
 						{
 							state.StateHandler = new StateHandler();
-							defaults = StateInfoConfig.GetRouteDefaults(state, state.Route);
-							defaults["controller"] = controller;
-							defaults["action"] = action;
 							route = RouteTable.Routes.MapRoute("Mvc" + state.Id, state.Route);
-							route.Defaults = defaults;
+							route.Defaults = StateInfoConfig.GetRouteDefaults(state, state.Route);
+							route.Defaults["controller"] = controller;
+							route.Defaults["action"] = action;
+							route.DataTokens = new RouteValueDictionary() { { NavigationSettings.Config.StateIdKey, state.Id } };
 							route.RouteHandler = new MvcStateRouteHandler(state);
 						}
 					}
