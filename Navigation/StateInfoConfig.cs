@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+#if NET40Plus
 using System.Web.Routing;
+#endif
 
 namespace Navigation
 {
@@ -139,6 +141,13 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
+		/// <summary>
+		/// TODO
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="route"></param>
+		/// <returns></returns>
 		public static RouteValueDictionary GetRouteDefaults(State state, string route)
 		{
 			RouteValueDictionary defaults = new RouteValueDictionary();
@@ -150,5 +159,6 @@ namespace Navigation
 			}
 			return defaults;
 		}
+#endif
 	}
 }

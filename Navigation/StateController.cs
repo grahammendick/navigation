@@ -45,17 +45,17 @@ namespace Navigation
 		{
 			try
 			{
-#if NET40Plus
 				State state = StateContext.State;
-				NameValueCollection data = StateContext.State.StateHandler.GetNavigationData(state, context);
+#if NET40Plus
+				NameValueCollection data = state.StateHandler.GetNavigationData(state, context);
 #else
-				data = StateContext.State.StateHandler.GetNavigationData(StateContext.State, data);
+				data = state.StateHandler.GetNavigationData(state, data);
 #endif
 				RemoveDefaultsAndDerived(data);
 #if NET35Plus
-				data = StateContext.ShieldDecode(data, false, StateContext.State);
+				data = StateContext.ShieldDecode(data, false, state);
 #else
-				data = StateContext.ShieldDecode(data, StateContext.State);
+				data = StateContext.ShieldDecode(data, state);
 #endif
 				StateContext.ReservedData.Clear();
 				StateContext.Data.SetDefaults(null);
@@ -76,7 +76,7 @@ namespace Navigation
 						StateContext.Data[key] = CrumbTrailManager.Parse(key, data[key], state);
 					}
 				}
-				StateContext.Data.SetDefaults(StateContext.State.Defaults);
+				StateContext.Data.SetDefaults(state.Defaults);
 				CrumbTrailManager.BuildCrumbTrail();
 			}
 			catch (ConfigurationErrorsException)
