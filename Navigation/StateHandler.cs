@@ -42,15 +42,16 @@ namespace Navigation
 		public virtual NameValueCollection GetNavigationData(State state, HttpContextBase context)
 		{
 			NameValueCollection queryData = new NameValueCollection();
-			foreach (string key in context.Request.RequestContext.RouteData.DataTokens.Keys)
+			RouteData routeData = context.Request.RequestContext.RouteData;
+			if (routeData.DataTokens[NavigationSettings.Config.StateIdKey] != null)
 			{
-				queryData.Add(key, (string)context.Request.RequestContext.RouteData.DataTokens[key]);
+				queryData[NavigationSettings.Config.StateIdKey] = (string)routeData.DataTokens[NavigationSettings.Config.StateIdKey];
 			}
-			foreach (string key in context.Request.RequestContext.RouteData.Values.Keys)
+			foreach (string key in routeData.Values.Keys)
 			{
-				if (context.Request.RequestContext.RouteData.Values[key] != null)
+				if (routeData.Values[key] != null)
 				{
-					queryData.Add(key, (string)context.Request.RequestContext.RouteData.Values[key]);
+					queryData.Add(key, (string)routeData.Values[key]);
 				}
 			}
 			foreach (string key in context.Request.QueryString)
