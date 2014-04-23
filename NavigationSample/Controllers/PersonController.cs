@@ -8,5 +8,10 @@ namespace Navigation.Sample.Controllers
         {
             return View("Listing", new PersonSearch().Search(null, null, null, 0, 10));
         }
+
+		public ActionResult GetDetails(int id)
+		{
+			return View("Details", new PersonSearch().GetDetails(id));
+		}
 	}
 }

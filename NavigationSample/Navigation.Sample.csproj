@@ -105,6 +105,7 @@
     <Content Include="packages.config" />
     <Content Include="Views\Person\Listing.cshtml" />
     <Content Include="Views\web.config" />
+    <Content Include="Views\Person\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

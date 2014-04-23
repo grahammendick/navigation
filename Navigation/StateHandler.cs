@@ -9,7 +9,7 @@ namespace Navigation
 	/// Implementation of <see cref="Navigation.IStateHandler"/> that builds and parses
 	/// navigation links for a routed <see cref="Navigation.State"/>
 	/// </summary>
-	public class StateHandler : IStateHandler
+	public abstract class StateHandler : IStateHandler
 	{
 		/// <summary>
 		/// Gets a routed link that navigates to the <paramref name="state"/> passing 
@@ -67,11 +67,7 @@ namespace Navigation
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="context">The current context</param>
 		/// <returns>The route name</returns>
-		protected virtual string GetRoute(State state, HttpContextBase context)
-		{
-			return state.Route;
-		}
-
+		protected abstract string GetRoute(State state, HttpContextBase context);
 	}
 }
 #endif
