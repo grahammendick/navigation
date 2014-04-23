@@ -26,6 +26,7 @@ namespace Navigation.Mvc
 							route.Defaults = StateInfoConfig.GetRouteDefaults(state, state.Route);
 							route.Defaults["controller"] = controller;
 							route.Defaults["action"] = action;
+							route.DataTokens = new RouteValueDictionary() { { NavigationSettings.Config.StateIdKey, state.Id } };
 							route.RouteHandler = new MvcStateRouteHandler(state);
 						}
 					}
