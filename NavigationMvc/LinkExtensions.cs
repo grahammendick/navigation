@@ -18,13 +18,19 @@ namespace Navigation.Mvc
 
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, IDictionary<string, object> htmlAttributes)
 		{
+			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationLink(action, toData), htmlAttributes);
+		}
+
+		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, IDictionary<string, object> htmlAttributes)
+		{
 			TagBuilder tagBuilder = new TagBuilder("a")
 			{
 				InnerHtml = !string.IsNullOrEmpty(linkText) ? HttpUtility.HtmlEncode(linkText) : string.Empty
 			};
 			tagBuilder.MergeAttributes<string, object>(htmlAttributes);
-			tagBuilder.MergeAttribute("href", StateController.GetNavigationLink(action, toData));
+			tagBuilder.MergeAttribute("href", url);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+
 		}
 	}
 }
