@@ -7,6 +7,6 @@
     <title>Listing</title>
 </head>
 <body>
-    <a href=@Navigation.StateController.GetNavigationLink("Select", new Navigation.NavigationData { { "id", 1 } })>Select</a>
+    @Html.NavigationLink("Select", "Select", new NavigationData { { "id", 1 } })
 </body>
 </html>

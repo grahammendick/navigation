@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LinkExtensions.cs" />
     <Compile Include="MvcStateHandler.cs" />
     <Compile Include="MvcStateRouteHandler.cs" />
     <Compile Include="NavigationDataValueProvider.cs" />
