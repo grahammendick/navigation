@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Navigation.Mvc
@@ -12,10 +13,16 @@ namespace Navigation.Mvc
 
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData)
 		{
+			return NavigationLink(htmlHelper, linkText, action, toData, null);
+		}
+
+		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, IDictionary<string, object> htmlAttributes)
+		{
 			TagBuilder tagBuilder = new TagBuilder("a")
 			{
 				InnerHtml = !string.IsNullOrEmpty(linkText) ? HttpUtility.HtmlEncode(linkText) : string.Empty
 			};
+			tagBuilder.MergeAttributes<string, object>(htmlAttributes);
 			tagBuilder.MergeAttribute("href", StateController.GetNavigationLink(action, toData));
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
