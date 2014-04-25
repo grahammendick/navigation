@@ -202,7 +202,7 @@ namespace Navigation
 			}
 			internal set
 			{
-				_Route = value;
+				_Route = StringComparer.OrdinalIgnoreCase.Compare(value, "~") != 0 ? value : string.Empty;
 			}
 		}
 #endif

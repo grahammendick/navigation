@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace Navigation
@@ -51,7 +52,10 @@ namespace Navigation
 			get
 			{
 				if (_MobileRoute == null)
-					_MobileRoute = Attributes["mobileRoute"] != null ? Attributes["mobileRoute"] : string.Empty;
+				{
+					bool rootRoute = StringComparer.OrdinalIgnoreCase.Compare(Attributes["mobileRoute"], "~") == 0;
+					_MobileRoute = (Attributes["mobileRoute"] != null && !rootRoute) ? Attributes["mobileRoute"] : string.Empty;
+				}
 				return _MobileRoute;
 			}
 		}

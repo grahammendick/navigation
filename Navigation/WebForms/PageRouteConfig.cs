@@ -34,7 +34,7 @@ namespace Navigation
 				{
 					foreach (State state in dialog.States)
 					{
-						if (state.Page.Length != 0 && state.Route.Length != 0)
+						if (state.Page.Length != 0 && state.Attributes["route"] != null && state.Attributes["route"].Length != 0)
 						{
 							route = RouteTable.Routes.MapPageRoute(state.GetRouteName(false), state.GetRoute(false), state.GetPage(false), state.CheckPhysicalUrlAccess,
 								GetDefaults(state, state.GetRoute(false)), null,
@@ -47,7 +47,7 @@ namespace Navigation
 									BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] { state }, null);
 #endif
 						}
-						if (state.Page.Length != 0 && state.MobileRoute.Length != 0)
+						if (state.Page.Length != 0 && state.Attributes["mobileRoute"] != null && state.Attributes["mobileRoute"].Length != 0)
 							RouteTable.Routes.MapPageRoute(state.GetRouteName(true), state.GetRoute(true), state.GetPage(true), state.CheckPhysicalUrlAccess,
 								GetDefaults(state, state.GetRoute(true)), null,
 								new RouteValueDictionary() { 

@@ -49,10 +49,7 @@ namespace Navigation
 		protected override string GetRoute(State state, HttpContextBase context)
 		{
 			bool mobile = GetMobile(context);
-			if (state.GetRoute(mobile).Length == 0 || RouteTable.Routes[state.GetRouteName(mobile)] == null)
-				return null;
-			else
-				return state.GetRouteName(mobile);
+			return RouteTable.Routes[state.GetRouteName(mobile)] != null ? state.GetRouteName(mobile) : null;
 		}
 #else
 		/// <summary>

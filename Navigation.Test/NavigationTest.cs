@@ -915,6 +915,15 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateLinkRootRouteTest()
+		{
+			StateController.Navigate("d5");
+			StateController.Navigate("t0");
+			string link = StateController.GetNavigationLink("t0");
+			Assert.IsTrue(link.StartsWith("/?"));
+		}
+
+		[TestMethod]
 		public void NavigateLinkDefaultsRouteTest()
 		{
 			StateController.Navigate("d3");
@@ -993,6 +1002,15 @@ namespace Navigation.Test
 			StateController.Navigate("d6");
 			string link = StateController.GetNavigationLink("t0");
 			Assert.IsTrue(link.EndsWith("custom"));
+		}
+
+		[TestMethod]
+		public void NavigateTransitionRootRouteTest()
+		{
+			StateController.Navigate("d5");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d5"].States["s2"], StateContext.State);
 		}
 
 #if NET35Plus
