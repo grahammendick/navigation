@@ -51,7 +51,7 @@ namespace Navigation
 			get
 			{
 				if (_MobileRoute == null)
-					_MobileRoute = Attributes["mobileRoute"] != null ? Attributes["mobileRoute"].Trim() : string.Empty;
+					_MobileRoute = Attributes["mobileRoute"] != null ? Attributes["mobileRoute"] : string.Empty;
 				return _MobileRoute;
 			}
 		}

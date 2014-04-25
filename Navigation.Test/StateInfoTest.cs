@@ -287,13 +287,15 @@ namespace Navigation.Test
 			Assert.AreEqual("m/d3s0", StateInfoConfig.Dialogs[3].States[0].MobileRoute);
 			Assert.AreEqual("d3s1/{string}/{short}", StateInfoConfig.Dialogs[3].States[1].Route);
 			Assert.AreEqual(string.Empty, StateInfoConfig.Dialogs[3].States[1].MobileRoute);
+			Assert.AreEqual(" d4s5", StateInfoConfig.Dialogs[4].States[5].Route);
+			Assert.AreEqual("md4s5 ", StateInfoConfig.Dialogs[4].States[5].MobileRoute);
 		}
 
 		[TestMethod]
 		public void PageRouteMapTest()
 		{
 			StateController.Navigate("d0");
-			Assert.AreEqual(19, RouteTable.Routes.Count);
+			Assert.AreEqual(20, RouteTable.Routes.Count);
 			Assert.IsNotNull(RouteTable.Routes["3-0"]);
 			Assert.IsNotNull(RouteTable.Routes["Mobile3-0"]);
 			Assert.IsNotNull(RouteTable.Routes["3-1"]);
