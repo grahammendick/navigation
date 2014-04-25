@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+#if NET40Plus
+using System.Web.Routing;
+#endif
 
 namespace Navigation
 {
@@ -12,6 +15,9 @@ namespace Navigation
 	public static partial class StateInfoConfig
 	{
 		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
+		private const string PARAMETER = "{{{0}}}";
+		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
+
 
 		private static Dictionary<string, Type> CreateKeyToTypeList()
 		{
@@ -134,5 +140,25 @@ namespace Navigation
 				return (StateInfoCollection<Dialog>)ConfigurationManager.GetSection("Navigation/StateInfo");
 			}
 		}
+
+#if NET40Plus
+		/// <summary>
+		/// TODO
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="route"></param>
+		/// <returns></returns>
+		public static RouteValueDictionary GetRouteDefaults(State state, string route)
+		{
+			RouteValueDictionary defaults = new RouteValueDictionary();
+			foreach (string key in state.FormattedDefaults.Keys)
+			{
+				if (route.IndexOf(string.Format(CultureInfo.InvariantCulture, PARAMETER, key), StringComparison.Ordinal) >= 0
+					|| route.IndexOf(string.Format(CultureInfo.InvariantCulture, OPTIONAL_PARAMETER, key), StringComparison.Ordinal) >= 0)
+					defaults.Add(key, state.FormattedDefaults[key]);
+			}
+			return defaults;
+		}
+#endif
 	}
 }
