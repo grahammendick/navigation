@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4AB8290D-41D9-4BC0-B7B5-A430B067BE65}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Navigation</RootNamespace>
+    <AssemblyName>Navigation</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET35Plus;NET40Plus;NET45Plus</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <DocumentationFile>bin\Debug\Navigation.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Navigation.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChecksumNavigationShield.cs" />
+    <Compile Include="ConverterFactory.cs" />
+    <Compile Include="ConverterInfoSectionHandler.cs" />
+    <Compile Include="Crumb.cs" />
+    <Compile Include="Mock\MockHttpBrowserCapabilities.cs" />
+    <Compile Include="WebForms\CrumbTrailDataSource.cs" />
+    <Compile Include="WebForms\CrumbTrailDataSourceView.cs" />
+    <Compile Include="CrumbTrailManager.cs" />
+    <Compile Include="CrumbTrailPersister.cs" />
+    <Compile Include="Dialog.cs" />
+    <Compile Include="WebForms\Dialog.cs" />
+    <Compile Include="WebForms\HistoryNavigator.cs" />
+    <Compile Include="IStateHandler.cs" />
+    <Compile Include="ListConverter.cs" />
+    <Compile Include="Mock\MockNavigationContext.cs" />
+    <Compile Include="Mock\MockNavigationRequest.cs" />
+    <Compile Include="Mock\MockNavigationResponse.cs" />
+    <Compile Include="NavigationData.cs" />
+    <Compile Include="WebForms\NavigationDataAttribute.cs" />
+    <Compile Include="WebForms\NavigationDataControlBuilderInterceptor.cs" />
+    <Compile Include="WebForms\NavigationDataExpressionBuilder.cs" />
+    <Compile Include="NavigationDataItem.cs" />
+    <Compile Include="WebForms\NavigationDataParameter.cs" />
+    <Compile Include="WebForms\NavigationDataSource.cs" />
+    <Compile Include="WebForms\NavigationDataSourceView.cs" />
+    <Compile Include="WebForms\NavigationDataTrigger.cs" />
+    <Compile Include="WebForms\NavigationDataValueProvider.cs" />
+    <Compile Include="NavigationDirection.cs" />
+    <Compile Include="WebForms\NavigationHyperLink.cs" />
+    <Compile Include="NavigationMode.cs" />
+    <Compile Include="NavigationSettings.cs" />
+    <Compile Include="NavigationShield.cs" />
+    <Compile Include="WebForms\Pager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\PageStateHandler.cs" />
+    <Compile Include="WebForms\RefreshHyperLinkAdapter.cs" />
+    <Compile Include="SessionCrumbTrailPersister.cs" />
+    <Compile Include="WebForms\Sorter.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="WebForms\State.cs" />
+    <Compile Include="WebForms\StateAdapter.cs" />
+    <Compile Include="StateContext.cs" />
+    <Compile Include="StateController.cs" />
+    <Compile Include="StateDisplayInfo.cs" />
+    <Compile Include="StateHandler.cs" />
+    <Compile Include="StateInfoCollection.cs" />
+    <Compile Include="StateInfoConfig.cs" />
+    <Compile Include="StateInfoSectionHandler.cs" />
+    <Compile Include="WebForms\StateController.cs" />
+    <Compile Include="WebForms\PageRouteConfig.cs" />
+    <Compile Include="WebForms\StateRouteHandler.cs" />
+    <Compile Include="Transition.cs" />
+    <Compile Include="UrlException.cs" />
+    <Compile Include="WebForms\ViewSwitcher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Navigation</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WebForms\HTML5History.debug.js">
+      <LogicalName>Navigation.HTML5History.debug.js</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebForms\HTML5History.js">
+      <LogicalName>Navigation.HTML5History.js</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
