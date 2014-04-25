@@ -69,6 +69,7 @@
     <Compile Include="LinkExtensions.cs" />
     <Compile Include="MvcStateHandler.cs" />
     <Compile Include="MvcStateRouteHandler.cs" />
+    <Compile Include="NavigateResult.cs" />
     <Compile Include="NavigationDataValueProvider.cs" />
     <Compile Include="NavigationDataValueProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
