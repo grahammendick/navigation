@@ -31,6 +31,21 @@ namespace Navigation.Mvc
 			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationBackLink(distance), htmlAttributes);
 		}
 
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText)
+		{
+			return RefreshLink(htmlHelper, linkText, null);
+		}
+
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData)
+		{
+			return RefreshLink(htmlHelper, linkText, toData, null);
+		}
+
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, IDictionary<string, object> htmlAttributes)
+		{
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(toData), htmlAttributes);
+		}
+
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, IDictionary<string, object> htmlAttributes)
 		{
 			TagBuilder tagBuilder = new TagBuilder("a")
