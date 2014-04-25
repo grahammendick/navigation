@@ -20,7 +20,7 @@ namespace Navigation.Mvc
 					{
 						controller = state.Attributes["controller"] != null ? state.Attributes["controller"].Trim() : string.Empty;
 						action = state.Attributes["action"] != null ? state.Attributes["action"].Trim() : string.Empty;
-						if (controller.Length != 0 && action.Length != 0 && state.Route.Length != 0)
+						if (controller.Length != 0 && action.Length != 0)
 						{
 							state.StateHandler = new MvcStateHandler();
 							route = RouteTable.Routes.MapRoute("Mvc" + state.Id, state.Route);
