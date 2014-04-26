@@ -8,12 +8,17 @@ namespace Navigation.Mvc
 	{
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action)
 		{
-			return NavigationLink(htmlHelper, linkText, action, null);
+			return NavigationLink(htmlHelper, linkText, action, null, null);
 		}
 
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData)
 		{
 			return NavigationLink(htmlHelper, linkText, action, toData, null);
+		}
+
+		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, IDictionary<string, object> htmlAttributes)
+		{
+			return NavigationLink(htmlHelper, linkText, action, null, htmlAttributes);
 		}
 
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, IDictionary<string, object> htmlAttributes)
@@ -33,12 +38,17 @@ namespace Navigation.Mvc
 
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText)
 		{
-			return RefreshLink(htmlHelper, linkText, null);
+			return RefreshLink(htmlHelper, linkText, null, null);
 		}
 
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData)
 		{
 			return RefreshLink(htmlHelper, linkText, toData, null);
+		}
+
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, IDictionary<string, object> htmlAttributes)
+		{
+			return RefreshLink(htmlHelper, linkText, null, htmlAttributes);
 		}
 
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, IDictionary<string, object> htmlAttributes)
