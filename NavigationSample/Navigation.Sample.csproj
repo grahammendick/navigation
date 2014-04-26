@@ -140,6 +140,7 @@
     <Compile Include="Listing.aspx.designer.cs">
       <DependentUpon>Listing.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\PersonSearchModel.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
