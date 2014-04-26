@@ -9,7 +9,7 @@ namespace Navigation.Mvc
 		{
 			if (StateInfoConfig.Dialogs == null)
 				return;
-			ValueProviderFactories.Factories.Insert(0, new NavigationDataValueProviderFactory());
+			ValueProviderFactories.Factories.Insert(3, new NavigationDataValueProviderFactory());
 			string controller, action;
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
