@@ -8,12 +8,17 @@ namespace Navigation.Mvc
 	{
 		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action)
 		{
-			return BeginNavigationForm(htmlHelper, action, null);
+			return BeginNavigationForm(htmlHelper, action, null, null);
 		}
 
 		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, NavigationData toData)
 		{
 			return BeginNavigationForm(htmlHelper, action, toData, null);
+		}
+
+		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, IDictionary<string, object> htmlAttributes)
+		{
+			return BeginNavigationForm(htmlHelper, action, null, htmlAttributes);
 		}
 
 		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, NavigationData toData, IDictionary<string, object> htmlAttributes)
