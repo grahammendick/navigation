@@ -70,10 +70,12 @@
     <Compile Include="LinkExtensions.cs" />
     <Compile Include="MvcStateHandler.cs" />
     <Compile Include="MvcStateRouteHandler.cs" />
+    <Compile Include="NavigateBackResult.cs" />
     <Compile Include="NavigateResult.cs" />
     <Compile Include="NavigationDataValueProvider.cs" />
     <Compile Include="NavigationDataValueProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefreshResult.cs" />
     <Compile Include="RouteConfig.cs" />
   </ItemGroup>
   <ItemGroup>
