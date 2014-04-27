@@ -19,6 +19,7 @@ namespace Navigation.Mvc.Test
 		public static void AddStateRoutes(TestContext context)
 		{
 			RouteConfig.AddStateRoutes();
+			StateController.Navigate("d0");
 		}
 
 		[TestMethod]
