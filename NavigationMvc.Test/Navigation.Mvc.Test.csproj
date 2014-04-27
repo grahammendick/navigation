@@ -87,6 +87,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ActionResultTest.cs" />
+    <Compile Include="NavigationDataValueProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
