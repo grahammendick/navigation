@@ -28,5 +28,14 @@ namespace Navigation.Mvc.Test
 			result.ExecuteResult(ControllerContext);
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0], StateContext.State);
 		}
+
+		[TestMethod]
+		public void NavigateResultTransitionTest()
+		{
+			StateController.Navigate("d0");
+			NavigateResult result = new NavigateResult("t0");
+			result.ExecuteResult(ControllerContext);
+			Assert.AreEqual("s1", StateContext.State.Key);
+		}
 	}
 }
