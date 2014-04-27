@@ -6,11 +6,7 @@ namespace Navigation.Sample.Controllers
 {
 	public class PersonController : Controller
 	{
-		public ActionResult Index(
-			PersonSearchModel model,
-			string sortExpression,
-			int startRowIndex,
-			int maximumRows)
+		public ActionResult Index(PersonSearchModel model, string sortExpression, int startRowIndex, int maximumRows)
 		{
 			DateTime outDate;
 			if (model.MinDateOfBirth != null && !DateTime.TryParse(model.MinDateOfBirth, out outDate))
