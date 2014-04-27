@@ -7,27 +7,15 @@ namespace Navigation.Sample.Models
 	{
 		public string Name
 		{
-			get
-			{
-				return StateContext.Bag.name;
-			}
-			set
-			{
-				StateContext.Bag.name = value;
-			}
+			get;
+			set;
 		}
 
 		[DisplayName("Min Date of Birth")]
 		public string MinDateOfBirth
 		{
-			get
-			{
-				return StateContext.Bag.minDateOfBirth;
-			}
-			set
-			{
-				StateContext.Bag.minDateOfBirth = value;
-			}
+			get;
+			set;
 		}
 
 		public IEnumerable<Person> People

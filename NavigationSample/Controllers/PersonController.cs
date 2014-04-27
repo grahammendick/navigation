@@ -1,4 +1,5 @@
 ﻿using Navigation.Sample.Models;
+using System;
 using System.Web.Mvc;
 
 namespace Navigation.Sample.Controllers
@@ -11,7 +12,16 @@ namespace Navigation.Sample.Controllers
 			int startRowIndex,
 			int maximumRows)
 		{
-			model.People = new PersonSearch().Search(model.Name, model.MinDateOfBirth, sortExpression, startRowIndex, maximumRows);
+			DateTime outDate;
+			if (model.MinDateOfBirth != null && !DateTime.TryParse(model.MinDateOfBirth, out outDate))
+				ModelState.AddModelError("MinDateOfBirth", "date error");
+			else
+			{
+				StateContext.Bag.name = model.Name;
+				StateContext.Bag.minDateOfBirth = model.MinDateOfBirth;
+			}
+			model.People = new PersonSearch().Search(StateContext.Bag.name, StateContext.Bag.minDateOfBirth, 
+				sortExpression, startRowIndex, maximumRows);
 			return View("Listing", model);
 		}
 
