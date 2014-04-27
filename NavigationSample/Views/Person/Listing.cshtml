@@ -11,6 +11,7 @@
         @Html.TextBoxFor(m => m.Name)
         @Html.LabelFor(m => m.MinDateOfBirth)
         @Html.TextBoxFor(m => m.MinDateOfBirth)
+        @Html.ValidationMessageFor(m => m.MinDateOfBirth)
         <input type="submit" value="Search"/>
     }
     <table cellspacing="0" border="1" style="border-collapse:collapse;">
