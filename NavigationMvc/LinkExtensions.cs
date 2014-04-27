@@ -16,12 +16,12 @@ namespace Navigation.Mvc
 			return NavigationLink(htmlHelper, linkText, action, toData, null);
 		}
 
-		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, IDictionary<string, object> htmlAttributes)
+		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, object htmlAttributes)
 		{
 			return NavigationLink(htmlHelper, linkText, action, null, htmlAttributes);
 		}
 
-		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, IDictionary<string, object> htmlAttributes)
+		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, object htmlAttributes)
 		{
 			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationLink(action, toData), htmlAttributes);
 		}
@@ -31,7 +31,7 @@ namespace Navigation.Mvc
 			return NavigationBackLink(htmlHelper, linkText, distance, null);
 		}
 
-		public static MvcHtmlString NavigationBackLink(this HtmlHelper htmlHelper, string linkText, int distance, IDictionary<string, object> htmlAttributes)
+		public static MvcHtmlString NavigationBackLink(this HtmlHelper htmlHelper, string linkText, int distance, object htmlAttributes)
 		{
 			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationBackLink(distance), htmlAttributes);
 		}
@@ -46,23 +46,23 @@ namespace Navigation.Mvc
 			return RefreshLink(htmlHelper, linkText, toData, null);
 		}
 
-		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, IDictionary<string, object> htmlAttributes)
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, object htmlAttributes)
 		{
 			return RefreshLink(htmlHelper, linkText, null, htmlAttributes);
 		}
 
-		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, IDictionary<string, object> htmlAttributes)
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, object htmlAttributes)
 		{
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(toData), htmlAttributes);
 		}
 
-		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, IDictionary<string, object> htmlAttributes)
+		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes)
 		{
 			TagBuilder tagBuilder = new TagBuilder("a")
 			{
 				InnerHtml = !string.IsNullOrEmpty(linkText) ? HttpUtility.HtmlEncode(linkText) : string.Empty
 			};
-			tagBuilder.MergeAttributes<string, object>(htmlAttributes);
+			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("href", url);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 

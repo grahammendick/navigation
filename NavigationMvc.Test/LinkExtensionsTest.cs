@@ -34,7 +34,22 @@ namespace Navigation.Mvc.Test
 		public void NavigationLinkDataTest()
 		{
 			StateController.Navigate("d0");
-			Assert.AreEqual("<a href=\"/r1?a=1\">link</a>", HtmlHelper.NavigationLink("link", "t0", new NavigationData { { "a", "1" } }).ToHtmlString());
+			Assert.AreEqual("<a href=\"/r1?a=1\">link</a>", HtmlHelper.NavigationLink("link", "t0", 
+				new NavigationData { { "a", "1" } }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void NavigationLinkAttributesTest()
+		{
+			Assert.AreEqual("<a href=\"/\" title=\"details\">link</a>", HtmlHelper.NavigationLink("link", "d0", 
+				new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void NavigationLinkDataAndAttributesTest()
+		{
+			Assert.AreEqual("<a href=\"/?a=1\" title=\"details\">link</a>", HtmlHelper.NavigationLink("link", "d0", 
+				new NavigationData { { "a", "1" } }, new { title = "details" }).ToHtmlString());
 		}
 	}
 }
