@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace Navigation.Mvc
 {
-	class RefreshResult : ActionResult
+	public class RefreshResult : ActionResult
 	{
 		public RefreshResult() : this(null)
 		{
