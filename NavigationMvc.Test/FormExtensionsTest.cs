@@ -21,8 +21,9 @@ namespace Navigation.Mvc.Test
 		public void NavigationFormTest()
 		{
 			StringBuilder tagBuilder = new StringBuilder();
-			GetHtmlHelper(tagBuilder).BeginNavigationForm("d0");
-			Assert.AreEqual("<form action=\"/\" method=\"post\">", tagBuilder.ToString());
+			StateController.Navigate("d0");
+			GetHtmlHelper(tagBuilder).BeginNavigationForm("t0");
+			Assert.AreEqual("<form action=\"/r1\" method=\"post\">", tagBuilder.ToString());
 		}
 
 		[TestMethod]
