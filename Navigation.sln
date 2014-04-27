@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Sample.Test", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Mvc", "NavigationMvc\Navigation.Mvc.csproj", "{C8FA6A79-41B1-4C63-9975-3B7A2E60951B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Mvc.Test", "NavigationMvc.Test\Navigation.Mvc.Test.csproj", "{6228F45D-7CA9-40BC-B0D4-A4830FEE6582}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{C8FA6A79-41B1-4C63-9975-3B7A2E60951B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8FA6A79-41B1-4C63-9975-3B7A2E60951B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8FA6A79-41B1-4C63-9975-3B7A2E60951B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6228F45D-7CA9-40BC-B0D4-A4830FEE6582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6228F45D-7CA9-40BC-B0D4-A4830FEE6582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6228F45D-7CA9-40BC-B0D4-A4830FEE6582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6228F45D-7CA9-40BC-B0D4-A4830FEE6582}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
