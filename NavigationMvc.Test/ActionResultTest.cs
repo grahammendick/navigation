@@ -57,5 +57,27 @@ namespace Navigation.Mvc.Test
 			result.ExecuteResult(ControllerContext);
 			Assert.AreEqual("s1", StateContext.State.Key);
 		}
+
+		[TestMethod]
+		public void NavigateRefreshResultTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
+			RefreshResult result = new RefreshResult();
+			result.ExecuteResult(ControllerContext);
+			Assert.AreEqual("s1", StateContext.State.Key);
+			Assert.IsNull(StateContext.Bag.a);
+		}
+
+		[TestMethod]
+		public void NavigateRefreshResultDataTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			RefreshResult result = new RefreshResult(new NavigationData { { "a", 1 } });
+			result.ExecuteResult(ControllerContext);
+			Assert.AreEqual("s1", StateContext.State.Key);
+			Assert.AreEqual(1, StateContext.Bag.a);
+		}
 	}
 }
