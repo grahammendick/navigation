@@ -78,5 +78,48 @@ namespace Navigation.Mvc.Test
 			Assert.AreEqual("<a href=\"/r1\" title=\"details\">link</a>", HtmlHelper.NavigationBackLink("link", 1,
 				new { title = "details" }).ToHtmlString());
 		}
+
+		[TestMethod]
+		public void RefreshLinkTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a href=\"/r1\">link</a>", HtmlHelper.RefreshLink("link").ToHtmlString());
+		}
+
+		[TestMethod]
+		public void RefreshLinkBlankTetTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a href=\"/r1\"></a>", HtmlHelper.RefreshLink(null).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void RefreshLinkDataTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a href=\"/r1?a=1\">link</a>", HtmlHelper.RefreshLink("link",
+				new NavigationData { { "a", "1" } }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void RefreshLinkAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a href=\"/r1\" title=\"details\">link</a>", HtmlHelper.RefreshLink("link",
+				new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void RefreshLinkDataAndAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a href=\"/r1?a=1\" title=\"details\">link</a>", HtmlHelper.RefreshLink("link",
+				new NavigationData { { "a", "1" } }, new { title = "details" }).ToHtmlString());
+		}
 	}
 }
