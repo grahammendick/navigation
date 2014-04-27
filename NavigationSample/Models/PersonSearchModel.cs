@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Navigation.Sample.Models
 {
@@ -14,8 +15,21 @@ namespace Navigation.Sample.Models
 			{
 				StateContext.Bag.name = value;
 			}
-
 		}
+
+		[DisplayName("Min Date of Birth")]
+		public string MinDateOfBirth
+		{
+			get
+			{
+				return StateContext.Bag.minDateOfBirth;
+			}
+			set
+			{
+				StateContext.Bag.minDateOfBirth = value;
+			}
+		}
+
 		public IEnumerable<Person> People
 		{
 			get;

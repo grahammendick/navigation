@@ -11,7 +11,7 @@ namespace Navigation.Sample.Controllers
 			int startRowIndex,
 			int maximumRows)
 		{
-			model.People = new PersonSearch().Search(model.Name, null, sortExpression, startRowIndex, maximumRows);
+			model.People = new PersonSearch().Search(model.Name, model.MinDateOfBirth, sortExpression, startRowIndex, maximumRows);
 			return View("Listing", model);
 		}
 
