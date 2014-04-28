@@ -5,7 +5,7 @@ using System.Web.Mvc;
 namespace Navigation.Mvc
 {
 	/// <summary>
-	/// Represents support for HTML in a Navigation application
+	/// Represents support for HTML in a navigation application
 	/// </summary>
 	public static class LinkExtensions
 	{
