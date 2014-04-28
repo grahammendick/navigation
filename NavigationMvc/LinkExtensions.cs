@@ -1,11 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Navigation.Mvc
 {
+	/// <summary>
+	/// Represents support for Navigation HTML in an application
+	/// </summary>
 	public static class LinkExtensions
 	{
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetNavigationLink(string, NavigationData)"/>
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="linkText">The inner text of the anchor element</param>
+		/// <param name="action">The key of a child <see cref="Transition"/> or the key of a 
+		/// <see cref="Dialog"/></param>
+		/// <returns>An anchor element (a element).</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="action"/> is null</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty;
+		/// <paramref name="action"/> does not match the key of a child <see cref="Transition"/> or 
+		/// the key of a <see cref="Dialog"/>; or there is <see cref="NavigationData"/> that cannot 
+		/// be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action)
 		{
 			return NavigationLink(htmlHelper, linkText, action, null, null);
@@ -58,9 +75,13 @@ namespace Navigation.Mvc
 
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes)
 		{
+			if (string.IsNullOrEmpty(linkText))
+			{
+				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
+			}
 			TagBuilder tagBuilder = new TagBuilder("a")
 			{
-				InnerHtml = !string.IsNullOrEmpty(linkText) ? HttpUtility.HtmlEncode(linkText) : string.Empty
+				InnerHtml = HttpUtility.HtmlEncode(linkText)
 			};
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("href", url);
