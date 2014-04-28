@@ -496,11 +496,6 @@ namespace Navigation
 						HttpContext.Current.Response.Redirect(url, true);
 						break;
 					}
-				case (NavigationMode.ClientNoAbort):
-					{
-						HttpContext.Current.Response.Redirect(url, false);
-						break;
-					}
 				case (NavigationMode.Server):
 					{
 						HttpContext.Current.Server.Transfer(url);
