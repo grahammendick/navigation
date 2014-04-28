@@ -31,7 +31,7 @@ namespace Navigation.Mvc
 				throw new InvalidOperationException();
 			}
 			context.Controller.TempData.Keep();
-			StateController.Refresh(ToData);
+			StateController.Refresh(ToData, NavigationMode.ClientNoAbort);
 		}
 	}
 }
