@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Web.Mvc;
 
 namespace Navigation.Mvc.Test
@@ -24,9 +25,10 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NavigationLinkBlankTextTest()
 		{
-			Assert.AreEqual("<a href=\"/\"></a>", HtmlHelper.NavigationLink(null, "d0").ToHtmlString());
+			HtmlHelper.NavigationLink(null, "d0");
 		}
 
 		[TestMethod]
@@ -61,12 +63,13 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NavigationBackLinkBlankTextTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			Assert.AreEqual("<a href=\"/r1\"></a>", HtmlHelper.NavigationBackLink("", 1).ToHtmlString());
+			HtmlHelper.NavigationBackLink("", 1);
 		}
 
 		[TestMethod]
@@ -88,11 +91,12 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void RefreshLinkBlankTetTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
-			Assert.AreEqual("<a href=\"/r1\"></a>", HtmlHelper.RefreshLink(null).ToHtmlString());
+			HtmlHelper.RefreshLink(null);
 		}
 
 		[TestMethod]
