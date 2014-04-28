@@ -7,8 +7,14 @@
 	{
 		/// <summary>
 		/// Navigates via a <see cref="System.Web.HttpResponse.Redirect(string, bool)">Response Redirect</see>
+		/// and ends the response
 		/// </summary>
 		Client,
+		/// <summary>
+		/// Navigates via a <see cref="System.Web.HttpResponse.Redirect(string, bool)">Response Redirect</see>
+		/// without ending the response
+		/// </summary>
+		ClientNoAbort,
 		/// <summary>
 		/// Navigates via a <see cref="System.Web.HttpServerUtility.Transfer(string)">Server Transfer</see>
 		/// </summary>
