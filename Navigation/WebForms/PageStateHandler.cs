@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 #if NET40Plus
@@ -64,10 +65,10 @@ namespace Navigation
 		/// <param name="data">The data to pass when navigating</param>
 		/// <param name="context">The current context</param>
 		/// <returns>The navigation link</returns>
-		public string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
+		public string GetNavigationLink(State state, NameValueCollection data)
 		{
 			string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
-			return GetLink(state, data, GetMobile(context), applicationPath);
+			return GetLink(state, data, GetMobile(HttpContext.Current), applicationPath);
 		}
 
 		/// <summary>
@@ -79,6 +80,30 @@ namespace Navigation
 		public NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
 			return new NameValueCollection(data);
+		}
+
+		public void NavigateLink(State state, string url, NavigationMode mode)
+		{
+			if (HttpContext.Current == null) mode = NavigationMode.Mock;
+			switch (mode)
+			{
+				case (NavigationMode.Client):
+					{
+						HttpContext.Current.Response.Redirect(url, true);
+						break;
+					}
+				case (NavigationMode.Server):
+					{
+						HttpContext.Current.Server.Transfer(url);
+						break;
+					}
+				case (NavigationMode.Mock):
+					{
+						StateContext.StateId = state.Id;
+						StateController.SetStateContext(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
+						break;
+					}
+			}
 		}
 #endif
 #if NET40Plus

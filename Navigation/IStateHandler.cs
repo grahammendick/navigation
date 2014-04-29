@@ -33,9 +33,8 @@ namespace Navigation
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="data">The data to pass when navigating</param>
-		/// <param name="context">The current context</param>
 		/// <returns>The navigation link</returns>
-		string GetNavigationLink(State state, NameValueCollection data, HttpContext context);
+		string GetNavigationLink(State state, NameValueCollection data);
 
 		/// <summary>
 		/// Gets the data parsed from the <paramref name="data">context data</paramref>
@@ -44,6 +43,8 @@ namespace Navigation
 		/// <param name="data">The current context data</param>
 		/// <returns>The navigation data</returns>
 		NameValueCollection GetNavigationData(State state, NameValueCollection data);
+
+		void NavigateLink(State state, string url, NavigationMode mode);
 #endif
 	}
 }
