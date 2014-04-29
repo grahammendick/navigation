@@ -28,5 +28,10 @@ namespace Navigation.Test
 			navigationData[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
 			return navigationData;
 		}
+
+		public void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
+		{
+			context.Response.Redirect(url, false);
+		}
 	}
 }

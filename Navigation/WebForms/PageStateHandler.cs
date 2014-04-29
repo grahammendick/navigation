@@ -51,6 +51,11 @@ namespace Navigation
 			bool mobile = GetMobile(context);
 			return RouteTable.Routes[state.GetRouteName(mobile)] != null ? state.GetRouteName(mobile) : null;
 		}
+
+		protected override bool GetEndResponse(State state, HttpContextBase context)
+		{
+			return true;
+		}
 #else
 		/// <summary>
 		/// Gets a link that navigates to the <paramref name="state"/> passing the <paramref name="data"/>

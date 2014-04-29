@@ -154,7 +154,7 @@ namespace Navigation
 			if (HttpContext.Current != null)
 				context = new HttpContextWrapper(HttpContext.Current);
 			else
-				context = new MockNavigationContext(null);
+				context = new MockNavigationContext(null, state);
 #else
 			HttpContext context = HttpContext.Current;
 #endif

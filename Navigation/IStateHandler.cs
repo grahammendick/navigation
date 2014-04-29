@@ -25,6 +25,8 @@ namespace Navigation
 		/// <param name="context">The current context</param>
 		/// <returns>The navigation data</returns>
 		NameValueCollection GetNavigationData(State state, HttpContextBase context);
+
+		void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context);
 #else
 		/// <summary>
 		/// Gets a link that navigates to the <paramref name="state"/> passing the <paramref name="data"/>

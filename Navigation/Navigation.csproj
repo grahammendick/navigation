@@ -60,6 +60,7 @@
     <Compile Include="ConverterInfoSectionHandler.cs" />
     <Compile Include="Crumb.cs" />
     <Compile Include="Mock\MockHttpBrowserCapabilities.cs" />
+    <Compile Include="Mock\MockHttpServerUtility.cs" />
     <Compile Include="WebForms\CrumbTrailDataSource.cs" />
     <Compile Include="WebForms\CrumbTrailDataSourceView.cs" />
     <Compile Include="CrumbTrailManager.cs" />

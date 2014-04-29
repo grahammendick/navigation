@@ -488,30 +488,12 @@ namespace Navigation
 
 		private static void NavigateLink(string url, State state, NavigationMode mode)
 		{
-			if (HttpContext.Current == null) mode = NavigationMode.Mock;
-			switch (mode)
-			{
-				case (NavigationMode.Client):
-					{
-						HttpContext.Current.Response.Redirect(url, true);
-						break;
-					}
-				case (NavigationMode.Server):
-					{
-						HttpContext.Current.Server.Transfer(url);
-						break;
-					}
-				case (NavigationMode.Mock):
-					{
-						StateContext.StateId = state.Id;
-#if NET40Plus
-						SetStateContext(new MockNavigationContext(url));
-#else
-						SetStateContext(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
-#endif
-						break;
-					}
-			}
+			HttpContextBase context = null;
+			if (HttpContext.Current != null)
+				context = new HttpContextWrapper(HttpContext.Current);
+			else
+				context = new MockNavigationContext(url, state);
+			state.StateHandler.NavigateLink(state, url, mode, context);
 		}
 
 		private static void RemoveDefaultsAndDerived(NameValueCollection data)

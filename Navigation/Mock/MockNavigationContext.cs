@@ -7,17 +7,25 @@ namespace Navigation
 {
 	internal class MockNavigationContext : HttpContextBase
 	{
-		private MockNavigationRequest _Request;
-		private MockNavigationResponse _Response;
+		private HttpRequestBase _Request;
+		private HttpResponseBase _Response;
+		private HttpServerUtilityBase _Server;
 		private Hashtable _Items;
 
-		internal MockNavigationContext(string url)
+		internal MockNavigationContext(string url, State state)
 			: base()
 		{
 			Url = url;
+			State = state;
 		}
 
 		private string Url
+		{
+			get;
+			set;
+		}
+
+		internal State State
 		{
 			get;
 			set;
@@ -38,8 +46,18 @@ namespace Navigation
 			get
 			{
 				if (_Response == null)
-					_Response = new MockNavigationResponse();
+					_Response = new MockNavigationResponse(State);
 				return _Response;
+			}
+		}
+
+		public override HttpServerUtilityBase Server
+		{
+			get
+			{
+				if (_Server == null)
+					_Server = new MockHttpServerUtility(State);
+				return _Server;
 			}
 		}
 
