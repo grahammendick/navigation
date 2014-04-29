@@ -41,6 +41,21 @@ namespace Navigation
 
 		public override void Redirect(string url, bool endResponse)
 		{
+			Redirect(url, endResponse, false);
+		}
+
+		public override void RedirectPermanent(string url)
+		{
+			Redirect(url, true, true);
+		}
+
+		public override void RedirectPermanent(string url, bool endResponse)
+		{
+			Redirect(url, endResponse, true);
+		}
+
+		private void Redirect(string url, bool endResponse, bool permanent)
+		{
 			StateContext.StateId = State.Id;
 			StateController.SetStateContext(new MockNavigationContext(url, State));
 		}
