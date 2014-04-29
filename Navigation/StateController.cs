@@ -488,12 +488,16 @@ namespace Navigation
 
 		private static void NavigateLink(string url, State state, NavigationMode mode)
 		{
+#if NET40Plus
 			HttpContextBase context = null;
 			if (HttpContext.Current != null)
 				context = new HttpContextWrapper(HttpContext.Current);
 			else
 				context = new MockNavigationContext(url, state);
 			state.StateHandler.NavigateLink(state, url, mode, context);
+#else
+			state.StateHandler.NavigateLink(state, url, mode);
+#endif
 		}
 
 		private static void RemoveDefaultsAndDerived(NameValueCollection data)

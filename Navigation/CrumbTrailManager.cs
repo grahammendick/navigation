@@ -155,10 +155,10 @@ namespace Navigation
 				context = new HttpContextWrapper(HttpContext.Current);
 			else
 				context = new MockNavigationContext(null, state);
-#else
-			HttpContext context = HttpContext.Current;
-#endif
 			return state.StateHandler.GetNavigationLink(state, coll, context);
+#else
+			return state.StateHandler.GetNavigationLink(state, coll);
+#endif
 		}
 
 		private static string DecodeURLValue(string urlValue)
