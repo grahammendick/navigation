@@ -1013,6 +1013,22 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs["d5"].States["s2"], StateContext.State);
 		}
 
+		[TestMethod]
+		public void NavigateServerTest()
+		{
+			StateController.Navigate("d0", NavigationMode.Server);
+			StateController.Navigate("t0", NavigationMode.Server);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
+		}
+
+		[TestMethod]
+		public void NavigateMockTest()
+		{
+			StateController.Navigate("d0", NavigationMode.Mock);
+			StateController.Navigate("t0", NavigationMode.Mock);
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
+		}
+
 #if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]

@@ -7,6 +7,18 @@ namespace Navigation
 	{
 		private HttpCookieCollection _Cookies;
 
+		internal MockNavigationResponse(State state)
+			: base()
+		{
+			State = state;
+		}
+
+		private State State
+		{
+			get;
+			set;
+		}
+
 		public override string ApplyAppPathModifier(string virtualPath)
 		{
 			return virtualPath;
@@ -20,6 +32,17 @@ namespace Navigation
 					_Cookies = new HttpCookieCollection();
 				return _Cookies;
 			}
+		}
+
+		public override void Redirect(string url)
+		{
+			Redirect(url, true);
+		}
+
+		public override void Redirect(string url, bool endResponse)
+		{
+			StateContext.StateId = State.Id;
+			StateController.SetStateContext(new MockNavigationContext(url, State));
 		}
 	}
 }

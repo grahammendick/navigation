@@ -61,6 +61,15 @@ namespace Navigation
 			return queryData;
 		}
 
+		public virtual void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
+		{
+			//TODO add RedirectPermant with a method GetPermanent and add to MockResponse
+			if (mode == NavigationMode.Client)
+				context.Response.Redirect(url, GetEndResponse(state, context));
+			else
+				context.Server.Transfer(url, GetPreserveForm(state, context));
+		}
+
 		/// <summary>
 		/// Returns the route of the <paramref name="state"/>
 		/// </summary>
@@ -68,6 +77,16 @@ namespace Navigation
 		/// <param name="context">The current context</param>
 		/// <returns>The route name</returns>
 		protected abstract string GetRoute(State state, HttpContextBase context);
+
+		protected virtual bool GetEndResponse(State state, HttpContextBase context)
+		{
+			return false;
+		}
+
+		protected virtual bool GetPreserveForm(State state, HttpContextBase context)
+		{
+			return false;
+		}
 	}
 }
 #endif
