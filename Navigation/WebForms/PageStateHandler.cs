@@ -99,8 +99,7 @@ namespace Navigation
 					}
 				case (NavigationMode.Mock):
 					{
-						StateContext.StateId = state.Id;
-						StateController.SetStateContext(HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
+						StateController.SetStateContext(state.Id, HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
 						break;
 					}
 			}
