@@ -32,6 +32,7 @@ namespace Navigation
 		/// Sets the <see cref="Navigation.StateContext.Data">Context Data</see> with the data returned
 		/// from the current <see cref="Navigation.State"/>'s <see cref="Navigation.IStateHandler"/>
 		/// </summary>
+		/// <param name="stateId">The current state id</param>
 		/// <param name="context">The current context</param>
 		public static void SetStateContext(string stateId, HttpContextBase context)
 #else
@@ -39,6 +40,7 @@ namespace Navigation
 		/// Sets the <see cref="Navigation.StateContext.Data">Context Data</see> with the data returned
 		/// from the current <see cref="Navigation.State"/>'s <see cref="Navigation.IStateHandler"/>
 		/// </summary>
+		/// <param name="stateId">The current state id</param>
 		/// <param name="data">The current context data</param>
 		public static void SetStateContext(string stateId, NameValueCollection data)
 #endif
