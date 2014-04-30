@@ -24,8 +24,7 @@ namespace Navigation
 
 		public override void Transfer(string path, bool preserveForm)
 		{
-			StateContext.StateId = State.Id;
-			StateController.SetStateContext(new MockNavigationContext(path, State));
+			StateController.SetStateContext(State.Id, new MockNavigationContext(path, State));
 		}
 	}
 }

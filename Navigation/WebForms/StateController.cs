@@ -82,7 +82,7 @@ namespace Navigation
 			{
 				NavigationData derivedData = new NavigationData(StateContext.State.Derived);
 #if NET40Plus
-				SetStateContext(new HttpContextWrapper(HttpContext.Current));
+				SetStateContext(StateContext.State.Id, new HttpContextWrapper(HttpContext.Current));
 #else
 				SetStateContext(HttpContext.Current.Request.QueryString);
 #endif
