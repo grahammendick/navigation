@@ -56,8 +56,7 @@ namespace Navigation
 
 		private void Redirect(string url, bool endResponse, bool permanent)
 		{
-			StateContext.StateId = State.Id;
-			StateController.SetStateContext(new MockNavigationContext(url, State));
+			StateController.SetStateContext(State.Id, new MockNavigationContext(url, State));
 		}
 	}
 }

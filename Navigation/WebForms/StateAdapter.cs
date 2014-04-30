@@ -91,9 +91,9 @@ namespace Navigation
 		private void Page_PreInit(object sender, EventArgs e)
 		{
 #if NET40Plus
-			StateController.SetStateContext(new HttpContextWrapper(HttpContext.Current));
+			StateController.SetStateContext(StateContext.State.Id, new HttpContextWrapper(HttpContext.Current));
 #else
-			StateController.SetStateContext(HttpContext.Current.Request.QueryString);
+			StateController.SetStateContext(StateContext.State.Id, HttpContext.Current.Request.QueryString);
 #endif
 			if (Page.IsPostBack)
 				StateContext.Data.Clear();

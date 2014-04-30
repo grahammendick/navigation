@@ -153,7 +153,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets of sets the identifier of the current <see cref="State"/>
+		/// Gets the identifier of the current <see cref="State"/>
 		/// </summary>
 		public static string StateId
 		{
@@ -161,7 +161,7 @@ namespace Navigation
 			{
 				return (string)ReservedData[NavigationSettings.Config.StateIdKey];
 			}
-			set
+			internal set
 			{
 				ReservedData[NavigationSettings.Config.StateIdKey] = value;
 			}

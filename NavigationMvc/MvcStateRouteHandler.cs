@@ -23,8 +23,7 @@ namespace Navigation.Mvc
 
 		protected override IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{
-			StateContext.StateId = State.Id;
-			StateController.SetStateContext(requestContext.HttpContext);
+			StateController.SetStateContext(State.Id, requestContext.HttpContext);
 			StateContext.Data["controller"] = null;
 			StateContext.Data["action"] = null;
 			return base.GetHttpHandler(requestContext);
