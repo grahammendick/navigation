@@ -8,7 +8,17 @@ namespace Navigation
 	/// </summary>
 	public class NavigationSettings : ConfigurationSection
 	{
-		private static NavigationSettings _Config = (NavigationSettings) ConfigurationManager.GetSection("Navigation/Settings") ?? new NavigationSettings();
+		private static NavigationSettings _Config;
+
+		static NavigationSettings()
+		{
+			_Config = (NavigationSettings)ConfigurationManager.GetSection("Navigation/Settings");
+			if (_Config == null)
+			{
+				_Config = new NavigationSettings();
+				_Config.SetReadOnly();
+			}
+		}
 
 		/// <summary>
 		/// 

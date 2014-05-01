@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Specialized;
+using System.Configuration;
+using System.Web;
 
 namespace Navigation.Test
 {
@@ -262,6 +260,13 @@ namespace Navigation.Test
 			string url = StateController.GetNavigationBackLink(1);
 			NameValueCollection coll = HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal)));
 			Assert.IsNull(coll["cs"]);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ConfigurationErrorsException))]
+		public void NavigationSettingsReadOnlyTest()
+		{
+			NavigationSettings.Config.StateIdKey = "StateId";
 		}
 	}
 }
