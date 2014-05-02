@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Listing</title>
+    <style>table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}</style>
 </head>
 <body>
     @using(Html.BeginRefreshForm(new NavigationData(true)))
@@ -14,7 +15,7 @@
         @Html.ValidationMessageFor(m => m.MinDateOfBirth)
         <input type="submit" value="Search"/>
     }
-    <table cellspacing="0" border="1" style="border-collapse:collapse;">
+    <table>
         <thead>
             <tr>
                 <th>Name</th>
