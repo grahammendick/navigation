@@ -100,19 +100,10 @@ namespace Navigation.Mvc
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		private static bool IsAscending(string sortBy, string sortExpressionKey)
-		{
-			string sortExpression = (string) StateContext.Data[sortExpressionKey];
-			if (sortExpression == sortBy)
-				return true;
-			if (sortExpression == sortBy + " DESC")
-				return false;
-			return true;
-		}
-
 		private static string GetSortExpression(string sortBy, string sortExpressionKey)
 		{
-			if (IsAscending(sortBy, sortExpressionKey))
+			string sortExpression = (string)StateContext.Data[sortExpressionKey];
+			if (sortExpression != sortBy + " DESC")
 				return sortBy + " DESC";
 			else
 				return sortBy;
