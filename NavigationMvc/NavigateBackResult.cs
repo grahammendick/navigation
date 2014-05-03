@@ -33,7 +33,7 @@ namespace Navigation.Mvc
 		/// </summary>
 		/// <param name="context">The context within which the result is executed</param>
 		/// <exception cref="System.ArgumentNullException"><paramref name="context"/> is null</exception>
-		/// <exception cref="System.ArgumentException"><see cref="StateControllerCanNavigateBack"/>
+		/// <exception cref="System.ArgumentException"><see cref="StateController.CanNavigateBack"/>
 		/// returns false for this <see cref="Distance"/></exception>
 		/// <exception cref="System.InvalidOperationException">A mandatory route parameter has not been
 		/// supplied a value</exception>
