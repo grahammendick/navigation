@@ -26,9 +26,16 @@ namespace Navigation.Mvc.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void NavigationLinkBlankTextTest()
+		public void NavigationLinkNullTextTest()
 		{
 			HtmlHelper.NavigationLink(null, "d0");
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NavigationLinkBlankTextTest()
+		{
+			HtmlHelper.NavigationLink("", "d0");
 		}
 
 		[TestMethod]
