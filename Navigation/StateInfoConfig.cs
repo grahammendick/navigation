@@ -143,11 +143,11 @@ namespace Navigation
 
 #if NET40Plus
 		/// <summary>
-		/// TODO
+		/// Returns <paramref name="state"/> defaults for the specified <paramref name="route"/> parameters
 		/// </summary>
-		/// <param name="state"></param>
-		/// <param name="route"></param>
-		/// <returns></returns>
+		/// <param name="state">The <see cref="State"/> to check for default values</param>
+		/// <param name="route">The route parameters</param>
+		/// <returns><see cref="State"/> defaults for the supplied route</returns>
 		public static RouteValueDictionary GetRouteDefaults(State state, string route)
 		{
 			RouteValueDictionary defaults = new RouteValueDictionary();
