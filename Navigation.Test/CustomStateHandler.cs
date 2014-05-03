@@ -8,7 +8,7 @@ namespace Navigation.Test
 #if NET40Plus
 		public string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
-			return GetNavigationLink(state, data, (HttpContext) null);
+			return GetNavigationLink(state, data);
 		}
 
 		public NameValueCollection GetNavigationData(State state, HttpContextBase context)
@@ -16,7 +16,7 @@ namespace Navigation.Test
 			return GetNavigationData(state, context.Request.QueryString);
 		}
 #endif
-		public string GetNavigationLink(State state, NameValueCollection data, HttpContext context)
+		public string GetNavigationLink(State state, NameValueCollection data)
 		{
 			return state.Attributes["handler"].Substring(1) + "?previous=" + data[NavigationSettings.Config.PreviousStateIdKey] + "&custom";
 		}
