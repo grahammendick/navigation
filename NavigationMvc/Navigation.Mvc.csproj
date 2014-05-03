@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="RefreshResult.cs" />
     <Compile Include="RouteConfig.cs" />
+    <Compile Include="SorterExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Navigation\Navigation.csproj">

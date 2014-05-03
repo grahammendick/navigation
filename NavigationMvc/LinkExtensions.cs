@@ -200,7 +200,6 @@ namespace Navigation.Mvc
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("href", url);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
-
 		}
 	}
 }
