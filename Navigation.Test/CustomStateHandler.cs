@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Web;
 
 namespace Navigation.Test
@@ -15,6 +16,17 @@ namespace Navigation.Test
 		{
 			return GetNavigationData(state, context.Request.QueryString);
 		}
+
+		public void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
+		{
+			context.Response.Redirect(url, false);
+		}
+#else
+		public void NavigateLink(State state, string url, NavigationMode mode)
+		{
+			StateController.SetStateContext(state.Id, HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
+		}
+
 #endif
 		public string GetNavigationLink(State state, NameValueCollection data)
 		{
@@ -27,11 +39,6 @@ namespace Navigation.Test
 			navigationData[NavigationSettings.Config.StateIdKey] = state.Id;
 			navigationData[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
 			return navigationData;
-		}
-
-		public void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
-		{
-			context.Response.Redirect(url, false);
 		}
 	}
 }
