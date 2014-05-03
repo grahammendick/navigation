@@ -70,7 +70,6 @@ namespace Navigation
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="data">The data to pass when navigating</param>
-		/// <param name="context">The current context</param>
 		/// <returns>The navigation link</returns>
 		public string GetNavigationLink(State state, NameValueCollection data)
 		{
@@ -89,6 +88,13 @@ namespace Navigation
 			return new NameValueCollection(data);
 		}
 
+		/// <summary>
+		/// Redirects or Transfers to the <paramref name="url"/> depending on the 
+		/// <paramref name="mode"/> specified
+		/// </summary>
+		/// <param name="state">The <see cref="State"/> to navigate to</param>
+		/// <param name="url">The target location</param>
+		/// <param name="mode">Indicates whether to Redirect or Transfer</param>
 		public void NavigateLink(State state, string url, NavigationMode mode)
 		{
 			if (HttpContext.Current == null) mode = NavigationMode.Mock;

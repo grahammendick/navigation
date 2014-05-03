@@ -51,6 +51,12 @@ namespace Navigation
 		/// <returns>The navigation data</returns>
 		NameValueCollection GetNavigationData(State state, NameValueCollection data);
 
+		/// <summary>
+		/// Navigates to the <paramref name="url"/> depending on the <paramref name="mode"/> specified
+		/// </summary>
+		/// <param name="state">The <see cref="State"/> to navigate to</param>
+		/// <param name="url">The target location</param>
+		/// <param name="mode">The navigation mode</param>
 		void NavigateLink(State state, string url, NavigationMode mode);
 #endif
 	}
