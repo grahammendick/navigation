@@ -65,7 +65,6 @@ namespace Navigation.Mvc
 			{
 				throw new ArgumentNullException("context");
 			}
-			context.Controller.TempData.Keep();
 			StateController.Navigate(Action, ToData);
 		}
 	}
