@@ -61,6 +61,14 @@ namespace Navigation
 			return queryData;
 		}
 
+		/// <summary>
+		/// Redirects or Transfers to the <paramref name="url"/> depending on the 
+		/// <paramref name="mode"/> specified
+		/// </summary>
+		/// <param name="state">The <see cref="State"/> to navigate to</param>
+		/// <param name="url">The target location</param>
+		/// <param name="mode">Indicates whether to Redirect or Transfer</param>
+		/// <param name="context">The current context</param>
 		public virtual void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
 		{
 			if (mode == NavigationMode.Client)
@@ -82,16 +90,38 @@ namespace Navigation
 		/// <returns>The route name</returns>
 		protected abstract string GetRouteName(State state, HttpContextBase context);
 
+		/// <summary>
+		/// Gets an indicator determining whether to terminate the current process when
+		/// navigating with a <see cref="NavigationMode.Client"/> mode
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="context">The current context</param>
+		/// <returns>Current process termination indicator</returns>
 		protected virtual bool GetEndResponse(State state, HttpContextBase context)
 		{
 			return false;
 		}
 
+		/// <summary>
+		/// Gets an indicator determining whether to permanently redirect when
+		/// navigating with a <see cref="NavigationMode.Client"/> mode
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="context">The current context</param>
+		/// <returns>Permanent redirection indicator</returns>
 		protected virtual bool GetPermanent(State state, HttpContextBase context)
 		{
 			return false;
 		}
 
+		/// <summary>
+		/// Gets an indicator determining whether to preserve the <see cref="System.Web.HttpRequest.Form"/>
+		/// and <see cref="System.Web.HttpRequest.QueryString"/> collections when navigating with a
+		/// <see cref="NavigationMode.Server"/> mode
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="context">The current context</param>
+		/// <returns>Request collections perservation indicator</returns>
 		protected virtual bool GetPreserveForm(State state, HttpContextBase context)
 		{
 			return false;
