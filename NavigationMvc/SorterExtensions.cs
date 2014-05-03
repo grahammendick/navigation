@@ -81,6 +81,85 @@ namespace Navigation.Mvc
 			return GenerateSorter(htmlHelper, linkText, sortBy, sortExpressionKey, defaultDescending, null);
 		}
 
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new sort
+		/// expression
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="linkText">The inner text of the anchor element</param>
+		/// <param name="sortBy">The column name to sort by</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty or
+		/// <paramref name="sortBy"/> is null or empty</exception>
+		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, object htmlAttributes)
+		{
+			return GenerateSorter(htmlHelper, linkText, sortBy, "sortExpression", false, htmlAttributes);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new sort
+		/// expression
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="linkText">The inner text of the anchor element</param>
+		/// <param name="sortBy">The column name to sort by</param>
+		/// <param name="sortExpressionKey">The sort expression <see cref="NavigationData"/> key</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty;
+		/// <paramref name="sortBy"/> is null or empty; or <paramref name="sortExpressionKey"/> is null
+		/// or empty</exception>
+		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey, object htmlAttributes)
+		{
+			return GenerateSorter(htmlHelper, linkText, sortBy, sortExpressionKey, false, htmlAttributes);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new sort
+		/// expression
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="linkText">The inner text of the anchor element</param>
+		/// <param name="sortBy">The column name to sort by</param>
+		/// <param name="defaultDescending">Indicates whether the first time the sort is clicked the
+		/// sort order is descending</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty or
+		/// <paramref name="sortBy"/> is null or empty</exception>
+		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, bool defaultDescending, object htmlAttributes)
+		{
+			return GenerateSorter(htmlHelper, linkText, sortBy, "sortExpression", defaultDescending, htmlAttributes);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new sort
+		/// expression
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="linkText">The inner text of the anchor element</param>
+		/// <param name="sortBy">The column name to sort by</param>
+		/// <param name="sortExpressionKey">The sort expression <see cref="NavigationData"/> key</param>
+		/// <param name="defaultDescending">Indicates whether the first time the sort is clicked the
+		/// sort order is descending</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty or
+		/// <paramref name="sortBy"/> is null or empty</exception>
+		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey, bool defaultDescending, object htmlAttributes)
+		{
+			return GenerateSorter(htmlHelper, linkText, sortBy, sortExpressionKey, defaultDescending, htmlAttributes);
+		}
+
 		private static MvcHtmlString GenerateSorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey, bool defaultDescending, object htmlAttributes)
 		{
 			if (string.IsNullOrEmpty(linkText))
