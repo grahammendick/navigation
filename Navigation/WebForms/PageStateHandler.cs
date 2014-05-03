@@ -53,6 +53,13 @@ namespace Navigation
 			return RouteTable.Routes[state.GetRouteName(mobile)] != null ? state.GetRouteName(mobile) : null;
 		}
 
+		/// <summary>
+		/// Returns true to terminate the current process when navigating with a 
+		/// <see cref="NavigationMode.Client"/> mode
+		/// </summary>
+		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
+		/// <param name="context">The current context</param>
+		/// <returns>True to terminate the current process</returns>
 		protected override bool GetEndResponse(State state, HttpContextBase context)
 		{
 			return true;
