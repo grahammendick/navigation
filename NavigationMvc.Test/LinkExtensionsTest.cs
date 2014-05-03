@@ -39,6 +39,12 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		public void NavigationLinkTextEncodedTest()
+		{
+			Assert.AreEqual("<a href=\"/\">link&lt;</a>", HtmlHelper.NavigationLink("link<", "d0").ToHtmlString());
+		}
+
+		[TestMethod]
 		public void NavigationLinkDataTest()
 		{
 			StateController.Navigate("d0");

@@ -40,6 +40,13 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		public void SorterTextEncodedTest()
+		{
+			StateController.Navigate("d0", new NavigationData { { "sortExpression", "a DESC" } });
+			Assert.AreEqual("<a href=\"/?sortExpression=a\">link&lt;</a>", HtmlHelper.Sorter("link<", "a").ToHtmlString());
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterNullTextTest()
 		{
