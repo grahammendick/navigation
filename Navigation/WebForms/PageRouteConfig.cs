@@ -7,7 +7,7 @@ using System.Web.Routing;
 namespace Navigation
 {
 	/// <summary>
-	/// Registers all <see cref="Navigation.State.Route"/> configuration information for WebForms
+	/// Registers all <see cref="Navigation.State.Route"/> configuration information for Web Forms
 	/// </summary>
 	public class PageRouteConfig
 	{
