@@ -31,7 +31,7 @@ namespace Navigation
 		/// <returns>The navigation link</returns>
 		public override string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
-			if (GetRoute(state, context) != null)
+			if (GetRouteName(state, context) != null)
 			{
 				return base.GetNavigationLink(state, data, context);
 			}
@@ -47,7 +47,7 @@ namespace Navigation
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="context">The current context</param>
 		/// <returns>The route name</returns>
-		protected override string GetRoute(State state, HttpContextBase context)
+		protected override string GetRouteName(State state, HttpContextBase context)
 		{
 			bool mobile = GetMobile(context);
 			return RouteTable.Routes[state.GetRouteName(mobile)] != null ? state.GetRouteName(mobile) : null;

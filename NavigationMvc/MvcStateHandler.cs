@@ -9,12 +9,12 @@ namespace Navigation.Mvc
 	public class MvcStateHandler : StateHandler
 	{
 		/// <summary>
-		/// Returns the route of the <paramref name="state"/>
+		/// Returns the route name of the <paramref name="state"/>
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="context">The current context</param>
 		/// <returns>The route name</returns>
-		protected override string GetRoute(State state, HttpContextBase context)
+		protected override string GetRouteName(State state, HttpContextBase context)
 		{
 			return "Mvc" + state.Id;
 		}

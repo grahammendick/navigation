@@ -27,7 +27,7 @@ namespace Navigation
 				if (key != NavigationSettings.Config.StateIdKey)
 					routeData.Add(key, data[key]);
 			}
-			VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(context, new RouteData()), GetRoute(state, context), routeData);
+			VirtualPathData virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(context, new RouteData()), GetRouteName(state, context), routeData);
 			if (virtualPath == null)
 				return null;
 			return virtualPath.VirtualPath;
@@ -75,12 +75,12 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Returns the route of the <paramref name="state"/>
+		/// Returns the route name of the <paramref name="state"/>
 		/// </summary>
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="context">The current context</param>
 		/// <returns>The route name</returns>
-		protected abstract string GetRoute(State state, HttpContextBase context);
+		protected abstract string GetRouteName(State state, HttpContextBase context);
 
 		protected virtual bool GetEndResponse(State state, HttpContextBase context)
 		{
