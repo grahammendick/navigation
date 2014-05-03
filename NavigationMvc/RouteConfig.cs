@@ -3,8 +3,14 @@ using System.Web.Routing;
 
 namespace Navigation.Mvc
 {
+	/// <summary>
+	/// Registers all <see cref="State.Route"/> configuration information for MVC
+	/// </summary>
 	public class RouteConfig
 	{
+		/// <summary>
+		/// Registers all <see cref="State.Route"/> configuration information
+		/// </summary>
 		public static void AddStateRoutes()
 		{
 			if (StateInfoConfig.Dialogs == null)
