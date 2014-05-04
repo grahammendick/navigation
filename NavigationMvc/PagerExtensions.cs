@@ -8,51 +8,51 @@ namespace Navigation.Mvc
 {
 	public static class PagerExtensions
 	{
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, object htmlAttributes = null)
 		{
-			return Pager(htmlHelper, "<<", "<", ">", ">>");
+			return Pager(htmlHelper, "<<", "<", ">", ">>", htmlAttributes);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
-			return Pager(htmlHelper, "<<", "<", ">", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return Pager(htmlHelper, "<<", "<", ">", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText, object htmlAttributes = null)
 		{
-			return Pager(htmlHelper, firstText, previousText, nextText, lastText, "startRowIndex", "maximumRows", "totalRowCount");
+			return Pager(htmlHelper, firstText, previousText, nextText, lastText, "startRowIndex", "maximumRows", "totalRowCount", htmlAttributes);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText,
-			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
+			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
-			return GeneratePager(htmlHelper, null, previousText, nextText, firstText, lastText, startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return GeneratePager(htmlHelper, null, previousText, nextText, firstText, lastText, startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, object htmlAttributes = null)
 		{
-			return Pager(htmlHelper, numberOfLinks, "...", "...");
+			return Pager(htmlHelper, numberOfLinks, "...", "...", htmlAttributes);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
-			return Pager(htmlHelper, numberOfLinks, "...", "...", startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return Pager(htmlHelper, numberOfLinks, "...", "...", startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText, object htmlAttributes = null)
 		{
-			return Pager(htmlHelper, numberOfLinks, previousText, nextText, "startRowIndex", "maximumRows", "totalRowCount");
+			return Pager(htmlHelper, numberOfLinks, previousText, nextText, "startRowIndex", "maximumRows", "totalRowCount", htmlAttributes);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText,
-			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
+			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
-			return GeneratePager(htmlHelper, numberOfLinks, previousText, nextText, null, null, startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return GeneratePager(htmlHelper, numberOfLinks, previousText, nextText, null, null, startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
 		private static MvcHtmlString GeneratePager(this HtmlHelper htmlHelper, int? numberOfLinks, 			
 			string previousText, string nextText, string firstText, string lastText,
-			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
+			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes)
 		{
 			if (StateContext.Data[startRowIndexKey] as int? == null)
 				throw new ArgumentException(Resources.InvalidPagerValue, startRowIndexKey);
@@ -78,6 +78,7 @@ namespace Navigation.Mvc
 			}
 			TagBuilder tagBuilder = new TagBuilder("ul");
 			tagBuilder.InnerHtml = pagerBuilder.ToString();
+			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			return new MvcHtmlString(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
