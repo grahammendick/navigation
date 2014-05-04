@@ -178,6 +178,28 @@ namespace Navigation.Mvc.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNullStartRowIndexTest()
+		{
+			StateController.Navigate("d0");
+			StateContext.Bag.startRowIndex = null;
+			StateContext.Bag.maximumRows = 10;
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNullMaximumRowsTest()
+		{
+			StateController.Navigate("d0");
+			StateContext.Bag.startRowIndex = 0;
+			StateContext.Bag.maximumRows = null;
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void PagerInvalidStartRowIndexTest()
 		{
 			StateController.Navigate("d0");
@@ -200,11 +222,21 @@ namespace Navigation.Mvc.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void PagerInvalidTotalRowCountTest()
+		public void PagerNullTotalRowCountTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = null;
+			HtmlHelper.Pager();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerInvalidTotalRowCountTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = "x";
 			HtmlHelper.Pager();
 		}
 	}
