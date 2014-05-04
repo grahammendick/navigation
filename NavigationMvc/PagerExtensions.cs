@@ -76,6 +76,8 @@ namespace Navigation.Mvc
 				var remainder = totalRowCount % maximumRows;
 				AddLink(pagerBuilder, lastText, remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows, startRowIndexKey, totalRowCount);
 			}
+			if (pagerBuilder.Length == 0)
+				return new MvcHtmlString(string.Empty);
 			TagBuilder tagBuilder = new TagBuilder("ul");
 			tagBuilder.InnerHtml = pagerBuilder.ToString();
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
