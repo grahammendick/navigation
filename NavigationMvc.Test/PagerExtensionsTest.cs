@@ -290,5 +290,152 @@ namespace Navigation.Mvc.Test
 			StateContext.Bag.totalRowCount = "x";
 			HtmlHelper.Pager();
 		}
+
+		[TestMethod]
+		public void PagerNumericEmptyTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 0;
+			Assert.AreEqual("", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericOnePageTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 1;
+			Assert.AreEqual("<ul><li>1</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericOneFullPageTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 10;
+			Assert.AreEqual("<ul><li>1</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericFirstPageOfTwoTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 11;
+			Assert.AreEqual("<ul><li>1</li>" +
+				"<li><a href=\"/r1/10\">2</a></li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericSecondPageOfTwoTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 10;
+			StateContext.Bag.totalRowCount = 11;
+			Assert.AreEqual("<ul><li><a href=\"/r1\">1</a></li>" +
+				"<li>2</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericSecondFullPageOfTwoTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 10;
+			StateContext.Bag.totalRowCount = 20;
+			Assert.AreEqual("<ul><li><a href=\"/r1\">1</a></li>" +
+				"<li>2</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericSecondPageOfThreeTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 10;
+			StateContext.Bag.totalRowCount = 21;
+			Assert.AreEqual("<ul><li><a href=\"/r1\">1</a></li>" +
+				"<li>2</li>" +
+				"<li><a href=\"/r1/20\">3</a></li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerFifthPageOfSixPageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 49;
+			Assert.AreEqual("<ul><li><a href=\"/r1/0/9\">1</a></li>" +
+				"<li><a href=\"/r1/9/9\">2</a></li>" +
+				"<li><a href=\"/r1/18/9\">3</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1/45/9\">...</a></li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerFullFifthPageOfFivePageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 45;
+			Assert.AreEqual("<ul><li><a href=\"/r1/0/9\">1</a></li>" +
+				"<li><a href=\"/r1/9/9\">2</a></li>" +
+				"<li><a href=\"/r1/18/9\">3</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericSeventhPageOfElevenPageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 54;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 97;
+			Assert.AreEqual("<ul><li><a href=\"/r1/36/9\">...</a></li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li>7</li>" +
+				"<li><a href=\"/r1/63/9\">8</a></li>" +
+				"<li><a href=\"/r1/72/9\">9</a></li>" +
+				"<li><a href=\"/r1/81/9\">10</a></li>" +
+				"<li><a href=\"/r1/90/9\">...</a></li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericFullSeventhPageOfSevenPageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 54;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 63;
+			Assert.AreEqual("<ul><li><a href=\"/r1/36/9\">...</a></li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li>7</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericThreeFullFifthPageOfSevenPageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 63;
+			Assert.AreEqual("<ul><li><a href=\"/r1/18/9\">...</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li><a href=\"/r1/54/9\">...</a></li></ul>", HtmlHelper.Pager(3).ToHtmlString());
+		}
 	}
 }
