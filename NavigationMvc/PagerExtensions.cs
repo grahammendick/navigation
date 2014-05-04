@@ -182,8 +182,6 @@ namespace Navigation.Mvc
 			int startRowIndex = (int)StateContext.Data[startRowIndexKey];
 			int maximumRows = (int)StateContext.Data[maximumRowsKey];
 			int totalRowCount = (int)StateContext.Data[totalRowCountKey];
-			if (totalRowCount == 0)
-				return new MvcHtmlString(string.Empty);
 			StringBuilder pagerBuilder = new StringBuilder();
 			if (numberOfLinks.HasValue)
 			{
@@ -197,6 +195,8 @@ namespace Navigation.Mvc
 				var remainder = totalRowCount % maximumRows;
 				AddLink(htmlHelper, pagerBuilder, lastText, remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows, startRowIndexKey, totalRowCount);
 			}
+			if (pagerBuilder.Length == 0)
+				return new MvcHtmlString(string.Empty);
 			TagBuilder tagBuilder = new TagBuilder("ul");
 			tagBuilder.InnerHtml = pagerBuilder.ToString();
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
