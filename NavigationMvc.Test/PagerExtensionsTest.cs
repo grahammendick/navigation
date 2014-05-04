@@ -96,7 +96,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerFirstPageOfThreePageSize9Test()
+		public void PagerFirstPageOfThreePageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -109,7 +109,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerSecondPageOfThreePageSize9Test()
+		public void PagerSecondPageOfThreePageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -123,7 +123,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerFullThirdPageOfThreePageSize9Test()
+		public void PagerFullThirdPageOfThreePageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -362,7 +362,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerFifthPageOfSixPageSize9Test()
+		public void PagerFifthPageOfSixPageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -378,7 +378,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerFullFifthPageOfFivePageSize9Test()
+		public void PagerFullFifthPageOfFivePageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -393,7 +393,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerNumericSeventhPageOfElevenPageSize9Test()
+		public void PagerNumericSeventhPageOfElevenPageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -410,7 +410,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerNumericFullSeventhPageOfSevenPageSize9Test()
+		public void PagerNumericFullSeventhPageOfSevenPageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -423,7 +423,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void PagerNumericThreeFullFifthPageOfSevenPageSize9Test()
+		public void PagerNumericThreeFullFifthPageOfSevenPageSizeNineTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
