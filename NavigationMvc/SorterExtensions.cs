@@ -55,18 +55,14 @@ namespace Navigation.Mvc
 				throw new ArgumentException(Resources.NullOrEmpty, "sortBy");
 			if (string.IsNullOrEmpty(sortExpressionKey))
 				throw new ArgumentException(Resources.NullOrEmpty, "sortExpressionKey");
-			NavigationData toData = new NavigationData(true);
-			toData[sortExpressionKey] = GetSortExpression(sortBy, sortExpressionKey);
-			return htmlHelper.RefreshLink(linkText, toData, htmlAttributes);
-		}
-
-		private static string GetSortExpression(string sortBy, string sortExpressionKey)
-		{
 			string sortExpression = (string)StateContext.Data[sortExpressionKey];
 			if (sortExpression != sortBy + " DESC")
-				return sortBy + " DESC";
+				sortExpression = sortBy + " DESC";
 			else
-				return sortBy;
+				sortExpression = sortBy;
+			NavigationData toData = new NavigationData(true);
+			toData[sortExpressionKey] = sortExpression;
+			return htmlHelper.RefreshLink(linkText, toData, htmlAttributes);
 		}
 	}
 }
