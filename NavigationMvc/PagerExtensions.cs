@@ -9,12 +9,12 @@ namespace Navigation.Mvc
 	{
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper)
 		{
-			return Pager(htmlHelper, "<", ">", "<<", ">>");
+			return Pager(htmlHelper, "<<", "<", ">", ">>");
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
 		{
-			return Pager(htmlHelper, "<", ">", "<<", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return Pager(htmlHelper, "<<", "<", ">", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstPageText, string previousPageText, string nextPageText, string lastPageText)
