@@ -20,8 +20,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, "<<", "<", ">", ">>", htmlAttributes);
@@ -39,8 +37,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, "<<", "<", ">", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
@@ -59,8 +55,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, firstText, previousText, nextText, lastText, "startRowIndex", "maximumRows", "totalRowCount", htmlAttributes);
@@ -82,8 +76,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
@@ -100,8 +92,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, numberOfLinks, "...", "...", htmlAttributes);
@@ -120,8 +110,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, numberOfLinks, "...", "...", startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
@@ -139,8 +127,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, numberOfLinks, previousText, nextText, "startRowIndex", "maximumRows", "totalRowCount", htmlAttributes);
@@ -161,8 +147,6 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An unordered list of anchor elements</returns>
-		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
-		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
@@ -173,12 +157,6 @@ namespace Navigation.Mvc
 			string previousText, string nextText, string firstText, string lastText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes)
 		{
-			if (StateContext.Data[startRowIndexKey] as int? == null)
-				throw new ArgumentException(Resources.InvalidPagerValue, startRowIndexKey);
-			if (StateContext.Data[maximumRowsKey] as int? == null)
-				throw new ArgumentException(Resources.InvalidPagerValue, maximumRowsKey);
-			if (StateContext.Data[totalRowCountKey] as int? == null)
-				throw new ArgumentException(Resources.InvalidPagerValue, totalRowCountKey);
 			int startRowIndex = (int)StateContext.Data[startRowIndexKey];
 			int maximumRows = (int)StateContext.Data[maximumRowsKey];
 			int totalRowCount = (int)StateContext.Data[totalRowCountKey];
