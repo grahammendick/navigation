@@ -3,7 +3,12 @@
 <html>
 <head>
     <title>Listing</title>
-    <style>table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}</style>
+    <style>
+        table{border-collapse:collapse;}
+        table,td,th{border:1px #000 solid;}
+        ul{list-style-type:none;padding:0;margin:0;}
+        li{ float:left;padding-right:3px;}
+    </style>
 </head>
 <body>
     @using(Html.BeginRefreshForm(new NavigationData(true)))
@@ -15,6 +20,9 @@
         @Html.ValidationMessageFor(m => m.MinDateOfBirth)
         <input type="submit" value="Search"/>
     }
+    Page size
+    @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
+    @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
     <table>
         <thead>
             <tr>
@@ -34,5 +42,7 @@
             }
         </tbody>
     </table>
+    @Html.Pager("First", "Previous", "Next", "Last")
+    @string.Format("Total Count {0}", StateContext.Bag.totalRowCount)
 </body>
 </html>
