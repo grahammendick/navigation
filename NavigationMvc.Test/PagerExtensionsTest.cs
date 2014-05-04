@@ -24,8 +24,7 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 0;
-			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
-				"<li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
+			Assert.AreEqual("", HtmlHelper.Pager().ToHtmlString());
 		}
 
 		[TestMethod]
