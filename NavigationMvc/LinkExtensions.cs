@@ -106,13 +106,9 @@ namespace Navigation.Mvc
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes)
 		{
 			if (string.IsNullOrEmpty(linkText))
-			{
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
-			}
-			TagBuilder tagBuilder = new TagBuilder("a")
-			{
-				InnerHtml = HttpUtility.HtmlEncode(linkText)
-			};
+			TagBuilder tagBuilder = new TagBuilder("a");
+			tagBuilder.InnerHtml = HttpUtility.HtmlEncode(linkText);
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("href", url);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
