@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -53,6 +54,12 @@ namespace Navigation.Mvc
 			string previousPageText, string nextPageText, string firstPageText, string lastPageText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
 		{
+			if (StateContext.Data[startRowIndexKey] as int? == null)
+				throw new ArgumentException(Resources.InvalidPagerValue, startRowIndexKey);
+			if (StateContext.Data[maximumRowsKey] as int? == null)
+				throw new ArgumentException(Resources.InvalidPagerValue, maximumRowsKey);
+			if (StateContext.Data[totalRowCountKey] as int? == null)
+				throw new ArgumentException(Resources.InvalidPagerValue, totalRowCountKey);
 			int startRowIndex = (int)StateContext.Data[startRowIndexKey];
 			int maximumRows = (int)StateContext.Data[maximumRowsKey];
 			int totalRowCount = (int)StateContext.Data[totalRowCountKey];
