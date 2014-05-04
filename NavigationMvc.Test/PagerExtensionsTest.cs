@@ -148,6 +148,17 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		public void PagerLinkTextEncodedTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 11;
+			Assert.AreEqual("<ul><li>First&gt;</li><li>&gt;Prev</li>" +
+				"<li><a href=\"/r1/10\">&lt;Next</a></li>" +
+				"<li><a href=\"/r1/10\">Last&lt;</a></li></ul>", HtmlHelper.Pager("First>", ">Prev", "<Next", "Last<").ToHtmlString());
+		}
+
+		[TestMethod]
 		public void PagerKeyTest()
 		{
 			StateController.Navigate("d0");
@@ -450,6 +461,21 @@ namespace Navigation.Mvc.Test
 				"<li>5</li>" +
 				"<li><a href=\"/r1/45/9\">6</a></li>" +
 				"<li><a href=\"/r1/54/9\">Next</a></li></ul>", HtmlHelper.Pager(3, "Prev", "Next").ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericLinkTextEncodedTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 63;
+			Assert.AreEqual("<ul><li><a href=\"/r1/18/9\">Prev&lt;</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li><a href=\"/r1/54/9\">Next&lt;</a></li></ul>", HtmlHelper.Pager(3, "Prev<", "Next<").ToHtmlString());
 		}
 
 		[TestMethod]
