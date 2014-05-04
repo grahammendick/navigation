@@ -23,7 +23,8 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 0;
-			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li><li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
+			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
+				"<li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
 
 		[TestMethod]
@@ -32,7 +33,8 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 1;
-			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li><li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
+			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
+				"<li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
 
 		[TestMethod]
@@ -41,7 +43,8 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 10;
-			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li><li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
+			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
+				"<li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
 
 		[TestMethod]
