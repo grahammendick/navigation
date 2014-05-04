@@ -96,6 +96,19 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		public void PagerFirstPageOfThreePageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 0;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 21;
+			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" +
+				"<li><a href=\"/r1/9/9\">&gt;</a></li>" +
+				"<li><a href=\"/r1/18/9\">&gt;&gt;</a></li></ul>", HtmlHelper.Pager().ToHtmlString());
+		}
+
+		[TestMethod]
 		public void PagerSecondPageOfThreePageSize9Test()
 		{
 			StateController.Navigate("d0");
