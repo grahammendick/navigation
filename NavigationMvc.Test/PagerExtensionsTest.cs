@@ -177,6 +177,57 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		public void PagerAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 11;
+			Assert.AreEqual("<ul title=\"details\"><li>&lt;&lt;</li><li>&lt;</li>" +
+				"<li><a href=\"/r1/10\">&gt;</a></li>" +
+				"<li><a href=\"/r1/10\">&gt;&gt;</a></li></ul>", HtmlHelper.Pager(new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerLinkTextAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = 11;
+			Assert.AreEqual("<ul title=\"details\"><li>First</li><li>Prev</li>" +
+				"<li><a href=\"/r1/10\">Next</a></li>" +
+				"<li><a href=\"/r1/10\">Last</a></li></ul>", 
+				HtmlHelper.Pager("First", "Prev", "Next", "Last", new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerKeyAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.start = 0;
+			StateContext.Bag.size = 10;
+			StateContext.Bag.total = 21;
+			Assert.AreEqual("<ul title=\"details\"><li>&lt;&lt;</li><li>&lt;</li>" +
+				"<li><a href=\"/r1?start=10&amp;size=10&amp;total=21\">&gt;</a></li>" +
+				"<li><a href=\"/r1?start=20&amp;size=10&amp;total=21\">&gt;&gt;</a></li></ul>",
+				HtmlHelper.Pager("start", "size", "total", new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerLinkTextKeyAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.start = 0;
+			StateContext.Bag.size = 10;
+			StateContext.Bag.total = 21;
+			Assert.AreEqual("<ul title=\"details\"><li>First</li><li>Prev</li>" +
+				"<li><a href=\"/r1?start=10&amp;size=10&amp;total=21\">Next</a></li>" +
+				"<li><a href=\"/r1?start=20&amp;size=10&amp;total=21\">Last</a></li></ul>",
+				HtmlHelper.Pager("First", "Prev", "Next", "Last", "start", "size", "total", new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void PagerNullStartRowIndexTest()
 		{
