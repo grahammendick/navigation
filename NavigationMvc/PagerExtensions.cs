@@ -6,44 +6,163 @@ using System.Web.Mvc;
 
 namespace Navigation.Mvc
 {
+	/// <summary>
+	/// Represents support for HTML in a navigation application
+	/// </summary>
 	public static class PagerExtensions
 	{
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, "<<", "<", ">", ">>", htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="startRowIndexKey">The start row index <see cref="NavigationData"/> key</param>
+		/// <param name="maximumRowsKey">The maximum rows <see cref="NavigationData"/> key</param>
+		/// <param name="totalRowCountKey">The total row count <see cref="NavigationData"/> key</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, "<<", "<", ">", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="firstText">The inner text of the first page anchor element</param>
+		/// <param name="previousText">The inner text of the previous page anchor element</param>
+		/// <param name="nextText">The inner text of the next page anchor element</param>
+		/// <param name="lastText">The inner text of the last page anchor element</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, firstText, previousText, nextText, lastText, "startRowIndex", "maximumRows", "totalRowCount", htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="firstText">The inner text of the first page anchor element</param>
+		/// <param name="previousText">The inner text of the previous page anchor element</param>
+		/// <param name="nextText">The inner text of the next page anchor element</param>
+		/// <param name="lastText">The inner text of the last page anchor element</param>
+		/// <param name="startRowIndexKey">The start row index <see cref="NavigationData"/> key</param>
+		/// <param name="maximumRowsKey">The maximum rows <see cref="NavigationData"/> key</param>
+		/// <param name="totalRowCountKey">The total row count <see cref="NavigationData"/> key</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
 			return GeneratePager(htmlHelper, null, previousText, nextText, firstText, lastText, startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="numberOfLinks">The number of anchor elements to display</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, numberOfLinks, "...", "...", htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="numberOfLinks">The number of anchor elements to display</param>
+		/// <param name="startRowIndexKey">The start row index <see cref="NavigationData"/> key</param>
+		/// <param name="maximumRowsKey">The maximum rows <see cref="NavigationData"/> key</param>
+		/// <param name="totalRowCountKey">The total row count <see cref="NavigationData"/> key</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, numberOfLinks, "...", "...", startRowIndexKey, maximumRowsKey, totalRowCountKey, htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="numberOfLinks">The number of anchor elements to display</param>
+		/// <param name="previousText">The inner text of the previous pages anchor element</param>
+		/// <param name="nextText">The inner text of the next pages anchor element</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText, object htmlAttributes = null)
 		{
 			return Pager(htmlHelper, numberOfLinks, previousText, nextText, "startRowIndex", "maximumRows", "totalRowCount", htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an unordered list of anchor elements with href attributes set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new start row
+		/// index
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="numberOfLinks">The number of anchor elements to display</param>
+		/// <param name="previousText">The inner text of the previous pages anchor element</param>
+		/// <param name="nextText">The inner text of the next pages anchor element</param>
+		/// <param name="startRowIndexKey">The start row index <see cref="NavigationData"/> key</param>
+		/// <param name="maximumRowsKey">The maximum rows <see cref="NavigationData"/> key</param>
+		/// <param name="totalRowCountKey">The total row count <see cref="NavigationData"/> key</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An unordered list of anchor elements</returns>
+		/// <exception cref="System.ArgumentException">Any of the start row index, maximum rows or total
+		/// row count <see cref="NavigationData"/> items are not integers</exception>
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey, object htmlAttributes = null)
 		{
