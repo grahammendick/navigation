@@ -94,5 +94,33 @@ namespace Navigation.Mvc.Test
 				"<li><a href=\"/r1/20\">&gt;</a></li>" + 
 				"<li><a href=\"/r1/20\">&gt;&gt;</a></li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
+
+		[TestMethod]
+		public void PagerSecondPageOfThreePageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 9;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 21;
+			Assert.AreEqual("<ul><li><a href=\"/r1/0/9\">&lt;&lt;</a></li>" +
+				"<li><a href=\"/r1/0/9\">&lt;</a></li>" +
+				"<li><a href=\"/r1/18/9\">&gt;</a></li>" +
+				"<li><a href=\"/r1/18/9\">&gt;&gt;</a></li></ul>", HtmlHelper.Pager().ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerFullThirdPageOfThreePageSize9Test()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 18;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 27;
+			Assert.AreEqual("<ul><li><a href=\"/r1/0/9\">&lt;&lt;</a></li>" +
+				"<li><a href=\"/r1/9/9\">&lt;</a></li>" +
+				"<li>&gt;</li>" +
+				"<li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
+		}
 	}
 }
