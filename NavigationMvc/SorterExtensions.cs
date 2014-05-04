@@ -39,9 +39,8 @@ namespace Navigation.Mvc
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An anchor element (a element)</returns>
-		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty;
-		/// <paramref name="sortBy"/> is null or empty; or <paramref name="sortExpressionKey"/> is null
-		/// or empty</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty or
+		/// <paramref name="sortBy"/> is null or empty</exception>
 		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey, object htmlAttributes = null)
 		{
 			return GenerateSorter(htmlHelper, linkText, sortBy, sortExpressionKey, htmlAttributes);
@@ -53,8 +52,6 @@ namespace Navigation.Mvc
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
 			if (string.IsNullOrEmpty(sortBy))
 				throw new ArgumentException(Resources.NullOrEmpty, "sortBy");
-			if (string.IsNullOrEmpty(sortExpressionKey))
-				throw new ArgumentException(Resources.NullOrEmpty, "sortExpressionKey");
 			string sortExpression = (string)StateContext.Data[sortExpressionKey];
 			if (sortExpression != sortBy + " DESC")
 				sortExpression = sortBy + " DESC";
