@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Web.Mvc;
 
 namespace Navigation.Mvc.Test
@@ -173,6 +174,38 @@ namespace Navigation.Mvc.Test
 				"<li><a href=\"/r1?start=10&amp;size=10&amp;total=21\">Next</a></li>" +
 				"<li><a href=\"/r1?start=20&amp;size=10&amp;total=21\">Last</a></li></ul>",
 				HtmlHelper.Pager("First", "Prev", "Next", "Last", "start", "size", "total").ToHtmlString());
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerInvalidStartRowIndexTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = "x";
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerInvalidMaximumRowsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.maximumRows = "x";
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerInvalidTotalRowCountTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = null;
+			HtmlHelper.Pager();
 		}
 	}
 }

@@ -61,6 +61,15 @@ namespace Navigation.Mvc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value must be an integer.
+        /// </summary>
+        internal static string InvalidPagerValue {
+            get {
+                return ResourceManager.GetString("InvalidPagerValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value cannot be null or empty.
         /// </summary>
         internal static string NullOrEmpty {
