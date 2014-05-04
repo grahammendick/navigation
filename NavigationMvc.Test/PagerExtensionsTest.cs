@@ -436,5 +436,176 @@ namespace Navigation.Mvc.Test
 				"<li><a href=\"/r1/45/9\">6</a></li>" +
 				"<li><a href=\"/r1/54/9\">...</a></li></ul>", HtmlHelper.Pager(3).ToHtmlString());
 		}
+
+		[TestMethod]
+		public void PagerNumericLinkTextTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 63;
+			Assert.AreEqual("<ul><li><a href=\"/r1/18/9\">Prev</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li><a href=\"/r1/54/9\">Next</a></li></ul>", HtmlHelper.Pager(3, "Prev", "Next").ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericKeyTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.start = 36;
+			StateContext.Bag.size = 9;
+			StateContext.Bag.total = 63;
+			Assert.AreEqual("<ul><li><a href=\"/r1?start=18&amp;size=9&amp;total=63\">...</a></li>" +
+				"<li><a href=\"/r1?start=27&amp;size=9&amp;total=63\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1?start=45&amp;size=9&amp;total=63\">6</a></li>" +
+				"<li><a href=\"/r1?start=54&amp;size=9&amp;total=63\">...</a></li></ul>", HtmlHelper.Pager(3, "start", "size", "total").ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericLinkTextKeyTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.start = 36;
+			StateContext.Bag.size = 9;
+			StateContext.Bag.total = 63;
+			Assert.AreEqual("<ul><li><a href=\"/r1?start=18&amp;size=9&amp;total=63\">Prev</a></li>" +
+				"<li><a href=\"/r1?start=27&amp;size=9&amp;total=63\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1?start=45&amp;size=9&amp;total=63\">6</a></li>" +
+				"<li><a href=\"/r1?start=54&amp;size=9&amp;total=63\">Next</a></li></ul>", HtmlHelper.Pager(3, "Prev", "Next", "start", "size", "total").ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 63;
+			Assert.AreEqual("<ul title=\"details\"><li><a href=\"/r1/18/9\">...</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li><a href=\"/r1/54/9\">...</a></li></ul>", HtmlHelper.Pager(3, new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericLinkTextAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = 36;
+			StateContext.Bag.maximumRows = 9;
+			StateContext.Bag.totalRowCount = 63;
+			Assert.AreEqual("<ul title=\"details\"><li><a href=\"/r1/18/9\">Prev</a></li>" +
+				"<li><a href=\"/r1/27/9\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1/45/9\">6</a></li>" +
+				"<li><a href=\"/r1/54/9\">Next</a></li></ul>", HtmlHelper.Pager(3, "Prev", "Next", new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericKeyAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.start = 36;
+			StateContext.Bag.size = 9;
+			StateContext.Bag.total = 63;
+			Assert.AreEqual("<ul title=\"details\"><li><a href=\"/r1?start=18&amp;size=9&amp;total=63\">...</a></li>" +
+				"<li><a href=\"/r1?start=27&amp;size=9&amp;total=63\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1?start=45&amp;size=9&amp;total=63\">6</a></li>" +
+				"<li><a href=\"/r1?start=54&amp;size=9&amp;total=63\">...</a></li></ul>",
+				HtmlHelper.Pager(3, "start", "size", "total", new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void PagerNumericLinkTextKeyAttributesTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.start = 36;
+			StateContext.Bag.size = 9;
+			StateContext.Bag.total = 63;
+			Assert.AreEqual("<ul title=\"details\"><li><a href=\"/r1?start=18&amp;size=9&amp;total=63\">Prev</a></li>" +
+				"<li><a href=\"/r1?start=27&amp;size=9&amp;total=63\">4</a></li>" +
+				"<li>5</li>" +
+				"<li><a href=\"/r1?start=45&amp;size=9&amp;total=63\">6</a></li>" +
+				"<li><a href=\"/r1?start=54&amp;size=9&amp;total=63\">Next</a></li></ul>",
+				HtmlHelper.Pager(3, "Prev", "Next", "start", "size", "total", new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNumericNullStartRowIndexTest()
+		{
+			StateController.Navigate("d0");
+			StateContext.Bag.startRowIndex = null;
+			StateContext.Bag.maximumRows = 10;
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager(5);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNumericNullMaximumRowsTest()
+		{
+			StateController.Navigate("d0");
+			StateContext.Bag.startRowIndex = 0;
+			StateContext.Bag.maximumRows = null;
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager(5);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNumericInvalidStartRowIndexTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.startRowIndex = "x";
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager(3);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNumericInvalidMaximumRowsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.maximumRows = "x";
+			StateContext.Bag.totalRowCount = 1;
+			HtmlHelper.Pager(3);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNumericNullTotalRowCountTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = null;
+			HtmlHelper.Pager(5);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void PagerNumericInvalidTotalRowCountTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateContext.Bag.totalRowCount = "x";
+			HtmlHelper.Pager(5);
+		}
 	}
 }
