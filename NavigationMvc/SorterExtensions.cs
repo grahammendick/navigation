@@ -17,48 +17,14 @@ namespace Navigation.Mvc
 		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
 		/// <param name="linkText">The inner text of the anchor element</param>
 		/// <param name="sortBy">The column name to sort by</param>
-		/// <returns>An anchor element (a element)</returns>
-		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty or
-		/// <paramref name="sortBy"/> is null or empty</exception>
-		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy)
-		{
-			return GenerateSorter(htmlHelper, linkText, sortBy, "sortExpression", null);
-		}
-
-		/// <summary>
-		/// Returns an anchor element (a element) with its href attribute set from a call to
-		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new sort
-		/// expression
-		/// </summary>
-		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
-		/// <param name="linkText">The inner text of the anchor element</param>
-		/// <param name="sortBy">The column name to sort by</param>
-		/// <param name="sortExpressionKey">The sort expression <see cref="NavigationData"/> key</param>
-		/// <returns>An anchor element (a element)</returns>
-		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty;
-		/// <paramref name="sortBy"/> is null or empty; or <paramref name="sortExpressionKey"/> is null
-		/// or empty</exception>
-		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey)
-		{
-			return GenerateSorter(htmlHelper, linkText, sortBy, sortExpressionKey, null);
-		}
-
-		/// <summary>
-		/// Returns an anchor element (a element) with its href attribute set from a call to
-		/// <see cref="StateController.GetRefreshLink(NavigationData)"/> passing the new sort
-		/// expression
-		/// </summary>
-		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
-		/// <param name="linkText">The inner text of the anchor element</param>
-		/// <param name="sortBy">The column name to sort by</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An anchor element (a element)</returns>
 		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty or
 		/// <paramref name="sortBy"/> is null or empty</exception>
-		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, object htmlAttributes)
+		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, object htmlAttributes = null)
 		{
-			return GenerateSorter(htmlHelper, linkText, sortBy, "sortExpression", htmlAttributes);
+			return Sorter(htmlHelper, linkText, sortBy, "sortExpression", htmlAttributes);
 		}
 
 		/// <summary>
@@ -76,7 +42,7 @@ namespace Navigation.Mvc
 		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty;
 		/// <paramref name="sortBy"/> is null or empty; or <paramref name="sortExpressionKey"/> is null
 		/// or empty</exception>
-		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey, object htmlAttributes)
+		public static MvcHtmlString Sorter(this HtmlHelper htmlHelper, string linkText, string sortBy, string sortExpressionKey, object htmlAttributes = null)
 		{
 			return GenerateSorter(htmlHelper, linkText, sortBy, sortExpressionKey, htmlAttributes);
 		}
