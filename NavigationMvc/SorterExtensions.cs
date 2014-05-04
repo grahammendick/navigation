@@ -55,15 +55,9 @@ namespace Navigation.Mvc
 				throw new ArgumentException(Resources.NullOrEmpty, "sortBy");
 			if (string.IsNullOrEmpty(sortExpressionKey))
 				throw new ArgumentException(Resources.NullOrEmpty, "sortExpressionKey");
-			TagBuilder tagBuilder = new TagBuilder("a")
-			{
-				InnerHtml = HttpUtility.HtmlEncode(linkText)
-			};
-			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			NavigationData toData = new NavigationData(true);
 			toData[sortExpressionKey] = GetSortExpression(sortBy, sortExpressionKey);
-			tagBuilder.MergeAttribute("href", StateController.GetRefreshLink(toData));
-			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+			return htmlHelper.RefreshLink(linkText, toData, htmlAttributes);
 		}
 
 		private static string GetSortExpression(string sortBy, string sortExpressionKey)

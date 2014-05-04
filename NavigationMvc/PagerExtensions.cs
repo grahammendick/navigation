@@ -187,15 +187,15 @@ namespace Navigation.Mvc
 			StringBuilder pagerBuilder = new StringBuilder();
 			if (numberOfLinks.HasValue)
 			{
-				AddNumericLinks(pagerBuilder, numberOfLinks.Value, startRowIndexKey, maximumRows, totalRowCount, previousText, nextText);
+				AddNumericLinks(htmlHelper, pagerBuilder, numberOfLinks.Value, startRowIndexKey, maximumRows, totalRowCount, previousText, nextText);
 			}
 			else
 			{
-				AddLink(pagerBuilder, firstText, 0, startRowIndexKey, totalRowCount);
-				AddLink(pagerBuilder, previousText, startRowIndex - maximumRows, startRowIndexKey, totalRowCount);
-				AddLink(pagerBuilder, nextText, startRowIndex + maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, firstText, 0, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, previousText, startRowIndex - maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, nextText, startRowIndex + maximumRows, startRowIndexKey, totalRowCount);
 				var remainder = totalRowCount % maximumRows;
-				AddLink(pagerBuilder, lastText, remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, lastText, remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows, startRowIndexKey, totalRowCount);
 			}
 			TagBuilder tagBuilder = new TagBuilder("ul");
 			tagBuilder.InnerHtml = pagerBuilder.ToString();
@@ -203,38 +203,35 @@ namespace Navigation.Mvc
 			return new MvcHtmlString(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		private static void AddNumericLinks(StringBuilder pagerBuilder, int numberOfLinks,
+		private static void AddNumericLinks(this HtmlHelper htmlHelper, StringBuilder pagerBuilder, int numberOfLinks,
 			string startRowIndexKey, int maximumRows, int totalRowCount,
 			string previousText, string nextText)
 		{
 			int startRowIndex = (int)StateContext.Data[startRowIndexKey];
 			int startNumberLink = startRowIndex / (numberOfLinks * maximumRows) * numberOfLinks;
 			if (startNumberLink != 0)
-				AddLink(pagerBuilder, previousText, (startNumberLink - 1) * maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, previousText, (startNumberLink - 1) * maximumRows, startRowIndexKey, totalRowCount);
 			int i = 0;
 			while (i < numberOfLinks && totalRowCount > (i + startNumberLink) * maximumRows)
 			{
-				AddLink(pagerBuilder, (i + startNumberLink + 1).ToString(CultureInfo.InvariantCulture), (i + startNumberLink) * maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, (i + startNumberLink + 1).ToString(CultureInfo.InvariantCulture), (i + startNumberLink) * maximumRows, startRowIndexKey, totalRowCount);
 				i++;
 			}
 			int nextRowIndex = (startNumberLink + numberOfLinks) * maximumRows;
 			if (nextRowIndex < totalRowCount)
-				AddLink(pagerBuilder, nextText, nextRowIndex, startRowIndexKey, totalRowCount);
+				AddLink(htmlHelper, pagerBuilder, nextText, nextRowIndex, startRowIndexKey, totalRowCount);
 		}
 
-		private static void AddLink(StringBuilder pagerBuilder, string linkText, int newStartRowIndex, string startRowIndexKey, int totalRowCount)
+		private static void AddLink(this HtmlHelper htmlHelper, StringBuilder pagerBuilder, string linkText, int newStartRowIndex, string startRowIndexKey, int totalRowCount)
 		{
 			int startRowIndex = (int)StateContext.Data[startRowIndexKey];
 			TagBuilder tagBuilder;
 			string itemHtml = HttpUtility.HtmlEncode(linkText);
 			if (newStartRowIndex >= 0 && newStartRowIndex < totalRowCount && newStartRowIndex != startRowIndex)
 			{
-				tagBuilder = new TagBuilder("a");
-				tagBuilder.InnerHtml = itemHtml;
 				NavigationData toData = new NavigationData(true);
 				toData[startRowIndexKey] = newStartRowIndex;
-				tagBuilder.MergeAttribute("href", StateController.GetRefreshLink(toData));
-				itemHtml = tagBuilder.ToString(TagRenderMode.Normal);
+				itemHtml = htmlHelper.RefreshLink(linkText, toData).ToString();
 			}
 			tagBuilder = new TagBuilder("li");
 			tagBuilder.InnerHtml = itemHtml;
