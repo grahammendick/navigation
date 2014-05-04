@@ -18,15 +18,15 @@ namespace Navigation.Mvc
 			return Pager(htmlHelper, "<<", "<", ">", ">>", startRowIndexKey, maximumRowsKey, totalRowCountKey);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstPageText, string previousPageText, string nextPageText, string lastPageText)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText)
 		{
-			return Pager(htmlHelper, firstPageText, previousPageText, nextPageText, lastPageText, "startRowIndex", "maximumRows", "totalRowCount");
+			return Pager(htmlHelper, firstText, previousText, nextText, lastText, "startRowIndex", "maximumRows", "totalRowCount");
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstPageText, string previousPageText, string nextPageText, string lastPageText,
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, string firstText, string previousText, string nextText, string lastText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
 		{
-			return GeneratePager(htmlHelper, null, previousPageText, nextPageText, firstPageText, lastPageText, startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return GeneratePager(htmlHelper, null, previousText, nextText, firstText, lastText, startRowIndexKey, maximumRowsKey, totalRowCountKey);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks)
@@ -39,19 +39,19 @@ namespace Navigation.Mvc
 			return Pager(htmlHelper, numberOfLinks, "...", "...", startRowIndexKey, maximumRowsKey, totalRowCountKey);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousPageText, string nextPageText)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText)
 		{
-			return Pager(htmlHelper, numberOfLinks, previousPageText, nextPageText, "startRowIndex", "maximumRows", "totalRowCount");
+			return Pager(htmlHelper, numberOfLinks, previousText, nextText, "startRowIndex", "maximumRows", "totalRowCount");
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousPageText, string nextPageText,
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int numberOfLinks, string previousText, string nextText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
 		{
-			return GeneratePager(htmlHelper, numberOfLinks, previousPageText, nextPageText, null, null, startRowIndexKey, maximumRowsKey, totalRowCountKey);
+			return GeneratePager(htmlHelper, numberOfLinks, previousText, nextText, null, null, startRowIndexKey, maximumRowsKey, totalRowCountKey);
 		}
 
 		private static MvcHtmlString GeneratePager(this HtmlHelper htmlHelper, int? numberOfLinks, 			
-			string previousPageText, string nextPageText, string firstPageText, string lastPageText,
+			string previousText, string nextText, string firstText, string lastText,
 			string startRowIndexKey, string maximumRowsKey, string totalRowCountKey)
 		{
 			if (StateContext.Data[startRowIndexKey] as int? == null)
@@ -66,15 +66,15 @@ namespace Navigation.Mvc
 			StringBuilder pagerBuilder = new StringBuilder();
 			if (numberOfLinks.HasValue)
 			{
-				AddNumericLinks(pagerBuilder, numberOfLinks.Value, startRowIndexKey, maximumRows, totalRowCount, "...", "...");
+				AddNumericLinks(pagerBuilder, numberOfLinks.Value, startRowIndexKey, maximumRows, totalRowCount, previousText, nextText);
 			}
 			else
 			{
-				AddLink(pagerBuilder, firstPageText, 0, startRowIndexKey, totalRowCount);
-				AddLink(pagerBuilder, previousPageText, startRowIndex - maximumRows, startRowIndexKey, totalRowCount);
-				AddLink(pagerBuilder, nextPageText, startRowIndex + maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(pagerBuilder, firstText, 0, startRowIndexKey, totalRowCount);
+				AddLink(pagerBuilder, previousText, startRowIndex - maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(pagerBuilder, nextText, startRowIndex + maximumRows, startRowIndexKey, totalRowCount);
 				var remainder = totalRowCount % maximumRows;
-				AddLink(pagerBuilder, lastPageText, remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(pagerBuilder, lastText, remainder != 0 ? totalRowCount - remainder : totalRowCount - maximumRows, startRowIndexKey, totalRowCount);
 			}
 			TagBuilder tagBuilder = new TagBuilder("ul");
 			tagBuilder.InnerHtml = pagerBuilder.ToString();
@@ -83,12 +83,12 @@ namespace Navigation.Mvc
 
 		private static void AddNumericLinks(StringBuilder pagerBuilder, int numberOfLinks,
 			string startRowIndexKey, int maximumRows, int totalRowCount,
-			string previousPageText, string nextPageText)
+			string previousText, string nextText)
 		{
 			int startRowIndex = (int)StateContext.Data[startRowIndexKey];
 			int startNumberLink = startRowIndex / (numberOfLinks * maximumRows) * numberOfLinks;
 			if (startNumberLink != 0)
-				AddLink(pagerBuilder, previousPageText, (startNumberLink - 1) * maximumRows, startRowIndexKey, totalRowCount);
+				AddLink(pagerBuilder, previousText, (startNumberLink - 1) * maximumRows, startRowIndexKey, totalRowCount);
 			int i = 0;
 			while (i < numberOfLinks && totalRowCount > (i + startNumberLink) * maximumRows)
 			{
@@ -97,7 +97,7 @@ namespace Navigation.Mvc
 			}
 			int nextRowIndex = (startNumberLink + numberOfLinks) * maximumRows;
 			if (nextRowIndex < totalRowCount)
-				AddLink(pagerBuilder, nextPageText, nextRowIndex, startRowIndexKey, totalRowCount);
+				AddLink(pagerBuilder, nextText, nextRowIndex, startRowIndexKey, totalRowCount);
 		}
 
 		private static void AddLink(StringBuilder pagerBuilder, string linkText, int newStartRowIndex, string startRowIndexKey, int totalRowCount)
