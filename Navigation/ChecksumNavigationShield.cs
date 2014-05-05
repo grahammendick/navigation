@@ -14,7 +14,21 @@ namespace Navigation
 	/// </summary>
 	public class ChecksumNavigationShield : NavigationShield
 	{
-		internal const string CHECK_SUM = "cs";
+		/// <summary>
+		/// Gets or sets the key that identifies the CheckSum
+		/// </summary>
+		[ConfigurationProperty("checksumKey", DefaultValue = "cs")]
+		public string ChecksumKey
+		{
+			get
+			{
+				return (string)this["checksumKey"];
+			}
+			set
+			{
+				this["checksumKey"] = value;
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets key used in the checksum generation routine, should be kept secret to prevent
@@ -80,7 +94,7 @@ namespace Navigation
 				newColl[key] = data[key];
 				list.Add(key, data[key]);
 			}
-			newColl.Add(CHECK_SUM, GetChecksum(list));
+			newColl.Add(ChecksumKey, GetChecksum(list));
 			return newColl;
 		}
 
@@ -115,7 +129,7 @@ namespace Navigation
 			{
 				if (key == null)
 					throw new UrlException(Resources.InvalidUrl);
-				if (key != CHECK_SUM)
+				if (key != ChecksumKey)
 				{
 					newColl[key] = data[key];
 					list.Add(key, data[key]);
