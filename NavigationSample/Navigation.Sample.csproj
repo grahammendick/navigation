@@ -56,7 +56,15 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -69,6 +77,14 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.1.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -101,6 +117,7 @@
     <Content Include="Details.Mobile.aspx" />
     <Content Include="Listing.aspx" />
     <Content Include="App_Browsers\Navigation.browser" />
+    <Content Include="People.html" />
     <Content Include="StateInfo.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Person\Listing.cshtml" />
@@ -114,9 +131,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\PersonApiController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Details.aspx.cs">
       <DependentUpon>Details.aspx</DependentUpon>
@@ -154,6 +174,10 @@
     <ProjectReference Include="..\NavigationMvc\Navigation.Mvc.csproj">
       <Project>{c8fa6a79-41b1-4c63-9975-3b7a2e60951b}</Project>
       <Name>Navigation.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NavigationWebApi\Navigation.WebApi.csproj">
+      <Project>{fe526fb6-1ef2-4352-8a1f-8a35be391c3b}</Project>
+      <Name>Navigation.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{4ab8290d-41d9-4bc0-b7b5-a430b067be65}</Project>
