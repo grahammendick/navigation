@@ -12,7 +12,7 @@ namespace Navigation.WebApi
 
 		protected internal WebApiStateRouteHandler(State state)
 		{
-
+			State = state;
 		}
 
 		public State State
