@@ -1,16 +1,11 @@
-﻿var app = angular.module('app', []);
-
-app.service('PersonService', function ($http, $rootScope) {
-    this.search = function ($scope) {
+﻿function PersonController($scope, $http) {
+    $scope.people;
+    $scope.search = function () {
         $http.get('/WebApiList')
             .success(function (data) {
-                $rootScope.people = data;
+                $scope.people = data;
             }
         );
     }
-})
-
-app.controller('PersonController', function ($scope, PersonService) {
-    $scope.people;
-    PersonService.search();
-});
+    $scope.search();
+};
