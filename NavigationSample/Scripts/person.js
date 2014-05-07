@@ -55,5 +55,11 @@
     $scope.showNextLast = function () {
         return $scope.totalRowCount > $scope.startRowIndex + $scope.maximumRows;
     }
+    $scope.select = function (person) {
+        $http.get(person.link)
+            .success(function (data) {
+            }
+        );
+    }
     $scope.getList();
 };
