@@ -118,11 +118,16 @@
     <Content Include="Listing.aspx" />
     <Content Include="App_Browsers\Navigation.browser" />
     <Content Include="People.html" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\person.js" />
     <Content Include="StateInfo.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Person\Listing.cshtml" />
     <Content Include="Views\web.config" />
     <Content Include="Views\Person\Details.cshtml" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

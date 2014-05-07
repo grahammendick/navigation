@@ -1,9 +1,30 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>Person Search</title>
+    <style>
+        table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
+        ul{list-style-type:none;padding:0;margin:0;}li{ float:left;padding-right:3px;}
+    </style>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/person.js"></script>
 </head>
 <body>
-
+    <div ng-app="app" ng-controller="PersonController">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="person in people">
+                    <td>{{ person.Name }}</td>
+                    <td>{{ person.DateOfBirth | date: 'dd/MM/yyyy' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
