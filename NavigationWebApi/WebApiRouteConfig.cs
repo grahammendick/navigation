@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.ValueProviders;
 using System.Web.Routing;
 
 namespace Navigation.WebApi
@@ -9,6 +10,7 @@ namespace Navigation.WebApi
 		{
 			if (StateInfoConfig.Dialogs == null)
 				return;
+			GlobalConfiguration.Configuration.Services.Insert(typeof(ValueProviderFactory), 0, new NavigationDataValueProviderFactory());
 			string apiController, action;
 			Route route;
 			RouteValueDictionary defaults;
