@@ -30,5 +30,17 @@
         $scope.maximumRows = size;
         $scope.getList();
     }
+    $scope.firstPage = function () {
+        $scope.startRowIndex = 0;
+        $scope.getList();
+    }
+    $scope.previousPage = function () {
+        $scope.startRowIndex = $scope.startRowIndex - $scope.maximumRows;
+        $scope.getList();
+    }
+    $scope.nextPage = function () {
+        $scope.startRowIndex = $scope.startRowIndex + $scope.maximumRows;
+        $scope.getList();
+    }
     $scope.getList();
 };
