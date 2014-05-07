@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
-using System.Linq;
 
 namespace Navigation.Sample.Controllers
 {
