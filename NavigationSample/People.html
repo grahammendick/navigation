@@ -11,11 +11,16 @@
 </head>
 <body>
     <div ng-controller="PersonController">
-        <label for="name">Name</label>
-        <input id="name" ng-model="name" />
-        <label for="minDateOfBirth">Min Date of Birth</label>
-        <input id="minDateOfBirth" ng-model="minDateOfBirth" />
-        <input type="submit" value="Search" ng-click="search()"/>
+        <form>
+            <label for="name">Name</label>
+            <input id="name" ng-model="name" />
+            <label for="minDateOfBirth">Min Date of Birth</label>
+            <input id="minDateOfBirth" ng-model="minDateOfBirth" />
+            <input type="submit" value="Search" ng-click="search()" />
+        </form>
+        Page size
+        <a href="#" ng-click="changePageSize(5)">5</a>
+        <a href="#" ng-click="changePageSize(10)">10</a>
         <table>
             <thead>
                 <tr>
