@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using System.Linq;
 
 namespace Navigation.Sample.Controllers
 {
@@ -15,14 +16,19 @@ namespace Navigation.Sample.Controllers
 		{
 			var people = new PersonSearch().Search(name, minDateOfBirth, sortExpression, startRowIndex, maximumRows);
 			return new {
-				People = people,
+				People = people.Select(p => new {
+						p.Name,
+						p.DateOfBirth,
+						link = StateController.GetNavigationLink("Select", new NavigationData { { "id", p.Id } })
+					}
+				),
 				TotalRowCount = StateContext.Bag.totalRowCount
 			};
 		}
 
-		public Person GetDetails(int id)
+		public Person GetDetails([ModelBinder] int id)
 		{
-			return new Person();
+			return new PersonSearch().GetDetails(id);
 		}
     }
 }

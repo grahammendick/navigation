@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="person in people">
-                    <td>{{ person.Name }}</td>
+                    <td><a href="#" ng-click="select(person)">{{ person.Name }}</a></td>
                     <td>{{ person.DateOfBirth | date: 'dd/MM/yyyy' }}</td>
                 </tr>
             </tbody>
