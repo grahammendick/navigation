@@ -4,6 +4,7 @@
     $scope.sortExpression = 'Name';
     $scope.startRowIndex = 0;
     $scope.maximumRows = 10;
+    $scope.totalRowCount;
     $scope.people;
     $scope.getList = function () {
         var url = '/WebApiList/' + $scope.startRowIndex + '/'
@@ -12,7 +13,8 @@
             url += '?name=' + $scope.name;
         $http.get(url)
             .success(function (data) {
-                $scope.people = data;
+                $scope.people = data.People;
+                $scope.totalRowCount = data.TotalRowCount;
             }
         );
     }
@@ -41,6 +43,17 @@
     $scope.nextPage = function () {
         $scope.startRowIndex = $scope.startRowIndex + $scope.maximumRows;
         $scope.getList();
+    }
+    $scope.lastPage = function () {
+        var remainder = $scope.totalRowCount % $scope.maximumRows;
+        $scope.startRowIndex = remainder != 0 ? $scope.totalRowCount - remainder : $scope.totalRowCount - $scope.maximumRows;
+        $scope.getList();
+    }
+    $scope.showFirstPrev = function () {
+        return $scope.startRowIndex > 0;
+    }
+    $scope.showNextLast = function () {
+        return $scope.totalRowCount > $scope.startRowIndex + $scope.maximumRows;
     }
     $scope.getList();
 };

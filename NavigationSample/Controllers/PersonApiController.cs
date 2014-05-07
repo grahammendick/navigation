@@ -6,14 +6,18 @@ namespace Navigation.Sample.Controllers
 {
     public class PersonApiController : ApiController
     {
-		public IEnumerable<Person> GetList(
+		public object GetList(
 			[ModelBinder] string name,
 			[ModelBinder] string minDateOfBirth,
 			[ModelBinder] string sortExpression,
 			[ModelBinder] int startRowIndex,
 			[ModelBinder] int maximumRows)
 		{
-			return new PersonSearch().Search(name, minDateOfBirth, sortExpression, startRowIndex, maximumRows);
+			var people = new PersonSearch().Search(name, minDateOfBirth, sortExpression, startRowIndex, maximumRows);
+			return new {
+				People = people,
+				TotalRowCount = StateContext.Bag.totalRowCount
+			};
 		}
 
 		public Person GetDetails(int id)
