@@ -6,7 +6,7 @@ namespace Navigation.Sample.Controllers
 {
 	public class PersonController : Controller
 	{
-		public ActionResult Index(PersonSearchModel model)
+		public ActionResult List(PersonSearchModel model)
 		{
 			DateTime outDate;
 			if (model.MinDateOfBirth == null || DateTime.TryParse(model.MinDateOfBirth, out outDate))
