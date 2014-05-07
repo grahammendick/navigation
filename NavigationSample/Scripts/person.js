@@ -5,7 +5,7 @@
     $scope.startRowIndex = 0;
     $scope.maximumRows = 10;
     $scope.people;
-    $scope.search = function () {
+    $scope.getList = function () {
         var url = '/WebApiList/' + $scope.startRowIndex + '/'
             + $scope.maximumRows + '/' + encodeURI($scope.sortExpression);
         if ($scope.name)
@@ -16,9 +16,19 @@
             }
         );
     }
+    $scope.search = function () {
+        $scope.startRowIndex = 0;
+        $scope.sortExpression = 'Name';
+        $scope.getList();
+    }
     $scope.sort = function () {
         $scope.sortExpression = $scope.sortExpression == 'Name' ? 'Name DESC' : 'Name';
-        $scope.search();
+        $scope.getList();
     }
-    $scope.search();
+    $scope.changePageSize = function (size) {
+        $scope.startRowIndex = 0;
+        $scope.maximumRows = size;
+        $scope.getList();
+    }
+    $scope.getList();
 };
