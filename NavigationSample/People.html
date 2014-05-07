@@ -11,6 +11,11 @@
 </head>
 <body>
     <div ng-controller="PersonController">
+        <label for="name">Name</label>
+        <input id="name" ng-model="name" />
+        <label for="minDateOfBirth">Min Date of Birth</label>
+        <input id="minDateOfBirth" ng-model="minDateOfBirth" />
+        <input type="submit" value="Search" ng-click="search()"/>
         <table>
             <thead>
                 <tr>
