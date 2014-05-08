@@ -20,7 +20,7 @@
             prefix = '&'
         }
         if ($scope.currentMinDateOfBirth)
-            url += prefix + 'minDateOfBirth=' + sIComponent($scope.currentMinDateOfBirth);
+            url += prefix + 'minDateOfBirth=' + encodeURIComponent($scope.currentMinDateOfBirth);
         $http.get(url)
             .success(function (data) {
                 $scope.dateError = false;
