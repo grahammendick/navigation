@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http.Controllers;
+﻿using System.Web.Http.Controllers;
 using System.Web.Http.ValueProviders;
 
 namespace Navigation.WebApi
