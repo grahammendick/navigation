@@ -9,6 +9,8 @@
     $scope.totalRowCount;
     $scope.people;
     $scope.dateError = false;
+    $scope.listing = true;
+    $scope.person = {};
     $scope.getList = function () {
         var url = '/WebApiList/' + $scope.startRowIndex + '/'
             + $scope.maximumRows + '/' + encodeURI($scope.sortExpression);
@@ -76,6 +78,9 @@
     $scope.select = function (person) {
         $http.get(person.link)
             .success(function (data) {
+                $scope.person.name = data.Name;
+                $scope.person.dateOfBirth = data.DateOfBirth;
+                $scope.listing = false;
             }
         );
     }

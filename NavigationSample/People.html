@@ -11,37 +11,46 @@
 </head>
 <body>
     <div ng-controller="PersonController">
-        <form>
-            <label for="name">Name</label>
-            <input id="name" ng-model="name" />
-            <label for="minDateOfBirth">Min Date of Birth</label>
-            <input id="minDateOfBirth" ng-model="minDateOfBirth" />
-            <span ng-show="dateError">date Error</span>
-            <input type="submit" value="Search" ng-click="search()" />
-        </form>
-        Page size
-        <a href="#" ng-click="changePageSize(5)">5</a>
-        <a href="#" ng-click="changePageSize(10)">10</a>
-        <table>
-            <thead>
-                <tr>
-                    <th><a href="#" ng-click="sort()">Name</a></th>
-                    <th>Date of Birth</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="person in people">
-                    <td><a href="#" ng-click="select(person)">{{ person.Name }}</a></td>
-                    <td>{{ person.DateOfBirth | date: 'dd/MM/yyyy' }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <span ng-show="!showFirstPrev()">First Previous</span>
-        <a href="#" ng-click="firstPage()" ng-show="showFirstPrev()">First</a>
-        <a href="#" ng-click="previousPage()" ng-show="showFirstPrev()">Previous</a>
-        <a href="#" ng-click="nextPage()" ng-show="showNextLast()">Next</a>
-        <a href="#" ng-click="lastPage()" ng-show="showNextLast()">Last</a>
-        <span ng-show="!showNextLast()">Next Last</span>
+        <div ng-show="listing">
+            <form>
+                <label for="name">Name</label>
+                <input id="name" ng-model="name" />
+                <label for="minDateOfBirth">Min Date of Birth</label>
+                <input id="minDateOfBirth" ng-model="minDateOfBirth" />
+                <span ng-show="dateError">date Error</span>
+                <input type="submit" value="Search" ng-click="search()" />
+            </form>
+            Page size
+            <a href="#" ng-click="changePageSize(5)">5</a>
+            <a href="#" ng-click="changePageSize(10)">10</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th><a href="#" ng-click="sort()">Name</a></th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="person in people">
+                        <td><a href="#" ng-click="select(person)">{{ person.Name }}</a></td>
+                        <td>{{ person.DateOfBirth | date: 'dd/MM/yyyy' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <span ng-show="!showFirstPrev()">First Previous</span>
+            <a href="#" ng-click="firstPage()" ng-show="showFirstPrev()">First</a>
+            <a href="#" ng-click="previousPage()" ng-show="showFirstPrev()">Previous</a>
+            <a href="#" ng-click="nextPage()" ng-show="showNextLast()">Next</a>
+            <a href="#" ng-click="lastPage()" ng-show="showNextLast()">Last</a>
+            <span ng-show="!showNextLast()">Next Last</span>
+        </div>
+        <div ng-show="!listing">
+            <a href="#" ng-click="listing = true">Person Search</a>
+            <form>
+                Name: {{ person.name }}<br />
+                DateOfBirth: {{ person.dateOfBirth | date: 'dd/MM/yyyy' }}
+            </form>
+        </div>
     </div>
 </body>
 </html>
