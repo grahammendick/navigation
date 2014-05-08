@@ -46,10 +46,10 @@
         </div>
         <div ng-show="!listing">
             <a href="#" ng-click="listing = true">Person Search</a>
-            <form>
+            <div>
                 Name: {{ person.name }}<br />
                 Date of Birth: {{ person.dateOfBirth | date: 'dd/MM/yyyy' }}
-            </form>
+            </div>
         </div>
     </div>
 </body>
