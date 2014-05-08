@@ -13,7 +13,7 @@
 		<ItemTemplate>
 			Name:
 			<asp:Label ID="NameLabel" runat="server" Text='<%#: Item.Name %>' /><br />
-			DateOfBirth:
+			Date of Birth:
 			<asp:Label ID="DateOfBirthLabel" runat="server" Text='<%# Item.DateOfBirth.ToString("d") %>' />
 		</ItemTemplate>
 	</asp:FormView>

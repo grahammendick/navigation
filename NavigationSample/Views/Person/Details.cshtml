@@ -1,4 +1,4 @@
-﻿@model Navigation.Sample.Person
+﻿@model Person
 
 <!DOCTYPE html>
 
@@ -8,5 +8,9 @@
 </head>
 <body>
     @Html.NavigationBackLink("Person Search", 1)
+    <div>
+        Name: @Model.Name<br/>
+        Date of Birth: @Model.DateOfBirth.ToShortDateString()
+    </div>
 </body>
 </html>
