@@ -16,6 +16,7 @@
             <input id="name" ng-model="name" />
             <label for="minDateOfBirth">Min Date of Birth</label>
             <input id="minDateOfBirth" ng-model="minDateOfBirth" />
+            <span ng-show="dateError">date Error</span>
             <input type="submit" value="Search" ng-click="search()" />
         </form>
         Page size
