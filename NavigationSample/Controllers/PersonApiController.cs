@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -13,6 +14,13 @@ namespace Navigation.Sample.Controllers
 			[ModelBinder] int startRowIndex,
 			[ModelBinder] int maximumRows)
 		{
+			DateTime outDate;
+			if (minDateOfBirth != null && !DateTime.TryParse(minDateOfBirth, out outDate)) 
+			{
+				return new {
+					DateError = true
+				};
+			}
 			var people = new PersonSearch().Search(name, minDateOfBirth, sortExpression, startRowIndex, maximumRows);
 			return new {
 				People = people.Select(p => new {

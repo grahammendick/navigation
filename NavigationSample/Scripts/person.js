@@ -1,4 +1,6 @@
 ﻿function PersonController($scope, $http) {
+    $scope.currentName;
+    $scope.currentMinDateOfBirth;
     $scope.name;
     $scope.minDateOfBirth;
     $scope.sortExpression = 'Name';
@@ -6,19 +8,35 @@
     $scope.maximumRows = 10;
     $scope.totalRowCount;
     $scope.people;
+    $scope.dateError = false;
     $scope.getList = function () {
         var url = '/WebApiList/' + $scope.startRowIndex + '/'
             + $scope.maximumRows + '/' + encodeURI($scope.sortExpression);
-        if ($scope.name)
-            url += '?name=' + $scope.name;
+        var prefix = '?';
+        if ($scope.currentName) {
+            url += prefix + 'name=' + encodeURI($scope.currentName);
+            prefix = '&'
+        }
+        if ($scope.currentMinDateOfBirth)
+            url += prefix + 'minDateOfBirth=' + encodeURI($scope.currentMinDateOfBirth);
         $http.get(url)
             .success(function (data) {
-                $scope.people = data.People;
-                $scope.totalRowCount = data.TotalRowCount;
+                $scope.dateError = false;
+                if (!data.DateError) {
+                    $scope.people = data.People;
+                    $scope.totalRowCount = data.TotalRowCount;
+                    $scope.name = $scope.currentName;
+                    $scope.minDateOfBirth = $scope.currentMinDateOfBirth;
+                } else {
+                    $scope.dateError = true;
+                }
+
             }
         );
     }
     $scope.search = function () {
+        $scope.currentName = $scope.name;
+        $scope.currentMinDateOfBirth = $scope.minDateOfBirth;
         $scope.startRowIndex = 0;
         $scope.sortExpression = 'Name';
         $scope.getList();
