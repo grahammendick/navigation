@@ -13,14 +13,14 @@
     $scope.person = {};
     $scope.getList = function () {
         var url = '/WebApiList/' + $scope.startRowIndex + '/'
-            + $scope.maximumRows + '/' + encodeURI($scope.sortExpression);
+            + $scope.maximumRows + '/' + encodeURIComponent($scope.sortExpression);
         var prefix = '?';
         if ($scope.currentName) {
-            url += prefix + 'name=' + encodeURI($scope.currentName);
+            url += prefix + 'name=' + encodeURIComponent($scope.currentName);
             prefix = '&'
         }
         if ($scope.currentMinDateOfBirth)
-            url += prefix + 'minDateOfBirth=' + encodeURI($scope.currentMinDateOfBirth);
+            url += prefix + 'minDateOfBirth=' + sIComponent($scope.currentMinDateOfBirth);
         $http.get(url)
             .success(function (data) {
                 $scope.dateError = false;
