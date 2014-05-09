@@ -42,6 +42,16 @@ namespace Navigation.WebApi.Test
 		}
 
 		[TestMethod]
+		public void NavigateWebApiToWebFormsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("s3", StateContext.State.Key);
+		}
+
+		[TestMethod]
 		public void NavigateLinkTest()
 		{
 			StateController.Navigate("d0");
@@ -66,13 +76,12 @@ namespace Navigation.WebApi.Test
 		}
 
 		[TestMethod]
-		public void NavigateWebApiToWebFormsTest()
+		public void NavigateWebApiToWebFormsLinkTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			StateController.Navigate("t0");
-			Assert.AreEqual("s3", StateContext.State.Key);
+			Assert.IsTrue(StateController.GetNavigationLink("t0").StartsWith("/r3"));
 		}
 
 		[TestMethod]
