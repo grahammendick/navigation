@@ -19,7 +19,7 @@ namespace Navigation.WebApi.Test
 		[TestMethod]
 		public void NavigationDataValueProviderFactoryRegisteredTest()
 		{
-			Assert.IsTrue(GlobalConfiguration.Configuration.Services.GetServices(typeof(ValueProviderFactory)).ToList()[0] is NavigationDataValueProviderFactory);
+			Assert.IsTrue(GlobalConfiguration.Configuration.Services.GetServices(typeof(ValueProviderFactory)).First() is NavigationDataValueProviderFactory);
 		}
 
 		[TestMethod]
