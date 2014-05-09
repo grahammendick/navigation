@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Mvc.Test", "Navi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.WebApi", "NavigationWebApi\Navigation.WebApi.csproj", "{FE526FB6-1EF2-4352-8A1F-8A35BE391C3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.WebApi.Test", "NavigationWebApi.Test\Navigation.WebApi.Test.csproj", "{F98EC579-C7E2-4E0B-96BD-FBEF8ECC002C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{FE526FB6-1EF2-4352-8A1F-8A35BE391C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE526FB6-1EF2-4352-8A1F-8A35BE391C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE526FB6-1EF2-4352-8A1F-8A35BE391C3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98EC579-C7E2-4E0B-96BD-FBEF8ECC002C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98EC579-C7E2-4E0B-96BD-FBEF8ECC002C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98EC579-C7E2-4E0B-96BD-FBEF8ECC002C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98EC579-C7E2-4E0B-96BD-FBEF8ECC002C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
