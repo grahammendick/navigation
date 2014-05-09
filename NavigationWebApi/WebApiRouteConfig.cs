@@ -4,8 +4,14 @@ using System.Web.Routing;
 
 namespace Navigation.WebApi
 {
+	/// <summary>
+	/// Registers all <see cref="State.Route"/> configuration information for Web Api
+	/// </summary>
 	public class WebApiRouteConfig
 	{
+		/// <summary>
+		/// Registers all <see cref="State.Route"/> configuration information
+		/// </summary>
 		public static void AddHttpRoutes()
 		{
 			if (StateInfoConfig.Dialogs == null)
