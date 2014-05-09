@@ -47,6 +47,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.2\lib\net45\System.Web.Http.dll</HintPath>
@@ -71,14 +72,20 @@
   <ItemGroup>
     <Compile Include="NavigationDataValueProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteConfigTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NavigationWebApi\Navigation.WebApi.csproj">
       <Project>{fe526fb6-1ef2-4352-8a1f-8a35be391c3b}</Project>
       <Name>Navigation.WebApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Navigation\Navigation.csproj">
+      <Project>{4ab8290d-41d9-4bc0-b7b5-a430b067be65}</Project>
+      <Name>Navigation</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
