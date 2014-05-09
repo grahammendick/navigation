@@ -121,5 +121,14 @@ namespace Navigation.WebApi.Test
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
 			Assert.AreEqual(1, StateContext.Bag.a);
 		}
+
+		[TestMethod]
+		public void NavigateDefaultsTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual(0, StateContext.Bag.startRowIndex);
+			Assert.AreEqual(10, StateContext.Bag.maximumRows);
+		}
 	}
 }
