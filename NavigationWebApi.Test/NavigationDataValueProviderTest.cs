@@ -1,10 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Navigation.WebApi;
+using System;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ValueProviders;
-using System.Linq;
-using Navigation;
-using System;
 
 namespace Navigation.WebApi.Test
 {
