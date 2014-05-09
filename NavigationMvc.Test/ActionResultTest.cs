@@ -15,13 +15,6 @@ namespace Navigation.Mvc.Test
 			}
 		}
 
-		[AssemblyInitialize]
-		public static void AddStateRoutes(TestContext context)
-		{
-			RouteConfig.AddStateRoutes();
-			StateController.Navigate("d0");
-		}
-
 		[TestMethod]
 		public void NavigateResultDialogTest()
 		{

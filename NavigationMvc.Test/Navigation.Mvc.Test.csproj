@@ -90,6 +90,7 @@
     <Compile Include="FormExtensionsTest.cs" />
     <Compile Include="LinkExtensionsTest.cs" />
     <Compile Include="NavigationDataValueProviderTest.cs" />
+    <Compile Include="NavigationTest.cs" />
     <Compile Include="PagerExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteConfigTest.cs" />
