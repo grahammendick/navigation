@@ -42,6 +42,30 @@ namespace Navigation.WebApi.Test
 		}
 
 		[TestMethod]
+		public void NavigateLinkTest()
+		{
+			StateController.Navigate("d0");
+			Assert.AreEqual("/r1", StateController.GetNavigationLink("t0"));
+		}
+
+		[TestMethod]
+		public void NavigateBackLinkTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("/r1", StateController.GetNavigationBackLink(1));
+		}
+
+		[TestMethod]
+		public void RefreshLinkTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("/r1", StateController.RefreshLink);
+		}
+
+		[TestMethod]
 		public void NavigateWebApiToWebFormsTest()
 		{
 			StateController.Navigate("d0");
