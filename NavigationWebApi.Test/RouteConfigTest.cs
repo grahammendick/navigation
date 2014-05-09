@@ -6,13 +6,6 @@ namespace Navigation.WebApi.Test
 	[TestClass]
 	public class RouteConfigTest
 	{
-		[AssemblyInitialize]
-		public static void AddStateRoutes(TestContext context)
-		{
-			WebApiRouteConfig.AddHttpRoutes();
-			StateController.Navigate("d0");
-		}
-
 		[TestMethod]
 		public void RouteTest()
 		{
