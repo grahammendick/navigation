@@ -11,13 +11,6 @@ namespace Navigation.Sample.Models
 			set;
 		}
 
-		[DisplayName("Min Date of Birth")]
-		public string MinDateOfBirth
-		{
-			get;
-			set;
-		}
-
 		public IEnumerable<Person> People
 		{
 			get;

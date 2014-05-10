@@ -9,19 +9,11 @@ namespace Navigation.Sample.Controllers
     {
 		public object GetList(
 			[ModelBinder] string name,
-			[ModelBinder] string minDateOfBirth,
 			[ModelBinder] string sortExpression,
 			[ModelBinder] int startRowIndex,
 			[ModelBinder] int maximumRows)
 		{
-			DateTime outDate;
-			if (minDateOfBirth != null && !DateTime.TryParse(minDateOfBirth, out outDate)) 
-			{
-				return new {
-					DateError = true
-				};
-			}
-			var people = new PersonSearch().Search(name, minDateOfBirth, sortExpression, startRowIndex, maximumRows);
+			var people = new PersonSearch().Search(name, sortExpression, startRowIndex, maximumRows);
 			return new {
 				People = people.Select(p => new {
 						p.Name,

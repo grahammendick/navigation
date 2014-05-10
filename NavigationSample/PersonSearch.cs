@@ -24,14 +24,12 @@ namespace Navigation.Sample
 
 		public IEnumerable<Person> Search(
 			[NavigationData] string name,
-			[NavigationData] string minDateOfBirth,
 			[NavigationData] string sortExpression,
 			[NavigationData] int startRowIndex,
 			[NavigationData] int maximumRows)
 		{
 			var q = from p in _People
 					where (name == null || p.Name.ToUpperInvariant().Contains(name.ToUpperInvariant()))
-					&& (minDateOfBirth == null || p.DateOfBirth >= DateTime.Parse(minDateOfBirth))
 					select p;
 			if (sortExpression != null)
 				q = !sortExpression.EndsWith("DESC") ? q.OrderBy(p => p.Name) : q.OrderByDescending(p => p.Name);
