@@ -1,5 +1,4 @@
 ﻿using Navigation.Sample.Models;
-using System;
 using System.Web.Mvc;
 
 namespace Navigation.Sample.Controllers
