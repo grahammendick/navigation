@@ -117,7 +117,7 @@
     <Content Include="Details.Mobile.aspx" />
     <Content Include="Listing.aspx" />
     <Content Include="App_Browsers\Navigation.browser" />
-    <Content Include="People.html" />
+    <Content Include="Person.html" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
