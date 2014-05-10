@@ -1,44 +1,28 @@
 ﻿function PersonController($scope, $http) {
     $scope.currentName;
-    $scope.currentMinDateOfBirth;
     $scope.name;
-    $scope.minDateOfBirth;
     $scope.sortExpression = 'Name';
     $scope.startRowIndex = 0;
     $scope.maximumRows = 10;
     $scope.totalRowCount;
     $scope.people;
-    $scope.dateError = false;
     $scope.listing = true;
     $scope.person = {};
     $scope.getList = function () {
         var url = '/WebApiList/' + $scope.startRowIndex + '/'
             + $scope.maximumRows + '/' + encodeURIComponent($scope.sortExpression);
-        var prefix = '?';
-        if ($scope.currentName) {
-            url += prefix + 'name=' + encodeURIComponent($scope.currentName);
-            prefix = '&'
-        }
-        if ($scope.currentMinDateOfBirth)
-            url += prefix + 'minDateOfBirth=' + encodeURIComponent($scope.currentMinDateOfBirth);
+        if ($scope.currentName)
+            url += '?name=' + encodeURIComponent($scope.currentName);
         $http.get(url)
             .success(function (data) {
-                $scope.dateError = false;
-                if (!data.DateError) {
-                    $scope.people = data.People;
-                    $scope.totalRowCount = data.TotalRowCount;
-                    $scope.name = $scope.currentName;
-                    $scope.minDateOfBirth = $scope.currentMinDateOfBirth;
-                } else {
-                    $scope.dateError = true;
-                }
-
+                $scope.people = data.People;
+                $scope.totalRowCount = data.TotalRowCount;
+                $scope.name = $scope.currentName;
             }
         );
     }
     $scope.search = function () {
         $scope.currentName = $scope.name;
-        $scope.currentMinDateOfBirth = $scope.minDateOfBirth;
         $scope.startRowIndex = 0;
         $scope.sortExpression = 'Name';
         $scope.getList();

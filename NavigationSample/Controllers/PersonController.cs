@@ -8,23 +8,14 @@ namespace Navigation.Sample.Controllers
 	{
 		public ActionResult List(PersonSearchModel model)
 		{
-			DateTime outDate;
-			if (model.MinDateOfBirth == null || DateTime.TryParse(model.MinDateOfBirth, out outDate))
+			if (StateContext.Bag.name != model.Name)
 			{
-				if (StateContext.Bag.name != model.Name || StateContext.Bag.minDateOfBirth != model.MinDateOfBirth)
-				{
-					StateContext.Bag.startRowIndex = null;
-					StateContext.Bag.sortExpression = null;
-				}
-				StateContext.Bag.name = model.Name;
-				StateContext.Bag.minDateOfBirth = model.MinDateOfBirth;
+				StateContext.Bag.startRowIndex = null;
+				StateContext.Bag.sortExpression = null;
 			}
-			else
-			{
-				ModelState.AddModelError("MinDateOfBirth", "date error");
-			}
-			model.People = new PersonSearch().Search(StateContext.Bag.name, StateContext.Bag.minDateOfBirth,
-				StateContext.Bag.sortExpression, StateContext.Bag.startRowIndex, StateContext.Bag.maximumRows);
+			StateContext.Bag.name = model.Name;
+			model.People = new PersonSearch().Search(StateContext.Bag.name, StateContext.Bag.sortExpression, 
+				StateContext.Bag.startRowIndex, StateContext.Bag.maximumRows);
 			return View("Listing", model);
 		}
 

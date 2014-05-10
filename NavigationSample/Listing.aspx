@@ -20,16 +20,12 @@
 				<EditItemTemplate>
 					<asp:Label ID="Label1" runat="server" Text="Name" AssociatedControlID="TextBox1" />
 					<asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("[name]") %>' />
-					<asp:Label ID="Label2" runat="server" Text="Min Date of Birth" AssociatedControlID="TextBox2" />
-					<asp:TextBox ID="TextBox2" runat="server" Text='<%# Bind("[minDateOfBirth]") %>' />
 					<asp:Button ID="Button1" runat="server" Text="Search" CommandName="Update" />
-					<asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="TextBox2" EnableClientScript="false" ErrorMessage="date error" Operator="DataTypeCheck" Type="Date" />
 				</EditItemTemplate>
 			</asp:FormView>
 			<cc1:NavigationDataSource ID="NavigationDataSource1" runat="server">
 				<SelectParameters>
 					<cc1:NavigationDataParameter Name="name"/> 
-					<cc1:NavigationDataParameter Name="minDateOfBirth"/> 
 				</SelectParameters>
 				<UpdateParameters>
 					<cc1:NavigationDataParameter Name="sortExpression" Reset="true"/>
@@ -60,7 +56,6 @@
 		</ContentTemplate>
 		<Triggers>
 			<cc1:NavigationDataTrigger Key="name" />
-			<cc1:NavigationDataTrigger Key="minDateOfBirth" />
 			<cc1:NavigationDataTrigger Key="sortExpression" />
 			<cc1:NavigationDataTrigger Key="startRowIndex" />
 			<cc1:NavigationDataTrigger Key="maximumRows" />
