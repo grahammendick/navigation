@@ -16,7 +16,7 @@
         $http.get(url)
             .success(function (data) {
                 $scope.people = data.People;
-                $scope.totalRowCount = data.TotalRowCount;
+                $scope.totalRowCount = data.Total;
                 $scope.name = $scope.currentName;
             }
         );
@@ -60,7 +60,7 @@
         return $scope.totalRowCount > $scope.startRowIndex + $scope.maximumRows;
     }
     $scope.select = function (person) {
-        $http.get(person.link)
+        $http.get(person.DetailsLink)
             .success(function (data) {
                 $scope.person.name = data.Name;
                 $scope.person.dateOfBirth = data.DateOfBirth;
