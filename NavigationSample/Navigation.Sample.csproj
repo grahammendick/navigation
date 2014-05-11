@@ -165,6 +165,8 @@
     <Compile Include="Listing.aspx.designer.cs">
       <DependentUpon>Listing.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\PersonApiModel.cs" />
+    <Compile Include="Models\PersonApiSearchModel.cs" />
     <Compile Include="Models\PersonSearchModel.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonSearch.cs" />
