@@ -490,7 +490,8 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// 
+		/// TODO - add a NavigateLink overload without mode?
+		/// Switch url and state around to match StateHandler NavigateLink
 		/// </summary>
 		/// <param name="url"></param>
 		/// <param name="state"></param>
