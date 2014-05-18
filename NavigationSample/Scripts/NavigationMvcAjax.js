@@ -4,9 +4,9 @@
         navigateAjax(location.pathname + location.search, e.target.getAttribute('href'), true)
     }
 });
-
+var currentUrl = location.pathname + location.search;
 window.onpopstate = function (e) {
-    navigateAjax(e.state != null ? e.state : '', location.pathname + location.search, false)
+    navigateAjax(currentUrl, location.pathname + location.search, false)
 };
 
 function navigateAjax(oldUrl, newUrl, addHistory)
@@ -15,8 +15,10 @@ function navigateAjax(oldUrl, newUrl, addHistory)
     req.onreadystatechange = function () {
         if (req.readyState == 4) {
             document.getElementById('np1').innerHTML = JSON.parse(req.responseText)['np1'];
-            if (addHistory)
+            currentUrl = newUrl;
+            if (addHistory) {
                 history.pushState(newUrl, '', newUrl);
+            }
         }
     };
     req.open("get", newUrl, true);
