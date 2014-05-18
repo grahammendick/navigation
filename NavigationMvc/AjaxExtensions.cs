@@ -12,7 +12,9 @@ namespace Navigation.Mvc
 			tagBuilder.MergeAttribute("id", "np1");
 			tagBuilder.InnerHtml = content(null).ToString();
 			Dictionary<string, string> panels = new Dictionary<string, string>();
-			panels["np1"] = content(null).ToString();
+			NavigationData data = (NavigationData) htmlHelper.ViewContext.HttpContext.Items["oldData"];
+			if (data != null && data[navigationDataKeys] != StateContext.Data[navigationDataKeys])
+				panels["np1"] = content(null).ToString();
 			htmlHelper.ViewContext.HttpContext.Items["panels"] = panels;
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}

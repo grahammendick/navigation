@@ -92,6 +92,18 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="stateId"></param>
+		/// <param name="url"></param>
+		public static void SetStateContext(string stateId, string url)
+		{
+			StateContext.StateId = stateId;
+			State state = StateContext.State;
+			SetStateContext(stateId, new MockNavigationContext(url, state));
+		}
+
 #if NET40Plus
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>

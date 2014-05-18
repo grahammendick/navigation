@@ -38,6 +38,12 @@ namespace Navigation.Mvc
 		/// <returns>The object that processes the request</returns>
 		protected override IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{
+			if (requestContext.HttpContext.Request.Headers["navigation"] != null)
+			{
+				//If this throws an exception, catch and carry on? can process without ajax?
+				StateController.SetStateContext(State.Id, requestContext.HttpContext.Request.Headers["navigation"]);
+				requestContext.HttpContext.Items["oldData"] = new NavigationData(true);
+			}
 			StateController.SetStateContext(State.Id, requestContext.HttpContext);
 			return base.GetHttpHandler(requestContext);
 		}
