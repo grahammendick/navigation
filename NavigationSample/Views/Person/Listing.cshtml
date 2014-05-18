@@ -18,7 +18,7 @@
     Page size
     @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
     @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
-    @Html.AjaxPanel("startRowIndex,maximumRows,sortExpression",
+    @Html.AjaxPanel("np1", "startRowIndex,maximumRows,sortExpression",
         @<div>
             <table>
                 <thead>
