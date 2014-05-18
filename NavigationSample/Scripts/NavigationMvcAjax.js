@@ -5,6 +5,7 @@
         req.onreadystatechange = function () {
             if (req.readyState == 4) {
                 document.getElementById('np1').innerHTML = JSON.parse(req.responseText)['np1'];
+                history.pushState('', '', e.target.href);
             }
         };
         req.open("get", e.target.href, true);
