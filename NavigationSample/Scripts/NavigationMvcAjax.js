@@ -8,7 +8,7 @@
             }
         };
         req.open("get", e.target.href, true);
-        req.setRequestHeader('navigation', location.href);
+        req.setRequestHeader('navigation', location.pathname + location.search);
         req.send();
     }
 });
