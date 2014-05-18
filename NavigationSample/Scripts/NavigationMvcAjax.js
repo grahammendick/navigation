@@ -14,7 +14,9 @@ function navigateAjax(newUrl, addHistory)
     var req = new XMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState == 4) {
-            document.getElementById('np1').innerHTML = JSON.parse(req.responseText)['np1'];
+            var panels = JSON.parse(req.responseText);
+            for(var panelId in panels)
+                document.getElementById(panelId).innerHTML = panels[panelId];
             currentUrl = newUrl;
             if (addHistory) {
                 history.pushState(newUrl, '', newUrl);
