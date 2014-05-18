@@ -92,18 +92,6 @@ namespace Navigation
 			}
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="stateId"></param>
-		/// <param name="url"></param>
-		public static void SetStateContext(string stateId, string url)
-		{
-			StateContext.StateId = stateId;
-			State state = StateContext.State;
-			SetStateContext(stateId, new MockNavigationContext(url, state));
-		}
-
 #if NET40Plus
 		/// <summary>
 		/// Navigates to a <see cref="Navigation.State"/>. Depending on the <paramref name="action"/>
@@ -501,11 +489,17 @@ namespace Navigation
 			return CrumbTrailManager.GetRefreshHref(toData);
 		}
 
-		private static void NavigateLink(string url, State state, NavigationMode mode)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="url"></param>
+		/// <param name="state"></param>
+		/// <param name="mode"></param>
+		public static void NavigateLink(string url, State state, NavigationMode mode)
 		{
 #if NET40Plus
 			HttpContextBase context = null;
-			if (HttpContext.Current != null)
+			if (HttpContext.Current != null && mode != NavigationMode.Mock)
 				context = new HttpContextWrapper(HttpContext.Current);
 			else
 				context = new MockNavigationContext(url, state);

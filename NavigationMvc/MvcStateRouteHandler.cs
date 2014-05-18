@@ -41,7 +41,7 @@ namespace Navigation.Mvc
 			if (requestContext.HttpContext.Request.Headers["navigation"] != null)
 			{
 				//If this throws an exception, catch and carry on? can process without ajax?
-				StateController.SetStateContext(State.Id, requestContext.HttpContext.Request.Headers["navigation"]);
+				StateController.NavigateLink(requestContext.HttpContext.Request.Headers["navigation"], State, NavigationMode.Mock);
 				requestContext.HttpContext.Items["oldData"] = new NavigationData(true);
 			}
 			StateController.SetStateContext(State.Id, requestContext.HttpContext);
