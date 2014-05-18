@@ -121,6 +121,7 @@
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\NavigationMvcAjax.js" />
     <Content Include="Scripts\person.js" />
     <Content Include="StateInfo.config" />
     <Content Include="packages.config" />
