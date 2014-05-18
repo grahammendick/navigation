@@ -6,10 +6,10 @@ namespace Navigation.Mvc
 {
 	public static class AjaxExtensions
 	{
-		public static MvcHtmlString AjaxPanel(this HtmlHelper htmlHelper, string navigationDataKeys, Func<dynamic, object> content)
+		public static MvcHtmlString AjaxPanel(this HtmlHelper htmlHelper, string id, string navigationDataKeys, Func<dynamic, object> content)
 		{
 			TagBuilder tagBuilder = new TagBuilder("span");
-			tagBuilder.MergeAttribute("id", "np1");
+			tagBuilder.MergeAttribute("id", id);
 			tagBuilder.InnerHtml = content(null).ToString();
 			Dictionary<string, string> panels = new Dictionary<string, string>();
 			NavigationData data = (NavigationData) htmlHelper.ViewContext.HttpContext.Items["oldData"];
@@ -22,7 +22,7 @@ namespace Navigation.Mvc
 				}
 			}
 			if (navigationDataChanged)
-				panels["np1"] = content(null).ToString();
+				panels[id] = content(null).ToString();
 			htmlHelper.ViewContext.HttpContext.Items["panels"] = panels;
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
