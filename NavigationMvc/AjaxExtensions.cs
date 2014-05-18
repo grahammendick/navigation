@@ -13,8 +13,8 @@ namespace Navigation.Mvc
 			tagBuilder.InnerHtml = content(null).ToString();
 			Dictionary<string, string> panels = new Dictionary<string, string>();
 			NavigationData data = (NavigationData) htmlHelper.ViewContext.HttpContext.Items["oldData"];
-			bool navigationDataChanged = navigationDataKeys == null;
-			if (!navigationDataChanged && data != null)
+			bool navigationDataChanged = navigationDataKeys == null || data == null;
+			if (!navigationDataChanged)
 			{
 				foreach (string key in navigationDataKeys.Split(new char[] { ',' }))
 				{

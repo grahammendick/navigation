@@ -38,7 +38,7 @@ namespace Navigation.Mvc
 		/// <returns>The object that processes the request</returns>
 		protected override IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{
-			if (requestContext.HttpContext.Request.Headers["navigation"] != null)
+			if (!string.IsNullOrEmpty(requestContext.HttpContext.Request.Headers["navigation"]))
 			{
 				//If this throws an exception, catch and carry on? can process without ajax?
 				StateController.NavigateLink(requestContext.HttpContext.Request.Headers["navigation"], State, NavigationMode.Mock);
