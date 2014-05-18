@@ -16,6 +16,7 @@ namespace Navigation.Mvc
 			if (StateInfoConfig.Dialogs == null)
 				return;
 			ValueProviderFactories.Factories.Insert(3, new NavigationDataValueProviderFactory());
+			GlobalFilters.Filters.Add(new AjaxAttribute());
 			string controller, action, area;
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())

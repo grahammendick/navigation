@@ -23,7 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Navigation.Mvc.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -68,7 +69,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AjaxExtensions.cs" />
     <Compile Include="FormExtensions.cs" />
+    <Compile Include="AjaxAttribute.cs" />
     <Compile Include="LinkExtensions.cs" />
     <Compile Include="MvcStateHandler.cs" />
     <Compile Include="MvcStateRouteHandler.cs" />

@@ -9,12 +9,15 @@
     </style>
 </head>
 <body>
-    @using(Html.BeginRefreshForm(new NavigationData(true)))
-    {
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name)
-        <input type="submit" value="Search"/>
-    }
+    @Html.AjaxPanel("name", 
+        @<div>
+             @using (Html.BeginRefreshForm(new NavigationData(true)))
+             {
+                 @Html.LabelFor(m => m.Name)
+                 @Html.TextBoxFor(m => m.Name)
+                 <input type="submit" value="Search" />
+             }
+        </div>)
     Page size
     @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
     @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
