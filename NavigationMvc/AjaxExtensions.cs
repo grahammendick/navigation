@@ -13,7 +13,15 @@ namespace Navigation.Mvc
 			tagBuilder.InnerHtml = content(null).ToString();
 			Dictionary<string, string> panels = new Dictionary<string, string>();
 			NavigationData data = (NavigationData) htmlHelper.ViewContext.HttpContext.Items["oldData"];
-			if (data != null && data[navigationDataKeys] != StateContext.Data[navigationDataKeys])
+			bool navigationDataChanged = navigationDataKeys == null;
+			if (!navigationDataChanged && data != null)
+			{
+				foreach (string key in navigationDataKeys.Split(new char[] { ',' }))
+				{
+					navigationDataChanged = navigationDataChanged || data[key.Trim()] != StateContext.Data[key.Trim()];
+				}
+			}
+			if (navigationDataChanged)
 				panels["np1"] = content(null).ToString();
 			htmlHelper.ViewContext.HttpContext.Items["panels"] = panels;
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
