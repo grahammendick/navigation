@@ -7,7 +7,6 @@
         table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
         ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
     </style>
-    <script src="~/Scripts/NavigationMvcAjax.js"></script>
 </head>
 <body>
     @using (Html.BeginRefreshForm(new NavigationData(true)))
@@ -43,5 +42,6 @@
             @Html.Pager("First", "Previous", "Next", "Last")
             @string.Format("Total Count {0}", StateContext.Bag.totalRowCount)
     </div>)
+    <script src="~/Scripts/NavigationMvcAjax.js"></script>
 </body>
 </html>
