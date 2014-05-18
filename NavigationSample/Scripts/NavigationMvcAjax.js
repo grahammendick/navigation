@@ -6,7 +6,7 @@
 });
 
 window.onpopstate = function (e) {
-    navigateAjax(e.state, location.pathname + location.search, false)
+    navigateAjax(e.state != null ? e.state : '', location.pathname + location.search, false)
 };
 
 function navigateAjax(oldUrl, newUrl, addHistory)
