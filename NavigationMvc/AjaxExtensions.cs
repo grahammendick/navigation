@@ -8,14 +8,22 @@ namespace Navigation.Mvc
 	{
 		public static MvcHtmlString AjaxPanel(this HtmlHelper htmlHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
 		{
-			string html = content(null).ToHtmlString();
+			string html = null;
 			if (NavigationDataChanged(htmlHelper, navigationDataKeys))
 			{
-				AjaxNavigationInfo.GetInfo(htmlHelper.ViewContext.HttpContext).Panels[id] = html;
+				AjaxNavigationInfo ajaxInfo = AjaxNavigationInfo.GetInfo(htmlHelper.ViewContext.HttpContext);
+				if (ajaxInfo.PanelId == null)
+					ajaxInfo.PanelId = id;
+				html = content(null).ToHtmlString();
+				if (ajaxInfo.PanelId == id)
+				{
+					ajaxInfo.Panels[id] = html;
+					ajaxInfo.PanelId = null;
+				}
 			}
 			TagBuilder tagBuilder = new TagBuilder("span");
 			tagBuilder.MergeAttribute("id", id);
-			tagBuilder.InnerHtml = html;
+			tagBuilder.InnerHtml = html ?? content(null).ToHtmlString();
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
@@ -28,7 +36,7 @@ namespace Navigation.Mvc
 					return true;
 				foreach (string key in navigationDataKeys.Split(new char[] { ',' }))
 				{
-					if (data[key.Trim()] != StateContext.Data[key.Trim()])
+					if (!data[key.Trim()].Equals(StateContext.Data[key.Trim()]))
 						return true;
 				}
 			}
