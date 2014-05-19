@@ -15,9 +15,7 @@ namespace Navigation.Mvc
 			{
 				if (NavigationDataChanged(navigationDataKeys, data))
 				{
-					Dictionary<string, string> panels = new Dictionary<string, string>();
-					panels[id] = html;
-					htmlHelper.ViewContext.HttpContext.Items["panels"] = panels;
+					AjaxNavigationInfo.GetInfo(htmlHelper.ViewContext.HttpContext).Panels[id] = html;
 				}
 			}
 			TagBuilder tagBuilder = new TagBuilder("span");
