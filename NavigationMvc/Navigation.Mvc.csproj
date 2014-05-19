@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AjaxExtensions.cs" />
+    <Compile Include="AjaxNavigationInfo.cs" />
     <Compile Include="FormExtensions.cs" />
     <Compile Include="AjaxAttribute.cs" />
     <Compile Include="LinkExtensions.cs" />
