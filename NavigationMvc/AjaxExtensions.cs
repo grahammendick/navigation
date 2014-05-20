@@ -6,12 +6,12 @@ namespace Navigation.Mvc
 {
 	public static class AjaxExtensions
 	{
-		public static MvcHtmlString RefreshAjaxPanel(this HtmlHelper htmlHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
+		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
 		{
 			string html = null;
-			if (NavigationDataChanged(htmlHelper, navigationDataKeys))
+			if (NavigationDataChanged(ajaxHelper, navigationDataKeys))
 			{
-				RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(htmlHelper.ViewContext.HttpContext);
+				RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext);
 				if (info.PanelId == null)
 					info.PanelId = id;
 				html = content(null).ToHtmlString();
@@ -27,9 +27,9 @@ namespace Navigation.Mvc
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		private static bool NavigationDataChanged(HtmlHelper htmlHelper, string navigationDataKeys)
+		private static bool NavigationDataChanged(AjaxHelper ajaxHelper, string navigationDataKeys)
 		{
-			NavigationData data = RefreshAjaxInfo.GetInfo(htmlHelper.ViewContext.HttpContext).Data;
+			NavigationData data = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext).Data;
 			if (data != null)
 			{
 				if (string.IsNullOrEmpty(navigationDataKeys))

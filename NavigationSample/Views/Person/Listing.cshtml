@@ -18,7 +18,7 @@
     Page size
     @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
     @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
-    @Html.RefreshAjaxPanel("np1", "startRowIndex,maximumRows",
+    @Ajax.RefreshPanel("np1", "startRowIndex,maximumRows",
         @<div>
             @Html.Partial("Grid", Model)
             @Html.Pager("First", "Previous", "Next", "Last")
