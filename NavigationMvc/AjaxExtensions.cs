@@ -6,19 +6,19 @@ namespace Navigation.Mvc
 {
 	public static class AjaxExtensions
 	{
-		public static MvcHtmlString AjaxPanel(this HtmlHelper htmlHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
+		public static MvcHtmlString RefreshAjaxPanel(this HtmlHelper htmlHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
 		{
 			string html = null;
 			if (NavigationDataChanged(htmlHelper, navigationDataKeys))
 			{
-				AjaxNavigationInfo ajaxInfo = AjaxNavigationInfo.GetInfo(htmlHelper.ViewContext.HttpContext);
-				if (ajaxInfo.PanelId == null)
-					ajaxInfo.PanelId = id;
+				RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(htmlHelper.ViewContext.HttpContext);
+				if (info.PanelId == null)
+					info.PanelId = id;
 				html = content(null).ToHtmlString();
-				if (ajaxInfo.PanelId == id)
+				if (info.PanelId == id)
 				{
-					ajaxInfo.Panels[id] = html;
-					ajaxInfo.PanelId = null;
+					info.Panels[id] = html;
+					info.PanelId = null;
 				}
 			}
 			TagBuilder tagBuilder = new TagBuilder("span");
@@ -29,7 +29,7 @@ namespace Navigation.Mvc
 
 		private static bool NavigationDataChanged(HtmlHelper htmlHelper, string navigationDataKeys)
 		{
-			NavigationData data = (NavigationData)htmlHelper.ViewContext.HttpContext.Items["oldData"];
+			NavigationData data = RefreshAjaxInfo.GetInfo(htmlHelper.ViewContext.HttpContext).Data;
 			if (data != null)
 			{
 				if (string.IsNullOrEmpty(navigationDataKeys))

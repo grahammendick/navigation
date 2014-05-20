@@ -121,7 +121,7 @@
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\NavigationMvcAjax.js" />
+    <Content Include="Scripts\navigation.mvc.js" />
     <Content Include="Scripts\person.js" />
     <Content Include="StateInfo.config" />
     <Content Include="packages.config" />
@@ -129,6 +129,7 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\Person\Details.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Views\Person\Grid.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

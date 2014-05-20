@@ -1,0 +1,23 @@
+﻿@model PersonSearchModel
+
+@Html.RefreshAjaxPanel("np2", "startRowIndex,maximumRows,sortExpression",
+    @<table>
+        <thead>
+            <tr>
+                <th>@Html.Sorter("Name", "Name")</th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model.People)
+            {
+                <tr>
+                    <td>
+                        @Html.NavigationLink(person.Name, "Select", new NavigationData { { "id", person.Id } })
+                    </td>
+                    <td>@person.DateOfBirth.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>)
+
