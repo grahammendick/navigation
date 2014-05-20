@@ -21,8 +21,11 @@
         req.onreadystatechange = function () {
             if (req.readyState == 4 && req.status == 200) {
                 var panels = JSON.parse(req.responseText);
-                for(var id in panels)
+                for (var id in panels) {
                     document.getElementById(id).innerHTML = panels[id];
+                    if (win.jQuery && jQuery.validator)
+                        jQuery.validator.unobtrusive.parse('#' + id);
+                }
                 if (addHistory)
                     history.pushState(newLink, win.document.title, newLink);
                 link = newLink;
