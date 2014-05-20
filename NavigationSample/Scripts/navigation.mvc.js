@@ -13,7 +13,7 @@ function navigateAjax(newUrl, addHistory)
 {
     var req = new XMLHttpRequest();
     req.onreadystatechange = function () {
-        if (req.readyState == 4 && req.status  == 200) {
+        if (req.readyState == 4 && req.status == 200) {
             var panels = JSON.parse(req.responseText);
             for(var panelId in panels)
                 document.getElementById(panelId).innerHTML = panels[panelId];
@@ -24,6 +24,6 @@ function navigateAjax(newUrl, addHistory)
         }
     };
     req.open("get", newUrl, true);
-    req.setRequestHeader('navigation', currentUrl);
+    req.setRequestHeader('Navigation-Link', currentUrl);
     req.send();
 }
