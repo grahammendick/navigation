@@ -10,6 +10,10 @@
         }
     });
 
+    win.addEventListener('popstate', function (e) {
+        refreshAjax(win.location.pathname + win.location.search, false)
+    });
+
     var link = win.location.pathname + win.location.search;
     function refreshAjax(newLink, addHistory)
     {
@@ -28,9 +32,5 @@
         req.setRequestHeader('Navigation-Link', link);
         req.send();
     }
-
-    win.onpopstate = function (e) {
-        refreshAjax(win.location.pathname + win.location.search, false)
-    };
 
 })(window);
