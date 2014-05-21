@@ -71,7 +71,7 @@ namespace Navigation
 		/// <param name="context">The current context</param>
 		public virtual void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
 		{
-			if (mode == NavigationMode.Client)
+			if (mode != NavigationMode.Server)
 			{
 				if (!GetPermanent(state, context))
 					context.Response.Redirect(url, GetEndResponse(state, context));
