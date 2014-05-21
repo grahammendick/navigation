@@ -5,8 +5,17 @@
 
     win.document.addEventListener('click', function (e) {
         if (e.target.tagName && e.target.tagName == 'A') {
-            e.preventDefault();
-            refreshAjax(e.target.getAttribute('href'), true)
+            var element = e.target;
+            var navigate = false;
+            while (element != null && !navigate) {
+                if (element.getAttribute)
+                    navigate = element.getAttribute('data-navigation') == 'refreshajax';
+                element = element.parentNode;
+            }
+            if (navigate) {
+                e.preventDefault();
+                refreshAjax(e.target.getAttribute('href'), true);
+            }
         }
     });
 
