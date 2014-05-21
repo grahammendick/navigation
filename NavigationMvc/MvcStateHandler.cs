@@ -21,6 +21,7 @@ namespace Navigation.Mvc
 			NameValueCollection data = base.GetNavigationData(state, context);
 			data.Remove("controller");
 			data.Remove("action");
+			data.Remove("refreshajax");
 			return data;
 		}
 

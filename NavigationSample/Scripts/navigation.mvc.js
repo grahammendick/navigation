@@ -40,7 +40,10 @@
                 link = newLink;
             }
         };
-        req.open('get', newLink, true);
+        var uniqueLink = newLink;
+        uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
+        uniqueLink += 'refreshajax=' + new Date().getTime();
+        req.open('get', uniqueLink, true);
         req.setRequestHeader('Navigation-Link', link);
         req.send();
     }

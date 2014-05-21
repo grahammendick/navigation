@@ -18,9 +18,6 @@ namespace Navigation.Mvc
 			RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(filterContext.HttpContext);
 			if (info.Data != null)
 			{
-				filterContext.HttpContext.Response.AppendHeader("Pragma", "no-cache");
-				filterContext.HttpContext.Response.AppendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-				filterContext.HttpContext.Response.AppendHeader("Expires", "0");
 				filterContext.HttpContext.Response.Output = info.Writer;
 				filterContext.HttpContext.Response.Write(JsonConvert.SerializeObject(info.Panels));
 			}
