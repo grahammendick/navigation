@@ -50,7 +50,7 @@ namespace Navigation.Mvc
 		/// be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, object htmlAttributes = null)
 		{
-			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationLink(action, toData), htmlAttributes);
+			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationLink(action, toData), htmlAttributes, false);
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace Navigation.Mvc
 		/// <see cref="StateController.CanNavigateBack"/> returns false for this <paramref name="distance"/></exception>
 		public static MvcHtmlString NavigationBackLink(this HtmlHelper htmlHelper, string linkText, int distance, object htmlAttributes = null)
 		{
-			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationBackLink(distance), htmlAttributes);
+			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationBackLink(distance), htmlAttributes, false);
 		}
 
 		/// <summary>
@@ -100,10 +100,10 @@ namespace Navigation.Mvc
 		/// there is <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, object htmlAttributes = null)
 		{
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(toData), htmlAttributes);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(toData), htmlAttributes, true);
 		}
 
-		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes)
+		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes, bool refresh)
 		{
 			if (string.IsNullOrEmpty(linkText))
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
@@ -111,6 +111,8 @@ namespace Navigation.Mvc
 			tagBuilder.InnerHtml = HttpUtility.HtmlEncode(linkText);
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("href", url);
+			if (refresh)
+				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 	}
