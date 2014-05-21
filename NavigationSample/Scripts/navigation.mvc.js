@@ -22,9 +22,9 @@
             if (req.readyState == 4 && req.status == 200) {
                 var panels = JSON.parse(req.responseText);
                 for (var id in panels) {
-                    win.document.getElementById(id).innerHTML = panels[id];
-                    if (win.jQuery && win.jQuery.validator)
-                        win.jQuery.validator.unobtrusive.parse('#' + id);
+                    var panel = win.document.getElementById(id);
+                    panel.innerHTML = panels[id];
+                    panel.dispatchEvent(new Event('refreshajax'));
                 }
                 if (addHistory)
                     history.pushState(newLink, win.document.title, newLink);
