@@ -34,7 +34,14 @@
                 for (var id in panels) {
                     var panel = win.document.getElementById(id);
                     panel.innerHTML = panels[id];
-                    panel.dispatchEvent(new Event('refreshajax'));
+                    var evt;
+                    try{
+                        evt = new win.Event('refreshajax');
+                    } catch (e) {
+                        evt = win.document.createEvent('Event');
+                        evt.initEvent('refreshajax', false, false);
+                    }
+                    panel.dispatchEvent(evt);
                 }
                 if (addHistory)
                     history.pushState(newLink, win.document.title, newLink);
