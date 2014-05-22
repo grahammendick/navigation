@@ -51,7 +51,7 @@
         uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
         uniqueLink += 'refreshajax=' + new Date().getTime();
         req.open('get', uniqueLink, true);
-        req.setRequestHeader('Navigation-Link', link);
+        req.setRequestHeader('Refresh-Ajax', link);
         req.send();
     }
 
