@@ -1,5 +1,5 @@
 ﻿(function (win) {
-    
+
     if (!(win.history && win.history.pushState))
         return;
 
@@ -25,8 +25,7 @@
     });
 
     var link = win.location.pathname + win.location.search;
-    function refreshAjax(newLink, addHistory)
-    {
+    function refreshAjax(newLink, addHistory) {
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = function () {
             if (req.readyState == 4 && req.status == 200) {
@@ -52,7 +51,7 @@
         uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
         uniqueLink += 'refreshajax=' + new Date().getTime();
         req.open('get', uniqueLink, true);
-        req.setRequestHeader('Navigation-Link', link);
+        req.setRequestHeader('Refresh-Ajax', link);
         req.send();
     }
 
