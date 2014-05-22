@@ -35,9 +35,9 @@
                     var panel = win.document.getElementById(id);
                     panel.innerHTML = panels[id];
                     var evt;
-                    try{
+                    if (typeof Event === 'function')
                         evt = new win.Event('refreshajax');
-                    } catch (e) {
+                    else {
                         evt = win.document.createEvent('Event');
                         evt.initEvent('refreshajax', false, false);
                     }
