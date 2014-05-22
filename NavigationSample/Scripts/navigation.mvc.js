@@ -27,7 +27,7 @@
     var link = win.location.pathname + win.location.search;
     function refreshAjax(newLink, addHistory)
     {
-        var req = new XMLHttpRequest();
+        var req = new win.XMLHttpRequest();
         req.onreadystatechange = function () {
             if (req.readyState == 4 && req.status == 200) {
                 var panels = JSON.parse(req.responseText);
