@@ -9,21 +9,38 @@
     </style>
 </head>
 <body>
-    @using (Html.BeginRefreshForm(new NavigationData(true)))
-    {
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name)
-        <input type="submit" value="Search" />
-    }
-    Page size
-    @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
-    @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
-    @Ajax.RefreshPanel("np1", "startRowIndex,maximumRows",
-        @<div>
-            @Html.Partial("Grid", Model)
-            @Html.Pager("First", "Previous", "Next", "Last")
-            @string.Format("Total Count {0}", StateContext.Bag.totalRowCount)
-        </div>)
+@Ajax.RefreshPanel("panel", "sortExpression,startRowIndex,maximumRows",
+    @<div>
+        <form action="@StateController.GetRefreshLink(new NavigationData(true))" method="post">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name)
+            <input type="submit" value="Search" />
+        </form>
+        Page size
+        @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
+        @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
+        <table>
+            <thead>
+                <tr>
+                    <th>@Html.Sorter("Name", "Name")</th>
+                    <th>Date of Birth</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var person in Model.People)
+                {
+                    <tr>
+                        <td>
+                            @Html.NavigationLink(person.Name, "Select", new NavigationData { { "id", person.Id } })
+                        </td>
+                        <td>@person.DateOfBirth.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Pager("First", "Previous", "Next", "Last")
+        @string.Format("Total Count {0}", StateContext.Bag.totalRowCount)
+    </div>)
     <script src="~/Scripts/navigation.mvc.js"></script>
 </body>
 </html>
