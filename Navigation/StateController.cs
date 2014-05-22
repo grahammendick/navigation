@@ -241,7 +241,7 @@ namespace Navigation
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
 #endif
-			NavigateLink(url, GetNextState(action), mode);
+			NavigateLink(GetNextState(action), url, mode);
 		}
 
 		/// <summary>
@@ -362,7 +362,7 @@ namespace Navigation
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
 #endif
-			NavigateLink(url, GetCrumb(distance).State, mode);
+			NavigateLink(GetCrumb(distance).State, url, mode);
 		}
 
 		/// <summary>
@@ -462,7 +462,7 @@ namespace Navigation
 			if (url == null)
 				throw new InvalidOperationException(Resources.InvalidRouteData);
 #endif
-			NavigateLink(url, StateContext.State, mode);
+			NavigateLink(StateContext.State, url, mode);
 		}
 
 		/// <summary>
@@ -490,13 +490,12 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// TODO - add a NavigateLink overload without mode?
-		/// Switch url and state around to match StateHandler NavigateLink
+		/// 
 		/// </summary>
-		/// <param name="url"></param>
 		/// <param name="state"></param>
+		/// <param name="url"></param>
 		/// <param name="mode"></param>
-		public static void NavigateLink(string url, State state, NavigationMode mode)
+		public static void NavigateLink(State state, string url, NavigationMode mode)
 		{
 #if NET40Plus
 			HttpContextBase context = null;
