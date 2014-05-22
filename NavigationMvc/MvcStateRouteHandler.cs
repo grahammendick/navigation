@@ -41,7 +41,7 @@ namespace Navigation.Mvc
 			var link = requestContext.HttpContext.Request.Headers["Refresh-Ajax"];
 			if (link != null)
 			{
-				StateController.NavigateLink(link, State, NavigationMode.Mock);
+				StateController.NavigateLink(State, link, NavigationMode.Mock);
 				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = new NavigationData(true);
 			}
 			StateController.SetStateContext(State.Id, requestContext.HttpContext);
