@@ -494,6 +494,16 @@ namespace Navigation
 		/// </summary>
 		/// <param name="state"></param>
 		/// <param name="url"></param>
+		public static void NavigateLink(State state, string url)
+		{
+			NavigateLink(state, url, NavigationMode.Client);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="url"></param>
 		/// <param name="mode"></param>
 		public static void NavigateLink(State state, string url, NavigationMode mode)
 		{
