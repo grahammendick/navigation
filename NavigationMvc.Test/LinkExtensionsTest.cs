@@ -131,12 +131,30 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		public void RefreshLinkNavigationDataAttributeTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a data-navigation=\"noajax\" href=\"/r1\">link</a>", HtmlHelper.RefreshLink("link",
+				new { data_navigation = "noajax" }).ToHtmlString());
+		}
+
+		[TestMethod]
 		public void RefreshLinkDataAndAttributesTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r1?a=1\" title=\"details\">link</a>", HtmlHelper.RefreshLink("link",
 				new NavigationData { { "a", "1" } }, new { title = "details" }).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void RefreshLinkDataAndNavigationDataAttributeTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			Assert.AreEqual("<a data-navigation=\"noajax\" href=\"/r1?a=1\">link</a>", HtmlHelper.RefreshLink("link",
+				new NavigationData { { "a", "1" } }, new { data_navigation = "noajax" }).ToHtmlString());
 		}
 	}
 }
