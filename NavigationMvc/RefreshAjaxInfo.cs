@@ -7,6 +7,7 @@ namespace Navigation.Mvc
 	internal sealed class RefreshAjaxInfo
 	{
 		private Dictionary<string, string> _Panels = new Dictionary<string, string>();
+		private static readonly object _RefreshAjaxInfoKey = new object();
 
 		internal Dictionary<string, string> Panels
 		{
@@ -36,9 +37,9 @@ namespace Navigation.Mvc
 
 		internal static RefreshAjaxInfo GetInfo(HttpContextBase context)
 		{
-			if (context.Items[typeof(RefreshAjaxInfo)] == null)
-				context.Items[typeof(RefreshAjaxInfo)] = new RefreshAjaxInfo();
-			return (RefreshAjaxInfo) context.Items[typeof(RefreshAjaxInfo)];
+			if (context.Items[_RefreshAjaxInfoKey] == null)
+				context.Items[_RefreshAjaxInfoKey] = new RefreshAjaxInfo();
+			return (RefreshAjaxInfo)context.Items[_RefreshAjaxInfoKey];
 		}
 	}
 }
