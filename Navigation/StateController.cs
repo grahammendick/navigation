@@ -494,6 +494,7 @@ namespace Navigation
 		/// </summary>
 		/// <param name="state">The <see cref="State"/> to navigate to</param>
 		/// <param name="url">The target location</param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="state"/> is null</exception>
 		public static void NavigateLink(State state, string url)
 		{
 			NavigateLink(state, url, NavigationMode.Client);
@@ -506,6 +507,7 @@ namespace Navigation
 		/// <param name="state">The <see cref="State"/> to navigate to</param>
 		/// <param name="url">The target location</param>
 		/// <param name="mode">Indicates whether to Redirect or Transfer</param>
+		/// <exception cref="System.ArgumentNullException"><paramref name="state"/> is null</exception>
 		public static void NavigateLink(State state, string url, NavigationMode mode)
 		{
 			if (state == null)
