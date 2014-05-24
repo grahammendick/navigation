@@ -12,7 +12,7 @@ namespace Navigation.Mvc
 	public class RefreshAjaxAttribute : ActionFilterAttribute
 	{
 		/// <summary>
-		/// During a refresh ajax request the default output writing is replaced
+		/// Responds to a refresh ajax request by overriding the default output writing
 		/// </summary>
 		/// <param name="filterContext">The filter context</param>
 		/// <exception cref="System.ArgumentNullException"><paramref name="filterContext"/> is null</exception>
@@ -29,7 +29,7 @@ namespace Navigation.Mvc
 		}
 
 		/// <summary>
-		/// During a refresh ajax request the updated panels are written as JSON
+		/// Responds to a refresh ajax request by writing the updated panel content as JSON
 		/// </summary>
 		/// <param name="filterContext">The filter context</param>
 		/// <exception cref="System.ArgumentNullException"><paramref name="filterContext"/> is null</exception>
