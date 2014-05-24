@@ -21,7 +21,7 @@ namespace Navigation.Mvc
 			if (filterContext == null)
 				throw new ArgumentNullException("filterContext");
 			RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(filterContext.HttpContext);
-			if (info.Data != null)
+			if (!filterContext.IsChildAction && info.Data != null)
 			{
 				info.Writer = filterContext.HttpContext.Response.Output;
 				filterContext.HttpContext.Response.Output = new StringWriter();
@@ -38,7 +38,7 @@ namespace Navigation.Mvc
 			if (filterContext == null)
 				throw new ArgumentNullException("filterContext");
 			RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(filterContext.HttpContext);
-			if (info.Data != null)
+			if (!filterContext.IsChildAction && info.Data != null)
 			{
 				filterContext.HttpContext.Response.Output = info.Writer;
 				filterContext.HttpContext.Response.Write(JsonConvert.SerializeObject(info.Panels));
