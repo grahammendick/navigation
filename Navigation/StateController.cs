@@ -490,21 +490,22 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// 
+		/// Redirects or Transfers to the <paramref name="url"/>
 		/// </summary>
-		/// <param name="state"></param>
-		/// <param name="url"></param>
+		/// <param name="state">The <see cref="State"/> to navigate to</param>
+		/// <param name="url">The target location</param>
 		public static void NavigateLink(State state, string url)
 		{
 			NavigateLink(state, url, NavigationMode.Client);
 		}
 
 		/// <summary>
-		/// 
+		/// Redirects or Transfers to the <paramref name="url"/> depending on the 
+		/// <paramref name="mode"/> specified
 		/// </summary>
-		/// <param name="state"></param>
-		/// <param name="url"></param>
-		/// <param name="mode"></param>
+		/// <param name="state">The <see cref="State"/> to navigate to</param>
+		/// <param name="url">The target location</param>
+		/// <param name="mode">Indicates whether to Redirect or Transfer</param>
 		public static void NavigateLink(State state, string url, NavigationMode mode)
 		{
 #if NET40Plus
