@@ -508,6 +508,8 @@ namespace Navigation
 		/// <param name="mode">Indicates whether to Redirect or Transfer</param>
 		public static void NavigateLink(State state, string url, NavigationMode mode)
 		{
+			if (state == null)
+				throw new ArgumentNullException("state");
 #if NET40Plus
 			HttpContextBase context = null;
 			if (HttpContext.Current != null && mode != NavigationMode.Mock)

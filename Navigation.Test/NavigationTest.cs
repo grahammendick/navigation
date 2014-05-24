@@ -1029,6 +1029,21 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NavigateLinkNullStateTest()
+		{
+			StateController.NavigateLink(null, StateController.GetNavigationLink("d0"));
+		}
+
+		[TestMethod]
+		public void NavigateLinkTest()
+		{
+			StateController.Navigate("d0");
+			StateController.NavigateLink(StateInfoConfig.Dialogs[0].States[1], StateController.GetNavigationLink("t0"));
+			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
+		}
+
 #if NET35Plus
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
