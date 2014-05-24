@@ -4,8 +4,20 @@ using System.Web.WebPages;
 
 namespace Navigation.Mvc
 {
+	/// <summary>
+	/// Represents support for AJAX in a navigation application
+	/// </summary>
 	public static class AjaxExtensions
 	{
+		/// <summary>
+		/// Returns a span element containing the specified <paramref name="content"/>
+		/// </summary>
+		/// <param name="ajaxHelper">The AJAX helper instance that this method extends</param>
+		/// <param name="id">The span element id</param>
+		/// <param name="navigationDataKeys">Comma separated list of <see cref="NavigationData"/>
+		/// items that trigger the panel to refresh</param>
+		/// <param name="content">Html content</param>
+		/// <returns>A span container element</returns>
 		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
 		{
 			string html = null;
