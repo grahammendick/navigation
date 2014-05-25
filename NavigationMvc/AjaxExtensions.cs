@@ -48,7 +48,8 @@ namespace Navigation.Mvc
 					return true;
 				foreach (string key in navigationDataKeys.Split(new char[] { ',' }))
 				{
-					if (!data[key.Trim()].Equals(StateContext.Data[key.Trim()]))
+					if ((data[key.Trim()] == null && StateContext.Data[key.Trim()] != null)
+						|| (data[key.Trim()] != null && !data[key.Trim()].Equals(StateContext.Data[key.Trim()])))
 						return true;
 				}
 			}
