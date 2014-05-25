@@ -61,6 +61,15 @@ namespace Navigation.Mvc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Child actions are not allowed to perform navigation actions.
+        /// </summary>
+        internal static string CannotNavigateInChildAction {
+            get {
+                return ResourceManager.GetString("CannotNavigateInChildAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value cannot be null or empty.
         /// </summary>
         internal static string NullOrEmpty {
