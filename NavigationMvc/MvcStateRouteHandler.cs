@@ -38,7 +38,7 @@ namespace Navigation.Mvc
 		/// <returns>The object that processes the request</returns>
 		protected override IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{
-			var link = requestContext.HttpContext.Request.Headers["Refresh-Ajax"];
+			var link = requestContext.HttpContext.Request.QueryString["refreshajax"];
 			if (link != null)
 			{
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
