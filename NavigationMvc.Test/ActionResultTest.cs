@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Web.Mvc;
 
 namespace Navigation.Mvc.Test
@@ -42,6 +43,26 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NavigateResultNullContextTest()
+		{
+			StateController.Navigate("d0");
+			NavigateResult result = new NavigateResult("t0");
+			result.ExecuteResult(null);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void NavigateResultChildActionTest()
+		{
+			var context = new Mock<ControllerContext>();
+			context.Setup(c => c.IsChildAction).Returns(true);
+			StateController.Navigate("d0");
+			NavigateResult result = new NavigateResult("t0");
+			result.ExecuteResult(context.Object);
+		}
+
+		[TestMethod]
 		public void NavigateBackResultTest()
 		{
 			StateController.Navigate("d0");
@@ -53,7 +74,31 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void NavigateRefreshResultTest()
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NavigateBackResultNullContextTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigateBackResult result = new NavigateBackResult(1);
+			result.ExecuteResult(null);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void NavigateBackResultChildActionTest()
+		{
+			var context = new Mock<ControllerContext>();
+			context.Setup(c => c.IsChildAction).Returns(true);
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			NavigateBackResult result = new NavigateBackResult(1);
+			result.ExecuteResult(context.Object);
+		}
+
+		[TestMethod]
+		public void RefreshResultTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
@@ -64,7 +109,7 @@ namespace Navigation.Mvc.Test
 		}
 
 		[TestMethod]
-		public void NavigateRefreshResultDataTest()
+		public void RefreshResultDataTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -72,6 +117,28 @@ namespace Navigation.Mvc.Test
 			result.ExecuteResult(ControllerContext);
 			Assert.AreEqual("s1", StateContext.State.Key);
 			Assert.AreEqual(1, StateContext.Bag.a);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void RefreshResultNullContextTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
+			RefreshResult result = new RefreshResult();
+			result.ExecuteResult(null);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void RefreshResultChildActionTest()
+		{
+			var context = new Mock<ControllerContext>();
+			context.Setup(c => c.IsChildAction).Returns(true);
+			StateController.Navigate("d0");
+			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
+			RefreshResult result = new RefreshResult();
+			result.ExecuteResult(context.Object);
 		}
 	}
 }
