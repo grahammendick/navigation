@@ -8,19 +8,18 @@ namespace Navigation.Mvc.Test
 	[TestClass]
 	public class ActionResultTest
 	{
-		private static ControllerContext ControllerContext
+		private static ControllerContext GetControllerContext(bool childAction)
 		{
-			get
-			{
-				return new Mock<ControllerContext> { DefaultValue = DefaultValue.Mock }.Object;
-			}
+			var context = new Mock<ControllerContext>();
+			context.Setup(c => c.IsChildAction).Returns(childAction);
+			return context.Object;
 		}
 
 		[TestMethod]
 		public void NavigateResultDialogTest()
 		{
 			NavigateResult result = new NavigateResult("d0");
-			result.ExecuteResult(ControllerContext);
+			result.ExecuteResult(GetControllerContext(false));
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[0], StateContext.State);
 		}
 
@@ -29,7 +28,7 @@ namespace Navigation.Mvc.Test
 		{
 			StateController.Navigate("d0");
 			NavigateResult result = new NavigateResult("t0");
-			result.ExecuteResult(ControllerContext);
+			result.ExecuteResult(GetControllerContext(false));
 			Assert.AreEqual("s1", StateContext.State.Key);
 		}
 
@@ -38,7 +37,7 @@ namespace Navigation.Mvc.Test
 		{
 			StateController.Navigate("d0");
 			NavigateResult result = new NavigateResult("t0", new NavigationData { { "a", 1 } });
-			result.ExecuteResult(ControllerContext);
+			result.ExecuteResult(GetControllerContext(false));
 			Assert.AreEqual(1, StateContext.Bag.a);
 		}
 
@@ -55,11 +54,9 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void NavigateResultChildActionTest()
 		{
-			var context = new Mock<ControllerContext>();
-			context.Setup(c => c.IsChildAction).Returns(true);
 			StateController.Navigate("d0");
 			NavigateResult result = new NavigateResult("t0");
-			result.ExecuteResult(context.Object);
+			result.ExecuteResult(GetControllerContext(true));
 		}
 
 		[TestMethod]
@@ -69,7 +66,7 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
 			NavigateBackResult result = new NavigateBackResult(1);
-			result.ExecuteResult(ControllerContext);
+			result.ExecuteResult(GetControllerContext(false));
 			Assert.AreEqual("s1", StateContext.State.Key);
 		}
 
@@ -88,13 +85,11 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void NavigateBackResultChildActionTest()
 		{
-			var context = new Mock<ControllerContext>();
-			context.Setup(c => c.IsChildAction).Returns(true);
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
 			NavigateBackResult result = new NavigateBackResult(1);
-			result.ExecuteResult(context.Object);
+			result.ExecuteResult(GetControllerContext(true));
 		}
 
 		[TestMethod]
@@ -103,7 +98,7 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
 			RefreshResult result = new RefreshResult();
-			result.ExecuteResult(ControllerContext);
+			result.ExecuteResult(GetControllerContext(false));
 			Assert.AreEqual("s1", StateContext.State.Key);
 			Assert.IsNull(StateContext.Bag.a);
 		}
@@ -114,7 +109,7 @@ namespace Navigation.Mvc.Test
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			RefreshResult result = new RefreshResult(new NavigationData { { "a", 1 } });
-			result.ExecuteResult(ControllerContext);
+			result.ExecuteResult(GetControllerContext(false));
 			Assert.AreEqual("s1", StateContext.State.Key);
 			Assert.AreEqual(1, StateContext.Bag.a);
 		}
@@ -133,12 +128,10 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void RefreshResultChildActionTest()
 		{
-			var context = new Mock<ControllerContext>();
-			context.Setup(c => c.IsChildAction).Returns(true);
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
 			RefreshResult result = new RefreshResult();
-			result.ExecuteResult(context.Object);
+			result.ExecuteResult(GetControllerContext(true));
 		}
 	}
 }
