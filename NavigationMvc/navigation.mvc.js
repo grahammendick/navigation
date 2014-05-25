@@ -49,9 +49,8 @@
         };
         var uniqueLink = newLink;
         uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
-        uniqueLink += 'refreshajax=' + new Date().getTime();
+        uniqueLink += 'refreshajax=' + win.encodeURIComponent(link);
         req.open('get', uniqueLink, true);
-        req.setRequestHeader('Refresh-Ajax', link);
         req.send();
     }
 
