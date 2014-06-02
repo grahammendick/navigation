@@ -1,4 +1,6 @@
 ﻿#if NET45Plus
+using System.Collections.Generic;
+using System.Globalization;
 using System.Web.ModelBinding;
 
 namespace Navigation
@@ -6,7 +8,7 @@ namespace Navigation
 	/// <summary>
 	/// Represents a value provider for <see cref="Navigation.NavigationData"/> values
 	/// </summary>
-	public sealed class NavigationDataValueProvider : SimpleValueProvider
+	public sealed class NavigationDataValueProvider : DictionaryValueProvider<object>
 	{
 		private ControlValueProvider ControlValueProvider
 		{
@@ -33,10 +35,20 @@ namespace Navigation
 		/// key will be retrieved from a <see cref="System.Web.UI.Control"/></param>
 		/// <param name="propertyName">The <see cref="System.Web.UI.Control"/> property</param>
 		public NavigationDataValueProvider(ModelBindingExecutionContext modelBindingExecutionContext, bool control, string propertyName)
-			: base(modelBindingExecutionContext)
+			: base(GetNavigationDataDictionary(), CultureInfo.InvariantCulture)
 		{
 			ControlValueProvider = new ControlValueProvider(modelBindingExecutionContext, propertyName);
 			Control = control;
+		}
+
+		private static Dictionary<string, object> GetNavigationDataDictionary()
+		{
+			Dictionary<string, object> data = new Dictionary<string, object>();
+			foreach (NavigationDataItem item in StateContext.Data)
+			{
+				data[item.Key] = item.Value;
+			}
+			return data;
 		}
 
 		/// <summary>
@@ -45,7 +57,7 @@ namespace Navigation
 		/// <param name="key">The <see cref="Navigation.NavigationData"/> key if <see cref="Control"/>
 		/// is false, or the <see cref="System.Web.UI.Control"/> ID if <see cref="Control"/> is true</param>
 		/// <returns>The <see cref="Navigation.NavigationData"/> value</returns>
-		protected override object FetchValue(string key)
+		public override ValueProviderResult GetValue(string key)
 		{
 			if (Control)
 			{
@@ -55,7 +67,7 @@ namespace Navigation
 			}
 			if (string.IsNullOrEmpty(key))
 				return null;
-			return StateContext.Data[key];
+			return base.GetValue(key);
 		}
 	}
 }
