@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace Navigation.Mvc
 {
@@ -44,7 +44,7 @@ namespace Navigation.Mvc
 				filterContext.HttpContext.Response.AppendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 				filterContext.HttpContext.Response.AppendHeader("Expires", "0");
 				filterContext.HttpContext.Response.Output = info.Writer;
-				filterContext.HttpContext.Response.Write(JsonConvert.SerializeObject(info.Panels));
+				filterContext.HttpContext.Response.Write(new JavaScriptSerializer().Serialize(info.Panels));
 			}
 		}
 	}
