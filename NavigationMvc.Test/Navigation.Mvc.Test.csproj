@@ -60,10 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NavigationMvc\Navigation.Mvc.csproj">
-      <Project>{c8fa6a79-41b1-4c63-9975-3b7a2e60951b}</Project>
-      <Name>Navigation.Mvc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{4ab8290d-41d9-4bc0-b7b5-a430b067be65}</Project>
       <Name>Navigation</Name>
