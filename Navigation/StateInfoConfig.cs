@@ -141,13 +141,17 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
+		/// <summary>
+		/// Registers all <see cref="Navigation.State.Route"/> configuration information.
+		/// This method is called automatically by ASP.NET and should not be called manually
+		/// </summary>
 		public static void AddStateRoutes()
 		{
 			PageRouteConfig.AddStateRoutes();
 			RouteConfig.AddStateRoutes();
 		}
 
-#if NET40Plus
 		/// <summary>
 		/// Returns <paramref name="state"/> defaults for the specified <paramref name="route"/> parameters
 		/// </summary>
