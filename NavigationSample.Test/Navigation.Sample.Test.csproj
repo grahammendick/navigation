@@ -57,10 +57,6 @@
     <Compile Include="PersonSearchTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NavigationMvc\Navigation.Mvc.csproj">
-      <Project>{c8fa6a79-41b1-4c63-9975-3b7a2e60951b}</Project>
-      <Name>Navigation.Mvc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NavigationSample\Navigation.Sample.csproj">
       <Project>{71bbf563-1a93-4802-8417-cd5767e4d2b4}</Project>
       <Name>Navigation.Sample</Name>
