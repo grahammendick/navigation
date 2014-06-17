@@ -6,15 +6,8 @@ using System.Web.Routing;
 
 namespace Navigation
 {
-	/// <summary>
-	/// Registers all <see cref="Navigation.State.Route"/> configuration information for Web Forms
-	/// </summary>
-	public class PageRouteConfig
+	internal static class PageRouteConfig
 	{
-		/// <summary>
-		/// Registers all <see cref="Navigation.State.Route"/> configuration information.
-		/// This method is called automatically by ASP.NET and should not be called manually
-		/// </summary>
 		internal static void AddStateRoutes()
 		{
 			if (StateInfoConfig.Dialogs == null)
