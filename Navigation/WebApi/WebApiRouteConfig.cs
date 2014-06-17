@@ -2,21 +2,15 @@
 using System.Web.Http.ValueProviders;
 using System.Web.Routing;
 
-namespace Navigation.WebApi
+namespace Navigation
 {
-	/// <summary>
-	/// Registers all <see cref="State.Route"/> configuration information for Web Api
-	/// </summary>
-	public class WebApiRouteConfig
+	internal static class WebApiRouteConfig
 	{
-		/// <summary>
-		/// Registers all <see cref="State.Route"/> configuration information
-		/// </summary>
-		public static void AddHttpRoutes()
+		internal static void AddHttpRoutes()
 		{
 			if (StateInfoConfig.Dialogs == null)
 				return;
-			GlobalConfiguration.Configuration.Services.Insert(typeof(ValueProviderFactory), 0, new NavigationDataValueProviderFactory());
+			GlobalConfiguration.Configuration.Services.Insert(typeof(ValueProviderFactory), 0, new NavigationDataValueWebApiProviderFactory());
 			string apiController, action;
 			Route route;
 			RouteValueDictionary defaults;

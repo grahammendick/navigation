@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ValueProviders;
 
-namespace Navigation.WebApi.Test
+namespace Navigation.Test.WebApi
 {
 	[TestClass]
 	public class NavigationDataValueProviderTest
@@ -12,14 +12,14 @@ namespace Navigation.WebApi.Test
 		[TestMethod]
 		public void NavigationDataValueProviderFactoryTest()
 		{
-			NavigationDataValueProviderFactory factory = new NavigationDataValueProviderFactory();
-			Assert.IsTrue(factory.GetValueProvider(null) is NavigationDataValueProvider);
+			NavigationDataValueWebApiProviderFactory factory = new NavigationDataValueWebApiProviderFactory();
+			Assert.IsTrue(factory.GetValueProvider(null) is NavigationDataWebApiValueProvider);
 		}
 
 		[TestMethod]
 		public void NavigationDataValueProviderFactoryRegisteredTest()
 		{
-			Assert.IsTrue(GlobalConfiguration.Configuration.Services.GetServices(typeof(ValueProviderFactory)).First() is NavigationDataValueProviderFactory);
+			Assert.IsTrue(GlobalConfiguration.Configuration.Services.GetServices(typeof(ValueProviderFactory)).First() is NavigationDataValueWebApiProviderFactory);
 		}
 
 		[TestMethod]
@@ -27,7 +27,7 @@ namespace Navigation.WebApi.Test
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
-			NavigationDataValueProvider valueProvider = new NavigationDataValueProvider();
+			NavigationDataWebApiValueProvider valueProvider = new NavigationDataWebApiValueProvider();
 			Assert.AreEqual(1, ((ValueProviderResult)valueProvider.GetValue("a")).RawValue);
 			Assert.AreEqual("1", ((ValueProviderResult)valueProvider.GetValue("a")).AttemptedValue);
 		}
@@ -37,7 +37,7 @@ namespace Navigation.WebApi.Test
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
-			NavigationDataValueProvider valueProvider = new NavigationDataValueProvider();
+			NavigationDataWebApiValueProvider valueProvider = new NavigationDataWebApiValueProvider();
 			Assert.AreEqual(1, ((ValueProviderResult)valueProvider.GetValue("A")).RawValue);
 			Assert.AreEqual("1", ((ValueProviderResult)valueProvider.GetValue("A")).AttemptedValue);
 		}
@@ -48,7 +48,7 @@ namespace Navigation.WebApi.Test
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
-			NavigationDataValueProvider valueProvider = new NavigationDataValueProvider();
+			NavigationDataWebApiValueProvider valueProvider = new NavigationDataWebApiValueProvider();
 			valueProvider.GetValue(null);
 		}
 
@@ -57,7 +57,7 @@ namespace Navigation.WebApi.Test
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
-			NavigationDataValueProvider valueProvider = new NavigationDataValueProvider();
+			NavigationDataWebApiValueProvider valueProvider = new NavigationDataWebApiValueProvider();
 			Assert.IsNull(valueProvider.GetValue("b"));
 		}
 	}

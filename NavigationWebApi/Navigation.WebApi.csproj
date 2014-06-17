@@ -49,12 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NavigationDataValueProvider.cs" />
-    <Compile Include="NavigationDataValueProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebApiRouteConfig.cs" />
-    <Compile Include="WebApiStateHandler.cs" />
-    <Compile Include="WebApiStateRouteHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Navigation\Navigation.csproj">

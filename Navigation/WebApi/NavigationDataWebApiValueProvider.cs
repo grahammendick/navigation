@@ -4,19 +4,19 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Http.ValueProviders;
 
-namespace Navigation.WebApi
+namespace Navigation
 {
 	/// <summary>
 	/// Represents a value provider for <see cref="NavigationData"/> values
 	/// </summary>
-	public class NavigationDataValueProvider : IValueProvider
+	public class NavigationDataWebApiValueProvider : IValueProvider
 	{
 		private Dictionary<string, ValueProviderResult> _values = new Dictionary<string, ValueProviderResult>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="NavigationDataValueProvider"/> class
 		/// </summary>
-		public NavigationDataValueProvider()
+		public NavigationDataWebApiValueProvider()
 		{
 			foreach (NavigationDataItem item in StateContext.Data)
 			{

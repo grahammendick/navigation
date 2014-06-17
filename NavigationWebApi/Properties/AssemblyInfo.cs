@@ -1,5 +1,4 @@
-﻿using Navigation.WebApi;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Web;
 
@@ -36,4 +35,3 @@ using System.Web;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: PreApplicationStartMethod(typeof(WebApiRouteConfig), "AddHttpRoutes")]
