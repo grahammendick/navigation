@@ -61,10 +61,6 @@
       <Project>{71bbf563-1a93-4802-8417-cd5767e4d2b4}</Project>
       <Name>Navigation.Sample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NavigationWebApi\Navigation.WebApi.csproj">
-      <Project>{fe526fb6-1ef2-4352-8a1f-8a35be391c3b}</Project>
-      <Name>Navigation.WebApi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{4ab8290d-41d9-4bc0-b7b5-a430b067be65}</Project>
       <Name>Navigation</Name>

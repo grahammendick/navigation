@@ -42,7 +42,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void DialogTest()
 		{
-			Assert.AreEqual(8, StateInfoConfig.Dialogs.Count);
+			Assert.AreEqual(9, StateInfoConfig.Dialogs.Count);
 			int i = 0;
 			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
@@ -337,7 +337,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
-			Dialog[] dialogArr = new Dialog[8];
+			Dialog[] dialogArr = new Dialog[9];
 			State[] stateArr = new State[5];
 			Transition[] transitionArr = new Transition[5];
 			StateInfoConfig.Dialogs.CopyTo(dialogArr, 0);

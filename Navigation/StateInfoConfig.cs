@@ -150,6 +150,7 @@ namespace Navigation
 		{
 			PageRouteConfig.AddStateRoutes();
 			RouteConfig.AddStateRoutes();
+			WebApiRouteConfig.AddHttpRoutes();
 		}
 
 		/// <summary>

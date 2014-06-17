@@ -1,12 +1,12 @@
 ﻿using System.Web.Http.Controllers;
 using System.Web.Http.ValueProviders;
 
-namespace Navigation.WebApi
+namespace Navigation
 {
 	/// <summary>
 	/// Represents a factory for creating <see cref="NavigationData"/> value provider objects
 	/// </summary>
-	public class NavigationDataValueProviderFactory : ValueProviderFactory
+	public class NavigationDataValueWebApiProviderFactory : ValueProviderFactory
 	{
 		/// <summary>
 		/// Returns a <see cref="NavigationData"/> value provider for the specified action context
@@ -15,7 +15,7 @@ namespace Navigation.WebApi
 		/// <returns><see cref="NavigationData"/> value provider</returns>
 		public override IValueProvider GetValueProvider(HttpActionContext actionContext)
 		{
-			return new NavigationDataValueProvider();
+			return new NavigationDataWebApiValueProvider();
 		}
 	}
 }

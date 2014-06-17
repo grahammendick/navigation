@@ -2,7 +2,7 @@
 using System.Web.Http.WebHost;
 using System.Web.Routing;
 
-namespace Navigation.WebApi
+namespace Navigation
 {
 	/// <summary>
 	/// Creates the <see cref="StateContext"/> for the Web Api <see cref="State"/>

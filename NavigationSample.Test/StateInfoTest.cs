@@ -1,17 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Navigation.WebApi;
 
 namespace Navigation.Sample.Test
 {
 	[TestClass]
 	public class StateInfoTest
 	{
-		[AssemblyInitialize]
-		public static void AddStateRoutes(TestContext context)
-		{
-			WebApiRouteConfig.AddHttpRoutes();
-		}
-
 		[TestMethod]
 		public void NavigatePersonTest()
 		{
