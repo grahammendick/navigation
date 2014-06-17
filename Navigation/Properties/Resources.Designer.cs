@@ -61,6 +61,15 @@ namespace Navigation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Child actions are not allowed to perform navigation actions.
+        /// </summary>
+        internal static string CannotNavigateInChildAction {
+            get {
+                return ResourceManager.GetString("CannotNavigateInChildAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is a mandatory attribute for a Dialog.
         /// </summary>
         internal static string DialogAttributeMissing {
@@ -228,6 +237,15 @@ namespace Navigation {
         internal static string NavigationLinkActionMissing {
             get {
                 return ResourceManager.GetString("NavigationLinkActionMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value cannot be null or empty.
+        /// </summary>
+        internal static string NullOrEmpty {
+            get {
+                return ResourceManager.GetString("NullOrEmpty", resourceCulture);
             }
         }
         

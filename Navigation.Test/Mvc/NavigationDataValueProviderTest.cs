@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc.Test
+namespace Navigation.Test.Mvc
 {
 	[TestClass]
 	public class NavigationDataValueProviderTest
@@ -9,14 +9,14 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void NavigationDataValueProviderFactoryTest()
 		{
-			NavigationDataValueProviderFactory factory = new NavigationDataValueProviderFactory();
-			Assert.IsTrue(factory.GetValueProvider(new ControllerContext()) is NavigationDataValueProvider);
+			NavigationDataMvcValueProviderFactory factory = new NavigationDataMvcValueProviderFactory();
+			Assert.IsTrue(factory.GetValueProvider(new ControllerContext()) is NavigationDataMvcValueProvider);
 		}
 
 		[TestMethod]
 		public void NavigationDataValueProviderFactoryRegisteredTest()
 		{
-			Assert.IsTrue(ValueProviderFactories.Factories[3] is NavigationDataValueProviderFactory);
+			Assert.IsTrue(ValueProviderFactories.Factories[3] is NavigationDataMvcValueProviderFactory);
 		}
 
 		[TestMethod]
@@ -24,7 +24,7 @@ namespace Navigation.Mvc.Test
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0", new NavigationData { { "a", 1 } });
-			NavigationDataValueProvider valueProvider = new NavigationDataValueProvider();
+			NavigationDataMvcValueProvider valueProvider = new NavigationDataMvcValueProvider();
 			Assert.AreEqual(1, ((ValueProviderResult) valueProvider.GetValue("a")).RawValue);
 		}
 	}

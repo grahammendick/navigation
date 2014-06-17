@@ -2,7 +2,7 @@
 using System.IO;
 using System.Web;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	internal sealed class RefreshAjaxInfo
 	{

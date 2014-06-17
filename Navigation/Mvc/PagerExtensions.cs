@@ -4,7 +4,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Represents support for HTML in a navigation application

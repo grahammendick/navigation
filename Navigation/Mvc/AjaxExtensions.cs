@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.WebPages;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Represents support for AJAX in a navigation application

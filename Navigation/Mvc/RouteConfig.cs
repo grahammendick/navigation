@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Registers all <see cref="State.Route"/> configuration information for MVC
@@ -11,11 +11,11 @@ namespace Navigation.Mvc
 		/// <summary>
 		/// Registers all <see cref="State.Route"/> configuration information
 		/// </summary>
-		public static void AddStateRoutes()
+		internal static void AddStateRoutes()
 		{
 			if (StateInfoConfig.Dialogs == null)
 				return;
-			ValueProviderFactories.Factories.Insert(3, new NavigationDataValueProviderFactory());
+			ValueProviderFactories.Factories.Insert(3, new NavigationDataMvcValueProviderFactory());
 			GlobalFilters.Filters.Add(new RefreshAjaxAttribute());
 			string controller, action, area;
 			Route route;

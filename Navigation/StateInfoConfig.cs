@@ -12,7 +12,7 @@ namespace Navigation
 	/// Provides static access to the <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
 	/// and <see cref="Navigation.Transition"/> configuration in the Navigation/StateInfo section
 	/// </summary>
-	public static partial class StateInfoConfig
+	public static class StateInfoConfig
 	{
 		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
 		private const string PARAMETER = "{{{0}}}";
@@ -139,6 +139,12 @@ namespace Navigation
 			{
 				return (StateInfoCollection<Dialog>)ConfigurationManager.GetSection("Navigation/StateInfo");
 			}
+		}
+
+		public static void AddStateRoutes()
+		{
+			PageRouteConfig.AddStateRoutes();
+			RouteConfig.AddStateRoutes();
 		}
 
 #if NET40Plus

@@ -3,7 +3,7 @@ using Moq;
 using System;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc.Test
+namespace Navigation.Test.Mvc
 {
 	[TestClass]
 	public class PagerExtensionsTest
@@ -21,7 +21,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerEmptyTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 0;
 			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
@@ -31,7 +31,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerOnePageTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 1;
 			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
@@ -41,7 +41,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerOneFullPageTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 10;
 			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
@@ -51,7 +51,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerFirstPageOfTwoTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 11;
 			Assert.AreEqual("<ul><li>&lt;&lt;</li><li>&lt;</li>" + 
@@ -62,7 +62,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerSecondPageOfTwoTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 11;
@@ -74,7 +74,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerSecondFullPageOfTwoTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 20;
@@ -86,7 +86,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerSecondPageOfThreeTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 21;
@@ -99,7 +99,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerFirstPageOfThreePageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 0;
 			StateContext.Bag.maximumRows = 9;
@@ -112,7 +112,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerSecondPageOfThreePageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 9;
 			StateContext.Bag.maximumRows = 9;
@@ -126,7 +126,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerFullThirdPageOfThreePageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 18;
 			StateContext.Bag.maximumRows = 9;
@@ -140,7 +140,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerLinkTextTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 11;
 			Assert.AreEqual("<ul><li>First</li><li>Prev</li>" +
@@ -151,7 +151,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerLinkTextEncodedTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 11;
 			Assert.AreEqual("<ul><li>First&gt;</li><li>&gt;Prev</li>" +
@@ -162,7 +162,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerKeyTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 0;
 			StateContext.Bag.size = 10;
@@ -176,7 +176,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerLinkTextKeyTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 0;
 			StateContext.Bag.size = 10;
@@ -190,7 +190,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 11;
 			Assert.AreEqual("<ul title=\"details\"><li>&lt;&lt;</li><li>&lt;</li>" +
@@ -201,7 +201,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerLinkTextAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 11;
 			Assert.AreEqual("<ul title=\"details\"><li>First</li><li>Prev</li>" +
@@ -213,7 +213,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerKeyAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 0;
 			StateContext.Bag.size = 10;
@@ -227,7 +227,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerLinkTextKeyAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 0;
 			StateContext.Bag.size = 10;
@@ -241,7 +241,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericEmptyTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 0;
 			Assert.AreEqual("", HtmlHelper.Pager(5).ToHtmlString());
@@ -250,7 +250,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericOnePageTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 1;
 			Assert.AreEqual("<ul><li>1</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
@@ -259,7 +259,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericOneFullPageTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 10;
 			Assert.AreEqual("<ul><li>1</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
@@ -268,7 +268,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericFirstPageOfTwoTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.totalRowCount = 11;
 			Assert.AreEqual("<ul><li>1</li>" +
@@ -278,7 +278,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericSecondPageOfTwoTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 11;
@@ -289,7 +289,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericSecondFullPageOfTwoTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 20;
@@ -300,7 +300,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericSecondPageOfThreeTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 21;
@@ -312,7 +312,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerFifthPageOfSixPageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -328,7 +328,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerFullFifthPageOfFivePageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -343,7 +343,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericSeventhPageOfElevenPageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 54;
 			StateContext.Bag.maximumRows = 9;
@@ -360,7 +360,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericFullSeventhPageOfSevenPageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 54;
 			StateContext.Bag.maximumRows = 9;
@@ -373,7 +373,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericThreeFullFifthPageOfSevenPageSizeNineTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -388,7 +388,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericLinkTextTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -403,7 +403,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericLinkTextEncodedTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -418,7 +418,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericKeyTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 36;
 			StateContext.Bag.size = 9;
@@ -433,7 +433,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericLinkTextKeyTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 36;
 			StateContext.Bag.size = 9;
@@ -448,7 +448,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -463,7 +463,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericLinkTextAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
@@ -478,7 +478,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericKeyAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 36;
 			StateContext.Bag.size = 9;
@@ -494,7 +494,7 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void PagerNumericLinkTextKeyAttributesTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateContext.Bag.start = 36;
 			StateContext.Bag.size = 9;
