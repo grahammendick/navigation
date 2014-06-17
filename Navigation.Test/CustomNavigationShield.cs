@@ -13,7 +13,7 @@ namespace Navigation.Test
 		{
 			return state == StateInfoConfig.Dialogs["d0"].States["s2"] || state == StateInfoConfig.Dialogs["d3"].States["s2"]
 				|| state == StateInfoConfig.Dialogs["d2"].States["s0"] || state == StateInfoConfig.Dialogs["d5"].States["s0"]
-				|| state.Parent.Key == "d6";
+				|| state.Parent.Key == "d6" || state.Parent.Key == "d7";
 		}
 
 #if NET35Plus

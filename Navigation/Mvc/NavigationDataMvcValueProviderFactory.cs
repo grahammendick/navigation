@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Represents a factory for creating <see cref="NavigationData"/> value provider objects
 	/// </summary>
-	public sealed class NavigationDataValueProviderFactory : ValueProviderFactory
+	public sealed class NavigationDataMvcValueProviderFactory : ValueProviderFactory
 	{
 		/// <summary>
 		/// Returns a <see cref="NavigationData"/> value provider for the specified controller context
@@ -17,7 +17,7 @@ namespace Navigation.Mvc
 		{
 			if (controllerContext == null)
 				throw new ArgumentNullException("controllerContext");
-			return new NavigationDataValueProvider();
+			return new NavigationDataMvcValueProvider();
 		}
 	}
 }

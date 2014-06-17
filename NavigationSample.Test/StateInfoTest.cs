@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Navigation.Mvc;
 using Navigation.WebApi;
 
 namespace Navigation.Sample.Test
@@ -10,7 +9,6 @@ namespace Navigation.Sample.Test
 		[AssemblyInitialize]
 		public static void AddStateRoutes(TestContext context)
 		{
-			RouteConfig.AddStateRoutes();
 			WebApiRouteConfig.AddHttpRoutes();
 		}
 

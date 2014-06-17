@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc.Test
+namespace Navigation.Test.Mvc
 {
 	[TestClass]
 	public class RefreshAjaxAttributeTest

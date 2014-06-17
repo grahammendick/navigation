@@ -15,7 +15,7 @@ namespace Navigation
 		/// Registers all <see cref="Navigation.State.Route"/> configuration information.
 		/// This method is called automatically by ASP.NET and should not be called manually
 		/// </summary>
-		public static void AddStateRoutes()
+		internal static void AddStateRoutes()
 		{
 			if (StateInfoConfig.Dialogs == null)
 				return;

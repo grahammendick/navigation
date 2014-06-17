@@ -15,6 +15,15 @@ namespace Navigation
 #endif
 	public static partial class StateController
 	{
+#if NET40Plus
+		static StateController()
+		{
+			if (HttpContext.Current == null)
+			{
+				StateInfoConfig.AddStateRoutes();
+			}
+		}
+#endif
 		/// <summary>
 		/// Gets a <see cref="Navigation.Crumb"/> collection representing the crumb trail, ordered
 		/// oldest <see cref="Navigation.Crumb"/> first

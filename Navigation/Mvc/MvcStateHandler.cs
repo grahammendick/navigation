@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Web;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Implementation of <see cref="Navigation.IStateHandler"/> that builds and parses

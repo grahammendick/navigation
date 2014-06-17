@@ -2,17 +2,17 @@
 using System.Globalization;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Represents a value provider for <see cref="NavigationData"/> values
 	/// </summary>
-	public sealed class NavigationDataValueProvider : DictionaryValueProvider<object>
+	public sealed class NavigationDataMvcValueProvider : DictionaryValueProvider<object>
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="NavigationDataValueProvider"/> class
 		/// </summary>
-		public NavigationDataValueProvider() : base(GetNavigationDataDictionary(), CultureInfo.InvariantCulture)
+		public NavigationDataMvcValueProvider() : base(GetNavigationDataDictionary(), CultureInfo.InvariantCulture)
 		{
 		}
 

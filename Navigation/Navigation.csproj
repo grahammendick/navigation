@@ -23,9 +23,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\Navigation.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -50,6 +51,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -60,6 +62,21 @@
     <Compile Include="Crumb.cs" />
     <Compile Include="Mock\MockHttpBrowserCapabilities.cs" />
     <Compile Include="Mock\MockHttpServerUtility.cs" />
+    <Compile Include="Mvc\AjaxExtensions.cs" />
+    <Compile Include="Mvc\FormExtensions.cs" />
+    <Compile Include="Mvc\LinkExtensions.cs" />
+    <Compile Include="Mvc\MvcStateHandler.cs" />
+    <Compile Include="Mvc\MvcStateRouteHandler.cs" />
+    <Compile Include="Mvc\NavigateBackResult.cs" />
+    <Compile Include="Mvc\NavigateResult.cs" />
+    <Compile Include="Mvc\NavigationDataMvcValueProvider.cs" />
+    <Compile Include="Mvc\NavigationDataMvcValueProviderFactory.cs" />
+    <Compile Include="Mvc\PagerExtensions.cs" />
+    <Compile Include="Mvc\RefreshAjaxAttribute.cs" />
+    <Compile Include="Mvc\RefreshAjaxInfo.cs" />
+    <Compile Include="Mvc\RefreshResult.cs" />
+    <Compile Include="Mvc\RouteConfig.cs" />
+    <Compile Include="Mvc\SorterExtensions.cs" />
     <Compile Include="WebForms\CrumbTrailDataSource.cs" />
     <Compile Include="WebForms\CrumbTrailDataSourceView.cs" />
     <Compile Include="CrumbTrailManager.cs" />
@@ -129,6 +146,11 @@
     <EmbeddedResource Include="WebForms\HTML5History.js">
       <LogicalName>Navigation.HTML5History.js</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Mvc\navigation.mvc.js" />
+    <Content Include="Mvc\navigation.mvc.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

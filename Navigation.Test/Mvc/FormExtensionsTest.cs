@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc.Test
+namespace Navigation.Test.Mvc
 {
 	[TestClass]
 	public class FormExtensionsTest
@@ -21,7 +21,7 @@ namespace Navigation.Mvc.Test
 		public void NavigationFormTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			GetHtmlHelper(formBuilder).BeginNavigationForm("t0");
 			Assert.AreEqual("<form action=\"/r1\" method=\"post\">", formBuilder.ToString());
 		}
@@ -30,7 +30,7 @@ namespace Navigation.Mvc.Test
 		public void NavigationFormDataTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			GetHtmlHelper(formBuilder).BeginNavigationForm("t0", new NavigationData { { "a", "1" } });
 			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\">", formBuilder.ToString());
 		}
@@ -39,23 +39,23 @@ namespace Navigation.Mvc.Test
 		public void NavigationFormMethodAttributeTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			GetHtmlHelper(formBuilder).BeginNavigationForm("d0", new { method="get" });
-			Assert.AreEqual("<form action=\"/\" method=\"get\">", formBuilder.ToString());
+			GetHtmlHelper(formBuilder).BeginNavigationForm("d7", new { method="get" });
+			Assert.AreEqual("<form action=\"/r0\" method=\"get\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
 		public void NavigationFormAttributesTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			GetHtmlHelper(formBuilder).BeginNavigationForm("d0", new { onsubmit = "validate" });
-			Assert.AreEqual("<form action=\"/\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
+			GetHtmlHelper(formBuilder).BeginNavigationForm("d7", new { onsubmit = "validate" });
+			Assert.AreEqual("<form action=\"/r0\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
 		public void NavigationBackFormTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "a", "1" } });
 			StateController.Navigate("t0");
 			GetHtmlHelper(formBuilder).BeginNavigationBackForm(1);
@@ -66,7 +66,7 @@ namespace Navigation.Mvc.Test
 		public void NavigationBackFormAttributesTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
 			GetHtmlHelper(formBuilder).BeginNavigationBackForm(1, new { onsubmit = "validate" });
@@ -77,7 +77,7 @@ namespace Navigation.Mvc.Test
 		public void RefreshFormTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "a", "1" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm();
 			Assert.AreEqual("<form action=\"/r1\" method=\"post\">", formBuilder.ToString());
@@ -87,7 +87,7 @@ namespace Navigation.Mvc.Test
 		public void RefreshFormDataTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } });
 			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\">", formBuilder.ToString());
@@ -97,7 +97,7 @@ namespace Navigation.Mvc.Test
 		public void RefreshFormAttributesTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r1\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
@@ -107,9 +107,9 @@ namespace Navigation.Mvc.Test
 		public void RefreshFormDataAndAttributesTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, new { onsubmit = "validate" });
-			Assert.AreEqual("<form action=\"/?a=1\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r0?a=1\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 	}
 }

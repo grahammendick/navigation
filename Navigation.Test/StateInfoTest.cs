@@ -36,12 +36,13 @@ namespace Navigation.Test
 		{
 			StateInfoConfig.Dialogs[6].States[0].StateHandler = new CustomStateHandler();
 			StateInfoConfig.Dialogs[6].States[1].StateHandler = new CustomStateHandler();
+			StateController.Navigate("d0");
 		}
 
 		[TestMethod]
 		public void DialogTest()
 		{
-			Assert.AreEqual(7, StateInfoConfig.Dialogs.Count);
+			Assert.AreEqual(8, StateInfoConfig.Dialogs.Count);
 			int i = 0;
 			foreach (Dialog dialog in StateInfoConfig.Dialogs)
 			{
@@ -295,7 +296,6 @@ namespace Navigation.Test
 		public void PageRouteMapTest()
 		{
 			StateController.Navigate("d0");
-			Assert.AreEqual(20, RouteTable.Routes.Count);
 			Assert.IsNotNull(RouteTable.Routes["3-0"]);
 			Assert.IsNotNull(RouteTable.Routes["Mobile3-0"]);
 			Assert.IsNotNull(RouteTable.Routes["3-1"]);
@@ -337,7 +337,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void StateInfoCopyToTest()
 		{
-			Dialog[] dialogArr = new Dialog[7];
+			Dialog[] dialogArr = new Dialog[8];
 			State[] stateArr = new State[5];
 			Transition[] transitionArr = new Transition[5];
 			StateInfoConfig.Dialogs.CopyTo(dialogArr, 0);

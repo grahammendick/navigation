@@ -3,7 +3,7 @@ using System.IO;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Represents an attribute used to mark an action method capable of handling refresh

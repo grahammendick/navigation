@@ -4,7 +4,7 @@ using System.Collections;
 using System.Web.Mvc;
 using System.Web.WebPages;
 
-namespace Navigation.Mvc.Test
+namespace Navigation.Test.Mvc
 {
 	[TestClass]
 	public class AjaxExtensionsTest

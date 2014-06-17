@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Creates the <see cref="StateContext"/> for the MVC <see cref="State"/>

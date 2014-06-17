@@ -18,16 +18,6 @@ namespace Navigation
 		private const string HISTORY_URL_VAR = "var {0} = {1};";
 		private const string HISTORY_URL = "n1";
 
-#if NET40Plus
-		static StateController()
-		{
-			if (HttpContext.Current == null)
-			{
-				PageRouteConfig.AddStateRoutes();
-			}
-		}
-#endif
-
 		/// <summary>
 		/// Wraps the ASP.NET <see cref="System.Web.UI.ScriptManager"/> history point functionality.
 		/// Adds a history point passing no <see cref="Navigation.NavigationData"/>

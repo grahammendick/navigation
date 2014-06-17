@@ -3,7 +3,7 @@ using Moq;
 using System;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc.Test
+namespace Navigation.Test.Mvc
 {
 	[TestClass]
 	public class SorterExtensionsTest
@@ -21,36 +21,36 @@ namespace Navigation.Mvc.Test
 		[TestMethod]
 		public void SorterDefaultDescendingTest()
 		{
-			StateController.Navigate("d0");
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?sortExpression=a%20DESC\">link</a>", HtmlHelper.Sorter("link", "a").ToHtmlString());
+			StateController.Navigate("d7");
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?sortExpression=a%20DESC\">link</a>", HtmlHelper.Sorter("link", "a").ToHtmlString());
 		}
 
 		[TestMethod]
 		public void SorterAscendingTest()
 		{
-			StateController.Navigate("d0", new NavigationData { { "sortExpression", "a DESC" } });
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?sortExpression=a\">link</a>", HtmlHelper.Sorter("link", "a").ToHtmlString());
+			StateController.Navigate("d7", new NavigationData { { "sortExpression", "a DESC" } });
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?sortExpression=a\">link</a>", HtmlHelper.Sorter("link", "a").ToHtmlString());
 		}
 
 		[TestMethod]
 		public void SorterDescendingTest()
 		{
-			StateController.Navigate("d0", new NavigationData { { "sortExpression", "a" } });
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?sortExpression=a%20DESC\">link</a>", HtmlHelper.Sorter("link", "a").ToHtmlString());
+			StateController.Navigate("d7", new NavigationData { { "sortExpression", "a" } });
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?sortExpression=a%20DESC\">link</a>", HtmlHelper.Sorter("link", "a").ToHtmlString());
 		}
 
 		[TestMethod]
 		public void SorterTextEncodedTest()
 		{
-			StateController.Navigate("d0", new NavigationData { { "sortExpression", "a DESC" } });
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?sortExpression=a\">link&lt;</a>", HtmlHelper.Sorter("link<", "a").ToHtmlString());
+			StateController.Navigate("d7", new NavigationData { { "sortExpression", "a DESC" } });
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?sortExpression=a\">link&lt;</a>", HtmlHelper.Sorter("link<", "a").ToHtmlString());
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterNullTextTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			HtmlHelper.Sorter(null, "a");
 		}
 
@@ -58,7 +58,7 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterBlankTextTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			HtmlHelper.Sorter("", "a");
 		}
 
@@ -66,7 +66,7 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterNullSortByTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			HtmlHelper.Sorter("link", null);
 		}
 
@@ -74,22 +74,22 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterBlankSortByTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			HtmlHelper.Sorter("link", "");
 		}
 
 		[TestMethod]
 		public void SorterSortExpressionTest()
 		{
-			StateController.Navigate("d0", new NavigationData { { "orderBy", "a DESC" } });
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?orderBy=a\">link</a>", HtmlHelper.Sorter("link", "a", "orderBy").ToHtmlString());
+			StateController.Navigate("d7", new NavigationData { { "orderBy", "a DESC" } });
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?orderBy=a\">link</a>", HtmlHelper.Sorter("link", "a", "orderBy").ToHtmlString());
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterNullSortExpressionTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			HtmlHelper.Sorter("link", "a", null);
 		}
 
@@ -97,23 +97,23 @@ namespace Navigation.Mvc.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void SorterBlankSortExpressionTest()
 		{
-			StateController.Navigate("d0");
+			StateController.Navigate("d7");
 			HtmlHelper.Sorter("link", "a", "");
 		}
 
 		[TestMethod]
 		public void SorterAttributesTest()
 		{
-			StateController.Navigate("d0", new NavigationData { { "sortExpression", "a DESC" } });
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?sortExpression=a\" title=\"details\">link</a>", HtmlHelper.Sorter("link", "a", 
+			StateController.Navigate("d7", new NavigationData { { "sortExpression", "a DESC" } });
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?sortExpression=a\" title=\"details\">link</a>", HtmlHelper.Sorter("link", "a", 
 				new { title = "details" }).ToHtmlString());
 		}
 
 		[TestMethod]
 		public void SorterSortExpressionAndAttributesTest()
 		{
-			StateController.Navigate("d0", new NavigationData { { "orderBy", "a DESC" } });
-			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/?orderBy=a\" title=\"details\">link</a>", HtmlHelper.Sorter("link", "a", "orderBy",
+			StateController.Navigate("d7", new NavigationData { { "orderBy", "a DESC" } });
+			Assert.AreEqual("<a data-navigation=\"refresh\" href=\"/r0?orderBy=a\" title=\"details\">link</a>", HtmlHelper.Sorter("link", "a", "orderBy",
 				new { title = "details" }).ToHtmlString());
 		}
 	}

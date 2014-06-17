@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace Navigation.Mvc
+namespace Navigation
 {
 	/// <summary>
 	/// Controls the processing of application actions by navigating via a call to
