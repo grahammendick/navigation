@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿#if NET40Plus
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -49,3 +50,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using System.Web.Http.Controllers;
+﻿#if NET40Plus
+using System.Web.Http.Controllers;
 using System.Web.Http.ValueProviders;
 
 namespace Navigation
@@ -19,3 +20,4 @@ namespace Navigation
 		}
 	}
 }
+#endif
