@@ -10,7 +10,7 @@ namespace Navigation
 	public sealed class NavigationDataMvcValueProvider : DictionaryValueProvider<object>
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NavigationDataValueProvider"/> class
+		/// Initializes a new instance of the <see cref="NavigationDataMvcValueProvider"/> class
 		/// </summary>
 		public NavigationDataMvcValueProvider() : base(GetNavigationDataDictionary(), CultureInfo.InvariantCulture)
 		{
