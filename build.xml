@@ -35,11 +35,11 @@
 				 TreatWarningsAsErrors=true; DocumentationFile=..\$(BuildDir)\$(NET35Folder)\$(XMLFile);" />
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v3.0; OutputPath=..\$(BuildDir)\$(NET30Folder);
-				 Configuration=Release; RunCodeAnalysis=$(CodeAnalysis); TreatWarningsAsErrors=true;
+				 Configuration=Release; DefineConstants=; RunCodeAnalysis=$(CodeAnalysis); TreatWarningsAsErrors=true;
 				 DocumentationFile=..\$(BuildDir)\$(NET30Folder)\$(XMLFile);" />
 		<MSBuild Projects="Navigation\Navigation.csproj" Targets="Rebuild"
 				 Properties="TargetFrameworkVersion=v2.0; OutputPath=..\$(BuildDir)\$(NET20Folder);
-				 Configuration=Release; RunCodeAnalysis=$(CodeAnalysis); TreatWarningsAsErrors=true;
+				 Configuration=Release; DefineConstants=; RunCodeAnalysis=$(CodeAnalysis); TreatWarningsAsErrors=true;
 				 DocumentationFile=..\$(BuildDir)\$(NET20Folder)\$(XMLFile);" />
 	</Target>
 	<!-- Release build Navigation.Test passing fixed framework 4.5, because MSTest doesn't
