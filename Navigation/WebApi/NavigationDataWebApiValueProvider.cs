@@ -14,7 +14,7 @@ namespace Navigation
 		private Dictionary<string, ValueProviderResult> _values = new Dictionary<string, ValueProviderResult>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NavigationDataValueProvider"/> class
+		/// Initializes a new instance of the <see cref="NavigationDataWebApiValueProvider"/> class
 		/// </summary>
 		public NavigationDataWebApiValueProvider()
 		{
