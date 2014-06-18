@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET40Plus
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Navigation.Test.Mvc
@@ -125,3 +126,4 @@ namespace Navigation.Test.Mvc
 		}
 	}
 }
+#endif

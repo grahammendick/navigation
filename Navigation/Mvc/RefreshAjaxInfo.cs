@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if NET40Plus
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
@@ -43,3 +44,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

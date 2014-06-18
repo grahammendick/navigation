@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET40Plus
+using System;
 using System.Web.Mvc;
 
 namespace Navigation
@@ -55,3 +56,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

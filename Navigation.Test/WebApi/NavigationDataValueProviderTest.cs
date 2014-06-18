@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#if NET40Plus
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -62,3 +63,4 @@ namespace Navigation.Test.WebApi
 		}
 	}
 }
+#endif

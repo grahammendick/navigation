@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#if NET40Plus
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
 using System.Text;
@@ -113,3 +114,4 @@ namespace Navigation.Test.Mvc
 		}
 	}
 }
+#endif

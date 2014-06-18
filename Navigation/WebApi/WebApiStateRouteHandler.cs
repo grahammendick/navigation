@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿#if NET40Plus
+using System.Web;
 using System.Web.Http.WebHost;
 using System.Web.Routing;
 
@@ -43,3 +44,4 @@ namespace Navigation
 		}
 	}
 }
+#endif
