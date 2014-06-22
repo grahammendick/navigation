@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 #if NET40Plus
 using System.Web.Routing;
+using System.Linq;
 #endif
 
 namespace Navigation
@@ -148,9 +149,22 @@ namespace Navigation
 		/// </summary>
 		public static void AddStateRoutes()
 		{
-			PageRouteConfig.AddStateRoutes();
-			RouteConfig.AddStateRoutes();
-			WebApiRouteConfig.AddHttpRoutes();
+			if (StateInfoConfig.Dialogs == null)
+				return;
+			using (RouteTable.Routes.GetWriteLock())
+			{
+				RouteTable.Routes.Ignore("{resource}.axd/{*pathInfo}");
+				var states = from d in Dialogs
+							 from s in d.States
+							 orderby s.Route == string.Empty || s.Route.StartsWith("{", StringComparison.Ordinal)
+							 select s;
+				foreach (State state in states)
+				{
+					PageRouteConfig.AddRoutes(state);
+					RouteConfig.AddRoute(state);
+					WebApiRouteConfig.AddHttpRoute(state);
+				}
+			}
 		}
 
 		/// <summary>
