@@ -15,6 +15,7 @@ namespace Navigation
 			Route route;
 			using (RouteTable.Routes.GetWriteLock())
 			{
+				RouteTable.Routes.Ignore("{resource}.axd/{*pathInfo}");
 #if NET45Plus
 				Type stateRouteHandlerType = typeof(StateRouteHandler);
 				if (NavigationSettings.Config.StateRouteHandler.Length != 0)
