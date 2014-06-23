@@ -913,8 +913,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void NavigateLinkRootRouteTest()
 		{
-			StateController.Navigate("d5");
-			StateController.Navigate("t0");
+			StateController.Navigate("d4");
 			string link = StateController.GetNavigationLink("t0");
 			Assert.IsTrue(link.StartsWith("/?"));
 		}
@@ -948,7 +947,7 @@ namespace Navigation.Test
 		{
 			StateController.Navigate("d4");
 			string link = StateController.GetNavigationLink("t0");
-			Assert.IsTrue(link.Contains("/d4s1?"));
+			Assert.IsTrue(link.Contains("/?"));
 		}
 
 		[TestMethod]

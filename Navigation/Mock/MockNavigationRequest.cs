@@ -130,7 +130,7 @@ namespace Navigation
 				if (_RequestContext == null)
 				{
 					RouteData routeData = new RouteData();
-					if (RawUrl != null)
+					if (RawUrl != null && RawUrl.IndexOf(".aspx", StringComparison.OrdinalIgnoreCase) == -1)
 						routeData = RouteTable.Routes.GetRouteData(Context) ?? new RouteData();
 					foreach (string key in routeData.Values.Keys.ToArray())
 					{
