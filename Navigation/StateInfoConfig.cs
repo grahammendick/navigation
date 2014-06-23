@@ -156,7 +156,7 @@ namespace Navigation
 				RouteTable.Routes.Ignore("{resource}.axd/{*pathInfo}");
 				var states = from d in Dialogs
 							 from s in d.States
-							 orderby s.Route == string.Empty || s.Route.StartsWith("{", StringComparison.Ordinal)
+							 orderby s.Route.StartsWith("{", StringComparison.Ordinal)
 							 select s;
 				foreach (State state in states)
 				{
