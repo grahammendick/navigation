@@ -71,7 +71,7 @@ namespace Navigation.Test
 					Assert.AreEqual("s" + i, state.Key);
 					Assert.AreEqual(state.Key, state.Title);
 					Assert.AreEqual(i, state.Index);
-					if (dialog.Index < 6 && state.Page.Length != 0)
+					if (dialog.Index < 6)
 						Assert.AreEqual(string.Format(page, dialog.Key, state.Key), state.Page);
 					if (i == 1 && dialog.Index < 3)
 						Assert.AreEqual(string.Format(mobilePage, dialog.Key, state.Key), state.MobilePage);
