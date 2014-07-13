@@ -23,8 +23,8 @@
 
     (function () {
         var setup = function () {
-            navigation.scope.html('<div style="display:table;margin:0px auto;padding-top:10px"><div style="display:table-row">'
-                + '<div style="display:table-row"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
+            navigation.scope.html('<div style="display:table;margin-left:10px;padding-top:10px"><div style="display:table-row">'
+                + '<div style="display:table-cell"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
                 + '</div><div style="display:table-cell; vertical-align:top">'
                 + '<div id="navigation-key" class="glimpse-header" style="text-align:center;padding:0"></div>'
                 + '<table style="width:320px;margin-left:10px"><tbody class="glimpse-row-holder"><tr class="glimpse-row">'
@@ -83,121 +83,121 @@
                 }
             });
         },
-            getPoint = function (e) {
-                return {
-                    x: (e.offsetX ? e.offsetX : e.pageX - $(navigation.canvas).offset().left) - navigation.x,
-                    y: (e.offsetY ? e.offsetY : e.pageY - $(navigation.canvas).offset().top) - navigation.y
-                };
-            },
-            getState = function (states, point) {
-                for (var i = 0; i < states.length; i++) {
-                    var state = states[i];
-                    if (state.x <= point.x && point.x <= state.x + state.w &&
-                        state.y <= point.y && point.y <= state.y + state.h)
-                        return state;
-                }
-                return null;
-            },
-            update = function (states, point) {
-                var oldSelection,
-                    newSelection = null;
-                for (var i = 0; i < states.length; i++) {
-                    var state = states[i];
-                    if (state.selected)
-                        oldSelection = state;
-                    if (state.x <= point.x && point.x <= state.x + state.w &&
-                        state.y <= point.y && point.y <= state.y + state.h) {
-                        state.selected = true;
-                        newSelection = state;
-                    }
-                }
-                if (newSelection && oldSelection && oldSelection !== newSelection)
-                    oldSelection.selected = false;
-            },
-            render = function () {
-                navigation.canvas.context.save();
-                navigation.canvas.context.clearRect(0, 0, navigation.canvas.width, navigation.canvas.height);
-                navigation.canvas.context.translate(navigation.x, navigation.y);
-                processStates(navigation.canvas.context, navigation.states, navigation.font);
-                processTransitions(navigation.canvas.context, navigation.transitions, navigation.font);
-                navigation.canvas.context.restore();
-            },
-            processStates = function (context, states, font) {
-                for (var i = 0; i < states.length; i++) {
-                    var state = states[i];
-                    if (state.index === 0) {
-                        context.font = '14px ' + font;
-                        context.textAlign = 'left';
-                        context.fillText(state.dialogKey, state.x + 10, state.y - 5, 2 * state.w);
-                    }
-                    context.save();
-                    context.fillStyle = '#fff';
-                    if (state.selected) {
-                        context.fillStyle = '#e6f5e6';
-                        processSelectedState(navigation.elements, state);
-                    }
-                    context.shadowOffsetX = 3;
-                    context.shadowOffsetY = 3;
-                    context.shadowBlur = 10;
-                    context.shadowColor = '#999';
-                    context.beginPath();
-                    context.rect(state.x, state.y, state.w, state.h);
-                    context.fill();
-                    context.restore();
-                    context.stroke();
-                    context.font = 'bold 12px ' + font;
-                    context.textAlign = 'center';
-                    context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
-                    context.textAlign = 'left';
-                    context.font = '10px ' + font;
-                    if (state.previous)
-                        context.fillText('previous', state.x + 5, state.y + 12);
-                    context.textAlign = 'right';
-                    if (state.current)
-                        context.fillText('current', state.x + state.w - 5, state.y + 12);
-                    if (state.back > 0)
-                        context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
-                }
-            },
-            processSelectedState = function (elements, state) {
-                elements.key.text(state.dialogKey + '-' + state.key);
-                elements.data.text(convertDictionary(state.data));
-                elements.page.text(state.page);
-                elements.title.text(state.title);
-                elements.route.text(state.route);
-                elements.theme.text(state.theme);
-                elements.masters.text(state.masters.join(', '));
-                elements.defaultTypes.text(convertDictionary(state.defaultTypes));
-                elements.derived.text(state.derived.join(', '));
-                elements.trackCrumbTrail.text(state.trackCrumbTrail.toString());
-                elements.checkPhysicalUrlAccess.text(state.checkPhysicalUrlAccess.toString());
-            },
-            convertDictionary = function (dictionary) {
-                var arr = [];
-                for (var key in dictionary) {
-                    var val = dictionary[key];
-                    arr.push(key + '=' + (JSON && JSON.stringify && $.isPlainObject(val) ? JSON.stringify(val) : val));
-                }
-                return arr.join(', ');
-            },
-            processTransitions = function (context, transitions, font) {
-                context.font = 'italic 12px ' + font;
-                context.beginPath();
-                for (var i = 0; i < transitions.length; i++) {
-                    var transition = transitions[i];
-                    context.moveTo(transition.x1, transition.y);
-                    context.lineTo(transition.x1, transition.y + transition.h);
-                    context.lineTo(transition.x2, transition.y + transition.h);
-                    context.lineTo(transition.x2, transition.y);
-                    context.textAlign = 'center';
-                    context.fillText(transition.key, transition.x1 + (transition.x2 - transition.x1) / 2,
-                        transition.y + transition.h + 12);
-                    context.moveTo(transition.x2 - 5, transition.y + 10);
-                    context.lineTo(transition.x2, transition.y);
-                    context.lineTo(transition.x2 + 5, transition.y + 10);
-                }
-                context.stroke();
+        getPoint = function (e) {
+            return {
+                x: (e.offsetX ? e.offsetX : e.pageX - $(navigation.canvas).offset().left) - navigation.x,
+                y: (e.offsetY ? e.offsetY : e.pageY - $(navigation.canvas).offset().top) - navigation.y
             };
+        },
+        getState = function (states, point) {
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (state.x <= point.x && point.x <= state.x + state.w &&
+                    state.y <= point.y && point.y <= state.y + state.h)
+                    return state;
+            }
+            return null;
+        },
+        update = function (states, point) {
+            var oldSelection,
+                newSelection = null;
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (state.selected)
+                    oldSelection = state;
+                if (state.x <= point.x && point.x <= state.x + state.w &&
+                    state.y <= point.y && point.y <= state.y + state.h) {
+                    state.selected = true;
+                    newSelection = state;
+                }
+            }
+            if (newSelection && oldSelection && oldSelection !== newSelection)
+                oldSelection.selected = false;
+        },
+        render = function () {
+            navigation.canvas.context.save();
+            navigation.canvas.context.clearRect(0, 0, navigation.canvas.width, navigation.canvas.height);
+            navigation.canvas.context.translate(navigation.x, navigation.y);
+            processStates(navigation.canvas.context, navigation.states, navigation.font);
+            processTransitions(navigation.canvas.context, navigation.transitions, navigation.font);
+            navigation.canvas.context.restore();
+        },
+        processStates = function (context, states, font) {
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (state.index === 0) {
+                    context.font = '14px ' + font;
+                    context.textAlign = 'left';
+                    context.fillText(state.dialogKey, state.x + 10, state.y - 5, 2 * state.w);
+                }
+                context.save();
+                context.fillStyle = '#fff';
+                if (state.selected) {
+                    context.fillStyle = '#e6f5e6';
+                    processSelectedState(navigation.elements, state);
+                }
+                context.shadowOffsetX = 3;
+                context.shadowOffsetY = 3;
+                context.shadowBlur = 10;
+                context.shadowColor = '#999';
+                context.beginPath();
+                context.rect(state.x, state.y, state.w, state.h);
+                context.fill();
+                context.restore();
+                context.stroke();
+                context.font = 'bold 12px ' + font;
+                context.textAlign = 'center';
+                context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
+                context.textAlign = 'left';
+                context.font = '10px ' + font;
+                if (state.previous)
+                    context.fillText('previous', state.x + 5, state.y + 12);
+                context.textAlign = 'right';
+                if (state.current)
+                    context.fillText('current', state.x + state.w - 5, state.y + 12);
+                if (state.back > 0)
+                    context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
+            }
+        },
+        processSelectedState = function (elements, state) {
+            elements.key.text(state.dialogKey + '-' + state.key);
+            elements.data.text(convertDictionary(state.data));
+            elements.page.text(state.page);
+            elements.title.text(state.title);
+            elements.route.text(state.route);
+            elements.theme.text(state.theme);
+            elements.masters.text(state.masters.join(', '));
+            elements.defaultTypes.text(convertDictionary(state.defaultTypes));
+            elements.derived.text(state.derived.join(', '));
+            elements.trackCrumbTrail.text(state.trackCrumbTrail.toString());
+            elements.checkPhysicalUrlAccess.text(state.checkPhysicalUrlAccess.toString());
+        },
+        convertDictionary = function (dictionary) {
+            var arr = [];
+            for (var key in dictionary) {
+                var val = dictionary[key];
+                arr.push(key + '=' + (JSON && JSON.stringify && $.isPlainObject(val) ? JSON.stringify(val) : val));
+            }
+            return arr.join(', ');
+        },
+        processTransitions = function (context, transitions, font) {
+            context.font = 'italic 12px ' + font;
+            context.beginPath();
+            for (var i = 0; i < transitions.length; i++) {
+                var transition = transitions[i];
+                context.moveTo(transition.x1, transition.y);
+                context.lineTo(transition.x1, transition.y + transition.h);
+                context.lineTo(transition.x2, transition.y + transition.h);
+                context.lineTo(transition.x2, transition.y);
+                context.textAlign = 'center';
+                context.fillText(transition.key, transition.x1 + (transition.x2 - transition.x1) / 2,
+                    transition.y + transition.h + 12);
+                context.moveTo(transition.x2 - 5, transition.y + 10);
+                context.lineTo(transition.x2, transition.y);
+                context.lineTo(transition.x2 + 5, transition.y + 10);
+            }
+            context.stroke();
+        };
         pubsub.subscribe('trigger.navigation.shell.subscriptions', wireListeners);
         pubsub.subscribe('trigger.navigation.event.render', render);
     })();
