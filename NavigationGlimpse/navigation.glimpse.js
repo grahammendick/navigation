@@ -23,12 +23,12 @@
 
     (function () {
         var setup = function () {
-            navigation.scope.html('<div style="display:table;margin-left:10px;padding-top:10px"><div style="display:table-row">'
+            navigation.scope.html('<div style="display:table;width:98%;margin-left:10px;padding-top:10px"><div style="display:table-row">'
                 + '<div style="display:table-cell"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
-                + '</div><div style="display:table-cell; vertical-align:top">'
+                + '</div><div style="display:table-cell;width:100%;vertical-align:top">'
                 + '<div id="navigation-key" class="glimpse-header" style="text-align:center;padding:0"></div>'
-                + '<table style="width:320px;margin-left:10px"><tbody class="glimpse-row-holder"><tr class="glimpse-row">'
-                + '<th scope="row" style="width:20%">Data</th><td id="navigation-data"></td></tr>'
+                + '<table style="margin-left:10px"><tbody class="glimpse-row-holder"><tr class="glimpse-row">'
+                + '<th scope="row" style="width:140px">Data</th><td id="navigation-data"></td></tr>'
                 + '<tr class="glimpse-row"><th scope="row">Page</th><td id="navigation-page"></td></tr>'
                 + '<tr class="glimpse-row"><th scope="row">Title</th><td id="navigation-title"></td></tr>'
                 + '<tr class="glimpse-row"><th scope="row">Route</th><td id="navigation-route"></td></tr>'
@@ -37,7 +37,7 @@
                 + '<tr class="glimpse-row"><th scope="row">DefaultTypes</th><td id="navigation-defaultTypes"></td></tr>'
                 + '<tr class="glimpse-row"><th scope="row">Derived</th><td id="navigation-derived"></td></tr>'
                 + '<tr class="glimpse-row"><th scope="row">TrackCrumbTrail</th><td id="navigation-trackCrumbTrail"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">CheckPhysical UrlAccess</th><td id="navigation-checkPhysicalUrlAccess"></td></tr>'
+                + '<tr class="glimpse-row"><th scope="row">CheckPhysicalUrlAccess</th><td id="navigation-checkPhysicalUrlAccess"></td></tr>'
                 + '</tbody></table></div></div></div>');
             navigation.canvas = $('#navigation-glimpse')[0];
             navigation.canvas.width = 750;
@@ -81,6 +81,11 @@
                             navigation.canvas.style.cursor = '';
                     }
                 }
+            });
+            $(window).resize(function (e) {
+                navigation.canvas.style.display = 'none';
+                navigation.canvas.style.offsetHeight;
+                navigation.canvas.style.display = 'block';
             });
         },
         getPoint = function (e) {
