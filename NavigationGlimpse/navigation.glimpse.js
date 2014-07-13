@@ -23,7 +23,7 @@
 
     (function () {
         var setup = function () {
-            navigation.scope.html('<div style="display:table;width:98%;margin-left:10px;padding-top:10px"><div style="display:table-row">'
+            navigation.scope.html('<div style="display:table;width:98%;padding:10px"><div style="display:table-row">'
                 + '<div style="display:table-cell"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
                 + '</div><div style="display:table-cell;width:100%;vertical-align:top">'
                 + '<div id="navigation-key" class="glimpse-header" style="text-align:center;padding:0"></div>'
