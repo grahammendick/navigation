@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 
 namespace Navigation.Glimpse.AlternateType
 {
-	public class StateHandler : AlternateType<Navigation.StateHandler>
+	public class StateHandler : AlternateType<IStateHandler>
 	{
 		private IEnumerable<IAlternateMethod> allMethods;
 
@@ -28,7 +28,7 @@ namespace Navigation.Glimpse.AlternateType
 		public class GetNavigationLink : AlternateMethod
 		{
 			public GetNavigationLink()
-				: base(typeof(Navigation.StateHandler), "GetNavigationLink")
+				: base(typeof(IStateHandler), "GetNavigationLink")
 			{
 			}
 

@@ -50,6 +50,7 @@
     <Compile Include="AlternateType\StateHandler.cs" />
     <Compile Include="AlternateType\StateRouteHandler.cs" />
     <Compile Include="ClientScript\Script.cs" />
+    <Compile Include="Inspector\StateHandlerInspector.cs" />
     <Compile Include="Inspector\StateRouteHandlerInspector.cs" />
     <Compile Include="Model\StateModel.cs" />
     <Compile Include="Model\TransitionModel.cs" />
