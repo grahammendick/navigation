@@ -166,9 +166,10 @@ namespace Navigation
 						data[MaximumRowsKey] = null;
 						if (MaximumRows != DefaultMaximumRows)
 							data[MaximumRowsKey] = MaximumRows;
-						link.NavigateUrl = StateController.GetRefreshLink(data);
+						link.NavigateUrl = null;
 						if (link.Enabled && PostBackHyperLink)
 						{
+							link.NavigateUrl = StateController.GetRefreshLink(data);
 							PostBackOptions postBackOptions = new PostBackOptions(this, startRowIndex.ToString(NumberFormatInfo.InvariantInfo));
 							postBackOptions.RequiresJavaScriptProtocol = true;
 							link.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
