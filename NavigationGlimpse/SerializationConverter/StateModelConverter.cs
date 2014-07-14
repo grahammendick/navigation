@@ -34,6 +34,7 @@ namespace Navigation.Glimpse.SerializationConverter
 				stateModel.State.Derived,
 				stateModel.State.TrackCrumbTrail,
 				stateModel.State.CheckPhysicalUrlAccess,
+				stateModel.NavigationLinks,
 			};
 		}
 

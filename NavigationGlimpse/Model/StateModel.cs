@@ -35,6 +35,8 @@ namespace Navigation.Glimpse.Model
         public string Theme { get; set; }
 
         public List<string> Masters { get; set; }
+
+		public List<NavigationLinkModel> NavigationLinks { get; set; }
     }
 }
 
