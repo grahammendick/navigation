@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateType\StateHandler.cs" />
     <Compile Include="AlternateType\StateRouteHandler.cs" />
     <Compile Include="ClientScript\Script.cs" />
     <Compile Include="Inspector\StateRouteHandlerInspector.cs" />
