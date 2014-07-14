@@ -1,6 +1,5 @@
 ﻿using Glimpse.Core.Extensibility;
 using Glimpse.Core.Extensions;
-using Navigation;
 using Navigation.Glimpse.Model;
 using Navigation.Glimpse.Support;
 using System;
