@@ -37,6 +37,7 @@
       <HintPath>..\packages\Glimpse.1.8.4\lib\net45\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -62,7 +63,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ScriptResource.cs" />
-    <Compile Include="SerializationConverter\NavigationLinkModelConverter.cs" />
     <Compile Include="SerializationConverter\StateModelConverter.cs" />
     <Compile Include="SerializationConverter\TransitionModelConverter.cs" />
     <Compile Include="Support\Canvas.cs" />

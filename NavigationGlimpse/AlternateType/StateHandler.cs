@@ -1,4 +1,5 @@
 ﻿using Glimpse.Core.Extensibility;
+using Glimpse.Core.Extensions;
 using Glimpse.Core.Message;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -36,13 +37,17 @@ namespace Navigation.Glimpse.AlternateType
 			{
 				var link = context.ReturnValue as string;
 				var state = context.Arguments[0] as State;
-				var data = context.Arguments[1] as NameValueCollection;
+				var data = ((NameValueCollection) context.Arguments[1]).ToDictionary();
+				data.Remove(NavigationSettings.Config.StateIdKey);
+				data.Remove(NavigationSettings.Config.PreviousStateIdKey);
+				data.Remove(NavigationSettings.Config.ReturnDataKey);
+				data.Remove(NavigationSettings.Config.CrumbTrailKey);
 				context.MessageBroker.Publish(new Message(link, state, data));
 			}
 
 			public class Message : MessageBase
 			{
-				public Message(string link, State state, NameValueCollection data)
+				public Message(string link, State state, IDictionary<string, string> data)
 				{
 					Link = link;
 					State = state;
@@ -53,7 +58,7 @@ namespace Navigation.Glimpse.AlternateType
 
 				public State State { get; set; }
 
-				public NameValueCollection Data { get; set; }
+				public IDictionary<string, string> Data { get; set; }
 			}
 		}
 	}

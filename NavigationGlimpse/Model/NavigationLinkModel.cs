@@ -1,10 +1,10 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 
 namespace Navigation.Glimpse.Model
 {
 	public class NavigationLinkModel
 	{
-		public NavigationLinkModel(string link, NameValueCollection data)
+		public NavigationLinkModel(string link, IDictionary<string, string> data)
 		{
 			Link = link;
 			Data = data;
@@ -12,6 +12,6 @@ namespace Navigation.Glimpse.Model
 
 		public string Link { get; private set; }
 
-		public NameValueCollection Data { get; set; }
+		public IDictionary<string, string> Data { get; set; }
 	}
 }
