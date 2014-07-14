@@ -34,17 +34,24 @@ namespace Navigation.Glimpse.AlternateType
 
 			public override void PostImplementation(IAlternateMethodContext context, TimerResult timerResult)
 			{
+				var link = context.ReturnValue as string;
+				var state = context.Arguments[0] as State;
+				var data = context.Arguments[1] as NameValueCollection;
+				context.MessageBroker.Publish(new Message(link, state, data));
 			}
 
 			public class Message : MessageBase
 			{
-				public Message(string link, NameValueCollection data)
+				public Message(string link, State state, NameValueCollection data)
 				{
 					Link = link;
+					State = state;
 					Data = data;
 				}
 
 				public string Link { get; set; }
+
+				public State State { get; set; }
 
 				public NameValueCollection Data { get; set; }
 			}
