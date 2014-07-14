@@ -1,6 +1,7 @@
 ﻿using Glimpse.Core.Extensibility;
 using Glimpse.Core.Extensions;
 using Navigation;
+using Navigation.Glimpse.Model;
 using Navigation.Glimpse.Support;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Navigation.Glimpse.Tab
 				stateDisplayInfo.Theme = GetCurrentTheme(context, mobile);
 				stateDisplayInfo.Masters = GetCurrentMasters(context, mobile);
 			}
-			return Canvas.Arrange(stateDisplayInfo);
+			return Canvas.Arrange(stateDisplayInfo, GetNavigationLinks(context));
 		}
 
 		private string GetCurrentPage(ITabContext context, bool mobile)
@@ -76,6 +77,12 @@ namespace Navigation.Glimpse.Tab
 				masters = ((!mobile || (StateContext.State.MobilePage.Length == 0 && StateContext.State.MobileMasters.Count == 0)) ?
 					StateContext.State.Masters : StateContext.State.MobileMasters).ToList();
 			return masters;
+		}
+
+		private Dictionary<string, List<NavigationLinkModel>> GetNavigationLinks(ITabContext context)
+		{
+			return context.GetMessages<AlternateType.StateHandler.GetNavigationLink.Message>().GroupBy(m => m.State.Id)
+				.ToDictionary(g => g.Key, g => g.Select(m => new NavigationLinkModel(m.Link, m.Data)).ToList());
 		}
 
 		public override string Name

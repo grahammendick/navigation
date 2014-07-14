@@ -21,7 +21,7 @@ namespace Navigation.Glimpse.Support
 		private const int PaddingX = 10;
 		private const int PaddingY = 5;
 
-		internal static CanvasData Arrange(StateDisplayInfo stateDisplayInfo)
+		internal static CanvasData Arrange(StateDisplayInfo stateDisplayInfo, Dictionary<string, List<NavigationLinkModel>> links)
 		{
 			var transitionModels = new List<TransitionModel>();
 			var stateModels = new List<StateModel>();
@@ -44,6 +44,8 @@ namespace Navigation.Glimpse.Support
 					stateModel.Route = state.Route;
 					stateModel.Theme = state.Theme;
 					stateModel.Masters = state.Masters.ToList();
+					if (links.ContainsKey(state.Id))
+						stateModel.NavigationLinks = links[state.Id];
 					if (state == StateContext.State)
 					{
 						stateModel.Current = state == StateContext.State;

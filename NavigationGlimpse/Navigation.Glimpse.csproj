@@ -52,6 +52,7 @@
     <Compile Include="ClientScript\Script.cs" />
     <Compile Include="Inspector\StateHandlerInspector.cs" />
     <Compile Include="Inspector\StateRouteHandlerInspector.cs" />
+    <Compile Include="Model\NavigationLinkModel.cs" />
     <Compile Include="Model\StateModel.cs" />
     <Compile Include="Model\TransitionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +62,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ScriptResource.cs" />
+    <Compile Include="SerializationConverter\NavigationLinkModelConverter.cs" />
     <Compile Include="SerializationConverter\StateModelConverter.cs" />
     <Compile Include="SerializationConverter\TransitionModelConverter.cs" />
     <Compile Include="Support\Canvas.cs" />
