@@ -102,6 +102,7 @@ namespace Navigation.Glimpse.Tab
 			context.PersistMessages<AlternateType.StateRouteHandler.GetMasterForDisplayInfo.Message>();
 			context.PersistMessages<AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>();
 			context.PersistMessages<AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>();
+			context.PersistMessages<AlternateType.StateHandler.GetNavigationLink.Message>();
 		}
 	}
 }
