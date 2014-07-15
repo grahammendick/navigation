@@ -155,12 +155,16 @@
                 context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
                 context.textAlign = 'left';
                 context.font = '10px ' + font;
-                if (state.previous)
-                    context.fillText('previous', state.x + 5, state.y + 12);
+                if (state.navigationLinks) {
+                    var linkText = state.navigationLinks.length > 1 ? ' links' : ' link';
+                    context.fillText(state.navigationLinks.length + linkText, state.x + 5, state.y + 12);
+                }
                 context.textAlign = 'right';
                 if (state.current)
                     context.fillText('current', state.x + state.w - 5, state.y + 12);
-                if (state.back > 0)
+                if (state.previous > 0)
+                    context.fillText('previous', state.x + state.w - 5, state.y + 12);
+                if (state.back > 1)
                     context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
             }
         },
