@@ -162,10 +162,13 @@
                 context.textAlign = 'right';
                 if (state.current)
                     context.fillText('current', state.x + state.w - 5, state.y + 12);
-                if (state.previous > 0)
-                    context.fillText('previous', state.x + state.w - 5, state.y + 12);
-                if (state.back > 1)
-                    context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
+                if (state.previous) {
+                    var previousText = state.back ? 'previous & back' : 'previous';
+                    context.fillText(previousText, state.x + state.w - 5, state.y + 12);
+                } else {
+                    if (state.back)
+                        context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
+                }
             }
         },
         processSelectedState = function (elements, state) {
