@@ -160,15 +160,15 @@
                     context.fillText(state.navigationLinks.length + linkText, state.x + 5, state.y + 12);
                 }
                 context.textAlign = 'right';
+                var text = null;
                 if (state.current)
-                    context.fillText('current', state.x + state.w - 5, state.y + 12);
-                if (state.previous) {
-                    var previousText = state.back ? 'previous & back' : 'previous';
-                    context.fillText(previousText, state.x + state.w - 5, state.y + 12);
-                } else {
-                    if (state.back)
-                        context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
-                }
+                    text = !state.previous ? 'current' : 'previous & current';
+                if (state.back)
+                    text = !state.previous ? 'back ' + state.back : 'previous & back';
+                if (!text && state.previous)
+                    text = 'previous';
+                if (text)
+                    context.fillText(text, state.x + state.w - 5, state.y + 12);
             }
         },
         processSelectedState = function (elements, state) {
