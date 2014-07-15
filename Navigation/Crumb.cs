@@ -20,6 +20,8 @@ namespace Navigation
 		{
 			get
 			{
+				if (_NavigationLink == null)
+					_NavigationLink = CrumbTrailManager.GetHref(State.Id, Data, null);
 				return _NavigationLink;
 			}
 		}
@@ -98,9 +100,8 @@ namespace Navigation
 			}
 		}
 
-		internal Crumb(string href, NavigationData data, State state, bool last)
+		internal Crumb(NavigationData data, State state, bool last)
 		{
-			_NavigationLink = href;
 			_Data = data ?? new NavigationData();
 			_State = state;
 			_Last = last;
