@@ -183,8 +183,8 @@
                 table += getRow('Masters', state.masters.join(', '));
                 table += getRow('DefaultTypes', convertDictionary(state.defaultTypes));
                 table += getRow('Derived', state.derived.join(', '));
-                table += getRow('TrackCrumbTrail', state.trackCrumbTrail.toString());
-                table += getRow('CheckPhysicalUrlAccess', state.checkPhysicalUrlAccess.toString());
+                table += getRow('TrackCrumbTrail', state.trackCrumbTrail);
+                table += getRow('CheckPhysicalUrlAccess', state.checkPhysicalUrlAccess);
             } else {
                 for (var i = 0; i < state.navigationLinks.length; i++) {
                     var data = convertDictionary(state.navigationLinks[i].data);
@@ -195,8 +195,10 @@
             elements.table.html(table);
         },
         getRow = function (key, value) {
+            if ((typeof value === 'string' && !value) || (typeof value === 'boolean' && value))
+                return '';
             var row = '<tr class="glimpse-row"><th scope="row" style="width:140px">{0}</th><td>{1}</td></tr>';
-            return row.replace('{0}', util.htmlEncode(key)).replace('{1}', util.htmlEncode(value));
+            return row.replace('{0}', util.htmlEncode(key)).replace('{1}', util.htmlEncode(value.toString()));
         }
         convertDictionary = function (dictionary) {
             var arr = [];
