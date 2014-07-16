@@ -97,8 +97,7 @@
         getState = function (states, point) {
             for (var i = 0; i < states.length; i++) {
                 var state = states[i];
-                if (state.x <= point.x && point.x <= state.x + state.w &&
-                    state.y <= point.y && point.y <= state.y + state.h)
+                if (hitTest(state.text, point) || hitTest(state.linkText,point))
                     return state;
             }
             return null;
@@ -110,14 +109,21 @@
                 var state = states[i];
                 if (state.selected)
                     oldSelection = state;
-                if (state.x <= point.x && point.x <= state.x + state.w &&
-                    state.y <= point.y && point.y <= state.y + state.h) {
+                if (hitTest(state.text, point) || hitTest(state.linkText, point)) {
                     state.selected = true;
                     newSelection = state;
                 }
             }
             if (newSelection && oldSelection && oldSelection !== newSelection)
                 oldSelection.selected = false;
+        },
+        hitTest = function (region, point) {
+            if (region) {
+                if (region.x <= point.x && point.x <= region.x + region.w &&
+                    region.y <= point.y && point.y <= region.y + region.h)
+                    return true;
+            }
+            return false;
         },
         render = function () {
             navigation.canvas.context.save();
@@ -150,14 +156,26 @@
                 context.fill();
                 context.restore();
                 context.stroke();
-                context.font = 'bold 12px ' + font;
+                context.font = 'bold 9pt ' + font;
                 context.textAlign = 'center';
                 context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
+                state.text = {
+                    x: state.x + state.w / 2 - context.measureText(state.key).width / 2,
+                    y: state.y + 21,
+                    w: context.measureText(state.key).width,
+                    h: 9
+                };
                 context.textAlign = 'left';
-                context.font = '12px ' + font;
+                context.font = '9pt ' + font;
                 if (state.navigationLinks) {
-                    var linkText = state.navigationLinks.length > 1 ? ' links' : ' link';
-                    context.fillText(state.navigationLinks.length + linkText, state.x + 5, state.y + 14);
+                    var linkText = state.navigationLinks.length + (state.navigationLinks.length > 1 ? ' links' : ' link');
+                    context.fillText(linkText, state.x + 5, state.y + 14);
+                    state.linkText = {
+                        x: state.x + 5,
+                        y: state.y + 5,
+                        w: context.measureText(linkText).width,
+                        h: 9
+                    };
                 }
                 context.font = '10px ' + font;
                 context.textAlign = 'center';
