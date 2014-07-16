@@ -177,6 +177,9 @@
             if (!state.showLinks) {
                 table += getRow('Data', convertDictionary(state.data));
                 table += getRow('Page', state.page);
+                table += getRow('Controller', state.controller);
+                table += getRow('ApiController', state.apiController);
+                table += getRow('Action', state.action);
                 table += getRow('Title', state.title);
                 table += getRow('Route', state.route);
                 table += getRow('Theme', state.theme);
@@ -195,7 +198,7 @@
             elements.table.html(table);
         },
         getRow = function (key, value) {
-            if ((typeof value === 'string' && !value) || (typeof value === 'boolean' && value))
+            if ((typeof value !== 'boolean' && !value) || (typeof value === 'boolean' && value))
                 return '';
             var row = '<tr class="glimpse-row"><th scope="row" style="width:140px">{0}</th><td>{1}</td></tr>';
             return row.replace('{0}', util.htmlEncode(key)).replace('{1}', util.htmlEncode(value.toString()));
