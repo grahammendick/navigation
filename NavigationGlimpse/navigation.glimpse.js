@@ -154,12 +154,13 @@
                 context.textAlign = 'center';
                 context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
                 context.textAlign = 'left';
-                context.font = '10px ' + font;
+                context.font = '12px ' + font;
                 if (state.navigationLinks) {
                     var linkText = state.navigationLinks.length > 1 ? ' links' : ' link';
-                    context.fillText(state.navigationLinks.length + linkText, state.x + 5, state.y + 12);
+                    context.fillText(state.navigationLinks.length + linkText, state.x + 5, state.y + 14);
                 }
-                context.textAlign = 'right';
+                context.font = '10px ' + font;
+                context.textAlign = 'center';
                 var text = null;
                 if (state.current)
                     text = !state.previous ? 'current' : 'previous & current';
@@ -168,7 +169,7 @@
                 if (!text && state.previous)
                     text = 'previous';
                 if (text)
-                    context.fillText(text, state.x + state.w - 5, state.y + 12);
+                    context.fillText(text, state.x + state.w / 2, state.y + 42, state.w - 2);
             }
         },
         processSelectedState = function (elements, state) {
