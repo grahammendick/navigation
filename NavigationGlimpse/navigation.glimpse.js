@@ -6,16 +6,7 @@
             find = function () {
                 elements.scope = navigation.scope;
                 elements.key = elements.scope.find('#navigation-key');
-                elements.data = elements.scope.find('#navigation-data');
-                elements.page = elements.scope.find('#navigation-page');
-                elements.title = elements.scope.find('#navigation-title');
-                elements.route = elements.scope.find('#navigation-route');
-                elements.theme = elements.scope.find('#navigation-theme');
-                elements.masters = elements.scope.find('#navigation-masters');
-                elements.defaultTypes = elements.scope.find('#navigation-defaultTypes');
-                elements.derived = elements.scope.find('#navigation-derived');
-                elements.trackCrumbTrail = elements.scope.find('#navigation-trackCrumbTrail');
-                elements.checkPhysicalUrlAccess = elements.scope.find('#navigation-checkPhysicalUrlAccess');
+                elements.table = elements.scope.find('tbody');
             };
         pubsub.subscribe('action.navigation.shell.loaded', find);
         return elements;
@@ -27,18 +18,7 @@
                 + '<div style="display:table-cell"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
                 + '</div><div style="display:table-cell;width:100%;vertical-align:top">'
                 + '<div id="navigation-key" class="glimpse-header" style="text-align:center;padding:0"></div>'
-                + '<table style="margin-left:10px"><tbody class="glimpse-row-holder"><tr class="glimpse-row">'
-                + '<th scope="row" style="width:140px">Data</th><td id="navigation-data"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Page</th><td id="navigation-page"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Title</th><td id="navigation-title"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Route</th><td id="navigation-route"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Theme</th><td id="navigation-theme"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Masters</th><td id="navigation-masters"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">DefaultTypes</th><td id="navigation-defaultTypes"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Derived</th><td id="navigation-derived"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">TrackCrumbTrail</th><td id="navigation-trackCrumbTrail"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">CheckPhysicalUrlAccess</th><td id="navigation-checkPhysicalUrlAccess"></td></tr>'
-                + '</tbody></table></div></div></div>');
+                + '<table style="margin-left:10px"><tbody class="glimpse-row-holder"></tbody></table></div></div></div>');
             navigation.canvas = $('#navigation-glimpse')[0];
             navigation.canvas.width = 750;
             navigation.canvas.height = 275;
@@ -111,6 +91,7 @@
                     oldSelection = state;
                 if (hitTest(state.text, point) || hitTest(state.linkText, point)) {
                     state.selected = true;
+                    state.showLinks = hitTest(state.linkText, point);
                     newSelection = state;
                 }
             }
@@ -192,17 +173,31 @@
         },
         processSelectedState = function (elements, state) {
             elements.key.text(state.dialogKey + '-' + state.key);
-            elements.data.text(convertDictionary(state.data));
-            elements.page.text(state.page);
-            elements.title.text(state.title);
-            elements.route.text(state.route);
-            elements.theme.text(state.theme);
-            elements.masters.text(state.masters.join(', '));
-            elements.defaultTypes.text(convertDictionary(state.defaultTypes));
-            elements.derived.text(state.derived.join(', '));
-            elements.trackCrumbTrail.text(state.trackCrumbTrail.toString());
-            elements.checkPhysicalUrlAccess.text(state.checkPhysicalUrlAccess.toString());
+            var table = '';
+            if (!state.showLinks) {
+                table += getRow('Data', convertDictionary(state.data));
+                table += getRow('Page', state.page);
+                table += getRow('Title', state.title);
+                table += getRow('Route', state.route);
+                table += getRow('Theme', state.theme);
+                table += getRow('Masters', state.masters.join(', '));
+                table += getRow('DefaultTypes', convertDictionary(state.defaultTypes));
+                table += getRow('Derived', state.derived.join(', '));
+                table += getRow('TrackCrumbTrail', state.trackCrumbTrail.toString());
+                table += getRow('CheckPhysicalUrlAccess', state.checkPhysicalUrlAccess.toString());
+            } else {
+                for (var i = 0; i < state.navigationLinks.length; i++) {
+                    var data = convertDictionary(state.navigationLinks[i].data);
+                    table += '<tr class="glimpse-row"><td><a href="' + state.navigationLinks[i].link + '">'
+                        + (data ? data : '&nbsp;&nbsp;&nbsp;') + '</a></td></tr>';
+                }
+            }
+            elements.table.html(table);
         },
+        getRow = function (key, value) {
+            var row = '<tr class="glimpse-row"><th scope="row" style="width:140px">{0}</th><td>{1}</td></tr>';
+            return row.replace('{0}', key).replace('{1}', value);
+        }
         convertDictionary = function (dictionary) {
             var arr = [];
             for (var key in dictionary) {
