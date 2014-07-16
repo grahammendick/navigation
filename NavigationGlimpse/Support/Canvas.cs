@@ -41,6 +41,9 @@ namespace Navigation.Glimpse.Support
 					stateModel.Y = stateY;
 					stateModel.H = StateHeight;
 					stateModel.Page = state.Page;
+					stateModel.Controller = state.Attributes["controller"];
+					stateModel.ApiController = state.Attributes["apiController"];
+					stateModel.Action = state.Attributes["action"];
 					stateModel.Route = state.Route;
 					stateModel.Theme = state.Theme;
 					stateModel.Masters = state.Masters.ToList();
