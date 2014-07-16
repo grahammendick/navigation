@@ -1,4 +1,4 @@
-﻿(function ($, pubsub) {
+﻿(function ($, pubsub, util) {
     var navigation = {};
 
     navigation.elements = (function () {
@@ -189,14 +189,14 @@
                 for (var i = 0; i < state.navigationLinks.length; i++) {
                     var data = convertDictionary(state.navigationLinks[i].data);
                     table += '<tr class="glimpse-row"><td><a href="' + state.navigationLinks[i].link + '">'
-                        + (data ? data : '&nbsp;&nbsp;&nbsp;') + '</a></td></tr>';
+                        + (data ? util.htmlEncode(data) : '&nbsp;&nbsp;&nbsp;') + '</a></td></tr>';
                 }
             }
             elements.table.html(table);
         },
         getRow = function (key, value) {
             var row = '<tr class="glimpse-row"><th scope="row" style="width:140px">{0}</th><td>{1}</td></tr>';
-            return row.replace('{0}', key).replace('{1}', value);
+            return row.replace('{0}', util.htmlEncode(key)).replace('{1}', util.htmlEncode(value));
         }
         convertDictionary = function (dictionary) {
             var arr = [];
@@ -255,4 +255,4 @@
         pubsub.subscribe('action.panel.rendering.navigation_glimpse', prerender);
         pubsub.subscribe('action.panel.rendered.navigation_glimpse', postrender);
     })();
-})(jQueryGlimpse, glimpse.pubsub);
+})(jQueryGlimpse, glimpse.pubsub, glimpse.util);
