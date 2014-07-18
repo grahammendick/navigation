@@ -137,15 +137,21 @@
                 context.fill();
                 context.restore();
                 context.stroke();
-                context.font = 'bold 9pt ' + font;
+                context.save();
+                context.font = '9pt ' + font;
                 context.textAlign = 'center';
+                context.fillStyle = '#2200C1';
                 context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
                 state.text = {
                     x: state.x + state.w / 2 - context.measureText(state.key).width / 2,
                     y: state.y + 21,
                     w: context.measureText(state.key).width,
-                    h: 9
+                    h: 11
                 };
+                context.beginPath();
+                context.moveTo(state.text.x, state.text.y + state.text.h - .5);
+                context.lineTo(state.text.x + state.text.w, state.text.y + state.text.h - .5);
+                context.strokeStyle = '#2200C1';
                 context.textAlign = 'left';
                 context.font = '9pt ' + font;
                 if (state.navigationLinks) {
@@ -155,9 +161,14 @@
                         x: state.x + 5,
                         y: state.y + 5,
                         w: context.measureText(linkText).width,
-                        h: 9
+                        h: 11
                     };
+                    context.moveTo(state.linkText.x, state.linkText.y + state.linkText.h - .5);
+                    context.lineTo(state.linkText.x + state.linkText.w, state.linkText.y + state.text.h - .5);
                 }
+                context.stroke();
+                context.closePath();
+                context.restore();
                 context.font = '10px ' + font;
                 context.textAlign = 'center';
                 var text = null;
