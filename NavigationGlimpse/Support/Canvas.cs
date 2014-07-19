@@ -1,5 +1,4 @@
-﻿using Navigation;
-using Navigation.Glimpse.Model;
+﻿using Navigation.Glimpse.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

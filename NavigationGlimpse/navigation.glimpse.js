@@ -201,6 +201,8 @@
                 table += getRow('Derived', state.derived.join(', '));
                 table += getRow('TrackCrumbTrail', state.trackCrumbTrail);
                 table += getRow('CheckPhysicalUrlAccess', state.checkPhysicalUrlAccess);
+                for(var key in state.attributes)
+                    table += getRow(key, state.attributes[key]);
             } else {
                 for (var i = 0; i < state.navigationLinks.length; i++) {
                     var data = convertDictionary(state.navigationLinks[i].data);
