@@ -10,7 +10,7 @@ using System.Web.WebPages;
 
 namespace Navigation.Glimpse.Tab
 {
-	public class NavigationTab : TabBase, ITabSetup, IKey
+	public class NavigationTab : TabBase, ITabSetup, IKey, IDocumentation
 	{
 		public override object GetData(ITabContext context)
 		{
@@ -109,6 +109,14 @@ namespace Navigation.Glimpse.Tab
 			context.PersistMessages<AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>();
 			context.PersistMessages<AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>();
 			context.PersistMessages<AlternateType.StateHandler.GetNavigationLink.Message>();
+		}
+
+		public string DocumentationUri
+		{
+			get 
+			{
+				return "http://navigation.codeplex.com/documentation";
+			}
 		}
 	}
 }
