@@ -42,6 +42,7 @@ namespace Navigation.Glimpse.AlternateType
 				data.Remove(NavigationSettings.Config.PreviousStateIdKey);
 				data.Remove(NavigationSettings.Config.ReturnDataKey);
 				data.Remove(NavigationSettings.Config.CrumbTrailKey);
+				data.Remove("httproute");
 				context.MessageBroker.Publish(new Message(link, state, data));
 			}
 
