@@ -7,12 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation", "Navigation\Na
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Test", "Navigation.Test\Navigation.Test.csproj", "{61805D4A-567A-49E8-9F36-83EBB1FFD8FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dsl", "Dsl\Dsl.csproj", "{01122BB5-5405-4F15-A5AB-95D19AD69660}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DslPackage", "DslPackage\DslPackage.csproj", "{31B85516-ADF3-4749-AF51-C0B95884C5B7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Designer.Test", "NavigationDesigner.Test\Navigation.Designer.Test.csproj", "{EA607C30-3CB1-4414-9315-7456A7231DA7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Glimpse", "NavigationGlimpse\Navigation.Glimpse.csproj", "{661DE0E9-E01C-40E9-9FF4-262592FBE945}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{064D6A1D-380D-4DA1-BC92-DD167B569716}"
@@ -42,18 +36,6 @@ Global
 		{61805D4A-567A-49E8-9F36-83EBB1FFD8FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61805D4A-567A-49E8-9F36-83EBB1FFD8FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61805D4A-567A-49E8-9F36-83EBB1FFD8FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01122BB5-5405-4F15-A5AB-95D19AD69660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01122BB5-5405-4F15-A5AB-95D19AD69660}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01122BB5-5405-4F15-A5AB-95D19AD69660}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01122BB5-5405-4F15-A5AB-95D19AD69660}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31B85516-ADF3-4749-AF51-C0B95884C5B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31B85516-ADF3-4749-AF51-C0B95884C5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31B85516-ADF3-4749-AF51-C0B95884C5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31B85516-ADF3-4749-AF51-C0B95884C5B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA607C30-3CB1-4414-9315-7456A7231DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{661DE0E9-E01C-40E9-9FF4-262592FBE945}.Release|Any CPU.ActiveCfg = Release|Any CPU
