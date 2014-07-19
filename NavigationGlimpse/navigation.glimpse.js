@@ -140,7 +140,7 @@
                 context.save();
                 context.font = '9pt ' + font;
                 context.textAlign = 'center';
-                context.fillStyle = '#2200C1';
+                context.fillStyle = '#00e';
                 context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
                 state.text = {
                     x: state.x + state.w / 2 - context.measureText(state.key).width / 2,
@@ -149,9 +149,8 @@
                     h: 11
                 };
                 context.beginPath();
-                context.moveTo(state.text.x, state.text.y + state.text.h - .5);
-                context.lineTo(state.text.x + state.text.w, state.text.y + state.text.h - .5);
-                context.strokeStyle = '#2200C1';
+                underline(context, state.text);
+                context.strokeStyle = '#00e';
                 context.textAlign = 'left';
                 context.font = '9pt ' + font;
                 if (state.navigationLinks) {
@@ -163,8 +162,7 @@
                         w: context.measureText(linkText).width,
                         h: 11
                     };
-                    context.moveTo(state.linkText.x, state.linkText.y + state.linkText.h - .5);
-                    context.lineTo(state.linkText.x + state.linkText.w, state.linkText.y + state.text.h - .5);
+                    underline(context, state.linkText);
                 }
                 context.stroke();
                 context.closePath();
@@ -181,6 +179,10 @@
                 if (text)
                     context.fillText(text, state.x + state.w / 2, state.y + 42, state.w - 2);
             }
+        },
+        underline = function (context, region) {
+            context.moveTo(region.x, region.y + region.h - .5);
+            context.lineTo(region.x + region.w, region.y + region.h - .5);
         },
         processSelectedState = function (elements, state) {
             elements.key.text(state.dialogKey + '-' + state.key);
