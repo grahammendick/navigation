@@ -188,21 +188,21 @@
             elements.key.text(state.dialogKey + '-' + state.key);
             var table = '';
             if (!state.showLinks) {
-                table += getRow('Data', convertDictionary(state.data));
-                table += getRow('Page', state.page);
-                table += getRow('Controller', state.controller);
-                table += getRow('ApiController', state.apiController);
-                table += getRow('Action', state.action);
-                table += getRow('Title', state.title);
-                table += getRow('Route', state.route);
-                table += getRow('Theme', state.theme);
-                table += getRow('Masters', state.masters.join(', '));
+                table += getRow('Data', convertData(state.data));
+                table += getRow('Page', util.htmlEncode(state.page));
+                table += getRow('Controller', util.htmlEncode(state.controller));
+                table += getRow('ApiController', util.htmlEncode(state.apiController));
+                table += getRow('Action', util.htmlEncode(state.action));
+                table += getRow('Title', util.htmlEncode(state.title));
+                table += getRow('Route', util.htmlEncode(state.route));
+                table += getRow('Theme', util.htmlEncode(state.theme));
+                table += getRow('Masters', util.htmlEncode(state.masters.join(', ')));
                 table += getRow('DefaultTypes', convertDictionary(state.defaultTypes));
-                table += getRow('Derived', state.derived.join(', '));
+                table += getRow('Derived', util.htmlEncode(state.derived.join(', ')));
                 table += getRow('TrackCrumbTrail', state.trackCrumbTrail);
                 table += getRow('CheckPhysicalUrlAccess', state.checkPhysicalUrlAccess);
                 for(var key in state.attributes)
-                    table += getRow(key, state.attributes[key]);
+                    table += getRow(util.htmlEncode(key), util.htmlEncode(state.attributes[key]));
             } else {
                 for (var i = 0; i < state.navigationLinks.length; i++) {
                     var data = convertDictionary(state.navigationLinks[i].data);
@@ -216,13 +216,24 @@
             if ((typeof value !== 'boolean' && !value) || (typeof value === 'boolean' && value))
                 return '';
             var row = '<tr class="glimpse-row"><th scope="row" style="width:140px">{0}</th><td>{1}</td></tr>';
-            return row.replace('{0}', util.htmlEncode(key)).replace('{1}', util.htmlEncode(value.toString()));
+            return row.replace('{0}', key).replace('{1}', value.toString());
         }
+        convertData = function (data) {
+            var arr = [];
+            for (var key in data) {
+                var val = data[key].value;
+                val = $.isPlainObject(val) ? JSON.stringify(val) : String(val);
+                val = util.htmlEncode(key) + '=' + util.htmlEncode(val);
+                if (data[key].changed)
+                    val = '<span style="font-weight:bold">' + val + '</span>';
+                arr.push(val);
+            }
+            return arr.join(', ');
+        },
         convertDictionary = function (dictionary) {
             var arr = [];
             for (var key in dictionary) {
-                var val = dictionary[key];
-                arr.push(key + '=' + (JSON && JSON.stringify && $.isPlainObject(val) ? JSON.stringify(val) : val));
+                arr.push(util.htmlEncode(key) + '=' + util.htmlEncode(dictionary[key]));
             }
             return arr.join(', ');
         },

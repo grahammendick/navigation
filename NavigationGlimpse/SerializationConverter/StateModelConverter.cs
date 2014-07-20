@@ -26,7 +26,7 @@ namespace Navigation.Glimpse.SerializationConverter
 				stateModel.Back,
 				Selected = stateModel.Current,
 				DialogKey = stateModel.State.Parent.Key,
-				Data = GetDictionary(stateModel.Data),
+				Data = GetDictionary(stateModel),
 				stateModel.Page,
 				stateModel.Controller,
 				stateModel.ApiController,
@@ -44,11 +44,18 @@ namespace Navigation.Glimpse.SerializationConverter
 			};
 		}
 
-		private Dictionary<string, object> GetDictionary(NavigationData data)
+		private Dictionary<string, object> GetDictionary(StateModel stateModel)
 		{
+			var defaults = stateModel.State.Defaults;
 			var dictionary = new Dictionary<string, object>();
-			foreach (NavigationDataItem item in data.OrderBy(i => i.Key))
-				dictionary[item.Key] = item.Value;
+			foreach (NavigationDataItem item in stateModel.Data.OrderBy(i => i.Key))
+			{
+				dictionary[item.Key] = new
+				{
+					Changed = defaults[item.Key] == null || !defaults[item.Key].Equals(item.Value),
+					item.Value
+				};
+			}
 			return dictionary;
 		}
 
