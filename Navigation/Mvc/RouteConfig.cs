@@ -6,7 +6,6 @@ namespace Navigation
 {
 	internal static class RouteConfig
 	{
-
 		private static bool _Initialised = false;
 
 		internal static void AddRoute(State state)
