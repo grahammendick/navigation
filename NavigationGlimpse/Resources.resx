@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RouteSetupReplacedRouteHandler" xml:space="preserve">
-    <value>Replaced Navigation Sate Route Handler, for {0}, with proxy implementation.</value>
+    <value>Replaced Navigation State Route Handler, for {0}, with proxy implementation.</value>
+  </data>
+  <data name="StateSetupReplacedStateHandler" xml:space="preserve">
+    <value>Replaced Navigation State Handler, for {0} {1}, with proxy implementation.</value>
   </data>
 </root>

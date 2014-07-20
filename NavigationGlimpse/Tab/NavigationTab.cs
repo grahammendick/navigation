@@ -1,6 +1,6 @@
 ﻿using Glimpse.Core.Extensibility;
 using Glimpse.Core.Extensions;
-using Navigation;
+using Navigation.Glimpse.Model;
 using Navigation.Glimpse.Support;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Web.WebPages;
 
 namespace Navigation.Glimpse.Tab
 {
-	public class NavigationTab : TabBase, ITabSetup, IKey
+	public class NavigationTab : TabBase, ITabSetup, IKey, IDocumentation
 	{
 		public override object GetData(ITabContext context)
 		{
@@ -25,7 +25,7 @@ namespace Navigation.Glimpse.Tab
 				stateDisplayInfo.Theme = GetCurrentTheme(context, mobile);
 				stateDisplayInfo.Masters = GetCurrentMasters(context, mobile);
 			}
-			return Canvas.Arrange(stateDisplayInfo);
+			return Canvas.Arrange(stateDisplayInfo, GetNavigationLinks(context));
 		}
 
 		private string GetCurrentPage(ITabContext context, bool mobile)
@@ -78,6 +78,12 @@ namespace Navigation.Glimpse.Tab
 			return masters;
 		}
 
+		private Dictionary<string, List<NavigationLinkModel>> GetNavigationLinks(ITabContext context)
+		{
+			return context.GetMessages<AlternateType.StateHandler.GetNavigationLink.Message>().GroupBy(m => m.State.Id)
+				.ToDictionary(g => g.Key, g => g.Select(m => new NavigationLinkModel(m.Link, m.Data)).ToList());
+		}
+
 		public override string Name
 		{
 			get
@@ -102,6 +108,15 @@ namespace Navigation.Glimpse.Tab
 			context.PersistMessages<AlternateType.StateRouteHandler.GetMasterForDisplayInfo.Message>();
 			context.PersistMessages<AlternateType.StateRouteHandler.GetDisplayInfoForTheme.Message>();
 			context.PersistMessages<AlternateType.StateRouteHandler.GetThemeForDisplayInfo.Message>();
+			context.PersistMessages<AlternateType.StateHandler.GetNavigationLink.Message>();
+		}
+
+		public string DocumentationUri
+		{
+			get 
+			{
+				return "http://navigation.codeplex.com/documentation";
+			}
 		}
 	}
 }

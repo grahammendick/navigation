@@ -61,11 +61,20 @@ namespace Navigation.Glimpse {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Replaced Navigation Sate Route Handler, for {0}, with proxy implementation..
+        ///   Looks up a localized string similar to Replaced Navigation State Route Handler, for {0}, with proxy implementation..
         /// </summary>
         internal static string RouteSetupReplacedRouteHandler {
             get {
                 return ResourceManager.GetString("RouteSetupReplacedRouteHandler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaced Navigation State Handler, for {0} {1}, with proxy implementation..
+        /// </summary>
+        internal static string StateSetupReplacedStateHandler {
+            get {
+                return ResourceManager.GetString("StateSetupReplacedStateHandler", resourceCulture);
             }
         }
     }
