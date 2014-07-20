@@ -7,7 +7,6 @@ namespace Navigation
 {
 	internal static class WebApiRouteConfig
 	{
-
 		private static bool _Initialised = false;
 
 		internal static void AddHttpRoute(State state)
@@ -34,8 +33,7 @@ namespace Navigation
 
 		private static void Initialise()
 		{
-			GlobalConfiguration.Configuration.Services
-				.Insert(typeof(ValueProviderFactory), 0, new NavigationDataValueWebApiProviderFactory());
+			GlobalConfiguration.Configuration.Services.Insert(typeof(ValueProviderFactory), 0, new NavigationDataValueWebApiProviderFactory());
 		}
 	}
 }
