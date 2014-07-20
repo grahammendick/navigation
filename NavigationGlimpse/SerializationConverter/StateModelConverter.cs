@@ -8,7 +8,7 @@ namespace Navigation.Glimpse.SerializationConverter
 {
 	public class StateModelConverter : SerializationConverter<StateModel>
 	{
-		private readonly HashSet<string> _reservedKeys = new HashSet<string> { "key", "page", "controller", "apiController", 
+		private readonly HashSet<string> ReservedKeys = new HashSet<string> { "key", "page", "controller", "apiController", 
 			"action", "route", "title", "defaultTypes", "defaults", "derived", "trackCrumbTrail", "masters", "theme", "checkPhysicalUrlAccess"};
 
 		public override object Convert(StateModel stateModel)
@@ -65,7 +65,7 @@ namespace Navigation.Glimpse.SerializationConverter
 			var attributes = new Dictionary<string, string>();
 			foreach(string key in state.Attributes.Keys)
 			{
-				if (!_reservedKeys.Contains(key))
+				if (!ReservedKeys.Contains(key))
 					attributes[key] = state.Attributes[key];
 			}
 			return attributes;
