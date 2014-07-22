@@ -1,4 +1,4 @@
-﻿(function ($, pubsub) {
+﻿(function ($, pubsub, util) {
     var navigation = {};
 
     navigation.elements = (function () {
@@ -6,16 +6,7 @@
             find = function () {
                 elements.scope = navigation.scope;
                 elements.key = elements.scope.find('#navigation-key');
-                elements.data = elements.scope.find('#navigation-data');
-                elements.page = elements.scope.find('#navigation-page');
-                elements.title = elements.scope.find('#navigation-title');
-                elements.route = elements.scope.find('#navigation-route');
-                elements.theme = elements.scope.find('#navigation-theme');
-                elements.masters = elements.scope.find('#navigation-masters');
-                elements.defaultTypes = elements.scope.find('#navigation-defaultTypes');
-                elements.derived = elements.scope.find('#navigation-derived');
-                elements.trackCrumbTrail = elements.scope.find('#navigation-trackCrumbTrail');
-                elements.checkPhysicalUrlAccess = elements.scope.find('#navigation-checkPhysicalUrlAccess');
+                elements.table = elements.scope.find('tbody');
             };
         pubsub.subscribe('action.navigation.shell.loaded', find);
         return elements;
@@ -23,22 +14,11 @@
 
     (function () {
         var setup = function () {
-            navigation.scope.html('<div style="display:table;margin:0px auto;padding-top:10px"><div style="display:table-row">'
-                + '<div style="display:table-row"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
-                + '</div><div style="display:table-cell; vertical-align:top">'
+            navigation.scope.html('<div style="display:table;width:98%;padding:10px"><div style="display:table-row">'
+                + '<div style="display:table-cell"><canvas id="navigation-glimpse" style="border:1px solid #000"></canvas>'
+                + '</div><div style="display:table-cell;width:100%;vertical-align:top">'
                 + '<div id="navigation-key" class="glimpse-header" style="text-align:center;padding:0"></div>'
-                + '<table style="width:320px;margin-left:10px"><tbody class="glimpse-row-holder"><tr class="glimpse-row">'
-                + '<th scope="row" style="width:20%">Data</th><td id="navigation-data"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Page</th><td id="navigation-page"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Title</th><td id="navigation-title"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Route</th><td id="navigation-route"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Theme</th><td id="navigation-theme"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Masters</th><td id="navigation-masters"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">DefaultTypes</th><td id="navigation-defaultTypes"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">Derived</th><td id="navigation-derived"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">TrackCrumbTrail</th><td id="navigation-trackCrumbTrail"></td></tr>'
-                + '<tr class="glimpse-row"><th scope="row">CheckPhysical UrlAccess</th><td id="navigation-checkPhysicalUrlAccess"></td></tr>'
-                + '</tbody></table></div></div></div>');
+                + '<table style="margin-left:10px"><tbody class="glimpse-row-holder"></tbody></table></div></div></div>');
             navigation.canvas = $('#navigation-glimpse')[0];
             navigation.canvas.width = 750;
             navigation.canvas.height = 275;
@@ -82,122 +62,199 @@
                     }
                 }
             });
+            $(window).resize(function (e) {
+                navigation.canvas.style.display = 'none';
+                navigation.canvas.style.offsetHeight;
+                navigation.canvas.style.display = 'block';
+            });
         },
-            getPoint = function (e) {
-                return {
-                    x: (e.offsetX ? e.offsetX : e.pageX - $(navigation.canvas).offset().left) - navigation.x,
-                    y: (e.offsetY ? e.offsetY : e.pageY - $(navigation.canvas).offset().top) - navigation.y
-                };
-            },
-            getState = function (states, point) {
-                for (var i = 0; i < states.length; i++) {
-                    var state = states[i];
-                    if (state.x <= point.x && point.x <= state.x + state.w &&
-                        state.y <= point.y && point.y <= state.y + state.h)
-                        return state;
+        getPoint = function (e) {
+            return {
+                x: (e.offsetX ? e.offsetX : e.pageX - $(navigation.canvas).offset().left) - navigation.x,
+                y: (e.offsetY ? e.offsetY : e.pageY - $(navigation.canvas).offset().top) - navigation.y
+            };
+        },
+        getState = function (states, point) {
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (hitTest(state.text, point) || hitTest(state.linkText,point))
+                    return state;
+            }
+            return null;
+        },
+        update = function (states, point) {
+            var oldSelection,
+                newSelection = null;
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (state.selected)
+                    oldSelection = state;
+                if (hitTest(state.text, point) || hitTest(state.linkText, point)) {
+                    state.selected = true;
+                    state.showLinks = hitTest(state.linkText, point);
+                    newSelection = state;
                 }
-                return null;
-            },
-            update = function (states, point) {
-                var oldSelection,
-                    newSelection = null;
-                for (var i = 0; i < states.length; i++) {
-                    var state = states[i];
-                    if (state.selected)
-                        oldSelection = state;
-                    if (state.x <= point.x && point.x <= state.x + state.w &&
-                        state.y <= point.y && point.y <= state.y + state.h) {
-                        state.selected = true;
-                        newSelection = state;
-                    }
-                }
-                if (newSelection && oldSelection && oldSelection !== newSelection)
-                    oldSelection.selected = false;
-            },
-            render = function () {
-                navigation.canvas.context.save();
-                navigation.canvas.context.clearRect(0, 0, navigation.canvas.width, navigation.canvas.height);
-                navigation.canvas.context.translate(navigation.x, navigation.y);
-                processStates(navigation.canvas.context, navigation.states, navigation.font);
-                processTransitions(navigation.canvas.context, navigation.transitions, navigation.font);
-                navigation.canvas.context.restore();
-            },
-            processStates = function (context, states, font) {
-                for (var i = 0; i < states.length; i++) {
-                    var state = states[i];
-                    if (state.index === 0) {
-                        context.font = '14px ' + font;
-                        context.textAlign = 'left';
-                        context.fillText(state.dialogKey, state.x + 10, state.y - 5, 2 * state.w);
-                    }
-                    context.save();
-                    context.fillStyle = '#fff';
-                    if (state.selected) {
-                        context.fillStyle = '#e6f5e6';
-                        processSelectedState(navigation.elements, state);
-                    }
-                    context.shadowOffsetX = 3;
-                    context.shadowOffsetY = 3;
-                    context.shadowBlur = 10;
-                    context.shadowColor = '#999';
-                    context.beginPath();
-                    context.rect(state.x, state.y, state.w, state.h);
-                    context.fill();
-                    context.restore();
-                    context.stroke();
-                    context.font = 'bold 12px ' + font;
-                    context.textAlign = 'center';
-                    context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
+            }
+            if (newSelection && oldSelection && oldSelection !== newSelection)
+                oldSelection.selected = false;
+        },
+        hitTest = function (region, point) {
+            if (region) {
+                if (region.x <= point.x && point.x <= region.x + region.w &&
+                    region.y <= point.y && point.y <= region.y + region.h)
+                    return true;
+            }
+            return false;
+        },
+        render = function () {
+            navigation.canvas.context.save();
+            navigation.canvas.context.clearRect(0, 0, navigation.canvas.width, navigation.canvas.height);
+            navigation.canvas.context.translate(navigation.x, navigation.y);
+            processStates(navigation.canvas.context, navigation.states, navigation.font);
+            processTransitions(navigation.canvas.context, navigation.transitions, navigation.font);
+            navigation.canvas.context.restore();
+        },
+        processStates = function (context, states, font) {
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (state.index === 0) {
+                    context.font = '14px ' + font;
                     context.textAlign = 'left';
-                    context.font = '10px ' + font;
-                    if (state.previous)
-                        context.fillText('previous', state.x + 5, state.y + 12);
-                    context.textAlign = 'right';
-                    if (state.current)
-                        context.fillText('current', state.x + state.w - 5, state.y + 12);
-                    if (state.back > 0)
-                        context.fillText('back ' + state.back, state.x + state.w - 5, state.y + 12);
+                    context.fillText(state.dialogKey, state.x + 10, state.y - 5, 2 * state.w);
                 }
-            },
-            processSelectedState = function (elements, state) {
-                elements.key.text(state.dialogKey + '-' + state.key);
-                elements.data.text(convertDictionary(state.data));
-                elements.page.text(state.page);
-                elements.title.text(state.title);
-                elements.route.text(state.route);
-                elements.theme.text(state.theme);
-                elements.masters.text(state.masters.join(', '));
-                elements.defaultTypes.text(convertDictionary(state.defaultTypes));
-                elements.derived.text(state.derived.join(', '));
-                elements.trackCrumbTrail.text(state.trackCrumbTrail.toString());
-                elements.checkPhysicalUrlAccess.text(state.checkPhysicalUrlAccess.toString());
-            },
-            convertDictionary = function (dictionary) {
-                var arr = [];
-                for (var key in dictionary) {
-                    var val = dictionary[key];
-                    arr.push(key + '=' + (JSON && JSON.stringify && $.isPlainObject(val) ? JSON.stringify(val) : val));
+                context.save();
+                context.fillStyle = '#fff';
+                if (state.selected) {
+                    context.fillStyle = '#e6f5e6';
+                    processSelectedState(navigation.elements, state);
                 }
-                return arr.join(', ');
-            },
-            processTransitions = function (context, transitions, font) {
-                context.font = 'italic 12px ' + font;
+                context.shadowOffsetX = 3;
+                context.shadowOffsetY = 3;
+                context.shadowBlur = 10;
+                context.shadowColor = '#999';
                 context.beginPath();
-                for (var i = 0; i < transitions.length; i++) {
-                    var transition = transitions[i];
-                    context.moveTo(transition.x1, transition.y);
-                    context.lineTo(transition.x1, transition.y + transition.h);
-                    context.lineTo(transition.x2, transition.y + transition.h);
-                    context.lineTo(transition.x2, transition.y);
-                    context.textAlign = 'center';
-                    context.fillText(transition.key, transition.x1 + (transition.x2 - transition.x1) / 2,
-                        transition.y + transition.h + 12);
-                    context.moveTo(transition.x2 - 5, transition.y + 10);
-                    context.lineTo(transition.x2, transition.y);
-                    context.lineTo(transition.x2 + 5, transition.y + 10);
+                context.rect(state.x, state.y, state.w, state.h);
+                context.fill();
+                context.restore();
+                context.stroke();
+                context.save();
+                context.font = '9pt ' + font;
+                context.textAlign = 'center';
+                context.fillStyle = '#00e';
+                context.fillText(state.key, state.x + state.w / 2, state.y + 30, state.w - 2);
+                state.text = {
+                    x: state.x + state.w / 2 - context.measureText(state.key).width / 2,
+                    y: state.y + 21,
+                    w: context.measureText(state.key).width,
+                    h: 11
+                };
+                context.beginPath();
+                underline(context, state.text);
+                context.strokeStyle = '#00e';
+                context.textAlign = 'left';
+                context.font = '9pt ' + font;
+                if (state.navigationLinks) {
+                    var linkText = state.navigationLinks.length + (state.navigationLinks.length > 1 ? ' links' : ' link');
+                    context.fillText(linkText, state.x + 5, state.y + 14);
+                    state.linkText = {
+                        x: state.x + 5,
+                        y: state.y + 5,
+                        w: context.measureText(linkText).width,
+                        h: 11
+                    };
+                    underline(context, state.linkText);
                 }
                 context.stroke();
-            };
+                context.closePath();
+                context.restore();
+                context.font = '10px ' + font;
+                context.textAlign = 'center';
+                var text = null;
+                if (state.current)
+                    text = !state.previous ? 'current' : 'previous & current';
+                if (state.back)
+                    text = !state.previous ? 'back ' + state.back : 'previous & back';
+                if (!text && state.previous)
+                    text = 'previous';
+                if (text)
+                    context.fillText(text, state.x + state.w / 2, state.y + 42, state.w - 2);
+            }
+        },
+        underline = function (context, region) {
+            context.moveTo(region.x, region.y + region.h - .5);
+            context.lineTo(region.x + region.w, region.y + region.h - .5);
+        },
+        processSelectedState = function (elements, state) {
+            elements.key.text(state.dialogKey + '-' + state.key);
+            var table = '';
+            if (!state.showLinks) {
+                table += getRow('Data', convertData(state.data));
+                table += getRow('Page', util.htmlEncode(state.page));
+                table += getRow('Controller', util.htmlEncode(state.controller));
+                table += getRow('ApiController', util.htmlEncode(state.apiController));
+                table += getRow('Action', util.htmlEncode(state.action));
+                table += getRow('Title', util.htmlEncode(state.title));
+                table += getRow('Route', util.htmlEncode(state.route));
+                table += getRow('Theme', util.htmlEncode(state.theme));
+                table += getRow('Masters', util.htmlEncode(state.masters.join(', ')));
+                table += getRow('DefaultTypes', convertDictionary(state.defaultTypes));
+                table += getRow('Derived', util.htmlEncode(state.derived.join(', ')));
+                table += getRow('TrackCrumbTrail', state.trackCrumbTrail);
+                table += getRow('CheckPhysicalUrlAccess', state.checkPhysicalUrlAccess);
+                for(var key in state.attributes)
+                    table += getRow(util.htmlEncode(key), util.htmlEncode(state.attributes[key]));
+            } else {
+                for (var i = 0; i < state.navigationLinks.length; i++) {
+                    var data = convertDictionary(state.navigationLinks[i].data);
+                    table += '<tr class="glimpse-row"><td><a href="' + state.navigationLinks[i].link + '">'
+                        + (data ? util.htmlEncode(data) : '&nbsp;&nbsp;&nbsp;') + '</a></td></tr>';
+                }
+            }
+            elements.table.html(table);
+        },
+        getRow = function (key, value) {
+            if ((typeof value !== 'boolean' && !value) || (typeof value === 'boolean' && value))
+                return '';
+            var row = '<tr class="glimpse-row"><th scope="row" style="width:140px">{0}</th><td>{1}</td></tr>';
+            return row.replace('{0}', key).replace('{1}', value.toString());
+        }
+        convertData = function (data) {
+            var arr = [];
+            for (var key in data) {
+                var val = data[key].value;
+                val = $.isPlainObject(val) ? JSON.stringify(val) : String(val);
+                val = util.htmlEncode(key) + '=' + util.htmlEncode(val);
+                if (data[key].changed)
+                    val = '<span style="font-weight:bold">' + val + '</span>';
+                arr.push(val);
+            }
+            return arr.join(', ');
+        },
+        convertDictionary = function (dictionary) {
+            var arr = [];
+            for (var key in dictionary) {
+                arr.push(util.htmlEncode(key) + '=' + util.htmlEncode(dictionary[key]));
+            }
+            return arr.join(', ');
+        },
+        processTransitions = function (context, transitions, font) {
+            context.font = 'italic 12px ' + font;
+            context.beginPath();
+            for (var i = 0; i < transitions.length; i++) {
+                var transition = transitions[i];
+                context.moveTo(transition.x1, transition.y);
+                context.lineTo(transition.x1, transition.y + transition.h);
+                context.lineTo(transition.x2, transition.y + transition.h);
+                context.lineTo(transition.x2, transition.y);
+                context.textAlign = 'center';
+                context.fillText(transition.key, transition.x1 + (transition.x2 - transition.x1) / 2,
+                    transition.y + transition.h + 12);
+                context.moveTo(transition.x2 - 5, transition.y + 10);
+                context.lineTo(transition.x2, transition.y);
+                context.lineTo(transition.x2 + 5, transition.y + 10);
+            }
+            context.stroke();
+        };
         pubsub.subscribe('trigger.navigation.shell.subscriptions', wireListeners);
         pubsub.subscribe('trigger.navigation.event.render', render);
     })();
@@ -229,4 +286,4 @@
         pubsub.subscribe('action.panel.rendering.navigation_glimpse', prerender);
         pubsub.subscribe('action.panel.rendered.navigation_glimpse', postrender);
     })();
-})(jQueryGlimpse, glimpse.pubsub);
+})(jQueryGlimpse, glimpse.pubsub, glimpse.util);
