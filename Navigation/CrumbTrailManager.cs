@@ -24,7 +24,6 @@ namespace Navigation
 				int arrayCount = 0;
 				string crumbTrail = StateContext.CrumbTrail;
 				int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
-				string href = null;
 				NavigationData navigationData;
 				bool last = true;
 				State state = null;
@@ -33,8 +32,7 @@ namespace Navigation
 					state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
 					navigationData = GetCrumbTrailData(crumbTrail, state);
 					crumbTrail = CropCrumbTrail(crumbTrail);
-					href = GetHref(state.Id, navigationData, null);
-					crumbTrailArray.Add(new Crumb(href, navigationData, state, last));
+					crumbTrailArray.Add(new Crumb(navigationData, state, last));
 					last = false;
 					arrayCount++;
 				}

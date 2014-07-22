@@ -37,19 +37,22 @@
       <HintPath>..\packages\Glimpse.1.8.4\lib\net45\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateType\StateHandler.cs" />
     <Compile Include="AlternateType\StateRouteHandler.cs" />
     <Compile Include="ClientScript\Script.cs" />
+    <Compile Include="Inspector\StateHandlerInspector.cs" />
     <Compile Include="Inspector\StateRouteHandlerInspector.cs" />
+    <Compile Include="Model\NavigationLinkModel.cs" />
     <Compile Include="Model\StateModel.cs" />
     <Compile Include="Model\TransitionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
