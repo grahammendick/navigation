@@ -23,7 +23,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\Navigation.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
@@ -59,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChecksumNavigationShield.cs" />
+    <Compile Include="Config\FluentDialog.cs" />
+    <Compile Include="Config\FluentExtensions.cs" />
+    <Compile Include="Config\FluentState.cs" />
+    <Compile Include="Config\FluentStateInfo.cs" />
+    <Compile Include="Config\FluentTest.cs" />
+    <Compile Include="Config\WebFormsState.cs" />
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="ConverterInfoSectionHandler.cs" />
     <Compile Include="Crumb.cs" />
