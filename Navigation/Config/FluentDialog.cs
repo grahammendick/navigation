@@ -2,30 +2,55 @@
 
 namespace Navigation
 {
-	public class FluentDialog<TStates, TInitial>
+	public class FluentDialog<TStates, TInitial> : IFluentDialog
 		where TStates : class
 		where TInitial : FluentState
 	{
+		private string _Key;
+		private TStates _States;
+		private FluentState _Initial;
+
 		private FluentStateInfo StateInfo
 		{ 
 			get;
 			set;
 		}
 
-		private TStates States
+		string IFluentDialog.Key
 		{
-			get;
-			set;
+			get
+			{
+				return _Key;
+			}
 		}
 
-		internal FluentDialog(FluentStateInfo stateInfo, TStates states)
+		object IFluentDialog.States
+		{
+			get
+			{
+				return _States;
+			}
+		}
+
+		FluentState IFluentDialog.Initial
+		{
+			get
+			{
+				return _Initial;
+			}
+		}
+
+		internal FluentDialog(FluentStateInfo stateInfo, string key, TStates states, FluentState initial)
 		{
 			StateInfo = stateInfo;
+			_Key = key;
+			_States = states;
+			_Initial = initial;
 		}
 
 		public FluentDialog<TStates, TInitial> Transition(string key, Func<TStates, FluentState> from, Func<TStates, FluentState> to)
 		{
-			from(States).AddTransition(key, to(States));
+			from(_States).AddTransition(key, to(_States));
 			return this;
 		}
 
