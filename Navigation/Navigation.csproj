@@ -65,6 +65,8 @@
     <Compile Include="Config\FluentState.cs" />
     <Compile Include="Config\FluentStateInfo.cs" />
     <Compile Include="Config\FluentTest.cs" />
+    <Compile Include="Config\FluentTransition.cs" />
+    <Compile Include="Config\IFluentDialog.cs" />
     <Compile Include="Config\WebFormsState.cs" />
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="ConverterInfoSectionHandler.cs" />

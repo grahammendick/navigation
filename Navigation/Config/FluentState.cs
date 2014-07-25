@@ -5,9 +5,9 @@ namespace Navigation
 {
 	public abstract class FluentState
 	{
-		private List<Tuple<string, FluentState>> _Transitions = new List<Tuple<string,FluentState>>();
+		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
-		private string Route 
+		internal string Route 
 		{ 
 			get;
 			set;
@@ -19,7 +19,7 @@ namespace Navigation
 			set;
 		}
 
-		internal IEnumerable<Tuple<string, FluentState>> Transitions
+		internal IEnumerable<FluentTransition> Transitions
 		{
 			get
 			{
@@ -34,7 +34,7 @@ namespace Navigation
 
 		internal void AddTransition(string key, FluentState to)
 		{
-			_Transitions.Add(Tuple.Create(key, to));
+			_Transitions.Add(new FluentTransition(key, to));
 		}
 	}
 }
