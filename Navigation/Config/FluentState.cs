@@ -7,6 +7,12 @@ namespace Navigation
 	{
 		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
+		internal string Key
+		{
+			get;
+			set;
+		}
+
 		internal string Route 
 		{ 
 			get;

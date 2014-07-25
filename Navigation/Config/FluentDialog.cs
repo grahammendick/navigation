@@ -60,5 +60,10 @@ namespace Navigation
 		{
 			return StateInfo.Dialog(key, states, initial);
 		}
+
+		public void Build()
+		{
+			StateInfo.Build();
+		}
 	}
 }
