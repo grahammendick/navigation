@@ -1,4 +1,5 @@
-﻿namespace Navigation
+﻿using System.Collections.Generic;
+namespace Navigation
 {
 	internal interface IFluentDialog
 	{
@@ -7,7 +8,7 @@
 			get;
 		}
 
-		object States
+		IEnumerable<FluentState> States
 		{
 			get;
 		}

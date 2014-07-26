@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Navigation
 {
@@ -24,11 +26,17 @@ namespace Navigation
 			}
 		}
 
-		object IFluentDialog.States
+		IEnumerable<FluentState> IFluentDialog.States
 		{
 			get
 			{
-				return _States;
+				var fluentStates = _States.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+				foreach (var stateProperty in fluentStates)
+				{
+					var fluentState = (FluentState)stateProperty.GetValue(_States);
+					fluentState.Key = stateProperty.Name;
+					yield return fluentState;
+				}
 			}
 		}
 
