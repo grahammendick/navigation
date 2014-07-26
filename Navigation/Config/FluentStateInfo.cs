@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Navigation
 {
@@ -37,14 +36,10 @@ namespace Navigation
 		private static void ProcessStates(Dialog dialog, IFluentDialog fluentDialog)
 		{
 			State state;
-			FluentState fluentState;
 			int stateIndex = 0;
-			var fluentStates = fluentDialog.States.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-			foreach (var stateProperty in fluentStates)
+			foreach (var fluentState in fluentDialog.States)
 			{
 				state = new State();
-				fluentState = (FluentState)stateProperty.GetValue(fluentDialog.States);
-				fluentState.Key = stateProperty.Name;
 				state.Parent = dialog;
 				state.Index = stateIndex;
 				stateIndex++;
@@ -59,16 +54,13 @@ namespace Navigation
 		private static void ProcessTransitions(Dialog dialog, IFluentDialog fluentDialog)
 		{
 			State state;
-			FluentState fluentState;
 			Transition transition;
 			int transitionIndex = 0;
-			var fluentStates = fluentDialog.States.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-			foreach (var stateProperty in fluentStates)
+			foreach (var fluentState in fluentDialog.States)
 			{
-				fluentState = (FluentState)stateProperty.GetValue(fluentDialog.States);
 				foreach (var fluentTransition in fluentState.Transitions)
 				{
-					state = dialog.States[stateProperty.Name];
+					state = dialog.States[fluentState.Key];
 					transition = new Transition();
 					transition.Parent = state;
 					transition.Index = transitionIndex;
