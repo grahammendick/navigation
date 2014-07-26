@@ -27,8 +27,10 @@ namespace Navigation
 				dialog = new Dialog();
 				dialog.Index = dialogIndex;
 				dialogIndex++;
+				dialog.Key = fluentDialog.Key;
 				ProcessStates(dialog, fluentDialog);
 				ProcessTransitions(dialog, fluentDialog);
+				dialogs.Add(fluentDialog.Key, dialog);
 			}
 		}
 
@@ -47,6 +49,9 @@ namespace Navigation
 				state.Index = stateIndex;
 				stateIndex++;
 				state.Key = fluentState.Key;
+				state.Attributes = new StateInfoCollection<string>();
+				foreach (var attribute in fluentState.Attributes)
+					state.Attributes[attribute.Key] = attribute.Value;
 				dialog.States[fluentState.Key] = state;
 			}
 		}

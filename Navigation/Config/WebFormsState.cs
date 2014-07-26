@@ -8,12 +8,6 @@
 			set;
 		}
 
-		internal string Theme
-		{
-			get;
-			set;
-		}
-
 		public WebFormsState(string route, string page) 
 			: base(route)
 		{

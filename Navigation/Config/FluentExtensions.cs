@@ -7,11 +7,5 @@
 			state.Defaults = defaults;
 			return state;
 		}
-
-		public static K Theme<K>(this K state, string theme) where K : WebFormsState
-		{
-			state.Theme = theme;
-			return state;
-		}
 	}
 }
