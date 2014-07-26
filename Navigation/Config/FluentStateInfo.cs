@@ -47,22 +47,30 @@ namespace Navigation
 				state.Index = stateIndex;
 				stateIndex++;
 				state.Key = fluentState.Key;
+				dialog.States[fluentState.Key] = state;
 			}
 		}
 
 		private static void ProcessTransitions(Dialog dialog, IFluentDialog fluentDialog)
 		{
 			State state;
+			FluentState fluentState;
 			Transition transition;
 			int transitionIndex = 0;
 			var fluentStates = fluentDialog.States.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 			foreach (var stateProperty in fluentStates)
 			{
-				state = dialog.States[stateProperty.Name];
-				transition = new Transition();
-				transition.Parent = state;
-				transition.Index = transitionIndex;
-				transitionIndex++;
+				fluentState = (FluentState)stateProperty.GetValue(fluentDialog.States);
+				foreach (var fluentTransition in fluentState.Transitions)
+				{
+					state = dialog.States[stateProperty.Name];
+					transition = new Transition();
+					transition.Parent = state;
+					transition.Index = transitionIndex;
+					transition.Key = fluentTransition.Key;
+					transitionIndex++;
+					state.Transitions[fluentTransition.Key] = transition;
+				}
 			}
 		}
 	}

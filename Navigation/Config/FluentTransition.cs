@@ -2,7 +2,7 @@
 {
 	internal class FluentTransition
 	{
-		private string Key
+		internal string Key
 		{
 			get;
 			set;
