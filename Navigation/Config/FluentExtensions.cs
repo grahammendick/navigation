@@ -7,5 +7,11 @@
 			state.Defaults = defaults;
 			return state;
 		}
+
+		public static K CheckPhysicalUrlAccess<K>(this K state, bool check) where K : WebFormsState
+		{
+			state.AddAttribute("checkPhysicalUrlAccess", check ? "true" : "false");
+			return state;
+		}
 	}
 }
