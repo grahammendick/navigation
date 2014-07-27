@@ -5,7 +5,7 @@ namespace Navigation
 {
 	public class FluentStateInfo
 	{
-		private List<IFluentDialog> _Dialogs = new List<IFluentDialog>();
+		private List<FluentDialog> _Dialogs = new List<FluentDialog>();
 
 		public FluentDialog<TStates, TInitial> Dialog<TStates, TInitial>(string key, TStates states, Func<TStates, TInitial> initial)
 			where TStates : class
@@ -33,7 +33,7 @@ namespace Navigation
 			}
 		}
 
-		private static void ProcessStates(Dialog dialog, IFluentDialog fluentDialog)
+		private static void ProcessStates(Dialog dialog, FluentDialog fluentDialog)
 		{
 			State state;
 			int stateIndex = 0;
@@ -51,7 +51,7 @@ namespace Navigation
 			}
 		}
 
-		private static void ProcessTransitions(Dialog dialog, IFluentDialog fluentDialog)
+		private static void ProcessTransitions(Dialog dialog, FluentDialog fluentDialog)
 		{
 			State state;
 			Transition transition;
