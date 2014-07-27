@@ -4,7 +4,14 @@ using System.Reflection;
 
 namespace Navigation
 {
-	public class FluentDialog<TStates, TInitial> : IFluentDialog
+	public abstract class FluentDialog
+	{
+		internal abstract string Key { get; }
+		internal abstract IEnumerable<FluentState> States { get; }
+		internal abstract FluentState Initial { get; }
+	}
+
+	public class FluentDialog<TStates, TInitial> : FluentDialog
 		where TStates : class
 		where TInitial : FluentState
 	{
@@ -18,7 +25,7 @@ namespace Navigation
 			set;
 		}
 
-		string IFluentDialog.Key
+		internal override string Key
 		{
 			get
 			{
@@ -26,7 +33,7 @@ namespace Navigation
 			}
 		}
 
-		IEnumerable<FluentState> IFluentDialog.States
+		internal override IEnumerable<FluentState> States
 		{
 			get
 			{
@@ -40,7 +47,7 @@ namespace Navigation
 			}
 		}
 
-		FluentState IFluentDialog.Initial
+		internal override FluentState Initial
 		{
 			get
 			{
