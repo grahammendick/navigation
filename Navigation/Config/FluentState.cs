@@ -45,10 +45,15 @@ namespace Navigation
 		protected FluentState(string route)
 		{
 			Route = route ?? string.Empty;
+			AddAttribute("route", route);
 		}
 
-		protected internal void AddAttribute(string key, string value)
+		public void AddAttribute(string key, string value)
 		{
+			if (string.IsNullOrEmpty(key))
+				throw new ArgumentException("key");
+			if (string.IsNullOrEmpty(value))
+				throw new ArgumentException("value");
 			_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 
