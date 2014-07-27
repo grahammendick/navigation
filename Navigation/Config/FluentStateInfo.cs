@@ -11,6 +11,12 @@ namespace Navigation
 			where TStates : class
 			where TInitial : FluentState
 		{
+			if (states == null)
+				throw new ArgumentNullException("states");
+			if (initial == null)
+				throw new ArgumentNullException("initial");
+			if (string.IsNullOrEmpty(key))
+				throw new ArgumentException("key");
 			var dialog = new FluentDialog<TStates, TInitial>(this, key, states, initial(states));
 			_Dialogs.Add(dialog);
 			return dialog;

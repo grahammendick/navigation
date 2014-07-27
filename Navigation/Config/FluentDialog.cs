@@ -64,6 +64,12 @@ namespace Navigation
 
 		public FluentDialog<TStates, TInitial> Transition(string key, Func<TStates, FluentState> from, Func<TStates, FluentState> to)
 		{
+			if (from == null)
+				throw new ArgumentNullException("from");
+			if (to == null)
+				throw new ArgumentNullException("to");
+			if (string.IsNullOrEmpty(key))
+				throw new ArgumentException("key");
 			from(_States).AddTransition(key, to(_States));
 			return this;
 		}

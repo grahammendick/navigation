@@ -1,4 +1,6 @@
-﻿namespace Navigation
+﻿using System;
+
+namespace Navigation
 {
 	public class WebFormsState : FluentState
 	{
@@ -10,7 +12,8 @@
 		public WebFormsState(string route, string page)
 			: base(route)
 		{
-			AddAttribute("route", route);
+			if (string.IsNullOrEmpty(page))
+				throw new ArgumentException("page");
 			AddAttribute("page", page);
 		}
 	}
