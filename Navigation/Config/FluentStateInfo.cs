@@ -64,8 +64,9 @@ namespace Navigation
 					transition = new Transition();
 					transition.Parent = state;
 					transition.Index = transitionIndex;
-					transition.Key = fluentTransition.Key;
 					transitionIndex++;
+					transition.Key = fluentTransition.Key;
+					transition.To = dialog.States[fluentTransition.To.Key];
 					state.Transitions[fluentTransition.Key] = transition;
 				}
 			}
