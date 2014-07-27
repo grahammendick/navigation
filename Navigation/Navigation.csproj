@@ -66,6 +66,7 @@
     <Compile Include="Config\FluentStateInfo.cs" />
     <Compile Include="Config\FluentTransition.cs" />
     <Compile Include="Config\MvcState.cs" />
+    <Compile Include="Config\WebApiState.cs" />
     <Compile Include="Config\WebFormsState.cs" />
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="ConverterInfoSectionHandler.cs" />
