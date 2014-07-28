@@ -50,6 +50,14 @@ namespace Navigation
 				state.Index = stateIndex;
 				stateIndex++;
 				state.Key = fluentState.Key;
+				state.DefaultTypes = new StateInfoCollection<Type>();
+				state.Defaults = new StateInfoCollection<object>();
+				state.FormattedDefaults = new StateInfoCollection<string>();
+				foreach (var def in fluentState.Defaults)
+				{
+					state.Defaults[def.Key] = def.Value;
+					state.FormattedDefaults[def.Key] = CrumbTrailManager.FormatURLObject(def.Key, def.Value, state);
+				}
 				state.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;

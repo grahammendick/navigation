@@ -1,10 +1,15 @@
-﻿namespace Navigation
+﻿using System.ComponentModel;
+
+namespace Navigation
 {
 	public static class FluentExtensions
 	{
 		public static K Defaults<K>(this K state, object defaults) where K : FluentState
 		{
-			state.Defaults = defaults;
+			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(defaults))
+			{
+				state.AddDefault(defaultProperty.Name, defaultProperty.GetValue(defaults));
+			}
 			return state;
 		}
 
