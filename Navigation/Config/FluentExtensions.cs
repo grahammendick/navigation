@@ -33,7 +33,7 @@ namespace Navigation
 			{
 				if (string.IsNullOrEmpty(key))
 					throw new ArgumentException("key");
-				state.AddDerived(key);
+				state.AddDerived(key.Trim());
 			}
 			return state;
 		}

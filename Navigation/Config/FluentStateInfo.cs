@@ -66,8 +66,8 @@ namespace Navigation
 				state.DerivedInternal = new Dictionary<string, string>();
 				foreach (var key in fluentState.Derived)
 				{
-					derived.Add(key.Trim());
-					state.DerivedInternal.Add(key.Trim(), key.Trim());
+					derived.Add(key);
+					state.DerivedInternal.Add(key, key);
 				}
 				state.Derived = new ReadOnlyCollection<string>(derived);
 				state.Attributes = new StateInfoCollection<string>();
