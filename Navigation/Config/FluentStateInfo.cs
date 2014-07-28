@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Navigation
 {
@@ -43,6 +44,7 @@ namespace Navigation
 		{
 			State state;
 			int stateIndex = 0;
+			List<string> derived;
 			foreach (var fluentState in fluentDialog.States)
 			{
 				state = new State();
@@ -60,6 +62,14 @@ namespace Navigation
 					state.Defaults[def.Key] = def.Value;
 					state.FormattedDefaults[def.Key] = CrumbTrailManager.FormatURLObject(def.Key, def.Value, state);
 				}
+				derived = new List<string>();
+				state.DerivedInternal = new Dictionary<string, string>();
+				foreach (var key in fluentState.Derived)
+				{
+					derived.Add(key.Trim());
+					state.DerivedInternal.Add(key.Trim(), key.Trim());
+				}
+				state.Derived = new ReadOnlyCollection<string>(derived);
 				state.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;
