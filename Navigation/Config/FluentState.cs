@@ -8,6 +8,7 @@ namespace Navigation
 		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
 		private List<KeyValuePair<string, Type>> _DefaultTypes = new List<KeyValuePair<string, Type>>();
 		private List<KeyValuePair<string, object>> _Defaults = new List<KeyValuePair<string, object>>();
+		private List<string> _Derived = new List<string>();
 		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
 		internal string Key
@@ -22,7 +23,7 @@ namespace Navigation
 			set;
 		}
 
-		internal IEnumerable<KeyValuePair<string, Type>> DefaultTypeList
+		internal IEnumerable<KeyValuePair<string, Type>> DefaultTypes
 		{
 			get
 			{
@@ -30,7 +31,7 @@ namespace Navigation
 			}
 		}
 
-		internal IEnumerable<KeyValuePair<string, object>> DefaultList
+		internal IEnumerable<KeyValuePair<string, object>> Defaults
 		{
 			get
 			{
@@ -38,7 +39,15 @@ namespace Navigation
 			}
 		}
 
-		internal IEnumerable<KeyValuePair<string, string>> AttributeList
+		internal IEnumerable<string> Derived
+		{
+			get
+			{
+				return _Derived;
+			}
+		}
+
+		internal IEnumerable<KeyValuePair<string, string>> Attributes
 		{
 			get
 			{
@@ -61,15 +70,6 @@ namespace Navigation
 				AddAttribute("route", route);
 		}
 
-		protected internal void AddAttribute(string key, string value)
-		{
-			if (string.IsNullOrEmpty(key))
-				throw new ArgumentException("key");
-			if (string.IsNullOrEmpty(value))
-				throw new ArgumentException("value");
-			_Attributes.Add(new KeyValuePair<string, string>(key, value));
-		}
-
 		internal void AddDefaultType(string key, Type type)
 		{
 			_DefaultTypes.Add(new KeyValuePair<string, Type>(key, type));
@@ -78,6 +78,20 @@ namespace Navigation
 		internal void AddDefault(string key, object value)
 		{
 			_Defaults.Add(new KeyValuePair<string, object>(key, value));
+		}
+
+		internal void AddDerived(string key)
+		{
+			_Derived.Add(key);
+		}
+
+		protected internal void AddAttribute(string key, string value)
+		{
+			if (string.IsNullOrEmpty(key))
+				throw new ArgumentException("key");
+			if (string.IsNullOrEmpty(value))
+				throw new ArgumentException("value");
+			_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 
 		internal void AddTransition(string key, FluentState to)

@@ -27,6 +27,17 @@ namespace Navigation
 			return state;
 		}
 
+		public static K Derived<K>(this K state, params string[] derived) where K : FluentState
+		{
+			foreach (var key in derived)
+			{
+				if (string.IsNullOrEmpty(key))
+					throw new ArgumentException("key");
+				state.AddDerived(key);
+			}
+			return state;
+		}
+
 		public static K Attribute<K>(this K state, string key, string value) where K : FluentState
 		{
 			state.AddAttribute(key, value);
