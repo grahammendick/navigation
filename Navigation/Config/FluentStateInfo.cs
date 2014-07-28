@@ -51,19 +51,17 @@ namespace Navigation
 				stateIndex++;
 				state.Key = fluentState.Key;
 				state.DefaultTypes = new StateInfoCollection<Type>();
-				foreach (var defaultType in fluentState.DefaultTypeList)
-				{
+				foreach (var defaultType in fluentState.DefaultTypes)
 					state.DefaultTypes[defaultType.Key] = defaultType.Value;
-				}
 				state.Defaults = new StateInfoCollection<object>();
 				state.FormattedDefaults = new StateInfoCollection<string>();
-				foreach (var def in fluentState.DefaultList)
+				foreach (var def in fluentState.Defaults)
 				{
 					state.Defaults[def.Key] = def.Value;
 					state.FormattedDefaults[def.Key] = CrumbTrailManager.FormatURLObject(def.Key, def.Value, state);
 				}
 				state.Attributes = new StateInfoCollection<string>();
-				foreach (var attribute in fluentState.AttributeList)
+				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;
 				dialog.States[fluentState.Key] = state;
 			}
