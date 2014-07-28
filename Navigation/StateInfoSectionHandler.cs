@@ -64,7 +64,7 @@ namespace Navigation
 			int stateIndex = 0;
 
 			XmlNode dialogChildNode;
-			string[] masters, derived;
+			string[] derived;
 			int i;
 			bool result;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
@@ -81,7 +81,6 @@ namespace Navigation
 						if (dialogChildNode.Attributes["key"] == null || dialogChildNode.Attributes["key"].Value.Length == 0)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "key"));
 						state.Key = dialogChildNode.Attributes["key"].Value;
-						masters = new string[] { };
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
 #if NET40Plus
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
