@@ -6,6 +6,7 @@ namespace Navigation
 	public abstract class FluentState
 	{
 		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
+		private List<KeyValuePair<string, Type>> _DefaultTypes = new List<KeyValuePair<string, Type>>();
 		private List<KeyValuePair<string, object>> _Defaults = new List<KeyValuePair<string, object>>();
 		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
@@ -21,7 +22,15 @@ namespace Navigation
 			set;
 		}
 
-		internal IEnumerable<KeyValuePair<string, object>> Defaults
+		internal IEnumerable<KeyValuePair<string, Type>> DefaultTypeList
+		{
+			get
+			{
+				return _DefaultTypes;
+			}
+		}
+
+		internal IEnumerable<KeyValuePair<string, object>> DefaultList
 		{
 			get
 			{
@@ -29,7 +38,7 @@ namespace Navigation
 			}
 		}
 
-		internal IEnumerable<KeyValuePair<string, string>> Attributes
+		internal IEnumerable<KeyValuePair<string, string>> AttributeList
 		{
 			get
 			{
@@ -61,12 +70,13 @@ namespace Navigation
 			_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 
+		internal void AddDefaultType(string key, Type type)
+		{
+			_DefaultTypes.Add(new KeyValuePair<string, Type>(key, type));
+		}
+
 		internal void AddDefault(string key, object value)
 		{
-			if (string.IsNullOrEmpty(key))
-				throw new ArgumentException("key");
-			if (value == null)
-				throw new ArgumentException("value");
 			_Defaults.Add(new KeyValuePair<string, object>(key, value));
 		}
 
