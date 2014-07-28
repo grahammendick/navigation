@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.ComponentModel;
 
 namespace Navigation
 {
@@ -53,8 +53,7 @@ namespace Navigation
 
 		private static IEnumerable<FluentState> GetStates(TStates states)
 		{
-			var fluentStates = states.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-			foreach (var stateProperty in fluentStates)
+			foreach (PropertyDescriptor stateProperty in TypeDescriptor.GetProperties(states))
 			{
 				var fluentState = (FluentState)stateProperty.GetValue(states);
 				fluentState.Key = stateProperty.Name;
