@@ -34,7 +34,7 @@ namespace Navigation
 			foreach (var key in derived)
 			{
 				if (string.IsNullOrEmpty(key))
-					throw new ArgumentException("key");
+					throw new ArgumentException("derived");
 				state.Derived.Add(key.Trim());
 			}
 			return state;
