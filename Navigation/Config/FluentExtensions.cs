@@ -7,6 +7,12 @@ namespace Navigation
 {
 	public static class FluentExtensions
 	{
+		public static K Title<K>(this K state, string title) where K : FluentState
+		{
+			state.Title = title;
+			return state;
+		}
+
 		public static K DefaultTypes<K>(this K state, object defaultTypes) where K : FluentState
 		{
 			foreach (PropertyDescriptor defaultTypeProperty in TypeDescriptor.GetProperties(defaultTypes))
