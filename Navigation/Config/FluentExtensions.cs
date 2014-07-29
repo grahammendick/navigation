@@ -46,6 +46,12 @@ namespace Navigation
 			return state;
 		}
 
+		public static K TrackCrumbTrail<K>(this K state, bool trackCrumbTrail) where K : FluentState
+		{
+			state.TrackCrumbTrail = trackCrumbTrail;
+			return state;
+		}
+
 		public static K Attributes<K>(this K state, object attributes) where K : FluentState
 		{
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))

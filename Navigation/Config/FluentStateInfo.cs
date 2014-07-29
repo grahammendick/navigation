@@ -52,7 +52,7 @@ namespace Navigation
 				state.Index = stateIndex;
 				stateIndex++;
 				state.Key = fluentState.Key;
-				state.Title = fluentState.Title ?? string.Empty;
+				state.Title = fluentState.Title;
 				state.DefaultTypes = new StateInfoCollection<Type>();
 				foreach (var defaultType in fluentState.DefaultTypes)
 					state.DefaultTypes[defaultType.Key] = defaultType.Value;
@@ -71,6 +71,7 @@ namespace Navigation
 					state.DerivedInternal.Add(key, key);
 				}
 				state.Derived = new ReadOnlyCollection<string>(derived);
+				state.TrackCrumbTrail = fluentState.TrackCrumbTrail;
 				state.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;
