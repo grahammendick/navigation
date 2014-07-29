@@ -9,7 +9,6 @@ namespace Navigation
 	{
 		public static K DefaultTypes<K>(this K state, object defaultTypes) where K : FluentState
 		{
-			state.DefaultTypes.Clear();
 			foreach (PropertyDescriptor defaultTypeProperty in TypeDescriptor.GetProperties(defaultTypes))
 			{
 				var type = defaultTypeProperty.GetValue(defaultTypes) as Type;
@@ -22,7 +21,6 @@ namespace Navigation
 
 		public static K Defaults<K>(this K state, object defaults) where K : FluentState
 		{
-			state.Defaults.Clear();
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(defaults))
 			{
 				if (defaultProperty.GetValue(defaults) != null)
@@ -33,7 +31,6 @@ namespace Navigation
 
 		public static K Derived<K>(this K state, params string[] derived) where K : FluentState
 		{
-			state.Derived.Clear();
 			foreach (var key in derived)
 			{
 				if (string.IsNullOrEmpty(key))
