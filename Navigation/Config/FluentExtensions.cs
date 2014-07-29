@@ -13,6 +13,13 @@ namespace Navigation
 			return state;
 		}
 
+		public static K Title<K>(this K state, string resourceType, string resourceKey) where K : FluentState
+		{
+			state.ResourceType = resourceType;
+			state.ResourceKey = resourceKey;
+			return state;
+		}
+
 		public static K DefaultTypes<K>(this K state, object defaultTypes) where K : FluentState
 		{
 			foreach (PropertyDescriptor defaultTypeProperty in TypeDescriptor.GetProperties(defaultTypes))
@@ -49,18 +56,6 @@ namespace Navigation
 		public static K TrackCrumbTrail<K>(this K state, bool trackCrumbTrail) where K : FluentState
 		{
 			state.TrackCrumbTrail = trackCrumbTrail;
-			return state;
-		}
-
-		public static K ResourceType<K>(this K state, string resourceType) where K : FluentState
-		{
-			state.ResourceType = resourceType;
-			return state;
-		}
-
-		public static K ResourceKey<K>(this K state, string resourceKey) where K : FluentState
-		{
-			state.ResourceKey = resourceKey;
 			return state;
 		}
 
