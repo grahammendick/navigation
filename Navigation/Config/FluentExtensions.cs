@@ -52,6 +52,18 @@ namespace Navigation
 			return state;
 		}
 
+		public static K ResourceType<K>(this K state, string resourceType) where K : FluentState
+		{
+			state.ResourceType = resourceType;
+			return state;
+		}
+
+		public static K ResourceKey<K>(this K state, string resourceKey) where K : FluentState
+		{
+			state.ResourceKey = resourceKey;
+			return state;
+		}
+
 		public static K Attributes<K>(this K state, object attributes) where K : FluentState
 		{
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))

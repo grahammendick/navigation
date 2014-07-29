@@ -72,6 +72,8 @@ namespace Navigation
 				}
 				state.Derived = new ReadOnlyCollection<string>(derived);
 				state.TrackCrumbTrail = fluentState.TrackCrumbTrail;
+				state.ResourceType = fluentState.ResourceType;
+				state.ResourceKey = fluentState.ResourceKey;
 				state.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;
