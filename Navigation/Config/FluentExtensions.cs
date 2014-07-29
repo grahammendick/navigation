@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Navigation
 {
@@ -7,40 +9,47 @@ namespace Navigation
 	{
 		public static K DefaultTypes<K>(this K state, object defaultTypes) where K : FluentState
 		{
+			state.DefaultTypes.Clear();
 			foreach (PropertyDescriptor defaultTypeProperty in TypeDescriptor.GetProperties(defaultTypes))
 			{
 				var type = defaultTypeProperty.GetValue(defaultTypes) as Type;
 				if (type == null)
 					throw new ArgumentException("defaultTypes");
-				state.AddDefaultType(defaultTypeProperty.Name, type);
+				state.DefaultTypes.Add(new KeyValuePair<string, Type>(defaultTypeProperty.Name, type));
 			}
 			return state;
 		}
 
 		public static K Defaults<K>(this K state, object defaults) where K : FluentState
 		{
+			state.Defaults.Clear();
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(defaults))
 			{
 				if (defaultProperty.GetValue(defaults) != null)
-					state.AddDefault(defaultProperty.Name, defaultProperty.GetValue(defaults));
+					state.Defaults.Add(new KeyValuePair<string, object>(defaultProperty.Name, defaultProperty.GetValue(defaults)));
 			}
 			return state;
 		}
 
 		public static K Derived<K>(this K state, params string[] derived) where K : FluentState
 		{
+			state.Derived.Clear();
 			foreach (var key in derived)
 			{
 				if (string.IsNullOrEmpty(key))
 					throw new ArgumentException("key");
-				state.AddDerived(key.Trim());
+				state.Derived.Add(key.Trim());
 			}
 			return state;
 		}
 
-		public static K Attribute<K>(this K state, string key, string value) where K : FluentState
+		public static K Attributes<K>(this K state, object attributes) where K : FluentState
 		{
-			state.AddAttribute(key, value);
+			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))
+			{
+				if (defaultProperty.GetValue(attributes) != null)
+					state.AddAttribute(defaultProperty.Name, Convert.ToString(defaultProperty.GetValue(attributes), CultureInfo.InvariantCulture));
+			}
 			return state;
 		}
 

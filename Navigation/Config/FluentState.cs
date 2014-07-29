@@ -23,7 +23,7 @@ namespace Navigation
 			set;
 		}
 
-		internal IEnumerable<KeyValuePair<string, Type>> DefaultTypes
+		internal List<KeyValuePair<string, Type>> DefaultTypes
 		{
 			get
 			{
@@ -31,7 +31,7 @@ namespace Navigation
 			}
 		}
 
-		internal IEnumerable<KeyValuePair<string, object>> Defaults
+		internal List<KeyValuePair<string, object>> Defaults
 		{
 			get
 			{
@@ -39,7 +39,7 @@ namespace Navigation
 			}
 		}
 
-		internal IEnumerable<string> Derived
+		internal List<string> Derived
 		{
 			get
 			{
@@ -68,21 +68,6 @@ namespace Navigation
 			Route = route ?? string.Empty;
 			if (!string.IsNullOrEmpty(route))
 				AddAttribute("route", route);
-		}
-
-		internal void AddDefaultType(string key, Type type)
-		{
-			_DefaultTypes.Add(new KeyValuePair<string, Type>(key, type));
-		}
-
-		internal void AddDefault(string key, object value)
-		{
-			_Defaults.Add(new KeyValuePair<string, object>(key, value));
-		}
-
-		internal void AddDerived(string key)
-		{
-			_Derived.Add(key);
 		}
 
 		protected internal void AddAttribute(string key, string value)
