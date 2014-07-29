@@ -5,9 +5,11 @@ namespace Navigation
 {
 	public abstract class FluentState
 	{
+		private string _Title;
 		private List<KeyValuePair<string, Type>> _DefaultTypes = new List<KeyValuePair<string, Type>>();
 		private List<KeyValuePair<string, object>> _Defaults = new List<KeyValuePair<string, object>>();
 		private List<string> _Derived = new List<string>();
+		private bool _TrackCrumbTrail = true;
 		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
 		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
@@ -19,8 +21,14 @@ namespace Navigation
 
 		internal string Title
 		{
-			get;
-			set;
+			get
+			{
+				return _Title ?? string.Empty;
+			}
+			set
+			{
+				_Title = value;
+			}
 		}
 
 		internal string Route 
@@ -50,6 +58,18 @@ namespace Navigation
 			get
 			{
 				return _Derived;
+			}
+		}
+
+		internal bool TrackCrumbTrail
+		{
+			get
+			{
+				return _TrackCrumbTrail;
+			}
+			set
+			{
+				_TrackCrumbTrail = value;
 			}
 		}
 
