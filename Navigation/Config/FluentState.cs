@@ -5,13 +5,19 @@ namespace Navigation
 {
 	public abstract class FluentState
 	{
-		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
 		private List<KeyValuePair<string, Type>> _DefaultTypes = new List<KeyValuePair<string, Type>>();
 		private List<KeyValuePair<string, object>> _Defaults = new List<KeyValuePair<string, object>>();
 		private List<string> _Derived = new List<string>();
+		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
 		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
 		internal string Key
+		{
+			get;
+			set;
+		}
+
+		internal string Title
 		{
 			get;
 			set;

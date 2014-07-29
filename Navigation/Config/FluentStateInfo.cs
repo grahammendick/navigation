@@ -52,6 +52,7 @@ namespace Navigation
 				state.Index = stateIndex;
 				stateIndex++;
 				state.Key = fluentState.Key;
+				state.Title = fluentState.Title ?? string.Empty;
 				state.DefaultTypes = new StateInfoCollection<Type>();
 				foreach (var defaultType in fluentState.DefaultTypes)
 					state.DefaultTypes[defaultType.Key] = defaultType.Value;
