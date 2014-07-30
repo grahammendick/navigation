@@ -818,5 +818,26 @@ namespace Navigation.Test
 		{
 			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("", null, false);
 		}
+
+		[TestMethod]
+		public void Test()
+		{
+			new FluentStateInfo()
+				.Dialog("Dialog1", new {
+					State1 = new WebFormsState("route1", "~/Page1.aspx"),
+					State2 = new WebFormsState("route2", "~/Page2.aspx")
+						.DefaultTypes(new { test = typeof(int) })
+						.Defaults(new { test = 5 })
+						.Derived("test"),
+					State3 = new MvcState("route3", "Home", "Index")
+				}, d => d.State1)
+					.Transition("transition1", d => d.State1, d => d.State2)
+				.Dialog("Dialog2", new {
+					State1 = new WebFormsState("~/Page1.aspx"),
+					State2 = new WebFormsState("~/Page2.aspx"),
+				}, d => d.State1)
+					.Transition("transition1", d => d.State1, d => d.State2)
+				.Build();
+		}
 	}
 }
