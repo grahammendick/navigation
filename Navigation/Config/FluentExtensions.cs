@@ -7,6 +7,35 @@ namespace Navigation
 {
 	public static partial class FluentExtensions
 	{
+		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, string title)
+			where UStates : class
+			where UInitial : FluentState
+		{
+			dialog.Title = title;
+			return dialog;
+		}
+
+		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, string resourceType, string resourceKey)
+			where UStates : class
+			where UInitial : FluentState
+		{
+			dialog.ResourceType = resourceType;
+			dialog.ResourceKey = resourceKey;
+			return dialog;
+		}
+
+		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, object attributes)
+			where UStates : class
+			where UInitial : FluentState
+		{
+			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))
+			{
+				if (defaultProperty.GetValue(attributes) != null)
+					dialog.AddAttribute(defaultProperty.Name, Convert.ToString(defaultProperty.GetValue(attributes), CultureInfo.InvariantCulture));
+			}
+			return dialog;
+		}
+
 		public static K Title<K>(this K state, string title) where K : FluentState
 		{
 			state.Title = title;

@@ -34,6 +34,12 @@ namespace Navigation
 				dialog.Index = dialogIndex;
 				dialogIndex++;
 				dialog.Key = fluentDialog.Key;
+				dialog.Title = fluentDialog.Title;
+				dialog.ResourceType = fluentDialog.ResourceType;
+				dialog.ResourceKey = fluentDialog.ResourceKey;
+				dialog.Attributes = new StateInfoCollection<string>();
+				foreach (var attribute in fluentDialog.Attributes)
+					dialog.Attributes[attribute.Key] = attribute.Value;
 				ProcessStates(dialog, fluentDialog);
 				ProcessTransitions(dialog, fluentDialog);
 				dialogs.Add(fluentDialog.Key, dialog);

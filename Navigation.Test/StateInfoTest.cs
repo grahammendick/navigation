@@ -831,6 +831,7 @@ namespace Navigation.Test
 						.Derived("test"),
 					State3 = new MvcState("route3", "Home", "Index")
 				}, d => d.State1)
+					.Title("test")
 					.Transition("transition1", d => d.State1, d => d.State2)
 				.Dialog("Dialog2", new {
 					State1 = new WebFormsState("~/Page1.aspx"),
