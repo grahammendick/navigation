@@ -8,6 +8,10 @@ namespace Navigation
 	{
 		private List<FluentDialog> _Dialogs = new List<FluentDialog>();
 
+		internal FluentStateInfo()
+		{
+		}
+
 		public FluentDialog<TStates, TInitial> Dialog<TStates, TInitial>(string key, TStates states, Func<TStates, TInitial> initial)
 			where TStates : class
 			where TInitial : FluentState
@@ -44,6 +48,9 @@ namespace Navigation
 				ProcessTransitions(dialog, fluentDialog);
 				dialogs.Add(fluentDialog.Key, dialog);
 			}
+			StateInfoConfig.Dialogs = dialogs;
+			StateInfoConfig.AddStateRoutes();
+			_Dialogs.Clear();
 		}
 
 		private static void ProcessStates(Dialog dialog, FluentDialog fluentDialog)

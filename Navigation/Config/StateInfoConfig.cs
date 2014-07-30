@@ -15,6 +15,8 @@ namespace Navigation
 	/// </summary>
 	public static class StateInfoConfig
 	{
+		private static StateInfoCollection<Dialog> _Dialogs;
+		private static FluentStateInfo _Fluent = new FluentStateInfo();
 		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
 		private const string PARAMETER = "{{{0}}}";
 		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
@@ -138,7 +140,19 @@ namespace Navigation
 		{
 			get
 			{
-				return (StateInfoCollection<Dialog>)ConfigurationManager.GetSection("Navigation/StateInfo");
+				return _Dialogs ?? (StateInfoCollection<Dialog>)ConfigurationManager.GetSection("Navigation/StateInfo");
+			}
+			internal set
+			{
+				_Dialogs = value;
+			}
+		}
+
+		public static FluentStateInfo Fluent
+		{
+			get
+			{
+				return _Fluent;
 			}
 		}
 

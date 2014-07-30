@@ -822,7 +822,7 @@ namespace Navigation.Test
 		[TestMethod]
 		public void Test()
 		{
-			new FluentStateInfo()
+			StateInfoConfig.Fluent
 				.Dialog("Dialog1", new {
 					State1 = new WebFormsState("route1", "~/Page1.aspx"),
 					State2 = new WebFormsState("route2", "~/Page2.aspx")
@@ -837,8 +837,8 @@ namespace Navigation.Test
 					State1 = new WebFormsState("~/Page1.aspx"),
 					State2 = new WebFormsState("~/Page2.aspx"),
 				}, d => d.State1)
-					.Transition("transition1", d => d.State1, d => d.State2)
-				.Build();
+					.Transition("transition1", d => d.State1, d => d.State2);
+				//.Build();
 		}
 	}
 }
