@@ -6,6 +6,11 @@ namespace Navigation
 {
 	public abstract class FluentDialog
 	{
+		private string _Title;
+		private string _ResourceType;
+		private string _ResourceKey;
+		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
+
 		internal string Key
 		{
 			get;
@@ -24,11 +29,64 @@ namespace Navigation
 			private set;
 		}
 
+		internal string Title
+		{
+			get
+			{
+				return _Title ?? string.Empty;
+			}
+			set
+			{
+				_Title = value;
+			}
+		}
+
+		internal string ResourceType
+		{
+			get
+			{
+				return _ResourceType ?? "StateInfo";
+			}
+			set
+			{
+				_ResourceType = value;
+			}
+		}
+
+		internal string ResourceKey
+		{
+			get
+			{
+				return _ResourceKey ?? string.Empty;
+			}
+			set
+			{
+				_ResourceKey = value;
+			}
+		}
+
+		internal IEnumerable<KeyValuePair<string, string>> Attributes
+		{
+			get
+			{
+				return _Attributes;
+			}
+		}
+
 		protected FluentDialog(string key, IEnumerable<FluentState> states, FluentState initial)
 		{
 			Key = key;
 			States = states;
 			Initial = initial;
+		}
+
+		protected internal void AddAttribute(string key, string value)
+		{
+			if (string.IsNullOrEmpty(key))
+				throw new ArgumentException("key");
+			if (string.IsNullOrEmpty(value))
+				throw new ArgumentException("value");
+			_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 	}
 
