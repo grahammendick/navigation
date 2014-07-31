@@ -70,6 +70,7 @@
     <Compile Include="CustomDataTypeConverter.cs" />
     <Compile Include="CustomNavigationShield.cs" />
     <Compile Include="CustomStateHandler.cs" />
+    <Compile Include="FluentStateInfoConfig.cs" />
     <Compile Include="MockHttpContext.cs" />
     <Compile Include="Mvc\ActionResultTest.cs" />
     <Compile Include="Mvc\AjaxExtensionsTest.cs" />
