@@ -6,10 +6,15 @@ namespace Navigation
 {
 	public class FluentStateInfo
 	{
-		private List<FluentDialog> _Dialogs = new List<FluentDialog>();
+		private List<FluentDialog> Dialogs
+		{
+			get;
+			set;
+		}
 
 		internal FluentStateInfo()
 		{
+			Dialogs = new List<FluentDialog>();
 		}
 
 		public FluentDialog<TStates, TInitial> Dialog<TStates, TInitial>(string key, TStates states, Func<TStates, TInitial> initial)
@@ -23,7 +28,7 @@ namespace Navigation
 			if (string.IsNullOrEmpty(key))
 				throw new ArgumentException("key");
 			var dialog = new FluentDialog<TStates, TInitial>(this, key, states, initial(states));
-			_Dialogs.Add(dialog);
+			Dialogs.Add(dialog);
 			return dialog;
 		}
 
@@ -32,7 +37,7 @@ namespace Navigation
 			StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();
 			Dialog dialog;
 			int dialogIndex = 0;
-			foreach (var fluentDialog in _Dialogs)
+			foreach (var fluentDialog in Dialogs)
 			{
 				dialog = new Dialog();
 				dialog.Index = dialogIndex;
@@ -50,7 +55,7 @@ namespace Navigation
 			}
 			StateInfoConfig.Dialogs = dialogs;
 			StateInfoConfig.AddStateRoutes();
-			_Dialogs.Clear();
+			Dialogs.Clear();
 		}
 
 		private static void ProcessStates(Dialog dialog, FluentDialog fluentDialog)
