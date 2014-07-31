@@ -24,7 +24,7 @@ namespace Navigation
 			return dialog;
 		}
 
-		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, object attributes)
+		public static FluentDialog<UStates, UInitial> Attributes<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, object attributes)
 			where UStates : class
 			where UInitial : FluentState
 		{

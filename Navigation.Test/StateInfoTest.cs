@@ -37,6 +37,39 @@ namespace Navigation.Test
 			StateInfoConfig.Dialogs[6].States[0].StateHandler = new CustomStateHandler();
 			StateInfoConfig.Dialogs[6].States[1].StateHandler = new CustomStateHandler();
 			StateController.Navigate("d0");
+			StateInfoConfig.Fluent
+				.Dialog("d0", new
+				{
+					s0 = new WebFormsState("~/d0/s0.aspx").Title("s0"),
+					s1 = new WebFormsState("~/d0/s1.aspx").Title("s1")
+						.DefaultTypes(new {_bool = typeof(int), @short = typeof(short), @long = typeof(string)})
+						.Defaults(new { @string = "Hello", _bool = true, _int = 0, @short = (short)1, @long = 2L, @float = 3F })
+						.Derived("st1 "," bool ","  long")
+						.Attributes(new { mobilePage = "~/mobile/d0/s1.aspx" }),
+					s2 = new WebFormsState("~/d0/s2.aspx").Title("s2")
+						.DefaultTypes(new { @string = typeof(string), DateTime = typeof(DateTime), @char = typeof(char), @byte = typeof(char) })
+						.Defaults(new { emptyString = "", @double = 4D, @decimal = 5M, DateTime = new DateTime(1990, 3, 1, 12, 35, 47), @byte = (byte) 6, @char = (char) 7 })
+						.Derived("string","decimal"),
+					s3 = new WebFormsState("~/d0/s3.aspx").Title("s3")
+						.DefaultTypes(new { s1 = typeof(string), s2 = typeof(int), b1 = typeof(bool), i1 = typeof(int), sh1 = typeof(short), l1 = typeof(long), f1 = typeof(float), d1 = typeof(double),
+							de1 = typeof(decimal), dt2 = typeof(DateTime), t1 = typeof(TimeSpan), by1 = typeof(byte), ch1 = typeof(char), g1 = typeof(Guid) }),
+					s4 = new WebFormsState("~/d0/s4.aspx").Title("s4")
+						.DefaultTypes(new { @string = typeof(string), @bool = typeof(bool), @int = typeof(int), @short = typeof(short), @long = typeof(long), @float = typeof(float), @double = typeof(double),
+							@decimal = typeof(decimal), DateTime = typeof(DateTime), TimeSpan = typeof(TimeSpan), @byte = typeof(byte), @char = typeof(char), Guid = typeof(Guid) }),
+				}, d => d.s0)
+					.Title("d0")
+					.Attributes(new { path = " d0 " })
+					.Transition("t0", d => d.s0, d => d.s1)
+					.Transition("t1", d => d.s0, d => d.s2)
+					.Transition("t2", d => d.s0, d => d.s3)
+					.Transition("t3", d => d.s0, d => d.s4)
+					.Transition("t0", d => d.s1, d => d.s2)
+					.Transition("t1", d => d.s1, d => d.s3)
+					.Transition("t2", d => d.s1, d => d.s4)
+					.Transition("t0", d => d.s2, d => d.s3)
+					.Transition("t1", d => d.s2, d => d.s4)
+					.Transition("t0", d => d.s3, d => d.s4);
+				//.Build();
 		}
 
 		[TestMethod]
@@ -817,28 +850,6 @@ namespace Navigation.Test
 		public void ParseNavigationDataExpressionEmptyExpressionTest()
 		{
 			NavigationData data = StateInfoConfig.ParseNavigationDataExpression("", null, false);
-		}
-
-		[TestMethod]
-		public void Test()
-		{
-			StateInfoConfig.Fluent
-				.Dialog("Dialog1", new {
-					State1 = new WebFormsState("route1", "~/Page1.aspx"),
-					State2 = new WebFormsState("route2", "~/Page2.aspx")
-						.DefaultTypes(new { test = typeof(int) })
-						.Defaults(new { test = 5 })
-						.Derived("test"),
-					State3 = new MvcState("route3", "Home", "Index")
-				}, d => d.State1)
-					.Title("test")
-					.Transition("transition1", d => d.State1, d => d.State2)
-				.Dialog("Dialog2", new {
-					State1 = new WebFormsState("~/Page1.aspx"),
-					State2 = new WebFormsState("~/Page2.aspx"),
-				}, d => d.State1)
-					.Transition("transition1", d => d.State1, d => d.State2);
-				//.Build();
 		}
 	}
 }

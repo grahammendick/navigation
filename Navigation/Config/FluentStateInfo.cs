@@ -51,6 +51,7 @@ namespace Navigation
 					dialog.Attributes[attribute.Key] = attribute.Value;
 				ProcessStates(dialog, fluentDialog);
 				ProcessTransitions(dialog, fluentDialog);
+				dialog.Initial = dialog.States[fluentDialog.Initial.Key];
 				dialogs.Add(fluentDialog.Key, dialog);
 			}
 			StateInfoConfig.Dialogs = dialogs;
@@ -71,6 +72,7 @@ namespace Navigation
 				stateIndex++;
 				state.Key = fluentState.Key;
 				state.Title = fluentState.Title;
+				state.Route = fluentState.Route;
 				state.DefaultTypes = new StateInfoCollection<Type>();
 				foreach (var defaultType in fluentState.DefaultTypes)
 					state.DefaultTypes[defaultType.Key] = defaultType.Value;
