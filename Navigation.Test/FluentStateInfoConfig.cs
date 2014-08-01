@@ -41,6 +41,38 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s2, d => d.s3)
 					.Transition("t1", d => d.s2, d => d.s4)
 					.Transition("t0", d => d.s3, d => d.s4)
+				.Dialog("d1", new
+				{
+					s0 = new WebFormsState("", "~/d1/s0.aspx")
+							.Title("s0"),
+					s1 = new WebFormsState("", "~/d1/s1.aspx")
+							.Title("s1"),
+					s2 = new WebFormsState("", "~/d1/s2.aspx")
+							.Title("s2")
+							.Attributes(new { masters = "!@" }),
+					s3 = new WebFormsState("", "~/d1/s3.aspx")
+							.Title("s3")
+							.Attributes(new { mobileTheme = " test  ", mobileMasters = " test1 ,  test2" }),
+					s4 = new WebFormsState("", "~/d1/s4.aspx")
+							.Title("s4")
+							.Attributes(new { mobileMasters = "," }),
+					s5 = new WebFormsState("", "~/d1/s5.aspx")
+							.Title("s5")
+							.Attributes(new { mobileMasters = "!@" }),
+				}, d => d.s0)
+					.Title("d1")
+					.Attributes(new { path = "d1" })
+					.Transition("t0", d => d.s0, d => d.s1)
+					.Transition("t0", d => d.s1, d => d.s2)
+					.Transition("t0", d => d.s2, d => d.s3)
+					.Transition("t0", d => d.s3, d => d.s4)
+					.Transition("t0", d => d.s4, d => d.s5)
+					.Transition("t0", d => d.s4, d => d.s5)
+					.Transition("t0", d => d.s5, d => d.s0)
+					.Transition("t1", d => d.s5, d => d.s1)
+					.Transition("t2", d => d.s5, d => d.s2)
+					.Transition("t3", d => d.s5, d => d.s3)
+					.Transition("t4", d => d.s5, d => d.s4)
 				.Build();
 		}
 	}
