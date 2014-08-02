@@ -97,5 +97,15 @@ namespace Navigation
 			}
 			return state;
 		}
+
+		public static K Attributes<K>(this K state, IDictionary<string, string> attributes) where K : FluentState
+		{
+			foreach (KeyValuePair<string, string> attribute in attributes)
+			{
+				if (attribute.Key != null && attribute.Value != null)
+					state.AddAttribute(attribute.Key, attribute.Value);
+			}
+			return state;
+		}
 	}
 }
