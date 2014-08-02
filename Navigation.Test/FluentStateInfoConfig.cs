@@ -78,6 +78,39 @@ namespace Navigation.Test
 					.Transition("t2", d => d.s5, d => d.s2)
 					.Transition("t3", d => d.s5, d => d.s3)
 					.Transition("t4", d => d.s5, d => d.s4)
+				.Dialog("d2", new
+				{
+					s0 = new WebFormsState("", "~/d2/s0.aspx")
+							.Title("s0")
+							.TrackCrumbTrail(false),
+					s1 = new WebFormsState("", "~/d2/s1.aspx")
+							.Title("s1")
+							.TrackCrumbTrail(true)
+							.Attributes(new { mobilePage = "~/mobile/d2/s1.aspx" }),
+					s2 = new WebFormsState("", "~/d2/s2.aspx")
+							.Title("s2")
+							.TrackCrumbTrail(false),
+					s3 = new WebFormsState("", "~/d2/s3.aspx")
+							.Title("s3")
+							.TrackCrumbTrail(true),
+					s4 = new WebFormsState("", "~/d2/s4.aspx")
+							.Title("s4")
+							.TrackCrumbTrail(false),
+					s5 = new WebFormsState("", "~/d2/s5.aspx")
+							.Title("s5"),
+					s6 = new WebFormsState("", "~/d2/s6.aspx")
+							.Title("s6"),
+				}, d => d.s0)
+					.Title("d2")
+					.Attributes(new { path = "d2" })
+					.Transition("t0", d => d.s0, d => d.s1)
+					.Transition("t0", d => d.s1, d => d.s2)
+					.Transition("t0", d => d.s2, d => d.s3)
+					.Transition("t0", d => d.s3, d => d.s4)
+					.Transition("t0", d => d.s4, d => d.s5)
+					.Transition("t0", d => d.s4, d => d.s5)
+					.Transition("t0", d => d.s5, d => d.s6)
+					.Transition("t0", d => d.s6, d => d.s0)
 				.Build();
 		}
 	}
