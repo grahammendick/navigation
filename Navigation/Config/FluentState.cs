@@ -126,8 +126,6 @@ namespace Navigation
 		{
 			if (string.IsNullOrEmpty(key))
 				throw new ArgumentException("key");
-			if (string.IsNullOrEmpty(value))
-				throw new ArgumentException("value");
 			_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 
