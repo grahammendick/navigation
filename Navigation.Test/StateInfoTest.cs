@@ -366,8 +366,8 @@ namespace Navigation.Test
 			Assert.AreEqual(dialogs[0].States[0].Transitions[0].Parent, dialogs[0].States[0]);
 			Assert.IsTrue(dialogs[0].States[1].Defaults.Count == 6);
 			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 6);
-			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 3);
-			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 4);
+			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 6);
+			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 7);
 			Assert.IsTrue(dialogs[0].States[1].Derived.Count == 3);
 			Assert.IsTrue(dialogs[0].States[2].Derived.Count == 2);
 			Assert.IsTrue(dialogs[6].Attributes.Count == 2);
