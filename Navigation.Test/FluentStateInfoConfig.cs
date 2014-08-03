@@ -211,6 +211,16 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s5, d => d.s6)
 					.Transition("t0", d => d.s6, d => d.s0)
+				.Dialog("d6", new
+				{
+					s0 = new CustomState("~/d6/s0.aspx")
+							.Title("s0"),
+					s1 = new CustomState("~/d6/s1.aspx")
+							.Title("s1"),
+				}, d => d.s0)
+					.Title("d6")
+					.Attributes(new { other = "true", path = " d6" })
+					.Transition("t0", d => d.s0, d => d.s1)
 				.Build();
 		}
 	}
