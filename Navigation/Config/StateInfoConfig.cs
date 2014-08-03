@@ -17,6 +17,9 @@ namespace Navigation
 	{
 		private static StateInfoCollection<Dialog> _Dialogs;
 		private static FluentStateInfo _Fluent = new FluentStateInfo();
+#if NET40Plus
+		private static bool _RoutesAdded = false;
+#endif
 		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
 		private const string PARAMETER = "{{{0}}}";
 		private const string OPTIONAL_PARAMETER = "{{*{0}}}";
@@ -163,8 +166,9 @@ namespace Navigation
 		/// </summary>
 		public static void AddStateRoutes()
 		{
-			if (StateInfoConfig.Dialogs == null)
+			if (StateInfoConfig.Dialogs == null || _RoutesAdded)
 				return;
+			_RoutesAdded = true;
 			using (RouteTable.Routes.GetWriteLock())
 			{
 				RouteTable.Routes.Ignore("{resource}.axd/{*pathInfo}");

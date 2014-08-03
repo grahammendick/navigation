@@ -18,10 +18,7 @@ namespace Navigation
 #if NET40Plus
 		static StateController()
 		{
-			if (HttpContext.Current == null)
-			{
-				StateInfoConfig.AddStateRoutes();
-			}
+			StateInfoConfig.AddStateRoutes();
 		}
 #endif
 		/// <summary>
