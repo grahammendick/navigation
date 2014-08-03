@@ -12,7 +12,7 @@ namespace Navigation.Test
 				{
 					s0 = new WebFormsState("", "~/d0/s0.aspx")
 							.Title("s0"),
-					s1 = new WebFormsState("", "~/d0/s1.aspx")
+					s1 = new WebFormsState("", " ~/d0/s1.aspx  ")
 							.Title("s1")
 							.DefaultTypes(new { _bool = typeof(int), @short = typeof(short), @long = typeof(string) })
 							.Defaults(new { @string = "Hello", _bool = true, _int = 0, @short = (short)1, @long = 2L, @float = 3F })
