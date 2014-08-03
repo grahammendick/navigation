@@ -166,7 +166,7 @@ namespace Navigation
 		/// </summary>
 		public static void AddStateRoutes()
 		{
-			if (StateInfoConfig.Dialogs == null || _RoutesAdded)
+			if (Dialogs == null || Dialogs.Count == 0 || _RoutesAdded)
 				return;
 			_RoutesAdded = true;
 			using (RouteTable.Routes.GetWriteLock())
