@@ -21,7 +21,7 @@ namespace Navigation.Test
 					s2 = new WebFormsState("", "~/d0/s2.aspx")
 							.Title("s2")
 							.DefaultTypes(new { @string = typeof(string), DateTime = typeof(DateTime), @char = typeof(char), @byte = typeof(char) })
-							.Defaults(new { emptyString = "", @double = 4D, @decimal = 5M, DateTime = new DateTime(1990, 3, 1, 12, 35, 47), @byte = (byte)6, @char = (char)7 })
+							.Defaults(new { emptyString = "", @double = 4D, @decimal = 5M, DateTime = new DateTime(1990, 3, 1, 12, 35, 47), @byte = (byte)6, @char = '7' })
 							.Derived("string", "decimal"),
 					s3 = new WebFormsState("", "~/d0/s3.aspx")
 							.Title("s3")
@@ -46,18 +46,20 @@ namespace Navigation.Test
 				{
 					s0 = new WebFormsState("", "~/d1/s0.aspx")
 							.Title("s0")
-							.Attributes(new Dictionary<string, string> { { "defaultTypes", "_0_1_2_3_4_5_=int,*/()-_+~@:?><.;[]{}!£$%^#&=short" } })
+							.DefaultTypes(new Dictionary<string, Type> { { "_0_1_2_3_4_5_", typeof(int) }, { "*/()-_+~@:?><.;[]{}!£$%^#&", typeof(short) } })
 							.Attributes(new { theme = "  test ", masters = "test1  , test2 " }),
 					s1 = new WebFormsState("", "~/d1/s1.aspx")
 							.Title("s1")
-							.Attributes(new Dictionary<string, string> { { "defaults", "  &s0=a,s1=b,s2?string=c,s3=d,b1=true,b2?bool=false,b3?bool=true,i1=0,i2?int=1,i3?int=2,sh1=3,sh2?short=4,sh3?short=5,l1=6,l2?long=7,l3?long=8,f1=9,f2?float=10,f3?float=11,d1=12,d2?double=13,d3?double=14,de1=15,de2?decimal=16,de3?decimal=17,dt1=1/3/1990 12:35:47,dt2?datetime=2/4/1991 13:36:48,dt3?datetime=3/5/1992 14:37:49,t1?string=d,by1=18,by2?byte=19,by3?byte=20,ch1=e,ch2?char=f,ch3?char=g,g1?string=h" }, { "defaultTypes", "s1=string,s2=bool,b1=bool,b2=int,i1=int,i2=short,sh1=short,sh2=long,l1=long,l2=float,f1=float,f2=double,d1=double,d2=decimal,de1=decimal,de2=datetime,dt1=datetime,dt2=timespan,t1=timespan,by1=byte,by2=char,ch1=char,ch2=guid,g1=guid" } })
+							.DefaultTypes(new { s1 = typeof(string), s2 = typeof(bool), b1 = typeof(bool), b2 = typeof(int), i1 = typeof(int), i2 = typeof(short), sh1 = typeof(short), sh2 = typeof(long), l1 = typeof(long), l2 = typeof(float), f1 = typeof(float), f2 = typeof(double), d1 = typeof(double), d2 = typeof(decimal), de1 = typeof(decimal), de2 = typeof(DateTime), dt1 = typeof(DateTime), dt2 = typeof(TimeSpan), t1 = typeof(TimeSpan), by1 = typeof(byte), by2 = typeof(char), ch1 = typeof(char), ch2 = typeof(Guid), g1 = typeof(Guid) })
+							.Defaults(new Dictionary<string, object> { { "  &s0", "a" } })
+							.Defaults(new { s1 = "b", s2 = "c", s3 = "d", b1 = true, b2 = false, b3 = true, i1 = 0, i2 =1, i3 = 2, sh1 = (short) 3, sh2 = (short) 4, sh3 = (short) 5, l1 = 6L, l2 = 7L, l3 = 8L, f1 = 9F, f2 = 10F, f3 = 11F, d1 = 12D, d2 = 13D,d3 = 14D, de1 = 15M, de2 = 16M, de3 = 17M, dt1 = new DateTime(1990, 3, 1, 12, 35, 47), dt2 = new DateTime(1991, 4, 2, 13, 36, 48), dt3 = new DateTime(1992, 5, 3, 14, 37, 49), t1 = "d", by1 = (byte) 18, by2 = (byte) 19, by3 = (byte) 20, ch1 = 'e', ch2 = 'f', ch3 = 'g', g1 ="h" })
 							.Attributes(new { masters = ",", mobilePage = "  ~/mobile/d1/s1.aspx " }),
 					s2 = new WebFormsState("", "~/d1/s2.aspx")
 							.Title("s2")
 							.Attributes(new { masters = "!@" }),
 					s3 = new WebFormsState("", "~/d1/s3.aspx")
 							.Title("s3")
-							.Attributes(new Dictionary<string, string> { { "mobileTheme", " test  " }, { "mobileMasters", " test1 ,  test2" } }),
+							.Attributes(new { mobileTheme = " test  ", mobileMasters = " test1 ,  test2" }),
 					s4 = new WebFormsState("", "~/d1/s4.aspx")
 							.Title("s4")
 							.Attributes(new { mobileMasters = "," }),
@@ -71,7 +73,6 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
 					.Transition("t0", d => d.s3, d => d.s4)
-					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s5, d => d.s0)
 					.Transition("t1", d => d.s5, d => d.s1)
@@ -108,7 +109,6 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s2, d => d.s3)
 					.Transition("t0", d => d.s3, d => d.s4)
 					.Transition("t0", d => d.s4, d => d.s5)
-					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s5, d => d.s6)
 					.Transition("t0", d => d.s6, d => d.s0)
 				.Dialog("d3", new
@@ -125,8 +125,9 @@ namespace Navigation.Test
 					s2 = new WebFormsState("d3s2/{char}/{*double}", "~/d3/s2.aspx")
 							.Title("s2")
 							.DefaultTypes(new { @string = typeof(string), DateTime = typeof(DateTime), @char = typeof(char), @byte = typeof(char) })
-							.Defaults(new { emptyString = "", @double = 4D, @decimal = 5M, DateTime = new DateTime(1990, 3, 1, 12, 35, 47), @byte = (byte)6, @char = (char)7 })
-							.Derived("string", "decimal"),
+							.Defaults(new { emptyString = "", @double = 4D, @decimal = 5M, DateTime = new DateTime(1990, 3, 1, 12, 35, 47), @byte = (byte)6, @char = '7' })
+							.Derived("string", "decimal")
+							.Attributes(new { mobilePage = "~/mobile/d3/s2.aspx" }),
 					s3 = new WebFormsState("d3s3/{*s}", "~/d3/s3.aspx")
 							.Title("s3")
 							.DefaultTypes(new { s1 = typeof(string), s2 = typeof(int), b1 = typeof(bool), i1 = typeof(int), sh1 = typeof(short), l1 = typeof(long), f1 = typeof(float), d1 = typeof(double), de1 = typeof(decimal), dt2 = typeof(DateTime), t1 = typeof(TimeSpan), by1 = typeof(byte), ch1 = typeof(char), g1 = typeof(Guid) })
@@ -152,10 +153,12 @@ namespace Navigation.Test
 				{
 					s0 = new WebFormsState("d4s0", "~/d4/s0.aspx")
 							.Title("s0")
-							.Attributes(new Dictionary<string, string> { { "defaultTypes", "_0_1_2_3_4_5_=int,*/()-_+~@:?><.;[]{}!£$%^#&=short" } }),
+							.DefaultTypes(new Dictionary<string, Type> { { "_0_1_2_3_4_5_", typeof(int) }, { "*/()-_+~@:?><.;[]{}!£$%^#&", typeof(short) } }),
 					s1 = new WebFormsState("{s1}/{*s}", "~/d4/s1.aspx")
 							.Title("s1")
-							.Attributes(new Dictionary<string, string> { { "defaults", "  &s0=a,s1=b,s2?string=c,s3=d,b1=true,b2?bool=false,b3?bool=true,i1=0,i2?int=1,i3?int=2,sh1=3,sh2?short=4,sh3?short=5,l1=6,l2?long=7,l3?long=8,f1=9,f2?float=10,f3?float=11,d1=12,d2?double=13,d3?double=14,de1=15,de2?decimal=16,de3?decimal=17,dt1=1/3/1990 12:35:47,dt2?datetime=2/4/1991 13:36:48,dt3?datetime=3/5/1992 14:37:49,t1?string=d,by1=18,by2?byte=19,by3?byte=20,ch1=e,ch2?char=f,ch3?char=g,g1?string=h" }, { "defaultTypes", "s1=string,s2=bool,b1=bool,b2=int,i1=int,i2=short,sh1=short,sh2=long,l1=long,l2=float,f1=float,f2=double,d1=double,d2=decimal,de1=decimal,de2=datetime,dt1=datetime,dt2=timespan,t1=timespan,by1=byte,by2=char,ch1=char,ch2=guid,g1=guid" } }),
+							.DefaultTypes(new { s1 = typeof(string), s2 = typeof(bool), b1 = typeof(bool), b2 = typeof(int), i1 = typeof(int), i2 = typeof(short), sh1 = typeof(short), sh2 = typeof(long), l1 = typeof(long), l2 = typeof(float), f1 = typeof(float), f2 = typeof(double), d1 = typeof(double), d2 = typeof(decimal), de1 = typeof(decimal), de2 = typeof(DateTime), dt1 = typeof(DateTime), dt2 = typeof(TimeSpan), t1 = typeof(TimeSpan), by1 = typeof(byte), by2 = typeof(char), ch1 = typeof(char), ch2 = typeof(Guid), g1 = typeof(Guid) })
+							.Defaults(new Dictionary<string, object> { { "  &s0", "a" } })
+							.Defaults(new { s1 = "b", s2 = "c", s3 = "d", b1 = true, b2 = false, b3 = true, i1 = 0, i2 =1, i3 = 2, sh1 = (short) 3, sh2 = (short) 4, sh3 = (short) 5, l1 = 6L, l2 = 7L, l3 = 8L, f1 = 9F, f2 = 10F, f3 = 11F, d1 = 12D, d2 = 13D,d3 = 14D, de1 = 15M, de2 = 16M, de3 = 17M, dt1 = new DateTime(1990, 3, 1, 12, 35, 47), dt2 = new DateTime(1991, 4, 2, 13, 36, 48), dt3 = new DateTime(1992, 5, 3, 14, 37, 49), t1 = "d", by1 = (byte) 18, by2 = (byte) 19, by3 = (byte) 20, ch1 = 'e', ch2 = 'f', ch3 = 'g', g1 ="h" }),
 					s2 = new WebFormsState("d4s2", "~/d4/s2.aspx")
 							.Title("s2"),
 					s3 = new WebFormsState("d4s3", "~/d4/s3.aspx")
@@ -172,7 +175,6 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
 					.Transition("t0", d => d.s3, d => d.s4)
-					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s5, d => d.s0)
 					.Transition("t1", d => d.s5, d => d.s1)
@@ -207,7 +209,6 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
 					.Transition("t0", d => d.s3, d => d.s4)
-					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s4, d => d.s5)
 					.Transition("t0", d => d.s5, d => d.s6)
 					.Transition("t0", d => d.s6, d => d.s0)
