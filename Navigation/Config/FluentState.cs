@@ -118,6 +118,8 @@ namespace Navigation
 		protected FluentState(string route)
 		{
 			Route = route ?? string.Empty;
+			if (!string.IsNullOrEmpty(route))
+				AddAttribute("route", route);
 		}
 
 		protected internal void AddAttribute(string key, string value)
