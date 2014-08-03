@@ -250,7 +250,7 @@ namespace Navigation.Test
 							.TrackCrumbTrail(false),
 					s1 = new WebApiState("w1/{startRowIndex}/{maximumRows}", "c1", "a1")
 							.Title("s1")
-							.Defaults(new { startRowIndex = typeof(int), maximumRows = typeof(int), start = typeof(int), size = typeof(int), total = typeof(int) })
+							.Defaults(new { start = typeof(int), size = typeof(int), total = typeof(int) })
 							.Defaults(new { startRowIndex = 0, maximumRows = 10 })
 							.Derived("totalRowCount")
 							.TrackCrumbTrail(false),
