@@ -34,7 +34,7 @@ namespace Navigation.Test
 		[AssemblyInitialize]
 		public static void SetCustomHandler(TestContext context)
 		{
-			//FluentStateInfoConfig.Register(StateInfoConfig.Fluent);
+			FluentStateInfoConfig.Register(StateInfoConfig.Fluent);
 			StateInfoConfig.Dialogs[6].States[0].StateHandler = new CustomStateHandler();
 			StateInfoConfig.Dialogs[6].States[1].StateHandler = new CustomStateHandler();
 			StateController.Navigate("d0");
@@ -123,12 +123,9 @@ namespace Navigation.Test
 		[TestMethod]
 		public void DialogAttributesTest()
 		{
-			Assert.AreEqual(5, StateInfoConfig.Dialogs[6].Attributes.Count);
-			Assert.AreEqual("d6", StateInfoConfig.Dialogs[6].Attributes["key"]);
-			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].Attributes[1]);
-			Assert.AreEqual("d6", StateInfoConfig.Dialogs[6].Attributes["title"]);
+			Assert.AreEqual(2, StateInfoConfig.Dialogs[6].Attributes.Count);
 			Assert.AreEqual("true", StateInfoConfig.Dialogs[6].Attributes["other"]);
-			Assert.AreEqual(" d6", StateInfoConfig.Dialogs[6].Attributes["path"]);
+			Assert.AreEqual(" d6", StateInfoConfig.Dialogs[6].Attributes[1]);
 		}
 
 		[TestMethod]
@@ -262,13 +259,9 @@ namespace Navigation.Test
 		[TestMethod]
 		public void AttributesTest()
 		{
-			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
-			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["key"]);
-			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["title"]);
-			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[2]);
-			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
-			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["key"]);
-			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["title"]);
+			Assert.AreEqual(1, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
+			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[0]);
+			Assert.AreEqual(1, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
 			Assert.AreEqual("~/d6/s1.aspx", StateInfoConfig.Dialogs[6].States[1].Attributes["handler"]);
 		}
 
@@ -377,7 +370,7 @@ namespace Navigation.Test
 			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 4);
 			Assert.IsTrue(dialogs[0].States[1].Derived.Count == 3);
 			Assert.IsTrue(dialogs[0].States[2].Derived.Count == 2);
-			Assert.IsTrue(dialogs[6].Attributes.Count == 5);
+			Assert.IsTrue(dialogs[6].Attributes.Count == 2);
 		}
 
 		[TestMethod]
@@ -492,6 +485,59 @@ namespace Navigation.Test
 		{
 			StateInfoCollection<object> defaults = StateInfoConfig.Dialogs[1].States[1].Defaults;
 			Assert.AreEqual("h", defaults["g1"]);
+		}
+
+		[TestMethod]
+		public void StateInfoConfigTest()
+		{
+			var dialogs = (StateInfoCollection<Dialog>)ConfigurationManager.GetSection("Navigation/StateInfo");
+			foreach(Dialog dialogA in dialogs)
+			{
+				var dialogB = StateInfoConfig.Dialogs[dialogA.Index];
+				Assert.AreEqual(dialogA.Key, dialogB.Key);
+				Assert.AreEqual(dialogA.Initial.Key, dialogB.Initial.Key);
+				Assert.AreEqual(dialogA.Path, dialogB.Path);
+				Assert.AreEqual(dialogA.Title, dialogB.Title);
+				foreach (string attributeKey in dialogA.Attributes.Keys)
+				{
+					if (attributeKey != "key" && attributeKey != "title" && attributeKey != "resourceKey" && attributeKey != "resourceType" && attributeKey != "initial")
+						Assert.AreEqual(dialogA.Attributes[attributeKey], dialogB.Attributes[attributeKey]);
+				}
+				foreach (State stateA in dialogA.States)
+				{
+					var stateB = StateInfoConfig.Dialogs[dialogA.Index].States[stateA.Index];
+					Assert.AreEqual(stateA.Key, stateB.Key);
+					Assert.AreEqual(stateA.Route, stateB.Route);
+					Assert.AreEqual(stateA.Page, stateB.Page);
+					Assert.AreEqual(stateA.Title, stateB.Title);
+					Assert.AreEqual(stateA.Theme, stateB.Theme);
+					Assert.AreEqual(stateA.MobilePage, stateB.MobilePage);
+					Assert.AreEqual(stateA.MobileRoute, stateB.MobileRoute);
+					Assert.AreEqual(stateA.MobileTheme, stateB.MobileTheme);
+					Assert.AreEqual(stateA.TrackCrumbTrail, stateB.TrackCrumbTrail);
+					Assert.AreEqual(stateA.CheckPhysicalUrlAccess, stateB.CheckPhysicalUrlAccess);
+					foreach (string defaultKey in stateA.Defaults.Keys)
+						Assert.AreEqual(stateA.Defaults[defaultKey], stateB.Defaults[defaultKey]);
+					foreach (string defaultTypeKey in stateA.DefaultTypes.Keys)
+						Assert.AreEqual(stateA.DefaultTypes[defaultTypeKey], stateB.DefaultTypes[defaultTypeKey]);
+					for (int i = 0; i < stateA.Masters.Count; i++)
+						Assert.AreEqual(stateA.Masters[i], stateB.Masters[i]);
+					for (int i = 0; i < stateA.MobileMasters.Count; i++)
+						Assert.AreEqual(stateA.MobileMasters[i], stateB.MobileMasters[i]);
+					foreach (string attributeKey in stateA.Attributes.Keys)
+					{
+						if (attributeKey != "key" && attributeKey != "title" && attributeKey != "resourceKey" && attributeKey != "resourceType"
+							 && attributeKey != "defaults" && attributeKey != "defaultTypes" && attributeKey != "derived" && attributeKey != "trackCrumbTrail")
+							Assert.AreEqual(stateA.Attributes[attributeKey], stateB.Attributes[attributeKey]);
+					}
+					foreach (Transition transitionA in stateA.Transitions)
+					{
+						var transitionB = StateInfoConfig.Dialogs[dialogA.Index].States[stateA.Index].Transitions[transitionA.Index];
+						Assert.AreEqual(transitionA.Key, transitionB.Key);
+						Assert.AreEqual(transitionA.To.Key, transitionB.To.Key);
+					}
+				}
+			}
 		}
 
 		[TestMethod]
