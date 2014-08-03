@@ -17,6 +17,8 @@ namespace Navigation
 			if (string.IsNullOrEmpty(page))
 				throw new ArgumentException("page");
 			AddAttribute("page", page);
+			if (!string.IsNullOrEmpty(route))
+				AddAttribute("route", route);
 		}
 	}
 }
