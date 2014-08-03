@@ -221,6 +221,48 @@ namespace Navigation.Test
 					.Title("d6")
 					.Attributes(new { other = "true", path = " d6" })
 					.Transition("t0", d => d.s0, d => d.s1)
+				.Dialog("d7", new
+				{
+					s0 = new MvcState("r0", "c0", "a0")
+							.Title("s0")
+							.TrackCrumbTrail(false),
+					s1 = new MvcState("r1/{startRowIndex}/{maximumRows}", "c1", "a1")
+							.Title("s1")
+							.DefaultTypes(new { startRowIndex = typeof(int), maximumRows = typeof(int), start = typeof(int), size = typeof(int), total = typeof(int) })
+							.Defaults(new { startRowIndex = 0, maximumRows = 10 })
+							.Derived("totalRowCount")
+							.TrackCrumbTrail(false),
+					s2 = new MvcState("r2", "c2", "a2")
+							.Title("s2"),
+					s3 = new WebFormsState("r3", "~/d0/s3.aspx")
+							.Title("s3")
+				}, d => d.s0)
+					.Title("d7")
+					.Attributes(new { path = "d7" })
+					.Transition("t0", d => d.s0, d => d.s1)
+					.Transition("t0", d => d.s1, d => d.s2)
+					.Transition("t0", d => d.s2, d => d.s3)
+				.Dialog("d8", new
+				{
+					s0 = new WebApiState("w0", "c0", "a0")
+							.Title("s0")
+							.TrackCrumbTrail(false),
+					s1 = new WebApiState("w1/{startRowIndex}/{maximumRows}", "c1", "a1")
+							.Title("s1")
+							.DefaultTypes(new { startRowIndex = typeof(int), maximumRows = typeof(int), start = typeof(int), size = typeof(int), total = typeof(int) })
+							.Defaults(new { startRowIndex = 0, maximumRows = 10 })
+							.Derived("totalRowCount")
+							.TrackCrumbTrail(false),
+					s2 = new WebApiState("w2", "c2", "a2")
+							.Title("s2"),
+					s3 = new WebFormsState("w3", "~/d0/s3.aspx")
+							.Title("s3")
+				}, d => d.s0)
+					.Title("d8")
+					.Attributes(new { path = "d8" })
+					.Transition("t0", d => d.s0, d => d.s1)
+					.Transition("t0", d => d.s1, d => d.s2)
+					.Transition("t0", d => d.s2, d => d.s3)
 				.Build();
 		}
 	}
