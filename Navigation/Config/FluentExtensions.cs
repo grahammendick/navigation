@@ -51,22 +51,46 @@ namespace Navigation
 
 		public static K DefaultTypes<K>(this K state, object defaultTypes) where K : FluentState
 		{
-			foreach (PropertyDescriptor defaultTypeProperty in TypeDescriptor.GetProperties(defaultTypes))
+			var defaultTypesDictionary = defaultTypes as IDictionary<string, Type>;
+			if (defaultTypesDictionary == null)
 			{
-				var type = defaultTypeProperty.GetValue(defaultTypes) as Type;
-				if (type == null)
-					throw new ArgumentException("defaultTypes");
-				state.DefaultTypes.Add(new KeyValuePair<string, Type>(defaultTypeProperty.Name, type));
+				foreach (PropertyDescriptor defaultTypeProperty in TypeDescriptor.GetProperties(defaultTypes))
+				{
+					var type = defaultTypeProperty.GetValue(defaultTypes) as Type;
+					if (type == null)
+						throw new ArgumentException("defaultTypes");
+					state.DefaultTypes.Add(new KeyValuePair<string, Type>(defaultTypeProperty.Name, type));
+				}
+			}
+			else
+			{
+				foreach (var defaultType in defaultTypesDictionary)
+				{
+					if (defaultType.Key != null && defaultType.Value != null)
+						state.DefaultTypes.Add(new KeyValuePair<string, Type>(defaultType.Key.Trim(), defaultType.Value));
+				}
 			}
 			return state;
 		}
 
 		public static K Defaults<K>(this K state, object defaults) where K : FluentState
 		{
-			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(defaults))
+			var defaultsDictionary = defaults as IDictionary<string, object>;
+			if (defaultsDictionary == null)
 			{
-				if (defaultProperty.GetValue(defaults) != null)
-					state.Defaults.Add(new KeyValuePair<string, object>(defaultProperty.Name, defaultProperty.GetValue(defaults)));
+				foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(defaults))
+				{
+					if (defaultProperty.GetValue(defaults) != null)
+						state.Defaults.Add(new KeyValuePair<string, object>(defaultProperty.Name, defaultProperty.GetValue(defaults)));
+				}
+			}
+			else
+			{
+				foreach (var defaultItem in defaultsDictionary)
+				{
+					if (defaultItem.Key != null && defaultItem.Value != null)
+						state.Defaults.Add(new KeyValuePair<string, object>(defaultItem.Key.Trim(), defaultItem.Value));
+				}
 			}
 			return state;
 		}
@@ -92,18 +116,7 @@ namespace Navigation
 		{
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))
 			{
-				if (defaultProperty.GetValue(attributes) != null)
-					state.AddAttribute(defaultProperty.Name, Convert.ToString(defaultProperty.GetValue(attributes), CultureInfo.InvariantCulture));
-			}
-			return state;
-		}
-
-		public static K Attributes<K>(this K state, IDictionary<string, string> attributes) where K : FluentState
-		{
-			foreach (KeyValuePair<string, string> attribute in attributes)
-			{
-				if (attribute.Key != null && attribute.Value != null)
-					state.AddAttribute(attribute.Key, attribute.Value);
+				state.AddAttribute(defaultProperty.Name, Convert.ToString(defaultProperty.GetValue(attributes), CultureInfo.InvariantCulture));
 			}
 			return state;
 		}

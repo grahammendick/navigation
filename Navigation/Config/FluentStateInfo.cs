@@ -117,6 +117,7 @@ namespace Navigation
 			int transitionIndex = 0;
 			foreach (var fluentState in fluentDialog.States)
 			{
+				transitionIndex = 0;
 				foreach (var fluentTransition in fluentState.Transitions)
 				{
 					state = dialog.States[fluentState.Key];
