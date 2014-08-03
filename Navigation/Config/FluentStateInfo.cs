@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Globalization;
 
 namespace Navigation
 {
@@ -41,7 +43,7 @@ namespace Navigation
 		public void Build()
 		{
 			if (Built)
-				throw new InvalidOperationException("");
+				throw new ConfigurationErrorsException("Cannot build twice");
 			StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();
 			Dialog dialog;
 			int dialogIndex = 0;
@@ -58,7 +60,7 @@ namespace Navigation
 				foreach (var attribute in fluentDialog.Attributes)
 					dialog.Attributes[attribute.Key] = attribute.Value;
 				if (dialogs[fluentDialog.Key] != null)
-					throw new InvalidOperationException();
+					throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateDialogKey, fluentDialog.Key));
 				dialogs.Add(fluentDialog.Key, dialog);
 				ProcessStates(dialog, fluentDialog);
 				ProcessTransitions(dialog, fluentDialog);
@@ -106,7 +108,7 @@ namespace Navigation
 				state.ResourceType = fluentState.ResourceType;
 				state.ResourceKey = fluentState.ResourceKey;
 				if (dialog.States[fluentState.Key] != null)
-					throw new InvalidOperationException();
+					throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateStateKey, fluentState.Key, dialog.Key));
 				state.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;
@@ -132,7 +134,7 @@ namespace Navigation
 					transition.Key = fluentTransition.Key;
 					transition.To = dialog.States[fluentTransition.To.Key];
 					if (state.Transitions[fluentTransition.Key] != null)
-						throw new InvalidOperationException();
+						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateTransitionKey, fluentTransition.Key, state.Key));
 					state.Transitions[fluentTransition.Key] = transition;
 				}
 			}
