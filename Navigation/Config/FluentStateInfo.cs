@@ -57,10 +57,12 @@ namespace Navigation
 				dialog.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentDialog.Attributes)
 					dialog.Attributes[attribute.Key] = attribute.Value;
+				if (dialogs[fluentDialog.Key] != null)
+					throw new InvalidOperationException();
+				dialogs.Add(fluentDialog.Key, dialog);
 				ProcessStates(dialog, fluentDialog);
 				ProcessTransitions(dialog, fluentDialog);
 				dialog.Initial = dialog.States[fluentDialog.Initial.Key];
-				dialogs.Add(fluentDialog.Key, dialog);
 			}
 			StateInfoConfig.Dialogs = dialogs;
 			StateInfoConfig.AddStateRoutes();
@@ -103,6 +105,8 @@ namespace Navigation
 				state.TrackCrumbTrail = fluentState.TrackCrumbTrail;
 				state.ResourceType = fluentState.ResourceType;
 				state.ResourceKey = fluentState.ResourceKey;
+				if (dialog.States[fluentState.Key] != null)
+					throw new InvalidOperationException();
 				state.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentState.Attributes)
 					state.Attributes[attribute.Key] = attribute.Value;
@@ -127,6 +131,8 @@ namespace Navigation
 					transitionIndex++;
 					transition.Key = fluentTransition.Key;
 					transition.To = dialog.States[fluentTransition.To.Key];
+					if (state.Transitions[fluentTransition.Key] != null)
+						throw new InvalidOperationException();
 					state.Transitions[fluentTransition.Key] = transition;
 				}
 			}
