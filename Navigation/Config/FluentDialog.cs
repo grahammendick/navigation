@@ -82,11 +82,8 @@ namespace Navigation
 
 		protected internal void AddAttribute(string key, string value)
 		{
-			if (string.IsNullOrEmpty(key))
-				throw new ArgumentException("key");
-			if (string.IsNullOrEmpty(value))
-				throw new ArgumentException("value");
-			_Attributes.Add(new KeyValuePair<string, string>(key, value));
+			if (key != null)
+				_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 	}
 

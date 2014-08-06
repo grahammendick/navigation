@@ -124,9 +124,8 @@ namespace Navigation
 
 		protected internal void AddAttribute(string key, string value)
 		{
-			if (string.IsNullOrEmpty(key))
-				throw new ArgumentException("key");
-			_Attributes.Add(new KeyValuePair<string, string>(key, value));
+			if (key != null)
+				_Attributes.Add(new KeyValuePair<string, string>(key, value));
 		}
 
 		internal void AddTransition(string key, FluentState to)
