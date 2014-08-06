@@ -31,7 +31,7 @@ namespace Navigation.Test
 							.Defaults(new { @string = typeof(string), @bool = typeof(bool), @int = typeof(int), @short = typeof(short), @long = typeof(long), @float = typeof(float), @double = typeof(double), @decimal = typeof(decimal), DateTime = typeof(DateTime), TimeSpan = typeof(TimeSpan), @byte = typeof(byte), @char = typeof(char), Guid = typeof(Guid) }),
 				}, d => d.s0)
 					.Title("d0")
-					.Attributes(new { path = " d0 " })
+					.Path(" d0 ")
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t1", d => d.s0, d => d.s2)
 					.Transition("t2", d => d.s0, d => d.s3)
@@ -103,7 +103,7 @@ namespace Navigation.Test
 							.Title("s6"),
 				}, d => d.s0)
 					.Title("d2")
-					.Attributes(new { path = "d2" })
+					.Path("d2")
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
@@ -170,7 +170,7 @@ namespace Navigation.Test
 							.Attributes(new { mobileRoute = "md4s5 " }),
 				}, d => d.s0)
 					.Title("d4")
-					.Attributes(new { path = "d4" })
+					.Path("d4")
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
@@ -260,7 +260,7 @@ namespace Navigation.Test
 							.Title("s3")
 				}, d => d.s0)
 					.Title("d8")
-					.Attributes(new { path = "d8" })
+					.Path("d8")
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
