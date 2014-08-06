@@ -8,12 +8,6 @@ namespace Navigation
 {
 	public class FluentStateInfo
 	{
-		private bool Built
-		{
-			get;
-			set;
-		}
-
 		private List<FluentDialog> Dialogs
 		{
 			get;
@@ -42,8 +36,6 @@ namespace Navigation
 
 		public void Build()
 		{
-			if (Built)
-				throw new ConfigurationErrorsException("Cannot build twice");
 			StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();
 			Dialog dialog;
 			int dialogIndex = 0;
@@ -68,8 +60,6 @@ namespace Navigation
 			}
 			StateInfoConfig.Dialogs = dialogs;
 			StateInfoConfig.AddStateRoutes();
-			Dialogs.Clear();
-			Built = true;
 		}
 
 		private static void ProcessStates(Dialog dialog, FluentDialog fluentDialog)
