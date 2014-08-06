@@ -27,8 +27,8 @@ namespace Navigation
 				throw new ArgumentNullException("states");
 			if (initial == null)
 				throw new ArgumentNullException("initial");
-			if (string.IsNullOrEmpty(key))
-				throw new ArgumentException("key");
+			if (key == null)
+				throw new ArgumentNullException("key");
 			var dialog = new FluentDialog<TStates, TInitial>(this, key, states, initial(states));
 			Dialogs.Add(dialog);
 			return dialog;

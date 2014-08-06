@@ -86,9 +86,8 @@ namespace Navigation
 		{
 			foreach (var key in derived)
 			{
-				if (string.IsNullOrEmpty(key))
-					throw new ArgumentException("derived");
-				state.Derived.Add(key.Trim());
+				if (key != null)
+					state.Derived.Add(key.Trim());
 			}
 			return state;
 		}
