@@ -3,7 +3,7 @@
 namespace Navigation
 {
 	/// <summary>
-	/// Configures Web Forms state information. A child of a <see cref="FluentDialog"/>
+	/// Configures Web Forms <see cref="State"/> information. A child of a <see cref="FluentDialog"/>
 	/// element, it represents the endpoint of a navigation
 	/// </summary>
 	public class WebFormsState : FluentState
