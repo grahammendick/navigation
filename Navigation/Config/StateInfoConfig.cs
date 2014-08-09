@@ -16,10 +16,8 @@ namespace Navigation
 	public static class StateInfoConfig
 	{
 		private static StateInfoCollection<Dialog> _Dialogs;
-#if NET35Plus
-		private static FluentStateInfo _Fluent = new FluentStateInfo();
-#endif
 #if NET40Plus
+		private static FluentStateInfo _Fluent = new FluentStateInfo();
 		private static bool _RoutesAdded = false;
 #endif
 		private static Dictionary<string, Type> _KeyToTypeList = CreateKeyToTypeList();
@@ -153,7 +151,7 @@ namespace Navigation
 			}
 		}
 
-#if NET35Plus
+#if NET40Plus
 		/// <summary>
 		/// Gets a fluent builder of the <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
 		/// and <see cref="Navigation.Transition"/> configuration
@@ -165,9 +163,7 @@ namespace Navigation
 				return _Fluent;
 			}
 		}
-#endif
 
-#if NET40Plus
 		/// <summary>
 		/// Registers all <see cref="Navigation.State.Route"/> configuration information.
 		/// This method is called automatically by ASP.NET and should not be called manually

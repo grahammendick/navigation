@@ -1,4 +1,4 @@
-﻿#if NET35Plus
+﻿#if NET40Plus
 namespace Navigation
 {
 	public static partial class FluentExtensions
@@ -19,7 +19,6 @@ namespace Navigation
 			return dialog;
 		}
 
-#if NET40Plus
 		/// <summary>
 		/// Sets a value that indicates whether ASP.NET should validate that the user has authority to access the 
 		/// physical page
@@ -33,7 +32,6 @@ namespace Navigation
 			state.AddAttribute("checkPhysicalUrlAccess", check ? "true" : "false");
 			return state;
 		}
-#endif
 	}
 }
 #endif

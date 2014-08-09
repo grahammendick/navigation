@@ -1,4 +1,4 @@
-﻿#if NET35Plus
+﻿#if NET40Plus
 namespace Navigation
 {
 	internal class FluentTransition

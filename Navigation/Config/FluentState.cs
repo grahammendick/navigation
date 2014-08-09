@@ -1,4 +1,4 @@
-﻿#if NET35Plus
+﻿#if NET40Plus
 using System;
 using System.Collections.Generic;
 
@@ -37,13 +37,11 @@ namespace Navigation
 			}
 		}
 
-#if NET40Plus
 		internal string Route 
 		{ 
 			get;
 			set;
 		}
-#endif
 
 		internal List<KeyValuePair<string, Type>> DefaultTypes
 		{
@@ -121,14 +119,6 @@ namespace Navigation
 			}
 		}
 
-#if !NET40Plus
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FluentState"/> class
-		/// </summary>
-		protected FluentState()
-		{
-		}
-#else
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FluentState"/> class
 		/// </summary>
@@ -139,7 +129,6 @@ namespace Navigation
 			if (!string.IsNullOrEmpty(route))
 				AddAttribute("route", route);
 		}
-#endif
 
 		/// <summary>
 		/// Adds a <see cref="State"/> attribute
