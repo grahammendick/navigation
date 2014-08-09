@@ -222,6 +222,7 @@ namespace Navigation.Test
 					.Title("d6")
 					.Attributes(new { other = "true", path = " d6" })
 					.Transition("t0", d => d.s0, d => d.s1)
+#if NET40Plus
 				.Dialog("d7", new
 				{
 					s0 = new MvcState("r0", "c0", "a0")
@@ -264,6 +265,7 @@ namespace Navigation.Test
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
+#endif
 				.Build();
 		}
 	}
