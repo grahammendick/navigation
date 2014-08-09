@@ -6,11 +6,9 @@ namespace Navigation
 	{
 #if !NET40Plus
 		public WebFormsState(string page)
-			: this(string.Empty, page)
 		{
 		}
-#endif
-
+#else
 		public WebFormsState(string route, string page)
 			: base(route)
 		{
@@ -18,5 +16,6 @@ namespace Navigation
 				throw new ArgumentException("page");
 			AddAttribute("page", page);
 		}
+#endif
 	}
 }
