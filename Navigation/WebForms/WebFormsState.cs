@@ -1,4 +1,4 @@
-﻿#if NET35Plus
+﻿#if NET40Plus
 using System;
 
 namespace Navigation
@@ -8,15 +8,6 @@ namespace Navigation
 	/// </summary>
 	public class WebFormsState : FluentState
 	{
-#if !NET40Plus
-		/// <summary>
-		/// Initializes a new instance of the <see cref="WebFormsState"/> class
-		/// </summary>
-		/// <param name="page">The aspx page</param>
-		public WebFormsState(string page)
-		{
-		}
-#else
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebFormsState"/> class
 		/// </summary>
@@ -29,7 +20,6 @@ namespace Navigation
 				throw new ArgumentException("page");
 			AddAttribute("page", page);
 		}
-#endif
 	}
 }
 #endif
