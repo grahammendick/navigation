@@ -47,8 +47,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets the number of the transition within its <see cref="Parent"/> as read
-		/// sequentially from the configuration section
+		/// Gets the number of the transition within its <see cref="Parent"/>
 		/// </summary>
 		public int Index
 		{

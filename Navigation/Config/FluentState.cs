@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Navigation
 {
+	/// <summary>
+	/// Configures <see cref="State"/> information. A child of a <see cref="FluentDialog"/> element
+	/// </summary>
 	public abstract class FluentState
 	{
 		private string _Title;
@@ -118,10 +121,17 @@ namespace Navigation
 		}
 
 #if !NET40Plus
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FluentState"/> class
+		/// </summary>
 		protected FluentState()
 		{
 		}
 #else
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FluentState"/> class
+		/// </summary>
+		/// <param name="route">The route Url pattern</param>
 		protected FluentState(string route)
 		{
 			Route = route ?? string.Empty;
@@ -130,6 +140,11 @@ namespace Navigation
 		}
 #endif
 
+		/// <summary>
+		/// Adds a <see cref="State"/> attribute
+		/// </summary>
+		/// <param name="key">The attribute key</param>
+		/// <param name="value">The attribute value</param>
 		protected internal void AddAttribute(string key, string value)
 		{
 			if (key != null)

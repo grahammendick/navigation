@@ -33,7 +33,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets the number of the dialog as read sequentially from the configuration section
+		/// Gets the number of the dialog
 		/// </summary>
 		public int Index
 		{
@@ -124,7 +124,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// Gets the list of attributes as read from the configuration section
+		/// Gets the list of attributes
 		/// </summary>
 		public StateInfoCollection<string> Attributes
 		{
