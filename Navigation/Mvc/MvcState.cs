@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET40Plus
+using System;
 
 namespace Navigation
 {
@@ -25,3 +26,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

@@ -33,11 +33,13 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		internal string Route 
 		{ 
 			get;
 			set;
 		}
+#endif
 
 		internal List<KeyValuePair<string, Type>> DefaultTypes
 		{
@@ -115,12 +117,18 @@ namespace Navigation
 			}
 		}
 
+#if !NET40Plus
+		protected FluentState()
+		{
+		}
+#else
 		protected FluentState(string route)
 		{
 			Route = route ?? string.Empty;
 			if (!string.IsNullOrEmpty(route))
 				AddAttribute("route", route);
 		}
+#endif
 
 		protected internal void AddAttribute(string key, string value)
 		{
