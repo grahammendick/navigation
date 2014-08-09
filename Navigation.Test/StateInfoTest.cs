@@ -125,9 +125,17 @@ namespace Navigation.Test
 		[TestMethod]
 		public void DialogAttributesTest()
 		{
+#if NET40Plus
 			Assert.AreEqual(2, StateInfoConfig.Dialogs[6].Attributes.Count);
 			Assert.AreEqual("true", StateInfoConfig.Dialogs[6].Attributes["other"]);
 			Assert.AreEqual(" d6", StateInfoConfig.Dialogs[6].Attributes[1]);
+#else
+			Assert.AreEqual(5, StateInfoConfig.Dialogs[6].Attributes.Count);
+			Assert.AreEqual("d6", StateInfoConfig.Dialogs[6].Attributes["key"]);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].Attributes[1]);
+			Assert.AreEqual("d6", StateInfoConfig.Dialogs[6].Attributes["title"]);
+			Assert.AreEqual(" d6", StateInfoConfig.Dialogs[6].Attributes["path"]);
+#endif
 		}
 
 		[TestMethod]
@@ -261,9 +269,19 @@ namespace Navigation.Test
 		[TestMethod]
 		public void AttributesTest()
 		{
+#if NET40Plus
 			Assert.AreEqual(1, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
 			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[0]);
 			Assert.AreEqual(1, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
+#else
+			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["key"]);
+			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["title"]);
+			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[2]);
+			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
+			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["key"]);
+			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["title"]);
+#endif
 			Assert.AreEqual("~/d6/s1.aspx", StateInfoConfig.Dialogs[6].States[1].Attributes["handler"]);
 		}
 
@@ -368,11 +386,17 @@ namespace Navigation.Test
 			Assert.AreEqual(dialogs[0].States[0].Transitions[0].Parent, dialogs[0].States[0]);
 			Assert.IsTrue(dialogs[0].States[1].Defaults.Count == 6);
 			Assert.IsTrue(dialogs[0].States[2].Defaults.Count == 6);
-			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 6);
-			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 7);
 			Assert.IsTrue(dialogs[0].States[1].Derived.Count == 3);
 			Assert.IsTrue(dialogs[0].States[2].Derived.Count == 2);
+#if NET40Plus
+			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 6);
+			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 7);
 			Assert.IsTrue(dialogs[6].Attributes.Count == 2);
+#else
+			Assert.IsTrue(dialogs[0].States[1].DefaultTypes.Count == 3);
+			Assert.IsTrue(dialogs[0].States[2].DefaultTypes.Count == 4);
+			Assert.IsTrue(dialogs[6].Attributes.Count == 5);
+#endif
 		}
 
 		[TestMethod]
