@@ -8,8 +8,8 @@ using System.Web;
 namespace Navigation
 {
 	/// <summary>
-	/// Configures state information contained in the Navigation/StateInfo section. A child
-	/// of a <see cref="Navigation.Dialog"/> element, it represents the endpoint of a navigation
+	/// Configures state information. A child of a <see cref="Navigation.Dialog"/> element, it represents
+	/// the endpoint of a navigation
 	/// </summary>
 	[Serializable]
 	public partial class State

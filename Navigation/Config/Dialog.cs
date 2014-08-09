@@ -5,9 +5,8 @@ using System.Web;
 namespace Navigation
 {
 	/// <summary>
-	/// Configures dialog information contained in the Navigation/StateInfo section. Represents 
-	/// a logical grouping of child <see cref="Navigation.State"/> elements. Navigating across
-	/// different dialogs will initialise the crumb trail
+	/// Configures dialog information. Represents a logical grouping of child <see cref="Navigation.State"/> elements.
+	/// Navigating across different dialogs will initialise the crumb trail
 	/// </summary>
 	[Serializable]
 	public partial class Dialog
