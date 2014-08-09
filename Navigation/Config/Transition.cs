@@ -3,9 +3,8 @@ using System;
 namespace Navigation
 {
 	/// <summary>
-	/// Configures transition information contained in the Navigation/StateInfo section. A child
-	/// of a <see cref="Navigation.State"/> element it represents a possible navigation from its 
-	/// <see cref="Parent"/> to a sibling <see cref="Navigation.State"/>
+	/// Configures transition information. A child of a <see cref="Navigation.State"/> element it represents
+	/// a possible navigation from its <see cref="Parent"/> to a sibling <see cref="Navigation.State"/>
 	/// </summary>
 	[Serializable]
 	public class Transition
