@@ -32,7 +32,7 @@ namespace Navigation.Test
 							.Defaults(new { @string = typeof(string), @bool = typeof(bool), @int = typeof(int), @short = typeof(short), @long = typeof(long), @float = typeof(float), @double = typeof(double), @decimal = typeof(decimal), DateTime = typeof(DateTime), TimeSpan = typeof(TimeSpan), @byte = typeof(byte), @char = typeof(char), Guid = typeof(Guid) }),
 				}, d => d.s0)
 					.Title("d0")
-					.Path(" d0 ")
+					.Attributes(new { path = " d0 " })
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t1", d => d.s0, d => d.s2)
 					.Transition("t2", d => d.s0, d => d.s3)
@@ -53,7 +53,7 @@ namespace Navigation.Test
 							.Title("s1")
 							.Defaults(new { s1 = typeof(string), s2 = typeof(bool), b1 = typeof(bool), b2 = typeof(int), i1 = typeof(int), i2 = typeof(short), sh1 = typeof(short), sh2 = typeof(long), l1 = typeof(long), l2 = typeof(float), f1 = typeof(float), f2 = typeof(double), d1 = typeof(double), d2 = typeof(decimal), de1 = typeof(decimal), de2 = typeof(DateTime), dt1 = typeof(DateTime), dt2 = typeof(TimeSpan), t1 = typeof(TimeSpan), by1 = typeof(byte), by2 = typeof(char), ch1 = typeof(char), ch2 = typeof(Guid), g1 = typeof(Guid) })
 							.Defaults(new Dictionary<string, object> { { "  &s0", "a" } })
-							.Defaults(new { s1 = "b", s2 = "c", s3 = "d", b1 = true, b2 = false, b3 = true, i1 = 0, i2 =1, i3 = 2, sh1 = (short) 3, sh2 = (short) 4, sh3 = (short) 5, l1 = 6L, l2 = 7L, l3 = 8L, f1 = 9F, f2 = 10F, f3 = 11F, d1 = 12D, d2 = 13D,d3 = 14D, de1 = 15M, de2 = 16M, de3 = 17M, dt1 = new DateTime(1990, 3, 1, 12, 35, 47), dt2 = new DateTime(1991, 4, 2, 13, 36, 48), dt3 = new DateTime(1992, 5, 3, 14, 37, 49), t1 = "d", by1 = (byte) 18, by2 = (byte) 19, by3 = (byte) 20, ch1 = 'e', ch2 = 'f', ch3 = 'g', g1 ="h" })
+							.Defaults(new { s1 = "b", s2 = "c", s3 = "d", b1 = true, b2 = false, b3 = true, i1 = 0, i2 = 1, i3 = 2, sh1 = (short)3, sh2 = (short)4, sh3 = (short)5, l1 = 6L, l2 = 7L, l3 = 8L, f1 = 9F, f2 = 10F, f3 = 11F, d1 = 12D, d2 = 13D, d3 = 14D, de1 = 15M, de2 = 16M, de3 = 17M, dt1 = new DateTime(1990, 3, 1, 12, 35, 47), dt2 = new DateTime(1991, 4, 2, 13, 36, 48), dt3 = new DateTime(1992, 5, 3, 14, 37, 49), t1 = "d", by1 = (byte)18, by2 = (byte)19, by3 = (byte)20, ch1 = 'e', ch2 = 'f', ch3 = 'g', g1 = "h" })
 							.Attributes(new { masters = ",", mobilePage = "  ~/mobile/d1/s1.aspx " }),
 					s2 = new WebFormsState("", "~/d1/s2.aspx")
 							.Title("s2")
@@ -104,7 +104,7 @@ namespace Navigation.Test
 							.Title("s6"),
 				}, d => d.s0)
 					.Title("d2")
-					.Path("d2")
+					.Attributes(new { path = "d2" })
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
@@ -159,7 +159,7 @@ namespace Navigation.Test
 							.Title("s1")
 							.Defaults(new { s1 = typeof(string), s2 = typeof(bool), b1 = typeof(bool), b2 = typeof(int), i1 = typeof(int), i2 = typeof(short), sh1 = typeof(short), sh2 = typeof(long), l1 = typeof(long), l2 = typeof(float), f1 = typeof(float), f2 = typeof(double), d1 = typeof(double), d2 = typeof(decimal), de1 = typeof(decimal), de2 = typeof(DateTime), dt1 = typeof(DateTime), dt2 = typeof(TimeSpan), t1 = typeof(TimeSpan), by1 = typeof(byte), by2 = typeof(char), ch1 = typeof(char), ch2 = typeof(Guid), g1 = typeof(Guid) })
 							.Defaults(new Dictionary<string, object> { { "  &s0", "a" } })
-							.Defaults(new { s1 = "b", s2 = "c", s3 = "d", b1 = true, b2 = false, b3 = true, i1 = 0, i2 =1, i3 = 2, sh1 = (short) 3, sh2 = (short) 4, sh3 = (short) 5, l1 = 6L, l2 = 7L, l3 = 8L, f1 = 9F, f2 = 10F, f3 = 11F, d1 = 12D, d2 = 13D,d3 = 14D, de1 = 15M, de2 = 16M, de3 = 17M, dt1 = new DateTime(1990, 3, 1, 12, 35, 47), dt2 = new DateTime(1991, 4, 2, 13, 36, 48), dt3 = new DateTime(1992, 5, 3, 14, 37, 49), t1 = "d", by1 = (byte) 18, by2 = (byte) 19, by3 = (byte) 20, ch1 = 'e', ch2 = 'f', ch3 = 'g', g1 ="h" }),
+							.Defaults(new { s1 = "b", s2 = "c", s3 = "d", b1 = true, b2 = false, b3 = true, i1 = 0, i2 = 1, i3 = 2, sh1 = (short)3, sh2 = (short)4, sh3 = (short)5, l1 = 6L, l2 = 7L, l3 = 8L, f1 = 9F, f2 = 10F, f3 = 11F, d1 = 12D, d2 = 13D, d3 = 14D, de1 = 15M, de2 = 16M, de3 = 17M, dt1 = new DateTime(1990, 3, 1, 12, 35, 47), dt2 = new DateTime(1991, 4, 2, 13, 36, 48), dt3 = new DateTime(1992, 5, 3, 14, 37, 49), t1 = "d", by1 = (byte)18, by2 = (byte)19, by3 = (byte)20, ch1 = 'e', ch2 = 'f', ch3 = 'g', g1 = "h" }),
 					s2 = new WebFormsState("d4s2", "~/d4/s2.aspx")
 							.Title("s2"),
 					s3 = new WebFormsState("d4s3", "~/d4/s3.aspx")
@@ -171,7 +171,7 @@ namespace Navigation.Test
 							.Attributes(new { mobileRoute = "md4s5 " }),
 				}, d => d.s0)
 					.Title("d4")
-					.Path("d4")
+					.Attributes(new { path = "d4" })
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
@@ -261,7 +261,7 @@ namespace Navigation.Test
 							.Title("s3")
 				}, d => d.s0)
 					.Title("d8")
-					.Path("d8")
+					.Attributes(new { path = "d8" })
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t0", d => d.s1, d => d.s2)
 					.Transition("t0", d => d.s2, d => d.s3)
