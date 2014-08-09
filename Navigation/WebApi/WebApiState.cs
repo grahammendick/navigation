@@ -4,7 +4,7 @@ using System;
 namespace Navigation
 {
 	/// <summary>
-	/// Configures Web Api state information. A child of a <see cref="FluentDialog"/>
+	/// Configures Web Api <see cref="State"/> information. A child of a <see cref="FluentDialog"/>
 	/// element, it represents the endpoint of a navigation
 	/// </summary>
 	public class WebApiState : FluentState

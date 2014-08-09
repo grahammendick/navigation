@@ -6,6 +6,10 @@ using System.Globalization;
 
 namespace Navigation
 {
+	/// <summary>
+	/// Fluently builds the <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
+	/// and <see cref="Navigation.Transition"/> configuration
+	/// </summary>
 	public class FluentStateInfo
 	{
 		private List<FluentDialog> Dialogs
@@ -19,6 +23,16 @@ namespace Navigation
 			Dialogs = new List<FluentDialog>();
 		}
 
+		/// <summary>
+		/// Configures <see cref="Dialog"/> information and represents a logical grouping of 
+		/// child <see cref="FluentState"/> elements
+		/// </summary>
+		/// <typeparam name="TStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="TInitial">Selects the state to navigate to</typeparam>
+		/// <param name="key">The unique dialog key</param>
+		/// <param name="states">The <see cref="FluentState"/> children</param>
+		/// <param name="initial">The state to navigate to</param>
+		/// <returns><see cref="FluentDialog"/> holding <see cref="Dialog"/> information</returns>
 		public FluentDialog<TStates, TInitial> Dialog<TStates, TInitial>(string key, TStates states, Func<TStates, TInitial> initial)
 			where TStates : class
 			where TInitial : FluentState
@@ -34,6 +48,10 @@ namespace Navigation
 			return dialog;
 		}
 
+		/// <summary>
+		/// Builds the <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
+		/// and <see cref="Navigation.Transition"/> configuration
+		/// </summary>
 		public void Build()
 		{
 			StateInfoCollection<Dialog> dialogs = new StateInfoCollection<Dialog>();

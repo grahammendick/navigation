@@ -11,7 +11,7 @@ namespace Navigation
 {
 	/// <summary>
 	/// Provides static access to the <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
-	/// and <see cref="Navigation.Transition"/> configuration in the Navigation/StateInfo section
+	/// and <see cref="Navigation.Transition"/> configuration
 	/// </summary>
 	public static class StateInfoConfig
 	{
@@ -151,6 +151,10 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets a fluent builder of the <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
+		/// and <see cref="Navigation.Transition"/> configuration
+		/// </summary>
 		public static FluentStateInfo Fluent
 		{
 			get
