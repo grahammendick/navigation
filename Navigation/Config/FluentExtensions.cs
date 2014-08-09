@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET35Plus
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -180,3 +181,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

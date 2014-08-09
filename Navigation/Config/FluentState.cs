@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET35Plus
+using System;
 using System.Collections.Generic;
 
 namespace Navigation
@@ -157,3 +158,4 @@ namespace Navigation
 		}
 	}
 }
+#endif

@@ -1,4 +1,5 @@
-﻿namespace Navigation.Test
+﻿#if NET40Plus
+namespace Navigation.Test
 {
 	public class CustomState : FluentState
 	{
@@ -9,3 +10,4 @@
 		}
 	}
 }
+#endif
