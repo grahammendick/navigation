@@ -4,8 +4,7 @@ using System;
 namespace Navigation
 {
 	/// <summary>
-	/// Configures Mvc <see cref="State"/> information. A child of a <see cref="FluentDialog"/>
-	/// element, it represents the endpoint of a navigation
+	/// Configures Mvc <see cref="State"/> information. A child of a <see cref="FluentDialog"/> element
 	/// </summary>
 	public class MvcState : FluentState
 	{

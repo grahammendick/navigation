@@ -5,8 +5,20 @@ using System.Globalization;
 
 namespace Navigation
 {
+	/// <summary>
+	/// Represents support for fluently building <see cref="Navigation.Dialog"/>, <see cref="Navigation.State"/>
+	/// and <see cref="Navigation.Transition"/> configuration
+	/// </summary>
 	public static partial class FluentExtensions
 	{
+		/// <summary>
+		/// Sets the textual description of the <see cref="Dialog"/>
+		/// </summary>
+		/// <typeparam name="UStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="UInitial">Selects the state to navigate to</typeparam>
+		/// <param name="dialog">The <see cref="FluentDialog"/></param>
+		/// <param name="title">The textual description</param>
+		/// <returns>The <see cref="FluentDialog"/></returns>
 		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, string title)
 			where UStates : class
 			where UInitial : FluentState
@@ -15,6 +27,15 @@ namespace Navigation
 			return dialog;
 		}
 
+		/// <summary>
+		/// Sets the textual description of the <see cref="Dialog"/>
+		/// </summary>
+		/// <typeparam name="UStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="UInitial">Selects the state to navigate to</typeparam>
+		/// <param name="dialog">The <see cref="FluentDialog"/></param>
+		/// <param name="resourceType">The resource type</param>
+		/// <param name="resourceKey">The resource key</param>
+		/// <returns>The <see cref="FluentDialog"/></returns>
 		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, string resourceType, string resourceKey)
 			where UStates : class
 			where UInitial : FluentState
@@ -24,6 +45,14 @@ namespace Navigation
 			return dialog;
 		}
 
+		/// <summary>
+		/// Adds <see cref="Dialog"/> attributes
+		/// </summary>
+		/// <typeparam name="UStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="UInitial">Selects the state to navigate to</typeparam>
+		/// <param name="dialog">The <see cref="FluentDialog"/></param>
+		/// <param name="attributes">The attributes</param>
+		/// <returns>The <see cref="FluentDialog"/></returns>
 		public static FluentDialog<UStates, UInitial> Attributes<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, object attributes)
 			where UStates : class
 			where UInitial : FluentState
@@ -36,12 +65,27 @@ namespace Navigation
 			return dialog;
 		}
 
+		/// <summary>
+		/// Sets the textual description of the <see cref="State"/>
+		/// </summary>
+		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
+		/// <param name="state">The <see cref="FluentState"/></param>
+		/// <param name="title">The textual description</param>
+		/// <returns>The <see cref="FluentState"/></returns>
 		public static K Title<K>(this K state, string title) where K : FluentState
 		{
 			state.Title = title;
 			return state;
 		}
 
+		/// <summary>
+		/// Sets the textual description of the <see cref="State"/>
+		/// </summary>
+		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
+		/// <param name="state">The <see cref="FluentState"/></param>
+		/// <param name="resourceType">The resource type</param>
+		/// <param name="resourceKey">The resource key</param>
+		/// <returns>The <see cref="FluentState"/></returns>
 		public static K Title<K>(this K state, string resourceType, string resourceKey) where K : FluentState
 		{
 			state.ResourceType = resourceType;
@@ -49,6 +93,13 @@ namespace Navigation
 			return state;
 		}
 
+		/// <summary>
+		/// Sets the default <see cref="NavigationData"/>
+		/// </summary>
+		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
+		/// <param name="state">The <see cref="FluentState"/></param>
+		/// <param name="defaults">The default <see cref="NavigationData"/></param>
+		/// <returns>The <see cref="FluentState"/></returns>
 		public static K Defaults<K>(this K state, object defaults) where K : FluentState
 		{
 			var defaultsDictionary = defaults as IDictionary<string, object>;
@@ -82,6 +133,13 @@ namespace Navigation
 
 		}
 
+		/// <summary>
+		/// Sets the derived <see cref="NavigationData"/>
+		/// </summary>
+		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
+		/// <param name="state">The <see cref="FluentState"/></param>
+		/// <param name="derived">The derived <see cref="NavigationData"/></param>
+		/// <returns>The <see cref="FluentState"/></returns>
 		public static K Derived<K>(this K state, params string[] derived) where K : FluentState
 		{
 			foreach (var key in derived)
@@ -92,12 +150,26 @@ namespace Navigation
 			return state;
 		}
 
+		/// <summary>
+		/// Sets a value that indicates whether to maintain crumb trail information 
+		/// </summary>
+		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
+		/// <param name="state">The <see cref="FluentState"/></param>
+		/// <param name="trackCrumbTrail">Maintain crumb trail indicator</param>
+		/// <returns>The <see cref="FluentState"/></returns>
 		public static K TrackCrumbTrail<K>(this K state, bool trackCrumbTrail) where K : FluentState
 		{
 			state.TrackCrumbTrail = trackCrumbTrail;
 			return state;
 		}
 
+		/// <summary>
+		/// Adds <see cref="State"/> attributes
+		/// </summary>
+		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
+		/// <param name="state">The <see cref="FluentState"/></param>
+		/// <param name="attributes">The attributes</param>
+		/// <returns>The <see cref="FluentState"/></returns>
 		public static K Attributes<K>(this K state, object attributes) where K : FluentState
 		{
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))
