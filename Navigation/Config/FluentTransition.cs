@@ -1,4 +1,5 @@
-﻿namespace Navigation
+﻿#if NET35Plus
+namespace Navigation
 {
 	internal class FluentTransition
 	{
@@ -21,3 +22,4 @@
 		}
 	}
 }
+#endif

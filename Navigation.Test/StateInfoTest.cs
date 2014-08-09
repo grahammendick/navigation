@@ -34,7 +34,9 @@ namespace Navigation.Test
 		[AssemblyInitialize]
 		public static void SetCustomHandler(TestContext context)
 		{
+#if NET40Plus
 			FluentStateInfoConfig.Register(StateInfoConfig.Fluent);
+#endif
 			StateInfoConfig.Dialogs[6].States[0].StateHandler = new CustomStateHandler();
 			StateInfoConfig.Dialogs[6].States[1].StateHandler = new CustomStateHandler();
 			StateController.Navigate("d0");
@@ -487,6 +489,7 @@ namespace Navigation.Test
 			Assert.AreEqual("h", defaults["g1"]);
 		}
 
+#if NET40Plus
 		[TestMethod]
 		public void StateInfoConfigTest()
 		{
@@ -539,6 +542,7 @@ namespace Navigation.Test
 				}
 			}
 		}
+#endif
 
 		[TestMethod]
 		[ExpectedException(typeof(ConfigurationErrorsException))]

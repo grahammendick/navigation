@@ -1,4 +1,5 @@
-﻿namespace Navigation
+﻿#if NET35Plus
+namespace Navigation
 {
 	public static partial class FluentExtensions
 	{
@@ -35,3 +36,4 @@
 #endif
 	}
 }
+#endif

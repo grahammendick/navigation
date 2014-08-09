@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET35Plus
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -77,7 +78,9 @@ namespace Navigation
 				dialog.Initial = dialog.States[fluentDialog.Initial.Key];
 			}
 			StateInfoConfig.Dialogs = dialogs;
+#if NET40Plus
 			StateInfoConfig.AddStateRoutes();
+#endif
 		}
 
 		private static void ProcessStates(Dialog dialog, FluentDialog fluentDialog)
@@ -93,7 +96,9 @@ namespace Navigation
 				stateIndex++;
 				state.Key = fluentState.Key;
 				state.Title = fluentState.Title;
+#if NET40Plus
 				state.Route = fluentState.Route;
+#endif
 				state.DefaultTypes = new StateInfoCollection<Type>();
 				foreach (var defaultType in fluentState.DefaultTypes)
 					state.DefaultTypes[defaultType.Key] = defaultType.Value;
@@ -154,3 +159,4 @@ namespace Navigation
 		}
 	}
 }
+#endif
