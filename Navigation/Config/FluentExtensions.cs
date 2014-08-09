@@ -14,14 +14,14 @@ namespace Navigation
 		/// <summary>
 		/// Sets the textual description of the <see cref="Dialog"/>
 		/// </summary>
-		/// <typeparam name="UStates">Type holding the <see cref="FluentState"/> children</typeparam>
-		/// <typeparam name="UInitial">Selects the state to navigate to</typeparam>
+		/// <typeparam name="TStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="TInitial">Selects the state to navigate to</typeparam>
 		/// <param name="dialog">The <see cref="FluentDialog"/></param>
 		/// <param name="title">The textual description</param>
 		/// <returns>The <see cref="FluentDialog"/></returns>
-		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, string title)
-			where UStates : class
-			where UInitial : FluentState
+		public static FluentDialog<TStates, TInitial> Title<TStates, TInitial>(this FluentDialog<TStates, TInitial> dialog, string title)
+			where TStates : class
+			where TInitial : FluentState
 		{
 			dialog.Title = title;
 			return dialog;
@@ -30,15 +30,15 @@ namespace Navigation
 		/// <summary>
 		/// Sets the textual description of the <see cref="Dialog"/>
 		/// </summary>
-		/// <typeparam name="UStates">Type holding the <see cref="FluentState"/> children</typeparam>
-		/// <typeparam name="UInitial">Selects the state to navigate to</typeparam>
+		/// <typeparam name="TStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="TInitial">Selects the state to navigate to</typeparam>
 		/// <param name="dialog">The <see cref="FluentDialog"/></param>
 		/// <param name="resourceType">The resource type</param>
 		/// <param name="resourceKey">The resource key</param>
 		/// <returns>The <see cref="FluentDialog"/></returns>
-		public static FluentDialog<UStates, UInitial> Title<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, string resourceType, string resourceKey)
-			where UStates : class
-			where UInitial : FluentState
+		public static FluentDialog<TStates, TInitial> Title<TStates, TInitial>(this FluentDialog<TStates, TInitial> dialog, string resourceType, string resourceKey)
+			where TStates : class
+			where TInitial : FluentState
 		{
 			dialog.ResourceType = resourceType;
 			dialog.ResourceKey = resourceKey;
@@ -48,14 +48,14 @@ namespace Navigation
 		/// <summary>
 		/// Adds <see cref="Dialog"/> attributes
 		/// </summary>
-		/// <typeparam name="UStates">Type holding the <see cref="FluentState"/> children</typeparam>
-		/// <typeparam name="UInitial">Selects the state to navigate to</typeparam>
+		/// <typeparam name="TStates">Type holding the <see cref="FluentState"/> children</typeparam>
+		/// <typeparam name="TInitial">Selects the state to navigate to</typeparam>
 		/// <param name="dialog">The <see cref="FluentDialog"/></param>
 		/// <param name="attributes">The attributes</param>
 		/// <returns>The <see cref="FluentDialog"/></returns>
-		public static FluentDialog<UStates, UInitial> Attributes<UStates, UInitial>(this FluentDialog<UStates, UInitial> dialog, object attributes)
-			where UStates : class
-			where UInitial : FluentState
+		public static FluentDialog<TStates, TInitial> Attributes<TStates, TInitial>(this FluentDialog<TStates, TInitial> dialog, object attributes)
+			where TStates : class
+			where TInitial : FluentState
 		{
 			foreach (PropertyDescriptor defaultProperty in TypeDescriptor.GetProperties(attributes))
 			{
