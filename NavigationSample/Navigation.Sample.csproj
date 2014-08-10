@@ -131,6 +131,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\StateInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StateInfo.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\FluentStateInfoConfig.cs" />
     <Compile Include="Controllers\PersonApiController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
@@ -176,6 +181,12 @@
       <Project>{4ab8290d-41d9-4bc0-b7b5-a430b067be65}</Project>
       <Name>Navigation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\StateInfo.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>StateInfo.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
