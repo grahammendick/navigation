@@ -104,6 +104,7 @@
   <ItemGroup>
     <Content Include="Details.aspx" />
     <Content Include="Details.Mobile.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="Listing.aspx" />
     <Content Include="App_Browsers\Navigation.browser" />
     <Content Include="Person.html" />
@@ -131,6 +132,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\FluentStateInfoConfig.cs" />
     <Compile Include="Controllers\PersonApiController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Details.aspx.cs">
@@ -148,6 +150,9 @@
       <DependentUpon>Details.Mobile.aspx</DependentUpon>
     </Compile>
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Listing.aspx.cs">
       <DependentUpon>Listing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
