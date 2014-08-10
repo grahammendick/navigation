@@ -66,13 +66,6 @@
       <Name>Navigation</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\NavigationSample\StateInfo.config">
-      <Link>StateInfo.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="App.config" />
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
