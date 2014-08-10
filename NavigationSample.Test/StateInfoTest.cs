@@ -5,6 +5,12 @@ namespace Navigation.Sample.Test
 	[TestClass]
 	public class StateInfoTest
 	{
+		[AssemblyInitialize]
+		public static void RegisterStateInfo(TestContext context)
+		{
+			FluentStateInfoConfig.Register(StateInfoConfig.Fluent);
+		}
+
 		[TestMethod]
 		public void NavigatePersonTest()
 		{
