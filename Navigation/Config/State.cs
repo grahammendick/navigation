@@ -28,8 +28,6 @@ namespace Navigation
 		private string _Route;
 #endif
 		private bool _TrackCrumbTrail;
-		private string _ResourceType;
-		private string _ResourceKey;
 		private StateInfoCollection<string> _Attributes;
 		[NonSerialized]
 		private IStateHandler _StateHandler;
@@ -177,16 +175,20 @@ namespace Navigation
 		{
 			get
 			{
-				if (ResourceKey.Length != 0)
-				{
-					return (string)HttpContext.GetGlobalResourceObject(ResourceType, ResourceKey, Thread.CurrentThread.CurrentUICulture);
-				}
+				if (TitleFunc != null)
+					return TitleFunc();
 				return _Title;
 			}
 			internal set
 			{
 				_Title = value;
 			}
+		}
+
+		internal Func<string> TitleFunc
+		{
+			get;
+			set;
 		}
 
 #if NET40Plus
@@ -227,30 +229,6 @@ namespace Navigation
 			internal set
 			{
 				_TrackCrumbTrail = value;
-			}
-		}
-
-		internal string ResourceType
-		{
-			get
-			{
-				return _ResourceType;
-			}
-			set
-			{
-				_ResourceType = value;
-			}
-		}
-
-		internal string ResourceKey
-		{
-			get
-			{
-				return _ResourceKey;
-			}
-			set
-			{
-				_ResourceKey = value;
 			}
 		}
 
