@@ -16,8 +16,6 @@ namespace Navigation
 		private State _Initial;
 		private string _Key;
 		private string _Title;
-		private string _ResourceType;
-		private string _ResourceKey;
 		private StateInfoCollection<string> _Attributes;
 
 		/// <summary>
@@ -86,10 +84,8 @@ namespace Navigation
 		{
 			get
 			{
-				if (ResourceKey.Length != 0)
-				{
-					return (string)HttpContext.GetGlobalResourceObject(ResourceType, ResourceKey, Thread.CurrentThread.CurrentUICulture);
-				}
+				if (TitleFunc != null)
+					return TitleFunc();
 				return _Title;
 			}
 			internal set
@@ -98,28 +94,10 @@ namespace Navigation
 			}
 		}
 
-		internal string ResourceType
+		internal Func<string> TitleFunc
 		{
-			get
-			{
-				return _ResourceType;
-			}
-			set
-			{
-				_ResourceType = value;
-			}
-		}
-
-		internal string ResourceKey
-		{
-			get
-			{
-				return _ResourceKey;
-			}
-			set
-			{
-				_ResourceKey = value;
-			}
+			get;
+			set;
 		}
 
 		/// <summary>

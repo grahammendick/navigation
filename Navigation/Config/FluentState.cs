@@ -14,8 +14,6 @@ namespace Navigation
 		private List<KeyValuePair<string, object>> _Defaults = new List<KeyValuePair<string, object>>();
 		private List<string> _Derived = new List<string>();
 		private bool _TrackCrumbTrail = true;
-		private string _ResourceType;
-		private string _ResourceKey;
 		private List<KeyValuePair<string, string>> _Attributes = new List<KeyValuePair<string, string>>();
 		private List<FluentTransition> _Transitions = new List<FluentTransition>();
 
@@ -79,28 +77,10 @@ namespace Navigation
 			}
 		}
 
-		internal string ResourceType
+		internal Func<string> TitleFunc
 		{
-			get
-			{
-				return _ResourceType ?? "StateInfo";
-			}
-			set
-			{
-				_ResourceType = value;
-			}
-		}
-
-		internal string ResourceKey
-		{
-			get
-			{
-				return _ResourceKey ?? string.Empty;
-			}
-			set
-			{
-				_ResourceKey = value;
-			}
+			get;
+			set;
 		}
 
 		internal IEnumerable<KeyValuePair<string, string>> Attributes

@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
 using System.Xml;
 
 namespace Navigation
@@ -22,7 +24,7 @@ namespace Navigation
 
 			XmlNode dialogNode;
 			int i;
-			string dialogInitial;
+			string dialogInitial, resourceType, resourceKey;
 			for (i = 0; i < section.ChildNodes.Count; i++)
 			{
 				dialog = new Dialog();
@@ -39,8 +41,10 @@ namespace Navigation
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DialogAttributeMissing, "key"));
 					dialog.Key = dialogNode.Attributes["key"].Value;
 					dialog.Title = dialogNode.Attributes["title"] != null ? dialogNode.Attributes["title"].Value : string.Empty;
-					dialog.ResourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
-					dialog.ResourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
+					resourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
+					resourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
+					if (resourceKey.Length != 0)
+						dialog.TitleFunc = () => (string)HttpContext.GetGlobalResourceObject(resourceType, resourceKey, Thread.CurrentThread.CurrentUICulture);
 					dialog.Attributes = new StateInfoCollection<string>();
 					foreach (XmlAttribute attribute in dialogNode.Attributes)
 						dialog.Attributes[attribute.Name] = attribute.Value;
@@ -67,6 +71,7 @@ namespace Navigation
 			string[] derived;
 			int i;
 			bool result;
+			string resourceType, resourceKey;
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
 			{
 				state = new State();
@@ -82,6 +87,10 @@ namespace Navigation
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "key"));
 						state.Key = dialogChildNode.Attributes["key"].Value;
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
+						resourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
+						resourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
+						if (resourceKey.Length != 0)
+							state.TitleFunc = () => (string)HttpContext.GetGlobalResourceObject(resourceType, resourceKey, Thread.CurrentThread.CurrentUICulture);
 #if NET40Plus
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
 #endif
@@ -139,8 +148,6 @@ namespace Navigation
 							else
 								throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeInvalid, state.Key, "trackCrumbTrail"));
 						}
-						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
-						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
 						if (dialog.States[dialogChildNode.Attributes["key"].Value] != null)
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateStateKey, dialogChildNode.Attributes["key"].Value, dialog.Key));
 						state.Attributes = new StateInfoCollection<string>();

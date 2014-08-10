@@ -65,8 +65,7 @@ namespace Navigation
 				dialogIndex++;
 				dialog.Key = fluentDialog.Key;
 				dialog.Title = fluentDialog.Title;
-				dialog.ResourceType = fluentDialog.ResourceType;
-				dialog.ResourceKey = fluentDialog.ResourceKey;
+				dialog.TitleFunc = fluentDialog.TitleFunc;
 				dialog.Attributes = new StateInfoCollection<string>();
 				foreach (var attribute in fluentDialog.Attributes)
 					dialog.Attributes[attribute.Key] = attribute.Value;
@@ -116,8 +115,7 @@ namespace Navigation
 				}
 				state.Derived = new ReadOnlyCollection<string>(derived);
 				state.TrackCrumbTrail = fluentState.TrackCrumbTrail;
-				state.ResourceType = fluentState.ResourceType;
-				state.ResourceKey = fluentState.ResourceKey;
+				state.TitleFunc = fluentState.TitleFunc;
 				if (dialog.States[fluentState.Key] != null)
 					throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DuplicateStateKey, fluentState.Key, dialog.Key));
 				state.Attributes = new StateInfoCollection<string>();

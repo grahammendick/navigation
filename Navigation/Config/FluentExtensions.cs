@@ -34,15 +34,13 @@ namespace Navigation
 		/// <typeparam name="TStates">Type holding the <see cref="FluentState"/> children</typeparam>
 		/// <typeparam name="TInitial">Selects the state to navigate to</typeparam>
 		/// <param name="dialog">The <see cref="FluentDialog"/></param>
-		/// <param name="resourceType">The resource type</param>
-		/// <param name="resourceKey">The resource key</param>
+		/// <param name="title">Returns the textual description</param>
 		/// <returns>The <see cref="FluentDialog"/></returns>
-		public static FluentDialog<TStates, TInitial> Title<TStates, TInitial>(this FluentDialog<TStates, TInitial> dialog, string resourceType, string resourceKey)
+		public static FluentDialog<TStates, TInitial> Title<TStates, TInitial>(this FluentDialog<TStates, TInitial> dialog, Func<string> title)
 			where TStates : class
 			where TInitial : FluentState
 		{
-			dialog.ResourceType = resourceType;
-			dialog.ResourceKey = resourceKey;
+			dialog.TitleFunc = title;
 			return dialog;
 		}
 
@@ -84,13 +82,11 @@ namespace Navigation
 		/// </summary>
 		/// <typeparam name="K">The type of the <see cref="FluentState"/></typeparam>
 		/// <param name="state">The <see cref="FluentState"/></param>
-		/// <param name="resourceType">The resource type</param>
-		/// <param name="resourceKey">The resource key</param>
+		/// <param name="title">Returns the textual description</param>
 		/// <returns>The <see cref="FluentState"/></returns>
-		public static K Title<K>(this K state, string resourceType, string resourceKey) where K : FluentState
+		public static K Title<K>(this K state, Func<string> title) where K : FluentState
 		{
-			state.ResourceType = resourceType;
-			state.ResourceKey = resourceKey;
+			state.TitleFunc = title;
 			return state;
 		}
 
