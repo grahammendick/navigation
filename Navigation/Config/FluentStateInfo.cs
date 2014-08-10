@@ -102,13 +102,10 @@ namespace Navigation
 				state.FormattedDefaults = new StateInfoCollection<string>();
 				foreach (var def in fluentState.Defaults)
 				{
+					if (state.DefaultTypes[def.Key] == null)
+						state.DefaultTypes[def.Key] = def.Value.GetType();
 					state.Defaults[def.Key] = def.Value;
 					state.FormattedDefaults[def.Key] = CrumbTrailManager.FormatURLObject(def.Key, def.Value, state);
-				}
-				foreach(string defaultKey in state.Defaults.Keys)
-				{
-					if (state.DefaultTypes[defaultKey] == null)
-						state.DefaultTypes[defaultKey] = state.Defaults[defaultKey].GetType();
 				}
 				derived = new List<string>();
 				state.DerivedInternal = new Dictionary<string, string>();
