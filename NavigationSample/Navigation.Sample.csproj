@@ -113,7 +113,6 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\navigation.mvc.js" />
     <Content Include="Scripts\person.js" />
-    <Content Include="StateInfo.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Person\Listing.cshtml" />
     <Content Include="Views\web.config" />
