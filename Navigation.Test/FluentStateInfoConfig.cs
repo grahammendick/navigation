@@ -31,7 +31,7 @@ namespace Navigation.Test
 							.Title(() => "s4")
 							.Defaults(new { @string = typeof(string), @bool = typeof(bool), @int = typeof(int), @short = typeof(short), @long = typeof(long), @float = typeof(float), @double = typeof(double), @decimal = typeof(decimal), DateTime = typeof(DateTime), TimeSpan = typeof(TimeSpan), @byte = typeof(byte), @char = typeof(char), Guid = typeof(Guid) }),
 				}, d => d.s0)
-					.Title("d0")
+					.Title(() => "d0")
 					.Attributes(new { path = " d0 " })
 					.Transition("t0", d => d.s0, d => d.s1)
 					.Transition("t1", d => d.s0, d => d.s2)
