@@ -446,8 +446,7 @@ namespace Navigation
 				if (Direction == NavigationDirection.Refresh && PostBack)
 				{
 					PostBackOptions postBackOptions = new PostBackOptions(this);
-					postBackOptions.RequiresJavaScriptProtocol = true;
-					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, string.Format(CultureInfo.InvariantCulture, "{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
+					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, string.Format(CultureInfo.InvariantCulture, "if(!event.ctrlKey&&!event.shiftKey){{{0};return false;}}", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
 				}
 			}
 			base.AddAttributesToRender(writer);

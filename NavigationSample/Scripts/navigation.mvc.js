@@ -5,7 +5,8 @@
 
     win.document.addEventListener('click', function (e) {
         if (e.target.tagName && e.target.tagName === 'A'
-            && e.target.getAttribute('data-navigation') === 'refresh') {
+            && e.target.getAttribute('data-navigation') === 'refresh'
+            && !e.ctrlKey && !e.shiftKey) {
             var element = e.target;
             var ajax = true;
             while (element != null && ajax) {
