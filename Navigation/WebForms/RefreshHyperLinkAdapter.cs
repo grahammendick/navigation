@@ -32,9 +32,8 @@ namespace Navigation
 			if (HyperLink.Enabled && HyperLink.Attributes["__ToData"] != null)
 			{
 				PostBackOptions postBackOptions = new PostBackOptions(HyperLink);
-				postBackOptions.RequiresJavaScriptProtocol = true;
 				postBackOptions.Argument = REFRESH_POST_BACK;
-				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, string.Format(CultureInfo.InvariantCulture, "{0};return false", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
+				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, string.Format(CultureInfo.InvariantCulture, "if(!event.ctrlKey&&!event.shiftKey){{{0};return false;}}", Page.ClientScript.GetPostBackEventReference(postBackOptions, true)));
 			}
 			HyperLink.Attributes.Remove("__ToData");
 			base.BeginRender(writer);
