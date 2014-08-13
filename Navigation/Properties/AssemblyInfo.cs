@@ -10,7 +10,7 @@ using System.Web.UI;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Navigation")]
-[assembly: AssemblyDescription("Navigation for ASP.NET Web Forms manages movement and data passing between ASPX pages in a unit-testable manner. There is no client-side logic, so it works in all browsers, and no server-side cache, so it works with the browser back button.")]
+[assembly: AssemblyDescription("Navigation for ASP.NET is a unique take on state management in ASP.NET applications that puts the Url back into the WUrld Wide Web.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Graham Mendick")]
 [assembly: AssemblyProduct("Navigation")]
