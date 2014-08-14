@@ -21,7 +21,7 @@
                 data[elements[0].name] = elements[0].value;
             }
             e.preventDefault();
-            req.open('post', getLink(e.target.action));
+            req.open('post', getAjaxLink(e.target.action));
             req.setRequestHeader("Content-Type", "application/json");
             req.send(win.JSON.stringify(data));
         }
@@ -48,11 +48,11 @@
     function refreshAjax(newLink, addHistory) {
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = onReady(req, addHistory, newLink);
-        req.open('get', getLink(newLink));
+        req.open('get', getAjaxLink(newLink));
         req.send();
     }
 
-    function getLink(baseLink) {
+    function getAjaxLink(baseLink) {
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
         return baseLink;
