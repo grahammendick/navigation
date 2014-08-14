@@ -21,6 +21,19 @@
         }
     });
 
+    win.document.addEventListener('submit', function (e) {
+        var els = e.target.elements;
+        var req = new win.XMLHttpRequest();
+        var data = {};
+        for (var i = 0; i < els.length; i++) {
+            data[els[0].name] = els[0].value;
+        }
+        e.preventDefault();
+        req.open(e.target.method, e.target.action);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.send(JSON.stringify(data));
+    });
+
     win.addEventListener('popstate', function (e) {
         refreshAjax(win.location.pathname + win.location.search, false)
     });
@@ -51,7 +64,7 @@
         var uniqueLink = newLink;
         uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
         uniqueLink += 'refreshajax=' + win.encodeURIComponent(link);
-        req.open('get', uniqueLink, true);
+        req.open('get', uniqueLink);
         req.send();
     }
 
