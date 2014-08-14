@@ -13,12 +13,12 @@
 
     win.document.addEventListener('submit', function (e) {
         if (ajaxOn(e.target)) {
-            var els = e.target.elements;
+            var elements = e.target.elements;
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true, null);
             var data = {};
-            for (var i = 0; i < els.length; i++) {
-                data[els[0].name] = els[0].value;
+            for (var i = 0; i < elements.length; i++) {
+                data[elements[0].name] = elements[0].value;
             }
             e.preventDefault();
             req.open('post', getLink(e.target.action));
