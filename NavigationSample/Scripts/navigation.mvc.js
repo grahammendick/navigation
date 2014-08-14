@@ -29,7 +29,10 @@
             data[els[0].name] = els[0].value;
         }
         e.preventDefault();
-        req.open(e.target.method, e.target.action);
+        var uniqueLink = e.target.action;
+        uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
+        uniqueLink += 'refreshajax=' + win.encodeURIComponent(link);
+        req.open(e.target.method, uniqueLink);
         req.setRequestHeader("Content-Type", "application/json");
         req.send(JSON.stringify(data));
     });
