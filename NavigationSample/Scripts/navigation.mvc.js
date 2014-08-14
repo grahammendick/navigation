@@ -24,6 +24,24 @@
     win.document.addEventListener('submit', function (e) {
         var els = e.target.elements;
         var req = new win.XMLHttpRequest();
+        req.onreadystatechange = function () {
+            if (req.readyState === 4 && req.status === 200) {
+                var panels = JSON.parse(req.responseText);
+                for (var id in panels) {
+                    var panel = win.document.getElementById(id);
+                    panel.innerHTML = panels[id];
+                    var evt;
+                    if (typeof Event === 'function')
+                        evt = new win.Event('refreshajax');
+                    else {
+                        evt = win.document.createEvent('Event');
+                        evt.initEvent('refreshajax', false, false);
+                    }
+                    panel.dispatchEvent(evt);
+                }
+                //add history
+            }
+        };
         var data = {};
         for (var i = 0; i < els.length; i++) {
             data[els[0].name] = els[0].value;
@@ -32,7 +50,7 @@
         var uniqueLink = e.target.action;
         uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
         uniqueLink += 'refreshajax=' + win.encodeURIComponent(link);
-        req.open(e.target.method, uniqueLink);
+        req.open('post', uniqueLink);
         req.setRequestHeader("Content-Type", "application/json");
         req.send(JSON.stringify(data));
     });
