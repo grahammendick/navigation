@@ -23,7 +23,7 @@
             e.preventDefault();
             req.open('post', getLink(e.target.action));
             req.setRequestHeader("Content-Type", "application/json");
-            req.send(JSON.stringify(data));
+            req.send(win.JSON.stringify(data));
         }
     });
 
