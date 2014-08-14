@@ -66,7 +66,7 @@
                     var panel = win.document.getElementById(id);
                     panel.innerHTML = resp.Panels[id];
                     var evt;
-                    if (typeof Event === 'function')
+                    if (typeof win.Event === 'function')
                         evt = new win.Event('refreshajax');
                     else {
                         evt = win.document.createEvent('Event');
