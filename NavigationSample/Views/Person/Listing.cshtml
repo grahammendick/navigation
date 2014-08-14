@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-@Ajax.RefreshPanel("panel", "sortExpression,startRowIndex,maximumRows",
+@Ajax.RefreshPanel("panel", "sortExpression,startRowIndex,maximumRows,name",
     @<div>
         <form action="@StateController.GetRefreshLink(new NavigationData(true))" method="post">
             @Html.LabelFor(m => m.Name)
