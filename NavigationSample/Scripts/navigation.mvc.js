@@ -5,35 +5,40 @@
 
     win.document.addEventListener('click', function (e) {
         if (e.target.tagName && e.target.tagName === 'A'
-            && e.target.getAttribute('data-navigation') === 'refresh'
-            && !e.ctrlKey && !e.shiftKey) {
-            var element = e.target;
+            && !e.ctrlKey && !e.shiftKey && ajaxOn(e.target)) {
+            e.preventDefault();
+            refreshAjax(e.target.getAttribute('href'), true);
+        }
+    });
+
+    win.document.addEventListener('submit', function (e) {
+        if (ajaxOn(e.target)) {
+            var els = e.target.elements;
+            var req = new win.XMLHttpRequest();
+            req.onreadystatechange = onReady(req, true, null);
+            var data = {};
+            for (var i = 0; i < els.length; i++) {
+                data[els[0].name] = els[0].value;
+            }
+            e.preventDefault();
+            req.open('post', getLink(e.target.action));
+            req.setRequestHeader("Content-Type", "application/json");
+            req.send(JSON.stringify(data));
+        }
+    });
+
+    function ajaxOn(element) {
+        if (element.getAttribute('data-navigation') === 'refresh') {
             var ajax = true;
             while (element != null && ajax) {
                 if (element.getAttribute)
                     ajax = element.getAttribute('data-navigation') !== 'noajax';
                 element = element.parentNode;
             }
-            if (ajax) {
-                e.preventDefault();
-                refreshAjax(e.target.getAttribute('href'), true);
-            }
+            return ajax;
         }
-    });
-
-    win.document.addEventListener('submit', function (e) {
-        var els = e.target.elements;
-        var req = new win.XMLHttpRequest();
-        req.onreadystatechange = onReady(req, true, null);
-        var data = {};
-        for (var i = 0; i < els.length; i++) {
-            data[els[0].name] = els[0].value;
-        }
-        e.preventDefault();
-        req.open('post', getLink(e.target.action));
-        req.setRequestHeader("Content-Type", "application/json");
-        req.send(JSON.stringify(data));
-    });
+        return false;
+    }
 
     win.addEventListener('popstate', function (e) {
         refreshAjax(win.location.pathname + win.location.search, false)
