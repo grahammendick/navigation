@@ -26,7 +26,7 @@
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = function () {
             if (req.readyState === 4 && req.status === 200) {
-                var panels = JSON.parse(req.responseText);
+                var panels = JSON.parse(req.responseText).Panels;
                 for (var id in panels) {
                     var panel = win.document.getElementById(id);
                     panel.innerHTML = panels[id];
@@ -39,7 +39,9 @@
                     }
                     panel.dispatchEvent(evt);
                 }
-                //add history
+                var newLink = JSON.parse(req.responseText).Link;
+                history.pushState(newLink, win.document.title, newLink);
+                link = newLink;
             }
         };
         var data = {};
@@ -64,7 +66,7 @@
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = function () {
             if (req.readyState === 4 && req.status === 200) {
-                var panels = JSON.parse(req.responseText);
+                var panels = JSON.parse(req.responseText).Panels;
                 for (var id in panels) {
                     var panel = win.document.getElementById(id);
                     panel.innerHTML = panels[id];
