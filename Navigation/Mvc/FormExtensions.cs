@@ -46,7 +46,7 @@ namespace Navigation
 		/// <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, NavigationData toData, object htmlAttributes = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetNavigationLink(action, toData), htmlAttributes);
+			return GenerateForm(htmlHelper, StateController.GetNavigationLink(action, toData), htmlAttributes, false);
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Navigation
 		/// false for this <paramref name="distance"/></exception>
 		public static MvcForm BeginNavigationBackForm(this HtmlHelper htmlHelper, int distance, object htmlAttributes = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetNavigationBackLink(distance), htmlAttributes);
+			return GenerateForm(htmlHelper, StateController.GetNavigationBackLink(distance), htmlAttributes, false);
 		}
 
 		/// <summary>
@@ -92,15 +92,17 @@ namespace Navigation
 		/// converted to a <see cref="System.String"/></exception>
 		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, object htmlAttributes = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(toData), htmlAttributes);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(toData), htmlAttributes, true);
 		}
 
-		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, object htmlAttributes)
+		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, object htmlAttributes, bool refresh)
 		{
 			TagBuilder tagBuilder = new TagBuilder("form");
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("action", url);
 			tagBuilder.MergeAttribute("method", "post");
+			if (refresh)
+				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
 			return new MvcForm(htmlHelper.ViewContext);
 		}
