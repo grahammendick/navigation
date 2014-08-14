@@ -45,7 +45,11 @@ namespace Navigation
 				filterContext.HttpContext.Response.AppendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 				filterContext.HttpContext.Response.AppendHeader("Expires", "0");
 				filterContext.HttpContext.Response.Output = info.Writer;
-				filterContext.HttpContext.Response.Write(new JavaScriptSerializer().Serialize(info.Panels));
+				filterContext.HttpContext.Response.Write(new JavaScriptSerializer().Serialize(new
+					{
+						Link = StateController.GetRefreshLink(new NavigationData(true)),
+						info.Panels
+					}));
 			}
 		}
 	}
