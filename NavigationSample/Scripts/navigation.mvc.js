@@ -30,10 +30,7 @@
             data[els[0].name] = els[0].value;
         }
         e.preventDefault();
-        var uniqueLink = e.target.action;
-        uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
-        uniqueLink += 'refreshajax=' + win.encodeURIComponent(link);
-        req.open('post', uniqueLink);
+        req.open('post', getLink(e.target.action));
         req.setRequestHeader("Content-Type", "application/json");
         req.send(JSON.stringify(data));
     });
@@ -46,17 +43,20 @@
     function refreshAjax(newLink, addHistory) {
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = onReady(req, addHistory, newLink);
-        var uniqueLink = newLink;
-        uniqueLink += uniqueLink.indexOf('?') > 0 ? '&' : '?';
-        uniqueLink += 'refreshajax=' + win.encodeURIComponent(link);
-        req.open('get', uniqueLink);
+        req.open('get', getLink(newLink));
         req.send();
+    }
+
+    function getLink(baseLink) {
+        baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
+        baseLink += 'refreshajax=' + win.encodeURIComponent(link);
+        return baseLink;
     }
 
     function onReady(req, addHistory, newLink) {
         return function () {
             if (req.readyState === 4 && req.status === 200) {
-                var panels = JSON.parse(req.responseText).Panels;
+                var panels = win.JSON.parse(req.responseText).Panels;
                 for (var id in panels) {
                     var panel = win.document.getElementById(id);
                     panel.innerHTML = panels[id];
@@ -70,7 +70,7 @@
                     panel.dispatchEvent(evt);
                 }
                 if (!newLink)
-                    newLink = JSON.parse(req.responseText).Link;
+                    newLink = win.JSON.parse(req.responseText).Link;
                 if (addHistory)
                     win.history.pushState(newLink, win.document.title, newLink);
                 link = newLink;
