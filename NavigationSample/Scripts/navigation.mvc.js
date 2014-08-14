@@ -56,10 +56,10 @@
     function onReady(req, addHistory, newLink) {
         return function () {
             if (req.readyState === 4 && req.status === 200) {
-                var panels = win.JSON.parse(req.responseText).Panels;
-                for (var id in panels) {
+                var resp = win.JSON.parse(req.responseText);
+                for (var id in resp.Panels) {
                     var panel = win.document.getElementById(id);
-                    panel.innerHTML = panels[id];
+                    panel.innerHTML = resp.Panels[id];
                     var evt;
                     if (typeof Event === 'function')
                         evt = new win.Event('refreshajax');
@@ -70,7 +70,7 @@
                     panel.dispatchEvent(evt);
                 }
                 if (!newLink)
-                    newLink = win.JSON.parse(req.responseText).Link;
+                    newLink = resp.Link;
                 if (addHistory)
                     win.history.pushState(newLink, win.document.title, newLink);
                 link = newLink;
