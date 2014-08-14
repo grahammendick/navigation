@@ -21,31 +21,6 @@
         }
     });
 
-    function onReady(req, addHistory, newLink) {
-        return function () {
-            if (req.readyState === 4 && req.status === 200) {
-                var panels = JSON.parse(req.responseText).Panels;
-                for (var id in panels) {
-                    var panel = win.document.getElementById(id);
-                    panel.innerHTML = panels[id];
-                    var evt;
-                    if (typeof Event === 'function')
-                        evt = new win.Event('refreshajax');
-                    else {
-                        evt = win.document.createEvent('Event');
-                        evt.initEvent('refreshajax', false, false);
-                    }
-                    panel.dispatchEvent(evt);
-                }
-                if (!newLink)
-                    newLink = JSON.parse(req.responseText).Link;
-                if (addHistory)
-                    win.history.pushState(newLink, win.document.title, newLink);
-                link = newLink;
-            }
-        };
-    }
-
     win.document.addEventListener('submit', function (e) {
         var els = e.target.elements;
         var req = new win.XMLHttpRequest();
@@ -78,4 +53,28 @@
         req.send();
     }
 
+    function onReady(req, addHistory, newLink) {
+        return function () {
+            if (req.readyState === 4 && req.status === 200) {
+                var panels = JSON.parse(req.responseText).Panels;
+                for (var id in panels) {
+                    var panel = win.document.getElementById(id);
+                    panel.innerHTML = panels[id];
+                    var evt;
+                    if (typeof Event === 'function')
+                        evt = new win.Event('refreshajax');
+                    else {
+                        evt = win.document.createEvent('Event');
+                        evt.initEvent('refreshajax', false, false);
+                    }
+                    panel.dispatchEvent(evt);
+                }
+                if (!newLink)
+                    newLink = JSON.parse(req.responseText).Link;
+                if (addHistory)
+                    win.history.pushState(newLink, win.document.title, newLink);
+                link = newLink;
+            }
+        };
+    }
 })(window);
