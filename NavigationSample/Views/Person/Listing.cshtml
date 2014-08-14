@@ -11,11 +11,11 @@
 <body>
 @Ajax.RefreshPanel("panel", "sortExpression,startRowIndex,maximumRows,name",
     @<div>
-        <form action="@StateController.GetRefreshLink(new NavigationData(true))" method="post">
-            @Html.LabelFor(m => m.Name)
-            @Html.TextBoxFor(m => m.Name)
-            <input type="submit" value="Search" />
-        </form>
+         <form action="@StateController.GetRefreshLink(new NavigationData(true))" method="post" data-navigation="refresh">
+             @Html.LabelFor(m => m.Name)
+             @Html.TextBoxFor(m => m.Name)
+             <input type="submit" value="Search" />
+         </form>
         Page size
         @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
         @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
