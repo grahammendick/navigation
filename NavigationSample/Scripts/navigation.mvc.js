@@ -20,8 +20,9 @@
             var data = {};
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    if (!ignoreTypes.test(element.type) && !element.disabled
+                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA'
+                    || element.tagName === 'SELECT') {
+                    if (element.name && !ignoreTypes.test(element.type) && !element.disabled
                         && (!checkTypes.test(element.type) || element.checked))
                         data[element.name] = element.value;
                 }
