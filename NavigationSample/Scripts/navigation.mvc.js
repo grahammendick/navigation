@@ -15,9 +15,12 @@
             var elements = e.target.elements;
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true, null);
+            var inputTypes = /^(button|image|submit|reset|file)$/i;
             var data = {};
             for (var i = 0; i < elements.length; i++) {
-                data[elements[0].name] = elements[0].value;
+                var element = elements[i];
+                if (!inputTypes.test(element.type) && !element.disabled)
+                    data[element.name] = element.value;
             }
             e.preventDefault();
             req.open('post', getAjaxLink(e.target.action));
