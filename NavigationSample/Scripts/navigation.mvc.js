@@ -15,13 +15,13 @@
             var elements = e.target.elements;
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true, null);
-            var tagTypes = /^(INPUT|TEXTAREA|SELECT)$/;
+            var tagNames = /^(INPUT|TEXTAREA|SELECT)$/;
             var ignoreTypes = /^(button|image|submit|reset|file)$/i;
             var checkTypes = /^(checkbox|radio)$/i;
             var data = {};
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
-                if (tagTypes.test(element.tagName) && element.name
+                if (tagNames.test(element.tagName) && element.name
                     && !ignoreTypes.test(element.type) && !element.disabled
                     && (!checkTypes.test(element.type) || element.checked))
                     data[element.name] = element.value;
