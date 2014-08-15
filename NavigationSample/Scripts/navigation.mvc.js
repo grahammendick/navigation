@@ -4,15 +4,14 @@
         return;
 
     win.document.addEventListener('click', function (e) {
-        if (e.target.tagName && e.target.tagName === 'A'
-            && !e.ctrlKey && !e.shiftKey && ajaxOn(e.target)) {
+        if (!e.ctrlKey && !e.shiftKey && ajaxOn(e.target, 'A')) {
             e.preventDefault();
             refreshAjax(e.target.getAttribute('href'), true);
         }
     });
 
     win.document.addEventListener('submit', function (e) {
-        if (ajaxOn(e.target)) {
+        if (ajaxOn(e.target, 'FORM')) {
             var elements = e.target.elements;
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true, null);
@@ -27,8 +26,9 @@
         }
     });
 
-    function ajaxOn(element) {
-        if (element.getAttribute('data-navigation') === 'refresh') {
+    function ajaxOn(element, tagName) {
+        if (element.tagName && element.tagName === tagName
+            && element.getAttribute('data-navigation') === 'refresh') {
             var ajax = true;
             while (element != null && ajax) {
                 if (element.getAttribute)
