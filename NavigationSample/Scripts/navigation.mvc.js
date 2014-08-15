@@ -19,7 +19,7 @@
             var data = {};
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
-                if (element.tagName === 'INPUT') {
+                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
                     if (!inputTypes.test(element.type) && !element.disabled)
                         data[element.name] = element.value;
                 }
