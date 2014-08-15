@@ -15,12 +15,14 @@
             var elements = e.target.elements;
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true, null);
-            var inputTypes = /^(button|image|submit|reset|file)$/i;
+            var ignoreTypes = /^(button|image|submit|reset|file)$/i;
+            var checkTypes = /^(checkbox|radio)$/i;
             var data = {};
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
                 if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    if (!inputTypes.test(element.type) && !element.disabled)
+                    if (!ignoreTypes.test(element.type) && !element.disabled
+                        && (!checkTypes.test(element.type) || element.checked))
                         data[element.name] = element.value;
                 }
             }
