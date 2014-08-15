@@ -19,8 +19,10 @@
             var data = {};
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
-                if (!inputTypes.test(element.type) && !element.disabled)
-                    data[element.name] = element.value;
+                if (element.tagName === 'INPUT') {
+                    if (!inputTypes.test(element.type) && !element.disabled)
+                        data[element.name] = element.value;
+                }
             }
             e.preventDefault();
             req.open('post', getAjaxLink(e.target.action));
@@ -30,8 +32,7 @@
     });
 
     function ajaxOn(element, tagName) {
-        if (element.tagName && element.tagName === tagName
-            && element.getAttribute('data-navigation') === 'refresh') {
+        if (element.tagName === tagName && element.getAttribute('data-navigation') === 'refresh') {
             var ajax = true;
             while (element != null && ajax) {
                 if (element.getAttribute)
