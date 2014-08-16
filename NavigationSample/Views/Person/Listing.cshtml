@@ -14,7 +14,7 @@
          <form action="@StateController.GetRefreshLink(new NavigationData(true))" method="post" data-navigation="refresh">
              @Html.LabelFor(m => m.Name)
              @Html.TextBoxFor(m => m.Name)
-             <input type="submit" value="Search" />
+             <input type="submit" name="search" value="Search" />
          </form>
         Page size
         @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
