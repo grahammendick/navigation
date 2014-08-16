@@ -3,10 +3,20 @@
     if (!(win.history && win.history.pushState))
         return;
 
+    var submitData = {};
     win.document.addEventListener('click', function (e) {
-        if (!e.ctrlKey && !e.shiftKey && ajaxOn(e.target, 'A')) {
+        var element = e.target;
+        if (!e.ctrlKey && !e.shiftKey && ajaxOn(element, 'A')) {
             e.preventDefault();
             refreshAjax(e.target.getAttribute('href'), true);
+        }
+        if (element.tagName === 'INPUT' && element.name) {
+            if (element.type === 'submit')
+                submitData[element.name] = element.value;
+            if (element.type === 'image') {
+                submitData[element.name + '.x'] = Math.max(0, e.offsetX);
+                submitData[element.name + '.y'] = Math.max(0, e.offsetY);
+            }
         }
     });
 
@@ -26,6 +36,9 @@
                     && (!checkTypes.test(element.type) || element.checked))
                     data[element.name] = element.value;
             }
+            for (var key in submitData)
+                data[key] = submitData[key];
+            submitData = {};
             e.preventDefault();
             req.open('post', getAjaxLink(e.target.action));
             req.setRequestHeader("Content-Type", "application/json");
