@@ -14,8 +14,8 @@
             if (element.type === 'submit')
                 submitData[element.name] = element.value;
             if (element.type === 'image') {
-                submitData[element.name + '.x'] = Math.max(0, e.offsetX);
-                submitData[element.name + '.y'] = Math.max(0, e.offsetY);
+                submitData[element.name + '.x'] = win.Math.max(0, e.offsetX);
+                submitData[element.name + '.y'] = win.Math.max(0, e.offsetY);
             }
         }
     });
