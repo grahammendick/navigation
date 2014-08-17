@@ -8,7 +8,7 @@
         var element = e.target;
         if (!e.ctrlKey && !e.shiftKey && ajaxOn(element, 'A')) {
             e.preventDefault();
-            refreshAjax(e.target.getAttribute('href'), true);
+            refreshAjax(element.getAttribute('href'), true);
         }
         if (element.tagName === 'INPUT' && element.name) {
             if (element.type === 'submit')
