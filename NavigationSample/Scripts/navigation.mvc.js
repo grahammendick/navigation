@@ -50,7 +50,7 @@
         if (element.tagName === tagName
             && element.getAttribute('data-navigation') === 'refresh') {
             var ajax = true;
-            while (element != null && ajax) {
+            while (!!element && ajax) {
                 if (element.getAttribute)
                     ajax = element.getAttribute('data-navigation') !== 'noajax';
                 element = element.parentNode;
