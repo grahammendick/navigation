@@ -47,7 +47,8 @@
     });
 
     function ajaxOn(element, tagName) {
-        if (element.tagName === tagName && element.getAttribute('data-navigation') === 'refresh') {
+        if (element.tagName === tagName
+            && element.getAttribute('data-navigation') === 'refresh') {
             var ajax = true;
             while (element != null && ajax) {
                 if (element.getAttribute)
