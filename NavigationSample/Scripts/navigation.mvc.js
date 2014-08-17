@@ -60,10 +60,6 @@
         return false;
     }
 
-    win.addEventListener('popstate', function (e) {
-        refreshAjax(win.location.pathname + win.location.search, false)
-    });
-
     var link = win.location.pathname + win.location.search;
     function refreshAjax(newLink, addHistory) {
         var req = new win.XMLHttpRequest();
@@ -78,28 +74,43 @@
         return baseLink;
     }
 
+    var cache = {};
     function onReady(req, addHistory, newLink) {
         return function () {
             if (req.readyState === 4 && req.status === 200) {
                 var resp = win.JSON.parse(req.responseText);
-                for (var id in resp.Panels) {
-                    var panel = win.document.getElementById(id);
-                    panel.innerHTML = resp.Panels[id];
-                    var evt;
-                    if (typeof win.Event === 'function')
-                        evt = new win.Event('refreshajax');
-                    else {
-                        evt = win.document.createEvent('Event');
-                        evt.initEvent('refreshajax', false, false);
-                    }
-                    panel.dispatchEvent(evt);
-                }
-                if (!newLink)
-                    newLink = resp.Link;
-                if (addHistory)
-                    win.history.pushState(newLink, win.document.title, newLink);
-                link = newLink;
+                handleRespone(resp, addHistory, newLink);
             }
         };
     }
+
+    function handleRespone(resp, addHistory, newLink) {
+        for (var id in resp.Panels) {
+            var panel = win.document.getElementById(id);
+            panel.innerHTML = resp.Panels[id];
+            var evt;
+            if (typeof win.Event === 'function')
+                evt = new win.Event('refreshajax');
+            else {
+                evt = win.document.createEvent('Event');
+                evt.initEvent('refreshajax', false, false);
+            }
+            panel.dispatchEvent(evt);
+        }
+        if (!newLink)
+            newLink = resp.Link;
+        if (addHistory)
+            win.history.pushState(newLink, win.document.title, newLink);
+        cache[link + '&' + newLink] = resp;
+        link = newLink;
+    }
+
+    win.addEventListener('popstate', function (e) {
+        var newLink = win.location.pathname + win.location.search;
+        var resp = cache[link + '&' + newLink];
+        if (!resp)
+            refreshAjax(newLink, false);
+        else
+            handleRespone(resp, false, newLink);
+    });
 })(window);
