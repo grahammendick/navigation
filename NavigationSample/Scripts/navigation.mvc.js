@@ -40,7 +40,7 @@
                 data[key] = submitData[key];
             submitData = {};
             e.preventDefault();
-            req.open('post', getAjaxLink(e.target.action));
+            req.open('post', getAjaxLink(e.target.getAttribute('action')));
             req.setRequestHeader("Content-Type", "application/json");
             req.send(win.JSON.stringify(data));
         }
