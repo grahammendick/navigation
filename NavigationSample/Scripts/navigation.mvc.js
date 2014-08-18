@@ -76,15 +76,16 @@
 
     var cache = {};
     function onReady(req, addHistory, newLink) {
+        var oldLink = link;
         return function () {
             if (req.readyState === 4 && req.status === 200) {
                 var resp = win.JSON.parse(req.responseText);
-                handleRespone(resp, addHistory, newLink);
+                handleRespone(resp, addHistory, newLink, oldLink);
             }
         };
     }
 
-    function handleRespone(resp, addHistory, newLink) {
+    function handleRespone(resp, addHistory, newLink, oldlink) {
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
             panel.innerHTML = resp.Panels[id];
@@ -101,7 +102,7 @@
             newLink = resp.Link;
         if (addHistory)
             win.history.pushState(newLink, win.document.title, newLink);
-        cache[link + '&' + newLink] = resp;
+        cache[oldlink + '&' + newLink] = resp;
         link = newLink;
     }
 
@@ -111,6 +112,6 @@
         if (!resp)
             refreshAjax(newLink, false);
         else
-            handleRespone(resp, false, newLink);
+            handleRespone(resp, false, newLink, link);
     });
 })(window);
