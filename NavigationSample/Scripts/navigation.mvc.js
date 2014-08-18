@@ -108,10 +108,12 @@
 
     win.addEventListener('popstate', function (e) {
         var newLink = win.location.pathname + win.location.search;
-        var resp = cache[link + '&' + newLink];
-        if (!resp)
-            refreshAjax(newLink, false);
-        else
-            handleRespone(resp, false, newLink, link);
+        if (link !== newLink) {
+            var resp = cache[link + '&' + newLink];
+            if (!resp)
+                refreshAjax(newLink, false);
+            else
+                handleRespone(resp, false, newLink, link);
+        }
     });
 })(window);
