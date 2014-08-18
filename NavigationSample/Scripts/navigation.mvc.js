@@ -85,7 +85,7 @@
         };
     }
 
-    function handleRespone(resp, addHistory, newLink, oldlink) {
+    function handleRespone(resp, addHistory, newLink, oldLink) {
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
             panel.innerHTML = resp.Panels[id];
@@ -100,9 +100,9 @@
         }
         if (!newLink)
             newLink = resp.Link;
-        if (addHistory)
+        if (addHistory && oldLink !== newLink)
             win.history.pushState(newLink, win.document.title, newLink);
-        cache[oldlink + '&' + newLink] = resp;
+        cache[oldLink + '&' + newLink] = resp;
         link = newLink;
     }
 
