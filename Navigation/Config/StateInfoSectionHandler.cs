@@ -24,7 +24,10 @@ namespace Navigation
 
 			XmlNode dialogNode;
 			int i;
-			string dialogInitial, resourceType, resourceKey;
+			string dialogInitial;
+#if NET40Plus
+			string resourceType, resourceKey;
+#endif
 			for (i = 0; i < section.ChildNodes.Count; i++)
 			{
 				dialog = new Dialog();
@@ -41,10 +44,15 @@ namespace Navigation
 						throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.DialogAttributeMissing, "key"));
 					dialog.Key = dialogNode.Attributes["key"].Value;
 					dialog.Title = dialogNode.Attributes["title"] != null ? dialogNode.Attributes["title"].Value : string.Empty;
+#if NET40Plus
 					resourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
 					resourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
 					if (resourceKey.Length != 0)
 						dialog.TitleFunc = () => (string)HttpContext.GetGlobalResourceObject(resourceType, resourceKey, Thread.CurrentThread.CurrentUICulture);
+#else
+					dialog.ResourceType = dialogNode.Attributes["resourceType"] != null ? dialogNode.Attributes["resourceType"].Value : "StateInfo";
+					dialog.ResourceKey = dialogNode.Attributes["resourceKey"] != null ? dialogNode.Attributes["resourceKey"].Value : string.Empty;
+#endif
 					dialog.Attributes = new StateInfoCollection<string>();
 					foreach (XmlAttribute attribute in dialogNode.Attributes)
 						dialog.Attributes[attribute.Name] = attribute.Value;
@@ -71,7 +79,9 @@ namespace Navigation
 			string[] derived;
 			int i;
 			bool result;
+#if NET40Plus
 			string resourceType, resourceKey;
+#endif
 			for (i = 0; i < dialogNode.ChildNodes.Count; i++)
 			{
 				state = new State();
@@ -87,10 +97,15 @@ namespace Navigation
 							throw new ConfigurationErrorsException(string.Format(CultureInfo.CurrentCulture, Resources.StateAttributeMissing, "key"));
 						state.Key = dialogChildNode.Attributes["key"].Value;
 						state.Title = dialogChildNode.Attributes["title"] != null ? dialogChildNode.Attributes["title"].Value : string.Empty;
+#if NET40Plus
 						resourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
 						resourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
 						if (resourceKey.Length != 0)
 							state.TitleFunc = () => (string)HttpContext.GetGlobalResourceObject(resourceType, resourceKey, Thread.CurrentThread.CurrentUICulture);
+#else
+						state.ResourceType = dialogChildNode.Attributes["resourceType"] != null ? dialogChildNode.Attributes["resourceType"].Value : "StateInfo";
+						state.ResourceKey = dialogChildNode.Attributes["resourceKey"] != null ? dialogChildNode.Attributes["resourceKey"].Value : string.Empty;
+#endif
 #if NET40Plus
 						state.Route = dialogChildNode.Attributes["route"] != null ? dialogChildNode.Attributes["route"].Value : string.Empty;
 #endif
