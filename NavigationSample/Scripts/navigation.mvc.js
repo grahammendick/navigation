@@ -100,7 +100,7 @@
         }
         if (!newLink)
             newLink = resp.Link;
-        if (addHistory && oldLink !== newLink)
+        if (addHistory && link !== newLink)
             win.history.pushState(newLink, win.document.title, newLink);
         cache[oldLink + '&' + newLink] = resp;
         link = newLink;
