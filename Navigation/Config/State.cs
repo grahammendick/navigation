@@ -24,6 +24,10 @@ namespace Navigation
 		private ReadOnlyCollection<string> _Derived;
 		private Dictionary<string, string> _DerivedInternal;
 		private string _Title;
+#if !NET40Plus
+		private string _ResourceType;
+		private string _ResourceKey;
+#endif
 #if NET40Plus
 		private string _Route;
 #endif
@@ -175,8 +179,15 @@ namespace Navigation
 		{
 			get
 			{
+#if NET40Plus
 				if (TitleFunc != null)
 					return TitleFunc();
+#else
+				if (ResourceKey.Length != 0)
+				{
+					return (string)HttpContext.GetGlobalResourceObject(ResourceType, ResourceKey, Thread.CurrentThread.CurrentUICulture);
+				}
+#endif
 				return _Title;
 			}
 			internal set
@@ -185,11 +196,37 @@ namespace Navigation
 			}
 		}
 
+#if NET40Plus
 		internal Func<string> TitleFunc
 		{
 			get;
 			set;
 		}
+#else
+		internal string ResourceType
+		{
+			get
+			{
+				return _ResourceType;
+			}
+			set
+			{
+				_ResourceType = value;
+			}
+		}
+
+		internal string ResourceKey
+		{
+			get
+			{
+				return _ResourceKey;
+			}
+			set
+			{
+				_ResourceKey = value;
+			}
+		}
+#endif
 
 #if NET40Plus
 		/// <summary>
