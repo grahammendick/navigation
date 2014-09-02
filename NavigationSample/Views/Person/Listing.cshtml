@@ -18,8 +18,8 @@
              <input type="submit" name="search" value="Search" />
         }
         Page size
-        @Html.RefreshLink("5", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", 5 } })
-        @Html.RefreshLink("10", new NavigationData(true) { { "startRowIndex", null }, { "maximumRows", null } })
+        @Html.RefreshLink("5", new NavigationData() { { "startRowIndex", null }, { "maximumRows", 5 } }, true)
+        @Html.RefreshLink("10", new NavigationData() { { "startRowIndex", null }, { "maximumRows", null } }, true)
         <table>
             <thead>
                 <tr>
