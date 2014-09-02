@@ -127,7 +127,7 @@ namespace Navigation
 		/// there is <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, string currentDataKeys, object htmlAttributes = null)
 		{
-			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
+			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys ?? string.Empty));
 			if (toData != null)
 				data.Add(toData);
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, currentDataKeys);
@@ -135,7 +135,7 @@ namespace Navigation
 
 		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
 		{
-			if (currentDataKeys == null || currentDataKeys.Length == 0)
+			if (currentDataKeys.Length == 0)
 				yield break;
 			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
 			{
