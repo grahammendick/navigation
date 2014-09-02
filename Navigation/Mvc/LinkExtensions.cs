@@ -1,5 +1,6 @@
 ﻿#if NET40Plus
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -107,8 +108,27 @@ namespace Navigation
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData);
 		}
 
-		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes, 
-			bool refresh = false, bool includeCurrentData = false)
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, string currentDataKeys, object htmlAttributes = null)
+		{
+			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
+			if (toData != null)
+				data.Add(toData);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, currentDataKeys);
+		}
+
+		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
+		{
+			if (currentDataKeys == null || currentDataKeys.Length == 0)
+				yield break;
+			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
+			{
+				yield return key.Trim();
+			}
+		}
+
+
+		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null)
 		{
 			if (string.IsNullOrEmpty(linkText))
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
@@ -119,7 +139,9 @@ namespace Navigation
 			if (refresh)
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			//if (includeCurrentData)
-				//tagBuilder.MergeAttribute("data-navigation-include", "true");
+				//tagBuilder.MergeAttribute("data-include", "true");
+			//if (currentDataKeys != null)
+				//tagBuilder.MergeAttribute("data-keys", currentDataKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 	}
