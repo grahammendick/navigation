@@ -17,6 +17,7 @@ namespace Navigation
 		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
 		/// <param name="action">The key of a child <see cref="Transition"/> or the key of a 
 		/// <see cref="Dialog"/></param>
+		/// <param name="writer">The text writer the HTML is written to</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An opening &lt;form&gt; tag</returns>
@@ -38,6 +39,7 @@ namespace Navigation
 		/// <see cref="Dialog"/></param>
 		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the next
 		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="writer">The text writer the HTML is written to</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An opening &lt;form&gt; tag</returns>
@@ -56,6 +58,7 @@ namespace Navigation
 		/// </summary>
 		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
 		/// <param name="distance">Starting at 1, the number of <see cref="Crumb"/> steps to go back</param>
+		/// <param name="writer">The text writer the HTML is written to</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An opening &lt;form&gt; tag</returns>
@@ -71,6 +74,7 @@ namespace Navigation
 		/// a call to <see cref="StateController.GetRefreshLink(NavigationData)"/>
 		/// </summary>
 		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="writer">The text writer the HTML is written to</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An opening &lt;form&gt; tag</returns>
@@ -86,6 +90,7 @@ namespace Navigation
 		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
 		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
 		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="writer">The text writer the HTML is written to</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An opening &lt;form&gt; tag</returns>
