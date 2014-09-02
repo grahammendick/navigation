@@ -95,6 +95,8 @@ namespace Navigation
 		/// <param name="linkText">The inner text of the anchor element</param>
 		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
 		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="includeCurrentData">Indicates whether to include the current data together
+		/// with the <paramref name="toData"/></param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An anchor element (a element)</returns>
@@ -108,6 +110,21 @@ namespace Navigation
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData);
 		}
 
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/>
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="linkText">The inner text of the anchor element</param>
+		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
+		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="currentDataKeys">A comma separated list of current data items to
+		/// include together with the <paramref name="toData"/></param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
+		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty; or
+		/// there is <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, string currentDataKeys, object htmlAttributes = null)
 		{
 			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
