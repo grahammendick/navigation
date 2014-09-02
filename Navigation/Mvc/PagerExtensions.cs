@@ -208,9 +208,9 @@ namespace Navigation
 			string itemHtml = HttpUtility.HtmlEncode(linkText);
 			if (newStartRowIndex >= 0 && newStartRowIndex < totalRowCount && newStartRowIndex != startRowIndex)
 			{
-				NavigationData toData = new NavigationData(true);
+				NavigationData toData = new NavigationData();
 				toData[startRowIndexKey] = newStartRowIndex;
-				itemHtml = htmlHelper.RefreshLink(linkText, toData).ToString();
+				itemHtml = htmlHelper.RefreshLink(linkText, toData, true).ToString();
 			}
 			tagBuilder = new TagBuilder("li");
 			tagBuilder.InnerHtml = itemHtml;

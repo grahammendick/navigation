@@ -58,9 +58,9 @@ namespace Navigation
 				sortExpression = sortBy + " DESC";
 			else
 				sortExpression = sortBy;
-			NavigationData toData = new NavigationData(true);
+			NavigationData toData = new NavigationData();
 			toData[sortExpressionKey] = sortExpression;
-			return htmlHelper.RefreshLink(linkText, toData, htmlAttributes);
+			return htmlHelper.RefreshLink(linkText, toData, true, htmlAttributes);
 		}
 	}
 }
