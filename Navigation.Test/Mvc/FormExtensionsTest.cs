@@ -40,7 +40,7 @@ namespace Navigation.Test.Mvc
 		public void NavigationFormMethodAttributeTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			GetHtmlHelper(formBuilder).BeginNavigationForm("d7", new { method="get" });
+			GetHtmlHelper(formBuilder).BeginNavigationForm("d7", null, new { method="get" });
 			Assert.AreEqual("<form action=\"/r0\" method=\"get\">", formBuilder.ToString());
 		}
 
@@ -48,7 +48,7 @@ namespace Navigation.Test.Mvc
 		public void NavigationFormAttributesTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
-			GetHtmlHelper(formBuilder).BeginNavigationForm("d7", new { onsubmit = "validate" });
+			GetHtmlHelper(formBuilder).BeginNavigationForm("d7", null, new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r0\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 
@@ -70,7 +70,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			StateController.Navigate("t0");
-			GetHtmlHelper(formBuilder).BeginNavigationBackForm(1, new { onsubmit = "validate" });
+			GetHtmlHelper(formBuilder).BeginNavigationBackForm(1, null, new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r1\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 
@@ -100,7 +100,7 @@ namespace Navigation.Test.Mvc
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
 			StateController.Navigate("t0");
-			GetHtmlHelper(formBuilder).BeginRefreshForm(new { onsubmit = "validate" });
+			GetHtmlHelper(formBuilder).BeginRefreshForm(null, new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r1\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 
@@ -109,7 +109,7 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, new { onsubmit = "validate" });
+			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, null, new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r0?a=1\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 	}
