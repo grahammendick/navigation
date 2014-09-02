@@ -51,7 +51,7 @@ namespace Navigation
 		/// be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString NavigationLink(this HtmlHelper htmlHelper, string linkText, string action, NavigationData toData, object htmlAttributes = null)
 		{
-			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationLink(action, toData), htmlAttributes, false);
+			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationLink(action, toData), htmlAttributes);
 		}
 
 		/// <summary>
@@ -68,7 +68,7 @@ namespace Navigation
 		/// <see cref="StateController.CanNavigateBack"/> returns false for this <paramref name="distance"/></exception>
 		public static MvcHtmlString NavigationBackLink(this HtmlHelper htmlHelper, string linkText, int distance, object htmlAttributes = null)
 		{
-			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationBackLink(distance), htmlAttributes, false);
+			return GenerateLink(htmlHelper, linkText, StateController.GetNavigationBackLink(distance), htmlAttributes);
 		}
 
 		/// <summary>
@@ -83,7 +83,7 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty</exception>
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, object htmlAttributes = null)
 		{
-			return RefreshLink(htmlHelper, linkText, null, htmlAttributes);
+			return RefreshLink(htmlHelper, linkText, null, false, htmlAttributes);
 		}
 
 		/// <summary>
@@ -99,12 +99,16 @@ namespace Navigation
 		/// <returns>An anchor element (a element)</returns>
 		/// <exception cref="System.ArgumentException"><paramref name="linkText"/> is null or empty; or
 		/// there is <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
-		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, object htmlAttributes = null)
+		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, bool includeCurrentData = false, object htmlAttributes = null)
 		{
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(toData), htmlAttributes, true);
+			var data = new NavigationData(includeCurrentData);
+			if (toData != null)
+				data.Add(toData);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData);
 		}
 
-		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes, bool refresh)
+		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes, 
+			bool refresh = false, bool includeCurrentData = false)
 		{
 			if (string.IsNullOrEmpty(linkText))
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
@@ -114,6 +118,8 @@ namespace Navigation
 			tagBuilder.MergeAttribute("href", url);
 			if (refresh)
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
+			//if (includeCurrentData)
+				//tagBuilder.MergeAttribute("data-navigation-include", "true");
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 	}
