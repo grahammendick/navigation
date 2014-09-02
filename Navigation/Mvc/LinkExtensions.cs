@@ -126,7 +126,6 @@ namespace Navigation
 			}
 		}
 
-
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
 			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null)
 		{
