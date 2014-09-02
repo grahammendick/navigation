@@ -1,4 +1,5 @@
 ﻿#if NET40Plus
+using System.IO;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
@@ -23,9 +24,9 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
 		/// a child <see cref="Transition"/> or the key of a <see cref="Dialog"/>; or there is 
 		/// <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
-		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, object htmlAttributes = null)
+		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, object htmlAttributes = null, TextWriter writer = null)
 		{
-			return BeginNavigationForm(htmlHelper, action, null, htmlAttributes);
+			return BeginNavigationForm(htmlHelper, action, null, htmlAttributes, writer);
 		}
 
 		/// <summary>
@@ -44,9 +45,9 @@ namespace Navigation
 		/// <exception cref="System.ArgumentException"><paramref name="action"/> does not match the key of 
 		/// a child <see cref="Transition"/> or the key of a <see cref="Dialog"/>; or there is 
 		/// <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
-		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, NavigationData toData, object htmlAttributes = null)
+		public static MvcForm BeginNavigationForm(this HtmlHelper htmlHelper, string action, NavigationData toData, object htmlAttributes = null, TextWriter writer = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetNavigationLink(action, toData), htmlAttributes, false);
+			return GenerateForm(htmlHelper, StateController.GetNavigationLink(action, toData), htmlAttributes, writer, false);
 		}
 
 		/// <summary>
@@ -60,9 +61,9 @@ namespace Navigation
 		/// <returns>An opening &lt;form&gt; tag</returns>
 		/// <exception cref="System.ArgumentException"><see cref="StateController.CanNavigateBack"/> returns
 		/// false for this <paramref name="distance"/></exception>
-		public static MvcForm BeginNavigationBackForm(this HtmlHelper htmlHelper, int distance, object htmlAttributes = null)
+		public static MvcForm BeginNavigationBackForm(this HtmlHelper htmlHelper, int distance, object htmlAttributes = null, TextWriter writer = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetNavigationBackLink(distance), htmlAttributes, false);
+			return GenerateForm(htmlHelper, StateController.GetNavigationBackLink(distance), htmlAttributes, writer, false);
 		}
 
 		/// <summary>
@@ -73,9 +74,9 @@ namespace Navigation
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
 		/// <returns>An opening &lt;form&gt; tag</returns>
-		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, object htmlAttributes = null)
+		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, object htmlAttributes = null, TextWriter writer = null)
 		{
-			return BeginRefreshForm(htmlHelper, null, htmlAttributes);
+			return BeginRefreshForm(htmlHelper, null, htmlAttributes, writer);
 		}
 
 		/// <summary>
@@ -90,12 +91,12 @@ namespace Navigation
 		/// <returns>An opening &lt;form&gt; tag</returns>
 		/// <exception cref="System.ArgumentException">There is <see cref="NavigationData"/> that cannot be
 		/// converted to a <see cref="System.String"/></exception>
-		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, object htmlAttributes = null)
+		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, object htmlAttributes = null, TextWriter writer = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(toData), htmlAttributes, true);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(toData), htmlAttributes, writer, true);
 		}
 
-		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, object htmlAttributes, bool refresh)
+		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, object htmlAttributes, TextWriter writer, bool refresh)
 		{
 			TagBuilder tagBuilder = new TagBuilder("form");
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
@@ -103,6 +104,8 @@ namespace Navigation
 			tagBuilder.MergeAttribute("method", "post");
 			if (refresh)
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
+			if (writer != null)
+				htmlHelper.ViewContext.Writer = writer;
 			htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
 			return new MvcForm(htmlHelper.ViewContext);
 		}
