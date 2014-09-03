@@ -8,7 +8,7 @@
         var element = e.target;
         if (!e.ctrlKey && !e.shiftKey && ajaxOn(element, 'A')) {
             e.preventDefault();
-            refreshAjax(element.getAttribute('href'), true);
+            refreshAjax(element.getAttribute('href'), true, element);
         }
         if (element.tagName === 'INPUT' && element.name) {
             if (element.type === 'submit')
@@ -40,7 +40,7 @@
                 data[key] = submitData[key];
             submitData = {};
             e.preventDefault();
-            req.open('post', getAjaxLink(e.target.getAttribute('action')));
+            req.open('post', getAjaxLink(e.target.getAttribute('action'), e.target));
             req.setRequestHeader("Content-Type", "application/json");
             req.send(win.JSON.stringify(data));
         }
@@ -61,16 +61,18 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    function refreshAjax(newLink, addHistory) {
+    function refreshAjax(newLink, addHistory, target) {
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = onReady(req, addHistory, newLink);
-        req.open('get', getAjaxLink(newLink));
+        req.open('get', getAjaxLink(newLink, target));
         req.send();
     }
 
-    function getAjaxLink(baseLink) {
+    function getAjaxLink(baseLink, target) {
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
+        if (target && target.getAttribute('data-include-current') === 'true')
+            baseLink += '&includecurrent=true';
         return baseLink;
     }
 
