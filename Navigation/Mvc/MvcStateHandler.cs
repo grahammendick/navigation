@@ -23,6 +23,7 @@ namespace Navigation
 			data.Remove("controller");
 			data.Remove("action");
 			data.Remove("refreshajax");
+			data.Remove("includecurrent");
 			return data;
 		}
 
