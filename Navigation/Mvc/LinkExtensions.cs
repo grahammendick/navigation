@@ -154,10 +154,10 @@ namespace Navigation
 			tagBuilder.MergeAttribute("href", url);
 			if (refresh)
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
-			//if (includeCurrentData)
-				//tagBuilder.MergeAttribute("data-include", "true");
-			//if (currentDataKeys != null)
-				//tagBuilder.MergeAttribute("data-keys", currentDataKeys);
+			if (includeCurrentData)
+				tagBuilder.MergeAttribute("data-include-current", "true");
+			if (currentDataKeys != null)
+				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 	}
