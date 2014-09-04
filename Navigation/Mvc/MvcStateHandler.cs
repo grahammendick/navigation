@@ -24,6 +24,7 @@ namespace Navigation
 			data.Remove("action");
 			data.Remove("refreshajax");
 			data.Remove("includecurrent");
+			data.Remove("currentkeys");
 			return data;
 		}
 
