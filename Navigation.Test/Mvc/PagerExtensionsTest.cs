@@ -67,8 +67,8 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 11;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;&lt;</a></li>" +
-				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;</a></li>" + 
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;&lt;</a></li>" +
+				"<li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;</a></li>" + 
 				"<li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
 
@@ -79,8 +79,8 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 20;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;&lt;</a></li>" +
-				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;</a></li>" + 
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;&lt;</a></li>" +
+				"<li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;</a></li>" + 
 				"<li>&gt;</li><li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
 
@@ -91,8 +91,8 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 21;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;&lt;</a></li>" +
-				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;&lt;</a></li>" +
+				"<li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">&lt;</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/20\">&gt;</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/20\">&gt;&gt;</a></li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
@@ -118,8 +118,8 @@ namespace Navigation.Test.Mvc
 			StateContext.Bag.startRowIndex = 9;
 			StateContext.Bag.maximumRows = 9;
 			StateContext.Bag.totalRowCount = 21;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">&lt;&lt;</a></li>" +
-				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">&lt;</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">&lt;&lt;</a></li>" +
+				"<li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">&lt;</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/18/9\">&gt;</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/18/9\">&gt;&gt;</a></li></ul>", HtmlHelper.Pager().ToHtmlString());
 		}
@@ -132,7 +132,7 @@ namespace Navigation.Test.Mvc
 			StateContext.Bag.startRowIndex = 18;
 			StateContext.Bag.maximumRows = 9;
 			StateContext.Bag.totalRowCount = 27;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">&lt;&lt;</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">&lt;&lt;</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/9/9\">&lt;</a></li>" +
 				"<li>&gt;</li>" +
 				"<li>&gt;&gt;</li></ul>", HtmlHelper.Pager().ToHtmlString());
@@ -283,7 +283,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 11;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">1</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">1</a></li>" +
 				"<li>2</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
 		}
 
@@ -294,7 +294,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 20;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">1</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">1</a></li>" +
 				"<li>2</li></ul>", HtmlHelper.Pager(5).ToHtmlString());
 		}
 
@@ -305,7 +305,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0");
 			StateContext.Bag.startRowIndex = 10;
 			StateContext.Bag.totalRowCount = 21;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">1</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1\">1</a></li>" +
 				"<li>2</li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/20\">3</a></li></ul>", HtmlHelper.Pager(5).ToHtmlString());
 		}
@@ -318,7 +318,7 @@ namespace Navigation.Test.Mvc
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
 			StateContext.Bag.totalRowCount = 49;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">1</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">1</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/9/9\">2</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/18/9\">3</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/27/9\">4</a></li>" +
@@ -334,7 +334,7 @@ namespace Navigation.Test.Mvc
 			StateContext.Bag.startRowIndex = 36;
 			StateContext.Bag.maximumRows = 9;
 			StateContext.Bag.totalRowCount = 45;
-			Assert.AreEqual("<ul><li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">1</a></li>" +
+			Assert.AreEqual("<ul><li><a data-current-keys=\"startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/9\">1</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/9/9\">2</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/18/9\">3</a></li>" +
 				"<li><a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/27/9\">4</a></li>" +
