@@ -1,4 +1,5 @@
 ﻿#if NET40Plus
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -44,8 +45,12 @@ namespace Navigation
 			var link = queryString["refreshajax"];
 			if (link != null)
 			{
-				var toData = new NavigationData(true);
-				//TODO remove defaults and derived
+				var toData = new Dictionary<string, object>();
+				foreach (NavigationDataItem item in new NavigationData(true))
+				{
+					if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
+						toData[item.Key] = item.Value;
+				}
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
 				var currentData = new NavigationData(true);
 				var includeCurrentData = false;
@@ -55,7 +60,7 @@ namespace Navigation
 				{
 					StateContext.Data.Clear();
 				}
-				foreach (NavigationDataItem item in toData)
+				foreach (var item in toData)
 					StateContext.Data[item.Key] = item.Value;
 				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = currentData;
 			}
