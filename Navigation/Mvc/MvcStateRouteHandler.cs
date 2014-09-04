@@ -45,6 +45,7 @@ namespace Navigation
 			if (link != null)
 			{
 				var toData = new NavigationData(true);
+				//TODO remove defaults and derived
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
 				var currentData = new NavigationData(true);
 				var includeCurrentData = false;
