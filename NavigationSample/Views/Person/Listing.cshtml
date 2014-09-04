@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-@Ajax.RefreshPanel("panel", "sortExpression,startRowIndex,maximumRows,name",
+@Ajax.RefreshPanel("search", "name",
     @<div>
         @using (Html.BeginRefreshForm(new NavigationData(true), __razor_template_writer))
         {
@@ -17,9 +17,12 @@
              @Html.TextBoxFor(m => m.Name)
              <input type="submit" name="search" value="Search" />
         }
-        Page size
-        @Html.RefreshLink("5", new NavigationData() { { "startRowIndex", "" }, { "maximumRows", 5 } }, true)
-        @Html.RefreshLink("10", new NavigationData() { { "startRowIndex", "" }, { "maximumRows", "" } }, true)
+    </div>)
+    Page size
+    @Html.RefreshLink("5", new NavigationData() { { "startRowIndex", "" }, { "maximumRows", 5 } }, true)
+    @Html.RefreshLink("10", new NavigationData() { { "startRowIndex", "" }, { "maximumRows", "" } }, true)
+@Ajax.RefreshPanel("list", "sortExpression,startRowIndex,maximumRows,name",
+    @<div>
         <table>
             <thead>
                 <tr>
