@@ -56,15 +56,31 @@ namespace Navigation
 				var includeCurrentData = false;
 				if (queryString["includecurrent"] != null)
 					includeCurrentData = bool.Parse(queryString["includecurrent"]);
+				var currentDataKeys = GetCurrentDataKeyEnumerator(queryString["currentkeys"] ?? string.Empty);
 				if (!includeCurrentData)
 				{
 					StateContext.Data.Clear();
+				}
+				else
+				{
+					foreach (var removeKey in currentDataKeys)
+						StateContext.Data[removeKey] = null;
 				}
 				foreach (var item in toData)
 					StateContext.Data[item.Key] = item.Value;
 				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = currentData;
 			}
 			return base.GetHttpHandler(requestContext);
+		}
+
+		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
+		{
+			if (currentDataKeys.Length == 0)
+				yield break;
+			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
+			{
+				yield return key.Trim();
+			}
 		}
 	}
 }

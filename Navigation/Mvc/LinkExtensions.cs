@@ -107,7 +107,19 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData);
+			string removeKeys = null;
+			if (includeCurrentData)
+			{
+				var removeKeyList = new List<string>();
+				foreach (NavigationDataItem item in toData)
+				{
+					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+						removeKeyList.Add(item.Key);
+				}
+				if (removeKeyList.Count > 0)
+					removeKeys = string.Join(",", removeKeyList);
+			}
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, removeKeys);
 		}
 
 		/// <summary>
@@ -156,7 +168,6 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			if (includeCurrentData)
 				tagBuilder.MergeAttribute("data-include-current", "true");
-			//TODO - if include current, add empty string values to current data keys so they can be cleared
 			if (currentDataKeys != null)
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));

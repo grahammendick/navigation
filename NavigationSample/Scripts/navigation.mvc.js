@@ -71,8 +71,11 @@
     function getAjaxLink(baseLink, target) {
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
-        if (target && target.getAttribute('data-include-current') === 'true')
+        if (target && target.getAttribute('data-include-current'))
             baseLink += '&includecurrent=true';
+        var currentKeys = target.getAttribute('data-current-keys');
+        if (target && currentKeys)
+            baseLink += '&currentkeys=' + win.encodeURIComponent(currentKeys);
         return baseLink;
     }
 
