@@ -57,14 +57,14 @@ namespace Navigation
 				if (queryString["includecurrent"] != null)
 					includeCurrentData = bool.Parse(queryString["includecurrent"]);
 				var currentDataKeys = GetCurrentDataKeyEnumerator(queryString["currentkeys"] ?? string.Empty);
-				if (!includeCurrentData)
-				{
-					StateContext.Data.Clear();
-				}
-				else
+				if (includeCurrentData)
 				{
 					foreach (var removeKey in currentDataKeys)
 						StateContext.Data[removeKey] = null;
+				}
+				else
+				{
+					StateContext.Data.Clear();
 				}
 				foreach (var item in toData)
 					StateContext.Data[item.Key] = item.Value;
