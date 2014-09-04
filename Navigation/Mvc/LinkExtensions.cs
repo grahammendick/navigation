@@ -156,6 +156,7 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			if (includeCurrentData)
 				tagBuilder.MergeAttribute("data-include-current", "true");
+			//TODO - if include current, add empty string values to current data keys so they can be cleared
 			if (currentDataKeys != null)
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));

@@ -39,13 +39,25 @@ namespace Navigation
 		/// <returns>The object that processes the request</returns>
 		protected override IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{
-			var link = requestContext.HttpContext.Request.QueryString["refreshajax"];
+			StateController.SetStateContext(State.Id, requestContext.HttpContext);
+			var queryString = requestContext.HttpContext.Request.QueryString;
+			var link = queryString["refreshajax"];
 			if (link != null)
 			{
+				var toData = new NavigationData(true);
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
-				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = new NavigationData(true);
+				var currentData = new NavigationData(true);
+				var includeCurrentData = false;
+				if (queryString["includecurrent"] != null)
+					includeCurrentData = bool.Parse(queryString["includecurrent"]);
+				if (!includeCurrentData)
+				{
+					StateContext.Data.Clear();
+				}
+				foreach (NavigationDataItem item in toData)
+					StateContext.Data[item.Key] = item.Value;
+				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = currentData;
 			}
-			StateController.SetStateContext(State.Id, requestContext.HttpContext);
 			return base.GetHttpHandler(requestContext);
 		}
 	}
