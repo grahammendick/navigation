@@ -27,7 +27,7 @@
         if (ajaxOn(e.target, 'FORM')) {
             var elements = e.target.elements;
             var req = new win.XMLHttpRequest();
-            req.onreadystatechange = onReady(req, true, null);
+            req.onreadystatechange = onReady(req, true);
             var data = {};
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
@@ -63,7 +63,7 @@
     var link = win.location.pathname + win.location.search;
     function refreshAjax(newLink, addHistory, target) {
         var req = new win.XMLHttpRequest();
-        req.onreadystatechange = onReady(req, addHistory, newLink);
+        req.onreadystatechange = onReady(req, addHistory);
         req.open('get', getAjaxLink(newLink, target));
         req.send();
     }
@@ -77,17 +77,17 @@
     }
 
     var cache = {};
-    function onReady(req, addHistory, newLink) {
+    function onReady(req, addHistory) {
         var oldLink = link;
         return function () {
             if (req.readyState === 4 && req.status === 200) {
                 var resp = win.JSON.parse(req.responseText);
-                handleRespone(resp, addHistory, newLink, oldLink);
+                handleRespone(resp, addHistory, oldLink);
             }
         };
     }
 
-    function handleRespone(resp, addHistory, newLink, oldLink) {
+    function handleRespone(resp, addHistory, oldLink) {
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
             panel.innerHTML = resp.Panels[id];
@@ -100,8 +100,7 @@
             }
             panel.dispatchEvent(evt);
         }
-        if (!newLink)
-            newLink = resp.Link;
+        var newLink = resp.Link;
         if (addHistory && link !== newLink)
             win.history.pushState(newLink, win.document.title, newLink);
         cache[oldLink + '&' + newLink] = resp;
