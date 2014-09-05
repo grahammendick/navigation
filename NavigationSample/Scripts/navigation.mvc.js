@@ -73,8 +73,8 @@
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
         if (target && target.getAttribute('data-include-current'))
             baseLink += '&includecurrent=true';
-        var currentKeys = target.getAttribute('data-current-keys');
-        if (target && currentKeys)
+        var currentKeys = target ? target.getAttribute('data-current-keys') : null;
+        if (currentKeys)
             baseLink += '&currentkeys=' + win.encodeURIComponent(currentKeys);
         return baseLink;
     }
