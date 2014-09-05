@@ -45,17 +45,16 @@ namespace Navigation
 			var link = queryString["refreshajax"];
 			if (link != null)
 			{
-				var toData = new Dictionary<string, object>();
-				foreach (NavigationDataItem item in new NavigationData(true))
+				var toData = new NavigationData(true);
+				foreach (NavigationDataItem item in StateContext.Data)
 				{
-					if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
-						toData[item.Key] = item.Value;
+					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+						toData[item.Key] = null;
 				}
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
-				var currentData = new NavigationData(true);
+				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = new NavigationData(true);
 				var includeCurrentData = false;
-				if (queryString["includecurrent"] != null)
-					includeCurrentData = bool.Parse(queryString["includecurrent"]);
+				bool.TryParse(queryString["includecurrent"], out includeCurrentData);
 				var currentDataKeys = GetCurrentDataKeyEnumerator(queryString["currentkeys"] ?? string.Empty);
 				if (includeCurrentData)
 				{
@@ -64,11 +63,11 @@ namespace Navigation
 				}
 				else
 				{
+					var currentData = new NavigationData(currentDataKeys);
 					StateContext.Data.Clear();
+					StateContext.Data.Add(currentData);
 				}
-				foreach (var item in toData)
-					StateContext.Data[item.Key] = item.Value;
-				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = currentData;
+				StateContext.Data.Add(toData);
 			}
 			return base.GetHttpHandler(requestContext);
 		}
