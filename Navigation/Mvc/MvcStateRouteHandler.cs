@@ -45,12 +45,7 @@ namespace Navigation
 			var link = queryString["refreshajax"];
 			if (link != null)
 			{
-				var toData = new NavigationData(true);
-				foreach (NavigationDataItem item in StateContext.Data)
-				{
-					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
-						toData[item.Key] = null;
-				}
+				var toData = GetToData();
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
 				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = new NavigationData(true);
 				var includeCurrentData = false;
@@ -70,6 +65,17 @@ namespace Navigation
 				StateContext.Data.Add(toData);
 			}
 			return base.GetHttpHandler(requestContext);
+		}
+
+		private static NavigationData GetToData()
+		{
+			var toData = new NavigationData(true);
+			foreach (NavigationDataItem item in StateContext.Data)
+			{
+				if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+					toData[item.Key] = null;
+			}
+			return toData;
 		}
 
 		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
