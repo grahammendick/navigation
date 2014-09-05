@@ -55,7 +55,7 @@ namespace Navigation
 				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = new NavigationData(true);
 				var includeCurrentData = false;
 				bool.TryParse(queryString["includecurrent"], out includeCurrentData);
-				var currentDataKeys = GetCurrentDataKeyEnumerator(queryString["currentkeys"] ?? string.Empty);
+				var currentDataKeys = GetCurrentDataKeyEnumerator(queryString["currentkeys"]);
 				if (includeCurrentData)
 				{
 					foreach (var removeKey in currentDataKeys)
@@ -74,7 +74,7 @@ namespace Navigation
 
 		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
 		{
-			if (currentDataKeys.Length == 0)
+			if (currentDataKeys == null || currentDataKeys.Length == 0)
 				yield break;
 			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
 			{
