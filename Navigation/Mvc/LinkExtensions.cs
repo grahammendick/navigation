@@ -105,20 +105,9 @@ namespace Navigation
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, bool includeCurrentData = false, object htmlAttributes = null)
 		{
 			var data = new NavigationData(includeCurrentData);
-			toData = toData ?? new NavigationData();
-			data.Add(toData);
-			string removeKeys = null;
-			if (includeCurrentData)
-			{
-				var removeKeyList = new List<string>();
-				foreach (NavigationDataItem item in toData)
-				{
-					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
-						removeKeyList.Add(item.Key);
-				}
-				if (removeKeyList.Count > 0)
-					removeKeys = string.Join(",", removeKeyList);
-			}
+			if (toData != null)
+				data.Add(toData);
+			string removeKeys = htmlHelper.GetRemoveKeys(includeCurrentData, toData);
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, removeKeys);
 		}
 
@@ -171,6 +160,23 @@ namespace Navigation
 			if (currentDataKeys != null)
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+		}
+
+		internal static string GetRemoveKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
+		{
+			string removeKeys = null;
+			if (includeCurrentData && toData != null)
+			{
+				var removeKeyList = new List<string>();
+				foreach (NavigationDataItem item in toData)
+				{
+					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+						removeKeyList.Add(item.Key);
+				}
+				if (removeKeyList.Count > 0)
+					removeKeys = string.Join(",", removeKeyList);
+			}
+			return removeKeys;
 		}
 	}
 }
