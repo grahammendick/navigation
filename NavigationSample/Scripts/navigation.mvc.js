@@ -20,9 +20,9 @@
         }
     });
 
-    var tagNames = /^(INPUT|TEXTAREA|SELECT)$/;
-    var ignoreTypes = /^(button|image|submit|reset|file)$/;
-    var checkTypes = /^(checkbox|radio)$/;
+    var tagNames = /^INPUT|TEXTAREA|SELECT$/;
+    var ignoreTypes = /^button|image|submit|reset|file$/;
+    var checkTypes = /^checkbox|radio$/;
     win.document.addEventListener('submit', function (e) {
         if (ajaxOn(e.target, 'FORM')) {
             var elements = e.target.elements;
