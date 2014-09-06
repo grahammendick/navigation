@@ -1,6 +1,7 @@
 ﻿#if NET40Plus
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -128,20 +129,10 @@ namespace Navigation
 		/// there is <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, string currentDataKeys, object htmlAttributes = null)
 		{
-			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
+			var data = htmlHelper.GetCurrentData(currentDataKeys);
 			if (toData != null)
 				data.Add(toData);
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, currentDataKeys);
-		}
-
-		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
-		{
-			if (currentDataKeys == null || currentDataKeys.Length == 0)
-				yield break;
-			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
-			{
-				yield return key.Trim();
-			}
 		}
 
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
@@ -177,6 +168,13 @@ namespace Navigation
 					removeKeys = string.Join(",", removeKeyList);
 			}
 			return removeKeys;
+		}
+
+		internal static NavigationData GetCurrentData(this HtmlHelper htmlHelper, string currentDataKeys)
+		{
+			if (currentDataKeys == null || currentDataKeys.Length == 0)
+				new NavigationData();
+			return new NavigationData(currentDataKeys.Split(',').Select(s => s.Trim()));
 		}
 	}
 }
