@@ -105,8 +105,8 @@ namespace Navigation
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, bool includeCurrentData = false, object htmlAttributes = null)
 		{
 			var data = new NavigationData(includeCurrentData);
-			if (toData != null)
-				data.Add(toData);
+			toData = toData ?? new NavigationData();
+			data.Add(toData);
 			string removeKeys = null;
 			if (includeCurrentData)
 			{
