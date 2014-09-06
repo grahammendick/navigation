@@ -125,20 +125,10 @@ namespace Navigation
 		/// converted to a <see cref="System.String"/></exception>
 		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, string currentDataKeys, TextWriter writer = null, object htmlAttributes = null)
 		{
-			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
+			var data = htmlHelper.GetCurrentData(currentDataKeys);
 			if (toData != null)
 				data.Add(toData);
 			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, false, currentDataKeys);
-		}
-
-		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
-		{
-			if (currentDataKeys == null || currentDataKeys.Length == 0)
-				yield break;
-			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
-			{
-				yield return key.Trim();
-			}
 		}
 
 		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes,
