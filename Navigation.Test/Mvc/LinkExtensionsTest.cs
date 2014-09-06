@@ -166,6 +166,7 @@ namespace Navigation.Test.Mvc
 			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?b=0&amp;a=1\">link</a>",
 				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" } }, true).ToHtmlString());
 		}
+
 		[TestMethod]
 		public void RefreshLinkIncludeCurrentDataNullToDataTest()
 		{
@@ -182,6 +183,15 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
 			Assert.AreEqual("<a data-current-keys=\"b,c,startRowIndex\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?a=1\">link</a>",
 				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" }, { "b", "" }, { "c", "" }, { "startRowIndex", 0 } }, true).ToHtmlString());
+		}
+
+		[TestMethod]
+		public void RefreshLinkIncludeCurrentDataAndAttributesTest()
+		{
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?b=0&amp;a=1\" title=\"details\">link</a>",
+				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" } }, true, new { title = "details" }).ToHtmlString());
 		}
 	}
 }
