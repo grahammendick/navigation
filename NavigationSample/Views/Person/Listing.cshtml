@@ -11,7 +11,7 @@
 <body>
 @Ajax.RefreshPanel("search", "name",
     @<div>
-        @using (Html.BeginRefreshForm(new NavigationData(true), __razor_template_writer))
+        @using (Html.BeginRefreshForm(null, true, __razor_template_writer))
         {
              @Html.LabelFor(m => m.Name)
              @Html.TextBoxFor(m => m.Name)

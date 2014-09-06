@@ -109,7 +109,7 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, null, new { onsubmit = "validate" });
+			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, false, null, new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r0?a=1\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 	}

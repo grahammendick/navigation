@@ -1,4 +1,5 @@
 ﻿#if NET40Plus
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -80,7 +81,7 @@ namespace Navigation
 		/// <returns>An opening &lt;form&gt; tag</returns>
 		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, TextWriter writer = null, object htmlAttributes = null)
 		{
-			return BeginRefreshForm(htmlHelper, null, writer, htmlAttributes);
+			return BeginRefreshForm(htmlHelper, null, false, writer, htmlAttributes);
 		}
 
 		/// <summary>
@@ -96,12 +97,46 @@ namespace Navigation
 		/// <returns>An opening &lt;form&gt; tag</returns>
 		/// <exception cref="System.ArgumentException">There is <see cref="NavigationData"/> that cannot be
 		/// converted to a <see cref="System.String"/></exception>
-		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, TextWriter writer = null, object htmlAttributes = null)
+		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, bool includeCurrentData = false, TextWriter writer = null, object htmlAttributes = null)
 		{
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(toData), writer, htmlAttributes, true);
+			var data = new NavigationData(includeCurrentData);
+			toData = toData ?? new NavigationData();
+			data.Add(toData);
+			string removeKeys = null;
+			if (includeCurrentData)
+			{
+				var removeKeyList = new List<string>();
+				foreach (NavigationDataItem item in toData)
+				{
+					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+						removeKeyList.Add(item.Key);
+				}
+				if (removeKeyList.Count > 0)
+					removeKeys = string.Join(",", removeKeyList);
+			}
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, removeKeys);
 		}
 
-		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes, bool refresh)
+		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, string currentDataKeys, TextWriter writer = null, object htmlAttributes = null)
+		{
+			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
+			if (toData != null)
+				data.Add(toData);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, false, currentDataKeys);
+		}
+
+		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
+		{
+			if (currentDataKeys == null || currentDataKeys.Length == 0)
+				yield break;
+			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
+			{
+				yield return key.Trim();
+			}
+		}
+
+		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes,
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null)
 		{
 			TagBuilder tagBuilder = new TagBuilder("form");
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
@@ -109,6 +144,10 @@ namespace Navigation
 			tagBuilder.MergeAttribute("method", "post");
 			if (refresh)
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
+			if (includeCurrentData)
+				tagBuilder.MergeAttribute("data-include-current", "true");
+			if (currentDataKeys != null)
+				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			if (writer != null)
 				htmlHelper.ViewContext.Writer = writer;
 			htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
