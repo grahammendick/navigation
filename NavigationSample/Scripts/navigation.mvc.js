@@ -20,31 +20,36 @@
         }
     });
 
+    win.document.addEventListener('submit', function (e) {
+        var element = e.target;
+        if (ajaxOn(element, 'FORM')) {
+            var req = new win.XMLHttpRequest();
+            req.onreadystatechange = onReady(req, true);
+            e.preventDefault();
+            req.open('post', getAjaxLink(element.getAttribute('action'), element));
+            req.setRequestHeader("Content-Type", "application/json");
+            req.send(win.JSON.stringify(getFormData(element)));
+        }
+    });
+
     var tagNames = /^INPUT|TEXTAREA|SELECT$/;
     var ignoreTypes = /^button|image|submit|reset|file$/;
     var checkTypes = /^checkbox|radio$/;
-    win.document.addEventListener('submit', function (e) {
-        if (ajaxOn(e.target, 'FORM')) {
-            var elements = e.target.elements;
-            var req = new win.XMLHttpRequest();
-            req.onreadystatechange = onReady(req, true);
-            var data = {};
-            for (var i = 0; i < elements.length; i++) {
-                var element = elements[i];
-                if (tagNames.test(element.tagName) && element.name
-                    && !ignoreTypes.test(element.type) && !element.disabled
-                    && (!checkTypes.test(element.type) || element.checked))
-                    data[element.name] = element.value;
-            }
-            for (var key in submitData)
-                data[key] = submitData[key];
-            submitData = {};
-            e.preventDefault();
-            req.open('post', getAjaxLink(e.target.getAttribute('action'), e.target));
-            req.setRequestHeader("Content-Type", "application/json");
-            req.send(win.JSON.stringify(data));
+    function getFormData(form) {
+        var elements = form.elements;
+        var data = {};
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (tagNames.test(element.tagName) && element.name
+                && !ignoreTypes.test(element.type) && !element.disabled
+                && (!checkTypes.test(element.type) || element.checked))
+                data[element.name] = element.value;
         }
-    });
+        for (var key in submitData)
+            data[key] = submitData[key];
+        submitData = {};
+        return data;
+    }
 
     function ajaxOn(element, tagName) {
         if (element.tagName === tagName
