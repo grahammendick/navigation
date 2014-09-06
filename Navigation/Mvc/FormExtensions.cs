@@ -91,6 +91,8 @@ namespace Navigation
 		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
 		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
 		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="includeCurrentData">Indicates whether to include the current data together
+		/// with the <paramref name="toData"/></param>
 		/// <param name="writer">The text writer the HTML is written to</param>
 		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
 		/// element</param>
@@ -100,23 +102,27 @@ namespace Navigation
 		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, bool includeCurrentData = false, TextWriter writer = null, object htmlAttributes = null)
 		{
 			var data = new NavigationData(includeCurrentData);
-			toData = toData ?? new NavigationData();
-			data.Add(toData);
-			string removeKeys = null;
-			if (includeCurrentData)
-			{
-				var removeKeyList = new List<string>();
-				foreach (NavigationDataItem item in toData)
-				{
-					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
-						removeKeyList.Add(item.Key);
-				}
-				if (removeKeyList.Count > 0)
-					removeKeys = string.Join(",", removeKeyList);
-			}
+			if (toData != null)
+				data.Add(toData);
+			string removeKeys = htmlHelper.GetRemoveKeys(includeCurrentData, toData);
 			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, removeKeys);
 		}
 
+		/// <summary>
+		/// Writes an opening &lt;form&gt; tag to the response with its action attribute set from
+		/// a call to <see cref="StateController.GetRefreshLink(NavigationData)"/>
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
+		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="currentDataKeys">A comma separated list of current data items to
+		/// include together with the <paramref name="toData"/></param>
+		/// <param name="writer">The text writer the HTML is written to</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An opening &lt;form&gt; tag</returns>
+		/// <exception cref="System.ArgumentException">There is <see cref="NavigationData"/> that cannot be
+		/// converted to a <see cref="System.String"/></exception>
 		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, string currentDataKeys, TextWriter writer = null, object htmlAttributes = null)
 		{
 			var data = new NavigationData(GetCurrentDataKeyEnumerator(currentDataKeys));
