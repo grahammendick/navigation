@@ -202,6 +202,15 @@ namespace Navigation.Test.Mvc
 			Assert.AreEqual("<a data-current-keys=\" b , c\" data-navigation=\"refresh\" href=\"/r1?b=0&amp;c=2&amp;a=1\">link</a>",
 				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" } }, " b , c").ToHtmlString());
 		}
+
+		[TestMethod]
+		public void RefreshLinkCurrentDataKeysAndAttributesTest()
+		{
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "c", "2" }, { "d", "3" } });
+			Assert.AreEqual("<a data-current-keys=\" b , c\" data-navigation=\"refresh\" href=\"/r1?b=0&amp;c=2&amp;a=1\" title=\"details\">link</a>",
+				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" } }, " b , c", new { title = "details" }).ToHtmlString());
+		}
 	}
 }
 #endif
