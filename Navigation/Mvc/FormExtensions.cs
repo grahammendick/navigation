@@ -104,8 +104,8 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			string removeKeys = htmlHelper.GetRemoveKeys(includeCurrentData, toData);
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, removeKeys);
+			string currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, currentKeys);
 		}
 
 		/// <summary>
@@ -126,9 +126,10 @@ namespace Navigation
 		public static MvcForm BeginRefreshForm(this HtmlHelper htmlHelper, NavigationData toData, string currentDataKeys, TextWriter writer = null, object htmlAttributes = null)
 		{
 			var data = htmlHelper.GetCurrentData(currentDataKeys);
+			string currentKeys = htmlHelper.GetCurrentKeys(null, data);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, false, currentDataKeys);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, false, currentKeys);
 		}
 
 		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes,

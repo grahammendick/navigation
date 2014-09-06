@@ -108,8 +108,8 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			string removeKeys = htmlHelper.GetRemoveKeys(includeCurrentData, toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, removeKeys);
+			string currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, currentKeys);
 		}
 
 		/// <summary>
@@ -130,9 +130,10 @@ namespace Navigation
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, string currentDataKeys, object htmlAttributes = null)
 		{
 			var data = htmlHelper.GetCurrentData(currentDataKeys);
+			string currentKeys = htmlHelper.GetCurrentKeys(null, data);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, currentDataKeys);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, currentKeys);
 		}
 
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
@@ -153,15 +154,15 @@ namespace Navigation
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		internal static string GetRemoveKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
+		internal static string GetCurrentKeys(this HtmlHelper htmlHelper, bool? includeCurrentData, NavigationData toData)
 		{
 			string removeKeys = null;
-			if (includeCurrentData && toData != null)
+			if (toData != null)
 			{
 				var removeKeyList = new List<string>();
 				foreach (NavigationDataItem item in toData)
 				{
-					if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+					if (!includeCurrentData.HasValue || item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
 						removeKeyList.Add(item.Key);
 				}
 				if (removeKeyList.Count > 0)
