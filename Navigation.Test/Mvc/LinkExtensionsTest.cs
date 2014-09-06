@@ -163,8 +163,16 @@ namespace Navigation.Test.Mvc
 		{
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
-			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?b=0&amp;a=1\">link</a>", 
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?b=0&amp;a=1\">link</a>",
 				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" } }, true).ToHtmlString());
+		}
+		[TestMethod]
+		public void RefreshLinkIncludeCurrentDataNullToDataTest()
+		{
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?b=0\">link</a>", 
+				HtmlHelper.RefreshLink("link", null, true).ToHtmlString());
 		}
 
 		[TestMethod]
