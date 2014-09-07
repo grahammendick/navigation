@@ -168,11 +168,12 @@ namespace Navigation
 
 		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, string currentDataKeys)
 		{
-			if (currentDataKeys == null || currentDataKeys.Length == 0)
-				yield break;
-			foreach (string key in currentDataKeys.Split(','))
+			if (currentDataKeys != null && currentDataKeys.Length != 0)
 			{
-				yield return key.Trim();
+				foreach (string key in currentDataKeys.Split(','))
+				{
+					yield return key.Trim();
+				}
 			}
 		}
 	}
