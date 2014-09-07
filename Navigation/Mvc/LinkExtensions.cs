@@ -159,14 +159,14 @@ namespace Navigation
 			string currentKeys = null;
 			if (toData != null)
 			{
-				var removeKeyList = new List<string>();
+				var currentKeyList = new List<string>();
 				foreach (NavigationDataItem item in toData)
 				{
 					if (item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
-						removeKeyList.Add(item.Key);
+						currentKeyList.Add(item.Key);
 				}
-				if (removeKeyList.Count > 0)
-					currentKeys = string.Join(",", removeKeyList);
+				if (currentKeyList.Count > 0)
+					currentKeys = string.Join(",", currentKeyList);
 			}
 			return currentKeys;
 		}
