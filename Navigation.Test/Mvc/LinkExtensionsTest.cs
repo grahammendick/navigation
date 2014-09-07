@@ -204,6 +204,15 @@ namespace Navigation.Test.Mvc
 		}
 
 		[TestMethod]
+		public void RefreshLinkCurrentDataKeysNullToDataTest()
+		{
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
+			Assert.AreEqual("<a data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" href=\"/r1?b=0\">link</a>",
+				HtmlHelper.RefreshLink("link", null, " b , startRowIndex").ToHtmlString());
+		}
+
+		[TestMethod]
 		public void RefreshLinkCurrentDataKeysAndAttributesTest()
 		{
 			StateController.Navigate("d7");
