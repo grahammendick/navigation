@@ -112,6 +112,16 @@ namespace Navigation.Test.Mvc
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, false, null, new { onsubmit = "validate" });
 			Assert.AreEqual("<form action=\"/r0?a=1\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
+
+		[TestMethod]
+		public void RefreshFormIncludeCurrentDataTest()
+		{
+			StringBuilder formBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, true);
+			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-include-current=\"true\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
+		}
 	}
 }
 #endif
