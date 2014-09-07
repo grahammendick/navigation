@@ -1,6 +1,7 @@
 ﻿#if NET40Plus
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections;
 using System.IO;
 using System.Text;
 using System.Web.Mvc;
@@ -12,9 +13,12 @@ namespace Navigation.Test.Mvc
 	{
 		private static HtmlHelper GetHtmlHelper(StringBuilder formBuilder)
 		{
-			ViewContext context = new Mock<ViewContext>().Object;
+			ViewContext context = new Mock<ViewContext> { CallBase = formBuilder == null }.Object;
 			IViewDataContainer container = new Mock<IViewDataContainer>().Object;
-			Mock.Get(context).Setup(c => c.Writer).Returns(new StringWriter(formBuilder));
+			if (formBuilder != null)
+				Mock.Get(context).Setup(c => c.Writer).Returns(new StringWriter(formBuilder));
+			else
+				Mock.Get(context).Setup(c => c.HttpContext.Items).Returns(new Hashtable());
 			return new HtmlHelper(context, container);
 		}
 
@@ -28,11 +32,29 @@ namespace Navigation.Test.Mvc
 		}
 
 		[TestMethod]
+		public void NavigationFormWriterTest()
+		{
+			StringBuilder formBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			GetHtmlHelper(null).BeginNavigationForm("t0", new StringWriter(formBuilder));
+			Assert.AreEqual("<form action=\"/r1\" method=\"post\">", formBuilder.ToString());
+		}
+
+		[TestMethod]
 		public void NavigationFormDataTest()
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
 			GetHtmlHelper(formBuilder).BeginNavigationForm("t0", new NavigationData { { "a", "1" } });
+			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\">", formBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void NavigationFormDataWriterTest()
+		{
+			StringBuilder formBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			GetHtmlHelper(null).BeginNavigationForm("t0", new NavigationData { { "a", "1" } }, new StringWriter(formBuilder));
 			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\">", formBuilder.ToString());
 		}
 
