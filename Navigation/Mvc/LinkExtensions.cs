@@ -171,7 +171,7 @@ namespace Navigation
 		{
 			if (currentDataKeys == null || currentDataKeys.Length == 0)
 				yield break;
-			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
+			foreach (string key in currentDataKeys.Split(','))
 			{
 				yield return key.Trim();
 			}
