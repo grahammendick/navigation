@@ -36,8 +36,8 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			GetHtmlHelper(null).BeginNavigationForm("t0", new StringWriter(formBuilder));
-			Assert.AreEqual("<form action=\"/r1\" method=\"post\">", formBuilder.ToString());
+			using (GetHtmlHelper(null).BeginNavigationForm("t0", new StringWriter(formBuilder)));
+			Assert.AreEqual("<form action=\"/r1\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -54,8 +54,8 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			GetHtmlHelper(null).BeginNavigationForm("t0", new NavigationData { { "a", "1" } }, new StringWriter(formBuilder));
-			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\">", formBuilder.ToString());
+			using (GetHtmlHelper(null).BeginNavigationForm("t0", new NavigationData { { "a", "1" } }, new StringWriter(formBuilder)));
+			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
 		[TestMethod]
