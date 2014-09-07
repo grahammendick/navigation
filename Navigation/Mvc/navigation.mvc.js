@@ -96,6 +96,10 @@
     }
 
     function handleRespone(resp, addHistory, oldLink) {
+        var newLink = resp.Link;
+        cache[oldLink + '&' + newLink] = resp;
+        if (link !== oldLink)
+            return;
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
             panel.innerHTML = resp.Panels[id];
@@ -108,10 +112,8 @@
             }
             panel.dispatchEvent(evt);
         }
-        var newLink = resp.Link;
         if (addHistory && link !== newLink)
             win.history.pushState(newLink, win.document.title, newLink);
-        cache[oldLink + '&' + newLink] = resp;
         link = newLink;
     }
 
@@ -122,7 +124,7 @@
             if (!resp)
                 refreshAjax(newLink, false);
             else
-                handleRespone(resp, false, newLink, link);
+                handleRespone(resp, false, link);
         }
     });
 })(window);
