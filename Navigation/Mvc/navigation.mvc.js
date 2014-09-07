@@ -8,7 +8,7 @@
         var element = e.target;
         if (!e.ctrlKey && !e.shiftKey && ajaxOn(element, 'A')) {
             e.preventDefault();
-            refreshAjax(element.getAttribute('href'), true);
+            refreshAjax(element.getAttribute('href'), true, element);
         }
         if (element.tagName === 'INPUT' && element.name) {
             if (element.type === 'submit')
@@ -20,31 +20,36 @@
         }
     });
 
-    var tagNames = /^(INPUT|TEXTAREA|SELECT)$/;
-    var ignoreTypes = /^(button|image|submit|reset|file)$/;
-    var checkTypes = /^(checkbox|radio)$/;
     win.document.addEventListener('submit', function (e) {
-        if (ajaxOn(e.target, 'FORM')) {
-            var elements = e.target.elements;
+        var element = e.target;
+        if (ajaxOn(element, 'FORM')) {
             var req = new win.XMLHttpRequest();
-            req.onreadystatechange = onReady(req, true, null);
-            var data = {};
-            for (var i = 0; i < elements.length; i++) {
-                var element = elements[i];
-                if (tagNames.test(element.tagName) && element.name
-                    && !ignoreTypes.test(element.type) && !element.disabled
-                    && (!checkTypes.test(element.type) || element.checked))
-                    data[element.name] = element.value;
-            }
-            for (var key in submitData)
-                data[key] = submitData[key];
-            submitData = {};
+            req.onreadystatechange = onReady(req, true);
             e.preventDefault();
-            req.open('post', getAjaxLink(e.target.getAttribute('action')));
+            req.open('post', getAjaxLink(element.getAttribute('action'), element));
             req.setRequestHeader("Content-Type", "application/json");
-            req.send(win.JSON.stringify(data));
+            req.send(win.JSON.stringify(getFormData(element)));
         }
     });
+
+    var tagNames = /^INPUT|TEXTAREA|SELECT$/;
+    var ignoreTypes = /^button|image|submit|reset|file$/;
+    var checkTypes = /^checkbox|radio$/;
+    function getFormData(form) {
+        var elements = form.elements;
+        var data = {};
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (tagNames.test(element.tagName) && element.name
+                && !ignoreTypes.test(element.type) && !element.disabled
+                && (!checkTypes.test(element.type) || element.checked))
+                data[element.name] = element.value;
+        }
+        for (var key in submitData)
+            data[key] = submitData[key];
+        submitData = {};
+        return data;
+    }
 
     function ajaxOn(element, tagName) {
         if (element.tagName === tagName
@@ -61,31 +66,36 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    function refreshAjax(newLink, addHistory) {
+    function refreshAjax(newLink, addHistory, target) {
         var req = new win.XMLHttpRequest();
-        req.onreadystatechange = onReady(req, addHistory, newLink);
-        req.open('get', getAjaxLink(newLink));
+        req.onreadystatechange = onReady(req, addHistory);
+        req.open('get', getAjaxLink(newLink, target));
         req.send();
     }
 
-    function getAjaxLink(baseLink) {
+    function getAjaxLink(baseLink, target) {
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
+        if (target && target.getAttribute('data-include-current'))
+            baseLink += '&includecurrent=true';
+        var currentKeys = target ? target.getAttribute('data-current-keys') : null;
+        if (currentKeys)
+            baseLink += '&currentkeys=' + win.encodeURIComponent(currentKeys);
         return baseLink;
     }
 
     var cache = {};
-    function onReady(req, addHistory, newLink) {
+    function onReady(req, addHistory) {
         var oldLink = link;
         return function () {
             if (req.readyState === 4 && req.status === 200) {
                 var resp = win.JSON.parse(req.responseText);
-                handleRespone(resp, addHistory, newLink, oldLink);
+                handleRespone(resp, addHistory, oldLink);
             }
         };
     }
 
-    function handleRespone(resp, addHistory, newLink, oldLink) {
+    function handleRespone(resp, addHistory, oldLink) {
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
             panel.innerHTML = resp.Panels[id];
@@ -98,8 +108,7 @@
             }
             panel.dispatchEvent(evt);
         }
-        if (!newLink)
-            newLink = resp.Link;
+        var newLink = resp.Link;
         if (addHistory && link !== newLink)
             win.history.pushState(newLink, win.document.title, newLink);
         cache[oldLink + '&' + newLink] = resp;
