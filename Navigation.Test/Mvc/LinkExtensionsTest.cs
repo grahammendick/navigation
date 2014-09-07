@@ -181,8 +181,8 @@ namespace Navigation.Test.Mvc
 		{
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
-			Assert.AreEqual("<a data-current-keys=\"b,c,startRowIndex,maximumRows\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?a=1\">link</a>",
-				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" }, { "b", "" }, { "c", "" }, { "startRowIndex", 0 }, { "maximumRows", "" } }, true).ToHtmlString());
+			Assert.AreEqual("<a data-current-keys=\"b,c,startRowIndex,totalRowCount\" data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1/0/11?a=1\">link</a>",
+				HtmlHelper.RefreshLink("link", new NavigationData { { "a", "1" }, { "b", "" }, { "c", "" }, { "startRowIndex", 0 }, { "maximumRows", 11 }, { "totalRowCount", 12 } }, true).ToHtmlString());
 		}
 
 		[TestMethod]
