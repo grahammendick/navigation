@@ -122,7 +122,7 @@
             if (!resp)
                 refreshAjax(newLink, false);
             else
-                handleRespone(resp, false, newLink, link);
+                handleRespone(resp, false, link);
         }
     });
 })(window);
