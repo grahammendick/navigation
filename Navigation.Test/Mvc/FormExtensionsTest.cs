@@ -211,9 +211,9 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
+			StateController.Navigate("t0", new NavigationData { { "startRowIndex", 0 }, { "c", "2" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, " b , startRowIndex");
-			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
 		}
 
 		[TestMethod]

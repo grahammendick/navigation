@@ -129,11 +129,11 @@ namespace Navigation
 		/// there is <see cref="NavigationData"/> that cannot be converted to a <see cref="System.String"/></exception>
 		public static MvcHtmlString RefreshLink(this HtmlHelper htmlHelper, string linkText, NavigationData toData, string currentDataKeys, object htmlAttributes = null)
 		{
-			var data = htmlHelper.GetCurrentData(currentDataKeys);
-			string currentKeys = htmlHelper.GetCurrentKeys(null, data);
+			var currentKeys = htmlHelper.GetCurrentKeys(currentDataKeys);
+			var data = new NavigationData(currentKeys);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, currentKeys);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, string.Join(",", currentKeys));
 		}
 
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
@@ -154,28 +154,31 @@ namespace Navigation
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		internal static string GetCurrentKeys(this HtmlHelper htmlHelper, bool? includeCurrentData, NavigationData toData)
+		internal static string GetCurrentKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
 		{
-			string removeKeys = null;
+			string currentKeys = null;
 			if (toData != null)
 			{
 				var removeKeyList = new List<string>();
 				foreach (NavigationDataItem item in toData)
 				{
-					if (!includeCurrentData.HasValue || item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
+					if (item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
 						removeKeyList.Add(item.Key);
 				}
 				if (removeKeyList.Count > 0)
-					removeKeys = string.Join(",", removeKeyList);
+					currentKeys = string.Join(",", removeKeyList);
 			}
-			return removeKeys;
+			return currentKeys;
 		}
 
-		internal static NavigationData GetCurrentData(this HtmlHelper htmlHelper, string currentDataKeys)
+		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, string currentDataKeys)
 		{
 			if (currentDataKeys == null || currentDataKeys.Length == 0)
-				new NavigationData();
-			return new NavigationData(currentDataKeys.Split(',').Select(s => s.Trim()));
+				yield break;
+			foreach (string key in currentDataKeys.Split(new char[] { ',' }))
+			{
+				yield return key.Trim();
+			}
 		}
 	}
 }
