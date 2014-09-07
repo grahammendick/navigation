@@ -104,8 +104,8 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			string currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, currentKeys);
+			var currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, string.Join(",", currentKeys));
 		}
 
 		/// <summary>
@@ -143,7 +143,7 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			if (includeCurrentData)
 				tagBuilder.MergeAttribute("data-include-current", "true");
-			if (currentDataKeys != null)
+			if (currentDataKeys != null && currentDataKeys.Length != 0)
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			if (writer != null)
 				htmlHelper.ViewContext.Writer = writer;

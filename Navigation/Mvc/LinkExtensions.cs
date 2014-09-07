@@ -108,8 +108,8 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			string currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, currentKeys);
+			var currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, string.Join(",", currentKeys));
 		}
 
 		/// <summary>
@@ -149,26 +149,22 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			if (includeCurrentData)
 				tagBuilder.MergeAttribute("data-include-current", "true");
-			if (currentDataKeys != null)
+			if (currentDataKeys != null && currentDataKeys.Length != 0)
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		internal static string GetCurrentKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
+		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
 		{
-			string currentKeys = null;
 			if (toData != null)
 			{
-				var currentKeyList = new List<string>();
 				foreach (NavigationDataItem item in toData)
 				{
 					if (item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
-						currentKeyList.Add(item.Key);
+						yield return item.Key;
 				}
-				if (currentKeyList.Count > 0)
-					currentKeys = string.Join(",", currentKeyList);
 			}
-			return currentKeys;
+			yield break;
 		}
 
 		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, string currentDataKeys)
