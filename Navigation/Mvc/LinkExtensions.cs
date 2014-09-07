@@ -162,7 +162,7 @@ namespace Navigation
 				var removeKeyList = new List<string>();
 				foreach (NavigationDataItem item in toData)
 				{
-					if (!includeCurrentData.HasValue || item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+					if (!includeCurrentData.HasValue || item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
 						removeKeyList.Add(item.Key);
 				}
 				if (removeKeyList.Count > 0)

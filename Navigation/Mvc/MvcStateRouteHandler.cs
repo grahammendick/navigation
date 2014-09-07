@@ -72,7 +72,7 @@ namespace Navigation
 			var toData = new NavigationData(true);
 			foreach (NavigationDataItem item in StateContext.Data)
 			{
-				if (item.Value.Equals(string.Empty) || StateContext.State.DefaultOrDerived(item.Key, item.Value))
+				if (item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
 					toData[item.Key] = null;
 			}
 			return toData;
