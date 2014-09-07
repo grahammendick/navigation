@@ -164,7 +164,6 @@ namespace Navigation
 						yield return item.Key;
 				}
 			}
-			yield break;
 		}
 
 		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, string currentDataKeys)
