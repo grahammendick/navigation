@@ -36,7 +36,7 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			using (GetHtmlHelper(null).BeginNavigationForm("t0", new StringWriter(formBuilder)));
+			using (GetHtmlHelper(null).BeginNavigationForm("t0", new StringWriter(formBuilder))) { };
 			Assert.AreEqual("<form action=\"/r1\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
@@ -54,7 +54,7 @@ namespace Navigation.Test.Mvc
 		{
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
-			using (GetHtmlHelper(null).BeginNavigationForm("t0", new NavigationData { { "a", "1" } }, new StringWriter(formBuilder)));
+			using (GetHtmlHelper(null).BeginNavigationForm("t0", new NavigationData { { "a", "1" } }, new StringWriter(formBuilder))) { };
 			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
@@ -92,7 +92,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "a", "1" } });
 			StateController.Navigate("t0");
-			using (GetHtmlHelper(null).BeginNavigationBackForm(1, new StringWriter(formBuilder)));
+			using (GetHtmlHelper(null).BeginNavigationBackForm(1, new StringWriter(formBuilder))) { };
 			Assert.AreEqual("<form action=\"/r1?a=1\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
@@ -123,7 +123,7 @@ namespace Navigation.Test.Mvc
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "a", "1" } });
-			using (GetHtmlHelper(null).BeginRefreshForm(new StringWriter(formBuilder)));
+			using (GetHtmlHelper(null).BeginRefreshForm(new StringWriter(formBuilder))) { };
 			Assert.AreEqual("<form action=\"/r1\" data-navigation=\"refresh\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
@@ -143,7 +143,7 @@ namespace Navigation.Test.Mvc
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
 			StateController.Navigate("t0");
-			using (GetHtmlHelper(null).BeginRefreshForm(new NavigationData { { "a", "1" } }, false, new StringWriter(formBuilder)));
+			using (GetHtmlHelper(null).BeginRefreshForm(new NavigationData { { "a", "1" } }, false, new StringWriter(formBuilder))) { };
 			Assert.AreEqual("<form action=\"/r1?a=1\" data-navigation=\"refresh\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
@@ -222,7 +222,7 @@ namespace Navigation.Test.Mvc
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
-			using (GetHtmlHelper(null).BeginRefreshForm(new NavigationData { { "a", "1" } }, " b , startRowIndex", new StringWriter(formBuilder)));
+			using (GetHtmlHelper(null).BeginRefreshForm(new NavigationData { { "a", "1" } }, " b , startRowIndex", new StringWriter(formBuilder))) { };
 			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
