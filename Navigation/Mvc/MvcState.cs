@@ -29,8 +29,6 @@ namespace Navigation
 		public MvcState(string route, string controller, string action, string area)
 			: base(route)
 		{
-			if (string.IsNullOrEmpty(route))
-				throw new ArgumentException("route");
 			if (string.IsNullOrEmpty(controller))
 				throw new ArgumentException("controller");
 			if (string.IsNullOrEmpty(action))
