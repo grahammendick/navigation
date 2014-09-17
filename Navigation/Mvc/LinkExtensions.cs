@@ -156,7 +156,7 @@ namespace Navigation
 
 		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
 		{
-			if (toData != null)
+			if (includeCurrentData && toData != null)
 			{
 				foreach (NavigationDataItem item in toData)
 				{
