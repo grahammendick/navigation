@@ -104,7 +104,7 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, null);
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, null, htmlHelper.GetToKeys(toData));
 		}
 
 		/// <summary>
@@ -128,11 +128,11 @@ namespace Navigation
 			var data = new NavigationData(currentKeys);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, false, string.Join(",", currentKeys));
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, false, string.Join(",", currentKeys), htmlHelper.GetToKeys(toData));
 		}
 
 		private static MvcForm GenerateForm(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes,
-			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null)
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toKeys = null)
 		{
 			TagBuilder tagBuilder = new TagBuilder("form");
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
@@ -142,8 +142,10 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			if (includeCurrentData)
 				tagBuilder.MergeAttribute("data-include-current", "true");
-			if (currentDataKeys != null && currentDataKeys.Length != 0)
+			if (!string.IsNullOrEmpty(currentDataKeys))
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
+			if (!string.IsNullOrEmpty(toKeys))
+				tagBuilder.MergeAttribute("data-to-keys", toKeys);
 			if (writer != null)
 				htmlHelper.ViewContext.Writer = writer;
 			htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
