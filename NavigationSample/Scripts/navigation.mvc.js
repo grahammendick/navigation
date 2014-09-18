@@ -78,10 +78,16 @@
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
         if (target && target.getAttribute('data-include-current'))
             baseLink += '&includecurrent=true';
-        var currentKeys = target ? target.getAttribute('data-current-keys') : null;
-        if (currentKeys)
-            baseLink += '&currentkeys=' + win.encodeURIComponent(currentKeys);
+        baseLink = setKeys(target, baseLink, 'data-current-keys', 'currentkeys');
+        baseLink = setKeys(target, baseLink, 'data-to-keys', 'tokeys');
         return baseLink;
+    }
+
+    function setKeys(target, link, attribute, name) {
+        var keys = target ? target.getAttribute(attribute) : null;
+        if (keys)
+            link += '&' + name + '=' + win.encodeURIComponent(keys);
+        return link;
     }
 
     var cache = {};
