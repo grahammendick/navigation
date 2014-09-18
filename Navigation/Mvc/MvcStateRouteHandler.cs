@@ -1,5 +1,6 @@
 ﻿#if NET40Plus
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -57,11 +58,21 @@ namespace Navigation
 					StateContext.Data.Clear();
 					StateContext.Data.Add(currentData);
 				}
+				UpdateData(queryString, toData);
+			}
+			return base.GetHttpHandler(requestContext);
+		}
+
+		private static void UpdateData(NameValueCollection queryString, NavigationData toData)
+		{
+			if (queryString["navigation"] != "history")
+			{
 				var toDataKeys = GetDataKeyEnumerator(queryString["tokeys"]);
 				foreach (var toDataKey in toDataKeys)
 					StateContext.Data[toDataKey] = toData[toDataKey];
 			}
-			return base.GetHttpHandler(requestContext);
+			else
+				StateContext.Data.Add(toData);
 		}
 
 		private static IEnumerable<string> GetDataKeyEnumerator(string dataKeys)

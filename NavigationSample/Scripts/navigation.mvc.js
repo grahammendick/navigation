@@ -76,6 +76,7 @@
     function getAjaxLink(baseLink, target) {
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
+        baseLink += '&navigation=' + (target ? 'refresh' : 'history');
         if (target && target.getAttribute('data-include-current'))
             baseLink += '&includecurrent=true';
         baseLink = setKeys(target, baseLink, 'data-current-keys', 'currentkeys');
