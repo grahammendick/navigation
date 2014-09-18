@@ -77,17 +77,17 @@
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
         baseLink += '&navigation=' + (target ? 'refresh' : 'history');
-        if (target && target.getAttribute('data-include-current'))
-            baseLink += '&includecurrent=true';
-        baseLink = setKeys(target, baseLink, 'data-current-keys', 'currentkeys');
-        baseLink = setKeys(target, baseLink, 'data-to-keys', 'tokeys');
+        if (target) {
+            baseLink = setKeys(target, baseLink, 'data-include-current', 'includecurrent');
+            baseLink = setKeys(target, baseLink, 'data-current-keys', 'currentkeys');
+            baseLink = setKeys(target, baseLink, 'data-to-keys', 'tokeys');
+        }
         return baseLink;
     }
 
     function setKeys(target, link, attribute, name) {
-        var keys = target ? target.getAttribute(attribute) : null;
-        if (keys)
-            link += '&' + name + '=' + win.encodeURIComponent(keys);
+        if (target.getAttribute(attribute))
+            link += '&' + name + '=' + win.encodeURIComponent(target.getAttribute(attribute));
         return link;
     }
 
