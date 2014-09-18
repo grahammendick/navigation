@@ -104,8 +104,7 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			var currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
-			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, string.Join(",", currentKeys));
+			return GenerateForm(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, true, includeCurrentData, null);
 		}
 
 		/// <summary>

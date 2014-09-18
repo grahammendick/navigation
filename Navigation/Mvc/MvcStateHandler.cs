@@ -25,6 +25,7 @@ namespace Navigation
 			data.Remove("refreshajax");
 			data.Remove("includecurrent");
 			data.Remove("currentkeys");
+			data.Remove("tokeys");
 			return data;
 		}
 

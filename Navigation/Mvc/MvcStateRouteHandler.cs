@@ -45,44 +45,30 @@ namespace Navigation
 			var link = queryString["refreshajax"];
 			if (link != null)
 			{
-				var toData = GetToData();
+				var toData = new NavigationData(true);
 				StateController.NavigateLink(State, link, NavigationMode.Mock);
 				RefreshAjaxInfo.GetInfo(requestContext.HttpContext).Data = new NavigationData(true);
 				var includeCurrentData = false;
 				bool.TryParse(queryString["includecurrent"], out includeCurrentData);
-				var currentDataKeys = GetCurrentDataKeyEnumerator(queryString["currentkeys"]);
-				if (includeCurrentData)
+				if (!includeCurrentData)
 				{
-					foreach (var removeKey in currentDataKeys)
-						StateContext.Data[removeKey] = null;
-				}
-				else
-				{
+					var currentDataKeys = GetDataKeyEnumerator(queryString["currentkeys"]);
 					var currentData = new NavigationData(currentDataKeys);
 					StateContext.Data.Clear();
 					StateContext.Data.Add(currentData);
 				}
-				StateContext.Data.Add(toData);
+				var toDataKeys = GetDataKeyEnumerator(queryString["tokeys"]);
+				foreach (var toDataKey in toDataKeys)
+					StateContext.Data[toDataKey] = toData[toDataKey];
 			}
 			return base.GetHttpHandler(requestContext);
 		}
 
-		private static NavigationData GetToData()
+		private static IEnumerable<string> GetDataKeyEnumerator(string dataKeys)
 		{
-			var toData = new NavigationData(true);
-			foreach (NavigationDataItem item in StateContext.Data)
-			{
-				if (item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
-					toData[item.Key] = null;
-			}
-			return toData;
-		}
-
-		private static IEnumerable<string> GetCurrentDataKeyEnumerator(string currentDataKeys)
-		{
-			if (currentDataKeys == null || currentDataKeys.Length == 0)
+			if (dataKeys == null || dataKeys.Length == 0)
 				yield break;
-			foreach (string key in currentDataKeys.Split(','))
+			foreach (string key in dataKeys.Split(','))
 			{
 				yield return key.Trim();
 			}
