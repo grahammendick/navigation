@@ -108,8 +108,7 @@ namespace Navigation
 			var data = new NavigationData(includeCurrentData);
 			if (toData != null)
 				data.Add(toData);
-			var currentKeys = htmlHelper.GetCurrentKeys(includeCurrentData, toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, string.Join(",", currentKeys));
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, includeCurrentData, null, htmlHelper.GetToKeys(toData));
 		}
 
 		/// <summary>
@@ -133,11 +132,11 @@ namespace Navigation
 			var data = new NavigationData(currentKeys);
 			if (toData != null)
 				data.Add(toData);
-			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, string.Join(",", currentKeys));
+			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, string.Join(",", currentKeys), htmlHelper.GetToKeys(toData));
 		}
 
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
-			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null)
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toKeys = null)
 		{
 			if (string.IsNullOrEmpty(linkText))
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
@@ -149,21 +148,23 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-navigation", "refresh");
 			if (includeCurrentData)
 				tagBuilder.MergeAttribute("data-include-current", "true");
-			if (currentDataKeys != null && currentDataKeys.Length != 0)
+			if (!string.IsNullOrEmpty(currentDataKeys))
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
+			if (!string.IsNullOrEmpty(toKeys))
+				tagBuilder.MergeAttribute("data-to-keys", toKeys);
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, bool includeCurrentData, NavigationData toData)
+		internal static string GetToKeys(this HtmlHelper htmlHelper, NavigationData toData)
 		{
-			if (includeCurrentData && toData != null)
+			if (toData != null)
 			{
+				var keys = new List<string>();
 				foreach (NavigationDataItem item in toData)
-				{
-					if (item.Value.Equals(string.Empty) || item.Value.Equals(StateContext.State.Defaults[item.Key]))
-						yield return item.Key;
-				}
+					keys.Add(item.Key);
+				return string.Join(",", keys);
 			}
+			return null;
 		}
 
 		internal static IEnumerable<string> GetCurrentKeys(this HtmlHelper htmlHelper, string currentDataKeys)
