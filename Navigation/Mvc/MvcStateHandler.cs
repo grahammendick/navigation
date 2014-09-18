@@ -22,10 +22,14 @@ namespace Navigation
 			NameValueCollection data = base.GetNavigationData(state, context);
 			data.Remove("controller");
 			data.Remove("action");
-			data.Remove("refreshajax");
-			data.Remove("includecurrent");
-			data.Remove("currentkeys");
-			data.Remove("tokeys");
+			if (context.Request.QueryString["refreshajax"] != null)
+			{
+				data.Remove("refreshajax");
+				data.Remove("includecurrent");
+				data.Remove("currentkeys");
+				data.Remove("tokeys");
+				data.Remove("navigation");
+			}
 			return data;
 		}
 
