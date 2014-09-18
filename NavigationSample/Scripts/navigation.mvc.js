@@ -131,8 +131,13 @@
             var resp = cache[link + '&' + newLink];
             if (!resp)
                 refreshAjax(newLink, false);
-            else
-                handleRespone(resp, false, link);
+            else {
+                try {
+                    handleRespone(resp, false, link);
+                } catch (e) {
+                    refreshAjax(newLink, false);
+                }
+            }
         }
     });
 })(window);
