@@ -134,7 +134,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } });
-			Assert.AreEqual("<form action=\"/r1?a=1\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?a=1\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -144,7 +144,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0");
 			using (GetHtmlHelper(null).BeginRefreshForm(new NavigationData { { "a", "1" } }, false, new StringWriter(formBuilder))) { };
-			Assert.AreEqual("<form action=\"/r1?a=1\" data-navigation=\"refresh\" method=\"post\"></form>", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?a=1\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -163,7 +163,7 @@ namespace Navigation.Test.Mvc
 			StringBuilder formBuilder = new StringBuilder();
 			StateController.Navigate("d7");
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, false, null, new { onsubmit = "validate" });
-			Assert.AreEqual("<form action=\"/r0?a=1\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r0?a=1\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -173,7 +173,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, true);
-			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-include-current=\"true\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-include-current=\"true\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -193,7 +193,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" }, { "b", "" }, { "c", "" }, { "startRowIndex", 0 }, { "maximumRows", "" }, { "totalRowCount", 12 } }, true);
-			Assert.AreEqual("<form action=\"/r1?a=1\" data-current-keys=\"b,c,startRowIndex,maximumRows\" data-include-current=\"true\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?a=1\" data-include-current=\"true\" data-navigation=\"refresh\" data-to-keys=\"a,b,c,startRowIndex,maximumRows,totalRowCount\" method=\"post\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -203,7 +203,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, true, null, new { onsubmit = "validate" });
-			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-include-current=\"true\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-include-current=\"true\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -213,7 +213,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "startRowIndex", 0 }, { "c", "2" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, " b , startRowIndex");
-			Assert.AreEqual("<form action=\"/r1?a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" method=\"post\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\">", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -223,7 +223,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
 			using (GetHtmlHelper(null).BeginRefreshForm(new NavigationData { { "a", "1" } }, " b , startRowIndex", new StringWriter(formBuilder))) { };
-			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" method=\"post\"></form>", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\"></form>", formBuilder.ToString());
 		}
 
 		[TestMethod]
@@ -243,7 +243,7 @@ namespace Navigation.Test.Mvc
 			StateController.Navigate("d7");
 			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
 			GetHtmlHelper(formBuilder).BeginRefreshForm(new NavigationData { { "a", "1" } }, " b , startRowIndex", null, new { onsubmit = "validate" });
-			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
+			Assert.AreEqual("<form action=\"/r1?b=0&amp;a=1\" data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" data-to-keys=\"a\" method=\"post\" onsubmit=\"validate\">", formBuilder.ToString());
 		}
 	}
 }
