@@ -137,7 +137,7 @@
             else {
                 try {
                     handleRespone(resp, false, link);
-                } catch (e) {
+                } catch (ex) {
                     refreshAjax(newLink, false, null, e.state);
                 }
             }
