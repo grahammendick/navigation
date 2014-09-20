@@ -48,6 +48,7 @@ namespace Navigation
 				filterContext.HttpContext.Response.Write(new JavaScriptSerializer().Serialize(new
 					{
 						Link = StateController.GetRefreshLink(new NavigationData(true)),
+						Title = filterContext.Controller.ViewData["Title"] as string,
 						info.Panels
 					}));
 			}
