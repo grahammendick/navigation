@@ -76,12 +76,20 @@
     function getAjaxLink(baseLink, target) {
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
-        if (target && target.getAttribute('data-include-current'))
-            baseLink += '&includecurrent=true';
-        var currentKeys = target ? target.getAttribute('data-current-keys') : null;
-        if (currentKeys)
-            baseLink += '&currentkeys=' + win.encodeURIComponent(currentKeys);
+        baseLink += '&navigation=' + (target ? 'refresh' : 'history');
+        if (target) {
+            baseLink = setData(target, baseLink, 'data-include-current', 'includecurrent');
+            baseLink = setData(target, baseLink, 'data-current-keys', 'currentkeys');
+            baseLink = setData(target, baseLink, 'data-to-keys', 'tokeys');
+        }
         return baseLink;
+    }
+
+    function setData(target, link, attribute, name) {
+        var value = target.getAttribute(attribute);
+        if (value)
+            link += '&' + name + '=' + win.encodeURIComponent(value);
+        return link;
     }
 
     var cache = {};
@@ -123,8 +131,13 @@
             var resp = cache[link + '&' + newLink];
             if (!resp)
                 refreshAjax(newLink, false);
-            else
-                handleRespone(resp, false, link);
+            else {
+                try {
+                    handleRespone(resp, false, link);
+                } catch (e) {
+                    refreshAjax(newLink, false);
+                }
+            }
         }
     });
 })(window);
