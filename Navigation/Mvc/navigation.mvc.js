@@ -66,9 +66,9 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    function refreshAjax(newLink, addHistory, target) {
+    function refreshAjax(newLink, addHistory, target, title) {
         var req = new win.XMLHttpRequest();
-        req.onreadystatechange = onReady(req, addHistory);
+        req.onreadystatechange = onReady(req, addHistory, title);
         req.open('get', getAjaxLink(newLink, target));
         req.send();
     }
@@ -93,11 +93,13 @@
     }
 
     var cache = {};
-    function onReady(req, addHistory) {
+    function onReady(req, addHistory, title) {
         var oldLink = link;
         return function () {
             if (req.readyState === 4 && req.status === 200) {
                 var resp = win.JSON.parse(req.responseText);
+                if (!resp.Title)
+                    resp.Title = title ? title : win.document.title;
                 handleRespone(resp, addHistory, oldLink);
             }
         };
@@ -121,7 +123,8 @@
             panel.dispatchEvent(evt);
         }
         if (addHistory && link !== newLink)
-            win.history.pushState(newLink, win.document.title, newLink);
+            win.history.pushState(resp.Title, resp.Title, newLink);
+        win.document.title = resp.Title;
         link = newLink;
     }
 
@@ -130,12 +133,12 @@
         if (link !== newLink) {
             var resp = cache[link + '&' + newLink];
             if (!resp)
-                refreshAjax(newLink, false);
+                refreshAjax(newLink, false, null, e.state);
             else {
                 try {
                     handleRespone(resp, false, link);
-                } catch (e) {
-                    refreshAjax(newLink, false);
+                } catch (ex) {
+                    refreshAjax(newLink, false, null, e.state);
                 }
             }
         }
