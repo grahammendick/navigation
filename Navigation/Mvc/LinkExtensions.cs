@@ -1,6 +1,7 @@
 ﻿#if NET40Plus
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 
@@ -134,13 +135,52 @@ namespace Navigation
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, string.Join(",", currentKeys), htmlHelper.GetToKeys(toData));
 		}
 
+		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, TextWriter writer = null, object htmlAttributes = null)
+		{
+			return BeginRefreshLink(htmlHelper, null, false, writer, htmlAttributes);
+		}
+
+		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, NavigationData toData, bool includeCurrentData = false, TextWriter writer = null, object htmlAttributes = null)
+		{
+			var data = new NavigationData(includeCurrentData);
+			if (toData != null)
+				data.Add(toData);
+			return GenerateRefreshLink(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, includeCurrentData, null, htmlHelper.GetToKeys(toData));
+		}
+
+		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, NavigationData toData, string currentDataKeys, TextWriter writer = null, object htmlAttributes = null)
+		{
+			var currentKeys = htmlHelper.GetCurrentKeys(currentDataKeys);
+			var data = new NavigationData(currentKeys);
+			if (toData != null)
+				data.Add(toData);
+			return GenerateRefreshLink(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, false, string.Join(",", currentKeys), htmlHelper.GetToKeys(toData));
+		}
+
 		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
-			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toKeys = null)
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toDataKeys = null)
 		{
 			if (string.IsNullOrEmpty(linkText))
 				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
+			var tagBuilder = GenerateTagBuilder(htmlHelper, linkText, url, htmlAttributes, refresh, includeCurrentData, currentDataKeys, toDataKeys);
+			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+		}
+
+		private static RefreshLink GenerateRefreshLink(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes,
+			bool includeCurrentData = false, string currentDataKeys = null, string toDataKeys = null)
+		{
+			var tagBuilder = GenerateTagBuilder(htmlHelper, null, url, htmlAttributes, true, includeCurrentData, currentDataKeys, toDataKeys);
+			writer = writer ?? htmlHelper.ViewContext.Writer;
+			writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
+			return new RefreshLink(writer);
+		}
+
+		private static TagBuilder GenerateTagBuilder(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toDataKeys = null)
+		{
 			TagBuilder tagBuilder = new TagBuilder("a");
-			tagBuilder.InnerHtml = HttpUtility.HtmlEncode(linkText);
+			if (!string.IsNullOrEmpty(linkText))
+				tagBuilder.InnerHtml = HttpUtility.HtmlEncode(linkText);
 			tagBuilder.MergeAttributes<string, object>(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
 			tagBuilder.MergeAttribute("href", url);
 			if (refresh)
@@ -149,9 +189,9 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-include-current", "true");
 			if (!string.IsNullOrEmpty(currentDataKeys))
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
-			if (!string.IsNullOrEmpty(toKeys))
-				tagBuilder.MergeAttribute("data-to-keys", toKeys);
-			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+			if (!string.IsNullOrEmpty(toDataKeys))
+				tagBuilder.MergeAttribute("data-to-keys", toDataKeys);
+			return tagBuilder;
 		}
 
 		internal static string GetToKeys(this HtmlHelper htmlHelper, NavigationData toData)
