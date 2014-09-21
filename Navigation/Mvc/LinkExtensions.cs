@@ -135,6 +135,15 @@ namespace Navigation
 			return GenerateLink(htmlHelper, linkText, StateController.GetRefreshLink(data), htmlAttributes, true, false, string.Join(",", currentKeys), htmlHelper.GetToKeys(toData));
 		}
 
+		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
+			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toDataKeys = null)
+		{
+			if (string.IsNullOrEmpty(linkText))
+				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
+			var tagBuilder = GenerateTagBuilder(htmlHelper, linkText, url, htmlAttributes, refresh, includeCurrentData, currentDataKeys, toDataKeys);
+			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+		}
+
 		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, TextWriter writer = null, object htmlAttributes = null)
 		{
 			return BeginRefreshLink(htmlHelper, null, false, writer, htmlAttributes);
@@ -155,15 +164,6 @@ namespace Navigation
 			if (toData != null)
 				data.Add(toData);
 			return GenerateRefreshLink(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, false, string.Join(",", currentKeys), htmlHelper.GetToKeys(toData));
-		}
-
-		private static MvcHtmlString GenerateLink(this HtmlHelper htmlHelper, string linkText, string url, object htmlAttributes,
-			bool refresh = false, bool includeCurrentData = false, string currentDataKeys = null, string toDataKeys = null)
-		{
-			if (string.IsNullOrEmpty(linkText))
-				throw new ArgumentException(Resources.NullOrEmpty, "linkText");
-			var tagBuilder = GenerateTagBuilder(htmlHelper, linkText, url, htmlAttributes, refresh, includeCurrentData, currentDataKeys, toDataKeys);
-			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
 		private static RefreshLink GenerateRefreshLink(this HtmlHelper htmlHelper, string url, TextWriter writer, object htmlAttributes,
