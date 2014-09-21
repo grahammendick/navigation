@@ -6,7 +6,7 @@
     var submitData = {};
     win.document.addEventListener('click', function (e) {
         var element = e.target;
-        var anchor = ajaxOn(element, 'A');
+        var anchor = getAjaxTarget(element, 'A');
         if (!e.ctrlKey && !e.shiftKey && anchor) {
             e.preventDefault();
             refreshAjax(anchor.getAttribute('href'), true, anchor);
@@ -22,7 +22,7 @@
     });
 
     win.document.addEventListener('submit', function (e) {
-        var form = ajaxOn(e.target, 'FORM');
+        var form = getAjaxTarget(e.target, 'FORM');
         if (form) {
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true);
@@ -52,9 +52,9 @@
         return data;
     }
 
-    function ajaxOn(element, tagName) {
+    function getAjaxTarget(element, tagName) {
         var target = null;
-        while (!!element) {
+        while (element) {
             if (element.getAttribute) {
                 var navigation = element.getAttribute('data-navigation');
                 if (!target && element.tagName === tagName && navigation === 'refresh')
