@@ -145,10 +145,8 @@ namespace Navigation
 				tagBuilder.MergeAttribute("data-current-keys", currentDataKeys);
 			if (!string.IsNullOrEmpty(toKeys))
 				tagBuilder.MergeAttribute("data-to-keys", toKeys);
-			if (writer != null)
-				htmlHelper.ViewContext.Writer = writer;
-			htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.StartTag));
-			return new MvcForm(htmlHelper.ViewContext);
+			(writer ?? htmlHelper.ViewContext.Writer).Write(tagBuilder.ToString(TagRenderMode.StartTag));
+			return new NavigationForm(htmlHelper.ViewContext, writer);
 		}
 	}
 }
