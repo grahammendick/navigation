@@ -6,9 +6,10 @@
     var submitData = {};
     win.document.addEventListener('click', function (e) {
         var element = e.target;
-        if (!e.ctrlKey && !e.shiftKey && ajaxOn(element, 'A')) {
+        var anchor = getAjaxTarget(element, 'A');
+        if (!e.ctrlKey && !e.shiftKey && anchor) {
             e.preventDefault();
-            refreshAjax(element.getAttribute('href'), true, element);
+            refreshAjax(anchor.getAttribute('href'), true, anchor);
         }
         if (element.tagName === 'INPUT' && element.name) {
             if (element.type === 'submit')
@@ -21,14 +22,14 @@
     });
 
     win.document.addEventListener('submit', function (e) {
-        var element = e.target;
-        if (ajaxOn(element, 'FORM')) {
+        var form = getAjaxTarget(e.target, 'FORM');
+        if (form) {
             var req = new win.XMLHttpRequest();
             req.onreadystatechange = onReady(req, true);
             e.preventDefault();
-            req.open('post', getAjaxLink(element.getAttribute('action'), element));
+            req.open('post', getAjaxLink(form.getAttribute('action'), form));
             req.setRequestHeader("Content-Type", "application/json");
-            req.send(win.JSON.stringify(getFormData(element)));
+            req.send(win.JSON.stringify(getFormData(form)));
         }
     });
 
@@ -51,18 +52,19 @@
         return data;
     }
 
-    function ajaxOn(element, tagName) {
-        if (element.tagName === tagName
-            && element.getAttribute('data-navigation') === 'refresh') {
-            var ajax = true;
-            while (!!element && ajax) {
-                if (element.getAttribute)
-                    ajax = element.getAttribute('data-navigation') !== 'noajax';
-                element = element.parentNode;
+    function getAjaxTarget(element, tagName) {
+        var target = null;
+        while (element) {
+            if (element.getAttribute) {
+                var navigation = element.getAttribute('data-navigation');
+                if (!target && element.tagName === tagName && navigation === 'refresh')
+                    target = element;
+                if (navigation === 'noajax')
+                    return null;
             }
-            return ajax;
+            element = element.parentNode;
         }
-        return false;
+        return target;
     }
 
     var link = win.location.pathname + win.location.search;
@@ -78,17 +80,17 @@
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
         baseLink += '&navigation=' + (target ? 'refresh' : 'history');
         if (target) {
-            baseLink = setData(target, baseLink, 'data-include-current', 'includecurrent');
-            baseLink = setData(target, baseLink, 'data-current-keys', 'currentkeys');
-            baseLink = setData(target, baseLink, 'data-to-keys', 'tokeys');
+            baseLink = setLinkData(target, baseLink, 'include-current');
+            baseLink = setLinkData(target, baseLink, 'current-keys');
+            baseLink = setLinkData(target, baseLink, 'to-keys');
         }
         return baseLink;
     }
 
-    function setData(target, link, attribute, name) {
-        var value = target.getAttribute(attribute);
+    function setLinkData(target, link, name) {
+        var value = target.getAttribute('data-' + name);
         if (value)
-            link += '&' + name + '=' + win.encodeURIComponent(value);
+            link += '&' + name.replace('-', '') + '=' + win.encodeURIComponent(value);
         return link;
     }
 
