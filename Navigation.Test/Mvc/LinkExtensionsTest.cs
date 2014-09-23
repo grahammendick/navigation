@@ -281,6 +281,86 @@ namespace Navigation.Test.Mvc
 			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" } }, false, new StringWriter(linkBuilder), new { title = "details" })) { };
 			Assert.AreEqual("<a data-navigation=\"refresh\" data-to-keys=\"a\" href=\"/r1?a=1\" title=\"details\"></a>", linkBuilder.ToString());
 		}
+
+		[TestMethod]
+		public void BeginRefreshLinkDataAndNavigationDataAttributeTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0");
+			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" } }, false, new StringWriter(linkBuilder), new { data_navigation = "noajax" })) { };
+			Assert.AreEqual("<a data-navigation=\"noajax\" data-to-keys=\"a\" href=\"/r1?a=1\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkIncludeCurrentDataTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" } }, true, new StringWriter(linkBuilder))) { };
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" data-to-keys=\"a\" href=\"/r1?b=0&amp;a=1\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkIncludeCurrentDataNullToDataTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(null, true, new StringWriter(linkBuilder))) { };
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" href=\"/r1?b=0\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkIncludeCurrentDataCurrentKeysTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" }, { "b", "" }, { "c", "" }, { "startRowIndex", 0 }, { "maximumRows", "" }, { "totalRowCount", 12 } }, true, new StringWriter(linkBuilder))) { };
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" data-to-keys=\"a,b,c,startRowIndex,maximumRows,totalRowCount\" href=\"/r1?a=1\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkIncludeCurrentDataAndAttributesTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" } }, true, new StringWriter(linkBuilder), new { title = "details" })) { };
+			Assert.AreEqual("<a data-include-current=\"true\" data-navigation=\"refresh\" data-to-keys=\"a\" href=\"/r1?b=0&amp;a=1\" title=\"details\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkCurrentDataKeysTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "startRowIndex", 0 }, { "c", "2" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" } }, " b , startRowIndex", new StringWriter(linkBuilder))) { };
+			Assert.AreEqual("<a data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" data-to-keys=\"a\" href=\"/r1?a=1\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkCurrentDataKeysNullToDataTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(null, " b , startRowIndex", new StringWriter(linkBuilder))) { };
+			Assert.AreEqual("<a data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" href=\"/r1?b=0\"></a>", linkBuilder.ToString());
+		}
+
+		[TestMethod]
+		public void BeginRefreshLinkCurrentDataKeysAndAttributesTest()
+		{
+			StringBuilder linkBuilder = new StringBuilder();
+			StateController.Navigate("d7");
+			StateController.Navigate("t0", new NavigationData { { "b", "0" }, { "startRowIndex", 0 }, { "c", "2" } });
+			using (GetHtmlHelper(null).BeginRefreshLink(new NavigationData { { "a", "1" } }, " b , startRowIndex", new StringWriter(linkBuilder), new { title = "details" })) { };
+			Assert.AreEqual("<a data-current-keys=\"b,startRowIndex\" data-navigation=\"refresh\" data-to-keys=\"a\" href=\"/r1?b=0&amp;a=1\" title=\"details\"></a>", linkBuilder.ToString());
+		}
 	}
 }
 #endif
