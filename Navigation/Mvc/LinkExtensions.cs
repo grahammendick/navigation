@@ -144,11 +144,33 @@ namespace Navigation
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/>
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="writer">The text writer the HTML is written to</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
 		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, TextWriter writer = null, object htmlAttributes = null)
 		{
 			return BeginRefreshLink(htmlHelper, null, false, writer, htmlAttributes);
 		}
 
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/>
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
+		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="includeCurrentData">Indicates whether to include the current data together
+		/// with the <paramref name="toData"/></param>
+		/// <param name="writer">The text writer the HTML is written to</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
 		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, NavigationData toData, bool includeCurrentData = false, TextWriter writer = null, object htmlAttributes = null)
 		{
 			var data = new NavigationData(includeCurrentData);
@@ -157,6 +179,19 @@ namespace Navigation
 			return GenerateRefreshLink(htmlHelper, StateController.GetRefreshLink(data), writer, htmlAttributes, includeCurrentData, null, htmlHelper.GetToKeys(toData));
 		}
 
+		/// <summary>
+		/// Returns an anchor element (a element) with its href attribute set from a call to
+		/// <see cref="StateController.GetRefreshLink(NavigationData)"/>
+		/// </summary>
+		/// <param name="htmlHelper">The HTML helper instance that this method extends</param>
+		/// <param name="toData">The <see cref="NavigationData"/> to be passed to the current
+		/// <see cref="State"/> and stored in the <see cref="StateContext"/></param>
+		/// <param name="currentDataKeys">A comma separated list of current data items to
+		/// include together with the <paramref name="toData"/></param>
+		/// <param name="writer">The text writer the HTML is written to</param>
+		/// <param name="htmlAttributes">An object that contains the HTML attributes to set for the
+		/// element</param>
+		/// <returns>An anchor element (a element)</returns>
 		public static RefreshLink BeginRefreshLink(this HtmlHelper htmlHelper, NavigationData toData, string currentDataKeys, TextWriter writer = null, object htmlAttributes = null)
 		{
 			var currentKeys = htmlHelper.GetCurrentKeys(currentDataKeys);
