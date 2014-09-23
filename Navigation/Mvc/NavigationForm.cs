@@ -4,9 +4,18 @@ using System.Web.Mvc.Html;
 
 namespace Navigation
 {
+	/// <summary>
+	/// Represents an HTML navigation form element
+	/// </summary>
 	public class NavigationForm : MvcForm
 	{
-		public NavigationForm(ViewContext viewContext, TextWriter writer) : base(viewContext)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NavigationForm"/> class
+		/// </summary>
+		/// <param name="viewContext">Object encapsulating view rendering information</param>
+		/// <param name="writer">The text writer the HTML is written to</param>
+		public NavigationForm(ViewContext viewContext, TextWriter writer)
+			: base(viewContext)
 		{
 			ViewContext = viewContext;
 			Writer = writer;
@@ -24,6 +33,10 @@ namespace Navigation
 			set;
 		}
 
+		/// <summary>
+		/// Finishes rendering of the navigation form element
+		/// </summary>
+		/// <param name="disposing">Finishes rendering if true</param>
 		protected override void Dispose(bool disposing)
 		{
 			var originalWriter = ViewContext.Writer;
