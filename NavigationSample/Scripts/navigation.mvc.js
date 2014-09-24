@@ -108,6 +108,10 @@
     }
 
     function handleRespone(resp, addHistory, oldLink) {
+        if (resp.RedirectLink) {
+            win.location.href = resp.RedirectLink;
+            return;
+        }
         var newLink = resp.Link;
         cache[oldLink + '&' + newLink] = resp;
         if (link !== oldLink)
