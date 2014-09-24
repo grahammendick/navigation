@@ -23,7 +23,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\Navigation.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
@@ -66,6 +67,7 @@
     <Compile Include="Config\FluentTransition.cs" />
     <Compile Include="Mvc\MvcState.cs" />
     <Compile Include="Mvc\NavigationForm.cs" />
+    <Compile Include="Mvc\RefreshAjaxModule.cs" />
     <Compile Include="Mvc\RefreshLink.cs" />
     <Compile Include="WebApi\WebApiState.cs" />
     <Compile Include="WebForms\FluentExtensions.cs" />
