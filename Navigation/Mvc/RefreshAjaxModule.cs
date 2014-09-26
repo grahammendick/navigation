@@ -5,8 +5,18 @@ using System.Web.Script.Serialization;
 
 namespace Navigation
 {
+	/// <summary>
+	/// Converts 302 redirects during refresh ajax navigation into 200s
+	/// so the redirection can happen on the client
+	/// </summary>
 	public class RefreshAjaxModule : IHttpModule
 	{
+		/// <summary>
+		/// Initializes request handlers
+		/// </summary>
+		/// <param name="context">An <see cref="System.Web.HttpApplication"/> that 
+		/// provides access to the methods, properties and events common to all 
+		/// application objects within an ASP.NET application</param>
 		public void Init(HttpApplication context)
 		{
 			context.EndRequest += context_EndRequest;
@@ -30,6 +40,9 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Disposes of any resources
+		/// </summary>
 		public void Dispose()
 		{
 		}
