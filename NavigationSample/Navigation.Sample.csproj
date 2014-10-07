@@ -100,11 +100,13 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Details.aspx" />
     <Content Include="Details.Mobile.aspx" />
-    <Content Include="Global.asax" />
     <Content Include="Listing.aspx" />
     <Content Include="App_Browsers\Navigation.browser" />
     <Content Include="Person.html" />
@@ -154,9 +156,6 @@
       <DependentUpon>Details.Mobile.aspx</DependentUpon>
     </Compile>
     <Compile Include="GlimpseSecurityPolicy.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Listing.aspx.cs">
       <DependentUpon>Listing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

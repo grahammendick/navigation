@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WebActivatorEx;
 
 namespace Navigation.Sample.Test
 {
@@ -8,7 +9,7 @@ namespace Navigation.Sample.Test
 		[AssemblyInitialize]
 		public static void RegisterStateInfo(TestContext context)
 		{
-			FluentStateInfoConfig.Register(StateInfoConfig.Fluent);
+			ActivationManager.Run();
 		}
 
 		[TestMethod]
