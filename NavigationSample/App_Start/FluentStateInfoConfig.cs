@@ -1,11 +1,14 @@
 ﻿using Resources;
+
+[assembly: WebActivatorEx.PreApplicationStartMethod(
+	typeof(Navigation.Sample.FluentStateInfoConfig), "Register")]
 namespace Navigation.Sample
 {
 	public class FluentStateInfoConfig
 	{
-		public static void Register(FluentStateInfo stateInfo)
+		public static void Register()
 		{
-			stateInfo
+			StateInfoConfig.Fluent
 				.Dialog("Person", new
 				{
 					Listing = new WebFormsState("List/{startRowIndex}/{maximumRows}/{sortExpression}", "~/Listing.aspx")
