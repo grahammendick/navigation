@@ -116,8 +116,13 @@
         cache[oldLink + '&' + newLink] = resp;
         if (link !== oldLink)
             return;
+        var backResp = {};
+        backResp.Link = link;
+        backResp.Title = win.document.title;
+        backResp.Panels = {};
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
+            backResp.Panels[id] = panel.innerHTML;
             panel.innerHTML = resp.Panels[id];
             var evt;
             if (typeof win.Event === 'function')
@@ -128,6 +133,7 @@
             }
             panel.dispatchEvent(evt);
         }
+        cache[newLink + '&' + link] = backResp;
         if (addHistory && link !== newLink)
             win.history.pushState(resp.Title, resp.Title, newLink);
         win.document.title = resp.Title;
