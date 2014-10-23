@@ -68,7 +68,6 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    var links = [link];
     function refreshAjax(newLink, addHistory, target, title) {
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = onReady(req, addHistory, title);
@@ -135,14 +134,8 @@
             panel.dispatchEvent(evt);
         }
         cache[newLink + '&' + link] = backResp;
-        if (addHistory && link !== newLink) {
-            var historyLength = win.history.length;
+        if (addHistory && link !== newLink)
             win.history.pushState(resp.Title, resp.Title, newLink);
-            var back = historyLength - win.history.length + 1;
-            if (back > 0 && links.length > 1)
-                links = links.slice(0, links.length - back);
-            links.push(newLink);
-        }
         win.document.title = resp.Title;
         link = newLink;
     }
