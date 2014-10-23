@@ -155,4 +155,39 @@
             }
         }
     });
+
+    function getShortestPath(fromLink, toLink) {
+        var previous = {};
+        var distances = {};
+        var unlinks = [];
+        var max = links.length;
+        for (var i = 0; i < links.length; i++) {
+            unlinks.push(links[i]);
+            distances[links[i]] = max;
+        }
+        var distance = distances[fromLink] = 0;
+        while (unlinks.length != 0) {
+            distance++;
+            var link = unlinks.sort(function (x, y) { distances[x] - distances[y] })[0];
+            if (link === toLink)
+            {
+                var path = [];
+                while (toLink) {
+                    path.push(toLink);
+                    toLink = previous[toLink];
+                }
+                return path.reverse();
+            }
+            var neighbours = neighbourhood[link];
+            for (var i = 0; i < neighbours.length; i++) {
+                var neighbour = neighbours[i];
+                if (distances[neighbour] === max) {
+                    distances[neighbour] = distance;
+                    previous[neighbour] = link;
+                }
+            }
+            unlinks.shift();
+        }
+        return null;
+    }
 })(window);
