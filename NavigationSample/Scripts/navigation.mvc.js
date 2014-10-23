@@ -156,6 +156,8 @@
         }
     });
 
+    var neighbourhood = {};
+    var links = [];
     function getShortestPath(fromLink, toLink) {
         var previous = {};
         var distances = {};
