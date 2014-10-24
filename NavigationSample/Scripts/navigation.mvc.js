@@ -108,6 +108,7 @@
     }
 
     var neighbourhood = {};
+    neighbourhood[link] = [];
     var links = [link];
     function handleRespone(resp, addHistory, oldLink) {
         if (resp.RedirectLink) {
@@ -136,8 +137,14 @@
         var newLink = resp.Link;
         cache[link + '&' + newLink] = resp;
         cache[newLink + '&' + link] = backResp;
-        if (links.indexOf(newLink) === -1)
+        if (links.indexOf(newLink) === -1) {
+            neighbourhood[newLink] = [];
             links.push(newLink);
+        }
+        if (neighbourhood[link].indexOf(newLink) === -1) {
+            neighbourhood[link].push(newLink);
+            neighbourhood[newLink].push(link);
+        }
         if (addHistory && link !== newLink)
             win.history.pushState(resp.Title, resp.Title, newLink);
         win.document.title = resp.Title;
