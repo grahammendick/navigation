@@ -159,12 +159,15 @@
     win.addEventListener('popstate', function (e) {
         var newLink = win.location.pathname + win.location.search;
         if (link !== newLink) {
-            var resp = cache[link + '&' + newLink];
-            if (!resp)
+            var path = getShortestPath(link, newLink);
+            if (!path)
                 refreshAjax(newLink, false, null, e.state);
             else {
                 try {
-                    handleRespone(resp, false, link);
+                    for (var i = 0; i < path.length - 1; i++) {
+                        var resp = cache[path[i] + '&' + path[i + 1]];
+                        handleRespone(resp, false, path[i]);
+                    }
                 } catch (ex) {
                     refreshAjax(newLink, false, null, e.state);
                 }
@@ -184,7 +187,7 @@
         var distance = distances[fromLink] = 0;
         while (unlinks.length != 0) {
             distance++;
-            var link = unlinks.sort(function (x, y) { distances[x] - distances[y] })[0];
+            var link = unlinks.sort(function (x, y) { return distances[x] - distances[y] })[0];
             if (link === toLink)
             {
                 var path = [];
