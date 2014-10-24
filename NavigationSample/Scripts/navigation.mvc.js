@@ -134,6 +134,15 @@
             }
             panel.dispatchEvent(evt);
         }
+        cacheResponse(resp, backResp);
+        var newLink = resp.Link;
+        if (addHistory && link !== newLink)
+            win.history.pushState(resp.Title, resp.Title, newLink);
+        win.document.title = resp.Title;
+        link = newLink;
+    }
+
+    function cacheResponse(resp, backResp) {
         var newLink = resp.Link;
         cache[link + '&' + newLink] = resp;
         cache[newLink + '&' + link] = backResp;
@@ -145,10 +154,6 @@
             neighbourhood[link].push(newLink);
             neighbourhood[newLink].push(link);
         }
-        if (addHistory && link !== newLink)
-            win.history.pushState(resp.Title, resp.Title, newLink);
-        win.document.title = resp.Title;
-        link = newLink;
     }
 
     win.addEventListener('popstate', function (e) {
