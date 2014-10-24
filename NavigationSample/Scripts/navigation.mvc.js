@@ -190,8 +190,7 @@
             var link = unlinks.sort(function (x, y) {
                 return distances[x] - distances[y]
             })[0];
-            if (link === toLink)
-            {
+            if (link === toLink) {
                 var path = [];
                 while (toLink) {
                     path.push(toLink);
