@@ -112,8 +112,6 @@
             win.location.href = resp.RedirectLink;
             return;
         }
-        var newLink = resp.Link;
-        cache[oldLink + '&' + newLink] = resp;
         if (link !== oldLink)
             return;
         var backResp = {};
@@ -133,6 +131,8 @@
             }
             panel.dispatchEvent(evt);
         }
+        var newLink = resp.Link;
+        cache[link + '&' + newLink] = resp;
         cache[newLink + '&' + link] = backResp;
         if (addHistory && link !== newLink)
             win.history.pushState(resp.Title, resp.Title, newLink);
