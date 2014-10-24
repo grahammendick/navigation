@@ -185,7 +185,7 @@
             distances[links[i]] = max;
         }
         var distance = distances[fromLink] = 0;
-        while (unlinks.length != 0) {
+        while (unlinks.length !== 0) {
             distance++;
             var link = unlinks.sort(function (x, y) {
                 return distances[x] - distances[y]
