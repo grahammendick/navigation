@@ -107,6 +107,8 @@
         };
     }
 
+    var neighbourhood = {};
+    var links = [link];
     function handleRespone(resp, addHistory, oldLink) {
         if (resp.RedirectLink) {
             win.location.href = resp.RedirectLink;
@@ -134,6 +136,8 @@
         var newLink = resp.Link;
         cache[link + '&' + newLink] = resp;
         cache[newLink + '&' + link] = backResp;
+        if (links.indexOf(newLink) === -1)
+            links.push(newLink);
         if (addHistory && link !== newLink)
             win.history.pushState(resp.Title, resp.Title, newLink);
         win.document.title = resp.Title;
@@ -156,8 +160,6 @@
         }
     });
 
-    var neighbourhood = {};
-    var links = [];
     function getShortestPath(fromLink, toLink) {
         var previous = {};
         var distances = {};
