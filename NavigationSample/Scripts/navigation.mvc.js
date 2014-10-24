@@ -187,7 +187,9 @@
         var distance = distances[fromLink] = 0;
         while (unlinks.length != 0) {
             distance++;
-            var link = unlinks.sort(function (x, y) { return distances[x] - distances[y] })[0];
+            var link = unlinks.sort(function (x, y) {
+                return distances[x] - distances[y]
+            })[0];
             if (link === toLink)
             {
                 var path = [];
