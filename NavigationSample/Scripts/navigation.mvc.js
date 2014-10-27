@@ -161,17 +161,12 @@
         if (link !== newLink) {
             var path = getShortestPath(link, newLink);
             if (path) {
-                try {
-                    for (var i = 0; i < path.length - 1; i++) {
-                        var resp = cache[path[i] + '&' + path[i + 1]];
-                        handleRespone(resp, false, path[i]);
-                    }
-                } catch (ex) {
-                    refreshAjax(newLink, false, null, e.state);
+                for (var i = 0; i < path.length - 1; i++) {
+                    var resp = cache[path[i] + '&' + path[i + 1]];
+                    handleRespone(resp, false, path[i]);
                 }
-            } else {
+            } else
                 refreshAjax(newLink, false, null, e.state);
-            }
         }
     });
 
