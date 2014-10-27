@@ -134,10 +134,12 @@
             }
             panel.dispatchEvent(evt);
         }
-        cacheResponse(resp, backResp);
         var newLink = resp.Link;
-        if (addHistory && link !== newLink)
-            win.history.pushState(resp.Title, resp.Title, newLink);
+        if (link !== newLink) {
+            cacheResponse(resp, backResp);
+            if (addHistory)
+                win.history.pushState(resp.Title, resp.Title, newLink);
+        }
         win.document.title = resp.Title;
         link = newLink;
     }
