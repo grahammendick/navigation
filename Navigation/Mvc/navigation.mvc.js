@@ -107,17 +107,23 @@
         };
     }
 
+    var neighbourhood = {};
+    neighbourhood[link] = [];
+    var links = [link];
     function handleRespone(resp, addHistory, oldLink) {
         if (resp.RedirectLink) {
             win.location.href = resp.RedirectLink;
             return;
         }
-        var newLink = resp.Link;
-        cache[oldLink + '&' + newLink] = resp;
         if (link !== oldLink)
             return;
+        var backResp = {};
+        backResp.Link = link;
+        backResp.Title = win.document.title;
+        backResp.Panels = {};
         for (var id in resp.Panels) {
             var panel = win.document.getElementById(id);
+            backResp.Panels[id] = panel.innerHTML;
             panel.innerHTML = resp.Panels[id];
             var evt;
             if (typeof win.Event === 'function')
@@ -128,25 +134,77 @@
             }
             panel.dispatchEvent(evt);
         }
-        if (addHistory && link !== newLink)
-            win.history.pushState(resp.Title, resp.Title, newLink);
+        var newLink = resp.Link;
+        if (link !== newLink) {
+            cacheResponse(resp, backResp);
+            if (addHistory)
+                win.history.pushState(resp.Title, resp.Title, newLink);
+        }
         win.document.title = resp.Title;
         link = newLink;
+    }
+
+    function cacheResponse(resp, backResp) {
+        var newLink = resp.Link;
+        cache[link + '&' + newLink] = resp;
+        cache[newLink + '&' + link] = backResp;
+        if (links.indexOf(newLink) === -1) {
+            neighbourhood[newLink] = [];
+            links.push(newLink);
+        }
+        if (neighbourhood[link].indexOf(newLink) === -1) {
+            neighbourhood[link].push(newLink);
+            neighbourhood[newLink].push(link);
+        }
     }
 
     win.addEventListener('popstate', function (e) {
         var newLink = win.location.pathname + win.location.search;
         if (link !== newLink) {
-            var resp = cache[link + '&' + newLink];
-            if (!resp)
-                refreshAjax(newLink, false, null, e.state);
-            else {
-                try {
-                    handleRespone(resp, false, link);
-                } catch (ex) {
-                    refreshAjax(newLink, false, null, e.state);
+            var path = getShortestPath(link, newLink);
+            if (path) {
+                for (var i = 0; i < path.length - 1; i++) {
+                    var resp = cache[path[i] + '&' + path[i + 1]];
+                    handleRespone(resp, false, path[i]);
                 }
-            }
+            } else
+                refreshAjax(newLink, false, null, e.state);
         }
     });
+
+    function getShortestPath(fromLink, toLink) {
+        var previous = {};
+        var distances = {};
+        var unlinks = [];
+        var max = links.length;
+        for (var i = 0; i < links.length; i++) {
+            unlinks.push(links[i]);
+            distances[links[i]] = max;
+        }
+        var distance = distances[fromLink] = 0;
+        while (unlinks.length !== 0) {
+            distance++;
+            var link = unlinks.sort(function (x, y) {
+                return distances[x] - distances[y]
+            })[0];
+            if (link === toLink) {
+                var path = [];
+                while (toLink) {
+                    path.push(toLink);
+                    toLink = previous[toLink];
+                }
+                return path.reverse();
+            }
+            var neighbours = neighbourhood[link];
+            for (var i = 0; i < neighbours.length; i++) {
+                var neighbour = neighbours[i];
+                if (distances[neighbour] === max) {
+                    distances[neighbour] = distance;
+                    previous[neighbour] = link;
+                }
+            }
+            unlinks.shift();
+        }
+        return null;
+    }
 })(window);
