@@ -9,7 +9,7 @@
         var anchor = getAjaxTarget(element, 'A');
         if (!e.ctrlKey && !e.shiftKey && anchor) {
             e.preventDefault();
-            refreshAjax(anchor.getAttribute('href'), true, anchor);
+            refreshAjax(anchor.getAttribute('href'), null, true, anchor);
         }
         if (element.tagName === 'INPUT' && element.name) {
             if (element.type === 'submit')
@@ -24,12 +24,8 @@
     win.document.addEventListener('submit', function (e) {
         var form = getAjaxTarget(e.target, 'FORM');
         if (form) {
-            var req = new win.XMLHttpRequest();
-            req.onreadystatechange = onReady(req, true);
             e.preventDefault();
-            req.open('post', getAjaxLink(form.getAttribute('action'), form));
-            req.setRequestHeader("Content-Type", "application/json");
-            req.send(win.JSON.stringify(getFormData(form)));
+            refreshAjax(form.getAttribute('action'), getFormData(form), true, form);
         }
     });
 
@@ -68,11 +64,17 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    function refreshAjax(newLink, addHistory, target, title) {
+    function navigate(data) {
+        refreshAjax(link, data, true);
+    }
+    
+    function refreshAjax(newLink, data, addHistory, target, title) {
         var req = new win.XMLHttpRequest();
         req.onreadystatechange = onReady(req, addHistory, title);
-        req.open('get', getAjaxLink(newLink, target));
-        req.send();
+        req.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
+        if (data)
+            req.setRequestHeader("Content-Type", "application/json");
+        req.send(win.JSON.stringify(data));
     }
 
     function getAjaxLink(baseLink, target) {
@@ -168,7 +170,7 @@
                     handleRespone(resp, false, path[i]);
                 }
             } else
-                refreshAjax(newLink, false, null, e.state);
+                refreshAjax(newLink, null, false, null, e.state);
         }
     });
 
@@ -207,4 +209,8 @@
         }
         return null;
     }
+
+    win.refreshAjax = {
+        navigate: navigate
+    };
 })(window);
