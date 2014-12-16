@@ -206,8 +206,14 @@
         return null;
     }
 
+    function getAddHandler(eventName) {
+        return function (handler) {
+            handlers[eventName].push(handler);
+        };
+    }
+
     win.refreshAjax = {
         navigate: navigate,
-        update: function (handler) { handlers['update'].push(handler); }
+        update: getAddHandler('update')
     };
 })(window);
