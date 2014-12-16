@@ -133,8 +133,7 @@
     var neighbourhood = {};
     neighbourhood[link] = [];
     var links = [link];
-    var handlers = [];
-    handlers['update'] = [];
+    var handlers = {};
     function handleRespone(req, resp) {
         var backResp = {};
         backResp.link = link;
@@ -145,8 +144,7 @@
             backResp.panels[id] = panel.innerHTML;
             panel.innerHTML = resp.panels[id];
         }
-        for (var i = 0; i < handlers['update'].length; i++)
-            handlers['update'][i](req, resp);
+        raiseEvent('update', req, resp);
         var newLink = resp.link;
         if (link !== newLink) {
             cacheResponse(resp, backResp);
@@ -221,14 +219,23 @@
         return null;
     }
 
-    function getAddHandler(eventName) {
+    function addHandler(eventName) {
         return function (handler) {
+            if (!handlers[eventName])
+                handlers[eventName] = [];
             handlers[eventName].push(handler);
         };
     }
 
+    function raiseEvent(eventName, req, resp) {
+        if (!handlers[eventName])
+            return;
+        for (var i = 0; i < handlers[eventName].length; i++)
+            handlers[eventName][i](req, resp);
+    }
+
     win.refreshAjax = {
         navigate: navigate,
-        update: getAddHandler('update')
+        update: addHandler('update')
     };
 })(window);
