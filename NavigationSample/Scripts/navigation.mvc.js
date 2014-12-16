@@ -151,6 +151,8 @@
             cacheResponse(resp, backResp);
             if (resp.history === 'add')
                 win.history.pushState(resp.title, resp.title, newLink);
+            if (resp.history === 'replace')
+                win.history.replaceState(resp.title, resp.title, newLink);
         }
         win.document.title = resp.title;
         link = newLink;
