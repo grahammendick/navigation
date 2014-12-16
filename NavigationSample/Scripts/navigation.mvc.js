@@ -64,8 +64,8 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    function navigate(data) {
-        refreshAjax(link, data, true);
+    function navigate(data, target) {
+        refreshAjax(link, data, true, target);
     }
     
     function refreshAjax(newLink, data, addHistory, target, title) {
