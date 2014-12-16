@@ -75,7 +75,7 @@
             target: target,
             cancel: false
         };
-        //raise event
+        raiseEvent('prenavigate', req, null);
         if (!req.cancel) {
             var resp = {
                 history: addHistory ? 'add' : null,
@@ -139,12 +139,13 @@
         backResp.link = link;
         backResp.title = win.document.title;
         backResp.panels = {};
+        raiseEvent('postnavigate', req, resp);
         for (var id in resp.panels) {
             var panel = win.document.getElementById(id);
             backResp.panels[id] = panel.innerHTML;
             panel.innerHTML = resp.panels[id];
         }
-        raiseEvent('update', req, resp);
+        raiseEvent('postupdate', req, resp);
         var newLink = resp.link;
         if (link !== newLink) {
             cacheResponse(resp, backResp);
@@ -219,7 +220,7 @@
         return null;
     }
 
-    function addHandler(eventName) {
+    function getAddHandler(eventName) {
         return function (handler) {
             if (!handlers[eventName])
                 handlers[eventName] = [];
@@ -236,6 +237,8 @@
 
     win.refreshAjax = {
         navigate: navigate,
-        update: addHandler('update')
-    };
+        prenavigate: getAddHandler('prenavigate'),
+        postnavigate: getAddHandler('postnavigate'),
+        postupdate: getAddHandler('postupdate')
+};
 })(window);
