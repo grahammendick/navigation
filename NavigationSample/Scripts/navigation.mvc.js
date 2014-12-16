@@ -69,12 +69,25 @@
     }
     
     function refreshAjax(newLink, data, addHistory, target, title) {
-        var req = new win.XMLHttpRequest();
-        req.onreadystatechange = onReady(req, addHistory, title);
-        req.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
-        if (data)
-            req.setRequestHeader("Content-Type", "application/json");
-        req.send(win.JSON.stringify(data));
+        var req = {
+            link: newLink,
+            data: data,
+            target: target,
+            cancel: false
+        };
+        //raise event
+        if (!req.cancel) {
+            var resp = {
+                history: addHistory ? 'add' : null,
+                title: title ? title : win.document.title
+            };
+            var ajaxReq = new win.XMLHttpRequest();
+            ajaxReq.onreadystatechange = onReady(ajaxReq, req, resp);
+            ajaxReq.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
+            if (data)
+                ajaxReq.setRequestHeader("Content-Type", "application/json");
+            ajaxReq.send(win.JSON.stringify(data));
+        }
     }
 
     function getAjaxLink(baseLink, target) {
@@ -97,14 +110,22 @@
     }
 
     var cache = {};
-    function onReady(req, addHistory, title) {
+    function onReady(ajaxReq, req, resp) {
         var oldLink = link;
         return function () {
-            if (req.readyState === 4 && req.status === 200) {
-                var resp = win.JSON.parse(req.responseText);
-                if (!resp.Title)
-                    resp.Title = title ? title : win.document.title;
-                handleRespone(resp, addHistory, oldLink);
+            if (ajaxReq.readyState === 4 && ajaxReq.status === 200) {
+                var ajaxResp = win.JSON.parse(ajaxReq.responseText);
+                if (ajaxResp.RedirectLink) {
+                    win.location.href = ajaxResp.RedirectLink;
+                    return;
+                }
+                if (link !== oldLink)
+                    return;
+                if (ajaxResp.Title)
+                    resp.title = ajaxResp.Title;
+                resp.panels = ajaxResp.Panels;
+                resp.link = ajaxResp.Link;
+                handleRespone(req, resp);
             }
         };
     }
@@ -114,36 +135,30 @@
     var links = [link];
     var handlers = [];
     handlers['update'] = [];
-    function handleRespone(resp, addHistory, oldLink) {
-        if (resp.RedirectLink) {
-            win.location.href = resp.RedirectLink;
-            return;
-        }
-        if (link !== oldLink)
-            return;
+    function handleRespone(req, resp) {
         var backResp = {};
-        backResp.Link = link;
-        backResp.Title = win.document.title;
-        backResp.Panels = {};
-        for (var id in resp.Panels) {
+        backResp.link = link;
+        backResp.title = win.document.title;
+        backResp.panels = {};
+        for (var id in resp.panels) {
             var panel = win.document.getElementById(id);
-            backResp.Panels[id] = panel.innerHTML;
-            panel.innerHTML = resp.Panels[id];
-            for (var i = 0; i < handlers['update'].length; i++)
-                handlers['update'][i](panel);
+            backResp.panels[id] = panel.innerHTML;
+            panel.innerHTML = resp.panels[id];
         }
-        var newLink = resp.Link;
+        for (var i = 0; i < handlers['update'].length; i++)
+            handlers['update'][i](req, resp);
+        var newLink = resp.link;
         if (link !== newLink) {
             cacheResponse(resp, backResp);
-            if (addHistory)
-                win.history.pushState(resp.Title, resp.Title, newLink);
+            if (resp.history === 'add')
+                win.history.pushState(resp.title, resp.title, newLink);
         }
-        win.document.title = resp.Title;
+        win.document.title = resp.title;
         link = newLink;
     }
 
     function cacheResponse(resp, backResp) {
-        var newLink = resp.Link;
+        var newLink = resp.link;
         cache[link + '&' + newLink] = resp;
         cache[newLink + '&' + link] = backResp;
         if (links.indexOf(newLink) === -1) {
@@ -163,7 +178,7 @@
             if (path) {
                 for (var i = 0; i < path.length - 1; i++) {
                     var resp = cache[path[i] + '&' + path[i + 1]];
-                    handleRespone(resp, false, path[i]);
+                    handleRespone(null, resp);
                 }
             } else
                 refreshAjax(newLink, null, false, null, e.state);
