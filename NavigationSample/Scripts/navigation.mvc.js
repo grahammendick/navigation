@@ -105,7 +105,7 @@
     function setLinkData(target, link, name) {
         var value = target.getAttribute('data-' + name);
         if (value)
-            link += '&' + name.replace('-','') + '=' + win.encodeURIComponent(value);
+            link += '&' + name.replace('-', '') + '=' + win.encodeURIComponent(value);
         return link;
     }
 
