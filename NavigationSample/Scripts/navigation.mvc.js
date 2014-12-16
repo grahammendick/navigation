@@ -133,7 +133,6 @@
     var neighbourhood = {};
     neighbourhood[link] = [];
     var links = [link];
-    var handlers = {};
     function handleRespone(req, resp) {
         var backResp = {};
         backResp.link = link;
@@ -222,6 +221,7 @@
         return null;
     }
 
+    var handlers = {};
     function getAddHandler(eventName) {
         return function (handler) {
             if (!handlers[eventName])
