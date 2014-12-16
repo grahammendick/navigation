@@ -112,6 +112,8 @@
     var neighbourhood = {};
     neighbourhood[link] = [];
     var links = [link];
+    var handlers = [];
+    handlers['update'] = [];
     function handleRespone(resp, addHistory, oldLink) {
         if (resp.RedirectLink) {
             win.location.href = resp.RedirectLink;
@@ -127,14 +129,8 @@
             var panel = win.document.getElementById(id);
             backResp.Panels[id] = panel.innerHTML;
             panel.innerHTML = resp.Panels[id];
-            var evt;
-            if (typeof win.Event === 'function')
-                evt = new win.Event('refreshajax');
-            else {
-                evt = win.document.createEvent('Event');
-                evt.initEvent('refreshajax', false, false);
-            }
-            panel.dispatchEvent(evt);
+            for (var i = 0; i < handlers['update'].length; i++)
+                handlers['update'][i](panel);
         }
         var newLink = resp.Link;
         if (link !== newLink) {
@@ -211,6 +207,7 @@
     }
 
     win.refreshAjax = {
-        navigate: navigate
+        navigate: navigate,
+        update: function (handler) { handlers['update'].push(handler); }
     };
 })(window);
