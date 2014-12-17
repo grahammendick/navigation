@@ -44,7 +44,8 @@ namespace Navigation.Sample
 					.Transition("Select", d => d.Listing, d => d.Details)
 				.Dialog("Todo", new
 				{
-					List = new MvcState("Todo", "Todo", "Index")
+					List = new MvcState("Todo/{*id}", "Todo", "Index")
+						.Defaults(new { id = typeof(int) })
 						.TrackCrumbTrail(false)
 				}, d => d.List)
 				.Build();

@@ -18,7 +18,7 @@
         <section>
             <ul id="todo-list">
                 @foreach (var todo in Model.Todos) {
-                    <li>@todo.Title</li>
+                    <li>@Html.RefreshLink(@todo.Title, new NavigationData{ { "id", @todo.Id } }, true)</li>
                 }
             </ul>
         </section>
