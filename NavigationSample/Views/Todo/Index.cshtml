@@ -1,17 +1,1 @@
-﻿@model TodoModel
-<!doctype html>
-<html lang="en" data-framework="Navigation">
-    <head>
-        <meta charset="utf-8">
-        <title>Navigation • TodoMVC</title>
-    </head>
-    <body>
-        <section>
-            <h1>todos</h1>
-            @using (Html.BeginRefreshForm(null, true))
-            {
-                @Html.TextBoxFor(m => m.Name, new { placeholder = "What needs to be done?" })
-            }
-        </section>
-    </body>
-</html>
+﻿@Html.Action("_Content")
