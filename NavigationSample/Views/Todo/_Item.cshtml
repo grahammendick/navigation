@@ -10,7 +10,7 @@
     }
     @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
     using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
-        <button class="destroy" name="action" value="delete">delete</button>
+        <button name="action" value="delete">delete</button>
     }
 }
 else {
