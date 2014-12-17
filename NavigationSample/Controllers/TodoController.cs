@@ -33,13 +33,19 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Add(TodoModel todoModel)
 		{
-			if (!string.IsNullOrWhiteSpace(todoModel.Title))
+			if (!string.IsNullOrWhiteSpace(todoModel.NewTitle))
 			{
-				ModelState.Remove("Title");
+				ModelState.Remove("NewTitle");
 				Todos.Add(new Todo { 
 					Id = (Todos.Max(t => (int?) t.Id) ?? 0) + 1,
-					Title = todoModel.Title.Trim() });
+					Title = todoModel.NewTitle.Trim() });
 			}
+			return View();
+		}
+
+		[ActionSelector]
+		public ActionResult Edit(Todo todo)
+		{
 			return View();
 		}
 	}
