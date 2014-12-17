@@ -36,7 +36,9 @@ namespace Navigation.Sample.Controllers
 			if (!string.IsNullOrWhiteSpace(todoModel.NewTitle))
 			{
 				ModelState.Remove("NewTitle");
-				Todos.Add(new Todo { 
+				StateContext.Bag.id = null;
+				Todos.Add(new Todo
+				{ 
 					Id = (Todos.Max(t => (int?) t.Id) ?? 0) + 1,
 					Title = todoModel.NewTitle.Trim() });
 			}
@@ -51,6 +53,22 @@ namespace Navigation.Sample.Controllers
 				StateContext.Bag.id = null;
 				Todos.First(t => t.Id == todo.Id).Title = todo.Title.Trim();
 			}
+			return View();
+		}
+
+		[ActionSelector]
+		public ActionResult Complete(Todo todo)
+		{
+			StateContext.Bag.id = null;
+			Todos.First(t => t.Id == todo.Id).Completed = true;
+			return View();
+		}
+
+		[ActionSelector]
+		public ActionResult Activate(Todo todo)
+		{
+			StateContext.Bag.id = null;
+			Todos.First(t => t.Id == todo.Id).Completed = false;
 			return View();
 		}
 	}

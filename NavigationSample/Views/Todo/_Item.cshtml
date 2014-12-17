@@ -1,5 +1,9 @@
 ﻿@model Todo
 @if (StateContext.Bag.id != Model.Id) {
+    using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
+        @Html.HiddenFor(m => m.Id)
+        <input type="submit" name="action" value="@(!Model.Completed ? "complete" : "activate")" />
+    }
     @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
 }
 else {
