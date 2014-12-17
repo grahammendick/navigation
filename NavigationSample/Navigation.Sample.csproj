@@ -136,6 +136,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionSelectorAttribute.cs" />
     <Compile Include="App_GlobalResources\StateInfo.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
