@@ -42,6 +42,10 @@ namespace Navigation.Sample
 						.Title(() => StateInfo.Details)
 				}, d => d.Listing)
 					.Transition("Select", d => d.Listing, d => d.Details)
+				.Dialog("Todo", new
+				{
+					List = new MvcState("Todo", "Todo", "Index")
+				}, d => d.List)
 				.Build();
 		}
 	}
