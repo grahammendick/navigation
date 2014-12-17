@@ -73,21 +73,18 @@
             link: newLink,
             data: data,
             target: target,
-            cancel: false
         };
         raiseEvent('prenavigate', req, null);
-        if (!req.cancel) {
-            var resp = {
-                history: addHistory ? 'add' : null,
-                title: title ? title : win.document.title
-            };
-            var ajaxReq = new win.XMLHttpRequest();
-            ajaxReq.onreadystatechange = onReady(ajaxReq, req, resp);
-            ajaxReq.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
-            if (data)
-                ajaxReq.setRequestHeader("Content-Type", "application/json");
-            ajaxReq.send(win.JSON.stringify(data));
-        }
+        var resp = {
+            history: addHistory ? 'add' : null,
+            title: title ? title : win.document.title
+        };
+        var ajaxReq = new win.XMLHttpRequest();
+        ajaxReq.onreadystatechange = onReady(ajaxReq, req, resp);
+        ajaxReq.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
+        if (data)
+            ajaxReq.setRequestHeader("Content-Type", "application/json");
+        ajaxReq.send(win.JSON.stringify(data));
     }
 
     function getAjaxLink(baseLink, target) {
