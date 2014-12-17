@@ -32,11 +32,10 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Add(TodoModel todoModel)
 		{
-			var title = todoModel.Title.Trim();
-			if (title != string.Empty)
+			if (!string.IsNullOrWhiteSpace(todoModel.Title))
 			{
 				ModelState.Remove("Title");
-				Todos.Add(new Todo { Title = todoModel.Title });
+				Todos.Add(new Todo { Title = todoModel.Title.Trim() });
 			}
 			return View();
 		}
