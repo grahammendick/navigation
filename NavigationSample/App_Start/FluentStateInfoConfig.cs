@@ -45,6 +45,7 @@ namespace Navigation.Sample
 				.Dialog("Todo", new
 				{
 					List = new MvcState("Todo", "Todo", "Index")
+						.TrackCrumbTrail(false)
 				}, d => d.List)
 				.Build();
 		}
