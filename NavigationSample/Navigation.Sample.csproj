@@ -143,6 +143,7 @@
       <DependentUpon>StateInfo.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\FluentStateInfoConfig.cs" />
+    <Compile Include="ChildParentSyncAttribute.cs" />
     <Compile Include="Controllers\PersonApiController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\TodoController.cs" />

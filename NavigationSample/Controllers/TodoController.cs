@@ -22,6 +22,8 @@ namespace Navigation.Sample.Controllers
 			return View();
 		}
 
+		[ChildParentSync]
+		[ChildActionOnly]
 		public ActionResult _Content()
 		{
 			return View(new TodoModel { Todos = Todos });
@@ -30,7 +32,12 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Add(TodoModel todoModel)
 		{
-			Todos.Add(new Todo { Title = todoModel.Title });
+			var title = todoModel.Title.Trim();
+			if (title != string.Empty)
+			{
+				ModelState.Remove("Title");
+				Todos.Add(new Todo { Title = todoModel.Title });
+			}
 			return View();
 		}
 	}
