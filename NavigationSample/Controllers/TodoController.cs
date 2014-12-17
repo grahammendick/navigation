@@ -46,6 +46,11 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Edit(Todo todo)
 		{
+			if (!string.IsNullOrWhiteSpace(todo.Title))
+			{
+				StateContext.Bag.id = null;
+				Todos.First(t => t.Id == todo.Id).Title = todo.Title.Trim();
+			}
 			return View();
 		}
 	}
