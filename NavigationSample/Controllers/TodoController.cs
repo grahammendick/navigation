@@ -71,5 +71,13 @@ namespace Navigation.Sample.Controllers
 			Todos.First(t => t.Id == todo.Id).Completed = false;
 			return View();
 		}
+
+		[ActionSelector]
+		public ActionResult Delete(Todo todo)
+		{
+			StateContext.Bag.id = null;
+			Todos.Remove(Todos.First(t => t.Id == todo.Id));
+			return View();
+		}
 	}
 }
