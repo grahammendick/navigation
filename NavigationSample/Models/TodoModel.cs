@@ -1,7 +1,11 @@
-﻿namespace Navigation.Sample.Models
+﻿using System.Collections.Generic;
+
+namespace Navigation.Sample.Models
 {
 	public class TodoModel
 	{
-		public string Name { get; set; }
+		public string Title { get; set; }
+
+		public IEnumerable<Todo> Todos { get; set; }
 	}
 }
