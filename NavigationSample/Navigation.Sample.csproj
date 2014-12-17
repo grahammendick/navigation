@@ -169,6 +169,7 @@
     <Compile Include="Models\PersonApiModel.cs" />
     <Compile Include="Models\PersonApiSearchModel.cs" />
     <Compile Include="Models\PersonSearchModel.cs" />
+    <Compile Include="Models\TodoModel.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
