@@ -1,5 +1,6 @@
 ﻿using Navigation.Sample.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Navigation.Sample.Controllers
@@ -35,7 +36,9 @@ namespace Navigation.Sample.Controllers
 			if (!string.IsNullOrWhiteSpace(todoModel.Title))
 			{
 				ModelState.Remove("Title");
-				Todos.Add(new Todo { Title = todoModel.Title.Trim() });
+				Todos.Add(new Todo { 
+					Id = (Todos.Max(t => (int?) t.Id) ?? 0) + 1,
+					Title = todoModel.Title.Trim() });
 			}
 			return View();
 		}
