@@ -121,6 +121,7 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\Person\Details.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Views\Todo\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -142,6 +143,7 @@
     <Compile Include="App_Start\FluentStateInfoConfig.cs" />
     <Compile Include="Controllers\PersonApiController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\TodoController.cs" />
     <Compile Include="Details.aspx.cs">
       <DependentUpon>Details.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
