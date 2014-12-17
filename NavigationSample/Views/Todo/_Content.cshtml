@@ -12,6 +12,7 @@
             @using (Html.BeginRefreshForm(null, true))
             {
                 @Html.TextBoxFor(m => m.Name, new { placeholder = "What needs to be done?" })
+                <input type="hidden" name="action" value="add" />
             }
         </header>
         <section>
