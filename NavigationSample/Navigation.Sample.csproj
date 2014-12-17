@@ -123,6 +123,7 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Views\Todo\Index.cshtml" />
     <Content Include="Views\Todo\_Content.cshtml" />
+    <Content Include="Views\Todo\_Item.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -17,16 +17,7 @@
         <section>
             <ul id="todo-list">
                 @foreach (var todo in Model.Todos) {
-                    <li>
-                        @if (StateContext.Bag.id != todo.Id) {
-                            @Html.RefreshLink(@todo.Title, new NavigationData{ { "id", @todo.Id } }, true)
-                        } else {
-                            using (Html.BeginRefreshForm(null, true)) {
-                                <input type="text" name="Title" value="@todo.Title" />
-                                <input type="hidden" name="action" value="edit" />
-                            }
-                        }
-                    </li>
+                    <li>@Html.Partial("_Item", todo)</li>
                 }
             </ul>
         </section>

@@ -1,0 +1,10 @@
+﻿@model Todo
+@if (StateContext.Bag.id != Model.Id) {
+    @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
+}
+else {
+    using (Html.BeginRefreshForm(null, true)) {
+        @Html.TextBoxFor(m => m.Title)
+        <input type="hidden" name="action" value="edit" />
+    }
+}
