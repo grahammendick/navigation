@@ -74,7 +74,7 @@
             data: data,
             target: target,
         };
-        raiseEvent('prenavigate', req, null);
+        raiseEvent('navigating', req, null);
         var resp = {
             history: addHistory ? 'add' : null,
             title: title ? title : win.document.title
@@ -135,13 +135,13 @@
         backResp.link = link;
         backResp.title = win.document.title;
         backResp.panels = {};
-        raiseEvent('postnavigate', req, resp);
+        raiseEvent('navigated', req, resp);
         for (var id in resp.panels) {
             var panel = win.document.getElementById(id);
             backResp.panels[id] = panel.innerHTML;
             panel.innerHTML = resp.panels[id];
         }
-        raiseEvent('postupdate', req, resp);
+        raiseEvent('updated', req, resp);
         var newLink = resp.link;
         if (link !== newLink) {
             cacheResponse(resp, backResp);
@@ -236,8 +236,8 @@
 
     win.refreshAjax = {
         navigate: navigate,
-        prenavigate: getAddHandler('prenavigate'),
-        postnavigate: getAddHandler('postnavigate'),
-        postupdate: getAddHandler('postupdate')
+        navigating: getAddHandler('navigating'),
+        navigated: getAddHandler('navigated'),
+        updated: getAddHandler('updated')
 };
 })(window);
