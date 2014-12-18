@@ -1,5 +1,5 @@
 ﻿@model Todo
-<div class="view">
+<div class="view @Model.Toggle">
 @if (StateContext.Bag.id != Model.Id) {
     using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
         <button name="action" value="@Model.Toggle" class="toggle @Model.Toggle">@Model.ToggleText</button>
