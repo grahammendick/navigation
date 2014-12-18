@@ -11,7 +11,7 @@
             e.preventDefault();
             refreshAjax(anchor.getAttribute('href'), null, true, anchor);
         }
-        if (element.tagName === 'INPUT' && element.name) {
+        if ((element.tagName === 'INPUT' || element.tagName === 'BUTTON') && element.name) {
             if (element.type === 'submit')
                 submitData[element.name] = element.value;
             if (element.type === 'image') {
