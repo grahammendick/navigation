@@ -252,7 +252,7 @@ label[for='toggle-all'] {
     text-decoration:none;
 }
 
-#todo-list li.completed label {
+#todo-list div.activate a {
 	color: #a9a9a9;
 	text-decoration: line-through;
 }
