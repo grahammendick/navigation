@@ -11,7 +11,7 @@
         <header id="header">
             <h1>todos</h1>
             @using (Html.BeginRefreshForm(null, true)) {
-                @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autofocus = "autofocus" })
+                @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autofocus = "autofocus", autocomplete = "off" })
                 <input type="hidden" name="action" value="add" />
             }
         </header>
