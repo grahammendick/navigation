@@ -244,6 +244,8 @@ label[for='toggle-all'] {
 	line-height: 1.2;
 	-webkit-transition: color 0.4s;
 	transition: color 0.4s;
+    color: #4d4d4d;
+    text-decoration:none;
 }
 
 #todo-list li.completed label {
