@@ -16,12 +16,7 @@
         </header>
         <section>
             @using (Html.BeginRefreshForm(null, true)) {
-                if (Model.ItemsLeft == 0) {
-                    <button name="action" value="activateAll">Mark all as active</button>
-                }
-                else {
-                    <button name="action" value="completeAll">Mark all as complete</button>
-                }
+                <button name="action" value="@Model.ToggleAll">@Model.ToggleAllText</button>
             }
             <ul id="todo-list">
                 @foreach (var todo in Model.Todos) {

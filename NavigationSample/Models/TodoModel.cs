@@ -11,5 +11,21 @@ namespace Navigation.Sample.Models
 		public int ItemsLeft { get; set; }
 
 		public int CompletedCount { get; set; }
+
+		public string ToggleAll
+		{
+			get
+			{
+				return ItemsLeft == 0 ? "activateAll" : "completeAll";
+			}
+		}
+
+		public string ToggleAllText
+		{
+			get
+			{
+				return ItemsLeft == 0 ? "Mark all as active" : "Mark all as complete";
+			}
+		}
 	}
 }
