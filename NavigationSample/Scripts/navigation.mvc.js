@@ -241,5 +241,5 @@
         navigating: getAddHandler('navigating'),
         navigated: getAddHandler('navigated'),
         updated: getAddHandler('updated')
-};
+    };
 })(window);
