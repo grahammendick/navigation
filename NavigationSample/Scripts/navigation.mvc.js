@@ -138,8 +138,10 @@
         raiseEvent('navigated', req, resp);
         for (var id in resp.panels) {
             var panel = win.document.getElementById(id);
-            backResp.panels[id] = panel.innerHTML;
-            panel.innerHTML = resp.panels[id];
+            if (panel) {
+                backResp.panels[id] = panel.innerHTML;
+                panel.innerHTML = resp.panels[id];
+            }
         }
         raiseEvent('updated', req, resp);
         var newLink = resp.link;
