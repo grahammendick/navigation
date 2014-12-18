@@ -14,7 +14,7 @@
             @<div>
                 <header id="header">
                     <h1>todos</h1>
-                    @using (Html.BeginRefreshForm(null, true, __razor_template_writer)) {
+                    @using (Html.BeginRefreshForm(null, true, __razor_template_writer, new { id = "todo-form" })) {
                         @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autofocus = "autofocus", autocomplete = "off" })
                         <input type="hidden" name="action" value="add" />
                     }
@@ -38,7 +38,7 @@
     <script type="text/javascript">
         refreshAjax.updated(function (req, resp) {
             var el = document.querySelector('#todo-list input');
-            if (!el)
+            if (!el && req.target && req.target.id === 'todo-form')
                 el = document.getElementById('new-todo');
             el.focus();
             el.value = el.value;
