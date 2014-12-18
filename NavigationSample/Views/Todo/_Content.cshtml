@@ -37,10 +37,11 @@
     <script src="~/Scripts/navigation.mvc.js"></script>
     <script type="text/javascript">
         refreshAjax.updated(function (req, resp) {
-            if (!req.target.getAttribute('data-todo'))
-                document.getElementById('new-todo').focus();
-            else
-                document.querySelector('#todo-list input').focus();
+            var el = document.getElementById('new-todo');
+            if (req.target.getAttribute('data-todo'))
+                el = document.querySelector('#todo-list input');
+            el.focus();
+            el.value = el.value;
         });
     </script>
 </body>
