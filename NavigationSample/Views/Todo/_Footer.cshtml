@@ -11,7 +11,7 @@
     </ul>
     @if (Model.CompletedCount > 0) {
         using (Html.BeginRefreshForm(null, true)) {
-            <button id="clear-completed" name="action" value="clearCompleted">Clear completed @Model.CompletedCount</button>
+            <button id="clear-completed" name="action" value="clearCompleted">Clear completed (@Model.CompletedCount)</button>
         }
     }
 </footer>
