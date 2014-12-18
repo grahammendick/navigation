@@ -65,7 +65,9 @@ namespace Navigation.Sample.Controllers
 		public ActionResult Complete(Todo todo)
 		{
 			StateContext.Bag.id = null;
-			Todos.First(t => t.Id == todo.Id).Completed = true;
+			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
+			if (todo != null)
+				todo.Completed = true;
 			return View();
 		}
 
@@ -73,7 +75,9 @@ namespace Navigation.Sample.Controllers
 		public ActionResult Activate(Todo todo)
 		{
 			StateContext.Bag.id = null;
-			Todos.First(t => t.Id == todo.Id).Completed = false;
+			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
+			if (todo != null)
+				todo.Completed = false;
 			return View();
 		}
 
@@ -81,7 +85,9 @@ namespace Navigation.Sample.Controllers
 		public ActionResult Delete(Todo todo)
 		{
 			StateContext.Bag.id = null;
-			Todos.Remove(Todos.First(t => t.Id == todo.Id));
+			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
+			if (todo != null)
+				Todos.Remove(todo);
 			return View();
 		}
 
