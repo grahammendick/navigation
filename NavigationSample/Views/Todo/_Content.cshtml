@@ -35,5 +35,13 @@
     <footer id="info">
     </footer>
     <script src="~/Scripts/navigation.mvc.js"></script>
+    <script type="text/javascript">
+        refreshAjax.updated(function (req, resp) {
+            if (!req.target.getAttribute('data-todo'))
+                document.getElementById('new-todo').focus();
+            else
+                document.querySelector('#todo-list input').focus();
+        });
+    </script>
 </body>
 </html>
