@@ -15,7 +15,7 @@
                 <input type="hidden" name="action" value="add" />
             }
         </header>
-        <section>
+        <section id="main">
             @using (Html.BeginRefreshForm(null, true)) {
                 <button name="action" value="@Model.ToggleAll">@Model.ToggleAllText</button>
             }
