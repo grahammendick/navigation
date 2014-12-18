@@ -4,7 +4,7 @@
     using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
         <button name="action" value="@Model.Toggle" class="toggle @Model.Toggle">@Model.ToggleText</button>
     }
-    @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
+    @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true, new { data_todo = Model.Id } )
     using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
         <button name="action" value="delete" class="destroy">Delete</button>
     }
