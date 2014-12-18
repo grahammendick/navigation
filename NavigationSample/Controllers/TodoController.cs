@@ -86,10 +86,27 @@ namespace Navigation.Sample.Controllers
 		}
 
 		[ActionSelector]
-		public ActionResult ClearCompleted()
+		public ActionResult CompleteAll()
+		{
+			StateContext.Bag.id = null;
+			Todos.ForEach(t => t.Completed = true);
+			return View();
+		}
+
+		[ActionSelector]
+		public ActionResult ActivateAll()
 		{
 			StateContext.Bag.id = null;
 			Todos.ForEach(t => t.Completed = false);
+			return View();
+		}
+
+		[ActionSelector]
+		public ActionResult ClearCompleted()
+		{
+			StateContext.Bag.id = null;
+			var completed = Todos.Where(t => t.Completed).ToList();
+			completed.ForEach(t => Todos.Remove(t));
 			return View();
 		}
 	}
