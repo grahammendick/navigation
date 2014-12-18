@@ -7,5 +7,7 @@ namespace Navigation.Sample.Models
 		public string NewTitle { get; set; }
 
 		public IEnumerable<Todo> Todos { get; set; }
+
+		public int ItemsLeft { get; set; }
 	}
 }
