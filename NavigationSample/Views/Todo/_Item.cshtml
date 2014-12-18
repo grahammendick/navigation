@@ -2,15 +2,15 @@
 @if (StateContext.Bag.id != Model.Id) {
     using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
         if (Model.Completed) {
-            <button name="action" value="activate">activate</button>
+            <button name="action" value="activate">Activate</button>
         }
         else {
-            <button name="action" value="complete">complete</button>
+            <button name="action" value="complete">Complete</button>
         }
     }
     @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
     using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
-        <button name="action" value="delete">delete</button>
+        <button name="action" value="delete">Delete</button>
     }
 }
 else {
