@@ -25,9 +25,12 @@ namespace Navigation.Sample.Controllers
 
 		[ChildParentSync]
 		[ChildActionOnly]
-		public ActionResult _Content()
+		public ActionResult _Content(string mode)
 		{
-			return View(new TodoModel { Todos = Todos });
+			var model = new TodoModel { Todos = Todos };
+			if (mode != "all")
+				model.Todos = model.Todos.Where(t => t.Completed == (mode == "completed"));
+			return View(model);
 		}
 
 		[ActionSelector]
