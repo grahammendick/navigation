@@ -177,7 +177,7 @@
             if (path) {
                 for (var i = 0; i < path.length - 1; i++) {
                     var resp = cache[path[i] + '&' + path[i + 1]];
-                    handleRespone(null, resp);
+                    handleRespone({}, resp);
                 }
             } else
                 refreshAjax(newLink, null, false, null, e.state);
