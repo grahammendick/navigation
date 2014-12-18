@@ -40,8 +40,10 @@
             var el = document.querySelector('#todo-list input');
             if (!el && req.target && req.target.id === 'todo-form')
                 el = document.getElementById('new-todo');
-            el.focus();
-            el.value = el.value;
+            if (el) {
+                el.focus();
+                el.value = el.value;
+            }
         });
     </script>
 </body>
