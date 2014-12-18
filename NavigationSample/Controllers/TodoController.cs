@@ -29,6 +29,7 @@ namespace Navigation.Sample.Controllers
 		{
 			var model = new TodoModel { Todos = Todos };
 			model.ItemsLeft = model.Todos.Count(t => !t.Completed);
+			model.CompletedCount = model.Todos.Count(t => t.Completed);
 			if (mode != "all")
 				model.Todos = model.Todos.Where(t => t.Completed == (mode == "completed"));
 			return View(model);
@@ -81,6 +82,14 @@ namespace Navigation.Sample.Controllers
 		{
 			StateContext.Bag.id = null;
 			Todos.Remove(Todos.First(t => t.Id == todo.Id));
+			return View();
+		}
+
+		[ActionSelector]
+		public ActionResult ClearCompleted()
+		{
+			StateContext.Bag.id = null;
+			Todos.ForEach(t => t.Completed = false);
 			return View();
 		}
 	}
