@@ -9,5 +9,7 @@ namespace Navigation.Sample.Models
 		public IEnumerable<Todo> Todos { get; set; }
 
 		public int ItemsLeft { get; set; }
+
+		public int CompletedCount { get; set; }
 	}
 }
