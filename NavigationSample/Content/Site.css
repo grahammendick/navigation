@@ -338,7 +338,7 @@ label[for='toggle-all'] {
 	text-decoration: none;
 }
 
-#filters li a.selected {
+#filters li.selected a{
 	font-weight: bold;
 }
 
