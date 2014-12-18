@@ -37,9 +37,9 @@
     <script src="~/Scripts/navigation.mvc.js"></script>
     <script type="text/javascript">
         refreshAjax.updated(function (req, resp) {
-            var el = document.getElementById('new-todo');
-            if (req && req.target && req.target.getAttribute('data-todo'))
-                el = document.querySelector('#todo-list input');
+            var el = document.querySelector('#todo-list input');
+            if (!el)
+                el = document.getElementById('new-todo');
             el.focus();
             el.value = el.value;
         });
