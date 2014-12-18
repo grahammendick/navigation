@@ -11,7 +11,7 @@
 }
 else {
     using (Html.BeginRefreshForm(null, true)) {
-        @Html.TextBoxFor(m => m.Title)
+        @Html.TextBoxFor(m => m.Title, new { @class = "edit" })
         <input type="hidden" name="action" value="edit" />
     }
 }
