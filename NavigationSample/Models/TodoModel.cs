@@ -27,5 +27,34 @@ namespace Navigation.Sample.Models
 				return ItemsLeft == 0 ? "Mark all as active" : "Mark all as complete";
 			}
 		}
+
+		private string GetSelected(string mode)
+		{
+			return StateContext.Bag.mode == mode ? "selected" : null;
+		}
+
+		public string AllSelected
+		{
+			get
+			{
+				return GetSelected("all");
+			}
+		}
+
+		public string ActiveSelected
+		{
+			get
+			{
+				return GetSelected("active");
+			}
+		}
+
+		public string CompletedSelected
+		{
+			get
+			{
+				return GetSelected("completed");
+			}
+		}
 	}
 }
