@@ -124,6 +124,7 @@
     <Content Include="Views\Todo\Index.cshtml" />
     <Content Include="Views\Todo\_Content.cshtml" />
     <Content Include="Views\Todo\_Item.cshtml" />
+    <Content Include="Views\Todo\_Footer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
