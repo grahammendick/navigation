@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bg.png" />
     <Content Include="Details.aspx" />
     <Content Include="Details.Mobile.aspx" />
     <Content Include="Listing.aspx" />
@@ -118,7 +119,7 @@
     <Content Include="Scripts\person.js" />
     <Content Include="packages.config" />
     <Content Include="Views\Person\Listing.cshtml" />
-    <Content Include="Site.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="Views\web.config" />
     <Content Include="Views\Person\Details.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
