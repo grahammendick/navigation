@@ -1,5 +1,9 @@
 ﻿@model TodoModel
 <footer>
+    <span>
+        <strong>@Model.ItemsLeft</strong>
+        @(Model.ItemsLeft != 1 ? "items" : "item") left
+    </span>
     <ul>
         <li>@Html.RefreshLink("All", new NavigationData { { "id", "" }, { "mode", "all" } })</li>
         <li>@Html.RefreshLink("Active", new NavigationData { { "id", "" }, { "mode", "active" } })</li>

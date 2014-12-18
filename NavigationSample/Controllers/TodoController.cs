@@ -28,6 +28,7 @@ namespace Navigation.Sample.Controllers
 		public ActionResult _Content(string mode)
 		{
 			var model = new TodoModel { Todos = Todos };
+			model.ItemsLeft = model.Todos.Count(t => !t.Completed);
 			if (mode != "all")
 				model.Todos = model.Todos.Where(t => t.Completed == (mode == "completed"));
 			return View(model);
