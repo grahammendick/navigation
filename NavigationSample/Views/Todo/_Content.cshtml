@@ -36,15 +36,18 @@
     </footer>
     <script src="~/Scripts/navigation.mvc.js"></script>
     <script type="text/javascript">
-        refreshAjax.updated(function (req, resp) {
-            var el = document.querySelector('#todo-list input');
-            if (!el && req.target && req.target.id === 'todo-form')
-                el = document.getElementById('new-todo');
-            if (el) {
-                el.focus();
-                el.value = el.value;
-            }
-        });
+        (function (win) {
+            if (!win.refreshAjax) return;
+            refreshAjax.updated(function (req, resp) {
+                var el = document.querySelector('#todo-list input');
+                if (!el && req.target && req.target.id === 'todo-form')
+                    el = document.getElementById('new-todo');
+                if (el) {
+                    el.focus();
+                    el.value = el.value;
+                }
+            });
+        })(window);
     </script>
 </body>
 </html>
