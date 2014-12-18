@@ -17,7 +17,7 @@
         </header>
         <section id="main">
             @using (Html.BeginRefreshForm(null, true)) {
-                <button id="toggle-all" name="action" value="@Model.ToggleAll">@Model.ToggleAllText</button>
+                <button id="toggle-all" name="action" value="@Model.ToggleAll" class="@Model.ToggleAll">@Model.ToggleAllText</button>
             }
             <ul id="todo-list">
                 @foreach (var todo in Model.Todos) {

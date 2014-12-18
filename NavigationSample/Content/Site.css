@@ -171,7 +171,7 @@ label[for='toggle-all'] {
 	padding: 0 25px 7px;
 }
 
-#toggle-all:checked:before {
+#toggle-all.activateAll:before {
 	color: #737373;
 }
 
@@ -234,11 +234,9 @@ label[for='toggle-all'] {
 	width: 40px;
 }
 
-#todo-list li .toggle:checked:after {
+#todo-list li .toggle.activate:after {
 	color: #85ada7;
 	text-shadow: 0 1px 0 #669991;
-	bottom: 1px;
-	position: relative;
 }
 
 #todo-list li a {
