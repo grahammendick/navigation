@@ -21,8 +21,22 @@ namespace Navigation
 		/// <returns>A span container element</returns>
 		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, string navigationDataKeys, Func<dynamic, HelperResult> content)
 		{
+			return RefreshPanel(ajaxHelper, id, NavigationDataChanged(navigationDataKeys), content);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ajaxHelper"></param>
+		/// <param name="id"></param>
+		/// <param name="changed"></param>
+		/// <param name="content"></param>
+		/// <returns></returns>
+		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, Func<NavigationData, NavigationData, bool> changed, Func<dynamic, HelperResult> content)
+		{
 			string html = null;
-			if (NavigationDataChanged(ajaxHelper, navigationDataKeys))
+			var fromData = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext).Data;
+			if (fromData != null && changed(fromData, StateContext.Data))
 			{
 				RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext);
 				if (info.PanelId == null)
@@ -40,21 +54,20 @@ namespace Navigation
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		private static bool NavigationDataChanged(AjaxHelper ajaxHelper, string navigationDataKeys)
+		private static Func<NavigationData, NavigationData, bool> NavigationDataChanged(string navigationDataKeys)
 		{
-			NavigationData data = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext).Data;
-			if (data != null)
-			{
-				if (string.IsNullOrEmpty(navigationDataKeys))
-					return true;
-				foreach (string key in navigationDataKeys.Split(new char[] { ',' }))
+			return (fromData, toData) =>
 				{
-					if ((data[key.Trim()] == null && StateContext.Data[key.Trim()] != null)
-						|| (data[key.Trim()] != null && !data[key.Trim()].Equals(StateContext.Data[key.Trim()])))
+					if (string.IsNullOrEmpty(navigationDataKeys))
 						return true;
-				}
-			}
-			return false;
+					foreach (string key in navigationDataKeys.Split(new char[] { ',' }))
+					{
+						if ((fromData[key.Trim()] == null && toData[key.Trim()] != null)
+							|| (fromData[key.Trim()] != null && !fromData[key.Trim()].Equals(toData[key.Trim()])))
+							return true;
+					}
+					return false;
+				};
 		}
 	}
 }

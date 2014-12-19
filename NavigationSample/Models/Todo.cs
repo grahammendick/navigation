@@ -1,4 +1,6 @@
-﻿namespace Navigation.Sample.Models
+﻿using System;
+
+namespace Navigation.Sample.Models
 {
 	public class Todo
 	{
@@ -21,6 +23,15 @@
 			get
 			{
 				return Completed ? "Mark as active" : "Mark as complete";
+			}
+		}
+
+		public Func<NavigationData, NavigationData, bool> Changed
+		{
+			get
+			{
+				return (fromData, toData) => fromData.Bag.id != toData.Bag.id 
+					&& (fromData.Bag.id == Id || toData.Bag.id == Id);
 			}
 		}
 	}
