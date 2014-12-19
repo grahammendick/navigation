@@ -100,6 +100,7 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult CompleteAll()
 		{
+			HttpContext.Items["refresh"] = true;
 			StateContext.Bag.id = null;
 			Todos.ForEach(t => t.Completed = true);
 			return View();
@@ -108,6 +109,7 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult ActivateAll()
 		{
+			HttpContext.Items["refresh"] = true;
 			StateContext.Bag.id = null;
 			Todos.ForEach(t => t.Completed = false);
 			return View();
@@ -116,6 +118,7 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult ClearCompleted()
 		{
+			HttpContext.Items["refresh"] = true;
 			StateContext.Bag.id = null;
 			var completed = Todos.Where(t => t.Completed).ToList();
 			completed.ForEach(t => Todos.Remove(t));
