@@ -63,8 +63,11 @@
                 if (req.target && req.target.getAttribute) {
                     var todoId = req.target.getAttribute('data-todo');
                     if (todoId && !resp.panels['todo' + todoId]) {
-                        var listItem = document.getElementById('todo' + todoId).parentNode;
-                        listItem.parentNode.removeChild(listItem);
+                        var todo = document.getElementById('todo' + todoId);
+                        if (todo) {
+                            var listItem = todo.parentNode;
+                            listItem.parentNode.removeChild(listItem);
+                        }
                     }
                 }
                 var el;
