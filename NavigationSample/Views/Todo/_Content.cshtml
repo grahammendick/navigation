@@ -53,9 +53,10 @@
                         if (todoId && newTodoId < todoId)
                             newTodoId = todoId;
                     }
-                    if (newTodoId)
+                    if (newTodoId && !document.getElementById('todo' + newTodoId)) {
                         document.getElementById('todo-list')
                             .insertAdjacentHTML('beforeend', '<li><span id="todo' + newTodoId + '" /></li>');
+                    }
                 }
             });
             refreshAjax.updated(function (req, resp) {
