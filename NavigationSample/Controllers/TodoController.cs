@@ -44,11 +44,12 @@ namespace Navigation.Sample.Controllers
 			{
 				ModelState.Remove("NewTitle");
 				StateContext.Bag.id = null;
-				Todos.Add(new Todo
-				{
+				var todo = new Todo {
 					Id = Id++,
-					Title = todoModel.NewTitle.Trim() 
-				});
+					Title = todoModel.NewTitle.Trim()
+				};
+				Todos.Add(todo);
+				HttpContext.Items["todoId"] = todo.Id;
 			}
 			return View();
 		}

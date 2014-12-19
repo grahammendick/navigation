@@ -45,9 +45,22 @@
     <script type="text/javascript">
         (function (win) {
             if (!win.refreshAjax) return;
+            refreshAjax.navigated(function (req, resp) {
+                if (req.target && req.target.id === 'todo-form') {
+                    var newTodoId = 0;
+                    for (var id in resp.panels) {
+                        var todoId = Number(id.slice(4));
+                        if (todoId && newTodoId < todoId)
+                            newTodoId = todoId;
+                    }
+                    if (newTodoId)
+                        document.getElementById('todo-list')
+                            .insertAdjacentHTML('beforeend', '<li><span id="todo' + newTodoId + '" /></li>');
+                }
+            });
             refreshAjax.updated(function (req, resp) {
                 var el = document.querySelector('#todo-list input');
-                if (!el && req.target && req.target.id === 'todo-form')
+                if (req.target && req.target.id === 'todo-form')
                     el = document.getElementById('new-todo');
                 if (el) {
                     el.focus();
