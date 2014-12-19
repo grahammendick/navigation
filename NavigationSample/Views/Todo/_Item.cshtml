@@ -1,18 +1,19 @@
 ﻿@model Todo
-<div class="view @Model.Toggle">
-@if (StateContext.Bag.id != Model.Id) {
-    using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
-        <button name="action" value="@Model.Toggle" class="toggle @Model.Toggle">@Model.ToggleText</button>
-    }
-    @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
-    using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true)) {
-        <button name="action" value="delete" class="destroy">Delete</button>
-    }
-}
-else {
-    using (Html.BeginRefreshForm(null, true)) {
-        @Html.TextBoxFor(m => m.Title, new { @class = "edit", autocomplete = "off" })
-        <input type="hidden" name="action" value="edit" />
-    }
-}
-</div>
+@Ajax.RefreshPanel("todo" + Model.Id, Model.Changed,
+    @<div class="view @Model.Toggle">
+        @if (StateContext.Bag.id != Model.Id) {
+            using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true, __razor_template_writer)) {
+                <button name="action" value="@Model.Toggle" class="toggle @Model.Toggle">@Model.ToggleText</button>
+            }
+            @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true)
+            using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true, __razor_template_writer)) {
+                <button name="action" value="delete" class="destroy">Delete</button>
+            }
+        }
+        else {
+            using (Html.BeginRefreshForm(null, true, __razor_template_writer)) {
+                @Html.TextBoxFor(m => m.Title, new { @class = "edit", autocomplete = "off" })
+                <input type="hidden" name="action" value="edit" />
+            }
+        }
+    </div>)

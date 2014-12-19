@@ -25,16 +25,14 @@
                         <button id="toggle-all" name="action" value="@Model.ToggleAll" class="@Model.ToggleAll">@Model.ToggleAllText</button>
                     }
                 </div>)
-            <ul id="todo-list">
-                @foreach (var todo in Model.Todos) {
-                    <li>
-                    @Ajax.RefreshPanel("todo" + todo.Id, todo.Changed,
-                        @<div>
-                            @Html.Partial("_Item", todo)
-                        </div>)
-                    </li>
-                }
-            </ul>
+            @Ajax.RefreshPanel("todos", Model.Changed,
+                @<div>
+                    <ul id="todo-list">
+                        @foreach (var todo in Model.Todos) {
+                            <li>@Html.Partial("_Item", todo)</li>
+                        }
+                    </ul>
+                </div>)
         </section>
         @Ajax.RefreshPanel("status", "",
             @<div>

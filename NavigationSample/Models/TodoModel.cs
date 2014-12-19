@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Web;
 
 namespace Navigation.Sample.Models
 {
@@ -54,6 +56,15 @@ namespace Navigation.Sample.Models
 			get
 			{
 				return GetSelected("completed");
+			}
+		}
+
+		public Func<HttpContextBase, NavigationData, NavigationData, bool> Changed
+		{
+			get
+			{
+				return (context, fromData, toData) => 
+					context.Items["refresh"] != null || fromData.Bag.mode != toData.Bag.mode;
 			}
 		}
 	}
