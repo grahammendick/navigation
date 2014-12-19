@@ -7,6 +7,8 @@ namespace Navigation.Sample.Controllers
 {
     public class TodoController : Controller
     {
+		private static int Id = 1;
+
 		private List<Todo> Todos
 		{
 			get
@@ -43,8 +45,8 @@ namespace Navigation.Sample.Controllers
 				ModelState.Remove("NewTitle");
 				StateContext.Bag.id = null;
 				Todos.Add(new Todo
-				{ 
-					Id = (Todos.Max(t => (int?) t.Id) ?? 0) + 1,
+				{
+					Id = Id++,
 					Title = todoModel.NewTitle.Trim() });
 			}
 			return View();
