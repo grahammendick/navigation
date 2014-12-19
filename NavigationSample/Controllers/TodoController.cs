@@ -47,7 +47,8 @@ namespace Navigation.Sample.Controllers
 				Todos.Add(new Todo
 				{
 					Id = Id++,
-					Title = todoModel.NewTitle.Trim() });
+					Title = todoModel.NewTitle.Trim() 
+				});
 			}
 			return View();
 		}
@@ -66,6 +67,7 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Complete(Todo todo)
 		{
+			HttpContext.Items["todoId"] = StateContext.Bag.id;
 			StateContext.Bag.id = null;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)
@@ -76,6 +78,7 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Activate(Todo todo)
 		{
+			HttpContext.Items["todoId"] = StateContext.Bag.id;
 			StateContext.Bag.id = null;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)
@@ -86,6 +89,7 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Delete(Todo todo)
 		{
+			HttpContext.Items["todoId"] = StateContext.Bag.id;
 			StateContext.Bag.id = null;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)

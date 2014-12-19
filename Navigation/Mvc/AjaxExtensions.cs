@@ -1,5 +1,6 @@
 ﻿#if NET40Plus
 using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
 
@@ -32,11 +33,11 @@ namespace Navigation
 		/// <param name="changed"></param>
 		/// <param name="content"></param>
 		/// <returns></returns>
-		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, Func<NavigationData, NavigationData, bool> changed, Func<dynamic, HelperResult> content)
+		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, Func<HttpContextBase, NavigationData, NavigationData, bool> changed, Func<dynamic, HelperResult> content)
 		{
 			string html = null;
 			var fromData = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext).Data;
-			if (fromData != null && changed(fromData, StateContext.Data))
+			if (fromData != null && changed(ajaxHelper.ViewContext.HttpContext, fromData, StateContext.Data))
 			{
 				RefreshAjaxInfo info = RefreshAjaxInfo.GetInfo(ajaxHelper.ViewContext.HttpContext);
 				if (info.PanelId == null)
@@ -54,9 +55,9 @@ namespace Navigation
 			return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
 		}
 
-		private static Func<NavigationData, NavigationData, bool> NavigationDataChanged(string navigationDataKeys)
+		private static Func<HttpContextBase, NavigationData, NavigationData, bool> NavigationDataChanged(string navigationDataKeys)
 		{
-			return (fromData, toData) =>
+			return (context, fromData, toData) =>
 				{
 					if (string.IsNullOrEmpty(navigationDataKeys))
 						return true;

@@ -8,27 +8,29 @@
 </head>
 <body>
     <section id="todoapp">
-        @Ajax.RefreshPanel("todos", "",
-            @<div>
-                <header id="header">
-                    <h1>todos</h1>
-                    @using (Html.BeginRefreshForm(null, true, __razor_template_writer, new { id = "todo-form" })) {
-                        @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autofocus = "autofocus", autocomplete = "off" })
-                        <input type="hidden" name="action" value="add" />
-                    }
-                </header>
-                <section id="main">
-                    @using (Html.BeginRefreshForm(null, true, __razor_template_writer)) {
-                        <button id="toggle-all" name="action" value="@Model.ToggleAll" class="@Model.ToggleAll">@Model.ToggleAllText</button>
-                    }
-                    <ul id="todo-list">
-                        @foreach (var todo in Model.Todos) {
-                            <li>@Html.Partial("_Item", todo)</li>
-                        }
-                    </ul>
-                </section>
-                @Html.Partial("_Footer", Model)
-            </div>)
+        <header id="header">
+            <h1>todos</h1>
+            @using (Html.BeginRefreshForm(null, true, null, new { id = "todo-form" })) {
+                @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autofocus = "autofocus", autocomplete = "off" })
+                <input type="hidden" name="action" value="add" />
+            }
+        </header>
+        <section id="main">
+            @using (Html.BeginRefreshForm(null, true)) {
+                <button id="toggle-all" name="action" value="@Model.ToggleAll" class="@Model.ToggleAll">@Model.ToggleAllText</button>
+            }
+            <ul id="todo-list">
+                @foreach (var todo in Model.Todos) {
+                    <li>
+                    @Ajax.RefreshPanel("todo" + todo.Id, todo.Changed,
+                        @<div>
+                            @Html.Partial("_Item", todo)
+                        </div>)
+                    </li>
+                }
+            </ul>
+        </section>
+        @Html.Partial("_Footer", Model)
     </section>
     <footer id="info">
     </footer>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 
 namespace Navigation.Sample.Models
 {
@@ -26,12 +27,12 @@ namespace Navigation.Sample.Models
 			}
 		}
 
-		public Func<NavigationData, NavigationData, bool> Changed
+		public Func<HttpContextBase, NavigationData, NavigationData, bool> Changed
 		{
 			get
 			{
-				return (fromData, toData) => fromData.Bag.id != toData.Bag.id 
-					&& (fromData.Bag.id == Id || toData.Bag.id == Id);
+				return (context, fromData, toData) => (int?) context.Items["todoId"] == Id ||
+					(fromData.Bag.id != toData.Bag.id  && (fromData.Bag.id == Id || toData.Bag.id == Id));
 			}
 		}
 	}
