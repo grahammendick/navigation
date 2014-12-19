@@ -161,7 +161,7 @@ label[for='toggle-all'] {
 	text-align: center;
 	/* Mobile Safari */
 	border: none;
-	color: transparent;
+	font-size: 0;
 }
 
 #toggle-all:before {
@@ -218,7 +218,7 @@ label[for='toggle-all'] {
 	-ms-appearance: none;
 	-o-appearance: none;
 	appearance: none;
-	color:transparent;
+	font-size: 0;
 }
 
 #todo-list li .toggle:after {
@@ -266,10 +266,9 @@ label[for='toggle-all'] {
 	width: 40px;
 	height: 40px;
 	margin: auto 0;
-	font-size: 22px;
 	-webkit-transition: all 0.2s;
 	transition: all 0.2s;
-	color:transparent;
+	font-size: 0;
 }
 
 #todo-list li .destroy:hover:after {
@@ -281,6 +280,7 @@ label[for='toggle-all'] {
 
 #todo-list li .destroy:after {
 	content: '✖';
+	font-size: 22px;
 	position:absolute;
 	left: 0;
 	top: 9px;
@@ -397,7 +397,7 @@ label[for='toggle-all'] {
 
 	#toggle-all {
 		top: -56px;
-		left: -15px;
+		left: -10px;
 		width: 65px;
 		height: 41px;
 		-webkit-transform: rotate(90deg);
