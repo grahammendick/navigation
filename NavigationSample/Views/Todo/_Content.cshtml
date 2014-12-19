@@ -60,9 +60,11 @@
                 }
             });
             refreshAjax.updated(function (req, resp) {
-                var el = document.querySelector('#todo-list input');
+                var el;
                 if (req.target && req.target.id === 'todo-form')
                     el = document.getElementById('new-todo');
+                else
+                    el = document.querySelector('#todo-list input');
                 if (el) {
                     el.focus();
                     el.value = el.value;
