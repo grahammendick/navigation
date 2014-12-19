@@ -60,6 +60,13 @@
                 }
             });
             refreshAjax.updated(function (req, resp) {
+                if (req.target && req.target.getAttribute) {
+                    var todoId = req.target.getAttribute('data-todo');
+                    if (todoId && !resp.panels['todo' + todoId]) {
+                        var listItem = document.getElementById('todo' + todoId).parentNode;
+                        listItem.parentNode.removeChild(listItem);
+                    }
+                }
                 var el;
                 if (req.target && req.target.id === 'todo-form')
                     el = document.getElementById('new-todo');
