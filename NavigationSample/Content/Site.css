@@ -33,11 +33,6 @@ body {
 	font-smoothing: antialiased;
 }
 
-button,
-input[type="checkbox"] {
-  outline: none;
-}
-
 #todoapp {
 	background: #fff;
 	background: rgba(255, 255, 255, 0.9);
