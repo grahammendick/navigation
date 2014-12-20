@@ -4,7 +4,7 @@
     refreshAjax.navigating(function (req, resp) {
         clear = false;
         if (req.data && req.data.action == 'edit')
-            document.querySelector('#todo-list input').setAttribute('editing', 'true');
+            document.querySelector('#todo-list input').editing = true;
     });
     refreshAjax.navigated(function (req, resp) {
         if (req.target && req.target.id === 'todo-form') {
@@ -41,7 +41,7 @@
             el.focus();
             el.value = el.value;
             el.addEventListener('blur', function (e) {
-                if (!el.getAttribute('editing')) {
+                if (!el.editing) {
                     refreshAjax.navigate({ action: 'clear' });
                     clear = true;
                 }
