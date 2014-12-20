@@ -99,6 +99,14 @@ namespace Navigation.Sample.Controllers
 		}
 
 		[ActionSelector]
+		public ActionResult Clear(Todo todo)
+		{
+			HttpContext.Items["clear"] = true;
+			StateContext.Bag.id = null;
+			return View();
+		}
+
+		[ActionSelector]
 		public ActionResult CompleteAll()
 		{
 			HttpContext.Items["refresh"] = true;

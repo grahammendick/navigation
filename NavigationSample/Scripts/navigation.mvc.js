@@ -136,6 +136,8 @@
         backResp.title = win.document.title;
         backResp.panels = {};
         raiseEvent('navigated', req, resp);
+        if (!resp.panels)
+            return;
         for (var id in resp.panels) {
             var panel = win.document.getElementById(id);
             if (panel) {
