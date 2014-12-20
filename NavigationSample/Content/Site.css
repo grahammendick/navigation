@@ -204,6 +204,7 @@ label[for='toggle-all'] {
 	text-align: center;
 	/* auto, since non-WebKit browsers doesn't support input styling */
 	height: 40px;
+	width: 40px;
 	position: absolute;
 	top: 0;
 	bottom: 0;
