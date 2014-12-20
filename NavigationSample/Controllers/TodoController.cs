@@ -60,7 +60,9 @@ namespace Navigation.Sample.Controllers
 			if (!string.IsNullOrWhiteSpace(todo.Title))
 			{
 				StateContext.Bag.id = null;
-				Todos.First(t => t.Id == todo.Id).Title = todo.Title.Trim();
+				todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
+				if (todo != null)
+					todo.Title = todo.Title.Trim();
 			}
 			return View();
 		}
