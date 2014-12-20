@@ -72,7 +72,7 @@
         var req = {
             link: newLink,
             data: data,
-            target: target,
+            target: target
         };
         raiseEvent('navigating', req, null);
         var resp = {
