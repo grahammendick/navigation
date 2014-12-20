@@ -67,5 +67,13 @@ namespace Navigation.Sample.Models
 					context.Items["refresh"] != null || fromData.Bag.mode != toData.Bag.mode;
 			}
 		}
+
+		public Func<HttpContextBase, NavigationData, NavigationData, bool> Refresh
+		{
+			get
+			{
+				return (context, fromData, toData) => context.Items["clear"] == null;
+			}
+		}
 	}
 }
