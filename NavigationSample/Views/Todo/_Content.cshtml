@@ -13,7 +13,7 @@
             @Ajax.RefreshPanel("new", "",
                 @<div>
                     @using (Html.BeginRefreshForm(null, true, __razor_template_writer, new { id = "todo-form" })) {
-                        @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autofocus = "autofocus", autocomplete = "off" })
+                        @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autocomplete = "off" })
                         <input type="hidden" name="action" value="add" />
                     }
                 </div>)
@@ -70,16 +70,18 @@
                         }
                     }
                 }
-                var el;
-                if (req.target && req.target.id === 'todo-form')
+                setFocus(req);
+            });
+            function setFocus(req){
+                var el = document.querySelector('#todo-list input');
+                if (!el && req.target && req.target.id === 'todo-form')
                     el = document.getElementById('new-todo');
-                else
-                    el = document.querySelector('#todo-list input');
                 if (el) {
                     el.focus();
                     el.value = el.value;
                 }
-            });
+            }
+            setFocus({ target: { id: 'todo-form' } });
         })(window);
     </script>
 </body>
