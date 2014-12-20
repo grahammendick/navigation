@@ -26,13 +26,13 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// 
+		/// Returns a span element containing the specified <paramref name="content"/>
 		/// </summary>
-		/// <param name="ajaxHelper"></param>
-		/// <param name="id"></param>
-		/// <param name="changed"></param>
-		/// <param name="content"></param>
-		/// <returns></returns>
+		/// <param name="ajaxHelper">The AJAX helper instance that this method extends</param>
+		/// <param name="id">The span element id</param>
+		/// <param name="changed">A function that triggers the panel to refresh</param>
+		/// <param name="content">Html content</param>
+		/// <returns>A span container element</returns>
 		public static MvcHtmlString RefreshPanel(this AjaxHelper ajaxHelper, string id, Func<HttpContextBase, NavigationData, NavigationData, bool> changed, Func<dynamic, HelperResult> content)
 		{
 			string html = null;
