@@ -283,7 +283,9 @@ label[for='toggle-all'] {
 	color: #a88a8a;
 }
 
-#todo-list li:hover .destroy {
+#todo-list li:hover .destroy, 
+#todo-list a:focus + form .destroy, 
+#todo-list li .destroy:focus {
 	display: block;
 }
 
