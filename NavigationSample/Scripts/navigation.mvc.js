@@ -106,7 +106,6 @@
         return link;
     }
 
-    var cache = {};
     function onReady(ajaxReq, req, resp) {
         var oldLink = link;
         return function () {
@@ -163,6 +162,7 @@
         link = newLink;
     }
 
+    var cache = {};
     function cacheResponse(resp, backResp) {
         var newLink = resp.link;
         cache[link + '&' + newLink] = resp;
