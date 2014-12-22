@@ -110,19 +110,24 @@
     function onReady(ajaxReq, req, resp) {
         var oldLink = link;
         return function () {
-            if (ajaxReq.readyState === 4 && ajaxReq.status === 200) {
-                var ajaxResp = win.JSON.parse(ajaxReq.responseText);
-                if (ajaxResp.RedirectLink) {
-                    win.location.href = ajaxResp.RedirectLink;
-                    return;
+            if (ajaxReq.readyState === 4) {
+                if (ajaxReq.status === 200) {
+                    var ajaxResp = win.JSON.parse(ajaxReq.responseText);
+                    if (ajaxResp.Title)
+                        resp.title = ajaxResp.Title;
+                    resp.panels = ajaxResp.Panels;
+                    resp.link = ajaxResp.Link;
+                    raiseEvent('navigated', req, resp);
+                    if (ajaxResp.RedirectLink) {
+                        win.location.href = ajaxResp.RedirectLink;
+                        return;
+                    }
+                    if (link !== oldLink)
+                        return;
+                    handleRespone(req, resp);
+                } else {
+                    raiseEvent('navigated', req, resp);
                 }
-                if (link !== oldLink)
-                    return;
-                if (ajaxResp.Title)
-                    resp.title = ajaxResp.Title;
-                resp.panels = ajaxResp.Panels;
-                resp.link = ajaxResp.Link;
-                handleRespone(req, resp);
             }
         };
     }
@@ -135,7 +140,7 @@
         backResp.link = link;
         backResp.title = win.document.title;
         backResp.panels = {};
-        raiseEvent('navigated', req, resp);
+        raiseEvent('updating', req, resp);
         if (!resp.panels)
             return;
         for (var id in resp.panels) {
@@ -242,6 +247,7 @@
         navigate: navigate,
         navigating: getAddHandler('navigating'),
         navigated: getAddHandler('navigated'),
+        updating: getAddHandler('updating'),
         updated: getAddHandler('updated')
     };
 })(window);
