@@ -27,6 +27,14 @@ namespace Navigation.Sample.Models
 			}
 		}
 
+		public string ToggleComplete
+		{
+			get
+			{
+				return Completed ? "false" : "true";
+			}
+		}
+
 		public Func<HttpContextBase, NavigationData, NavigationData, bool> Changed
 		{
 			get
