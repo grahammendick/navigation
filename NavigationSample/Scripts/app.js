@@ -2,10 +2,10 @@
     'use strict';
 
     if (!win.refreshAjax) return;
-    var clear = false;
+    var edit = false;
 
     refreshAjax.navigating(function (req, resp) {
-        clear = false;
+        edit = false;
         if (req.data && req.data.action == 'edit')
             document.querySelector('#todo-list input').editing = true;
     });
@@ -23,7 +23,7 @@
                     .insertAdjacentHTML('beforeend', '<li><span id="todo' + newTodoId + '" /></li>');
             }
         }
-        if (req.data && req.data.action === 'clear' && !clear)
+        if (req.data && req.data.action === 'edit' && !edit)
             resp.panels = null;
     });
 
@@ -49,7 +49,7 @@
             el.addEventListener('blur', function (e) {
                 if (!el.editing) {
                     refreshAjax.navigate({ action: 'edit', Title: el.value }, el);
-                    clear = true;
+                    edit = true;
                 }
             });
         } else if (req.target && req.target.id === 'todo-form') {
