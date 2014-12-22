@@ -6,7 +6,6 @@
 
     refreshAjax.navigating(function (req, resp) {
         clear = false;
-
         if (req.data && req.data.action == 'edit')
             document.querySelector('#todo-list input').editing = true;
     });
