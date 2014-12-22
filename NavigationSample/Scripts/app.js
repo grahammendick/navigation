@@ -5,7 +5,7 @@
     var edit = false;
 
     refreshAjax.navigating(function (req, resp) {
-        edit = req.data && req.data.action == 'edit';
+        edit = req.data && (req.data.action == 'edit' || req.data.action == 'clear');
     });
 
     refreshAjax.updating(function (req, resp) {
@@ -45,16 +45,12 @@
             el.focus();
             el.value = el.value;
             el.addEventListener('blur', function (e) {
-                if (!edit) {
+                if (!edit)
                     refreshAjax.navigate({ action: 'edit', Title: el.value }, el);
-                    edit = true;
-                }
             });
             el.addEventListener('keyup', function (e) {
-                if (!edit && e.keyCode == 27) {
+                if (!edit && e.keyCode == 27)
                     refreshAjax.navigate({ action: 'clear' }, el);
-                    edit = true;
-                }
             });
         } else if (req.target.id === 'todo-form') {
             document.getElementById('new-todo').focus();
