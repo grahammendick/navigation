@@ -64,7 +64,7 @@ namespace Navigation.Sample.Controllers
 			{
 				if (!string.IsNullOrWhiteSpace(title))
 				{
-					HttpContext.Items["clear"] = true;
+					HttpContext.Items["edit"] = true;
 					todo.Title = title.Trim();
 				}
 				else

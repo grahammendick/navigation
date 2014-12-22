@@ -72,7 +72,7 @@ namespace Navigation.Sample.Models
 		{
 			get
 			{
-				return (context, fromData, toData) => context.Items["clear"] == null;
+				return (context, fromData, toData) => context.Items["edit"] == null;
 			}
 		}
 	}
