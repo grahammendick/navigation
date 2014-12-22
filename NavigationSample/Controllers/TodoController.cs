@@ -57,12 +57,13 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Edit(Todo todo)
 		{
-			if (!string.IsNullOrWhiteSpace(todo.Title))
+			var title = todo.Title;
+			if (!string.IsNullOrWhiteSpace(title))
 			{
 				StateContext.Bag.id = null;
 				todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 				if (todo != null)
-					todo.Title = todo.Title.Trim();
+					todo.Title = title.Trim();
 			}
 			return View();
 		}
