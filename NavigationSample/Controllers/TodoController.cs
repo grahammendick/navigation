@@ -57,13 +57,20 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Edit(Todo todo)
 		{
+			StateContext.Bag.id = null;
 			var title = todo.Title;
-			if (!string.IsNullOrWhiteSpace(title))
+			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
+			if (todo != null)
 			{
-				StateContext.Bag.id = null;
-				todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
-				if (todo != null)
+				if (!string.IsNullOrWhiteSpace(title))
+				{
+					HttpContext.Items["clear"] = true;
 					todo.Title = title.Trim();
+				}
+				else
+				{
+					Todos.Remove(todo);
+				}
 			}
 			return View();
 		}
@@ -98,14 +105,6 @@ namespace Navigation.Sample.Controllers
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)
 				Todos.Remove(todo);
-			return View();
-		}
-
-		[ActionSelector]
-		public ActionResult Clear(Todo todo)
-		{
-			HttpContext.Items["clear"] = true;
-			StateContext.Bag.id = null;
 			return View();
 		}
 
