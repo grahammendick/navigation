@@ -5,9 +5,7 @@
     var edit = false;
 
     refreshAjax.navigating(function (req, resp) {
-        edit = false;
-        if (req.data && req.data.action == 'edit')
-            document.querySelector('#todo-list input').editing = true;
+        edit = req.data && req.data.action == 'edit';
     });
 
     refreshAjax.updating(function (req, resp) {
@@ -47,7 +45,7 @@
             el.focus();
             el.value = el.value;
             el.addEventListener('blur', function (e) {
-                if (!el.editing) {
+                if (!edit) {
                     refreshAjax.navigate({ action: 'edit', Title: el.value }, el);
                     edit = true;
                 }
