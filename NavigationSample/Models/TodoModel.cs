@@ -30,6 +30,14 @@ namespace Navigation.Sample.Models
 			}
 		}
 
+		public string ToggleAllComplete
+		{
+			get
+			{
+				return ItemsLeft == 0 ? "false" : "true";
+			}
+		}
+
 		private string GetSelected(string mode)
 		{
 			return StateContext.Bag.mode == mode ? "selected" : null;

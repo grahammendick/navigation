@@ -76,24 +76,13 @@ namespace Navigation.Sample.Controllers
 		}
 
 		[ActionSelector]
-		public ActionResult Complete(Todo todo)
+		public ActionResult Toggle(Todo todo, bool complete)
 		{
 			HttpContext.Items["todoId"] = StateContext.Bag.id;
 			StateContext.Bag.id = null;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)
-				todo.Completed = true;
-			return View();
-		}
-
-		[ActionSelector]
-		public ActionResult Activate(Todo todo)
-		{
-			HttpContext.Items["todoId"] = StateContext.Bag.id;
-			StateContext.Bag.id = null;
-			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
-			if (todo != null)
-				todo.Completed = false;
+				todo.Completed = complete;
 			return View();
 		}
 
@@ -109,20 +98,11 @@ namespace Navigation.Sample.Controllers
 		}
 
 		[ActionSelector]
-		public ActionResult CompleteAll()
+		public ActionResult ToggleAll(bool complete)
 		{
 			HttpContext.Items["refresh"] = true;
 			StateContext.Bag.id = null;
-			Todos.ForEach(t => t.Completed = true);
-			return View();
-		}
-
-		[ActionSelector]
-		public ActionResult ActivateAll()
-		{
-			HttpContext.Items["refresh"] = true;
-			StateContext.Bag.id = null;
-			Todos.ForEach(t => t.Completed = false);
+			Todos.ForEach(t => t.Completed = complete);
 			return View();
 		}
 

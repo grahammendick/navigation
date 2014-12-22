@@ -42,7 +42,7 @@
     });
 
     function initEdit(req) {
-        var el = document.querySelector('#todo-list input');
+        var el = document.querySelector('#todo-list input[type="text"]');
         if (el) {
             el.focus();
             el.value = el.value;
