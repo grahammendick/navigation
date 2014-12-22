@@ -11,7 +11,7 @@
     });
 
     refreshAjax.updating(function (req, resp) {
-        if (req.target && req.target.id === 'todo-form') {
+        if (req.target.id === 'todo-form') {
             var newTodoId = 0;
             for (var id in resp.panels) {
                 var todoId = Number(id.slice(4));
@@ -28,7 +28,7 @@
     });
 
     refreshAjax.updated(function (req, resp) {
-        if (req.target && req.target.getAttribute) {
+        if (req.target.getAttribute) {
             var todoId = req.target.getAttribute('data-todo');
             if (todoId && !resp.panels['todo' + todoId]) {
                 var todo = document.getElementById('todo' + todoId);
@@ -52,7 +52,7 @@
                     edit = true;
                 }
             });
-        } else if (req.target && req.target.id === 'todo-form') {
+        } else if (req.target.id === 'todo-form') {
             document.getElementById('new-todo').focus();
         }
     }

@@ -185,11 +185,16 @@
             var path = getShortestPath(link, newLink);
             if (path) {
                 for (var i = 0; i < path.length - 1; i++) {
+                    var req = {
+                        link: path[i + 1],
+                        target: win
+                    };
                     var resp = cache[path[i] + '&' + path[i + 1]];
-                    handleRespone({}, resp);
+                    resp.history = null;
+                    handleRespone(req, resp);
                 }
             } else
-                refreshAjax(newLink, null, false, null, e.state);
+                refreshAjax(newLink, null, false, win, e.state);
         }
     });
 
