@@ -1,11 +1,16 @@
 ﻿(function (win) {
+    'use strict';
+
     if (!win.refreshAjax) return;
     var clear = false;
+
     refreshAjax.navigating(function (req, resp) {
         clear = false;
+
         if (req.data && req.data.action == 'edit')
             document.querySelector('#todo-list input').editing = true;
     });
+
     refreshAjax.updating(function (req, resp) {
         if (req.target && req.target.id === 'todo-form') {
             var newTodoId = 0;
@@ -22,6 +27,7 @@
         if (req.data && req.data.action === 'clear' && !clear)
             resp.panels = null;
     });
+
     refreshAjax.updated(function (req, resp) {
         if (req.target && req.target.getAttribute) {
             var todoId = req.target.getAttribute('data-todo');
@@ -35,6 +41,7 @@
         }
         initEdit(req);
     });
+
     function initEdit(req) {
         var el = document.querySelector('#todo-list input');
         if (el) {
@@ -50,5 +57,6 @@
             document.getElementById('new-todo').focus();
         }
     }
+
     initEdit({ target: { id: 'todo-form' } });
 })(window);
