@@ -50,6 +50,12 @@
                     edit = true;
                 }
             });
+            el.addEventListener('keyup', function (e) {
+                if (e.keyCode == 27) {
+                    refreshAjax.navigate({ action: 'clear' }, el);
+                    edit = true;
+                }
+            });
         } else if (req.target.id === 'todo-form') {
             document.getElementById('new-todo').focus();
         }
