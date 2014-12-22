@@ -65,6 +65,8 @@
 
     var link = win.location.pathname + win.location.search;
     function navigate(data, target) {
+        target = target || {};
+        target['include-current'] = true;
         refreshAjax(link, data, true, target);
     }
     
@@ -100,7 +102,7 @@
     }
 
     function setLinkData(target, link, name) {
-        var value = target.getAttribute('data-' + name);
+        var value = target.getAttribute('data-' + name) || target[name];
         if (value)
             link += '&' + name.replace('-', '') + '=' + win.encodeURIComponent(value);
         return link;

@@ -48,7 +48,7 @@
             el.value = el.value;
             el.addEventListener('blur', function (e) {
                 if (!el.editing) {
-                    refreshAjax.navigate({ action: 'clear' });
+                    refreshAjax.navigate({ action: 'edit', Title: el.value }, el);
                     clear = true;
                 }
             });
