@@ -59,9 +59,6 @@
         } else if (req.target.id === 'todo-form') {
             document.getElementById('new-todo').focus();
         }
-
-        function cancel(e) {
-        }
     }
 
     initEdit({ target: { id: 'todo-form' } });
