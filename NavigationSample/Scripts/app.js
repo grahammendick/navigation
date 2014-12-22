@@ -6,7 +6,7 @@
         if (req.data && req.data.action == 'edit')
             document.querySelector('#todo-list input').editing = true;
     });
-    refreshAjax.navigated(function (req, resp) {
+    refreshAjax.updating(function (req, resp) {
         if (req.target && req.target.id === 'todo-form') {
             var newTodoId = 0;
             for (var id in resp.panels) {
