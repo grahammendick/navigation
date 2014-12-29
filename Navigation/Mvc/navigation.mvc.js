@@ -9,9 +9,9 @@
         var anchor = getAjaxTarget(element, 'A');
         if (!e.ctrlKey && !e.shiftKey && anchor) {
             e.preventDefault();
-            refreshAjax(anchor.getAttribute('href'), true, anchor);
+            refreshAjax(anchor.getAttribute('href'), null, true, anchor);
         }
-        if (element.tagName === 'INPUT' && element.name) {
+        if ((element.tagName === 'INPUT' || element.tagName === 'BUTTON') && element.name) {
             if (element.type === 'submit')
                 submitData[element.name] = element.value;
             if (element.type === 'image') {
@@ -24,12 +24,8 @@
     win.document.addEventListener('submit', function (e) {
         var form = getAjaxTarget(e.target, 'FORM');
         if (form) {
-            var req = new win.XMLHttpRequest();
-            req.onreadystatechange = onReady(req, true);
             e.preventDefault();
-            req.open('post', getAjaxLink(form.getAttribute('action'), form));
-            req.setRequestHeader("Content-Type", "application/json");
-            req.send(win.JSON.stringify(getFormData(form)));
+            refreshAjax(form.getAttribute('action'), getFormData(form), true, form);
         }
     });
 
@@ -68,11 +64,29 @@
     }
 
     var link = win.location.pathname + win.location.search;
-    function refreshAjax(newLink, addHistory, target, title) {
-        var req = new win.XMLHttpRequest();
-        req.onreadystatechange = onReady(req, addHistory, title);
-        req.open('get', getAjaxLink(newLink, target));
-        req.send();
+    function navigate(data, target) {
+        target = target || {};
+        target['include-current'] = true;
+        refreshAjax(link, data, true, target);
+    }
+
+    function refreshAjax(newLink, data, addHistory, target, title) {
+        var req = {
+            link: newLink,
+            data: data,
+            target: target
+        };
+        raiseEvent('navigating', req, null);
+        var resp = {
+            history: addHistory ? 'add' : null,
+            title: title ? title : win.document.title
+        };
+        var ajaxReq = new win.XMLHttpRequest();
+        ajaxReq.onreadystatechange = onReady(ajaxReq, req, resp);
+        ajaxReq.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
+        if (data)
+            ajaxReq.setRequestHeader("Content-Type", "application/json");
+        ajaxReq.send(win.JSON.stringify(data));
     }
 
     function getAjaxLink(baseLink, target) {
@@ -88,21 +102,33 @@
     }
 
     function setLinkData(target, link, name) {
-        var value = target.getAttribute('data-' + name);
+        var value = target.getAttribute('data-' + name) || target[name];
         if (value)
             link += '&' + name.replace('-', '') + '=' + win.encodeURIComponent(value);
         return link;
     }
 
-    var cache = {};
-    function onReady(req, addHistory, title) {
+    function onReady(ajaxReq, req, resp) {
         var oldLink = link;
         return function () {
-            if (req.readyState === 4 && req.status === 200) {
-                var resp = win.JSON.parse(req.responseText);
-                if (!resp.Title)
-                    resp.Title = title ? title : win.document.title;
-                handleRespone(resp, addHistory, oldLink);
+            if (ajaxReq.readyState === 4) {
+                if (ajaxReq.status === 200) {
+                    var ajaxResp = win.JSON.parse(ajaxReq.responseText);
+                    if (ajaxResp.Title)
+                        resp.title = ajaxResp.Title;
+                    resp.panels = ajaxResp.Panels;
+                    resp.link = ajaxResp.Link;
+                    raiseEvent('navigated', req, resp);
+                    if (ajaxResp.RedirectLink) {
+                        win.location.href = ajaxResp.RedirectLink;
+                        return;
+                    }
+                    if (link !== oldLink)
+                        return;
+                    handleRespone(req, resp);
+                } else {
+                    raiseEvent('navigated', req, resp);
+                }
             }
         };
     }
@@ -110,42 +136,37 @@
     var neighbourhood = {};
     neighbourhood[link] = [];
     var links = [link];
-    function handleRespone(resp, addHistory, oldLink) {
-        if (resp.RedirectLink) {
-            win.location.href = resp.RedirectLink;
-            return;
-        }
-        if (link !== oldLink)
-            return;
+    function handleRespone(req, resp) {
         var backResp = {};
-        backResp.Link = link;
-        backResp.Title = win.document.title;
-        backResp.Panels = {};
-        for (var id in resp.Panels) {
+        backResp.link = link;
+        backResp.title = win.document.title;
+        backResp.panels = {};
+        raiseEvent('updating', req, resp);
+        if (!resp.panels)
+            return;
+        for (var id in resp.panels) {
             var panel = win.document.getElementById(id);
-            backResp.Panels[id] = panel.innerHTML;
-            panel.innerHTML = resp.Panels[id];
-            var evt;
-            if (typeof win.Event === 'function')
-                evt = new win.Event('refreshajax');
-            else {
-                evt = win.document.createEvent('Event');
-                evt.initEvent('refreshajax', false, false);
+            if (panel) {
+                backResp.panels[id] = panel.innerHTML;
+                panel.innerHTML = resp.panels[id];
             }
-            panel.dispatchEvent(evt);
         }
-        var newLink = resp.Link;
+        raiseEvent('updated', req, resp);
+        var newLink = resp.link;
         if (link !== newLink) {
             cacheResponse(resp, backResp);
-            if (addHistory)
-                win.history.pushState(resp.Title, resp.Title, newLink);
+            if (resp.history === 'add')
+                win.history.pushState(resp.title, resp.title, newLink);
+            if (resp.history === 'replace')
+                win.history.replaceState(resp.title, resp.title, newLink);
         }
-        win.document.title = resp.Title;
+        win.document.title = resp.title;
         link = newLink;
     }
 
+    var cache = {};
     function cacheResponse(resp, backResp) {
-        var newLink = resp.Link;
+        var newLink = resp.link;
         cache[link + '&' + newLink] = resp;
         cache[newLink + '&' + link] = backResp;
         if (links.indexOf(newLink) === -1) {
@@ -164,11 +185,16 @@
             var path = getShortestPath(link, newLink);
             if (path) {
                 for (var i = 0; i < path.length - 1; i++) {
+                    var req = {
+                        link: path[i + 1],
+                        target: win
+                    };
                     var resp = cache[path[i] + '&' + path[i + 1]];
-                    handleRespone(resp, false, path[i]);
+                    resp.history = null;
+                    handleRespone(req, resp);
                 }
             } else
-                refreshAjax(newLink, false, null, e.state);
+                refreshAjax(newLink, null, false, win, e.state);
         }
     });
 
@@ -207,4 +233,28 @@
         }
         return null;
     }
+
+    var handlers = {};
+    function getAddHandler(eventName) {
+        return function (handler) {
+            if (!handlers[eventName])
+                handlers[eventName] = [];
+            handlers[eventName].push(handler);
+        };
+    }
+
+    function raiseEvent(eventName, req, resp) {
+        if (!handlers[eventName])
+            return;
+        for (var i = 0; i < handlers[eventName].length; i++)
+            handlers[eventName][i](req, resp);
+    }
+
+    win.refreshAjax = {
+        navigate: navigate,
+        navigating: getAddHandler('navigating'),
+        navigated: getAddHandler('navigated'),
+        updating: getAddHandler('updating'),
+        updated: getAddHandler('updated')
+    };
 })(window);
