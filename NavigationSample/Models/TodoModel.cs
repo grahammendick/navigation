@@ -14,6 +14,14 @@ namespace Navigation.Sample.Models
 
 		public int CompletedCount { get; set; }
 
+		public bool Empty
+		{
+			get
+			{
+				return ItemsLeft == 0 && CompletedCount == 0;
+			}
+		}
+
 		public string ToggleAll
 		{
 			get
