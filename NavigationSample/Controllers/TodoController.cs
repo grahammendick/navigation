@@ -25,7 +25,6 @@ namespace Navigation.Sample.Controllers
 			return View();
 		}
 
-		[ChildParentSync]
 		[ChildActionOnly]
 		public ActionResult _Content(string mode)
 		{
@@ -42,7 +41,6 @@ namespace Navigation.Sample.Controllers
 		{
 			if (!string.IsNullOrWhiteSpace(todoModel.NewTitle))
 			{
-				ModelState.Remove("NewTitle");
 				StateContext.Bag.id = null;
 				var todo = new Todo {
 					Id = Id++,
