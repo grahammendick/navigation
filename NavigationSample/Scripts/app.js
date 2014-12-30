@@ -46,11 +46,11 @@
             el.value = el.value;
             el.addEventListener('blur', function (e) {
                 if (!edit)
-                    refreshAjax.navigate({ action: 'edit', Title: el.value }, el);
+                    refreshAjax.navigate({ action: 'edit', Title: el.value }, el.form);
             });
             el.addEventListener('keyup', function (e) {
                 if (!edit && e.keyCode == 27)
-                    refreshAjax.navigate({ action: 'clear' }, el);
+                    refreshAjax.navigate({ action: 'clear' }, el.form);
             });
         } else if (req.target.id === 'todo-form') {
             document.getElementById('new-todo').focus();
