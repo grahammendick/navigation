@@ -21,7 +21,7 @@
                     .insertAdjacentHTML('beforeend', '<li><span id="todo' + newTodoId + '" /></li>');
             }
         }
-        if (req.data && req.data.action === 'edit' && !edit)
+        if (req.data && (req.data.action == 'edit' || req.data.action == 'clear') && !edit)
             resp.panels = null;
     });
 
