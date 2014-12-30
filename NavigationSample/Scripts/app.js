@@ -40,6 +40,7 @@
     });
 
     function initEdit(req) {
+        edit = false;
         var el = document.querySelector('#todo-list input[type="text"]');
         if (el) {
             el.focus();
