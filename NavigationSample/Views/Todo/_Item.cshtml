@@ -12,8 +12,8 @@
             }
         }
         else {
-            using (Html.BeginRefreshForm(null, true, __razor_template_writer)) {
-                @Html.TextBoxFor(m => m.Title, new { @class = "edit", autocomplete = "off", data_todo = Model.Id })
+            using (Html.BeginRefreshForm(null, true, __razor_template_writer, new { data_todo = Model.Id })) {
+                @Html.TextBoxFor(m => m.Title, new { @class = "edit", autocomplete = "off" })
                 <input type="hidden" name="action" value="edit" />
             }
         }
