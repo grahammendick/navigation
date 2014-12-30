@@ -65,12 +65,10 @@
 
     var link = win.location.pathname + win.location.search;
     function navigate(data, target) {
-        target = target || {};
-        target['include-current'] = true;
-        refreshAjax(link, data, true, target);
+        refreshAjax(link, data, true, target || {});
     }
 
-    function refreshAjax(newLink, data, addHistory, target, title) {
+    function refreshAjax(newLink, data, history, target, title) {
         var req = {
             link: newLink,
             data: data,
@@ -78,31 +76,32 @@
         };
         raiseEvent('navigating', req, null);
         var resp = {
-            history: addHistory ? 'add' : null,
+            history: history,
             title: title ? title : win.document.title
         };
         var ajaxReq = new win.XMLHttpRequest();
         ajaxReq.onreadystatechange = onReady(ajaxReq, req, resp);
-        ajaxReq.open(data ? 'post' : 'get', getAjaxLink(newLink, target));
+        ajaxReq.open(data ? 'post' : 'get', getAjaxLink(req, resp));
         if (data)
             ajaxReq.setRequestHeader("Content-Type", "application/json");
         ajaxReq.send(win.JSON.stringify(data));
     }
 
-    function getAjaxLink(baseLink, target) {
+    function getAjaxLink(req, resp) {
+        var baseLink = req.link;
         baseLink += baseLink.indexOf('?') > 0 ? '&' : '?';
         baseLink += 'refreshajax=' + win.encodeURIComponent(link);
-        baseLink += '&navigation=' + (target ? 'refresh' : 'history');
-        if (target) {
-            baseLink = setLinkData(target, baseLink, 'include-current');
-            baseLink = setLinkData(target, baseLink, 'current-keys');
-            baseLink = setLinkData(target, baseLink, 'to-keys');
+        baseLink += '&navigation=' + (resp.history ? 'refresh' : 'history');
+        if (req.target.getAttribute) {
+            baseLink = setLinkData(req.target, baseLink, 'include-current');
+            baseLink = setLinkData(req.target, baseLink, 'current-keys');
+            baseLink = setLinkData(req.target, baseLink, 'to-keys');
         }
         return baseLink;
     }
 
     function setLinkData(target, link, name) {
-        var value = target.getAttribute('data-' + name) || target[name];
+        var value = target.getAttribute('data-' + name);
         if (value)
             link += '&' + name.replace('-', '') + '=' + win.encodeURIComponent(value);
         return link;
@@ -152,16 +151,13 @@
             }
         }
         raiseEvent('updated', req, resp);
-        var newLink = resp.link;
-        if (link !== newLink) {
+        if (link !== resp.link) {
             cacheResponse(resp, backResp);
-            if (resp.history === 'add')
-                win.history.pushState(resp.title, resp.title, newLink);
-            if (resp.history === 'replace')
-                win.history.replaceState(resp.title, resp.title, newLink);
+            if (resp.history)
+                win.history.pushState(resp.title, resp.title, resp.link);
         }
         win.document.title = resp.title;
-        link = newLink;
+        link = resp.link;
     }
 
     var cache = {};
