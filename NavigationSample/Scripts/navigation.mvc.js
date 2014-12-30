@@ -70,7 +70,7 @@
         refreshAjax(link, data, true, target);
     }
     
-    function refreshAjax(newLink, data, addHistory, target, title) {
+    function refreshAjax(newLink, data, history, target, title) {
         var req = {
             link: newLink,
             data: data,
@@ -78,7 +78,7 @@
         };
         raiseEvent('navigating', req, null);
         var resp = {
-            history: addHistory ? 'add' : null,
+            history: history,
             title: title ? title : win.document.title
         };
         var ajaxReq = new win.XMLHttpRequest();
@@ -155,10 +155,8 @@
         var newLink = resp.link;
         if (link !== newLink) {
             cacheResponse(resp, backResp);
-            if (resp.history === 'add')
+            if (resp.history)
                 win.history.pushState(resp.title, resp.title, newLink);
-            if (resp.history === 'replace')
-                win.history.replaceState(resp.title, resp.title, newLink);
         }
         win.document.title = resp.title;
         link = newLink;
