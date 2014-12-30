@@ -152,14 +152,13 @@
             }
         }
         raiseEvent('updated', req, resp);
-        var newLink = resp.link;
-        if (link !== newLink) {
+        if (link !== resp.link) {
             cacheResponse(resp, backResp);
             if (resp.history)
-                win.history.pushState(resp.title, resp.title, newLink);
+                win.history.pushState(resp.title, resp.title, resp.link);
         }
         win.document.title = resp.title;
-        link = newLink;
+        link = resp.link;
     }
 
     var cache = {};
