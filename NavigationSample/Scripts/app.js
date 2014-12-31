@@ -5,7 +5,7 @@
     var edit = false;
 
     refreshAjax.navigating(function (req, resp) {
-        edit = req.data && req.data.action == 'edit';
+        edit = req.data && req.data.action === 'edit';
     });
 
     refreshAjax.updating(function (req, resp) {
@@ -21,7 +21,7 @@
                     .insertAdjacentHTML('beforeend', '<li><span id="todo' + newTodoId + '" /></li>');
             }
         }
-        if (req.data && req.data.action == 'edit' && !edit)
+        if (req.data && req.data.action === 'edit' && !edit)
             resp.panels = null;
     });
 
@@ -50,7 +50,7 @@
                     refreshAjax.navigate({ action: 'edit', Title: el.value }, el.form);
             });
             el.addEventListener('keyup', function (e) {
-                if (!edit && e.keyCode == 27)
+                if (!edit && e.keyCode === 27)
                     refreshAjax.navigate({ action: 'edit', cancel: true }, el.form);
             });
         } else if (req.target.id === 'todo-form') {
