@@ -67,7 +67,7 @@
     function navigate(data, target) {
         refreshAjax(link, data, true, target || {});
     }
-    
+
     function refreshAjax(newLink, data, history, target, title) {
         var req = {
             link: newLink,
