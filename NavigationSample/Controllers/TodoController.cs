@@ -64,7 +64,10 @@ namespace Navigation.Sample.Controllers
 				if (!string.IsNullOrWhiteSpace(title))
 					todo.Title = title.Trim();
 				else
+				{
+					HttpContext.Items["edit"] = null;
 					Todos.Remove(todo);
+				}
 			}
 			return View();
 		}
