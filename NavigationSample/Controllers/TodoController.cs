@@ -55,19 +55,12 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Edit(Todo todo, bool cancel = false)
 		{
+			HttpContext.Items["edit"] = true;
 			StateContext.Bag.id = null;
 			var title = todo.Title;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
-			if (todo != null && !cancel)
-			{
-				if (!string.IsNullOrWhiteSpace(title))
-				{
-					HttpContext.Items["edit"] = true;
-					todo.Title = title.Trim();
-				}
-				else
-					Todos.Remove(todo);
-			}
+			if (todo != null && !cancel && !string.IsNullOrWhiteSpace(title))
+				todo.Title = title.Trim();
 			return View();
 		}
 
@@ -86,7 +79,6 @@ namespace Navigation.Sample.Controllers
 		public ActionResult Delete(Todo todo)
 		{
 			HttpContext.Items["todoId"] = StateContext.Bag.id;
-			StateContext.Bag.id = null;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)
 				Todos.Remove(todo);
