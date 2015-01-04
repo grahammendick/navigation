@@ -46,8 +46,13 @@
             el.focus();
             el.value = el.value;
             el.addEventListener('blur', function (e) {
-                if (!edit)
-                    refreshAjax.navigate({ action: 'edit', Title: el.value }, el.form);
+            	if (!edit) {
+            		if (el.value.trim())
+            			refreshAjax.navigate({ action: 'edit', Title: el.value }, el.form);
+            		else
+            			refreshAjax.navigate({ action: 'delete' }, el.form);
+            	}
+
             });
             el.addEventListener('keyup', function (e) {
                 if (!edit && e.keyCode === 27)
