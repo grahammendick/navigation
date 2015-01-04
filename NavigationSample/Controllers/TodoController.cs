@@ -55,12 +55,19 @@ namespace Navigation.Sample.Controllers
 		[ActionSelector]
 		public ActionResult Edit(Todo todo, bool cancel = false)
 		{
-			HttpContext.Items["edit"] = true;
 			StateContext.Bag.id = null;
 			var title = todo.Title;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
-			if (todo != null && !cancel && !string.IsNullOrWhiteSpace(title))
-				todo.Title = title.Trim();
+			if (todo != null && !cancel)
+			{
+				if (!string.IsNullOrWhiteSpace(title))
+				{
+					HttpContext.Items["edit"] = true;
+					todo.Title = title.Trim();
+				}
+				else
+					Todos.Remove(todo);
+			}
 			return View();
 		}
 
