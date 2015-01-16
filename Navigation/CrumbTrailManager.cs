@@ -54,18 +54,7 @@ namespace Navigation
 				trailBuilder.Append(CRUMB_1_SEP);
 				trailBuilder.Append(crumb.State.StateKey);
 				trailBuilder.Append(CRUMB_2_SEP);
-				string prefix = string.Empty;
-				foreach (NavigationDataItem item in crumb.Data)
-				{
-					if (!item.Value.Equals(string.Empty) && !crumb.State.DefaultOrDerived(item.Key, item.Value))
-					{
-						trailBuilder.Append(prefix);
-						trailBuilder.Append(EncodeURLValue(item.Key));
-						trailBuilder.Append(RET_1_SEP);
-						trailBuilder.Append(FormatURLObject(item.Key, item.Value, crumb.State));
-						prefix = RET_3_SEP;
-					}
-				}
+				BuildReturnData(trailBuilder, crumb.State, crumb.Data);
 			}
 			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
 		}
@@ -92,18 +81,7 @@ namespace Navigation
 			if (returnData != null && state.TrackCrumbTrail && StateContext.State != null)
 			{
 				StringBuilder returnDataBuilder = new StringBuilder();
-				string prefix = string.Empty;
-				foreach (NavigationDataItem item in returnData)
-				{
-					if (!item.Value.Equals(string.Empty) && !StateContext.State.DefaultOrDerived(item.Key, item.Value))
-					{
-						returnDataBuilder.Append(prefix);
-						returnDataBuilder.Append(EncodeURLValue(item.Key));
-						returnDataBuilder.Append(RET_1_SEP);
-						returnDataBuilder.Append(FormatURLObject(item.Key, item.Value, StateContext.State));
-						prefix = RET_3_SEP;
-					}
-				}
+				BuildReturnData(returnDataBuilder, StateContext.State, returnData);
 				if (returnDataBuilder.Length > 0)
 					coll[NavigationSettings.Config.ReturnDataKey] = returnDataBuilder.ToString();
 			}
@@ -126,6 +104,22 @@ namespace Navigation
 #else
 			return state.StateHandler.GetNavigationLink(state, coll);
 #endif
+		}
+
+		private static void BuildReturnData(StringBuilder returnDataBuilder, State state, NavigationData returnData)
+		{
+			string prefix = string.Empty;
+			foreach (NavigationDataItem item in returnData)
+			{
+				if (!item.Value.Equals(string.Empty) && !state.DefaultOrDerived(item.Key, item.Value))
+				{
+					returnDataBuilder.Append(prefix);
+					returnDataBuilder.Append(EncodeURLValue(item.Key));
+					returnDataBuilder.Append(RET_1_SEP);
+					returnDataBuilder.Append(FormatURLObject(item.Key, item.Value, state));
+					prefix = RET_3_SEP;
+				}
+			}
 		}
 
 		private static string DecodeURLValue(string urlValue)
