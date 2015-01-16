@@ -140,7 +140,7 @@
     <Compile Include="WebForms\StateAdapter.cs" />
     <Compile Include="StateContext.cs" />
     <Compile Include="StateController.cs" />
-    <Compile Include="StateDisplayInfo.cs" />
+    <Compile Include="WebForms\StateDisplayInfo.cs" />
     <Compile Include="StateHandler.cs" />
     <Compile Include="Config\StateInfoCollection.cs" />
     <Compile Include="Config\StateInfoConfig.cs" />
