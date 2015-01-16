@@ -76,7 +76,7 @@ namespace Navigation
 				trailBuilder.Append(CRUMB_1_SEP);
 				trailBuilder.Append(crumb.State.StateKey);
 				trailBuilder.Append(CRUMB_2_SEP);
-				BuildReturnData(trailBuilder, crumb.State, crumb.Data);
+				FormatReturnData(trailBuilder, crumb.State, crumb.Data);
 			}
 			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
 		}
@@ -102,7 +102,7 @@ namespace Navigation
 			}
 			if (returnData != null && state.TrackCrumbTrail && StateContext.State != null)
 			{
-				var returnDataBuilder = BuildReturnData(null, StateContext.State, returnData);
+				var returnDataBuilder = FormatReturnData(null, StateContext.State, returnData);
 				if (returnDataBuilder.Length > 0)
 					coll[NavigationSettings.Config.ReturnDataKey] = returnDataBuilder.ToString();
 			}
@@ -127,7 +127,7 @@ namespace Navigation
 #endif
 		}
 
-		private static StringBuilder BuildReturnData(StringBuilder returnDataBuilder, State state, NavigationData returnData)
+		private static StringBuilder FormatReturnData(StringBuilder returnDataBuilder, State state, NavigationData returnData)
 		{
 			returnDataBuilder = returnDataBuilder ?? new StringBuilder();
 			string prefix = string.Empty;
