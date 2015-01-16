@@ -43,62 +43,31 @@ namespace Navigation
 
 		internal static void BuildCrumbTrail()
 		{
-			string trail = StateContext.CrumbTrail;
-			if (StateContext.PreviousStateId != null)
+			var crumbs = CrumbTrailHrefArray;
+			if (StateContext.PreviousState != null)
+				crumbs.Add(new Crumb(StateContext.ReturnData, StateContext.PreviousState, false));
+			crumbs = StateContext.State.StateHandler.TruncateCrumbTrail(StateContext.State, crumbs);
+			crumbs.Reverse();
+			var trailBuilder = new StringBuilder();
+			foreach (var crumb in crumbs)
 			{
-				bool initialState = StateContext.GetDialog(StateContext.StateId).Initial == StateContext.GetState(StateContext.StateId);
-				if (initialState)
+				trailBuilder.Append(CRUMB_1_SEP);
+				trailBuilder.Append(crumb.State.StateKey);
+				trailBuilder.Append(CRUMB_2_SEP);
+				string prefix = string.Empty;
+				foreach (NavigationDataItem item in crumb.Data)
 				{
-					trail = null;
-				}
-				else
-				{
-					string croppedTrail = trail;
-					int crumbTrailSize = GetCrumbTrailSize(trail);
-					int count = 0;
-					bool repeatedState = false;
-					if (StateContext.PreviousStateId == StateContext.StateId)
+					if (!item.Value.Equals(string.Empty) && !crumb.State.DefaultOrDerived(item.Key, item.Value))
 					{
-						repeatedState = true;
-					}
-					while (!repeatedState && count < crumbTrailSize)
-					{
-						string trailState = GetCrumbTrailState(croppedTrail);
-						croppedTrail = CropCrumbTrail(croppedTrail);
-						if (StateContext.GetState(trailState) == StateContext.GetState(StateContext.StateId))
-						{
-							trail = croppedTrail;
-							repeatedState = true;
-						}
-						count++;
-					}
-
-					if (!repeatedState)
-					{
-						StringBuilder formattedReturnData = new StringBuilder();
-						string prefix = string.Empty;
-						if (StateContext.ReturnData != null)
-						{
-							foreach (NavigationDataItem item in StateContext.ReturnData)
-							{
-								formattedReturnData.Append(prefix);
-								formattedReturnData.Append(EncodeURLValue(item.Key));
-								formattedReturnData.Append(RET_1_SEP);
-								formattedReturnData.Append(FormatURLObject(item.Key, item.Value, StateContext.GetState(StateContext.PreviousStateId)));
-								prefix = RET_3_SEP;
-							}
-						}
-						StringBuilder trailBuilder = new StringBuilder();
-						trailBuilder.Append(CRUMB_1_SEP);
-						trailBuilder.Append(StateContext.GetState(StateContext.PreviousStateId).StateKey);
-						trailBuilder.Append(CRUMB_2_SEP);
-						trailBuilder.Append(formattedReturnData.ToString());
-						trailBuilder.Append(trail);
-						trail = trailBuilder.ToString();
+						trailBuilder.Append(prefix);
+						trailBuilder.Append(EncodeURLValue(item.Key));
+						trailBuilder.Append(RET_1_SEP);
+						trailBuilder.Append(FormatURLObject(item.Key, item.Value, crumb.State));
+						prefix = RET_3_SEP;
 					}
 				}
 			}
-			StateContext.GenerateKey(trail);
+			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
 		}
 
 		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)

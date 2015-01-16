@@ -1,4 +1,5 @@
 ﻿#if NET40Plus
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Routing;
@@ -125,6 +126,21 @@ namespace Navigation
 		protected virtual bool GetPreserveForm(State state, HttpContextBase context)
 		{
 			return false;
+		}
+
+		public virtual List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
+		{
+			var newCrumbs = new List<Crumb>();
+			if (state.Parent.Initial == state)
+				return newCrumbs;
+			foreach (var crumb in crumbs)
+			{
+				if (crumb.State != state)
+					newCrumbs.Add(crumb);
+				else
+					break;
+			}
+			return newCrumbs;
 		}
 	}
 }

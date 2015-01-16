@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Web;
 
 namespace Navigation
@@ -59,5 +60,7 @@ namespace Navigation
 		/// <param name="mode">The navigation mode</param>
 		void NavigateLink(State state, string url, NavigationMode mode);
 #endif
+
+		List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs);
 	}
 }

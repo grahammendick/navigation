@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 
@@ -39,6 +40,12 @@ namespace Navigation.Test
 			navigationData[NavigationSettings.Config.StateIdKey] = state.Id;
 			navigationData[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
 			return navigationData;
+		}
+
+
+		public virtual List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
+		{
+			return crumbs;
 		}
 	}
 }
