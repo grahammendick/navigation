@@ -1,0 +1,52 @@
+﻿@model TodoModel
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Navigation • TodoMVC</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <section id="todoapp">
+        <header id="header">
+            <h1>todos</h1>
+            @Ajax.RefreshPanel("new", @Model.Refresh,
+                @<div>
+                    @using (Html.BeginRefreshForm(null, true, __razor_template_writer, new { id = "todo-form" })) {
+                        @Html.TextBoxFor(m => m.NewTitle, new { id = "new-todo", placeholder = "What needs to be done?", autocomplete = "off" })
+                        <input type="hidden" name="action" value="add" />
+                    }
+                </div>)
+        </header>
+        <section id="main">
+            @Ajax.RefreshPanel("toggle", @Model.Refresh,
+                @<div>
+                    @if (!Model.Empty) {
+                        using (Html.BeginRefreshForm(null, true, __razor_template_writer)) {
+                            <input type="hidden" name="complete" value="@Model.ToggleAllComplete" />
+                            <button id="toggle-all" name="action" value="toggleAll" class="@Model.ToggleAll">@Model.ToggleAllText</button>
+                        }
+                    }
+                </div>)
+            @Ajax.RefreshPanel("todos", Model.Changed,
+                @<div>
+                    <ul id="todo-list">
+                        @foreach (var todo in Model.Todos) {
+                            <li>@Html.Partial("_Item", todo)</li>
+                        }
+                    </ul>
+                </div>)
+        </section>
+        @Ajax.RefreshPanel("status", @Model.Refresh,
+            @<div>
+                @if (!Model.Empty) {
+                    @Html.Partial("_Footer", Model)
+                }
+            </div>)
+    </section>
+    <footer id="info">
+    </footer>
+    <script src="~/Scripts/navigation.mvc.js"></script>
+    <script src="~/Scripts/app.js"></script>
+</body>
+</html>

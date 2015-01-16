@@ -1,0 +1,20 @@
+﻿@model Todo
+@Ajax.RefreshPanel("todo" + Model.Id, Model.Changed,
+    @<div class="view @Model.Toggle">
+        @if (StateContext.Bag.id != Model.Id) {
+            using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true, __razor_template_writer, new { data_todo = Model.Id })) {
+                <input type="hidden" name="complete" value="@Model.ToggleComplete" />
+                <button name="action" value="toggle" class="toggle @Model.Toggle">@Model.ToggleText</button>
+            }
+            @Html.RefreshLink(Model.Title, new NavigationData { { "id", Model.Id } }, true, new { data_todo = Model.Id })
+            using (Html.BeginRefreshForm(new NavigationData { { "id", Model.Id } }, true, __razor_template_writer, new { data_todo = Model.Id })) {
+                <button name="action" value="delete" class="destroy">Delete</button>
+            }
+        }
+        else {
+            using (Html.BeginRefreshForm(null, true, __razor_template_writer, new { data_todo = Model.Id })) {
+                @Html.TextBoxFor(m => m.Title, new { @class = "edit", autocomplete = "off" })
+                <input type="hidden" name="action" value="edit" />
+            }
+        }
+    </div>)
