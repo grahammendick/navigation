@@ -80,8 +80,7 @@ namespace Navigation
 			}
 			if (returnData != null && state.TrackCrumbTrail && StateContext.State != null)
 			{
-				StringBuilder returnDataBuilder = new StringBuilder();
-				BuildReturnData(returnDataBuilder, StateContext.State, returnData);
+				var returnDataBuilder = BuildReturnData(null, StateContext.State, returnData);
 				if (returnDataBuilder.Length > 0)
 					coll[NavigationSettings.Config.ReturnDataKey] = returnDataBuilder.ToString();
 			}
@@ -106,8 +105,9 @@ namespace Navigation
 #endif
 		}
 
-		private static void BuildReturnData(StringBuilder returnDataBuilder, State state, NavigationData returnData)
+		private static StringBuilder BuildReturnData(StringBuilder returnDataBuilder, State state, NavigationData returnData)
 		{
+			returnDataBuilder = returnDataBuilder ?? new StringBuilder();
 			string prefix = string.Empty;
 			foreach (NavigationDataItem item in returnData)
 			{
@@ -120,6 +120,7 @@ namespace Navigation
 					prefix = RET_3_SEP;
 				}
 			}
+			return returnDataBuilder;
 		}
 
 		private static string DecodeURLValue(string urlValue)
