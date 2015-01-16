@@ -20,11 +20,11 @@ namespace Navigation
 		{
 			get
 			{
-				List<Crumb> crumbTrailArray = new List<Crumb>();
-				int arrayCount = 0;
-				string trail = StateContext.CrumbTrail;
-				int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
-				bool last = true;
+				var crumbTrailArray = new List<Crumb>();
+				var arrayCount = 0;
+				var trail = StateContext.CrumbTrail;
+				var crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
+				var last = true;
 				while (arrayCount < crumbTrailSize)
 				{
 					var stateKey = Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
