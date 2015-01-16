@@ -43,6 +43,24 @@ namespace Navigation
 			}
 		}
 
+		internal static void BuildCrumbTrail()
+		{
+			var crumbs = Crumbs;
+			if (StateContext.PreviousState != null)
+				crumbs.Add(new Crumb(StateContext.ReturnData, StateContext.PreviousState, false));
+			crumbs = StateContext.State.StateHandler.TruncateCrumbTrail(StateContext.State, crumbs);
+			crumbs.Reverse();
+			var trailBuilder = new StringBuilder();
+			foreach (var crumb in crumbs)
+			{
+				trailBuilder.Append(CRUMB_1_SEP);
+				trailBuilder.Append(crumb.State.StateKey);
+				trailBuilder.Append(CRUMB_2_SEP);
+				FormatReturnData(trailBuilder, crumb.State, crumb.Data);
+			}
+			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
+		}
+
 		private static NavigationData GetCrumbTrailData(string trail, State state)
 		{
 			NavigationData navData = null;
@@ -61,24 +79,6 @@ namespace Navigation
 			else
 				croppedTrail = "";
 			return croppedTrail;
-		}
-
-		internal static void BuildCrumbTrail()
-		{
-			var crumbs = Crumbs;
-			if (StateContext.PreviousState != null)
-				crumbs.Add(new Crumb(StateContext.ReturnData, StateContext.PreviousState, false));
-			crumbs = StateContext.State.StateHandler.TruncateCrumbTrail(StateContext.State, crumbs);
-			crumbs.Reverse();
-			var trailBuilder = new StringBuilder();
-			foreach (var crumb in crumbs)
-			{
-				trailBuilder.Append(CRUMB_1_SEP);
-				trailBuilder.Append(crumb.State.StateKey);
-				trailBuilder.Append(CRUMB_2_SEP);
-				FormatReturnData(trailBuilder, crumb.State, crumb.Data);
-			}
-			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
 		}
 
 		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)
