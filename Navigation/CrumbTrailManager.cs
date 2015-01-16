@@ -22,16 +22,18 @@ namespace Navigation
 			{
 				List<Crumb> crumbTrailArray = new List<Crumb>();
 				int arrayCount = 0;
-				string crumbTrail = StateContext.CrumbTrail;
-				int crumbTrailSize = GetCrumbTrailSize(crumbTrail);
+				string trail = StateContext.CrumbTrail;
+				int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
 				NavigationData navigationData;
 				bool last = true;
+				string stateKey = null;
 				State state = null;
 				while (arrayCount < crumbTrailSize)
 				{
-					state = StateContext.GetState(GetCrumbTrailState(crumbTrail));
-					navigationData = GetCrumbTrailData(crumbTrail, state);
-					crumbTrail = CropCrumbTrail(crumbTrail);
+					stateKey = Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
+					state = StateContext.GetState(stateKey);
+					navigationData = GetCrumbTrailData(trail, state);
+					trail = CropCrumbTrail(trail);
 					crumbTrailArray.Add(new Crumb(navigationData, state, last));
 					last = false;
 					arrayCount++;
@@ -39,6 +41,26 @@ namespace Navigation
 				crumbTrailArray.Reverse();
 				return crumbTrailArray;
 			}
+		}
+
+		private static NavigationData GetCrumbTrailData(string trail, State state)
+		{
+			NavigationData navData = null;
+			string data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
+			if (data.Length != 0)
+				navData = ParseReturnData(data, state);
+			return navData;
+		}
+
+		private static string CropCrumbTrail(string trail)
+		{
+			string croppedTrail;
+			int nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
+			if (nextTrailStart != -1)
+				croppedTrail = trail.Substring(nextTrailStart);
+			else
+				croppedTrail = "";
+			return croppedTrail;
 		}
 
 		internal static void BuildCrumbTrail()
@@ -163,43 +185,6 @@ namespace Navigation
 			{
 				throw new UrlException(Resources.InvalidUrl, ex);
 			}
-		}
-
-		private static int GetCrumbTrailSize(string trail)
-		{
-			int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
-			return crumbTrailSize;
-		}
-
-		private static string CropCrumbTrail(string trail)
-		{
-			string croppedTrail;
-			int nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
-			if (nextTrailStart != -1)
-			{
-				croppedTrail = trail.Substring(nextTrailStart);
-			}
-			else
-			{
-				croppedTrail = "";
-			}
-			return croppedTrail;
-		}
-
-		private static string GetCrumbTrailState(string trail)
-		{
-			return Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
-		}
-
-		private static NavigationData GetCrumbTrailData(string trail, State state)
-		{
-			NavigationData navData = null;
-			string data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
-			if (data.Length != 0)
-			{
-				navData = ParseReturnData(data, state);
-			}
-			return navData;
 		}
 
 		internal static string GetRefreshHref(NavigationData refreshData)
