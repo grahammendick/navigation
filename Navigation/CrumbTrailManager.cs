@@ -16,7 +16,7 @@ namespace Navigation
 		private static string CRUMB_1_SEP = "4" + SEPARATOR;
 		private static string CRUMB_2_SEP = "5" + SEPARATOR;
 
-		internal static List<Crumb> CrumbTrailHrefArray
+		internal static List<Crumb> Crumbs
 		{
 			get
 			{
@@ -43,7 +43,7 @@ namespace Navigation
 
 		internal static void BuildCrumbTrail()
 		{
-			var crumbs = CrumbTrailHrefArray;
+			var crumbs = Crumbs;
 			if (StateContext.PreviousState != null)
 				crumbs.Add(new Crumb(StateContext.ReturnData, StateContext.PreviousState, false));
 			crumbs = StateContext.State.StateHandler.TruncateCrumbTrail(StateContext.State, crumbs);
