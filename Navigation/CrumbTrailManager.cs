@@ -24,16 +24,17 @@ namespace Navigation
 				int arrayCount = 0;
 				string trail = StateContext.CrumbTrail;
 				int crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
-				NavigationData navigationData;
 				bool last = true;
-				string stateKey = null;
-				State state = null;
 				while (arrayCount < crumbTrailSize)
 				{
-					stateKey = Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
-					state = StateContext.GetState(stateKey);
-					navigationData = GetCrumbTrailData(trail, state);
-					trail = CropCrumbTrail(trail);
+					var stateKey = Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
+					var state = StateContext.GetState(stateKey);
+					NavigationData navigationData = null;
+					var data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
+					if (data.Length != 0)
+						navigationData = ParseReturnData(data, state);
+					var nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
+					trail = nextTrailStart != -1 ? trail.Substring(nextTrailStart) : string.Empty;
 					crumbTrailArray.Add(new Crumb(navigationData, state, last));
 					last = false;
 					arrayCount++;
@@ -59,26 +60,6 @@ namespace Navigation
 				FormatReturnData(trailBuilder, crumb.State, crumb.Data);
 			}
 			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
-		}
-
-		private static NavigationData GetCrumbTrailData(string trail, State state)
-		{
-			NavigationData navData = null;
-			string data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
-			if (data.Length != 0)
-				navData = ParseReturnData(data, state);
-			return navData;
-		}
-
-		private static string CropCrumbTrail(string trail)
-		{
-			string croppedTrail;
-			int nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
-			if (nextTrailStart != -1)
-				croppedTrail = trail.Substring(nextTrailStart);
-			else
-				croppedTrail = "";
-			return croppedTrail;
 		}
 
 		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)
