@@ -135,10 +135,9 @@ namespace Navigation
 				return newCrumbs;
 			foreach (var crumb in crumbs)
 			{
-				if (crumb.State != state)
-					newCrumbs.Add(crumb);
-				else
+				if (crumb.State == state)
 					break;
+				newCrumbs.Add(crumb);
 			}
 			return newCrumbs;
 		}
