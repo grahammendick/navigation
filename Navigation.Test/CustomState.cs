@@ -7,6 +7,7 @@ namespace Navigation.Test
 			: base("")
 		{
 			AddAttribute("handler", handler);
+			AddAttribute("page", handler);
 		}
 	}
 }

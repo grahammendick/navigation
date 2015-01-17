@@ -270,9 +270,9 @@ namespace Navigation.Test
 		public void AttributesTest()
 		{
 #if NET40Plus
-			Assert.AreEqual(1, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
+			Assert.AreEqual(2, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
 			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[0]);
-			Assert.AreEqual(1, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
+			Assert.AreEqual(2, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
 #else
 			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
 			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["key"]);
