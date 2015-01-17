@@ -55,7 +55,7 @@ namespace Navigation
 			foreach (var crumb in crumbs)
 			{
 				trailBuilder.Append(CRUMB_1_SEP);
-				trailBuilder.Append(crumb.State.StateKey);
+				trailBuilder.Append(crumb.State.Id);
 				trailBuilder.Append(CRUMB_2_SEP);
 				FormatReturnData(trailBuilder, crumb.State, crumb.Data);
 			}
