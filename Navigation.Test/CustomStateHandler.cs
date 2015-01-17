@@ -5,22 +5,24 @@ using System.Web;
 
 namespace Navigation.Test
 {
-	public class CustomStateHandler : IStateHandler
+	public class CustomStateHandler : PageStateHandler
 	{
 #if NET40Plus
-		public string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
+
+		public override string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
-			return GetNavigationLink(state, data);
+			data["previous"] = data[NavigationSettings.Config.PreviousStateIdKey];
+			data.Remove(NavigationSettings.Config.PreviousStateIdKey);
+			return base.GetNavigationLink(state, data, context) + "&custom=custom";
 		}
 
-		public NameValueCollection GetNavigationData(State state, HttpContextBase context)
+		public override NameValueCollection GetNavigationData(State state, HttpContextBase context)
 		{
-			return GetNavigationData(state, context.Request.QueryString);
-		}
-
-		public void NavigateLink(State state, string url, NavigationMode mode, HttpContextBase context)
-		{
-			context.Response.Redirect(url, false);
+			var data = base.GetNavigationData(state, context);
+			data[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
+			data.Remove("previous");
+			data.Remove("custom");
+			return data;
 		}
 #else
 		public void NavigateLink(State state, string url, NavigationMode mode)
@@ -29,21 +31,7 @@ namespace Navigation.Test
 		}
 
 #endif
-		public string GetNavigationLink(State state, NameValueCollection data)
-		{
-			return state.Attributes["handler"].Substring(1) + "?previous=" + data[NavigationSettings.Config.PreviousStateIdKey] + "&custom";
-		}
-
-		public NameValueCollection GetNavigationData(State state, NameValueCollection data)
-		{
-			NameValueCollection navigationData = new NameValueCollection();
-			navigationData[NavigationSettings.Config.StateIdKey] = state.Id;
-			navigationData[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
-			return navigationData;
-		}
-
-
-		public virtual List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
+		public override List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
 		{
 			return crumbs;
 		}
