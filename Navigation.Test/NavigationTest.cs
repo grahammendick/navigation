@@ -1039,6 +1039,44 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDialogDialogCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("d6");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States["s0"], StateController.Crumbs[0].State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateDialogTransitionDialogCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States["s0"], StateController.Crumbs[0].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateController.Crumbs[1].State);
+			Assert.AreEqual(2, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateDialogDialogBackCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("d6");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[0], StateContext.State);
+		}
+
+		[TestMethod]
+		public void NavigateDialogTransitionDialogBackCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
+		}
+		[TestMethod]
 		public void NavigateTransitionRootRouteTest()
 		{
 			StateController.Navigate("d5");
