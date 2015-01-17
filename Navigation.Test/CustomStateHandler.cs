@@ -34,9 +34,9 @@ namespace Navigation.Test
 		public override List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
 		{
 			var parent = crumbs.Count > 0 ? crumbs.Last().State.Parent.Key : null;
-			if (parent != "d0" && parent != "d3")
-				return base.TruncateCrumbTrail(state, crumbs);
-			return crumbs;
+			if (parent == "d0" || parent == "d3")
+				return crumbs;
+			return base.TruncateCrumbTrail(state, crumbs);
 		}
 	}
 }
