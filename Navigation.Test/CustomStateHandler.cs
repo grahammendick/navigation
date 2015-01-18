@@ -33,10 +33,17 @@ namespace Navigation.Test
 #endif
 		public override List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
 		{
-			var previousDialog = crumbs.Count > 0 ? crumbs.Last().State.Parent.Key : null;
-			if (previousDialog == "d0" || previousDialog == "d3")
-				return crumbs;
-			return base.TruncateCrumbTrail(state, crumbs);
+			var newCrumbs = new List<Crumb>();
+			if (state.Parent.Key == "d6")
+			{
+				foreach(var crumb in crumbs)
+				{
+					if (crumb.State.Parent.Key == "d0" || crumb.State.Parent.Key == "d3")
+						newCrumbs.Add(crumb);
+				}
+			}
+			newCrumbs.AddRange(base.TruncateCrumbTrail(state, crumbs));
+			return newCrumbs;
 		}
 	}
 }
