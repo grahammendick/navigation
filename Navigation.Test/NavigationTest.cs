@@ -1000,6 +1000,21 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDialogDialogCustomStateHandlerTest()
+		{
+			StateController.Navigate("d1");
+			StateController.Navigate("d6");
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+
+		[TestMethod]
+		public void NavigateDialogDialogCustomStateHandlerRouteTest()
+		{
+			StateController.Navigate("d4");
+			StateController.Navigate("d6");
+			Assert.AreEqual(0, StateController.Crumbs.Count);
+		}
+		[TestMethod]
 		public void NavigateDialogDialogCustomTrailTest()
 		{
 			StateController.Navigate("d0");
