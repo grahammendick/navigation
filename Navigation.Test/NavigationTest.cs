@@ -1139,6 +1139,7 @@ namespace Navigation.Test
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs[3].States[1], StateContext.State);
 		}
+
 		[TestMethod]
 		public void NavigateTransitionRootRouteTest()
 		{
