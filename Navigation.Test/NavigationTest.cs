@@ -1024,7 +1024,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogCustomTrailTest()
+		public void NavigateCrossDialogCustomTrailTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -1044,17 +1044,18 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogBackCustomTrailTest()
+		public void NavigateCrossDialogBackCustomTrailTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
 			StateController.Navigate("d6");
+			StateController.Refresh();
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[1], StateContext.State);
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogTransitionBackTwoCustomTrailTest()
+		public void NavigateCrossDialogBackTwoCustomTrailTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -1065,7 +1066,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogTransitionBackOneByOneCustomTrailTest()
+		public void NavigateCrossDialogBackOneByOneCustomTrailTest()
 		{
 			StateController.Navigate("d0");
 			StateController.Navigate("t0");
@@ -1077,16 +1078,6 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
 		}
 
-		[TestMethod]
-		public void NavigateDialogTransitionDialogRefreshBackCustomTrailTest()
-		{
-			StateController.Navigate("d0");
-			StateController.Navigate("t0");
-			StateController.Navigate("d6");
-			StateController.Refresh();
-			StateController.NavigateBack(1);
-			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[1], StateContext.State);
-		}
 
 		[TestMethod]
 		public void NavigateDialogDialogCustomTrailRouteTest()
@@ -1098,7 +1089,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogCustomTrailRouteTest()
+		public void NavigateCrossDialogCustomTrailRouteTest()
 		{
 			StateController.Navigate("d3");
 			StateController.Navigate("t0");
@@ -1118,17 +1109,18 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogBackCustomTrailRouteTest()
+		public void NavigateCrossDialogBackCustomTrailRouteTest()
 		{
 			StateController.Navigate("d3");
 			StateController.Navigate("t0");
 			StateController.Navigate("d6");
+			StateController.Refresh();
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogTransitionBackTwoCustomTrailRouteTest()
+		public void NavigateCrossDialogBackTwoCustomTrailRouteTest()
 		{
 			StateController.Navigate("d3");
 			StateController.Navigate("t0");
@@ -1139,7 +1131,7 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
-		public void NavigateDialogTransitionDialogTransitionBackOneByOneCustomTrailRouteTest()
+		public void NavigateCrossDialogBackOneByOneCustomTrailRouteTest()
 		{
 			StateController.Navigate("d3");
 			StateController.Navigate("t0");
@@ -1149,17 +1141,6 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[6].States[0], StateContext.State);
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs[3].States[1], StateContext.State);
-		}
-
-		[TestMethod]
-		public void NavigateDialogTransitionDialogRefreshBackCustomTrailRouteTest()
-		{
-			StateController.Navigate("d3");
-			StateController.Navigate("t0");
-			StateController.Navigate("d6");
-			StateController.Refresh();
-			StateController.NavigateBack(1);
-			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
 		}
 
 		[TestMethod]
