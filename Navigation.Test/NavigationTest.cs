@@ -1014,6 +1014,7 @@ namespace Navigation.Test
 			StateController.Navigate("d6");
 			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
+
 		[TestMethod]
 		public void NavigateDialogDialogCustomTrailTest()
 		{
