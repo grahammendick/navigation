@@ -1078,6 +1078,17 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDialogTransitionDialogRefreshBackCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Refresh();
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[1], StateContext.State);
+		}
+
+		[TestMethod]
 		public void NavigateDialogDialogCustomTrailRouteTest()
 		{
 			StateController.Navigate("d3");
@@ -1138,6 +1149,17 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[6].States[0], StateContext.State);
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs[3].States[1], StateContext.State);
+		}
+
+		[TestMethod]
+		public void NavigateDialogTransitionDialogRefreshBackCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Refresh();
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
 		}
 
 		[TestMethod]
