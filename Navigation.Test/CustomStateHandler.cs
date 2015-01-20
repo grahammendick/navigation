@@ -1,9 +1,5 @@
-﻿#if !NET40Plus
-using System;
-#endif
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Web;
 
 namespace Navigation.Test
@@ -27,11 +23,20 @@ namespace Navigation.Test
 			return data;
 		}
 #else
-		public void NavigateLink(State state, string url, NavigationMode mode)
+		public override string GetNavigationLink(State state, NameValueCollection data)
 		{
-			StateController.SetStateContext(state.Id, HttpUtility.ParseQueryString(url.Substring(url.IndexOf("?", StringComparison.Ordinal))));
+			data["previous"] = data[NavigationSettings.Config.PreviousStateIdKey];
+			data.Remove(NavigationSettings.Config.PreviousStateIdKey);
+			return base.GetNavigationLink(state, data) + "&custom=custom";
 		}
 
+		public override NameValueCollection GetNavigationData(State state, NameValueCollection data)
+		{
+			data[NavigationSettings.Config.PreviousStateIdKey] = data["previous"];
+			data.Remove("previous");
+			data.Remove("custom");
+			return data;
+		}
 #endif
 		public override List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
 		{
