@@ -1907,6 +1907,128 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateBackDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(3);
+			Assert.AreEqual("Hello", StateContext.Data["string"]);
+			Assert.AreEqual(true, StateContext.Data["_bool"]);
+			Assert.AreEqual(0, StateContext.Data["_int"]);
+			Assert.AreEqual((short)1, StateContext.Data["short"]);
+			Assert.AreEqual(2L, StateContext.Data["long"]);
+			Assert.AreEqual(3F, StateContext.Data["float"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(3);
+			Assert.AreEqual("Hello", StateContext.Data["string"]);
+			Assert.AreEqual(true, StateContext.Data["_bool"]);
+			Assert.AreEqual(0, StateContext.Data["_int"]);
+			Assert.AreEqual((short)1, StateContext.Data["short"]);
+			Assert.AreEqual(2L, StateContext.Data["long"]);
+			Assert.AreEqual(3F, StateContext.Data["float"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackDataAndDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Refresh();
+			StateController.NavigateBack(3);
+			Assert.AreEqual(string.Empty, StateContext.Data["emptyString"]);
+			Assert.AreEqual(4D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Data["DateTime"]);
+			Assert.AreEqual((byte)6, StateContext.Data["byte"]);
+			Assert.AreEqual('7', StateContext.Data["char"]);
+			Assert.AreEqual(1, StateContext.Data["s"]);
+			Assert.AreEqual("2", StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackDataAndDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Refresh();
+			StateController.NavigateBack(3);
+			Assert.AreEqual(string.Empty, StateContext.Data["emptyString"]);
+			Assert.AreEqual(4D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateContext.Data["DateTime"]);
+			Assert.AreEqual((byte)6, StateContext.Data["byte"]);
+			Assert.AreEqual('7', StateContext.Data["char"]);
+			Assert.AreEqual(1, StateContext.Data["s"]);
+			Assert.AreEqual("2", StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackOverrideDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(){
+				{ "emptyString", "World" }, { "double" , 1D }, { "decimal" , 5m}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(1);
+			Assert.AreEqual("World", StateContext.Data["emptyString"]);
+			Assert.AreEqual(1D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+		}
+
+		[TestMethod]
+		public void NavigateBackOverrideDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			NavigationData data = new NavigationData(){
+				{ "emptyString", "World" }, { "double" , 1D }, { "decimal" , 5m}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(1);
+			StateController.NavigateBack(1);
+			Assert.AreEqual("World", StateContext.Data["emptyString"]);
+			Assert.AreEqual(1D, StateContext.Data["double"]);
+			Assert.AreEqual(5m, StateContext.Data["decimal"]);
+		}
+
+		[TestMethod]
 		public void DefaultsViewStateTest()
 		{
 			StateController.Navigate("d0");
