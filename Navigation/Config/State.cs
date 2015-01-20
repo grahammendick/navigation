@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+#if !NET40Plus
+using System.Threading;
+using System.Web;
+#endif
 
 namespace Navigation
 {
