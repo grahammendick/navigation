@@ -2029,6 +2029,56 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void CrumbDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			Assert.IsNull(StateController.Crumbs[0].Data["string"]);
+			Assert.IsNull(StateController.Crumbs[0].Data["long"]);
+			Assert.AreEqual("Hello", StateController.Crumbs[1].Data["string"]);
+			Assert.AreEqual(true, StateController.Crumbs[1].Data["_bool"]);
+			Assert.AreEqual(0, StateController.Crumbs[1]["_int"]);
+			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
+			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
+			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
+			Assert.AreEqual("", StateController.Crumbs[2]["emptyString"]);
+			Assert.AreEqual(4D, StateController.Crumbs[2].Data["double"]);
+			Assert.AreEqual(5m, StateController.Crumbs[2].Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateController.Crumbs[2]["DateTime"]);
+			Assert.AreEqual((byte)6, StateController.Crumbs[2].Data["byte"]);
+			Assert.AreEqual('7', StateController.Crumbs[2].Data["char"]);
+		}
+
+		[TestMethod]
+		public void CrumbDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			Assert.IsNull(StateController.Crumbs[0].Data["string"]);
+			Assert.IsNull(StateController.Crumbs[0].Data["long"]);
+			Assert.AreEqual("Hello", StateController.Crumbs[1].Data["string"]);
+			Assert.AreEqual(true, StateController.Crumbs[1].Data["_bool"]);
+			Assert.AreEqual(0, StateController.Crumbs[1]["_int"]);
+			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
+			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
+			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
+			Assert.AreEqual("", StateController.Crumbs[2]["emptyString"]);
+			Assert.AreEqual(4D, StateController.Crumbs[2].Data["double"]);
+			Assert.AreEqual(5m, StateController.Crumbs[2].Data["decimal"]);
+			Assert.AreEqual(new DateTime(1990, 3, 1, 12, 35, 47), StateController.Crumbs[2]["DateTime"]);
+			Assert.AreEqual((byte)6, StateController.Crumbs[2].Data["byte"]);
+			Assert.AreEqual('7', StateController.Crumbs[2].Data["char"]);
+		}
+
+		[TestMethod]
 		public void NavigateDataNavigateBackCustomTrailTest()
 		{
 			StateController.Navigate("d0");
@@ -2042,6 +2092,168 @@ namespace Navigation.Test
 			StateController.NavigateBack(1);
 			Assert.AreEqual("Hello", StateContext.Data["s"]);
 			Assert.IsNull(StateContext.Data["t"]);
+		}
+
+		[TestMethod]
+		public void CrumbDataAndDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			Assert.IsNull(StateController.Crumbs[0].Data["string"]);
+			Assert.IsNull(StateController.Crumbs[0]["s"]);
+			Assert.AreEqual("Hello", StateController.Crumbs[1].Data["string"]);
+			Assert.AreEqual(true, StateController.Crumbs[1].Data["_bool"]);
+			Assert.AreEqual(0, StateController.Crumbs[1]["_int"]);
+			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
+			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
+			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
+			Assert.AreEqual(1, StateController.Crumbs[1]["s"]);
+			Assert.AreEqual("2", StateController.Crumbs[1].Data["t"]);
+		}
+
+		[TestMethod]
+		public void CrumbDataAndDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			Assert.IsNull(StateController.Crumbs[0].Data["string"]);
+			Assert.IsNull(StateController.Crumbs[0]["s"]);
+			Assert.AreEqual("Hello", StateController.Crumbs[1].Data["string"]);
+			Assert.AreEqual(true, StateController.Crumbs[1].Data["_bool"]);
+			Assert.AreEqual(0, StateController.Crumbs[1]["_int"]);
+			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
+			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
+			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
+			Assert.AreEqual(1, StateController.Crumbs[1]["s"]);
+			Assert.AreEqual("2", StateController.Crumbs[1].Data["t"]);
+		}
+
+		[TestMethod]
+		public void NavigateOverrideCrumbDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			data["string"] = "World";
+			data["_int"] = 0;
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			Assert.AreEqual("World", StateController.Crumbs[1].Data["string"]);
+			Assert.AreEqual(true, StateController.Crumbs[1].Data["_bool"]);
+			Assert.AreEqual(0, StateController.Crumbs[1]["_int"]);
+			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
+			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
+			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
+		}
+
+		[TestMethod]
+		public void NavigateOverrideCrumbDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			NavigationData data = new NavigationData();
+			data["string"] = "World";
+			data["_int"] = 0;
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			Assert.AreEqual("World", StateController.Crumbs[1].Data["string"]);
+			Assert.AreEqual(true, StateController.Crumbs[1].Data["_bool"]);
+			Assert.AreEqual(0, StateController.Crumbs[1]["_int"]);
+			Assert.AreEqual((short)1, StateController.Crumbs[1].Data["short"]);
+			Assert.AreEqual(2L, StateController.Crumbs[1].Data["long"]);
+			Assert.AreEqual(3F, StateController.Crumbs[1].Data["float"]);
+		}
+
+		[TestMethod]
+		public void OverrideCrumbDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData();
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.NavigateBack(1);
+			Crumb crumb = StateController.Crumbs[1];
+			crumb.Data["string"] = "Hello";
+			crumb.Data["_int"] = 1;
+			Assert.AreEqual("Hello", crumb.Data["string"]);
+			Assert.AreEqual(1, crumb["_int"]);
+			Assert.AreEqual((short)1, crumb.Data["short"]);
+		}
+
+		[TestMethod]
+		public void OverrideCrumbDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			NavigationData data = new NavigationData();
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.NavigateBack(1);
+			Crumb crumb = StateController.Crumbs[1];
+			crumb.Data["string"] = "Hello";
+			crumb.Data["_int"] = 1;
+			Assert.AreEqual("Hello", crumb.Data["string"]);
+			Assert.AreEqual(1, crumb["_int"]);
+			Assert.AreEqual((short)1, crumb.Data["short"]);
+		}
+
+		[TestMethod]
+		public void ClearCrumbDataAndDefaultsCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Refresh();
+			Crumb crumb = StateController.Crumbs[1];
+			crumb.Data.Clear();
+			Assert.AreEqual("Hello", crumb.Data["string"]);
+			Assert.AreEqual(true, crumb.Data["_bool"]);
+			Assert.AreEqual(0, crumb["_int"]);
+			Assert.AreEqual((short)1, crumb.Data["short"]);
+			Assert.AreEqual(2L, crumb.Data["long"]);
+			Assert.AreEqual(3F, crumb.Data["float"]);
+			Assert.IsNull(crumb["s"]);
+			Assert.IsNull(crumb.Data["t"]);
+		}
+
+		[TestMethod]
+		public void ClearCrumbDataAndDefaultsCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			NavigationData data = new NavigationData(){
+				{ "s" , 1 }, { "t" , "2"}
+			};
+			StateController.Navigate("t0", data);
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Refresh();
+			Crumb crumb = StateController.Crumbs[1];
+			crumb.Data.Clear();
+			Assert.AreEqual("Hello", crumb.Data["string"]);
+			Assert.AreEqual(true, crumb.Data["_bool"]);
+			Assert.AreEqual(0, crumb["_int"]);
+			Assert.AreEqual((short)1, crumb.Data["short"]);
+			Assert.AreEqual(2L, crumb.Data["long"]);
+			Assert.AreEqual(3F, crumb.Data["float"]);
+			Assert.IsNull(crumb["s"]);
+			Assert.IsNull(crumb.Data["t"]);
 		}
 
 		[TestMethod]
