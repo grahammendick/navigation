@@ -1106,6 +1106,9 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.Navigate("d6");
 			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s0"], StateController.Crumbs[0].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States["s1"], StateController.Crumbs[1].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States["s0"], StateController.Crumbs[2].State);
 			StateController.NavigateBack(2);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[1], StateContext.State);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
@@ -1118,6 +1121,9 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.Navigate("d6");
 			StateController.Navigate("t0");
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States["s0"], StateController.Crumbs[0].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States["s1"], StateController.Crumbs[1].State);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States["s0"], StateController.Crumbs[2].State);
 			StateController.NavigateBack(2);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
 			Assert.AreEqual(1, StateController.Crumbs.Count);
