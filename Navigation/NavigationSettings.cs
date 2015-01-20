@@ -47,6 +47,22 @@ namespace Navigation
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets whether to revert to using short State keys in the crumb trail
+		/// </summary>
+		[ConfigurationProperty("originalCrumbTrailKeys", DefaultValue = false)]
+		public bool OriginalCrumbTrailKeys
+		{
+			get
+			{
+				return (bool)this["originalCrumbTrailKeys"];
+			}
+			set
+			{
+				this["originalCrumbTrailKeys"] = value;
+			}
+		}
+
 #if NET45Plus
 		/// <summary>
 		/// Gets or sets the custom <see cref="Navigation.StateRouteHandler"/>
