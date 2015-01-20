@@ -1,4 +1,7 @@
 ﻿using System;
+#if !NET40Plus
+using System.Collections.Generic;
+#endif
 using System.Collections.Specialized;
 using System.Text;
 using System.Web;
@@ -116,6 +119,26 @@ namespace Navigation
 						break;
 					}
 			}
+		}
+
+		/// <summary>
+		/// The crumb trail is truncated whenever a repeated or initial <see cref="State"/> is encountered
+		/// </summary>
+		/// <param name="state">The <see cref="State"/> navigated to</param>
+		/// <param name="crumbs">The <see cref="Crumb"/> collection representing the crumb trail</param>
+		/// <returns>Truncated crumb trail</returns>
+		public virtual List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
+		{
+			var newCrumbs = new List<Crumb>();
+			if (state.Parent.Initial == state)
+				return newCrumbs;
+			foreach (var crumb in crumbs)
+			{
+				if (crumb.State == state)
+					break;
+				newCrumbs.Add(crumb);
+			}
+			return newCrumbs;
 		}
 #endif
 #if NET40Plus

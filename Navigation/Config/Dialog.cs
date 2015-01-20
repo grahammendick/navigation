@@ -1,4 +1,8 @@
 using System;
+#if !NET40Plus
+using System.Threading;
+using System.Web;
+#endif
 
 namespace Navigation
 {
