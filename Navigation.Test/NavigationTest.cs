@@ -1118,6 +1118,28 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDialogBackCustomTrailTest()
+		{
+			StateController.Navigate("d0");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[0], StateContext.State);
+		}
+
+		[TestMethod]
+		public void NavigateDialogBackCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			StateController.Navigate("t0");
+			StateController.Navigate("d6");
+			StateController.Navigate("t0");
+			StateController.NavigateBack(1);
+			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[0], StateContext.State);
+		}
+
+		[TestMethod]
 		public void NavigateCrossDialogBackOneByOneCustomTrailTest()
 		{
 			StateController.Navigate("d0");
