@@ -60,7 +60,12 @@ namespace Navigation
 		/// <param name="mode">The navigation mode</param>
 		void NavigateLink(State state, string url, NavigationMode mode);
 #endif
-
+		/// <summary>
+		/// Truncates the crumb trail
+		/// </summary>
+		/// <param name="state">The <see cref="State"/> navigated to</param>
+		/// <param name="crumbs">The <see cref="Crumb"/> collection representing the crumb trail</param>
+		/// <returns>Truncated crumb trail</returns>
 		List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs);
 	}
 }
