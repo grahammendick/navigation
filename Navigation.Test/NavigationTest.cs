@@ -1062,6 +1062,7 @@ namespace Navigation.Test
 			StateController.Navigate("d6");
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[0], StateContext.State);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1071,6 +1072,7 @@ namespace Navigation.Test
 			StateController.Navigate("d6");
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[0], StateContext.State);
+			Assert.AreEqual(0, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1082,6 +1084,7 @@ namespace Navigation.Test
 			StateController.Refresh();
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[1], StateContext.State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1093,6 +1096,7 @@ namespace Navigation.Test
 			StateController.Refresh();
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1104,6 +1108,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.NavigateBack(2);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d0"].States[1], StateContext.State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1115,6 +1120,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.NavigateBack(2);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d3"].States[1], StateContext.State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1126,6 +1132,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[0], StateContext.State);
+			Assert.AreEqual(2, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1137,6 +1144,7 @@ namespace Navigation.Test
 			StateController.Navigate("t0");
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs["d6"].States[0], StateContext.State);
+			Assert.AreEqual(2, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1150,6 +1158,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[6].States[0], StateContext.State);
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs[0].States[1], StateContext.State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]
@@ -1163,6 +1172,7 @@ namespace Navigation.Test
 			Assert.AreEqual(StateInfoConfig.Dialogs[6].States[0], StateContext.State);
 			StateController.NavigateBack(1);
 			Assert.AreEqual(StateInfoConfig.Dialogs[3].States[1], StateContext.State);
+			Assert.AreEqual(1, StateController.Crumbs.Count);
 		}
 
 		[TestMethod]

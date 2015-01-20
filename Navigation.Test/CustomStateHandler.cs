@@ -34,15 +34,18 @@ namespace Navigation.Test
 		public override List<Crumb> TruncateCrumbTrail(State state, List<Crumb> crumbs)
 		{
 			var newCrumbs = new List<Crumb>();
+			var d6Crumbs = new List<Crumb>();
 			if (state.Parent.Key == "d6")
 			{
 				foreach(var crumb in crumbs)
 				{
 					if (crumb.State.Parent.Key == "d0" || crumb.State.Parent.Key == "d3")
 						newCrumbs.Add(crumb);
+					if (crumb.State.Parent.Key == "d6")
+						d6Crumbs.Add(crumb);
 				}
 			}
-			newCrumbs.AddRange(base.TruncateCrumbTrail(state, crumbs));
+			newCrumbs.AddRange(base.TruncateCrumbTrail(state, d6Crumbs));
 			return newCrumbs;
 		}
 	}
