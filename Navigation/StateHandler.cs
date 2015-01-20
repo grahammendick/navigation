@@ -129,7 +129,7 @@ namespace Navigation
 		}
 
 		/// <summary>
-		/// The crumb trail is truncated whenever a repeated or initial <see cref="State"/> is encountered
+		/// Truncates the crumb trail whenever a repeated or initial <see cref="State"/> is encountered
 		/// </summary>
 		/// <param name="state">The <see cref="State"/> navigated to</param>
 		/// <param name="crumbs">The <see cref="Crumb"/> collection representing the crumb trail</param>
