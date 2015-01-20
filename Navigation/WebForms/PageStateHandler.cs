@@ -74,7 +74,7 @@ namespace Navigation
 		/// <param name="state">The <see cref="Navigation.State"/> to navigate to</param>
 		/// <param name="data">The data to pass when navigating</param>
 		/// <returns>The navigation link</returns>
-		public string GetNavigationLink(State state, NameValueCollection data)
+		public virtual string GetNavigationLink(State state, NameValueCollection data)
 		{
 			string applicationPath = HttpContext.Current != null ? HttpContext.Current.Request.ApplicationPath : NavigationSettings.Config.ApplicationPath;
 			return GetLink(state, data, GetMobile(HttpContext.Current), applicationPath);
@@ -86,7 +86,7 @@ namespace Navigation
 		/// <param name="state">The <see cref="Navigation.State"/> navigated to</param>
 		/// <param name="data">The current context data</param>
 		/// <returns>The navigation data</returns>
-		public NameValueCollection GetNavigationData(State state, NameValueCollection data)
+		public virtual NameValueCollection GetNavigationData(State state, NameValueCollection data)
 		{
 			return new NameValueCollection(data);
 		}
@@ -98,7 +98,7 @@ namespace Navigation
 		/// <param name="state">The <see cref="State"/> to navigate to</param>
 		/// <param name="url">The target location</param>
 		/// <param name="mode">Indicates whether to Redirect or Transfer</param>
-		public void NavigateLink(State state, string url, NavigationMode mode)
+		public virtual void NavigateLink(State state, string url, NavigationMode mode)
 		{
 			if (HttpContext.Current == null) mode = NavigationMode.Mock;
 			switch (mode)
