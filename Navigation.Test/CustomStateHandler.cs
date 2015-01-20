@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿#if !NET40Plus
+using System;
+#endif
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
@@ -8,7 +11,6 @@ namespace Navigation.Test
 	public class CustomStateHandler : PageStateHandler
 	{
 #if NET40Plus
-
 		public override string GetNavigationLink(State state, NameValueCollection data, HttpContextBase context)
 		{
 			data["previous"] = data[NavigationSettings.Config.PreviousStateIdKey];
