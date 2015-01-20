@@ -274,11 +274,11 @@ namespace Navigation.Test
 			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[0]);
 			Assert.AreEqual(2, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
 #else
-			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
+			Assert.AreEqual(4, StateInfoConfig.Dialogs[6].States[0].Attributes.Count);
 			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["key"]);
 			Assert.AreEqual("s0", StateInfoConfig.Dialogs[6].States[0].Attributes["title"]);
 			Assert.AreEqual("~/d6/s0.aspx", StateInfoConfig.Dialogs[6].States[0].Attributes[2]);
-			Assert.AreEqual(3, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
+			Assert.AreEqual(4, StateInfoConfig.Dialogs[6].States[1].Attributes.Count);
 			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["key"]);
 			Assert.AreEqual("s1", StateInfoConfig.Dialogs[6].States[1].Attributes["title"]);
 #endif
