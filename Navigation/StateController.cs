@@ -29,7 +29,7 @@ namespace Navigation
 		{
 			get
 			{
-				return new ReadOnlyCollection<Crumb>(CrumbTrailManager.Crumbs);
+				return new ReadOnlyCollection<Crumb>(CrumbTrailManager.GetCrumbs(true));
 			}
 		}
 
