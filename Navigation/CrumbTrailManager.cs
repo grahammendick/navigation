@@ -16,37 +16,9 @@ namespace Navigation
 		private static string CRUMB_1_SEP = "4" + SEPARATOR;
 		private static string CRUMB_2_SEP = "5" + SEPARATOR;
 
-		internal static List<Crumb> Crumbs
-		{
-			get
-			{
-				var crumbTrailArray = new List<Crumb>();
-				var arrayCount = 0;
-				var trail = StateContext.CrumbTrail;
-				var crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
-				var last = true;
-				while (arrayCount < crumbTrailSize)
-				{
-					var stateKey = Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
-					var state = StateContext.GetState(stateKey);
-					NavigationData navigationData = null;
-					var data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
-					if (data.Length != 0)
-						navigationData = ParseReturnData(data, state);
-					var nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
-					trail = nextTrailStart != -1 ? trail.Substring(nextTrailStart) : string.Empty;
-					crumbTrailArray.Add(new Crumb(navigationData, state, last));
-					last = false;
-					arrayCount++;
-				}
-				crumbTrailArray.Reverse();
-				return crumbTrailArray;
-			}
-		}
-
 		internal static void BuildCrumbTrail()
 		{
-			var crumbs = Crumbs;
+			var crumbs = GetCrumbs(false);
 			if (StateContext.PreviousState != null)
 				crumbs.Add(new Crumb(StateContext.ReturnData, StateContext.PreviousState, false));
 			crumbs = StateContext.State.StateHandler.TruncateCrumbTrail(StateContext.State, crumbs);
@@ -60,6 +32,31 @@ namespace Navigation
 				FormatReturnData(trailBuilder, crumb.State, crumb.Data);
 			}
 			StateContext.GenerateKey(trailBuilder.Length != 0 ? trailBuilder.ToString() : null);
+		}
+
+		internal static List<Crumb> GetCrumbs(bool setLast)
+		{
+			var crumbTrailArray = new List<Crumb>();
+			var arrayCount = 0;
+			var trail = StateContext.CrumbTrail;
+			var crumbTrailSize = trail == null ? 0 : Regex.Split(trail, CRUMB_1_SEP).Length - 1;
+			var last = true;
+			while (arrayCount < crumbTrailSize)
+			{
+				var stateKey = Regex.Split(trail.Substring(CRUMB_1_SEP.Length), CRUMB_2_SEP)[0];
+				var state = StateContext.GetState(stateKey);
+				NavigationData navigationData = null;
+				var data = Regex.Split(trail.Substring(trail.IndexOf(CRUMB_2_SEP, StringComparison.Ordinal) + CRUMB_2_SEP.Length), CRUMB_1_SEP)[0];
+				if (data.Length != 0)
+					navigationData = ParseReturnData(data, state);
+				var nextTrailStart = trail.IndexOf(CRUMB_1_SEP, 1, StringComparison.Ordinal);
+				trail = nextTrailStart != -1 ? trail.Substring(nextTrailStart) : string.Empty;
+				crumbTrailArray.Add(new Crumb(navigationData, state, setLast && last));
+				last = false;
+				arrayCount++;
+			}
+			crumbTrailArray.Reverse();
+			return crumbTrailArray;
 		}
 
 		internal static string GetHref(string nextState, NavigationData navigationData, NavigationData returnData)
