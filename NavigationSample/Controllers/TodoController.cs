@@ -86,7 +86,6 @@ namespace Navigation.Sample.Controllers
 		public ActionResult Delete(Todo todo)
 		{
 			HttpContext.Items["todoId"] = StateContext.Bag.id;
-			StateContext.Bag.id = null;
 			todo = Todos.FirstOrDefault(t => t.Id == todo.Id);
 			if (todo != null)
 				Todos.Remove(todo);

@@ -40,7 +40,7 @@ namespace Navigation.Sample.Models
 			get
 			{
 				return (context, fromData, toData) => (int?) context.Items["todoId"] == Id ||
-					(fromData.Bag.id != toData.Bag.id  && (fromData.Bag.id == Id || toData.Bag.id == Id));
+					(fromData.Bag.id != toData.Bag.id && (fromData.Bag.id == Id || toData.Bag.id == Id));
 			}
 		}
 	}
