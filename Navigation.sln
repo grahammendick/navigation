@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation", "Navigation\Navigation.csproj", "{4AB8290D-41D9-4BC0-B7B5-A430B067BE65}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Sample", "NavigationSample\Navigation.Sample.csproj", "{71BBF563-1A93-4802-8417-CD5767E4D2B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.Sample.Test", "NavigationSample.Test\Navigation.Sample.Test.csproj", "{B54A05B6-F329-4B9F-BF20-7D4AD49E741E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation.JS", "NavigationJS\Navigation.JS.csproj", "{7FE4CE3F-487F-4265-B642-CA7E528B99F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +54,10 @@ Global
 		{B54A05B6-F329-4B9F-BF20-7D4AD49E741E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54A05B6-F329-4B9F-BF20-7D4AD49E741E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B54A05B6-F329-4B9F-BF20-7D4AD49E741E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FE4CE3F-487F-4265-B642-CA7E528B99F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE4CE3F-487F-4265-B642-CA7E528B99F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE4CE3F-487F-4265-B642-CA7E528B99F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE4CE3F-487F-4265-B642-CA7E528B99F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
