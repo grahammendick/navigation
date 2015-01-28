@@ -13,6 +13,10 @@
         index: number;
         key: string;
         title: string;
+        route: string;
+        trackCrumbTrail: boolean;
+        attributes: Array<string>;
+        stateHandler: IStateHandler;
     }
 
     export class Transition {
@@ -22,21 +26,36 @@
         key: string;
     }
 
+    export class Crumb {
+        data: any;
+        state: State;
+        last: boolean;
+        getNavigationLink(): string {
+            return '';
+        }
+    }
+
+    export interface IStateHandler {
+    }
+
     export class StateInfoConfig {
         dialogs: Array<Dialog>;
     }
 
     class CrumbTrailManager {
-        static getHref(nextState: string, navigationData: any, returnData: any) {
+        static getHref(nextState: string, navigationData: any, returnData: any): string {
+            return null;
         }
     }
 
     export class StateController {
         static navigate(action: string, toData?: any) {
         }
-        static getNavigationLink(action: string, toData?: any) {
+
+        static getNavigationLink(action: string, toData?: any): string {
             return CrumbTrailManager.getHref(action, toData, null);
         }
+
         private static navigateLink(state: State, url: string) {
         }
     }
