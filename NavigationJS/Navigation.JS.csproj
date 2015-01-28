@@ -56,15 +56,10 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Crumb.ts" />
-    <TypeScriptCompile Include="Dialog.ts" />
     <TypeScriptCompile Include="IStateHandler.ts" />
-    <TypeScriptCompile Include="NavigationData.ts" />
-    <TypeScriptCompile Include="State.ts" />
     <TypeScriptCompile Include="StateContext.ts" />
-    <TypeScriptCompile Include="StateController.ts" />
+    <TypeScriptCompile Include="Navigation.ts" />
     <TypeScriptCompile Include="StateHandler.ts" />
-    <TypeScriptCompile Include="StateInfoConfig.ts" />
-    <TypeScriptCompile Include="Transition.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 </Project>
