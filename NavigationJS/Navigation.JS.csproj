@@ -56,7 +56,6 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Crumb.ts" />
-    <TypeScriptCompile Include="CrumbTrailManager.ts" />
     <TypeScriptCompile Include="Dialog.ts" />
     <TypeScriptCompile Include="IStateHandler.ts" />
     <TypeScriptCompile Include="NavigationData.ts" />
