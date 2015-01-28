@@ -55,11 +55,8 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Crumb.ts" />
-    <TypeScriptCompile Include="IStateHandler.ts" />
     <TypeScriptCompile Include="StateContext.ts" />
     <TypeScriptCompile Include="Navigation.ts" />
-    <TypeScriptCompile Include="StateHandler.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 </Project>
