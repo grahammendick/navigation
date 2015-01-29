@@ -44,6 +44,8 @@
     transition.key = 't0';
     transition.parent = state1;
     transition.to = state2;
+    state1.transitions.push(transition);
+    state1._transitions[transition.key] = transition;
     Navigation.StateInfoConfig.dialogs.push(dialog);
     Navigation.StateInfoConfig._dialogs[dialog.key] = dialog;
     for (var dialogKey in Navigation.StateInfoConfig._dialogs) {
@@ -61,6 +63,12 @@
     QUnit.test("NavigateDialog", function (assert) {
         Navigation.StateController.navigate('d0');
         assert.equal(Navigation.StateContext.state, state1);
+    });
+
+    QUnit.test("NavigateTransition", function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        assert.equal(Navigation.StateContext.state, state2);
     });
 }
  
