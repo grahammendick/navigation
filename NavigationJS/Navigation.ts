@@ -1,7 +1,7 @@
 ﻿module Navigation {
     export class Dialog {
-        states: Array<State>;
-        _states: { [index: string]: State };
+        states: Array<State> = [];
+        _states: { [index: string]: State } = {};
         index: number;
         initial: State;
         key: string;
@@ -9,8 +9,8 @@
     }
 
     export class State {
-        transitions: Array<Transition>;
-        _transitions: { [index: string]: Transition };
+        transitions: Array<Transition> = [];
+        _transitions: { [index: string]: Transition } = {};
         parent: Dialog;
         index: number;
         key: string;
@@ -60,8 +60,8 @@
     }
 
     export class StateInfoConfig {
-        static dialogs: Array<Dialog>;
-        static _dialogs: { [index: string]: Dialog };
+        static dialogs: Array<Dialog> = [];
+        static _dialogs: { [index: string]: Dialog } = {};
     }
 
     export class StateContext {
