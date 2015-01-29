@@ -90,8 +90,6 @@
 
         static navigate(action: string, toData?: any) {
             var url = this.getNavigationLink(action, toData);
-            if (!url)
-                throw "invalid route data";
             this.navigateLink(this.getNextState(action), url);
         }
 
