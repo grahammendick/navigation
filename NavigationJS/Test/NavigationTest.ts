@@ -24,6 +24,12 @@
         }
     }
 
+    Navigation.StateInfoConfig.build([
+        { key: 'd0', initial: 's0', states: [
+            { key: 's0', route: 'r0', transitions: [
+                { t0: 's1' }] },
+            { key: 's1', route: 'r1' }] }
+    ]);
     var dialog: Navigation.Dialog = new Navigation.Dialog();
     dialog.key = 'd0';
     dialog.index = 0;
