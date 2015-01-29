@@ -56,8 +56,6 @@
     }
 
     QUnit.module('Navigation', {
-        setup: function () {
-        }
     });
 
     QUnit.test("NavigateDialog", function (assert) {
