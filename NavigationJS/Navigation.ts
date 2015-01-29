@@ -97,9 +97,10 @@
 
     /* Detect if the Url changes
     //  1. page load
-    //  2. push state (http://stackoverflow.com/questions/4570093)
-    //  3. onhashchange (ie8?)
-    //  4. poll for hashchange (ie7)
+    //  2. pop state
+    //  3. push state (http://stackoverflow.com/questions/4570093)
+    //  4. onhashchange (ie8?)
+    //  5. poll for hashchange (ie7)
     // Then raise UrlChange event.
     // Custom StateAdapter listens, calls StateController.SetContext
     // and does custom logic like changing ViewModel
