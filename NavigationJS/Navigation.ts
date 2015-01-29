@@ -40,6 +40,7 @@
     }
 
     export interface IStateHandler {
+        navigateLink(state: State, url: string);
     }
 
     export class StateInfoConfig {
@@ -52,6 +53,7 @@
         static previousDialog: Dialog;
         static state: State;
         static dialog: Dialog;
+        static data: any;
     }
 
     class CrumbTrailManager {
@@ -61,14 +63,22 @@
     }
 
     export class StateController {
+        static setStateContext(stateId: string, url: string) {
+        }
+
         static navigate(action: string, toData?: any) {
+            var url = this.getNavigationLink(action, toData);
+            if (!url)
+                throw "invalid route data";
+            this.navigateLink(this.getNextState(action), url);
         }
 
         static getNavigationLink(action: string, toData?: any): string {
-            return CrumbTrailManager.getHref(this.getNextState(action).Id(), toData, null);
+            return CrumbTrailManager.getHref(this.getNextState(action).Id(), toData, StateContext.data);
         }
 
         private static navigateLink(state: State, url: string) {
+            state.stateHandler.navigateLink(state, url);
         }
 
         private static getNextState(action: string): State {
