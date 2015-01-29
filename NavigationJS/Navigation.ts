@@ -40,12 +40,22 @@
     }
 
     export interface IStateHandler {
+        getNavigationLink(state: State, data: any): string;
         navigateLink(state: State, url: string);
+        getNavigationData(state: State, url: string): any;
     }
 
     export class StateHandler implements IStateHandler {
+        getNavigationLink(state: State, data: any): string {
+            return null;
+        }
+
         navigateLink(state: State, url: string) {
-            StateController.setStateContext(state.Id(), url);
+            StateController.setStateContext(state, url);
+        }
+
+        getNavigationData(state: State, url: string): any {
+            return null;
         }
     }
 
@@ -63,13 +73,15 @@
     }
 
     class CrumbTrailManager {
-        static getHref(nextState: string, navigationData: any, returnData: any): string {
-            return null;
+        static getHref(nextState: State, navigationData: any, returnData: any): string {
+            return nextState.stateHandler.getNavigationLink(nextState, null);
         }
     }
 
     export class StateController {
-        static setStateContext(stateId: string, url: string) {
+        static setStateContext(state: State, url: string) {
+            StateContext.state = state;
+            var data = state.stateHandler.getNavigationData(state, url);
         }
 
         static navigate(action: string, toData?: any) {
@@ -80,7 +92,7 @@
         }
 
         static getNavigationLink(action: string, toData?: any): string {
-            return CrumbTrailManager.getHref(this.getNextState(action).Id(), toData, StateContext.data);
+            return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
         }
 
         private static navigateLink(state: State, url: string) {
