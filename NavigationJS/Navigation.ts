@@ -1,6 +1,7 @@
 ﻿module Navigation {
     export class Dialog {
         states: Array<State>;
+        _states: { [index: string]: State };
         index: number;
         initial: State;
         key: string;
@@ -47,26 +48,14 @@
 
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
-            var dataArray: Array<string> = [];
-            for (var key in data) {
-                dataArray.push(key + '=' + data[key]); 
-            }
-            return dataArray.join('&');
+            return null;
         }
 
         navigateLink(state: State, url: string) {
-            var data = {};
-            var dataArray = url.split('&');
-            var keyValue: Array<string>;
-            for (var i = 0; i < dataArray.length; i++) {
-                keyValue = dataArray[i].split('=');
-                data[keyValue[0]] = keyValue[1];
-            }
-            StateController.setStateContext(state, data);
         }
 
         getNavigationData(state: State, data: any): any {
-            return data;
+            return null;
         }
     }
 
