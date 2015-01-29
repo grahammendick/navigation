@@ -42,20 +42,31 @@
     export interface IStateHandler {
         getNavigationLink(state: State, data: any): string;
         navigateLink(state: State, url: string);
-        getNavigationData(state: State, url: string): any;
+        getNavigationData(state: State, data: string): any;
     }
 
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
-            return null;
+            var dataArray: Array<string> = [];
+            for (var key in data) {
+                dataArray.push(key + '=' + data[key]); 
+            }
+            return dataArray.join('&');
         }
 
         navigateLink(state: State, url: string) {
-            StateController.setStateContext(state, url);
+            var data = {};
+            var dataArray = url.split('&');
+            var keyValue: Array<string>;
+            for (var i = 0; i < dataArray.length; i++) {
+                keyValue = dataArray[i].split('=');
+                data[keyValue[0]] = keyValue[1];
+            }
+            StateController.setStateContext(state, data);
         }
 
-        getNavigationData(state: State, url: string): any {
-            return null;
+        getNavigationData(state: State, data: any): any {
+            return data;
         }
     }
 
@@ -74,14 +85,18 @@
 
     class CrumbTrailManager {
         static getHref(nextState: State, navigationData: any, returnData: any): string {
-            return nextState.stateHandler.getNavigationLink(nextState, null);
+            var data = {};
+            for (var key in navigationData) {
+                data[key] = navigationData[key];
+            }
+            return nextState.stateHandler.getNavigationLink(nextState, data);
         }
     }
 
     export class StateController {
-        static setStateContext(state: State, url: string) {
+        static setStateContext(state: State, data: any) {
             StateContext.state = state;
-            var data = state.stateHandler.getNavigationData(state, url);
+            var data = state.stateHandler.getNavigationData(state, data);
         }
 
         static navigate(action: string, toData?: any) {
