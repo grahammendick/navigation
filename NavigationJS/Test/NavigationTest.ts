@@ -55,18 +55,32 @@
         }
     }
 
-    QUnit.module('Navigation', {
+    QUnit.module('NavigationTest', {
     });
 
-    QUnit.test("NavigateDialog", function (assert) {
+    QUnit.test("NavigateDialogTest", function (assert) {
         Navigation.StateController.navigate('d0');
         assert.equal(Navigation.StateContext.state, state1);
     });
 
-    QUnit.test("NavigateTransition", function (assert) {
+    QUnit.test("NavigateTransitionTest", function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         assert.equal(Navigation.StateContext.state, state2);
+    });
+
+    QUnit.module('NavigationDataTest', {
+    });
+
+    QUnit.test("NavigateStringDataTest", function (assert) {
+        Navigation.StateController.navigate('d0', { 'string': 'hello' });
+        assert.equal(Navigation.StateContext.data['string'], 'hello');
+    });
+
+    QUnit.test("NavigateNumberDataTest", function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0', { 'number': 1 });
+        assert.equal(Navigation.StateContext.data['number'], 1);
     });
 }
  
