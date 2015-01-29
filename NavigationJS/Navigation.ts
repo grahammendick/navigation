@@ -17,7 +17,6 @@
         title: string;
         route: string;
         trackCrumbTrail: boolean;
-        attributes: Array<string>;
         stateHandler: IStateHandler = new StateHandler();
         Id(): string{
             return this.parent.index.toString() + '-' + this.index.toString();
@@ -62,6 +61,24 @@
     export class StateInfoConfig {
         static dialogs: Array<Dialog> = [];
         static _dialogs: { [index: string]: Dialog } = {};
+        static build(dialogs: Array<any>) {
+            for (var i = 0; i < dialogs.length; i++) {
+                var dialogObject = dialogs[i];
+                var dialog = new Dialog();
+                dialog.index = i;
+                for (var key in dialogObject) {
+                    if (key === 'states')
+                        this.processStates(dialog, dialogObject['states']);
+                    else
+                        dialog[key] = dialogObject[key];
+                }
+                this.dialogs.push(dialog);
+                this._dialogs[dialog.key] = dialog;
+            }
+        }
+
+        private static processStates(dialog: Dialog, states: Array<any>) {
+        }
     }
 
     export class StateContext {
