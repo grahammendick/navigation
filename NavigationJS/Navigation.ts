@@ -85,7 +85,7 @@
     export class StateController {
         static setStateContext(state: State, data: any) {
             StateContext.state = state;
-            var data = state.stateHandler.getNavigationData(state, data);
+            StateContext.data = state.stateHandler.getNavigationData(state, data);
         }
 
         static navigate(action: string, toData?: any) {
