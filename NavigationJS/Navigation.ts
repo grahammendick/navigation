@@ -103,14 +103,14 @@
 
         private static getNextState(action: string): State {
             if (!action)
-                throw "action is required";
+                throw new Error('action is required');
             var nextState: State = null;
             if (StateContext.state && StateContext.state._transitions[action])
                 nextState = StateContext.state._transitions[action].to;
             if (!nextState && StateInfoConfig._dialogs[action])
                 nextState = StateInfoConfig._dialogs[action].initial;
             if (!nextState)
-                throw "invalid action";
+                throw new Error('invalid action');
             return nextState;
         }
     }
