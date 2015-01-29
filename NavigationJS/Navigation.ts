@@ -43,6 +43,12 @@
         navigateLink(state: State, url: string);
     }
 
+    export class StateAdapter implements IStateHandler {
+        navigateLink(state: State, url: string) {
+            StateController.setStateContext(state.Id(), url);
+        }
+    }
+
     export class StateInfoConfig {
         static dialogs: Array<Dialog>;
         static _dialogs: { [index: string]: Dialog };
@@ -101,7 +107,7 @@
     //  3. push state (http://stackoverflow.com/questions/4570093)
     //  4. onhashchange (ie8?)
     //  5. poll for hashchange (ie7)
-    // Then raise UrlChange event.
+    // Then raise Navigate event.
     // Custom StateAdapter listens, calls StateController.SetContext
     // and does custom logic like changing ViewModel
     */
