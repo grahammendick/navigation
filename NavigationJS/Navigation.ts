@@ -17,7 +17,7 @@
         route: string;
         trackCrumbTrail: boolean;
         attributes: Array<string>;
-        stateHandler: IStateHandler;
+        stateHandler: IStateHandler = new StateHandler();
         Id(): string{
             return this.parent.index.toString() + '-' + this.index.toString();
         }
@@ -43,7 +43,7 @@
         navigateLink(state: State, url: string);
     }
 
-    export class StateAdapter implements IStateHandler {
+    export class StateHandler implements IStateHandler {
         navigateLink(state: State, url: string) {
             StateController.setStateContext(state.Id(), url);
         }
