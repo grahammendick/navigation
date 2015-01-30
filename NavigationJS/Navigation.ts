@@ -3,8 +3,13 @@
         data: any;
         state: State;
         last: boolean;
+        constructor(data: any, state: State, last: boolean) {
+            this.data = data;
+            this.state = state;
+            this.last = last;
+        }
         getNavigationLink(): string {
-            return '';
+            return CrumbTrailManager.getHref(this.state, this.data, null);
         }
     }
 
@@ -36,12 +41,13 @@
     }
 
     class CrumbTrailManager {
+        static returnData: any;
         static crumbTrail: string;
 
         static buildCrumbTrail() {
             var crumbs = this.getCrumbs(false);
             if (StateContext.previousState)
-                crumbs.push(new Crumb());
+                crumbs.push(new Crumb(this.returnData, StateContext.previousState, false));
             crumbs.reverse();
             var trailString: string = '';
             for (var i = 0; i < crumbs.length; i++) {
@@ -66,7 +72,7 @@
                     navigationData = {};
                 var nextTrailStart = trail.indexOf('4_', 1);
                 trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
-                crumbTrailArray.push(new Crumb());
+                crumbTrailArray.push(new Crumb(navigationData, state, setLast && last));
                 last = false;
                 arrayCount++;
             }
