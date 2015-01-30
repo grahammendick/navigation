@@ -1,5 +1,5 @@
 ﻿module NavigationTest {
-    export class StateHandler implements Navigation.IStateHandler {
+    export class StateHandler extends Navigation.StateHandler {
         getNavigationLink(state: Navigation.State, data: any): string {
             var dataArray: Array<string> = [];
             for (var key in data) {
