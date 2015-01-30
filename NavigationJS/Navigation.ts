@@ -43,6 +43,10 @@
             }
             return nextState.stateHandler.getNavigationLink(nextState, data);
         }
+
+        static getRefreshHref(refreshData: any): string {
+            return this.getHref(StateContext.state, refreshData, null);
+        }
     }
 
     export class StateController {
@@ -58,6 +62,15 @@
 
         static getNavigationLink(action: string, toData?: any): string {
             return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
+        }
+
+        static refresh(toData?: any) {
+            var url = this.getRefreshLink(toData);
+            this.navigateLink(StateContext.state, url);
+        }
+
+        static getRefreshLink(toData?: any): string {
+            return CrumbTrailManager.getRefreshHref(toData);
         }
 
         private static navigateLink(state: State, url: string) {
