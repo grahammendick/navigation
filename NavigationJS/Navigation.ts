@@ -3,13 +3,16 @@
         data: any;
         state: State;
         last: boolean;
+        private _navigationLink; string;
         constructor(data: any, state: State, last: boolean) {
             this.data = data;
             this.state = state;
             this.last = last;
         }
         getNavigationLink(): string {
-            return CrumbTrailManager.getHref(this.state, this.data, null);
+            if (!this._navigationLink)
+                this._navigationLink = CrumbTrailManager.getHref(this.state, this.data, null);
+            return this._navigationLink;
         }
     }
 
