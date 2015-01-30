@@ -27,33 +27,9 @@
     Navigation.StateInfoConfig.build([
         { key: 'd0', initial: 's0', states: [
             { key: 's0', route: 'r0', transitions: [
-                { t0: 's1' }] },
+                { key: 't0', to : 's1' }] },
             { key: 's1', route: 'r1' }] }
     ]);
-    var dialog: Navigation.Dialog = new Navigation.Dialog();
-    dialog.key = 'd0';
-    dialog.index = 0;
-    var state1: Navigation.State = new Navigation.State();
-    state1.key = 's0';
-    state1.index = 0;
-    state1.parent = dialog;
-    var state2: Navigation.State = new Navigation.State();
-    state2.key = 's1';
-    state2.index = 1;
-    state2.parent = dialog;
-    dialog.states.push(state1);
-    dialog._states[state1.key] = state1;
-    dialog.states.push(state2);
-    dialog._states[state2.key] = state2;
-    dialog.initial = state1;
-    var transition: Navigation.Transition = new Navigation.Transition();
-    transition.key = 't0';
-    transition.parent = state1;
-    transition.to = state2;
-    state1.transitions.push(transition);
-    state1._transitions[transition.key] = transition;
-    Navigation.StateInfoConfig.dialogs.push(dialog);
-    Navigation.StateInfoConfig._dialogs[dialog.key] = dialog;
     for (var dialogKey in Navigation.StateInfoConfig._dialogs) {
         var dialog = Navigation.StateInfoConfig._dialogs[dialogKey];
         for (var stateKey in dialog._states) {
@@ -66,13 +42,13 @@
 
     QUnit.test("NavigateDialogTest", function (assert) {
         Navigation.StateController.navigate('d0');
-        assert.equal(Navigation.StateContext.state, state1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
     });
 
     QUnit.test("NavigateTransitionTest", function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateContext.state, state2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
     });
 
     QUnit.module('NavigationDataTest', {

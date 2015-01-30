@@ -1,35 +1,4 @@
 ﻿module Navigation {
-    export class Dialog {
-        states: Array<State> = [];
-        _states: { [index: string]: State } = {};
-        index: number;
-        initial: State;
-        key: string;
-        title: string;
-    }
-
-    export class State {
-        transitions: Array<Transition> = [];
-        _transitions: { [index: string]: Transition } = {};
-        parent: Dialog;
-        index: number;
-        key: string;
-        title: string;
-        route: string;
-        trackCrumbTrail: boolean;
-        stateHandler: IStateHandler = new StateHandler();
-        Id(): string{
-            return this.parent.index.toString() + '-' + this.index.toString();
-        }
-    }
-
-    export class Transition {
-        to: State;
-        parent: State;
-        index: number;
-        key: string;
-    }
-
     export class Crumb {
         data: any;
         state: State;
@@ -55,29 +24,6 @@
 
         getNavigationData(state: State, data: any): any {
             return null;
-        }
-    }
-
-    export class StateInfoConfig {
-        static dialogs: Array<Dialog> = [];
-        static _dialogs: { [index: string]: Dialog } = {};
-        static build(dialogs: Array<any>) {
-            for (var i = 0; i < dialogs.length; i++) {
-                var dialogObject = dialogs[i];
-                var dialog = new Dialog();
-                dialog.index = i;
-                for (var key in dialogObject) {
-                    if (key === 'states')
-                        this.processStates(dialog, dialogObject['states']);
-                    else
-                        dialog[key] = dialogObject[key];
-                }
-                this.dialogs.push(dialog);
-                this._dialogs[dialog.key] = dialog;
-            }
-        }
-
-        private static processStates(dialog: Dialog, states: Array<any>) {
         }
     }
 
