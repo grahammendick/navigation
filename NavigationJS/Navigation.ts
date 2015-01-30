@@ -42,8 +42,7 @@
                 data['c1'] = StateContext.state.id;
             }
             for (var key in navigationData) {
-                if (navigationData[key])
-                    data[key] = navigationData[key];
+                data[key] = navigationData[key];
             }
             if (state.trackCrumbTrail && StateContext.state) {
                 var returnDataString = this.formatReturnData(returnData);
@@ -57,8 +56,7 @@
         private static formatReturnData(returnData: any) {
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
-                if (returnData[key])
-                    returnDataArray.push(key + '1_' + returnData[key]);
+                returnDataArray.push(key + '1_' + returnData[key]);
             }
             return returnDataArray.join('3_');
         }
