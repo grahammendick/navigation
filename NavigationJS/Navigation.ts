@@ -36,6 +36,54 @@
     }
 
     class CrumbTrailManager {
+        static crumbTrail: string;
+
+        static buildCrumbTrail() {
+            var crumbs = this.getCrumbs(false);
+            if (StateContext.previousState)
+                crumbs.push(new Crumb());
+            crumbs.reverse();
+            var trailString: string = '';
+            for (var i = 0; i < crumbs.length; i++) {
+                trailString += '4_' + crumbs[i].state.id + '5_';
+                trailString += this.formatReturnData(crumbs[i].data);
+            }
+            this.crumbTrail = trailString ? trailString : null;
+        }
+
+        static getCrumbs(setLast: boolean): Array<Crumb> {
+            var crumbTrailArray: Array<Crumb> = [];
+            var arrayCount = 0;
+            var trail = this.crumbTrail;
+            var crumbTrailSize = !trail ? 0 : trail.split('4_').length - 1;
+            var last = true;
+            while (arrayCount < crumbTrailSize) {
+                var stateKey = trail.substring('4_'.length).split('5_')[0];
+                var state = this.getState(stateKey);
+                var navigationData: any;
+                var data = trail.substring((trail.indexOf('5_') + '5_'.length)).split('4_')[0];
+                if (data)
+                    navigationData = {};
+                var nextTrailStart = trail.indexOf('4_', 1);
+                trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
+                crumbTrailArray.push(new Crumb());
+                last = false;
+                arrayCount++;
+            }
+            crumbTrailArray.reverse();
+            return crumbTrailArray;
+        }
+
+        static getState(id: string) {
+            if (!id) return null;
+            var ids = id.split('-');
+            if (ids.length != 2) return null;
+            var dialogIndex = +ids[0];
+            var stateIndex = +ids[1];
+            if (isNaN(dialogIndex) || isNaN(stateIndex)) return null;
+            return StateInfoConfig.dialogs[dialogIndex].states[stateIndex];
+        }
+
         static getHref(state: State, navigationData: any, returnData: any): string {
             var data = {};
             if (state.trackCrumbTrail && StateContext.state) {
@@ -53,7 +101,7 @@
             return state.stateHandler.getNavigationLink(state, data);
         }
 
-        private static formatReturnData(returnData: any) {
+        static formatReturnData(returnData: any): string {
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
                 returnDataArray.push(key + '1_' + returnData[key]);
@@ -71,21 +119,11 @@
             StateContext.state = state;
             StateContext.dialog = state.parent;
             StateContext.data = state.stateHandler.getNavigationData(state, data);
-            StateContext.previousState = this.getState(StateContext.data['c1']);
+            StateContext.previousState = CrumbTrailManager.getState(StateContext.data['c1']);
             delete StateContext.data['c1'];
             StateContext.previousDialog = null;
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;
-        }
-
-        private static getState(id: string) {
-            if (!id) return null;
-            var ids = id.split('-');
-            if (ids.length != 2) return null;
-            var dialogIndex = +ids[0];
-            var stateIndex = +ids[1];
-            if (isNaN(dialogIndex) || isNaN(stateIndex)) return null;
-            return StateInfoConfig.dialogs[dialogIndex].states[stateIndex];
         }
 
         static navigate(action: string, toData?: any) {
