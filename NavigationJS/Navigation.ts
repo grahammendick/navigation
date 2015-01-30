@@ -77,11 +77,7 @@
         static getState(id: string) {
             if (!id) return null;
             var ids = id.split('-');
-            if (ids.length != 2) return null;
-            var dialogIndex = +ids[0];
-            var stateIndex = +ids[1];
-            if (isNaN(dialogIndex) || isNaN(stateIndex)) return null;
-            return StateInfoConfig.dialogs[dialogIndex].states[stateIndex];
+            return StateInfoConfig.dialogs[+ids[0]].states[+ids[1]];
         }
 
         static getHref(state: State, navigationData: any, returnData: any): string {
