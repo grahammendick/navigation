@@ -49,6 +49,7 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[0]);
     });
 
     QUnit.test("RefreshTest", function (assert) {

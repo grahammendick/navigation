@@ -17,7 +17,7 @@
         key: string;
         title: string;
         route: string;
-        trackCrumbTrail: boolean;
+        trackCrumbTrail: boolean = true;
         stateHandler: IStateHandler = new StateHandler();
     }
 
