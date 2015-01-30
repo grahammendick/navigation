@@ -10,7 +10,7 @@
 
         navigateLink(state: Navigation.State, url: string) {
             var data = {};
-            var dataArray = url.split('&');
+            var dataArray = url ? url.split('&') : [];
             var keyValue: Array<string>;
             for (var i = 0; i < dataArray.length; i++) {
                 keyValue = dataArray[i].split('=');

@@ -72,7 +72,7 @@
                 var navigationData: any;
                 var data = trail.substring((trail.indexOf('5_') + '5_'.length)).split('4_')[0];
                 if (data)
-                    navigationData = {};
+                    navigationData = this.parseReturnData(data);
                 var nextTrailStart = trail.indexOf('4_', 1);
                 trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
                 crumbTrailArray.push(new Crumb(navigationData, state, setLast && last));
@@ -117,6 +117,16 @@
         static getRefreshHref(refreshData: any): string {
             return this.getHref(StateContext.state, refreshData, null);
         }
+
+        static parseReturnData(returnData: string): any {
+            var navigationData = {};
+            var returnDataArray = returnData.split('3_');
+            for (var i = 0; i < returnDataArray.length; i++) {
+                var nameValuePair = returnDataArray[i].split('1_');
+                navigationData[nameValuePair[0]] = nameValuePair[1];
+            }
+            return navigationData;
+        }
     }
 
     export class StateController {
@@ -129,6 +139,10 @@
             StateContext.previousDialog = null;
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;
+            CrumbTrailManager.returnData = null;
+            if (StateContext.data['c2'])
+                CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(StateContext.data['c2']);
+            delete StateContext.data['c2'];
         }
 
         static navigate(action: string, toData?: any) {
