@@ -18,9 +18,6 @@
         route: string;
         trackCrumbTrail: boolean;
         stateHandler: IStateHandler = new StateHandler();
-        Id(): string {
-            return this.parent.index.toString() + '-' + this.index.toString();
-        }
     }
 
     export class Transition {
