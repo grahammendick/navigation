@@ -13,6 +13,7 @@
         _transitions: { [index: string]: Transition } = {};
         parent: Dialog;
         index: number;
+        id: string;
         key: string;
         title: string;
         route: string;
@@ -53,6 +54,7 @@
                 var state = new State();
                 state.parent = dialog;
                 state.index = i;
+                state.id = dialog.index + '-' + state.index;
                 for (var key in stateObject) {
                     if (key !== 'transitions')
                         state[key] = stateObject[key];
