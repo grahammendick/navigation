@@ -43,6 +43,7 @@
     QUnit.test("NavigateDialogTest", function (assert) {
         Navigation.StateController.navigate('d0');
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
+        assert.equal(0, Navigation.StateController.crumbs.length);
     });
 
     QUnit.test("NavigateTransitionTest", function (assert) {
