@@ -20,6 +20,7 @@
         getNavigationLink(state: State, data: any): string;
         navigateLink(state: State, url: string);
         getNavigationData(state: State, data: string): any;
+        truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb>;
     }
 
     export class StateHandler implements IStateHandler {
@@ -32,6 +33,18 @@
 
         getNavigationData(state: State, data: any): any {
             return null;
+        }
+
+        truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb> {
+            var newCrumbs: Array<Crumb> = [];
+            if (state.parent.initial === state)
+                return newCrumbs;
+            for (var i = 0; i < crumbs.length; i++) {
+                if (crumbs[i].state === state)
+                    break;
+                newCrumbs.push(crumbs[i]);
+            }
+            return newCrumbs;
         }
     }
 
@@ -51,6 +64,7 @@
             var crumbs = this.getCrumbs(false);
             if (StateContext.previousState)
                 crumbs.push(new Crumb(this.returnData, StateContext.previousState, false));
+            crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
             crumbs.reverse();
             var trailString: string = '';
             for (var i = 0; i < crumbs.length; i++) {
