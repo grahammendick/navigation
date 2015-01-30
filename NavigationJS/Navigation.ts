@@ -36,12 +36,31 @@
     }
 
     class CrumbTrailManager {
-        static getHref(nextState: State, navigationData: any, returnData: any): string {
+        static getHref(state: State, navigationData: any, returnData: any): string {
             var data = {};
-            for (var key in navigationData) {
-                data[key] = navigationData[key];
+            if (state.trackCrumbTrail && StateContext.state) {
+                data['c1'] = StateContext.state.id;
             }
-            return nextState.stateHandler.getNavigationLink(nextState, data);
+            for (var key in navigationData) {
+                if (navigationData[key])
+                    data[key] = navigationData[key];
+            }
+            if (state.trackCrumbTrail && StateContext.state) {
+                var returnDataString = this.formatReturnData(returnData);
+                if (returnDataString) {
+                    data['c2'] = returnDataString;
+                }
+            }
+            return state.stateHandler.getNavigationLink(state, data);
+        }
+
+        private static formatReturnData(returnData: any) {
+            var returnDataArray: Array<string> = [];
+            for (var key in returnData) {
+                if (returnData[key])
+                    returnDataArray.push(key + '1_' + returnData[key]);
+            }
+            return returnDataArray.join('3_');
         }
 
         static getRefreshHref(refreshData: any): string {
