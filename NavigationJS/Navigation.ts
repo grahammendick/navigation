@@ -130,6 +130,8 @@
     }
 
     export class StateController {
+        static crumbs: Array<Crumb>;
+
         static setStateContext(state: State, data: any) {
             StateContext.state = state;
             StateContext.dialog = state.parent;
@@ -142,6 +144,8 @@
             CrumbTrailManager.returnData = null;
             if (StateContext.data['c2'])
                 CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(StateContext.data['c2']);
+            CrumbTrailManager.buildCrumbTrail();
+            this.crumbs = CrumbTrailManager.getCrumbs(true);
             delete StateContext.data['c2'];
         }
 
