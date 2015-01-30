@@ -51,6 +51,8 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[0]);
         assert.equal(1, Navigation.StateController.crumbs.length);
+        assert.equal(Navigation.StateContext.dialog.initial, Navigation.StateController.crumbs[0].state);
+        assert.ok(Navigation.StateController.crumbs[0].last);
     });
 
     QUnit.test("RefreshTest", function (assert) {
