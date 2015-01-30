@@ -28,7 +28,9 @@
         { key: 'd0', initial: 's0', states: [
             { key: 's0', route: 'r0', transitions: [
                 { key: 't0', to : 's1' }] },
-            { key: 's1', route: 'r1' }] }
+            { key: 's1', route: 'r1', transitions: [
+                { key: 't0', to: 's2' }] },
+            { key: 's2', route: 'r2' }] }
     ]);
     for (var dialogKey in Navigation.StateInfoConfig._dialogs) {
         var dialog = Navigation.StateInfoConfig._dialogs[dialogKey];
@@ -54,6 +56,19 @@
         assert.equal(1, Navigation.StateController.crumbs.length);
         assert.equal(Navigation.StateContext.dialog.initial, Navigation.StateController.crumbs[0].state);
         assert.ok(Navigation.StateController.crumbs[0].last);
+    });
+
+    QUnit.test("NavigateTransitionTransitionTest", function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s2']);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[1]);
+        assert.equal(2, Navigation.StateController.crumbs.length);
+        assert.equal(Navigation.StateContext.dialog.initial, Navigation.StateController.crumbs[0].state);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateController.crumbs[1].state);
+        assert.ok(!Navigation.StateController.crumbs[0].last);
+        assert.ok(Navigation.StateController.crumbs[1].last);
     });
 
     QUnit.test("RefreshTest", function (assert) {
