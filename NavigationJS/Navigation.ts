@@ -71,7 +71,21 @@
     export class StateController {
         static setStateContext(state: State, data: any) {
             StateContext.state = state;
+            StateContext.dialog = state.parent;
             StateContext.data = state.stateHandler.getNavigationData(state, data);
+            StateContext.previousState = this.getState(StateContext.data['c1']);
+            if (StateContext.previousState)
+                StateContext.previousDialog = StateContext.previousState.parent;
+        }
+
+        private static getState(id: string) {
+            if (!id) return null;
+            var ids = id.split('-');
+            if (ids.length != 2) return null;
+            var dialogIndex = +ids[0];
+            var stateIndex = +ids[1];
+            if (isNaN(dialogIndex) || isNaN(stateIndex)) return null;
+            return StateInfoConfig.dialogs[dialogIndex].states[stateIndex];
         }
 
         static navigate(action: string, toData?: any) {
