@@ -51,6 +51,13 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
     });
 
+    QUnit.test("RefreshTest", function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.refresh();
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[1]);
+    });
+
     QUnit.module('NavigationDataTest', {
     });
 
