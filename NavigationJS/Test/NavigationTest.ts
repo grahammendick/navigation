@@ -62,14 +62,14 @@
     });
 
     QUnit.test("NavigateStringDataTest", function (assert) {
-        Navigation.StateController.navigate('d0', { 'string': 'hello' });
-        assert.equal(Navigation.StateContext.data['string'], 'hello');
+        Navigation.StateController.navigate('d0', { s: 'hello' });
+        assert.equal(Navigation.StateContext.data.s, 'hello');
     });
 
     QUnit.test("NavigateNumberDataTest", function (assert) {
         Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0', { 'number': 1 });
-        assert.equal(Navigation.StateContext.data['number'], 1);
+        Navigation.StateController.navigate('t0', { n: 1 });
+        assert.equal(Navigation.StateContext.data.n, 1);
     });
 
     QUnit.test("NavigateRefreshDataTest", function (assert) {
