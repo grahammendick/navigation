@@ -117,6 +117,8 @@
                     data['c2'] = returnDataString;
                 }
             }
+            if (this.crumbTrail && state.trackCrumbTrail)
+                data['c3'] = this.crumbTrail;
             return state.stateHandler.getNavigationLink(state, data);
         }
 
@@ -151,16 +153,18 @@
             StateContext.dialog = state.parent;
             StateContext.data = state.stateHandler.getNavigationData(state, data);
             StateContext.previousState = CrumbTrailManager.getState(StateContext.data['c1']);
-            delete StateContext.data['c1'];
             StateContext.previousDialog = null;
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;
             CrumbTrailManager.returnData = null;
             if (StateContext.data['c2'])
                 CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(StateContext.data['c2']);
+            CrumbTrailManager.crumbTrail = StateContext.data['c3'];
             CrumbTrailManager.buildCrumbTrail();
             this.crumbs = CrumbTrailManager.getCrumbs(true);
+            delete StateContext.data['c1'];
             delete StateContext.data['c2'];
+            delete StateContext.data['c3'];
         }
 
         static navigate(action: string, toData?: any) {
