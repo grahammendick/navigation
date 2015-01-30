@@ -75,6 +75,7 @@
             StateContext.data = state.stateHandler.getNavigationData(state, data);
             StateContext.previousState = this.getState(StateContext.data['c1']);
             delete StateContext.data['c1'];
+            StateContext.previousDialog = null;
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;
         }
