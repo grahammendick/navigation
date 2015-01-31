@@ -4,11 +4,13 @@
         state: State;
         last: boolean;
         private _navigationLink; string;
+
         constructor(data: any, state: State, last: boolean) {
             this.data = data;
             this.state = state;
             this.last = last;
         }
+
         getNavigationLink(): string {
             if (!this._navigationLink)
                 this._navigationLink = CrumbTrailManager.getHref(this.state, this.data, null);
@@ -54,6 +56,18 @@
         static state: State;
         static dialog: Dialog;
         static data: any;
+
+        static newCurrentData(keys?: Array<string>): any {
+            if (!keys) {
+                keys = [];
+                for (var key in this.data)
+                    keys.push(key);
+            }
+            var data: any = {};
+            for (var i = 0; i < keys.length; i++)
+                data[keys[i]] = this.data[keys[i]];
+            return data;
+        }
     }
 
     class CrumbTrailManager {
