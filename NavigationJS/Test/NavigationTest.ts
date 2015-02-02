@@ -181,11 +181,124 @@
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
+    QUnit.test('NavigateInvalidActionTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateController.navigate('d1');
+            Navigation.StateController.navigate('t1');
+        });
+    });
+
+    QUnit.test('NavigateNullActionTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateController.navigate('d1');
+            Navigation.StateController.navigate(null);
+        });
+    });
+
     QUnit.test('RefreshTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.refresh();
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[1]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
+        assert.ok(Navigation.StateController.crumbs[0].last);
+        assert.notEqual(Navigation.StateController.getRefreshLink(), null);
+    });
+
+    QUnit.test('RefreshWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.refresh();
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[2]);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateContext.previousDialog, null);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+        assert.notEqual(Navigation.StateController.getRefreshLink(), null);
+    });
+
+    QUnit.test('NavigateBackOneTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t2');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[3]);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
+    QUnit.test('NavigateBackOneWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[2]);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateContext.previousDialog, null);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
+    QUnit.test('NavigateBackTwoTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[2]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[4]);
+        assert.equal(Navigation.StateController.crumbs.length, 2);
+        assert.ok(!Navigation.StateController.crumbs[0].last);
+        assert.ok(Navigation.StateController.crumbs[1].last);
+        for (var i = 0; i < Navigation.StateController.crumbs.length; i++) {
+            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig.dialogs[0].states[i]);
+        }
+    });
+
+    QUnit.test('NavigateBackTwoWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[4]);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateContext.previousDialog, null);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
+    QUnit.test('NavigateBackOneByOneTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t1');
+        Navigation.StateController.navigate('t1');
+        Navigation.StateController.navigateBack(1);
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
+        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs[0].states[0].parent);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state.transitions[1].to);
+        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateContext.state.transitions[1].to.parent);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
+    QUnit.test('NavigateBackOneByOneWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[4]);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateContext.previousDialog, null);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
     QUnit.module('NavigationDataTest', {
