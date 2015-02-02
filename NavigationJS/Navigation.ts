@@ -253,9 +253,8 @@
         }
 
         private static getCrumb(distance: number): Crumb {
-            if (distance > this.crumbs.length || distance <= 0) {
+            if (distance > this.crumbs.length || distance <= 0)
                 throw new Error('Invalid distance');
-            }
             return this.crumbs[this.crumbs.length - distance];
         }
     }
