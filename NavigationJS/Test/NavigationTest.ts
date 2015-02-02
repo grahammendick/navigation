@@ -25,12 +25,57 @@
     }
 
     Navigation.StateInfoConfig.build([
-        { key: 'd0', initial: 's0', states: [
-            { key: 's0', route: 'r0', transitions: [
-                { key: 't0', to : 's1' }] },
-            { key: 's1', route: 'r1', transitions: [
-                { key: 't0', to: 's2' }] },
-            { key: 's2', route: 'r2' }] }
+        { key: 'd0', initial: 's0', title: 'd0', states: [
+            { key: 's0', route: 'r0', title: 's0', transitions: [
+                { key: 't0', to: 's1' },
+                { key: 't1', to: 's2' },
+                { key: 't2', to: 's3' },
+                { key: 't3', to: 's4' }]},
+            { key: 's1', route: 'r1', title: 's1', transitions: [
+                { key: 't0', to: 's2' },
+                { key: 't1', to: 's3' },
+                { key: 't2', to: 's4' }]},
+            { key: 's2', route: 'r2', title: 's2', transitions: [
+                { key: 't0', to: 's3' },
+                { key: 't1', to: 's4' }]},
+            { key: 's3', route: 'r3', title: 's3', transitions: [
+                { key: 't0', to: 's4' }]},
+            { key: 's4', route: 'r4', title: 's4'}
+        ]},
+        { key: 'd1', initial: 's0', title: 'd1', states: [
+            { key: 's0', route: 'r0', title: 's0', transitions: [
+                { key: 't0', to: 's1' }]},
+            { key: 's1', route: 'r1', title: 's1', transitions: [
+                { key: 't0', to: 's2' }]},
+            { key: 's2', route: 'r2', title: 's2', transitions: [
+                { key: 't0', to: 's3' }]},
+            { key: 's3', route: 'r3', title: 's3', transitions: [
+                { key: 't0', to: 's4' }]},
+            { key: 's4', route: 'r4', title: 's4', transitions: [
+                { key: 't0', to: 's5' }]},
+            { key: 's5', route: 'r5', title: 's5', transitions: [
+                { key: 't0', to: 's0' },
+                { key: 't1', to: 's1' },
+                { key: 't2', to: 's2' },
+                { key: 't3', to: 's3' },
+                { key: 't4', to: 's4' }]}
+        ]},
+        { key: 'd2', initial: 's0', title: 'd2', states: [
+            { key: 's0', route: 'r0', title: 's0', trackCrumbTrail: false, transitions: [
+                { key: 't0', to: 's1' }]},
+            { key: 's1', route: 'r1', title: 's1', trackCrumbTrail: true, transitions: [
+                { key: 't0', to: 's2' }]},
+            { key: 's2', route: 'r2', title: 's2', trackCrumbTrail: false, transitions: [
+                { key: 't0', to: 's3' }]},
+            { key: 's3', route: 'r3', title: 's3', trackCrumbTrail: true, transitions: [
+                { key: 't0', to: 's4' }]},
+            { key: 's4', route: 'r4', title: 's4', trackCrumbTrail: false, transitions: [
+                { key: 't0', to: 's5' }]},
+            { key: 's5', route: 'r5', title: 's5', transitions: [
+                { key: 't0', to: 's6' }]},
+            { key: 's6', route: 'r6', title: 's6', transitions: [
+                { key: 't0', to: 's0' }]}
+        ]}
     ]);
     for (var dialogKey in Navigation.StateInfoConfig._dialogs) {
         var dialog = Navigation.StateInfoConfig._dialogs[dialogKey];
@@ -42,13 +87,41 @@
     QUnit.module('NavigationTest', {
     });
 
-    QUnit.test("NavigateDialogTest", function (assert) {
+    QUnit.test('NavigateDialogTest', function (assert) {
         Navigation.StateController.navigate('d0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0'].initial);
         assert.equal(0, Navigation.StateController.crumbs.length);
     });
 
-    QUnit.test("NavigateTransitionTest", function (assert) {
+    QUnit.test('NavigateInvalidDialogTest', function (assert) {
+        assert.throws(() => Navigation.StateController.navigate('d9'));
+    });
+
+    QUnit.test('NavigateCrossDialogTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('d1');
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d1'].initial);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
+        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig._dialogs['d0']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d1']._states['s0']);
+        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs['d1']);
+        assert.equal(0, Navigation.StateController.crumbs.length);
+    });
+
+    QUnit.test('NavigateCrossDialogWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('d2');
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2'].initial);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateContext.previousDialog, null);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2']._states['s0']);
+        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs['d2']);
+        assert.equal(0, Navigation.StateController.crumbs.length);
+    });
+
+    QUnit.test('NavigateTransitionTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
@@ -58,7 +131,7 @@
         assert.ok(Navigation.StateController.crumbs[0].last);
     });
 
-    QUnit.test("NavigateTransitionTransitionTest", function (assert) {
+    QUnit.test('NavigateTransitionTransitionTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
@@ -71,7 +144,7 @@
         assert.ok(Navigation.StateController.crumbs[1].last);
     });
 
-    QUnit.test("RefreshTest", function (assert) {
+    QUnit.test('RefreshTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.refresh();
@@ -81,18 +154,18 @@
     QUnit.module('NavigationDataTest', {
     });
 
-    QUnit.test("NavigateStringDataTest", function (assert) {
+    QUnit.test('NavigateStringDataTest', function (assert) {
         Navigation.StateController.navigate('d0', { s: 'hello' });
         assert.equal(Navigation.StateContext.data.s, 'hello');
     });
 
-    QUnit.test("NavigateNumberDataTest", function (assert) {
+    QUnit.test('NavigateNumberDataTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0', { n: 1 });
         assert.equal(Navigation.StateContext.data.n, 1);
     });
 
-    QUnit.test("NavigateRefreshDataTest", function (assert) {
+    QUnit.test('NavigateRefreshDataTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.refresh({ s: 'hello' });
