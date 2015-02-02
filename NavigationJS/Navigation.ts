@@ -235,7 +235,7 @@
             state.stateHandler.navigateLink(state, url);
         }
 
-        private static getNextState(action: string): State {
+        static getNextState(action: string): State {
             if (!action)
                 throw new Error('action is required');
             var nextState: State = null;
