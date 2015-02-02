@@ -73,6 +73,7 @@
     class CrumbTrailManager {
         static returnData: any;
         static crumbTrail: string;
+        private static SEPARATOR = '_';
         private static RET_1_SEP = '1_';
         private static RET_2_SEP = '2_';
         private static RET_3_SEP = '3_';
@@ -141,12 +142,20 @@
             return state.stateHandler.getNavigationLink(state, data);
         }
 
-        static formatReturnData(returnData: any): string {
+        private static formatReturnData(returnData: any): string {
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
-                returnDataArray.push(key + this.RET_1_SEP + returnData[key]);
+                returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key]));
             }
             return returnDataArray.join(this.RET_3_SEP);
+        }
+
+        private static decodeUrlValue(urlValue: string): string {
+            return urlValue.replace('0' + this.SEPARATOR, this.SEPARATOR); 
+        }
+
+        private static encodeUrlValue(urlValue: string): string {
+            return urlValue.replace(this.SEPARATOR, '0' + this.SEPARATOR);
         }
 
         static getRefreshHref(refreshData: any): string {
@@ -158,7 +167,7 @@
             var returnDataArray = returnData.split(this.RET_3_SEP);
             for (var i = 0; i < returnDataArray.length; i++) {
                 var nameValuePair = returnDataArray[i].split(this.RET_1_SEP);
-                navigationData[nameValuePair[0]] = nameValuePair[1];
+                navigationData[this.decodeUrlValue(nameValuePair[0])] = this.decodeUrlValue(nameValuePair[1]);
             }
             return navigationData;
         }
