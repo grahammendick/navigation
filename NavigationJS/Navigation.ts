@@ -190,6 +190,15 @@
             return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
         }
 
+        static navigateBack(distance: number) {
+            var url = this.getNavigationBackLink(distance);
+            this.navigateLink(this.getCrumb(distance).state, url);
+        }
+
+        static getNavigationBackLink(distance: number): string {
+            return this.getCrumb(distance).getNavigationLink();
+        }
+
         static refresh(toData?: any) {
             var url = this.getRefreshLink(toData);
             this.navigateLink(StateContext.state, url);
@@ -214,6 +223,13 @@
             if (!nextState)
                 throw new Error('invalid action');
             return nextState;
+        }
+
+        private static getCrumb(distance: number): Crumb {
+            if (distance > this.crumbs.length || distance <= 0) {
+                throw new Error('Invalid distance');
+            }
+            return this.crumbs[this.crumbs.length - distance];
         }
     }
 
