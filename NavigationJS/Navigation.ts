@@ -129,7 +129,8 @@
                 data['c1'] = StateContext.state.id;
             }
             for (var key in navigationData) {
-                data[key] = navigationData[key];
+                if (navigationData[key] != null && navigationData[key].toString())
+                    data[key] = navigationData[key];
             }
             if (state.trackCrumbTrail && StateContext.state) {
                 var returnDataString = this.formatReturnData(returnData);
@@ -145,7 +146,8 @@
         private static formatReturnData(returnData: any): string {
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
-                returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key]));
+                if (returnData[key] != null && returnData[key].toString())
+                    returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key]));
             }
             return returnDataArray.join(this.RET_3_SEP);
         }
