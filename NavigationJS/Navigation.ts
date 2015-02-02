@@ -3,12 +3,14 @@
         data: any;
         state: State;
         last: boolean;
+        title: string;
         private _navigationLink; string;
 
         constructor(data: any, state: State, last: boolean) {
             this.data = data;
             this.state = state;
             this.last = last;
+            this.title = state.title;
         }
 
         getNavigationLink(): string {
@@ -202,6 +204,13 @@
 
         static getNavigationLink(action: string, toData?: any): string {
             return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
+        }
+
+        static canNavigateBack(distance: number) {
+            var canNavigate = false;
+            if (distance <= this.crumbs.length && distance > 0)
+                canNavigate = true;
+            return canNavigate
         }
 
         static navigateBack(distance: number) {
