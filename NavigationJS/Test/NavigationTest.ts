@@ -22,21 +22,6 @@
         getNavigationData(state: Navigation.State, data: any): any {
             return data;
         }
-
-        truncateCrumbTrail(state: Navigation.State, crumbs: Array<Navigation.Crumb>): Array<Navigation.Crumb> {
-            var newCrumbs: Array<Navigation.Crumb> = [];
-            var d6Crumbs: Array<Navigation.Crumb> = [];
-            if (state.parent.key === 'd6') {
-                for (var i = 0; i < crumbs.length; i++) {
-                    if (crumbs[i].state.parent.key === 'd0')
-                        newCrumbs.push(crumbs[i]);
-                    if (crumbs[i].state.parent.key === 'd6')
-                        d6Crumbs.push(crumbs[i]);
-                }
-            }
-            newCrumbs = newCrumbs.concat(super.truncateCrumbTrail(state, state.parent.key !== 'd6' ? crumbs : d6Crumbs));
-            return newCrumbs;
-        }
     }
 
     Navigation.StateInfoConfig.build([
@@ -97,10 +82,30 @@
             { key: 's1', route: 'r1', title: 's1'}
         ]}
     ]);
+
     for (var dialogKey in Navigation.StateInfoConfig._dialogs) {
         var dialog = Navigation.StateInfoConfig._dialogs[dialogKey];
         for (var stateKey in dialog._states) {
+            var oldStateHandler = dialog._states[stateKey].stateHandler;
             dialog._states[stateKey].stateHandler = new StateHandler();
+            if (dialog._states[stateKey].parent.key === 'd6') {
+                dialog._states[stateKey].stateHandler.truncateCrumbTrail = getCustomCrumbTrailTruncation(oldStateHandler);
+            }
+        }
+    }
+
+    function getCustomCrumbTrailTruncation(oldStateHandler: Navigation.IStateHandler) {
+        return (state, crumbs) => {
+            var newCrumbs: Array<Navigation.Crumb> = [];
+            var d6Crumbs: Array<Navigation.Crumb> = [];
+            for (var i = 0; i < crumbs.length; i++) {
+                if (crumbs[i].state.parent.key === 'd0')
+                    newCrumbs.push(crumbs[i]);
+                if (crumbs[i].state.parent.key === 'd6')
+                    d6Crumbs.push(crumbs[i]);
+            }
+            newCrumbs = newCrumbs.concat(oldStateHandler.truncateCrumbTrail(state, d6Crumbs));
+            return newCrumbs;
         }
     }
 
