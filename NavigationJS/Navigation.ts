@@ -73,6 +73,11 @@
     class CrumbTrailManager {
         static returnData: any;
         static crumbTrail: string;
+        private static RET_1_SEP = '1_';
+        private static RET_2_SEP = '2_';
+        private static RET_3_SEP = '3_';
+        private static CRUMB_1_SEP = '4_';
+        private static CRUMB_2_SEP = '5_';
 
         static buildCrumbTrail() {
             var crumbs = this.getCrumbs(false);
@@ -82,7 +87,7 @@
             crumbs.reverse();
             var trailString: string = '';
             for (var i = 0; i < crumbs.length; i++) {
-                trailString += '4_' + crumbs[i].state.id + '5_';
+                trailString += this.CRUMB_1_SEP + crumbs[i].state.id + this.CRUMB_2_SEP;
                 trailString += this.formatReturnData(crumbs[i].data);
             }
             this.crumbTrail = trailString ? trailString : null;
@@ -92,16 +97,16 @@
             var crumbTrailArray: Array<Crumb> = [];
             var arrayCount = 0;
             var trail = this.crumbTrail;
-            var crumbTrailSize = !trail ? 0 : trail.split('4_').length - 1;
+            var crumbTrailSize = !trail ? 0 : trail.split(this.CRUMB_1_SEP).length - 1;
             var last = true;
             while (arrayCount < crumbTrailSize) {
-                var stateKey = trail.substring('4_'.length).split('5_')[0];
+                var stateKey = trail.substring(this.CRUMB_1_SEP.length).split(this.CRUMB_2_SEP)[0];
                 var state = this.getState(stateKey);
                 var navigationData: any;
-                var data = trail.substring((trail.indexOf('5_') + '5_'.length)).split('4_')[0];
+                var data = trail.substring((trail.indexOf(this.CRUMB_2_SEP) + this.CRUMB_2_SEP.length)).split(this.CRUMB_1_SEP)[0];
                 if (data)
                     navigationData = this.parseReturnData(data);
-                var nextTrailStart = trail.indexOf('4_', 1);
+                var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
                 trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
                 crumbTrailArray.push(new Crumb(navigationData, state, setLast && last));
                 last = false;
@@ -139,9 +144,9 @@
         static formatReturnData(returnData: any): string {
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
-                returnDataArray.push(key + '1_' + returnData[key]);
+                returnDataArray.push(key + this.RET_1_SEP + returnData[key]);
             }
-            return returnDataArray.join('3_');
+            return returnDataArray.join(this.RET_3_SEP);
         }
 
         static getRefreshHref(refreshData: any): string {
@@ -150,9 +155,9 @@
 
         static parseReturnData(returnData: string): any {
             var navigationData = {};
-            var returnDataArray = returnData.split('3_');
+            var returnDataArray = returnData.split(this.RET_3_SEP);
             for (var i = 0; i < returnDataArray.length; i++) {
-                var nameValuePair = returnDataArray[i].split('1_');
+                var nameValuePair = returnDataArray[i].split(this.RET_1_SEP);
                 navigationData[nameValuePair[0]] = nameValuePair[1];
             }
             return navigationData;
