@@ -125,18 +125,16 @@
 
         static getHref(state: State, navigationData: any, returnData: any): string {
             var data = {};
-            if (state.trackCrumbTrail && StateContext.state) {
+            if (state.trackCrumbTrail && StateContext.state)
                 data['c1'] = StateContext.state.id;
-            }
             for (var key in navigationData) {
                 if (navigationData[key] != null && navigationData[key].toString())
                     data[key] = navigationData[key];
             }
             if (state.trackCrumbTrail && StateContext.state) {
                 var returnDataString = this.formatReturnData(returnData);
-                if (returnDataString) {
+                if (returnDataString)
                     data['c2'] = returnDataString;
-                }
             }
             if (this.crumbTrail && state.trackCrumbTrail)
                 data['c3'] = this.crumbTrail;
