@@ -29,14 +29,35 @@
 
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
-            return null;
+            var route = Router.getRoute(state, data);
+            var routeData = Router.getData(route);
+            var query: Array<string> = [];
+            for (var key in data) {
+                if (!routeData || routeData[key] == null)
+                    query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+            }
+            if (query.length > 0)
+                route += '?' + query.join('&');
+            return route;
         }
 
         navigateLink(state: State, url: string) {
+            var queryIndex = url.indexOf('?');
+            var data = Router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex));
+            data = data ? data : {};
+            if (queryIndex >= 0) {
+                var query = url.substring(queryIndex + 1);
+                var params = query.split('&');
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i].split('=');
+                    data[decodeURIComponent(param[0])] = decodeURIComponent(param[1]);
+                }
+            }
+            StateController.setStateContext(state, data);
         }
 
         getNavigationData(state: State, data: any): any {
-            return null;
+            return data;
         }
 
         truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb> {
@@ -51,6 +72,13 @@
             return newCrumbs;
         }
     }
+
+    export interface IRouter {
+        getData(route: string): any;
+        getRoute(state: State, data: any): string;
+    }
+
+    export var Router: IRouter;
 
     export class StateContext {
         static previousState: State;
@@ -127,6 +155,7 @@
 
         static getHref(state: State, navigationData: any, returnData: any): string {
             var data = {};
+            data['c0'] = state.id;
             if (state.trackCrumbTrail && StateContext.state)
                 data['c1'] = StateContext.state.id;
             for (var key in navigationData) {
