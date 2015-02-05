@@ -1,26 +1,16 @@
 ﻿module NavigationTest {
     export class StateHandler extends Navigation.StateHandler {
-        getNavigationLink(state: Navigation.State, data: any): string {
-            var dataArray: Array<string> = [];
-            for (var key in data) {
-                dataArray.push(key + '=' + data[key]);
+        truncateCrumbTrail(state: Navigation.State, crumbs: Array<Navigation.Crumb>): Array<Navigation.Crumb> {
+            var newCrumbs: Array<Navigation.Crumb> = [];
+            var d6Crumbs: Array<Navigation.Crumb> = [];
+            for (var i = 0; i < crumbs.length; i++) {
+                if (crumbs[i].state.parent.key === 'd0')
+                    newCrumbs.push(crumbs[i]);
+                if (crumbs[i].state.parent.key === 'd6')
+                    d6Crumbs.push(crumbs[i]);
             }
-            return dataArray.join('&');
-        }
-
-        navigateLink(state: Navigation.State, url: string) {
-            var data = {};
-            var dataArray = url ? url.split('&') : [];
-            var keyValue: Array<string>;
-            for (var i = 0; i < dataArray.length; i++) {
-                keyValue = dataArray[i].split('=');
-                data[keyValue[0]] = keyValue[1];
-            }
-            Navigation.StateController.setStateContext(state, data);
-        }
-
-        getNavigationData(state: Navigation.State, data: any): any {
-            return data;
+            newCrumbs = newCrumbs.concat(super.truncateCrumbTrail(state, d6Crumbs));
+            return newCrumbs;
         }
     }
 
@@ -83,29 +73,27 @@
         ]}
     ]);
 
+    var state: Navigation.State;
     for (var dialogKey in Navigation.StateInfoConfig.dialogs) {
         var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
         for (var stateKey in dialog.states) {
+            var route = window['crossroads'].addRoute(dialog.states[stateKey].route, () => {
+                state = dialog.states[stateKey];
+            });
+            dialog.states[stateKey]['_route'] = route;
             var oldStateHandler = dialog.states[stateKey].stateHandler;
-            dialog.states[stateKey].stateHandler = new StateHandler();
             if (dialog.states[stateKey].parent.key === 'd6') {
-                dialog.states[stateKey].stateHandler.truncateCrumbTrail = getCustomCrumbTrailTruncation(oldStateHandler);
+                dialog.states[stateKey].stateHandler = new StateHandler();
             }
         }
     }
 
-    function getCustomCrumbTrailTruncation(oldStateHandler: Navigation.IStateHandler) {
-        return (state, crumbs) => {
-            var newCrumbs: Array<Navigation.Crumb> = [];
-            var d6Crumbs: Array<Navigation.Crumb> = [];
-            for (var i = 0; i < crumbs.length; i++) {
-                if (crumbs[i].state.parent.key === 'd0')
-                    newCrumbs.push(crumbs[i]);
-                if (crumbs[i].state.parent.key === 'd6')
-                    d6Crumbs.push(crumbs[i]);
-            }
-            newCrumbs = newCrumbs.concat(oldStateHandler.truncateCrumbTrail(state, d6Crumbs));
-            return newCrumbs;
+    Navigation.Router = {
+        getData: (route: String) => {
+            return null;
+        },
+        getRoute: (state: Navigation.State, data: any) => {
+            return state['_route'].interpolate(data);
         }
     }
 
