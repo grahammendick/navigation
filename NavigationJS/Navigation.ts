@@ -29,6 +29,7 @@
 
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
+            delete data['c0'];
             var route = Router.getRoute(state, data);
             var routeData = Router.getData(route);
             var query: Array<string> = [];
