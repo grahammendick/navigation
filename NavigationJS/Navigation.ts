@@ -23,7 +23,7 @@
     export interface IStateHandler {
         getNavigationLink(state: State, data: any): string;
         navigateLink(state: State, url: string);
-        getNavigationData(state: State, data: string): any;
+        getNavigationData(state: State, url: string): any;
         truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb>;
     }
 
@@ -43,6 +43,10 @@
         }
 
         navigateLink(state: State, url: string) {
+            StateController.setStateContext(state, url);
+        }
+
+        getNavigationData(state: State, url: string): any {
             var queryIndex = url.indexOf('?');
             var data = Router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex));
             data = data ? data : {};
@@ -54,10 +58,6 @@
                     data[decodeURIComponent(param[0])] = decodeURIComponent(param[1]);
                 }
             }
-            StateController.setStateContext(state, data);
-        }
-
-        getNavigationData(state: State, data: any): any {
             return data;
         }
 
@@ -208,11 +208,11 @@
     export class StateController {
         static crumbs: Array<Crumb>;
 
-        static setStateContext(state: State, data: any) {
+        static setStateContext(state: State, url: string) {
             try {
                 StateContext.state = state;
                 StateContext.dialog = state.parent;
-                StateContext.data = state.stateHandler.getNavigationData(state, data);
+                StateContext.data = state.stateHandler.getNavigationData(state, url);
                 StateContext.previousState = CrumbTrailManager.getState(StateContext.data['c1']);
                 StateContext.previousDialog = null;
                 if (StateContext.previousState)
