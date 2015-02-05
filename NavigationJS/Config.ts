@@ -1,7 +1,7 @@
 ﻿module Navigation {
     export class Dialog {
-        states: Array<State> = [];
-        _states: { [index: string]: State } = {};
+        _states: Array<State> = [];
+        states: { [index: string]: State } = {};
         index: number;
         initial: State;
         key: string;
@@ -9,8 +9,8 @@
     }
 
     export class State {
-        transitions: Array<Transition> = [];
-        _transitions: { [index: string]: Transition } = {};
+        _transitions: Array<Transition> = [];
+        transitions: { [index: string]: Transition } = {};
         parent: Dialog;
         index: number;
         id: string;
@@ -29,8 +29,8 @@
     }
 
     export class StateInfoConfig {
-        static dialogs: Array<Dialog> = [];
-        static _dialogs: { [index: string]: Dialog } = {};
+        static _dialogs: Array<Dialog> = [];
+        static dialogs: { [index: string]: Dialog } = {};
         static build(dialogs: Array<any>) {
             for (var i = 0; i < dialogs.length; i++) {
                 var dialogObject = dialogs[i];
@@ -40,11 +40,11 @@
                     if (key !== 'states')
                         dialog[key] = dialogObject[key];
                 }
-                this.dialogs.push(dialog);
-                this._dialogs[dialog.key] = dialog;
+                this._dialogs.push(dialog);
+                this.dialogs[dialog.key] = dialog;
                 this.processStates(dialog, dialogObject);
                 this.processTransitions(dialog, dialogObject);
-                dialog.initial = dialog._states[dialogObject.initial];
+                dialog.initial = dialog.states[dialogObject.initial];
             }
         }
 
@@ -59,8 +59,8 @@
                     if (key !== 'transitions')
                         state[key] = stateObject[key];
                 }
-                dialog.states.push(state);
-                dialog._states[state.key] = state;
+                dialog._states.push(state);
+                dialog.states[state.key] = state;
             }
         }
 
@@ -71,10 +71,10 @@
                         var transitionObject = dialogObject.states[i].transitions[j];
                         var transition = new Transition();
                         transition.key = transitionObject.key;
-                        transition.parent = dialog.states[i];
-                        transition.to = dialog._states[transitionObject.to];
-                        transition.parent.transitions.push(transition);
-                        transition.parent._transitions[transition.key] = transition;
+                        transition.parent = dialog._states[i];
+                        transition.to = dialog.states[transitionObject.to];
+                        transition.parent._transitions.push(transition);
+                        transition.parent.transitions[transition.key] = transition;
                     }
                 }
             }

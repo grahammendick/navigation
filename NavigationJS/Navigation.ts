@@ -122,7 +122,7 @@
         static getState(id: string) {
             if (!id) return null;
             var ids = id.split('-');
-            return StateInfoConfig.dialogs[+ids[0]].states[+ids[1]];
+            return StateInfoConfig._dialogs[+ids[0]]._states[+ids[1]];
         }
 
         static getHref(state: State, navigationData: any, returnData: any): string {
@@ -235,7 +235,7 @@
             return CrumbTrailManager.getRefreshHref(toData);
         }
 
-        private static navigateLink(state: State, url: string) {
+        static navigateLink(state: State, url: string) {
             state.stateHandler.navigateLink(state, url);
         }
 
@@ -243,10 +243,10 @@
             if (!action)
                 throw new Error('action is required');
             var nextState: State = null;
-            if (StateContext.state && StateContext.state._transitions[action])
-                nextState = StateContext.state._transitions[action].to;
-            if (!nextState && StateInfoConfig._dialogs[action])
-                nextState = StateInfoConfig._dialogs[action].initial;
+            if (StateContext.state && StateContext.state.transitions[action])
+                nextState = StateContext.state.transitions[action].to;
+            if (!nextState && StateInfoConfig.dialogs[action])
+                nextState = StateInfoConfig.dialogs[action].initial;
             if (!nextState)
                 throw new Error('invalid action');
             return nextState;
