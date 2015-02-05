@@ -81,7 +81,6 @@
                 state = dialog.states[stateKey];
             });
             dialog.states[stateKey]['_route'] = route;
-            var oldStateHandler = dialog.states[stateKey].stateHandler;
             if (dialog.states[stateKey].parent.key === 'd6') {
                 dialog.states[stateKey].stateHandler = new StateHandler();
             }
