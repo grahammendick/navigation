@@ -83,13 +83,13 @@
         ]}
     ]);
 
-    for (var dialogKey in Navigation.StateInfoConfig._dialogs) {
-        var dialog = Navigation.StateInfoConfig._dialogs[dialogKey];
-        for (var stateKey in dialog._states) {
-            var oldStateHandler = dialog._states[stateKey].stateHandler;
-            dialog._states[stateKey].stateHandler = new StateHandler();
-            if (dialog._states[stateKey].parent.key === 'd6') {
-                dialog._states[stateKey].stateHandler.truncateCrumbTrail = getCustomCrumbTrailTruncation(oldStateHandler);
+    for (var dialogKey in Navigation.StateInfoConfig.dialogs) {
+        var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
+        for (var stateKey in dialog.states) {
+            var oldStateHandler = dialog.states[stateKey].stateHandler;
+            dialog.states[stateKey].stateHandler = new StateHandler();
+            if (dialog.states[stateKey].parent.key === 'd6') {
+                dialog.states[stateKey].stateHandler.truncateCrumbTrail = getCustomCrumbTrailTruncation(oldStateHandler);
             }
         }
     }
@@ -114,7 +114,7 @@
 
     QUnit.test('NavigateDialogTest', function (assert) {
         Navigation.StateController.navigate('d0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0'].initial);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].initial);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
@@ -126,11 +126,11 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d1');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d1'].initial);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
-        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig._dialogs['d0']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d1']._states['s0']);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs['d1']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d0']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
@@ -138,18 +138,18 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d2');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2'].initial);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].initial);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2']._states['s0']);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs['d2']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s0']);
+        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d2']);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
     QUnit.test('NavigateDialogDialogTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('d0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0'].initial);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].initial);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
@@ -157,7 +157,7 @@
     QUnit.test('NavigateDialogDialogWithoutTrailTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('d2');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2'].initial);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].initial);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -166,7 +166,7 @@
     QUnit.test('NavigateTransitionTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.dialog.initial);
         assert.equal(Navigation.StateController.crumbs.length, 1);
         assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
@@ -176,7 +176,7 @@
     QUnit.test('NavigateTransitionFromWithoutTrailTest', function (assert) {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2']._states['s1']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s1']);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.dialog.initial);
         assert.equal(Navigation.StateController.crumbs.length, 1);
         assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
@@ -187,8 +187,8 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t1');
         Navigation.StateController.navigate('t1');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s4']);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs['d0']._states['s2']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
         assert.equal(Navigation.StateController.crumbs.length, 2);
         assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
         assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateContext.previousState);
@@ -200,7 +200,7 @@
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2']._states['s2']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -220,7 +220,7 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.refresh();
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[1]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
         assert.equal(Navigation.StateController.crumbs.length, 1);
         assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
@@ -233,7 +233,7 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.refresh();
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[2]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2]._states[2]);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -244,8 +244,8 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t2');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[3]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[3]);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
@@ -255,7 +255,7 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[2]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2]._states[2]);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -268,13 +268,13 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(2);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[2]);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs[0].states[4]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[2]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[4]);
         assert.equal(Navigation.StateController.crumbs.length, 2);
         assert.ok(!Navigation.StateController.crumbs[0].last);
         assert.ok(Navigation.StateController.crumbs[1].last);
         for (var i = 0; i < Navigation.StateController.crumbs.length; i++) {
-            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig.dialogs[0].states[i]);
+            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig._dialogs[0]._states[i]);
         }
     });
 
@@ -287,7 +287,7 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(2);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[4]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2]._states[4]);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -299,10 +299,10 @@
         Navigation.StateController.navigate('t1');
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[0]);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs[0].states[0].parent);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state.transitions[1].to);
-        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateContext.state.transitions[1].to.parent);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs[0]._states[0].parent);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state._transitions[1].to);
+        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateContext.state._transitions[1].to.parent);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
@@ -316,7 +316,7 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].states[4]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2]._states[4]);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -381,7 +381,7 @@
         Navigation.StateController.navigate('t3');
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.refresh();
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].initial);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0].initial);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
@@ -391,7 +391,7 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.refresh();
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[2].initial);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2].initial);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
         assert.equal(Navigation.StateController.crumbs.length, 0);
@@ -404,14 +404,14 @@
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.refresh();
         Navigation.StateController.navigate('t1');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0']._states['s3']);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s3']);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
         assert.equal(Navigation.StateController.crumbs.length, 2);
         assert.ok(!Navigation.StateController.crumbs[0].last);
         assert.ok(Navigation.StateController.crumbs[1].last);
         for (var i = 0; i < Navigation.StateController.crumbs.length; i++) {
-            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig.dialogs[0].states[i]);
-            assert.equal(Navigation.StateController.crumbs[i].title, Navigation.StateInfoConfig.dialogs[0].states[i].title);
+            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig._dialogs[0]._states[i]);
+            assert.equal(Navigation.StateController.crumbs[i].title, Navigation.StateInfoConfig._dialogs[0]._states[i].title);
         }
     });
 
@@ -423,12 +423,12 @@
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.refresh();
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2']._states['s3']);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs['d2']._states['s2']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s3']);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
         assert.equal(Navigation.StateController.crumbs.length, 1);
         assert.ok(Navigation.StateController.crumbs[0].last);
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs[2].states[2]);
-        assert.equal(Navigation.StateController.crumbs[0].title, Navigation.StateInfoConfig.dialogs[2].states[2].title);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig._dialogs[2]._states[2]);
+        assert.equal(Navigation.StateController.crumbs[0].title, Navigation.StateInfoConfig._dialogs[2]._states[2].title);
     });
 
     QUnit.test('NavigateTransitionWithoutTrailTransitionTest', function (assert) {
@@ -436,8 +436,8 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d2']._states['s3']);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs['d2']._states['s2']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s3']);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
         assert.equal(Navigation.StateController.crumbs.length, 1);
         assert.ok(Navigation.StateController.crumbs[0].last);
     });
@@ -448,10 +448,10 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig._dialogs['d0']._states['s0']);
-        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
-        assert.equal(Navigation.StateController.crumbs[2].state, Navigation.StateInfoConfig._dialogs['d0']._states['s2']);
-        assert.equal(Navigation.StateController.crumbs[3].state, Navigation.StateInfoConfig._dialogs['d0']._states['s3']);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(Navigation.StateController.crumbs[2].state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
+        assert.equal(Navigation.StateController.crumbs[3].state, Navigation.StateInfoConfig.dialogs['d0'].states['s3']);
         assert.equal(Navigation.StateController.crumbs.length, 4);
         assert.ok(!Navigation.StateController.crumbs[0].last);
         assert.ok(!Navigation.StateController.crumbs[1].last);
@@ -463,7 +463,7 @@
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
         var state = Navigation.StateController.getNextState('t0');
-        assert.equal(state, Navigation.StateInfoConfig._dialogs['d2']._states['s2']);
+        assert.equal(state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
     });
 
     QUnit.test('NavigateTransitionTransitionGetCrumbTest', function (assert) {
@@ -471,13 +471,13 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         var crumb = Navigation.StateController.crumbs[1];
-        assert.equal(crumb.state, Navigation.StateInfoConfig._dialogs['d1']._states['s1']);
+        assert.equal(crumb.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
     });
 
     QUnit.test('NavigateDialogDialogCustomTrailTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('d6');
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig._dialogs['d0']._states['s0']);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
@@ -485,8 +485,8 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig._dialogs['d0']._states['s0']);
-        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig._dialogs['d0'].states[1]);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 2);
     });
 
@@ -494,7 +494,7 @@
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0'].states[0]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[0]);
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
@@ -504,7 +504,7 @@
         Navigation.StateController.navigate('d6');
         Navigation.StateController.refresh();
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0'].states[1]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
@@ -513,11 +513,11 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig._dialogs['d0']._states['s0']);
-        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig._dialogs['d0']._states['s1']);
-        assert.equal(Navigation.StateController.crumbs[2].state, Navigation.StateInfoConfig._dialogs['d6']._states['s0']);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(Navigation.StateController.crumbs[2].state, Navigation.StateInfoConfig.dialogs['d6'].states['s0']);
         Navigation.StateController.navigateBack(2);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d0'].states[1]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
@@ -527,7 +527,7 @@
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs['d6'].states[0]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d6']._states[0]);
         assert.equal(Navigation.StateController.crumbs.length, 2);
     });
 
@@ -537,9 +537,9 @@
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[3].states[0]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[3]._states[0]);
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs[0].states[1]);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
