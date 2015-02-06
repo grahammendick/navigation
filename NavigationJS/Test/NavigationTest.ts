@@ -83,10 +83,12 @@
         var d6s0 = dialogs.d6.states.s0;
         var d6s1 = dialogs.d6.states.s1;
         d0s0._route = crossroads.addRoute(d0s0.route, function (s) {
-            data = { s: s };
+            if (s)
+                data = { s: s };
         });
         d2s2._route = crossroads.addRoute(d2s2.route, function (n) {
-            data = { n: n };
+            if (n)
+                data = { n: n };
         });
         d6s0.stateHandler = new StateHandler();
         d6s1.stateHandler = new StateHandler();
@@ -576,10 +578,13 @@
         assert.equal(Navigation.StateContext.data['n'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
     });
 
-    QUnit.test('NavigateNumberDataTest', function (assert) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0', { n: 1 });
-        assert.equal(Navigation.StateContext.data.n, 1);
+    QUnit.test('SeparatorUrlCharacterDataTest', function (assert) {
+        var data = {};
+        data['_0_1_2_3_4_5_'] = '__00__11__22__33__44__55__';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['_0_1_2_3_4_5_'], '__00__11__22__33__44__55__');
     });
 
     QUnit.test('NavigateRefreshDataTest', function (assert) {
