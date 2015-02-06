@@ -560,13 +560,20 @@
 
     QUnit.test('ReservedUrlCharacterDataTest', function (assert) {
         var data = {};
-        data['s'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], }{'
         data['*="/()\'-_+~@:?><.;[],{}!£$%^#'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
         Navigation.StateController.navigate('d0', data);
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['s'], '!#="/£$%^&*()\' - _ +~@:?><.;[], }{');
         assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
+    });
+
+    QUnit.test('ReservedUrlCharacterRouteDataTest', function (assert) {
+        var data = {};
+        data['n'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0', data);
+        assert.equal(Navigation.StateContext.data['n'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
     });
 
     QUnit.test('NavigateNumberDataTest', function (assert) {
