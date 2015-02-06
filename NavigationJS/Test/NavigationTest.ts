@@ -601,6 +601,15 @@
         assert.equal(Navigation.StateContext.data['_0_1_2_3_4_5_'], '__00__11__22__33__44__55__');
     });
 
+    QUnit.test('SeparatorUrlCharacterRouteDataTest', function (assert) {
+        var data = {};
+        data['s'] = '__00__11__22__33__44__55__';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['s'], '__00__11__22__33__44__55__');
+    });
+
     QUnit.test('NavigateRefreshDataTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
