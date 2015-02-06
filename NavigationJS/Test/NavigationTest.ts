@@ -547,16 +547,30 @@
     });
 
     QUnit.test('NavigateDataTest', function (assert) {
-        Navigation.StateController.navigate('d0', { s: 'hello', n: 1 });
-        assert.equal(Navigation.StateContext.data.s, 'hello');
+        Navigation.StateController.navigate('d0', { n: 1 });
+        assert.equal(Navigation.StateContext.data.s, null);
         assert.equal(Navigation.StateContext.data.n, 1);
+    });
+
+    QUnit.test('NavigateRouteDataTest', function (assert) {
+        Navigation.StateController.navigate('d0', { s: 'hello' });
+        assert.equal(Navigation.StateContext.data.s, 'hello');
+        assert.equal(Navigation.StateContext.data.n, null);
     });
 
     QUnit.test('NavigateDataWithoutTrailTest', function (assert) {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0', { s: 'hello', n: 1 });
+        Navigation.StateController.navigate('t0', { s: 'hello' });
         assert.equal(Navigation.StateContext.data.s, 'hello');
+        assert.equal(Navigation.StateContext.data.n, null);
+    });
+
+    QUnit.test('NavigateRouteDataWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0', { n: 1 });
+        assert.equal(Navigation.StateContext.data.s, null);
         assert.equal(Navigation.StateContext.data.n, 1);
     });
 
