@@ -16,16 +16,16 @@
 
     Navigation.StateInfoConfig.build([
         { key: 'd0', initial: 's0', title: 'd0', states: [
-            { key: 's0', route: 'r0', title: 's0', transitions: [
+            { key: 's0', route: 'd0s0/:s:', title: 's0', transitions: [
                 { key: 't0', to: 's1' },
                 { key: 't1', to: 's2' },
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'r1', title: 's1', transitions: [
+            { key: 's1', route: 'd0s1/:s1:/:s2:', title: 's1', transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
                 { key: 't2', to: 's4' }]},
-            { key: 's2', route: 'r2', title: 's2', transitions: [
+            { key: 's2', route: 'd0s2', title: 's2', transitions: [
                 { key: 't0', to: 's3' },
                 { key: 't1', to: 's4' }]},
             { key: 's3', route: 'r3', title: 's3', transitions: [
@@ -77,9 +77,7 @@
     for (var dialogKey in Navigation.StateInfoConfig.dialogs) {
         var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
         for (var stateKey in dialog.states) {
-            var route = window['crossroads'].addRoute(dialog.states[stateKey].route, () => {
-                state = dialog.states[stateKey];
-            });
+            var route = window['crossroads'].addRoute(dialog.states[stateKey].route);
             dialog.states[stateKey]['_route'] = route;
             if (dialog.states[stateKey].parent.key === 'd6') {
                 dialog.states[stateKey].stateHandler = new StateHandler();
@@ -87,14 +85,24 @@
         }
     }
 
-    Navigation.Router = {
-        getData: (route: String) => {
-            return null;
-        },
-        getRoute: (state: Navigation.State, data: any) => {
-            return state['_route'].interpolate(data);
-        }
-    }
+    (function () {
+        var data;
+        var dialogs: any = Navigation.StateInfoConfig.dialogs;
+        dialogs.d0.states.s0._route.matched.add(function (s) {
+            data = { s: s };
+        });
+        Navigation.Router = {
+            getData: (route: String) => {
+                data = null;
+                window['crossroads'].resetState();
+                window['crossroads'].parse(route);
+                return data;
+            },
+            getRoute: (state: Navigation.State, data: any) => {
+                return state['_route'].interpolate(data);
+            }
+        };
+    })();
 
     QUnit.module('NavigationTest', {
     });
