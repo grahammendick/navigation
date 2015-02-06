@@ -94,10 +94,15 @@
             getData: (route: String) => {
                 data = null;
                 crossroads.parse(route);
+                for (var k in data)
+                    data[k] = decodeURIComponent(data[k]);
                 return data;
             },
             getRoute: (state: Navigation.State, data: any) => {
-                return state['_route'] ? state['_route'].interpolate(data) : state.route;
+                var encodedData = {};
+                for (var k in data)
+                    encodedData[k] = encodeURIComponent(data[k]);
+                return state['_route'] ? state['_route'].interpolate(encodedData) : state.route;
             }
         };
     })();
@@ -555,11 +560,13 @@
 
     QUnit.test('ReservedUrlCharacterDataTest', function (assert) {
         var data = {};
-        data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
+        data['s'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], }{'
+        data['*="/()\'-_+~@:?><.;[],{}!£$%^#'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
         Navigation.StateController.navigate('d0', data);
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
+        assert.equal(Navigation.StateContext.data['s'], '!#="/£$%^&*()\' - _ +~@:?><.;[], }{');
+        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
     });
 
     QUnit.test('NavigateNumberDataTest', function (assert) {
