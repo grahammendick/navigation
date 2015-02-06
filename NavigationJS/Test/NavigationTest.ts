@@ -553,6 +553,15 @@
         assert.equal(Navigation.StateContext.data.n, 1);
     });
 
+    QUnit.test('ReservedUrlCharacterDataTest', function (assert) {
+        var data = {};
+        data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
+    });
+
     QUnit.test('NavigateNumberDataTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0', { n: 1 });
