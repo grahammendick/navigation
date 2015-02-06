@@ -76,6 +76,7 @@
     (function () {
         var data;
         var crossroads = window['crossroads'];
+        crossroads.ignoreState = true;
         var dialogs: any = Navigation.StateInfoConfig.dialogs;
         var d0s0 = dialogs.d0.states.s0;
         var d6s0 = dialogs.d6.states.s0;
@@ -88,7 +89,6 @@
         Navigation.Router = {
             getData: (route: String) => {
                 data = null;
-                crossroads.resetState();
                 crossroads.parse(route);
                 return data;
             },
