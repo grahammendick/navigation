@@ -184,11 +184,11 @@
         }
 
         private static decodeUrlValue(urlValue: string): string {
-            return urlValue.replace('0' + this.SEPARATOR, this.SEPARATOR); 
+            return urlValue.replace(new RegExp('0' + this.SEPARATOR, 'g'), this.SEPARATOR); 
         }
 
         private static encodeUrlValue(urlValue: string): string {
-            return urlValue.replace(this.SEPARATOR, '0' + this.SEPARATOR);
+            return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
         }
 
         static getRefreshHref(refreshData: any): string {
