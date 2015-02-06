@@ -178,7 +178,7 @@
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
                 if (returnData[key] != null && returnData[key].toString())
-                    returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key]));
+                    returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key].toString()));
             }
             return returnDataArray.join(this.RET_3_SEP);
         }
