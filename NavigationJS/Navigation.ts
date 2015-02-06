@@ -37,6 +37,7 @@
                 if (!routeData || routeData[key] == null)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
+            query.sort();
             if (query.length > 0)
                 route += '?' + query.join('&');
             return route;
