@@ -21,11 +21,11 @@
                 { key: 't1', to: 's2' },
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'd0s1/:s1:/:s2:', title: 's1', transitions: [
+            { key: 's1', route: 'r1', title: 's1', transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
                 { key: 't2', to: 's4' }]},
-            { key: 's2', route: 'd0s2', title: 's2', transitions: [
+            { key: 's2', route: 'r2', title: 's2', transitions: [
                 { key: 't0', to: 's3' },
                 { key: 't1', to: 's4' }]},
             { key: 's3', route: 'r3', title: 's3', transitions: [
@@ -73,33 +73,27 @@
         ]}
     ]);
 
-    var state: Navigation.State;
-    for (var dialogKey in Navigation.StateInfoConfig.dialogs) {
-        var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
-        for (var stateKey in dialog.states) {
-            var route = window['crossroads'].addRoute(dialog.states[stateKey].route);
-            dialog.states[stateKey]['_route'] = route;
-            if (dialog.states[stateKey].parent.key === 'd6') {
-                dialog.states[stateKey].stateHandler = new StateHandler();
-            }
-        }
-    }
-
     (function () {
         var data;
+        var crossroads = window['crossroads'];
         var dialogs: any = Navigation.StateInfoConfig.dialogs;
-        dialogs.d0.states.s0._route.matched.add(function (s) {
+        var d0s0 = dialogs.d0.states.s0;
+        var d6s0 = dialogs.d6.states.s0;
+        var d6s1 = dialogs.d6.states.s1;
+        d0s0._route = crossroads.addRoute(d0s0.route, function (s) {
             data = { s: s };
         });
+        d6s0.stateHandler = new StateHandler();
+        d6s1.stateHandler = new StateHandler();
         Navigation.Router = {
             getData: (route: String) => {
                 data = null;
-                window['crossroads'].resetState();
-                window['crossroads'].parse(route);
+                crossroads.resetState();
+                crossroads.parse(route);
                 return data;
             },
             getRoute: (state: Navigation.State, data: any) => {
-                return state['_route'].interpolate(data);
+                return state['_route'] ? state['_route'].interpolate(data) : state.route;
             }
         };
     })();
