@@ -610,10 +610,31 @@
         assert.equal(Navigation.StateContext.data['s'], '__00__11__22__33__44__55__');
     });
 
-    QUnit.test('NavigateRefreshDataTest', function (assert) {
+    QUnit.test('EmptyStringDataNavigateTest', function (assert) {
+        var data = {};
+        data['r'] = '';
+        data['t'] = '1';
+        Navigation.StateController.navigate('d0', data);
+        assert.equal(Navigation.StateContext.data['r'], null);
+        assert.equal(Navigation.StateContext.data['t'], '1');
+    });
+
+    QUnit.test('EmptyStringRouteDataNavigateTest', function (assert) {
+        var data = {};
+        data['s'] = '';
+        data['t'] = '1';
+        Navigation.StateController.navigate('d0', data);
+        assert.equal(Navigation.StateContext.data['s'], null);
+        assert.equal(Navigation.StateContext.data['t'], '1');
+    });
+
+    QUnit.test('EmptyStringDataTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
-        Navigation.StateController.refresh({ s: 'hello' });
-        assert.equal(Navigation.StateContext.data.s, 'hello');
-    });}
+        Navigation.StateContext.data['s'] = '';
+        Navigation.StateContext.data['t'] = '1';
+        assert.equal(Navigation.StateContext.data['s'], '');
+        assert.equal(Navigation.StateContext.data['t'], '1');
+    });
+}
  
