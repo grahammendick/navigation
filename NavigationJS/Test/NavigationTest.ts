@@ -55,7 +55,7 @@
                 { key: 't0', to: 's1' }]},
             { key: 's1', route: 'r1', title: 's1', trackCrumbTrail: true, transitions: [
                 { key: 't0', to: 's2' }]},
-            { key: 's2', route: 'r2', title: 's2', trackCrumbTrail: false, transitions: [
+            { key: 's2', route: 'd2s2/:n:', title: 's2', trackCrumbTrail: false, transitions: [
                 { key: 't0', to: 's3' }]},
             { key: 's3', route: 'r3', title: 's3', trackCrumbTrail: true, transitions: [
                 { key: 't0', to: 's4' }]},
@@ -79,10 +79,14 @@
         crossroads.ignoreState = true;
         var dialogs: any = Navigation.StateInfoConfig.dialogs;
         var d0s0 = dialogs.d0.states.s0;
+        var d2s2 = dialogs.d2.states.s2;
         var d6s0 = dialogs.d6.states.s0;
         var d6s1 = dialogs.d6.states.s1;
         d0s0._route = crossroads.addRoute(d0s0.route, function (s) {
             data = { s: s };
+        });
+        d2s2._route = crossroads.addRoute(d2s2.route, function (n) {
+            data = { n: n };
         });
         d6s0.stateHandler = new StateHandler();
         d6s1.stateHandler = new StateHandler();
@@ -537,6 +541,14 @@
 
     QUnit.test('NavigateDataTest', function (assert) {
         Navigation.StateController.navigate('d0', { s: 'hello', n: 1 });
+        assert.equal(Navigation.StateContext.data.s, 'hello');
+        assert.equal(Navigation.StateContext.data.n, 1);
+    });
+
+    QUnit.test('NavigateDataWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0', { s: 'hello', n: 1 });
         assert.equal(Navigation.StateContext.data.s, 'hello');
         assert.equal(Navigation.StateContext.data.n, 1);
     });
