@@ -636,5 +636,51 @@
         assert.equal(Navigation.StateContext.data['s'], '');
         assert.equal(Navigation.StateContext.data['t'], '1');
     });
+
+    QUnit.test('EmptyStringStateDataNavigateBackTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateContext.data['r'] = '';
+        Navigation.StateContext.data['t'] = '1';
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['r'], null);
+        assert.equal(Navigation.StateContext.data['t'], '1');
+    });
+
+    QUnit.test('EmptyStringStateRouteDataNavigateBackTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateContext.data['s'] = '';
+        Navigation.StateContext.data['t'] = '1';
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['s'], null);
+        assert.equal(Navigation.StateContext.data['t'], '1');
+    });
+
+    QUnit.test('NavigateDataNavigateBackTest', function (assert) {
+        var data = {};
+        data['r'] = 'Hello';
+        data['t'] = '';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0');
+        assert.equal(Navigation.StateController.crumbs[0].data['r'], 'Hello');
+        assert.equal(Navigation.StateController.crumbs[0].data['t'], null);
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['r'], 'Hello');
+        assert.equal(Navigation.StateContext.data['t'], null);
+    });
+
+    QUnit.test('NavigateRouteDataNavigateBackTest', function (assert) {
+        var data = {};
+        data['s'] = 'Hello';
+        data['t'] = '';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0');
+        assert.equal(Navigation.StateController.crumbs[0].data['s'], 'Hello');
+        assert.equal(Navigation.StateController.crumbs[0].data['t'], null);
+        Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.data['s'], 'Hello');
+        assert.equal(Navigation.StateContext.data['t'], null);
+    });
 }
  
