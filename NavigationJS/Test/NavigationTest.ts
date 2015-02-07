@@ -25,12 +25,12 @@
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
                 { key: 't2', to: 's4' }]},
-            { key: 's2', route: 'r2', title: 's2', transitions: [
+            { key: 's2', route: 'd0s2/:s:', title: 's2', transitions: [
                 { key: 't0', to: 's3' },
                 { key: 't1', to: 's4' }]},
-            { key: 's3', route: 'r3', title: 's3', transitions: [
+            { key: 's3', route: 'd0s3/:s:', title: 's3', transitions: [
                 { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'r4', title: 's4'}
+            { key: 's4', route: 'd0s4/:s:', title: 's4'}
         ]},
         { key: 'd1', initial: 's0', title: 'd1', states: [
             { key: 's0', route: 'r0', title: 's0', transitions: [
@@ -78,17 +78,15 @@
         var crossroads = window['crossroads'];
         crossroads.ignoreState = true;
         var dialogs: any = Navigation.StateInfoConfig.dialogs;
-        var d0s0 = dialogs.d0.states.s0;
-        var d0s1 = dialogs.d0.states.s1;
         var d2s2 = dialogs.d2.states.s2;
         var d6s0 = dialogs.d6.states.s0;
         var d6s1 = dialogs.d6.states.s1;
-        d0s0._route = crossroads.addRoute(d0s0.route, function (s) {
-            if (s) data = { s: s };
-        });
-        d0s1._route = crossroads.addRoute(d0s1.route, function (s) {
-            if (s) data = { s: s };
-        });
+        for (var key in dialogs.d0.states) {
+            var state = dialogs.d0.states[key];
+            state._route = crossroads.addRoute(state.route, function (s) {
+                if (s) data = { s: s };
+            });
+        }
         d2s2._route = crossroads.addRoute(d2s2.route, function (n) {
             if (n) data = { n: n };
         });
@@ -957,6 +955,34 @@
         assert.equal(Navigation.StateContext.data.i, null);
         assert.equal(Navigation.StateContext.data.n, 2);
         assert.equal(Navigation.StateContext.data['n'], 2);
+    });
+
+    QUnit.test('NavigateWizardDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {
+            r: 'Hello',
+            n: 5
+        };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t1', Navigation.StateContext.newCurrentData());
+        assert.equal(Navigation.StateController.crumbs[1].data['r'], 'Hello');
+        assert.equal(Navigation.StateController.crumbs[1].data['n'], 5);
+        assert.equal(Navigation.StateContext.data['r'], 'Hello');
+        assert.equal(Navigation.StateContext.data['n'], 5);
+    });
+
+    QUnit.test('NavigateWizardRouteDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {
+            s: 'Hello',
+            n: 5
+        };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t1', Navigation.StateContext.newCurrentData());
+        assert.equal(Navigation.StateController.crumbs[1].data['s'], 'Hello');
+        assert.equal(Navigation.StateController.crumbs[1].data['n'], 5);
+        assert.equal(Navigation.StateContext.data['s'], 'Hello');
+        assert.equal(Navigation.StateContext.data['n'], 5);
     });
 }
  
