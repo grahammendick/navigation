@@ -32,7 +32,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>37903</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
@@ -56,8 +56,8 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Config.ts" />
-    <TypeScriptCompile Include="Test\NavigationTest.ts" />
     <TypeScriptCompile Include="Navigation.ts" />
+    <TypeScriptCompile Include="Test\NavigationTest.ts" />
     <TypeScriptCompile Include="Test\qunit.d.ts" />
   </ItemGroup>
   <ItemGroup>
