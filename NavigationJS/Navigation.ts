@@ -159,7 +159,7 @@
                 var navigationData: any;
                 var data = trail.substring((trail.indexOf(this.CRUMB_2_SEP) + this.CRUMB_2_SEP.length)).split(this.CRUMB_1_SEP)[0];
                 if (data)
-                    navigationData = this.parseReturnData(data);
+                    navigationData = this.parseReturnData(data, state);
                 var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
                 trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
                 crumbTrailArray.push(new Crumb(navigationData, state, setLast && last));
@@ -184,7 +184,7 @@
             for (var key in navigationData) {
                 if (navigationData[key] != null && navigationData[key].toString()
                     && (!router.ignoreDefaults || navigationData[key] != state.defaults[key]))
-                    data[key] = navigationData[key];
+                    data[key] = this.formatURLObject(key, navigationData[key], state);
             }
             if (state.trackCrumbTrail && StateContext.state) {
                 var returnDataString = this.formatReturnData(state, returnData);
@@ -201,7 +201,7 @@
             for (var key in returnData) {
                 if (returnData[key] != null && returnData[key].toString()
                     && (!router.ignoreDefaults || returnData[key] != state.defaults[key]))
-                    returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key].toString()));
+                    returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state));
             }
             return returnDataArray.join(this.RET_3_SEP);
         }
@@ -214,16 +214,42 @@
             return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
         }
 
+        static formatURLObject(key: string, urlObject: any, state: State) {
+            var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
+            var converterKey = ConverterFactory.getKeyFromObject(urlObject);
+            var formattedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
+            formattedValue = this.encodeUrlValue(formattedValue);
+            if (typeof urlObject !== defaultType)
+                formattedValue += this.RET_2_SEP + converterKey;
+            return formattedValue; 
+        }
+
+        static parseURLString(key: string, val: string, state: State): any {
+            var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
+            var urlValue = val;
+            var converterKey = ConverterFactory.getKey(defaultType);
+            if (val.indexOf(this.RET_2_SEP) > -1) {
+                var arr = val.split(this.RET_2_SEP);
+                urlValue = arr[0];
+                converterKey = arr[1];
+            }
+            try {
+                return ConverterFactory.getConverter(converterKey).convertFrom(this.decodeUrlValue(urlValue));
+            } catch (e) {
+                throw new Error('Invalid Url');
+            }
+        }
+
         static getRefreshHref(refreshData: any): string {
             return this.getHref(StateContext.state, refreshData, null);
         }
 
-        static parseReturnData(returnData: string): any {
+        static parseReturnData(returnData: string, state: State): any {
             var navigationData = {};
             var returnDataArray = returnData.split(this.RET_3_SEP);
             for (var i = 0; i < returnDataArray.length; i++) {
                 var nameValuePair = returnDataArray[i].split(this.RET_1_SEP);
-                navigationData[this.decodeUrlValue(nameValuePair[0])] = this.decodeUrlValue(nameValuePair[1]);
+                navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state);
             }
             return navigationData;
         }
@@ -236,21 +262,23 @@
             try {
                 StateContext.state = state;
                 StateContext.dialog = state.parent;
-                StateContext.data = state.stateHandler.getNavigationData(state, url);
-                StateContext.previousState = CrumbTrailManager.getState(StateContext.data['c1']);
+                var data = state.stateHandler.getNavigationData(state, url);
+                StateContext.previousState = CrumbTrailManager.getState(data['c1']);
                 StateContext.previousDialog = null;
                 if (StateContext.previousState)
                     StateContext.previousDialog = StateContext.previousState.parent;
                 CrumbTrailManager.returnData = null;
-                if (StateContext.data['c2'])
-                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(StateContext.data['c2']);
-                CrumbTrailManager.crumbTrail = StateContext.data['c3'];
+                if (data['c2'])
+                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data['c2'], state);
+                CrumbTrailManager.crumbTrail = data['c3'];
+                StateContext.data = {};
+                for(var key in data){
+                    if (key !== 'c1' && key !== 'c2' && key !== 'c3')
+                        StateContext.data[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+                }
                 NavigationData.setDefaults(StateContext.data, StateContext.state.defaults);
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
-                delete StateContext.data['c1'];
-                delete StateContext.data['c2'];
-                delete StateContext.data['c3'];
             } catch (e) {
                 throw new Error('Invalid Url');
             }
@@ -319,11 +347,11 @@
             return null;
         }
 
-        convertFrom(val: any): string {
+        convertFrom(val: string): any {
             return null;
         }
 
-        convertTo(val: string): any {
+        convertTo(val: any): string {
             return null;
         }
     }
@@ -333,11 +361,11 @@
             return 'string';
         }
 
-        convertFrom(val: any) {
+        convertFrom(val: string): any {
             return val;
         }
 
-        convertTo(val: string) {
+        convertTo(val: any): string {
             return val;
         }
     }
@@ -347,12 +375,12 @@
             return 'number';
         }
 
-        convertFrom(val: any) {
-            return val.toString();
+        convertFrom(val: string): any {
+            return Number(val);
         }
 
-        convertTo(val: string) {
-            return Number(val);
+        convertTo(val: any): string {
+            return val.toString();
         }
     }
 
@@ -371,7 +399,7 @@
             }
             this.typeToKeyList = {};
             for (var i = 0; i < this.typeArray.length; i++) {
-                this.keyToConverterList[this.typeArray[i]().getType()] = i.toString();
+                this.typeToKeyList[this.typeArray[i]().getType()] = i.toString();
             }
         }
 
@@ -380,9 +408,9 @@
         }
 
         static getKeyFromObject(obj: any) {
-            if (!this.typeToKeyList(typeof obj))
+            if (!this.typeToKeyList[typeof obj])
                 throw new Error('Invalid type');
-            return this.typeToKeyList(typeof obj);
+            return this.typeToKeyList[typeof obj];
         }
 
         static getConverter(key: string): TypeConverter {
