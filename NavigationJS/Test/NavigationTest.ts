@@ -92,7 +92,7 @@
         });
         d6s0.stateHandler = new StateHandler();
         d6s1.stateHandler = new StateHandler();
-        Navigation.Router = {
+        Navigation.router = {
             getData: (route: String) => {
                 data = null;
                 crossroads.parse(route);

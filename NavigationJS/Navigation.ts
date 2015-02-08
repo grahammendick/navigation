@@ -31,8 +31,8 @@
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
             delete data['c0'];
-            var route = Router.getRoute(state, data);
-            var routeData = Router.getData(route);
+            var route = router.getRoute(state, data);
+            var routeData = router.getData(route);
             var query: Array<string> = [];
             for (var key in data) {
                 if (!routeData || routeData[key] == null)
@@ -50,7 +50,7 @@
 
         getNavigationData(state: State, url: string): any {
             var queryIndex = url.indexOf('?');
-            var data = Router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex));
+            var data = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex));
             data = data ? data : {};
             if (queryIndex >= 0) {
                 var query = url.substring(queryIndex + 1);
@@ -81,7 +81,7 @@
         getRoute(state: State, data: any): string;
     }
 
-    export var Router: IRouter;
+    export var router: IRouter;
 
     class NavigationData {
         static setDefaults(data: any, defaults: any) {
