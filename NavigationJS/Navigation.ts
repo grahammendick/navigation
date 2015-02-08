@@ -79,6 +79,7 @@
     export interface IRouter {
         getData(route: string): any;
         getRoute(state: State, data: any): string;
+        ignoreDefaults: boolean;
     }
 
     export var router: IRouter;
@@ -141,7 +142,7 @@
             var trailString: string = '';
             for (var i = 0; i < crumbs.length; i++) {
                 trailString += this.CRUMB_1_SEP + crumbs[i].state.id + this.CRUMB_2_SEP;
-                trailString += this.formatReturnData(crumbs[i].data);
+                trailString += this.formatReturnData(crumbs[i].state, crumbs[i].data);
             }
             this.crumbTrail = trailString ? trailString : null;
         }
@@ -181,11 +182,12 @@
             if (state.trackCrumbTrail && StateContext.state)
                 data['c1'] = StateContext.state.id;
             for (var key in navigationData) {
-                if (navigationData[key] != null && navigationData[key].toString())
+                if (navigationData[key] != null && navigationData[key].toString()
+                    && (!router.ignoreDefaults || navigationData[key] != state.defaults[key]))
                     data[key] = navigationData[key];
             }
             if (state.trackCrumbTrail && StateContext.state) {
-                var returnDataString = this.formatReturnData(returnData);
+                var returnDataString = this.formatReturnData(state, returnData);
                 if (returnDataString)
                     data['c2'] = returnDataString;
             }
@@ -194,10 +196,11 @@
             return state.stateHandler.getNavigationLink(state, data);
         }
 
-        private static formatReturnData(returnData: any): string {
+        private static formatReturnData(state: State, returnData: any): string {
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
-                if (returnData[key] != null && returnData[key].toString())
+                if (returnData[key] != null && returnData[key].toString()
+                    && (!router.ignoreDefaults || returnData[key] != state.defaults[key]))
                     returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.encodeUrlValue(returnData[key].toString()));
             }
             return returnDataArray.join(this.RET_3_SEP);
