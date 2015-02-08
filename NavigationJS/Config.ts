@@ -15,6 +15,7 @@
         index: number;
         id: string;
         key: string;
+        defaults: any;
         title: string;
         route: string;
         trackCrumbTrail: boolean = true;

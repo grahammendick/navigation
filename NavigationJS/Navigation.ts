@@ -11,6 +11,7 @@
             this.state = state;
             this.last = last;
             this.title = state.title;
+            NavigationData.setDefaults(this.data, this.state.defaults);
         }
 
         getNavigationLink(): string {
@@ -82,6 +83,15 @@
 
     export var Router: IRouter;
 
+    class NavigationData {
+        static setDefaults(data: any, defaults: any) {
+            for (var key in defaults) {
+                if (data[key] == null || !data[key].toString())
+                    data[key] = defaults[key];
+            }
+        }
+    }
+
     export class StateContext {
         static previousState: State;
         static previousDialog: Dialog;
@@ -99,6 +109,16 @@
             for (var i = 0; i < keys.length; i++)
                 data[keys[i]] = this.data[keys[i]];
             return data;
+        }
+
+        static clear(key?: string) {
+            if (key)
+                this.data[key] = this.state.defaults[key];
+            else {
+                for (var key in this.data) {
+                    this.data[key] = this.state.defaults[key];
+                }
+            }
         }
     }
 
@@ -222,6 +242,7 @@
                 if (StateContext.data['c2'])
                     CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(StateContext.data['c2']);
                 CrumbTrailManager.crumbTrail = StateContext.data['c3'];
+                NavigationData.setDefaults(StateContext.data, StateContext.state.defaults);
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
                 delete StateContext.data['c1'];
