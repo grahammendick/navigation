@@ -314,6 +314,84 @@
         }
     }
 
+    class TypeConverter{
+        getType(): string {
+            return null;
+        }
+
+        convertFrom(val: any): string {
+            return null;
+        }
+
+        convertTo(val: string): any {
+            return null;
+        }
+    }
+
+    class StringConverter extends TypeConverter {
+        getType(): string {
+            return 'string';
+        }
+
+        convertFrom(val: any) {
+            return val;
+        }
+
+        convertTo(val: string) {
+            return val;
+        }
+    }
+
+    class NumberConverter extends TypeConverter {
+        getType(): string {
+            return 'number';
+        }
+
+        convertFrom(val: any) {
+            return val.toString();
+        }
+
+        convertTo(val: string) {
+            return Number(val);
+        }
+    }
+
+    class ConverterFactory {
+        private static typeArray: { (): TypeConverter; }[];
+        private static keyToConverterList: any;
+        private static typeToKeyList: any;
+
+        static init() {
+            this.typeArray = [];
+            this.typeArray.push(() => new StringConverter());
+            this.typeArray.push(() => new NumberConverter());
+            this.keyToConverterList = {};
+            for (var i = 0; i < this.typeArray.length; i++) {
+                this.keyToConverterList[i.toString()] = this.typeArray[i]();
+            }
+            this.typeToKeyList = {};
+            for (var i = 0; i < this.typeArray.length; i++) {
+                this.keyToConverterList[this.typeArray[i]().getType()] = i.toString();
+            }
+        }
+
+        static getKey(type: string) {
+            return this.typeToKeyList[type];
+        }
+
+        static getKeyFromObject(obj: any) {
+            if (!this.typeToKeyList(typeof obj))
+                throw new Error('Invalid type');
+            return this.typeToKeyList(typeof obj);
+        }
+
+        static getConverter(key: string): TypeConverter {
+            return this.keyToConverterList[key];
+        }
+    }
+
+    ConverterFactory.init();
+
     /* Detect if the Url changes
     //  1. page load
     //  2. pop state
