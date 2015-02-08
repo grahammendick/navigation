@@ -105,7 +105,8 @@
                 for (var k in data)
                     encodedData[k] = encodeURIComponent(data[k]);
                 return state['_route'] ? state['_route'].interpolate(encodedData) : state.route;
-            }
+            },
+            ignoreDefaults: false
         };
     })();
 
