@@ -370,13 +370,27 @@
         }
     }
 
+    class BooleanConverter extends TypeConverter {
+        getType(): string {
+            return 'boolean';
+        }
+
+        convertFrom(val: string): any {
+            return val === 'true';
+        }
+
+        convertTo(val: any): string {
+            return val.toString();
+        }
+    }
+
     class NumberConverter extends TypeConverter {
         getType(): string {
             return 'number';
         }
 
         convertFrom(val: string): any {
-            return Number(val);
+            return +val;
         }
 
         convertTo(val: any): string {
@@ -392,6 +406,7 @@
         static init() {
             this.typeArray = [];
             this.typeArray.push(() => new StringConverter());
+            this.typeArray.push(() => new BooleanConverter());
             this.typeArray.push(() => new NumberConverter());
             this.keyToConverterList = {};
             for (var i = 0; i < this.typeArray.length; i++) {
