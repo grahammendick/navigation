@@ -94,20 +94,15 @@
         state: State;
         last: boolean;
         title: string;
-        private _navigationLink; string;
+        navigationLink; string;
 
         constructor(data: any, state: State, last: boolean) {
             this.data = data;
             this.state = state;
             this.last = last;
             this.title = state.title;
+            this.navigationLink = CrumbTrailManager.getHref(this.state, this.data, null);
             NavigationData.setDefaults(this.data, this.state.defaults);
-        }
-
-        getNavigationLink(): string {
-            if (!this._navigationLink)
-                this._navigationLink = CrumbTrailManager.getHref(this.state, this.data, null);
-            return this._navigationLink;
         }
     }
 
@@ -396,7 +391,7 @@
         }
 
         static getNavigationBackLink(distance: number): string {
-            return this.getCrumb(distance).getNavigationLink();
+            return this.getCrumb(distance).navigationLink;
         }
 
         static refresh(toData?: any) {
