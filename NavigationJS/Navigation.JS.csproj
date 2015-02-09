@@ -55,7 +55,6 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Config.ts" />
     <TypeScriptCompile Include="Navigation.ts" />
     <TypeScriptCompile Include="Test\NavigationTest.ts" />
     <TypeScriptCompile Include="Test\qunit.d.ts" />
