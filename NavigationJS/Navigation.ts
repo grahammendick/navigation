@@ -398,6 +398,46 @@
         }
     }
 
+    class ArrayConverter extends TypeConverter {
+        private converter: TypeConverter;
+        private SEPARATOR = '-';
+        private SEPARATOR1 = '1' + this.SEPARATOR;
+        private SEPARATOR2 = '2' + this.SEPARATOR;
+
+        constructor(converter: TypeConverter) {
+            super();
+            this.converter = converter;
+        }
+
+        getType(): string {
+            return this.converter.getType() + 'array';
+        }
+
+        convertFrom(val: string): any {
+            var arr = [];
+            if (val.length !== 0) {
+                var vals = val.split(this.SEPARATOR1);
+                for (var i = 0; i < vals.length; i++) {
+                    if (vals[i].length !== 0)
+                        arr.push(this.converter.convertFrom(vals[i].replace(new RegExp(this.SEPARATOR2, 'g'), this.SEPARATOR)));
+                    else
+                        arr.push(null);
+                }
+            }
+            return arr;
+        }
+
+        convertTo(val: any): string {
+            var formatArray = [];
+            var arr: Array<any> = val;
+            for (var i = 0; arr.length; i++) {
+                if (arr[i] != null)
+                    formatArray.push(this.converter.convertTo(arr[i]).replace(new RegExp(this.SEPARATOR, 'g'), this.SEPARATOR2));
+            }
+            return formatArray.join(this.SEPARATOR1);
+        }
+    }
+
     class ConverterFactory {
         private static typeArray: { (): TypeConverter; }[];
         private static keyToConverterList: any;
@@ -409,12 +449,12 @@
             this.typeArray.push(() => new BooleanConverter());
             this.typeArray.push(() => new NumberConverter());
             this.keyToConverterList = {};
-            for (var i = 0; i < this.typeArray.length; i++) {
-                this.keyToConverterList[i.toString()] = this.typeArray[i]();
-            }
             this.typeToKeyList = {};
             for (var i = 0; i < this.typeArray.length; i++) {
+                this.keyToConverterList[i.toString()] = this.typeArray[i]();
+                this.keyToConverterList['a' + i] = new ArrayConverter(this.typeArray[i]());
                 this.typeToKeyList[this.typeArray[i]().getType()] = i.toString();
+                this.typeToKeyList[new ArrayConverter(this.typeArray[i]()).getType()] = 'a' + i;
             }
         }
 
@@ -423,9 +463,21 @@
         }
 
         static getKeyFromObject(obj: any) {
-            if (!this.typeToKeyList[typeof obj])
+            var fullType = typeof obj;
+            if (Object.prototype.toString.call(obj) === '[object Array]') {
+                var arr: Array<any> = obj;
+                var type2 = 'string';
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] != null) {
+                        type2 = typeof arr[i];
+                        break;
+                    }
+                }
+                fullType = type2 + 'array';
+            }
+            if (!this.typeToKeyList[fullType])
                 throw new Error('Invalid type');
-            return this.typeToKeyList[typeof obj];
+            return this.typeToKeyList[fullType];
         }
 
         static getConverter(key: string): TypeConverter {
