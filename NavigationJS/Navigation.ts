@@ -22,6 +22,8 @@
         route: string;
         trackCrumbTrail: boolean = true;
         stateHandler: IStateHandler = new StateHandler();
+        ended: () => void = function () { };
+        started: () => void = function () { };
     }
 
     export class Transition {
@@ -130,7 +132,11 @@
         }
 
         navigateLink(state: State, url: string) {
+            var oldState = StateContext.state;
             StateController.setStateContext(state, url);
+            if (oldState)
+                oldState.ended();
+            state.started();
         }
 
         getNavigationData(state: State, url: string): any {
