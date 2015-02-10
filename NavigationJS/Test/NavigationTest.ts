@@ -14,6 +14,41 @@
         }
     }
 
+    class CrossroadsRouter implements Navigation.IRouter {
+        private crossroads: any;
+        supportsDefaults: boolean = false;
+        constructor() {
+            this.crossroads = window['crossroads'];
+            this.crossroads.ignoreState = true;
+        }
+
+        getData(route: string): any {
+            var data = {};
+            var match = this.crossroads._getMatchedRoutes(route)[0];
+            for (var i = 0; i < match.params.length; i++) {
+                data[match._paramsIds[i]] = decodeURIComponent(match.params[i]);
+            }
+            return data;
+        }
+
+        getRoute(state: Navigation.State, data: any): string {
+            var encodedData = {};
+            for (var k in data)
+                encodedData[k] = encodeURIComponent(data[k]);
+            return state['_route'].interpolate(encodedData);
+        }
+
+        addRoutes(dialogs: Array<Navigation.Dialog>) {
+            for (var i = 0; i < dialogs.length; i++) {
+                for (var j = 0; j < dialogs[i]._states.length; j++) {
+                    dialogs[i]._states[j]['_route'] = this.crossroads.addRoute(dialogs[i]._states[j].route);
+                }
+            }
+        }
+    }
+
+    Navigation.router = new CrossroadsRouter();
+
     Navigation.StateInfoConfig.build([
         { key: 'd0', initial: 's0', title: 'd0', states: [
             { key: 's0', route: 'd0s0', title: 's0', transitions: [
@@ -78,35 +113,9 @@
         ]}
     ]);
 
-    class CrossroadsRouter implements Navigation.IRouter {
-        private crossroads: any;
-        private data: any;
-        supportsDefaults: boolean = false;
-        constructor() {
-            this.crossroads = window['crossroads'];
-            this.crossroads.ignoreState = true;
-        }
-
-        getData(route: string): any {
-            this.data = null;
-            this.crossroads.parse(route);
-            for (var k in this.data)
-                this.data[k] = decodeURIComponent(this.data[k]);
-            return this.data;
-        }
-
-        getRoute(state: Navigation.State, data: any): string {
-            var encodedData = {};
-            for (var k in data)
-                encodedData[k] = encodeURIComponent(data[k]);
-            return state['_route'] ? state['_route'].interpolate(encodedData) : state.route;
-        }
-    }
-
     var dialogs: any = Navigation.StateInfoConfig.dialogs;
     dialogs.d6.states.s0.stateHandler = new StateHandler();
     dialogs.d6.states.s1.stateHandler = new StateHandler();
-    Navigation.router = new CrossroadsRouter();
 
     QUnit.module('NavigationTest', {
     });
