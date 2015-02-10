@@ -51,6 +51,7 @@
                 this.processTransitions(dialog, dialogObject);
                 dialog.initial = dialog.states[dialogObject.initial];
             }
+            router.addRoutes(StateInfoConfig._dialogs);
         }
 
         private static processStates(dialog: Dialog, dialogObject: any) {
@@ -171,6 +172,7 @@
         getData(route: string): any;
         getRoute(state: State, data: any): string;
         supportsDefaults: boolean;
+        addRoutes(dialogs: Array<Dialog>);
     }
 
     export var router: IRouter;
