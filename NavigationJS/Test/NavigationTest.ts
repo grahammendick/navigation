@@ -544,6 +544,16 @@
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
+    var individualNavigationData = {};
+    individualNavigationData['string'] = 'Hello';
+    individualNavigationData['boolean'] = true;
+    individualNavigationData['number'] = 0;
+
+    var arrayNavigationData = {};
+    arrayNavigationData['array_string'] = ['He-llo', 'World'];
+    arrayNavigationData['array_boolean'] = [true, false];
+    arrayNavigationData['array_number'] = [1, 2];
+
     QUnit.module('NavigationDataTest', {
     });
 
