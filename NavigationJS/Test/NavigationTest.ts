@@ -78,32 +78,35 @@
         ]}
     ]);
 
-    (function () {
-        var data;
-        var crossroads = window['crossroads'];
-        crossroads.ignoreState = true;
-        var dialogs: any = Navigation.StateInfoConfig.dialogs;
-        var d6s0 = dialogs.d6.states.s0;
-        var d6s1 = dialogs.d6.states.s1;
-        d6s0.stateHandler = new StateHandler();
-        d6s1.stateHandler = new StateHandler();
-        Navigation.router = {
-            getData: (route: String) => {
-                data = null;
-                crossroads.parse(route);
-                for (var k in data)
-                    data[k] = decodeURIComponent(data[k]);
-                return data;
-            },
-            getRoute: (state: Navigation.State, data: any) => {
-                var encodedData = {};
-                for (var k in data)
-                    encodedData[k] = encodeURIComponent(data[k]);
-                return state['_route'] ? state['_route'].interpolate(encodedData) : state.route;
-            },
-            supportsDefaults: false
-        };
-    })();
+    class CrossroadsRouter implements Navigation.IRouter {
+        private crossroads: any;
+        private data: any;
+        supportsDefaults: boolean = false;
+        constructor() {
+            this.crossroads = window['crossroads'];
+            this.crossroads.ignoreState = true;
+        }
+
+        getData(route: string): any {
+            this.data = null;
+            this.crossroads.parse(route);
+            for (var k in this.data)
+                this.data[k] = decodeURIComponent(this.data[k]);
+            return this.data;
+        }
+
+        getRoute(state: Navigation.State, data: any): string {
+            var encodedData = {};
+            for (var k in data)
+                encodedData[k] = encodeURIComponent(data[k]);
+            return state['_route'] ? state['_route'].interpolate(encodedData) : state.route;
+        }
+    }
+
+    var dialogs: any = Navigation.StateInfoConfig.dialogs;
+    dialogs.d6.states.s0.stateHandler = new StateHandler();
+    dialogs.d6.states.s1.stateHandler = new StateHandler();
+    Navigation.router = new CrossroadsRouter();
 
     QUnit.module('NavigationTest', {
     });
