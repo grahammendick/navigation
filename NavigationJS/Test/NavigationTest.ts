@@ -21,21 +21,26 @@
                 { key: 't1', to: 's2' },
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'd0s1/:s:', title: 's1', transitions: [
+            { key: 's1', route: 'd0s1/:s:', title: 's1', defaults: { 'string': 'Hello', _bool: true, _number: 0 }, 
+                defaultTypes: { _bool: 'number', _number: 'number' }, transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
                 { key: 't2', to: 's4' }]},
-            { key: 's2', route: 'd0s2/:s:', title: 's2', transitions: [
+            { key: 's2', route: 'd0s2/:s:', title: 's2', defaults: { emptyString: '', 'number': 4 }, 
+                defaultTypes: { 'string': 'string' }, transitions: [
                 { key: 't0', to: 's3' },
                 { key: 't1', to: 's4' }]},
-            { key: 's3', route: 'd0s3/:s:', title: 's3', transitions: [
+            { key: 's3', route: 'd0s3/:s:', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
+                 transitions: [
                 { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd0s4/:s:', title: 's4'}
+            { key: 's4', route: 'd0s4/:s:', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
         ]},
         { key: 'd1', initial: 's0', title: 'd1', states: [
-            { key: 's0', route: 'r0', title: 's0', transitions: [
+            { key: 's0', route: 'r0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
+                transitions: [
                 { key: 't0', to: 's1' }]},
-            { key: 's1', route: 'r1', title: 's1', transitions: [
+            { key: 's1', route: 'r1', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
+                defaultTypes: { s1: 'string', s2: 'boolean', b1: 'boolean', b2: 'number', n1: 'number', n2: 'string' },  transitions: [
                 { key: 't0', to: 's2' }]},
             { key: 's2', route: 'r2', title: 's2', transitions: [
                 { key: 't0', to: 's3' }]},

@@ -358,7 +358,7 @@
                 StateContext.previousDialog = null;
                 if (StateContext.previousState)
                     StateContext.previousDialog = StateContext.previousState.parent;
-                CrumbTrailManager.returnData = null;
+                CrumbTrailManager.returnData = {};
                 if (data['c2'])
                     CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data['c2'], state);
                 CrumbTrailManager.crumbTrail = data['c3'];
