@@ -620,6 +620,9 @@
     arrayNavigationData['array_number'] = [1, 2];
 
     QUnit.module('NavigationDataTest', {
+        setup: () => {
+            Navigation.StateContext.clear();
+        }
     });
 
     QUnit.test('NavigateIndividualDataTest', function (assert) {
@@ -675,6 +678,82 @@
         assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
         assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
         assert.equal(i, 3);
+    });
+
+    QUnit.test('InvalidIndividualDataTest', function (assert) {
+        var data = {};
+        data['item'] = new Date();
+        assert.throws(() => Navigation.StateController.navigate('d0', data));
+    });
+
+    QUnit.test('InvalidArrayDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateContext.data['item'] = [new Date()];
+        assert.throws(() => Navigation.StateController.navigate('t0'));
+    });
+
+    QUnit.test('InvalidDataGetNavigationLinkTest', function (assert) {
+        var data = {};
+        data['item'] = new Date();
+        assert.throws(() => Navigation.StateController.getNavigationLink('d0', data));
+    });
+
+    QUnit.test('InvalidDataRefreshTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateContext.data['item'] = new Date();
+        assert.throws(() => Navigation.StateController.refresh(Navigation.StateContext.newCurrentData()));
+    });
+
+    QUnit.test('InvalidRefreshDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        assert.throws(() => Navigation.StateController.refresh({ item: new Date() }));
+    });
+
+    QUnit.test('InvalidDataGetRefreshLinkTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateContext.data['item'] = new Date();
+        assert.throws(() => Navigation.StateController.getRefreshLink(Navigation.StateContext.newCurrentData()));
+    });
+
+    QUnit.test('InvalidGetRefreshLinkDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        assert.throws(() => Navigation.StateController.getRefreshLink({ item: new Date() }));
+    });
+
+    QUnit.test('InvalidTypesArrayDataTest', function (assert) {
+        var data = {};
+        data['item0'] = ['0', 1];
+        data['item1'] = [0, '1'];
+        Navigation.StateController.navigate('d0', data);
+        assert.strictEqual(Navigation.StateContext.data['item0'][0], '0');
+        assert.strictEqual(Navigation.StateContext.data['item0'][1], '1');
+        assert.strictEqual(Navigation.StateContext.data['item1'][0], 0);
+        assert.strictEqual(Navigation.StateContext.data['item1'][1], 1);
+    });
+
+    QUnit.test('NavigateInvalidContextDataWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        var data = {};
+        data['s'] = 'Hello';
+        Navigation.StateContext.data['item'] = new Date();
+        Navigation.StateController.navigate('t0', data);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+    });
+
+    QUnit.test('RefreshInvalidContextDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {};
+        data['s'] = 'Hello';
+        Navigation.StateContext.data['item'] = new Date();
+        Navigation.StateController.refresh(data);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+    });
+
+    QUnit.test('NavigateInvalidDataWithoutTrailTest', function (assert) {
+        var data = {};
+        data['item'] = new Date();
+        assert.throws(() => Navigation.StateController.navigate('d2', data));
     });
 
     QUnit.test('ReservedUrlCharacterDataTest', function (assert) {
