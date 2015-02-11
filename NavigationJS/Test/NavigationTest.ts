@@ -788,25 +788,7 @@
         assert.equal(Navigation.StateContext.data['_0_1_2_3_4_5_'], '__00__11__22__33__44__55__');
     });
 
-    QUnit.test('SeparatorUrlCharacterRouteDataTest', function (assert) {
-        var data = {};
-        data['s'] = '__00__11__22__33__44__55__';
-        Navigation.StateController.navigate('d0', data);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['s'], '__00__11__22__33__44__55__');
-    });
-
     QUnit.test('EmptyStringDataNavigateTest', function (assert) {
-        var data = {};
-        data['r'] = '';
-        data['t'] = '1';
-        Navigation.StateController.navigate('d0', data);
-        assert.equal(Navigation.StateContext.data['r'], null);
-        assert.equal(Navigation.StateContext.data['t'], '1');
-    });
-
-    QUnit.test('EmptyStringRouteDataNavigateTest', function (assert) {
         var data = {};
         data['s'] = '';
         data['t'] = '1';
@@ -826,16 +808,6 @@
 
     QUnit.test('EmptyStringStateDataNavigateBackTest', function (assert) {
         Navigation.StateController.navigate('d0');
-        Navigation.StateContext.data['r'] = '';
-        Navigation.StateContext.data['t'] = '1';
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['r'], null);
-        assert.equal(Navigation.StateContext.data['t'], '1');
-    });
-
-    QUnit.test('EmptyStringStateRouteDataNavigateBackTest', function (assert) {
-        Navigation.StateController.navigate('d0');
         Navigation.StateContext.data['s'] = '';
         Navigation.StateContext.data['t'] = '1';
         Navigation.StateController.navigate('t0');
@@ -845,19 +817,6 @@
     });
 
     QUnit.test('NavigateDataNavigateBackTest', function (assert) {
-        var data = {};
-        data['r'] = 'Hello';
-        data['t'] = '';
-        Navigation.StateController.navigate('d0', data);
-        Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].data['r'], 'Hello');
-        assert.equal(Navigation.StateController.crumbs[0].data['t'], null);
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['r'], 'Hello');
-        assert.equal(Navigation.StateContext.data['t'], null);
-    });
-
-    QUnit.test('NavigateRouteDataNavigateBackTest', function (assert) {
         var data = {};
         data['s'] = 'Hello';
         data['t'] = '';
@@ -872,20 +831,6 @@
 
     QUnit.test('ChangeDataNavigateBackTest', function (assert) {
         var data = {};
-        data['r'] = 'Hello';
-        Navigation.StateController.navigate('d0', data);
-        Navigation.StateContext.data['r'] = 'World';
-        Navigation.StateContext.data['i'] = 2;
-        Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].data['r'], 'World');
-        assert.equal(Navigation.StateController.crumbs[0].data['i'], 2);
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['r'], 'World');
-        assert.equal(Navigation.StateContext.data['i'], 2);
-    });
-
-    QUnit.test('ChangeRouteDataNavigateBackTest', function (assert) {
-        var data = {};
         data['s'] = 'Hello';
         Navigation.StateController.navigate('d0', data);
         Navigation.StateContext.data['s'] = 'World';
@@ -899,20 +844,6 @@
     });
 
     QUnit.test('BlankDataNavigateBackTest', function (assert) {
-        var data = {};
-        data['r'] = 'Hello';
-        Navigation.StateController.navigate('d0', data);
-        Navigation.StateContext.data['r'] = null;
-        Navigation.StateContext.data['i'] = 2;
-        Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].data['r'], null);
-        assert.equal(Navigation.StateController.crumbs[0].data['i'], 2);
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['r'], null);
-        assert.equal(Navigation.StateContext.data['i'], 2);
-    });
-
-    QUnit.test('BlankRouteDataNavigateBackTest', function (assert) {
         var data = {};
         data['s'] = 'Hello';
         Navigation.StateController.navigate('d0', data);
