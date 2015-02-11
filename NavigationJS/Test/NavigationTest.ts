@@ -1225,5 +1225,109 @@
         assert.strictEqual(Navigation.StateContext.data['s'], undefined);
         assert.strictEqual(Navigation.StateContext.data['t'], undefined);
     });
+
+    QUnit.test('NavigateBackDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
+    QUnit.test('NavigateBackDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
+    QUnit.test('NavigateBackDataAndDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        var data = { s: 1, t: '2' };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(2);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], '2');
+    });
+
+    QUnit.test('NavigateBackDataAndDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        var data = { s: 1, t: '2' };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(2);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], '2');
+    });
+
+    QUnit.test('NavigateBackOverrideDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        var data = { emptyString: 'World', 'number': 1, char: 5 };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], 'World');
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+    });
+
+    QUnit.test('NavigateBackOverrideDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        var data = { emptyString: 'World', 'number': 1, char: 5 };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], 'World');
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+    });
+
+    QUnit.test('CrumbDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[2].data['emptyString'], '');
+        assert.strictEqual(Navigation.StateController.crumbs[2].data['number'], 4);
+        assert.strictEqual(Navigation.StateController.crumbs[2].data['char'], 7);
+    });
+
+    QUnit.test('CrumbDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[2].data['emptyString'], '');
+        assert.strictEqual(Navigation.StateController.crumbs[2].data['number'], 4);
+        assert.strictEqual(Navigation.StateController.crumbs[2].data['char'], 7);
+    });
 }
  

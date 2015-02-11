@@ -256,7 +256,7 @@
             while (arrayCount < crumbTrailSize) {
                 var stateKey = trail.substring(this.CRUMB_1_SEP.length).split(this.CRUMB_2_SEP)[0];
                 var state = this.getState(stateKey);
-                var navigationData: any;
+                var navigationData: any = {};
                 var data = trail.substring((trail.indexOf(this.CRUMB_2_SEP) + this.CRUMB_2_SEP.length)).split(this.CRUMB_1_SEP)[0];
                 if (data)
                     navigationData = this.parseReturnData(data, state);
