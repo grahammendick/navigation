@@ -762,7 +762,7 @@
         Navigation.StateController.navigate('d0', data);
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.strictEqual(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
     });
 
     QUnit.test('ReservedUrlCharacterRouteDataTest', function (assert) {
@@ -773,10 +773,10 @@
         data['number'] = '!#="/£$%^&*()\'-_+~@:?><.;[],{}';
         Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0', data);
-        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
-        assert.equal(Navigation.StateContext.data['string'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
-        assert.equal(Navigation.StateContext.data['_bool'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
-        assert.equal(Navigation.StateContext.data['number'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.strictEqual(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.strictEqual(Navigation.StateContext.data['string'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.strictEqual(Navigation.StateContext.data['number'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
     });
 
     QUnit.test('SeparatorUrlCharacterDataTest', function (assert) {
@@ -785,7 +785,7 @@
         Navigation.StateController.navigate('d0', data);
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['_0_1_2_3_4_5_'], '__00__11__22__33__44__55__');
+        assert.strictEqual(Navigation.StateContext.data['_0_1_2_3_4_5_'], '__00__11__22__33__44__55__');
     });
 
     QUnit.test('EmptyStringDataNavigateTest', function (assert) {
@@ -793,8 +793,8 @@
         data['s'] = '';
         data['t'] = '1';
         Navigation.StateController.navigate('d0', data);
-        assert.equal(Navigation.StateContext.data['s'], null);
-        assert.equal(Navigation.StateContext.data['t'], '1');
+        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['t'], '1');
     });
 
     QUnit.test('EmptyStringDataTest', function (assert) {
@@ -802,8 +802,8 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateContext.data['s'] = '';
         Navigation.StateContext.data['t'] = '1';
-        assert.equal(Navigation.StateContext.data['s'], '');
-        assert.equal(Navigation.StateContext.data['t'], '1');
+        assert.strictEqual(Navigation.StateContext.data['s'], '');
+        assert.strictEqual(Navigation.StateContext.data['t'], '1');
     });
 
     QUnit.test('EmptyStringStateDataNavigateBackTest', function (assert) {
@@ -812,8 +812,8 @@
         Navigation.StateContext.data['t'] = '1';
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['s'], null);
-        assert.equal(Navigation.StateContext.data['t'], '1');
+        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['t'], '1');
     });
 
     QUnit.test('NavigateDataNavigateBackTest', function (assert) {
@@ -822,11 +822,11 @@
         data['t'] = '';
         Navigation.StateController.navigate('d0', data);
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].data['s'], 'Hello');
-        assert.equal(Navigation.StateController.crumbs[0].data['t'], null);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['s'], 'Hello');
-        assert.equal(Navigation.StateContext.data['t'], null);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
     });
 
     QUnit.test('ChangeDataNavigateBackTest', function (assert) {
@@ -836,11 +836,11 @@
         Navigation.StateContext.data['s'] = 'World';
         Navigation.StateContext.data['i'] = 2;
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].data['s'], 'World');
-        assert.equal(Navigation.StateController.crumbs[0].data['i'], 2);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'World');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], 2);
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['s'], 'World');
-        assert.equal(Navigation.StateContext.data['i'], 2);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'World');
+        assert.strictEqual(Navigation.StateContext.data['i'], 2);
     });
 
     QUnit.test('BlankDataNavigateBackTest', function (assert) {
@@ -850,11 +850,24 @@
         Navigation.StateContext.data['s'] = null;
         Navigation.StateContext.data['i'] = 2;
         Navigation.StateController.navigate('t0');
-        assert.equal(Navigation.StateController.crumbs[0].data['s'], null);
-        assert.equal(Navigation.StateController.crumbs[0].data['i'], 2);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], 2);
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['s'], null);
-        assert.equal(Navigation.StateContext.data['i'], 2);
+        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['i'], 2);
+    });
+
+    QUnit.test('ClearDataNavigateBackTest', function (assert) {
+        var data = {};
+        data['s'] = 'Hello';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateContext.clear();
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], undefined);
+        Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['i'], undefined);
     });
 
     QUnit.test('RemoveDataNavigateBackTest', function (assert) {
