@@ -468,7 +468,7 @@
         }
 
         convertTo(val: any): string {
-            return val;
+            return val.toString();
         }
     }
 
