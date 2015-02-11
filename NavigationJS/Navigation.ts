@@ -100,7 +100,7 @@
         navigationLink; string;
 
         constructor(data: any, state: State, last: boolean) {
-            this.data = data;
+            this.data = data ? data : {};
             this.state = state;
             this.last = last;
             this.title = state.title;
