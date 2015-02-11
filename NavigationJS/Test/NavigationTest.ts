@@ -26,7 +26,7 @@
             var data = {};
             var match = this.crossroads._getMatchedRoutes(route)[0];
             for (var i = 0; i < match.params.length; i++) {
-                data[match._paramsIds[i]] = decodeURIComponent(match.params[i]);
+                data[match.route._paramsIds[i]] = decodeURIComponent(match.params[i]);
             }
             return data;
         }
@@ -58,7 +58,7 @@
                 { key: 't1', to: 's2' },
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'd0s1', title: 's1', defaults: { 'string': 'Hello', _bool: true, _number: 0 }, 
+            { key: 's1', route: 'd0s1', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
                 defaultTypes: { _bool: 'number', _number: 'number' }, transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
@@ -114,7 +114,7 @@
                 { key: 't1', to: 's2' },
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'd3s1/{string}/{number}', title: 's1', defaults: { 'string': 'Hello', _bool: true, _number: 0 }, 
+            { key: 's1', route: 'd3s1/{string}/{number}', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
                 defaultTypes: { _bool: 'number', _number: 'number' }, transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
@@ -622,32 +622,59 @@
     QUnit.module('NavigationDataTest', {
     });
 
-    QUnit.test('NavigateDataTest', function (assert) {
-        Navigation.StateController.navigate('d0', { n: 1 });
-        assert.equal(Navigation.StateContext.data.s, null);
-        assert.equal(Navigation.StateContext.data.n, 1);
+    QUnit.test('NavigateIndividualDataTest', function (assert) {
+        Navigation.StateController.navigate('d0', individualNavigationData);
+        var i = 0;
+        for (var key in Navigation.StateContext.data) {
+            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
+            i++;
+        }
+        assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+        assert.equal(i, 3);
     });
 
-    QUnit.test('NavigateRouteDataTest', function (assert) {
-        Navigation.StateController.navigate('d0', { s: 'hello' });
-        assert.equal(Navigation.StateContext.data.s, 'hello');
-        assert.equal(Navigation.StateContext.data.n, null);
-    });
-
-    QUnit.test('NavigateDataWithoutTrailTest', function (assert) {
+    QUnit.test('NavigateIndividualDataWithoutTrailTest', function (assert) {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0', { s: 'hello' });
-        assert.equal(Navigation.StateContext.data.s, 'hello');
-        assert.equal(Navigation.StateContext.data.n, null);
+        Navigation.StateController.navigate('t0', individualNavigationData);
+        var i = 0;
+        for (var key in Navigation.StateContext.data) {
+            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
+            i++;
+        }
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['number'], 0);
+        assert.equal(i, 3);
     });
 
-    QUnit.test('NavigateRouteDataWithoutTrailTest', function (assert) {
-        Navigation.StateController.navigate('d2');
+    QUnit.test('NavigateArrayDataTest', function (assert) {
+        Navigation.StateController.navigate('d0', arrayNavigationData);
         Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0', { n: 1 });
-        assert.equal(Navigation.StateContext.data.s, null);
-        assert.equal(Navigation.StateContext.data.n, 1);
+        Navigation.StateController.navigateBack(1);
+        var i = 0;
+        for (var key in Navigation.StateContext.data) {
+            assert.strictEqual(Navigation.StateContext.data[key][0], arrayNavigationData[key][0]);
+            assert.strictEqual(Navigation.StateContext.data[key][1], arrayNavigationData[key][1]);
+            i++;
+        }
+        assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
+        assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
+        assert.equal(i, 3);
+    });
+
+    QUnit.test('NavigateArrayDataRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3', arrayNavigationData);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(1);
+        var i = 0;
+        for (var key in Navigation.StateContext.data) {
+            assert.strictEqual(Navigation.StateContext.data[key][0], arrayNavigationData[key][0]);
+            assert.strictEqual(Navigation.StateContext.data[key][1], arrayNavigationData[key][1]);
+            i++;
+        }
+        assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
+        assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
+        assert.equal(i, 3);
     });
 
     QUnit.test('ReservedUrlCharacterDataTest', function (assert) {
