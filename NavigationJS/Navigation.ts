@@ -285,7 +285,7 @@
             NavigationData.setDefaults(navigationData, state.defaults);
             for (var key in navigationData) {
                 if (navigationData[key] != null && navigationData[key].toString()
-                    && (!router.supportsDefaults || navigationData[key] != state.defaults[key]))
+                    && (!router.supportsDefaults || navigationData[key] !== state.defaults[key]))
                     data[key] = this.formatURLObject(key, navigationData[key], state);
             }
             if (state.trackCrumbTrail && StateContext.state) {
@@ -302,7 +302,7 @@
             var returnDataArray: Array<string> = [];
             for (var key in returnData) {
                 if (returnData[key] != null && returnData[key].toString()
-                    && (!router.supportsDefaults || returnData[key] != state.defaults[key]))
+                    && (!router.supportsDefaults || returnData[key] !== state.defaults[key]))
                     returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state));
             }
             return returnDataArray.join(this.RET_3_SEP);
