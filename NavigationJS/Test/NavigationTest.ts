@@ -1329,5 +1329,83 @@
         assert.strictEqual(Navigation.StateController.crumbs[2].data['number'], 4);
         assert.strictEqual(Navigation.StateController.crumbs[2].data['char'], 7);
     });
+
+    QUnit.test('CrumbDataAndDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = { s: 1, t: '2' };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+    });
+
+    QUnit.test('CrumbDataAndDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        var data = { s: 1, t: '2' };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+    });
+
+    QUnit.test('NavigateOverrideCrumbDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {};
+        data['string'] = 'World';
+        data['number'] = 0;
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
+    QUnit.test('NavigateOverrideCrumbDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        var data = {};
+        data['string'] = 'World';
+        data['number'] = 0;
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
+    QUnit.test('OverrideCrumbDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {};
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        var crumb = Navigation.StateController.crumbs[1];
+        crumb.data['string'] = 'Hello';
+        crumb.data['number'] = 0;
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
+    QUnit.test('OverrideCrumbDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        var data = {};
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        var crumb = Navigation.StateController.crumbs[1];
+        crumb.data['string'] = 'Hello';
+        crumb.data['number'] = 0;
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
 }
  
