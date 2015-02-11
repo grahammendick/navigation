@@ -59,7 +59,7 @@
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
             { key: 's1', route: 'd0s1', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
-                defaultTypes: { _bool: 'number', _number: 'number' }, transitions: [
+                defaultTypes: { _bool: 'number', 'number': 'number' }, transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
                 { key: 't2', to: 's4' }]},
@@ -115,7 +115,7 @@
                 { key: 't2', to: 's3' },
                 { key: 't3', to: 's4' }]},
             { key: 's1', route: 'd3s1/{string}/{number}', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
-                defaultTypes: { _bool: 'number', _number: 'number' }, transitions: [
+                defaultTypes: { _bool: 'number', 'number': 'number' }, transitions: [
                 { key: 't0', to: 's2' },
                 { key: 't1', to: 's3' },
                 { key: 't2', to: 's4' }]},
@@ -1070,6 +1070,66 @@
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'Changed');
         Navigation.StateController.navigateBack(1);
         assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+    });
+
+    QUnit.test('NavigateDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
+    QUnit.test('NavigateDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
+    QUnit.test('NavigationDataDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateContext.data['string'] = null;
+        Navigation.StateContext.data['number'] = 'Hello';
+        assert.strictEqual(Navigation.StateContext.data['string'], null);
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 'Hello');
+    });
+
+    QUnit.test('NavigationDataDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateContext.data['string'] = null;
+        Navigation.StateContext.data['number'] = 'Hello';
+        assert.strictEqual(Navigation.StateContext.data['string'], null);
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 'Hello');
+    });
+
+    QUnit.test('RemoveDefaultsTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateContext.clear('emptyString');
+        Navigation.StateContext.clear('number');
+        Navigation.StateContext.clear('char');
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+    });
+
+    QUnit.test('RemoveDefaultsRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateContext.clear('emptyString');
+        Navigation.StateContext.clear('number');
+        Navigation.StateContext.clear('char');
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
     });
 }
  
