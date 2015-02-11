@@ -357,8 +357,8 @@
         static crumbs: Array<Crumb>;
 
         static setStateContext(state: State, url: string) {
+            var oldState = StateContext.state;
             try {
-                var oldState = StateContext.state;
                 StateContext.state = state;
                 StateContext.dialog = state.parent;
                 var data = state.stateHandler.getNavigationData(state, url);
@@ -378,12 +378,12 @@
                 NavigationData.setDefaults(StateContext.data, StateContext.state.defaults);
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
-                if (oldState)
-                    oldState.ended();
-                state.started();
             } catch (e) {
                 throw new Error('Invalid Url');
             }
+            if (oldState)
+                oldState.ended();
+            state.started();
         }
 
         static navigate(action: string, toData?: any) {
