@@ -1059,5 +1059,17 @@
         assert.strictEqual(Navigation.StateContext.data['s'], 3);
         assert.strictEqual(Navigation.StateContext.data['t'], '3');
     });
+
+    QUnit.test('ChangeCrumbDataNavigateBackTest', function (assert) {
+        var data = {};
+        data['s'] = 'Hello';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0');
+        var crumb = Navigation.StateController.crumbs[0];
+        crumb.data['s'] = 'Changed';
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'Changed');
+        Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+    });
 }
  
