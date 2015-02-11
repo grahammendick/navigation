@@ -758,20 +758,25 @@
 
     QUnit.test('ReservedUrlCharacterDataTest', function (assert) {
         var data = {};
-        data['*="/()\'-_+~@:?><.;[],{}!£$%^#'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
+        data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'] = '!#="/£$%^&*()\'-_+~@:?><.;[],{}';
         Navigation.StateController.navigate('d0', data);
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
+        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
     });
 
     QUnit.test('ReservedUrlCharacterRouteDataTest', function (assert) {
         var data = {};
-        data['n'] = '!#="/£$%^&*()\' - _ +~@:?><.;[], {}'
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
+        data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'] = '!#="/£$%^&*()\'-_+~@:?><.;[],{}';
+        data['string'] = '!#="/£$%^&*()\'-_+~@:?><.;[],{}';
+        data['_bool'] = '!#="/£$%^&*()\'-_+~@:?><.;[],{}';
+        data['number'] = '!#="/£$%^&*()\'-_+~@:?><.;[],{}';
+        Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0', data);
-        assert.equal(Navigation.StateContext.data['n'], '!#="/£$%^&*()\' - _ +~@:?><.;[], {}');
+        assert.equal(Navigation.StateContext.data['*="/()\'-_+~@:?><.;[],{}!£$%^#&'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.equal(Navigation.StateContext.data['string'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.equal(Navigation.StateContext.data['_bool'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
+        assert.equal(Navigation.StateContext.data['number'], '!#="/£$%^&*()\'-_+~@:?><.;[],{}');
     });
 
     QUnit.test('SeparatorUrlCharacterDataTest', function (assert) {
