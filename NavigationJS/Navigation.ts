@@ -184,6 +184,13 @@
                     data[key] = defaults[key];
             }
         }
+
+        static clone(data: any) {
+            var clone = {};
+            for (var key in data)
+                clone[key] = data[key];
+            return clone;
+        }
     }
 
     export class StateContext {
@@ -274,6 +281,8 @@
             data['c0'] = state.id;
             if (state.trackCrumbTrail && StateContext.state)
                 data['c1'] = StateContext.state.id;
+            navigationData = NavigationData.clone(navigationData);
+            NavigationData.setDefaults(navigationData, state.defaults);
             for (var key in navigationData) {
                 if (navigationData[key] != null && navigationData[key].toString()
                     && (!router.supportsDefaults || navigationData[key] != state.defaults[key]))
