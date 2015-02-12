@@ -1834,5 +1834,48 @@
         assert.notEqual(url.indexOf('=10&'), -1);
         assert.notEqual(url.indexOf('=202_'), -1);
     });
+
+    QUnit.test('NavigateRefreshCurrentDataTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {};
+        data['s'] = 'Hello';
+        data['n'] = 1;
+        data['c'] = '1';
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.refresh(Navigation.StateContext.newCurrentData(['s', 'c']));
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['c'], '1');
+        assert.strictEqual(Navigation.StateContext.data['n'], undefined);
+    });
+
+    QUnit.test('NavigateCurrentDataDefaultsTest', function (assert) {
+        var data = {};
+        data['emptyString'] = 'Hello';
+        data['number'] = 1;
+        data['char'] = '6';
+        Navigation.StateController.navigate('d0', data);
+        Navigation.StateController.navigate('t0', Navigation.StateContext.newCurrentData());
+        Navigation.StateController.navigate('t0', Navigation.StateContext.newCurrentData(['number', 'char']));
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+        assert.strictEqual(Navigation.StateContext.data['char'], '6');
+    });
+
+    QUnit.test('NavigateMissingRouteDataTest', function (assert) {
+        Navigation.StateController.navigate('d4');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        assert.throws(() => Navigation.StateController.navigate('t0'));
+    });
+
+    QUnit.test('NavigateRefreshMissingRouteDataTest', function (assert) {
+        Navigation.StateController.navigate('d4');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0', { s1: 1, s2: 2 });
+        assert.throws(() => Navigation.StateController.refresh());
+    });
 }
  
