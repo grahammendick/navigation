@@ -1802,5 +1802,37 @@
         assert.strictEqual(Navigation.StateContext.data['b1'], 0);
         assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
     });
+
+    QUnit.test('ReservedUrlCharacterDefaultTypesTest', function (assert) {
+        var data = {};
+        data['*/()-_+~@:?><.;[]{}!£$%^#&'] = 0;
+        data['**=/()-_+~@:?><.;[]{}!£$%^#&&'] = 1;
+        Navigation.StateController.navigate('d1', data);
+        var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.newCurrentData());
+        assert.notEqual(url.indexOf('=0&'), -1);
+        assert.notEqual(url.indexOf('=12_'), -1);
+        assert.strictEqual(Navigation.StateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
+        assert.strictEqual(Navigation.StateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
+        Navigation.StateController.navigate('t0');
+        url = Navigation.StateController.getNavigationBackLink(1);
+        assert.notEqual(url.indexOf('=0&'), -1);
+        assert.notEqual(url.indexOf('=12_'), -1);
+    });
+
+    QUnit.test('SeparatorUrlCharacterDefaultTypesTest', function (assert) {
+        var data = {};
+        data['_0_1_2_3_4_5_'] = 10;
+        data['__0_1_2_3_4_5_'] = 20;
+        Navigation.StateController.navigate('d1', data);
+        var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.newCurrentData());
+        assert.notEqual(url.indexOf('=10&'), -1);
+        assert.notEqual(url.indexOf('=202_'), -1);
+        assert.strictEqual(Navigation.StateContext.data['_0_1_2_3_4_5_'], 10);
+        assert.strictEqual(Navigation.StateContext.data['__0_1_2_3_4_5_'], 20);
+        Navigation.StateController.navigate('t0');
+        url = Navigation.StateController.getNavigationBackLink(1);
+        assert.notEqual(url.indexOf('=10&'), -1);
+        assert.notEqual(url.indexOf('=202_'), -1);
+    });
 }
  
