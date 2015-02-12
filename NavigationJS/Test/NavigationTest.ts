@@ -2005,5 +2005,27 @@
             ])
         });
     });
+
+    QUnit.test('MissingTransitionToTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { key: 't0' }]},
+                { key: 's1', route: 'd0s1', title: 's1' }]}
+            ])
+        }, /mandatory/, '');
+    });
+
+    QUnit.test('EmptyTransitionToTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { key: 't0', to: '' }]},
+                { key: 's1', route: 'd0s1', title: 's1' }]}
+            ])
+        }, /mandatory/, '');
+    });
 }
  
