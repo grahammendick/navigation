@@ -78,6 +78,8 @@
                         state.defaultTypes[key] = typeof state.defaults[key];
                     state.formattedDefaults[key] = CrumbTrailManager.formatURLObject(key, state.defaults[key], state);
                 }
+                if (!state.key)
+                    throw new Error('State key is mandatory');
                 if (dialog.states[state.key])
                     throw new Error('Duplicate state key');
                 dialog._states.push(state);
@@ -92,6 +94,8 @@
                         var transitionObject = dialogObject.states[i].transitions[j];
                         var transition = new Transition();
                         transition.key = transitionObject.key;
+                        if (!transition.key)
+                            throw new Error('Transition key is mandatory');
                         transition.parent = dialog._states[i];
                         transition.to = dialog.states[transitionObject.to];
                         if (!transition.to)
