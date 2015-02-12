@@ -1945,5 +1945,23 @@
             ])
         });
     });
+
+    QUnit.test('MissingDialogKeyTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]}
+            ]);
+        });
+    });
+
+    QUnit.test('EmptyDialogKeyTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: '', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]}
+            ]);
+        });
+    });
 }
  

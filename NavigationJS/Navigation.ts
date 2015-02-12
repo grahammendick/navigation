@@ -47,6 +47,8 @@
                     if (key !== 'states')
                         dialog[key] = dialogObject[key];
                 }
+                if (!dialog.key)
+                    throw new Error('Dialog key is mandatory');
                 if (this.dialogs[dialog.key])
                     throw new Error('Duplicate dialog key');
                 this._dialogs.push(dialog);
