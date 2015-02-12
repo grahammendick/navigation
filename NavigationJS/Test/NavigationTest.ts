@@ -1963,5 +1963,47 @@
             ]);
         });
     });
+
+    QUnit.test('MissingStateKeyTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'},
+                { route: 'd0s1', title: 's1' }]}
+            ]);
+        });
+    });
+
+    QUnit.test('EmptyStateKeyTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'},
+                { key: '', route: 'd0s1', title: 's1' }]}
+            ]);
+        });
+    });
+
+    QUnit.test('MissingTransitionKeyTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { to: 's1' }]},
+                { key: 's1', route: 'd0s1', title: 's1' }]}
+            ])
+        });
+    });
+
+    QUnit.test('EmptyTransitionKeyTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { key: '', to: 's1' }]},
+                { key: 's1', route: 'd0s1', title: 's1' }]}
+            ])
+        });
+    });
 }
  
