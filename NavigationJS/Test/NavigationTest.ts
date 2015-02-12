@@ -1773,5 +1773,34 @@
         assert.strictEqual(Navigation.StateContext.data['b1'], 0);
         assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
     });
+
+    QUnit.test('NavigateRefreshOverrideDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d1');
+        var data = {};
+        data['s1'] = true;
+        data['b1'] = 0;
+        data['n1'] = 'hello';
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.refresh(Navigation.StateContext.newCurrentData());
+        assert.strictEqual(Navigation.StateContext.data['s1'], true);
+        assert.strictEqual(Navigation.StateContext.data['b1'], 0);
+        assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
+    });
+
+    QUnit.test('NavigateBackOverrideDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d1');
+        var data = {};
+        data['s1'] = true;
+        data['b1'] = 0;
+        data['n1'] = 'hello';
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigateBack(2);
+        Navigation.StateController.refresh(Navigation.StateContext.newCurrentData());
+        assert.strictEqual(Navigation.StateContext.data['s1'], true);
+        assert.strictEqual(Navigation.StateContext.data['b1'], 0);
+        assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
+    });
 }
  
