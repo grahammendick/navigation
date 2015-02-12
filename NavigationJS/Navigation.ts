@@ -98,6 +98,8 @@
                             throw new Error('Transition key is mandatory');
                         transition.parent = dialog._states[i];
                         transition.to = dialog.states[transitionObject.to];
+                        if (!transitionObject.to)
+                            throw new Error('Transition to is mandatory');
                         if (!transition.to)
                             throw new Error('Invalid transition to key');
                         if (transition.parent.transitions[transition.key])
