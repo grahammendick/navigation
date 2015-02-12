@@ -1646,5 +1646,71 @@
         assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
         assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
-    });}
+    });
+
+    QUnit.test('NavigateLinkTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateContext.data['_number'] = 1;
+        Navigation.StateContext.data['string'] = 'Hello';
+        var link = Navigation.StateController.getNavigationLink('t0');
+        assert.notEqual(link.indexOf('c1'), -1);
+        assert.notEqual(link.indexOf('_number'), -1);
+        assert.notEqual(link.indexOf('string'), -1);
+    });
+
+    QUnit.test('NavigateLinkWithoutTrailTest', function (assert) {
+        Navigation.StateController.navigate('d2');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateContext.data['_number'] = 1;
+        Navigation.StateContext.data['string'] = 'Hello';
+        var link = Navigation.StateController.getNavigationLink('t0');
+        assert.equal(link.indexOf('c1'), -1);
+        assert.equal(link.indexOf('_number'), -1);
+        assert.equal(link.indexOf('string'), -1);
+    });
+
+    QUnit.test('NavigateDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0', individualNavigationData);
+        var i = 0;
+        for (var key in Navigation.StateContext.data) {
+            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
+            i++;
+        }
+        assert.equal(i, 3);
+    });
+
+    QUnit.test('NavigateLinkDefaultTypesStringTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var data = { s1: 'hello', s2: 'world' };
+        var url = Navigation.StateController.getNavigationLink('t0', data);
+        assert.notEqual(url.indexOf('s1=hello&'), -1);
+        assert.notEqual(url.indexOf('s2=world2_'), -1);
+    });
+
+    QUnit.test('NavigateLinkDefaultTypesBoolTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var data = { b1: true, b2: false };
+        var url = Navigation.StateController.getNavigationLink('t0', data);
+        assert.notEqual(url.indexOf('b1=true&'), -1);
+        assert.notEqual(url.indexOf('b2=false2_'), -1);
+    });
+
+    QUnit.test('NavigateLinkDefaultTypesNumberTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var data = { n1: 0, n2: 1 };
+        var url = Navigation.StateController.getNavigationLink('t0', data);
+        assert.notEqual(url.indexOf('n1=0&'), -1);
+        assert.notEqual(url.indexOf('n2=12_'), -1);
+    });
+}
  
