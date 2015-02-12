@@ -381,9 +381,11 @@
             } catch (e) {
                 throw new Error('Invalid Url');
             }
-            if (oldState)
-                oldState.ended();
-            state.started();
+            if (oldState !== state) {
+                if (oldState)
+                    oldState.ended();
+                state.started();
+            }
         }
 
         static navigate(action: string, toData?: any) {
