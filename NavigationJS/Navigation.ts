@@ -37,6 +37,8 @@
         static _dialogs: Array<Dialog> = [];
         static dialogs: { [index: string]: Dialog } = {};
         static build(dialogs: Array<any>) {
+            this._dialogs = [];
+            this.dialogs = {};
             for (var i = 0; i < dialogs.length; i++) {
                 var dialogObject = dialogs[i];
                 var dialog = new Dialog();
@@ -84,6 +86,8 @@
                         transition.key = transitionObject.key;
                         transition.parent = dialog._states[i];
                         transition.to = dialog.states[transitionObject.to];
+                        if (!transition.to)
+                            throw new Error('Invalid transition to key');
                         transition.parent._transitions.push(transition);
                         transition.parent.transitions[transition.key] = transition;
                     }
