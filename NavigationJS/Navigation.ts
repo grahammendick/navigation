@@ -66,7 +66,7 @@
                         state[key] = stateObject[key];
                 }
                 for (var key in state.defaults) {
-                    if (state.defaultTypes[key])
+                    if (!state.defaultTypes[key])
                         state.defaultTypes[key] = typeof state.defaults[key];
                     state.formattedDefaults[key] = CrumbTrailManager.formatURLObject(key, state.defaults[key], state);
                 }

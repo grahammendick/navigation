@@ -1712,5 +1712,66 @@
         assert.notEqual(url.indexOf('n1=0&'), -1);
         assert.notEqual(url.indexOf('n2=12_'), -1);
     });
+
+    QUnit.test('NavigateBackLinkDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var data = {
+            s2: 'world',
+            n1: 0,
+            n2: 1
+        };
+        data['s1'] = 'hello';
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        var url = Navigation.StateController.getNavigationBackLink(1);
+        assert.notEqual(url.indexOf('s1=hello&'), -1);
+        assert.notEqual(url.indexOf('s2=world2_'), -1);
+        assert.notEqual(url.indexOf('n1=0&'), -1);
+        assert.notEqual(url.indexOf('n2=12_'), -1);
+    });
+
+    QUnit.test('NavigateRefreshLinkDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var data = {
+            s2: 'world',
+            n1: 0,
+            n2: 1
+        };
+        data['s1'] = 'hello';
+        Navigation.StateController.navigate('t0', data);
+        var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.newCurrentData());
+        assert.notEqual(url.indexOf('s1=hello&'), -1);
+        assert.notEqual(url.indexOf('s2=world2_'), -1);
+        assert.notEqual(url.indexOf('n1=0&'), -1);
+        assert.notEqual(url.indexOf('n2=12_'), -1);
+    });
+
+    QUnit.test('NavigateBack2LinkDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {
+            _bool: 1
+        };
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var url = Navigation.StateController.getNavigationBackLink(2);
+        assert.notEqual(url.indexOf('_bool=1&'), -1);
+    });
+
+    QUnit.test('NavigateOverrideDefaultTypesTest', function (assert) {
+        Navigation.StateController.navigate('d1');
+        var data = {};
+        data['s1'] = true;
+        data['b1'] = 0;
+        data['n1'] = 'hello';
+        Navigation.StateController.navigate('t0', data);
+        assert.strictEqual(Navigation.StateContext.data['s1'], true);
+        assert.strictEqual(Navigation.StateContext.data['b1'], 0);
+        assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
+    });
 }
  
