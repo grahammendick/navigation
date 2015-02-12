@@ -1617,5 +1617,34 @@
         assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
     });
-}
+
+    QUnit.test('OverrideCrumbDefaultsCustomTrailTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var data = {};
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('d6');
+        Navigation.StateController.navigateBack(1);
+        var crumb = Navigation.StateController.crumbs[1];
+        crumb.data['string'] = 'Hello';
+        crumb.data['number'] = 0;
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
+    QUnit.test('OverrideCrumbDefaultsCustomTrailRouteTest', function (assert) {
+        Navigation.StateController.navigate('d3');
+        var data = {};
+        Navigation.StateController.navigate('t0', data);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('d6');
+        Navigation.StateController.navigateBack(1);
+        var crumb = Navigation.StateController.crumbs[1];
+        crumb.data['string'] = 'Hello';
+        crumb.data['number'] = 0;
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });}
  
