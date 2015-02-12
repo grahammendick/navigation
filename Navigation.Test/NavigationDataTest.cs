@@ -2095,6 +2095,22 @@ namespace Navigation.Test
 		}
 
 		[TestMethod]
+		public void NavigateDataNavigateBackCustomTrailRouteTest()
+		{
+			StateController.Navigate("d3");
+			NavigationData data = new NavigationData();
+			data["s"] = "Hello";
+			data["t"] = string.Empty;
+			StateController.Navigate("d6", data);
+			StateController.Navigate("t0");
+			Assert.AreEqual("Hello", StateController.Crumbs[1].Data["s"]);
+			Assert.IsNull(StateController.Crumbs[1].Data["t"]);
+			StateController.NavigateBack(1);
+			Assert.AreEqual("Hello", StateContext.Data["s"]);
+			Assert.IsNull(StateContext.Data["t"]);
+		}
+
+		[TestMethod]
 		public void CrumbDataAndDefaultsCustomTrailTest()
 		{
 			StateController.Navigate("d0");
@@ -2254,22 +2270,6 @@ namespace Navigation.Test
 			Assert.AreEqual(3F, crumb.Data["float"]);
 			Assert.IsNull(crumb["s"]);
 			Assert.IsNull(crumb.Data["t"]);
-		}
-
-		[TestMethod]
-		public void NavigateDataNavigateBackCustomTrailRouteTest()
-		{
-			StateController.Navigate("d3");
-			NavigationData data = new NavigationData();
-			data["s"] = "Hello";
-			data["t"] = string.Empty;
-			StateController.Navigate("d6", data);
-			StateController.Navigate("t0");
-			Assert.AreEqual("Hello", StateController.Crumbs[1].Data["s"]);
-			Assert.IsNull(StateController.Crumbs[1].Data["t"]);
-			StateController.NavigateBack(1);
-			Assert.AreEqual("Hello", StateContext.Data["s"]);
-			Assert.IsNull(StateContext.Data["t"]);
 		}
 
 		[TestMethod]
