@@ -54,7 +54,7 @@
 
     Navigation.router = new CrossroadsRouter();
 
-    function initRoutes() {
+    function initStateInfo() {
         Navigation.StateInfoConfig.build([
             { key: 'd0', initial: 's0', title: 'd0', states: [
                 { key: 's0', route: 'd0s0', title: 's0', transitions: [
@@ -181,7 +181,7 @@
 
     QUnit.module('NavigationTest', {
         setup: () => {
-            initRoutes();
+            initStateInfo();
         }
     });
 
@@ -628,7 +628,7 @@
 
     QUnit.module('NavigationDataTest', {
         setup: () => {
-            initRoutes();
+            initStateInfo();
             Navigation.StateContext.clear();
         }
     });
@@ -1888,7 +1888,7 @@
 
     QUnit.module('StateInfoTest', {
         setup: () => {
-            initRoutes();
+            initStateInfo();
         }
     });
 
