@@ -39,143 +39,150 @@
         }
 
         addRoutes(dialogs: Array<Navigation.Dialog>) {
+            this.crossroads.removeAllRoutes();
             for (var i = 0; i < dialogs.length; i++) {
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
                     dialogs[i]._states[j]['_route'] = this.crossroads.addRoute(dialogs[i]._states[j].route);
                 }
             }
-            this.crossroads.removeRoute(dialogs[4]._states[1]['_route']);
-            dialogs[4]._states[1]['_route'] = this.crossroads.addRoute(dialogs[4]._states[1].route);
+            if (dialogs[4]) {
+                this.crossroads.removeRoute(dialogs[4]._states[1]['_route']);
+                dialogs[4]._states[1]['_route'] = this.crossroads.addRoute(dialogs[4]._states[1].route);
+            }
         }
     }
 
     Navigation.router = new CrossroadsRouter();
 
-    Navigation.StateInfoConfig.build([
-        { key: 'd0', initial: 's0', title: 'd0', states: [
-            { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                { key: 't0', to: 's1' },
-                { key: 't1', to: 's2' },
-                { key: 't2', to: 's3' },
-                { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'd0s1', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
-                defaultTypes: { _bool: 'number', 'number': 'number' }, transitions: [
-                { key: 't0', to: 's2' },
-                { key: 't1', to: 's3' },
-                { key: 't2', to: 's4' }]},
-            { key: 's2', route: 'd0s2', title: 's2', defaults: { emptyString: '', 'number': 4, char: 7 }, 
-                defaultTypes: { 'string': 'string' }, transitions: [
-                { key: 't0', to: 's3' },
-                { key: 't1', to: 's4' }]},
-            { key: 's3', route: 'd0s3', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
-                 transitions: [
-                { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd0s4', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
-        ]},
-        { key: 'd1', initial: 's0', title: 'd1', states: [
-            { key: 's0', route: 'd1s0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
-                transitions: [
-                { key: 't0', to: 's1' }]},
-            { key: 's1', route: 'd1s1', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
-                defaultTypes: { s1: 'string', s2: 'boolean', b1: 'boolean', b2: 'number', n1: 'number', n2: 'string' },  transitions: [
-                { key: 't0', to: 's2' }]},
-            { key: 's2', route: 'd1s2', title: 's2', transitions: [
-                { key: 't0', to: 's3' }]},
-            { key: 's3', route: 'd1s3', title: 's3', transitions: [
-                { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd1s4', title: 's4', transitions: [
-                { key: 't0', to: 's5' }]},
-            { key: 's5', route: 'd1s5', title: 's5', transitions: [
-                { key: 't0', to: 's0' },
-                { key: 't1', to: 's1' },
-                { key: 't2', to: 's2' },
-                { key: 't3', to: 's3' },
-                { key: 't4', to: 's4' }]}
-        ]},
-        { key: 'd2', initial: 's0', title: 'd2', states: [
-            { key: 's0', route: 'd2s0', title: 's0', trackCrumbTrail: false, transitions: [
-                { key: 't0', to: 's1' }]},
-            { key: 's1', route: 'd2s1', title: 's1', trackCrumbTrail: true, transitions: [
-                { key: 't0', to: 's2' }]},
-            { key: 's2', route: 'd2s2', title: 's2', trackCrumbTrail: false, transitions: [
-                { key: 't0', to: 's3' }]},
-            { key: 's3', route: 'd2s3', title: 's3', trackCrumbTrail: true, transitions: [
-                { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd2s4', title: 's4', trackCrumbTrail: false, transitions: [
-                { key: 't0', to: 's5' }]},
-            { key: 's5', route: 'd2s5', title: 's5', transitions: [
-                { key: 't0', to: 's6' }]},
-            { key: 's6', route: 'd2s6', title: 's6', transitions: [
-                { key: 't0', to: 's0' }]}
-        ]},
-        { key: 'd3', initial: 's0', title: 'd0', states: [
-            { key: 's0', route: 'd3s0', title: 's0', transitions: [
-                { key: 't0', to: 's1' },
-                { key: 't1', to: 's2' },
-                { key: 't2', to: 's3' },
-                { key: 't3', to: 's4' }]},
-            { key: 's1', route: 'd3s1/{string}/{number}', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
-                defaultTypes: { _bool: 'number', 'number': 'number' }, transitions: [
-                { key: 't0', to: 's2' },
-                { key: 't1', to: 's3' },
-                { key: 't2', to: 's4' }]},
-            { key: 's2', route: 'd3s2/{char}/:number:', title: 's2', defaults: { emptyString: '', 'number': 4, char: 7 }, 
-                defaultTypes: { 'string': 'string' }, transitions: [
-                { key: 't0', to: 's3' },
-                { key: 't1', to: 's4' }]},
-            { key: 's3', route: 'd3s3/:s:', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
-                 transitions: [
-                { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd3s4', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
-        ]},
-        { key: 'd4', initial: 's0', title: 'd1', states: [
-            { key: 's0', route: 'd4s0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
-                transitions: [
-                { key: 't0', to: 's1' }]},
-            { key: 's1', route: '{s1}/:s:', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
-                defaultTypes: { s1: 'string', s2: 'boolean', b1: 'boolean', b2: 'number', n1: 'number', n2: 'string' },  transitions: [
-                { key: 't0', to: 's2' }]},
-            { key: 's2', route: 'd4s2', title: 's2', transitions: [
-                { key: 't0', to: 's3' }]},
-            { key: 's3', route: 'd4s3', title: 's3', transitions: [
-                { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd4s4/{s1}/{s2}', title: 's4', transitions: [
-                { key: 't0', to: 's5' }]},
-            { key: 's5', route: 'd4s5', title: 's5', transitions: [
-                { key: 't0', to: 's0' },
-                { key: 't1', to: 's1' },
-                { key: 't2', to: 's2' },
-                { key: 't3', to: 's3' },
-                { key: 't4', to: 's4' }]}
-        ]},
-        { key: 'd5', initial: 's0', title: 'd2', states: [
-            { key: 's0', route: 'd5s0', title: 's0', trackCrumbTrail: false, transitions: [
-                { key: 't0', to: 's1' }]},
-            { key: 's1', route: 'd5s1', title: 's1', trackCrumbTrail: true, transitions: [
-                { key: 't0', to: 's2' }]},
-            { key: 's2', route: 'd5s2', title: 's2', trackCrumbTrail: false, transitions: [
-                { key: 't0', to: 's3' }]},
-            { key: 's3', route: 'd5s3', title: 's3', trackCrumbTrail: true, transitions: [
-                { key: 't0', to: 's4' }]},
-            { key: 's4', route: 'd5s4', title: 's4', trackCrumbTrail: false, transitions: [
-                { key: 't0', to: 's5' }]},
-            { key: 's5', route: 'd5s5', title: 's5', transitions: [
-                { key: 't0', to: 's6' }]},
-            { key: 's6', route: 'd5s6', title: 's6', transitions: [
-                { key: 't0', to: 's0' }]}
-        ]},
-        { key: 'd6', initial: 's0', title: 'd6', states: [
-            { key: 's0', route: 'd6s0', title: 's0', transitions: [
-                { key: 't0', to: 's1' }]},
-            { key: 's1', route: 'd6s1', title: 's1'}
-        ]}
-    ]);
-
-    var dialogs: any = Navigation.StateInfoConfig.dialogs;
-    dialogs.d6.states.s0.stateHandler = new StateHandler();
-    dialogs.d6.states.s1.stateHandler = new StateHandler();
+    function initRoutes() {
+        Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { key: 't0', to: 's1' },
+                    { key: 't1', to: 's2' },
+                    { key: 't2', to: 's3' },
+                    { key: 't3', to: 's4' }]},
+                { key: 's1', route: 'd0s1', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
+                    defaultTypes: { _bool: 'number', 'number': 'number' }, transitions: [
+                    { key: 't0', to: 's2' },
+                    { key: 't1', to: 's3' },
+                    { key: 't2', to: 's4' }]},
+                { key: 's2', route: 'd0s2', title: 's2', defaults: { emptyString: '', 'number': 4, char: 7 }, 
+                    defaultTypes: { 'string': 'string' }, transitions: [
+                    { key: 't0', to: 's3' },
+                    { key: 't1', to: 's4' }]},
+                { key: 's3', route: 'd0s3', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
+                        transitions: [
+                    { key: 't0', to: 's4' }]},
+                { key: 's4', route: 'd0s4', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
+            ]},
+            { key: 'd1', initial: 's0', title: 'd1', states: [
+                { key: 's0', route: 'd1s0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
+                    transitions: [
+                    { key: 't0', to: 's1' }]},
+                { key: 's1', route: 'd1s1', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
+                    defaultTypes: { s1: 'string', s2: 'boolean', b1: 'boolean', b2: 'number', n1: 'number', n2: 'string' },  transitions: [
+                    { key: 't0', to: 's2' }]},
+                { key: 's2', route: 'd1s2', title: 's2', transitions: [
+                    { key: 't0', to: 's3' }]},
+                { key: 's3', route: 'd1s3', title: 's3', transitions: [
+                    { key: 't0', to: 's4' }]},
+                { key: 's4', route: 'd1s4', title: 's4', transitions: [
+                    { key: 't0', to: 's5' }]},
+                { key: 's5', route: 'd1s5', title: 's5', transitions: [
+                    { key: 't0', to: 's0' },
+                    { key: 't1', to: 's1' },
+                    { key: 't2', to: 's2' },
+                    { key: 't3', to: 's3' },
+                    { key: 't4', to: 's4' }]}
+            ]},
+            { key: 'd2', initial: 's0', title: 'd2', states: [
+                { key: 's0', route: 'd2s0', title: 's0', trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's1' }]},
+                { key: 's1', route: 'd2s1', title: 's1', trackCrumbTrail: true, transitions: [
+                    { key: 't0', to: 's2' }]},
+                { key: 's2', route: 'd2s2', title: 's2', trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's3' }]},
+                { key: 's3', route: 'd2s3', title: 's3', trackCrumbTrail: true, transitions: [
+                    { key: 't0', to: 's4' }]},
+                { key: 's4', route: 'd2s4', title: 's4', trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's5' }]},
+                { key: 's5', route: 'd2s5', title: 's5', transitions: [
+                    { key: 't0', to: 's6' }]},
+                { key: 's6', route: 'd2s6', title: 's6', transitions: [
+                    { key: 't0', to: 's0' }]}
+            ]},
+            { key: 'd3', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd3s0', title: 's0', transitions: [
+                    { key: 't0', to: 's1' },
+                    { key: 't1', to: 's2' },
+                    { key: 't2', to: 's3' },
+                    { key: 't3', to: 's4' }]},
+                { key: 's1', route: 'd3s1/{string}/{number}', title: 's1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, 
+                    defaultTypes: { _bool: 'number', 'number': 'number' }, transitions: [
+                    { key: 't0', to: 's2' },
+                    { key: 't1', to: 's3' },
+                    { key: 't2', to: 's4' }]},
+                { key: 's2', route: 'd3s2/{char}/:number:', title: 's2', defaults: { emptyString: '', 'number': 4, char: 7 }, 
+                    defaultTypes: { 'string': 'string' }, transitions: [
+                    { key: 't0', to: 's3' },
+                    { key: 't1', to: 's4' }]},
+                { key: 's3', route: 'd3s3/:s:', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
+                        transitions: [
+                    { key: 't0', to: 's4' }]},
+                { key: 's4', route: 'd3s4', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
+            ]},
+            { key: 'd4', initial: 's0', title: 'd1', states: [
+                { key: 's0', route: 'd4s0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
+                    transitions: [
+                    { key: 't0', to: 's1' }]},
+                { key: 's1', route: '{s1}/:s:', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
+                    defaultTypes: { s1: 'string', s2: 'boolean', b1: 'boolean', b2: 'number', n1: 'number', n2: 'string' },  transitions: [
+                    { key: 't0', to: 's2' }]},
+                { key: 's2', route: 'd4s2', title: 's2', transitions: [
+                    { key: 't0', to: 's3' }]},
+                { key: 's3', route: 'd4s3', title: 's3', transitions: [
+                    { key: 't0', to: 's4' }]},
+                { key: 's4', route: 'd4s4/{s1}/{s2}', title: 's4', transitions: [
+                    { key: 't0', to: 's5' }]},
+                { key: 's5', route: 'd4s5', title: 's5', transitions: [
+                    { key: 't0', to: 's0' },
+                    { key: 't1', to: 's1' },
+                    { key: 't2', to: 's2' },
+                    { key: 't3', to: 's3' },
+                    { key: 't4', to: 's4' }]}
+            ]},
+            { key: 'd5', initial: 's0', title: 'd2', states: [
+                { key: 's0', route: 'd5s0', title: 's0', trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's1' }]},
+                { key: 's1', route: 'd5s1', title: 's1', trackCrumbTrail: true, transitions: [
+                    { key: 't0', to: 's2' }]},
+                { key: 's2', route: 'd5s2', title: 's2', trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's3' }]},
+                { key: 's3', route: 'd5s3', title: 's3', trackCrumbTrail: true, transitions: [
+                    { key: 't0', to: 's4' }]},
+                { key: 's4', route: 'd5s4', title: 's4', trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's5' }]},
+                { key: 's5', route: 'd5s5', title: 's5', transitions: [
+                    { key: 't0', to: 's6' }]},
+                { key: 's6', route: 'd5s6', title: 's6', transitions: [
+                    { key: 't0', to: 's0' }]}
+            ]},
+            { key: 'd6', initial: 's0', title: 'd6', states: [
+                { key: 's0', route: 'd6s0', title: 's0', transitions: [
+                    { key: 't0', to: 's1' }]},
+                { key: 's1', route: 'd6s1', title: 's1'}
+            ]}
+        ]);
+        var dialogs: any = Navigation.StateInfoConfig.dialogs;
+        dialogs.d6.states.s0.stateHandler = new StateHandler();
+        dialogs.d6.states.s1.stateHandler = new StateHandler();
+    }
 
     QUnit.module('NavigationTest', {
+        setup: () => {
+            initRoutes();
+        }
     });
 
     QUnit.test('NavigateDialogTest', function (assert) {
@@ -621,6 +628,7 @@
 
     QUnit.module('NavigationDataTest', {
         setup: () => {
+            initRoutes();
             Navigation.StateContext.clear();
         }
     });
@@ -1877,5 +1885,22 @@
         Navigation.StateController.navigate('t0', { s1: 1, s2: 2 });
         assert.throws(() => Navigation.StateController.refresh());
     });
+
+    QUnit.module('StateInfoTest', {
+        setup: () => {
+            initRoutes();
+        }
+    });
+
+    QUnit.test('InvalidTransitionToTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { key: 't0', to: 's1' }]}
+                ]}
+            ])
+        });
+   });
 }
  
