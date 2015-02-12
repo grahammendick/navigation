@@ -47,11 +47,15 @@
                     if (key !== 'states')
                         dialog[key] = dialogObject[key];
                 }
+                if (this.dialogs[dialog.key])
+                    throw new Error('Duplicate dialog key');
                 this._dialogs.push(dialog);
                 this.dialogs[dialog.key] = dialog;
                 this.processStates(dialog, dialogObject);
                 this.processTransitions(dialog, dialogObject);
                 dialog.initial = dialog.states[dialogObject.initial];
+                if (!dialog.initial)
+                    throw new Error('Invalid dialog initial key');
             }
             router.addRoutes(StateInfoConfig._dialogs);
         }
@@ -72,6 +76,8 @@
                         state.defaultTypes[key] = typeof state.defaults[key];
                     state.formattedDefaults[key] = CrumbTrailManager.formatURLObject(key, state.defaults[key], state);
                 }
+                if (dialog.states[state.key])
+                    throw new Error('Duplicate state key');
                 dialog._states.push(state);
                 dialog.states[state.key] = state;
             }
@@ -88,6 +94,8 @@
                         transition.to = dialog.states[transitionObject.to];
                         if (!transition.to)
                             throw new Error('Invalid transition to key');
+                        if (transition.parent.transitions[transition.key])
+                            throw new Error('Duplicate transition key');
                         transition.parent._transitions.push(transition);
                         transition.parent.transitions[transition.key] = transition;
                     }

@@ -1902,5 +1902,48 @@
             ])
         });
    });
+
+    QUnit.test('InvalidInitialTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's1', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]}
+            ]);
+        });
+    });
+
+    QUnit.test('DuplicateDialogTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]},
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]}
+            ]);
+        });
+    });
+
+    QUnit.test('DuplicateStateTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'},
+                { key: 's0', route: 'd0s0', title: 's0' }]}
+            ]);
+        });
+    });
+
+    QUnit.test('DuplicateTransitionTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: 's0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                    { key: 't0', to: 's1' },
+                    { key: 't0', to: 's2' }]},
+                { key: 's1', route: 'd0s1', title: 's1' },
+                { key: 's2', route: 'd0s2', title: 's2' }]}
+            ])
+        });
+    });
 }
  
