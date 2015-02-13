@@ -95,6 +95,7 @@
                     for (var j = 0; j < dialogObject.states[i].transitions.length; j++) {
                         var transitionObject = dialogObject.states[i].transitions[j];
                         var transition = new Transition();
+                        transition.index = j;
                         transition.key = transitionObject.key;
                         if (!transition.key)
                             throw new Error('Transition key is mandatory');
