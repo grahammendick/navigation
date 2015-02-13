@@ -1987,6 +1987,28 @@
         }
     });
 
+    QUnit.test('TrackCrumbTrailTest', function (assert) {
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[0].trackCrumbTrail, false);
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[1].trackCrumbTrail, true);
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[2].trackCrumbTrail, false);
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[3].trackCrumbTrail, true);
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[4].trackCrumbTrail, false);
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[5].trackCrumbTrail, true);
+        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[6].trackCrumbTrail, true);
+    });
+
+    QUnit.test('DefaultsTest', function (assert) {
+        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[1].defaults['string'], 'Hello');
+        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[1].defaults['_bool'], true);
+        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[1].defaults['number'], 1);
+    });
+
+    QUnit.test('DefaultTypesTest', function (assert) {
+        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['string'], 'string');
+        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['boolean'], 'boolean');
+        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['number'], 'number');
+    });
+
     QUnit.test('InvalidTransitionToTest', function (assert) {
         assert.throws(() => {
             Navigation.StateInfoConfig.build([
