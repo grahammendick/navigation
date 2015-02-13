@@ -112,7 +112,7 @@
                 { key: 's6', route: 'd2s6', title: 's6', transitions: [
                     { key: 't0', to: 's0' }]}
             ]},
-            { key: 'd3', initial: 's0', title: 'd0', states: [
+            { key: 'd3', initial: 's0', title: 'd3', states: [
                 { key: 's0', route: 'd3s0', title: 's0', transitions: [
                     { key: 't0', to: 's1' },
                     { key: 't1', to: 's2' },
@@ -132,7 +132,7 @@
                     { key: 't0', to: 's4' }]},
                 { key: 's4', route: 'd3s4', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
             ]},
-            { key: 'd4', initial: 's0', title: 'd1', states: [
+            { key: 'd4', initial: 's0', title: 'd4', states: [
                 { key: 's0', route: 'd4s0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
                     transitions: [
                     { key: 't0', to: 's1' }]},
@@ -152,7 +152,7 @@
                     { key: 't3', to: 's3' },
                     { key: 't4', to: 's4' }]}
             ]},
-            { key: 'd5', initial: 's0', title: 'd2', states: [
+            { key: 'd5', initial: 's0', title: 'd5', states: [
                 { key: 's0', route: 'd5s0', title: 's0', trackCrumbTrail: false, transitions: [
                     { key: 't0', to: 's1' }]},
                 { key: 's1', route: 'd5s1', title: 's1', trackCrumbTrail: true, transitions: [
@@ -1889,6 +1889,60 @@
     QUnit.module('StateInfoTest', {
         setup: () => {
             initStateInfo();
+        }
+    });
+
+    QUnit.test('DialogTest', function (assert) {
+        assert.equal(Navigation.StateInfoConfig._dialogs.length, 7);
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            assert.equal(dialog.key, 'd' + i);
+            assert.equal(dialog.title, dialog.key);
+            assert.equal(dialog.index, i);
+            assert.equal(dialog.initial.title, 's0');
+        }
+    });
+
+    QUnit.test('StateTest', function (assert) {
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            if (dialog.index < 6)
+                assert.equal(dialog._states.length, 5 + dialog.index % 3);
+            for (var j = 0; j < dialog._states.length; j++) {
+                var state = dialog._states[j];
+                assert.equal(state.key, 's' + j);
+                assert.equal(state.title, state.key);
+                assert.equal(state.index, j);
+            }
+        }
+    });
+
+    QUnit.test('TransitionTest', function (assert) {
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            for (var j = 0; j < dialog._states.length; j++) {
+                var state = dialog._states[j];
+                if (dialog.index === 0)
+                    assert.equal(state._transitions.length, 4 - state.index);
+                if (dialog.index === 1) {
+                    if (state.index !== 5)
+                        assert.equal(state._transitions.length, 1);
+                    else
+                        assert.equal(state._transitions.length, 5);
+                }
+                for (var k = 0; k < state._transitions.length; k++) {
+                    var transition = state._transitions[k];
+                    assert.equal(transition.key, 't' + k);
+                    assert.equal(transition.index, k);
+                }
+            }
+        }
+    });
+
+    QUnit.test('DialogInitialTest', function (assert) {
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            assert.equal(dialog.initial, dialog._states[0]);
         }
     });
 
