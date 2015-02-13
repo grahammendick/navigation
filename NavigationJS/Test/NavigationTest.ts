@@ -168,7 +168,7 @@
                 { key: 's6', route: 'd5s6', title: 's6', transitions: [
                     { key: 't0', to: 's0' }]}
             ]},
-            { key: 'd6', initial: 's0', title: 'd6', states: [
+            { key: 'd6', initial: 's0', title: 'd6', other: true, path: ' d6', states: [
                 { key: 's0', route: 'd6s0', title: 's0', transitions: [
                     { key: 't0', to: 's1' }]},
                 { key: 's1', route: 'd6s1', title: 's1'}
@@ -1943,6 +1943,47 @@
         for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
             var dialog = Navigation.StateInfoConfig._dialogs[i];
             assert.equal(dialog.initial, dialog._states[0]);
+        }
+    });
+
+    QUnit.test('DialogAttributesTest', function (assert) {
+        assert.equal(Navigation.StateInfoConfig._dialogs[6]['other'], true);
+        assert.equal(Navigation.StateInfoConfig._dialogs[6]['path'], ' d6');
+    });
+
+    QUnit.test('StateParentTest', function (assert) {
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            for (var j = 0; j < dialog._states.length; j++) {
+                var state = dialog._states[j];
+                assert.equal(state.parent, dialog);
+            }
+        }
+    });
+
+    QUnit.test('TransitionParentTest', function (assert) {
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            for (var j = 0; j < dialog._states.length; j++) {
+                var state = dialog._states[j];
+                for (var k = 0; k < state._transitions.length; k++) {
+                    var transition = state._transitions[k];
+                    assert.equal(transition.parent, state);
+                }
+            }
+        }
+    });
+
+    QUnit.test('TransitionToTest', function (assert) {
+        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
+            var dialog = Navigation.StateInfoConfig._dialogs[i];
+            for (var j = 0; j < dialog._states.length; j++) {
+                var state = dialog._states[j];
+                for (var k = 0; k < state._transitions.length; k++) {
+                    var transition = state._transitions[k];
+                    assert.equal(transition.to, dialog.states[transition.to.key]);
+                }
+            }
         }
     });
 
