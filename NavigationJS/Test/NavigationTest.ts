@@ -1964,6 +1964,24 @@
         });
     });
 
+    QUnit.test('MissingDialogInitialTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]}
+            ]);
+        }, /mandatory/, '');
+    });
+
+    QUnit.test('EmptyDialogInitialTest', function (assert) {
+        assert.throws(() => {
+            Navigation.StateInfoConfig.build([
+            { key: 'd0', initial: '', title: 'd0', states: [
+                { key: 's0', route: 'd0s0', title: 's0'}]}
+            ]);
+        }, /mandatory/, '');
+    });
+
     QUnit.test('MissingStateKeyTest', function (assert) {
         assert.throws(() => {
             Navigation.StateInfoConfig.build([
