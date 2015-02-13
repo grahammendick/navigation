@@ -56,6 +56,8 @@
                 this.processStates(dialog, dialogObject);
                 this.processTransitions(dialog, dialogObject);
                 dialog.initial = dialog.states[dialogObject.initial];
+                if (!dialogObject.initial)
+                    throw new Error('Dialog initial is mandatory');
                 if (!dialog.initial)
                     throw new Error('Invalid dialog initial key');
             }
