@@ -443,7 +443,7 @@
 
         static navigateLink(state: State, url: string) {
             var oldState = StateContext.state;
-            if (oldState != state) {
+            if (oldState !== state) {
                 try {
                     var data = state.stateHandler.getNavigationData(state, url);
                     data = this.parseData(data, state);
