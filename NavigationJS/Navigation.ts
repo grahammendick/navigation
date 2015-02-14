@@ -450,12 +450,10 @@
             var oldState = StateContext.state;
             try {
                 var data = state.stateHandler.getNavigationData(state, url);
-                delete data['c1'];
-                delete data['c2'];
-                delete data['c3'];
                 var newData = {};
                 for (var key in data) {
-                    newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+                    if (key !== 'c1' && key !== 'c2' && key !== 'c3')
+                        newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
                 }
                 NavigationData.setDefaults(newData, state.defaults);
             } catch (e) {
