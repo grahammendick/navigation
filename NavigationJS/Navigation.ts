@@ -448,15 +448,19 @@
 
         static navigateLink(state: State, url: string) {
             var oldState = StateContext.state;
-            var data = state.stateHandler.getNavigationData(state, url);
-            delete data['c1'];
-            delete data['c2'];
-            delete data['c3'];
-            var newData = {};
-            for (var key in data) {
-                newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+            try {
+                var data = state.stateHandler.getNavigationData(state, url);
+                delete data['c1'];
+                delete data['c2'];
+                delete data['c3'];
+                var newData = {};
+                for (var key in data) {
+                    newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+                }
+                NavigationData.setDefaults(newData, state.defaults);
+            } catch (e) {
+                throw new Error('Invalid Url');
             }
-            NavigationData.setDefaults(newData, state.defaults);
             state.starting(newData, url, function () {
                 if (oldState === StateContext.state)
                     state.stateHandler.navigateLink(state, url);
