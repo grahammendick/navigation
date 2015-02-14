@@ -443,16 +443,20 @@
 
         static navigateLink(state: State, url: string) {
             var oldState = StateContext.state;
-            try {
-                var data = state.stateHandler.getNavigationData(state, url);
-                data = this.parseData(data, state);
-            } catch (e) {
-                throw new Error('Invalid Url');
+            if (oldState != state) {
+                try {
+                    var data = state.stateHandler.getNavigationData(state, url);
+                    data = this.parseData(data, state);
+                } catch (e) {
+                    throw new Error('Invalid Url');
+                }
+                state.starting(data, url, () => {
+                    if (oldState === StateContext.state)
+                        state.stateHandler.navigateLink(state, url);
+                });
+            } else {
+                state.stateHandler.navigateLink(state, url);
             }
-            state.starting(data, url, () => {
-                if (oldState === StateContext.state)
-                    state.stateHandler.navigateLink(state, url);
-            });
         }
 
         private static parseData(data: any, state: State): any {
