@@ -394,12 +394,7 @@
                 if (data['c2'])
                     CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data['c2'], state);
                 CrumbTrailManager.crumbTrail = data['c3'];
-                StateContext.data = {};
-                for(var key in data){
-                    if (key !== 'c1' && key !== 'c2' && key !== 'c3')
-                        StateContext.data[key] = CrumbTrailManager.parseURLString(key, data[key], state);
-                }
-                NavigationData.setDefaults(StateContext.data, StateContext.state.defaults);
+                StateContext.data = this.parseData(data, state);
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
             } catch (e) {
@@ -450,19 +445,24 @@
             var oldState = StateContext.state;
             try {
                 var data = state.stateHandler.getNavigationData(state, url);
-                var newData = {};
-                for (var key in data) {
-                    if (key !== 'c1' && key !== 'c2' && key !== 'c3')
-                        newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
-                }
-                NavigationData.setDefaults(newData, state.defaults);
+                data = this.parseData(data, state);
             } catch (e) {
                 throw new Error('Invalid Url');
             }
-            state.starting(newData, url, () => {
+            state.starting(data, url, () => {
                 if (oldState === StateContext.state)
                     state.stateHandler.navigateLink(state, url);
             });
+        }
+
+        private static parseData(data: any, state: State): any {
+            var newData = {};
+            for (var key in data) {
+                if (key !== 'c1' && key !== 'c2' && key !== 'c3')
+                    newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+            }
+            NavigationData.setDefaults(newData, state.defaults);
+            return newData;
         }
 
         static getNextState(action: string): State {
