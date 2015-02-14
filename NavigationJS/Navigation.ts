@@ -24,6 +24,7 @@
         stateHandler: IStateHandler = new StateHandler();
         ended: () => void = function () { };
         started: () => void = function () { };
+        starting: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
     }
 
     export class Transition {
@@ -446,7 +447,20 @@
         }
 
         static navigateLink(state: State, url: string) {
-            state.stateHandler.navigateLink(state, url);
+            var oldState = StateContext.state;
+            var data = state.stateHandler.getNavigationData(state, url);
+            delete data['c1'];
+            delete data['c2'];
+            delete data['c3'];
+            var newData = {};
+            for (var key in data) {
+                newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+            }
+            NavigationData.setDefaults(newData, state.defaults);
+            state.starting(newData, url, function () {
+                if (oldState === StateContext.state)
+                    state.stateHandler.navigateLink(state, url);
+            });
         }
 
         static getNextState(action: string): State {
