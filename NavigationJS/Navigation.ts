@@ -459,7 +459,7 @@
             } catch (e) {
                 throw new Error('Invalid Url');
             }
-            state.starting(newData, url, function () {
+            state.starting(newData, url, () => {
                 if (oldState === StateContext.state)
                     state.stateHandler.navigateLink(state, url);
             });
