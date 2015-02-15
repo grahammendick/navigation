@@ -169,7 +169,7 @@
                     { key: 't0', to: 's0' }]}
             ]},
             { key: 'd6', initial: 's0', title: 'd6', other: true, path: ' d6', states: [
-                { key: 's0', route: 'd6s0', title: 's0', transitions: [
+                { key: 's0', route: 'd6s0', title: 's0', handler: '~/d6/s0.aspx', transitions: [
                     { key: 't0', to: 's1' }]},
                 { key: 's1', route: 'd6s1', title: 's1'}
             ]}
@@ -2007,6 +2007,37 @@
         assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['string'], 'string');
         assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['boolean'], 'boolean');
         assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['number'], 'number');
+    });
+
+    QUnit.test('AttributesTest', function (assert) {
+        assert.equal(Navigation.StateInfoConfig._dialogs[6]._states[0]['handler'], '~/d6/s0.aspx');
+    });
+
+    QUnit.test('RouteTest', function (assert) {
+        assert.equal(Navigation.StateInfoConfig._dialogs[3]._states[0].route, 'd3s0');
+        assert.equal(Navigation.StateInfoConfig._dialogs[3]._states[1].route, 'd3s1/{string}/{number}');
+    });
+
+    QUnit.test('DefaultTypesStringTest', function (assert) {
+        var defaults = Navigation.StateInfoConfig._dialogs[1]._states[1].defaults;
+        assert.strictEqual(defaults[' &s0'], 'a');
+        assert.strictEqual(defaults['s1'], 'b');
+        assert.strictEqual(defaults['s2'], 'c');
+        assert.strictEqual(defaults['s3'], 'd');
+    });
+
+    QUnit.test('DefaultTypesBoolTest', function (assert) {
+        var defaults = Navigation.StateInfoConfig._dialogs[1]._states[1].defaults;
+        assert.strictEqual(defaults['b1'], true);
+        assert.strictEqual(defaults['b2'], false);
+        assert.strictEqual(defaults['b3'], true);
+    });
+
+    QUnit.test('DefaultTypesNumberTest', function (assert) {
+        var defaults = Navigation.StateInfoConfig._dialogs[1]._states[1].defaults;
+        assert.strictEqual(defaults['n1'], 0);
+        assert.strictEqual(defaults['n2'], 1);
+        assert.strictEqual(defaults['n3'], 2);
     });
 
     QUnit.test('InvalidTransitionToTest', function (assert) {
