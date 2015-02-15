@@ -63,6 +63,7 @@
                     throw new Error('Invalid dialog initial key');
             }
             router.addRoutes(StateInfoConfig._dialogs);
+            //StateController.navigateLink(window.location.href)
         }
 
         private static processStates(dialog: Dialog, dialogObject: any) {
@@ -158,6 +159,7 @@
 
         navigateLink(state: State, url: string) {
             StateController.setStateContext(state, url);
+            //pushState - if url doesn't match window.location.href
         }
 
         getNavigationData(state: State, url: string): any {
@@ -634,14 +636,5 @@
 
     ConverterFactory.init();
 
-    /* Detect if the Url changes
-    //  1. page load
-    //  2. pop state
-    //  3. push state (http://stackoverflow.com/questions/4570093)
-    //  4. onhashchange (ie8?)
-    //  5. poll for hashchange (ie7)
-    // Then raise Navigate event.
-    // Custom StateAdapter listens, calls StateController.SetContext
-    // and does custom logic like changing ViewModel
-    */
+    //On popState or hashChange call StateController.navigateLink(window.location.href)
 }
