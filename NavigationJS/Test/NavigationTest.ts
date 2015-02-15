@@ -547,6 +547,17 @@
         assert.equal(crumb.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
     });
 
+    QUnit.test('NavigateLinkRouteTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        assert.notEqual(link.indexOf('d3s0'), -1);
+    });
+
+    QUnit.test('NavigateLinkRootRouteTest', function (assert) {
+        Navigation.StateController.navigate('d4');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        assert.notEqual(link.indexOf('b/?'), 0);
+    });
+
     QUnit.test('NavigateDialogDialogCustomTrailTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('d6');
