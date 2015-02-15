@@ -117,6 +117,15 @@
         }
     }
 
+    export class NavigationSettings {
+        stateIdKey: string = 'c0';
+        previousStateIdKey: string = 'c1';
+        returnDataKey: string = 'c2';
+        crumbTrailKey: string = 'c3';
+    }
+
+    export var settings: NavigationSettings = new NavigationSettings();
+
     export class Crumb {
         data: any;
         state: State;
@@ -143,7 +152,7 @@
 
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
-            delete data['c0'];
+            delete data[settings.stateIdKey];
             var route = router.getRoute(state, data);
             var routeData = router.getData(route);
             var query: Array<string> = [];
@@ -300,9 +309,9 @@
 
         static getHref(state: State, navigationData: any, returnData: any): string {
             var data = {};
-            data['c0'] = state.id;
+            data[settings.stateIdKey] = state.id;
             if (state.trackCrumbTrail && StateContext.state)
-                data['c1'] = StateContext.state.id;
+                data[settings.previousStateIdKey] = StateContext.state.id;
             navigationData = NavigationData.clone(navigationData);
             NavigationData.setDefaults(navigationData, state.defaults);
             for (var key in navigationData) {
@@ -313,10 +322,10 @@
             if (state.trackCrumbTrail && StateContext.state) {
                 var returnDataString = this.formatReturnData(state, returnData);
                 if (returnDataString)
-                    data['c2'] = returnDataString;
+                    data[settings.returnDataKey] = returnDataString;
             }
             if (this.crumbTrail && state.trackCrumbTrail)
-                data['c3'] = this.crumbTrail;
+                data[settings.crumbTrailKey] = this.crumbTrail;
             return state.stateHandler.getNavigationLink(state, data);
         }
 
@@ -388,14 +397,14 @@
                 StateContext.state = state;
                 StateContext.dialog = state.parent;
                 var data = state.stateHandler.getNavigationData(state, url);
-                StateContext.previousState = CrumbTrailManager.getState(data['c1']);
+                StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
                 StateContext.previousDialog = null;
                 if (StateContext.previousState)
                     StateContext.previousDialog = StateContext.previousState.parent;
                 CrumbTrailManager.returnData = {};
-                if (data['c2'])
-                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data['c2'], state);
-                CrumbTrailManager.crumbTrail = data['c3'];
+                if (data[settings.returnDataKey])
+                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data[settings.returnDataKey], state);
+                CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
                 StateContext.data = this.parseData(data, state);
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
@@ -464,7 +473,7 @@
         private static parseData(data: any, state: State): any {
             var newData = {};
             for (var key in data) {
-                if (key !== 'c1' && key !== 'c2' && key !== 'c3')
+                if (key !== settings.previousStateIdKey && key !== settings.returnDataKey && key !== settings.crumbTrailKey)
                     newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
             }
             NavigationData.setDefaults(newData, state.defaults);
