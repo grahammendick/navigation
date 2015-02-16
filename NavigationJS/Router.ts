@@ -2,9 +2,10 @@
     export class Router {
         private routes: Array<Route> = [];
 
-        addRoute(path: string, defaults?: any, dataTokens?: any) {
+        addRoute(path: string, defaults?: any, dataTokens?: any): Route {
             var route = new Route(path, defaults, dataTokens);
             this.routes.push(route);
+            return route;
         }
 
         match(path: string): Route {
