@@ -1,5 +1,19 @@
 ﻿module Navigation {
     export class Router {
+        private routes: Array<Route> = [];
+
+        addRoute(path: string, defaults?: any, dataTokens?: any) {
+            var route = new Route(path, defaults, dataTokens);
+            this.routes.push(route);
+        }
+
+        match(path: string): Route {
+            for (var i = 0; i < this.routes.length; i++) {
+                if (this.routes[i].match(path))
+                    return this.routes[i];
+            }
+            return null;
+        }
     }
 
     export class Route {
@@ -13,6 +27,7 @@
             this.path = path;
             this.defaults = defaults;
             this.dataTokens = dataTokens;
+            this.parse();
         }
 
         private parse() {
@@ -30,7 +45,11 @@
             for (var i = 0; i < this.segments.length; i++) {
                 subPatterns.push(this.segments[i].pattern.source);
             }
-            this.pattern = new RegExp(subPatterns.join('\/'));
+            this.pattern = new RegExp('^' + subPatterns.join('\/') + '$');
+        }
+
+        match(path: string) {
+            return this.pattern.test(path);
         }
     }
 
