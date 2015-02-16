@@ -25,8 +25,8 @@
 
         constructor(path: string, defaults?: any, dataTokens?: any) {
             this.path = path;
-            this.defaults = defaults;
-            this.dataTokens = dataTokens;
+            this.defaults = defaults ? defaults : {};
+            this.dataTokens = dataTokens ? dataTokens : {};
             this.parse();
         }
 
@@ -82,7 +82,7 @@
             this.mandatory = this.mandatory || !optional;
             var pattern = this.path.replace(this.paramsPattern, '?');
             pattern = pattern.replace(this.escapePattern, '\\$&');
-            pattern = pattern.replace(/\\?/g, '([^/]+)' + (this.mandatory ? '' : '?'));
+            pattern = pattern.replace(/\?/g, '([^/]+)' + (this.mandatory ? '' : '?'));
             this.pattern = new RegExp(pattern);
         }    
     }
