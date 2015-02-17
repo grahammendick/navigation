@@ -105,9 +105,9 @@
         private parse() {
             var optional = false;
             var replace = (match: string, param: string) => {
-                var key = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
-                this.params.push(key);
-                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[key];
+                var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+                this.params.push(name);
+                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 if (this.path.length === match.length && optionalOrDefault)
                     optional = true;
                 return '?'
