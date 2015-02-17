@@ -46,16 +46,15 @@
         private parse() {
             var subPaths = this.path.split('/').reverse();
             var segments: Array<Segment> = [];
-            var mandatory = false;
+            var segment : Segment;
             for (var i = 0; i < subPaths.length; i++) {
-                var segment = new Segment(subPaths[i], mandatory, this.defaults);
+                segment = new Segment(subPaths[i], segment ? segment.mandatory : false, this.defaults);
                 segments.push(segment);
-                mandatory = segment.mandatory;
             }
             this.segments = segments.reverse();
             var subPatterns: Array<string> = [];
             for (var i = 0; i < this.segments.length; i++) {
-                var segment = this.segments[i];
+                segment = this.segments[i];
                 subPatterns.push(segment.pattern.source);
                 for (var j = 0; j < segment.params.length; j++) {
                     this.params.push(segment.params[j]);
