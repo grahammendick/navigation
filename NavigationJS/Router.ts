@@ -21,6 +21,7 @@
     export class RouteMatch {
         route: Route;
         data: any;
+
         constructor(route: Route, data: any) {
             this.route = route;
             this.data = data;
@@ -90,23 +91,20 @@
         }
 
         parse(defaults: any) {
-            var match: RegExpExecArray;
-            this.paramsPattern.lastIndex = 0;
             var optional = false;
-            while (match = this.paramsPattern.exec(this.path)) {
-                var param = match[1];
+            var replace = (match: string, param: string) => {
                 if (param.slice(-1) === '?')
                     param = param.substring(0, param.length - 1);
                 this.params.push(param);
                 if (this.path.length === match[0].length && (param.slice(-1) === '?' || defaults[param]))
                     optional = true;
+                return '?'
             }
-            this.paramsPattern.lastIndex = 0;
             this.mandatory = this.mandatory || !optional;
-            var pattern = this.path.replace(this.paramsPattern, '?');
+            var pattern = this.path.replace(this.paramsPattern, replace);
             pattern = pattern.replace(this.escapePattern, '\\$&');
             pattern = pattern.replace(/\?/g, '([^/]+)' + (this.mandatory ? '' : '?'));
             this.pattern = new RegExp(pattern);
-        }    
+        }
     }
 }
