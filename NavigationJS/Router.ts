@@ -45,19 +45,15 @@
 
         private parse() {
             var subPaths = this.path.split('/').reverse();
-            var segments: Array<Segment> = [];
             var segment : Segment;
+            var subPatterns: Array<string> = [];
             for (var i = 0; i < subPaths.length; i++) {
                 segment = new Segment(subPaths[i], segment ? segment.mandatory : false, this.defaults);
-                segments.push(segment);
-            }
-            this.segments = segments.reverse();
-            var subPatterns: Array<string> = [];
-            for (var i = 0; i < this.segments.length; i++) {
-                segment = this.segments[i];
-                subPatterns.push(segment.pattern.source);
-                for (var j = 0; j < segment.params.length; j++) {
-                    this.params.push(segment.params[j]);
+                this.segments.unshift(segment);
+                subPatterns.unshift(segment.pattern.source);
+                var params = segment.params.reverse();
+                for (var j = 0; j < params.length; j++) {
+                    this.params.unshift(params[j]);
                 }
             }
             this.pattern = new RegExp('^' + subPatterns.join('\/') + '$');
