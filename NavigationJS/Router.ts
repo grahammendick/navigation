@@ -12,9 +12,15 @@
             path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
             path = path.substring(0, 1) === '/' ? path : '/' + path;
             for (var i = 0; i < this.routes.length; i++) {
-                var data = this.routes[i].match(path);
-                if (data)
-                    return new RouteMatch(this.routes[i], data);
+                var route = this.routes[i];
+                var data = route.match(path);
+                if (data) {
+                    for (var key in route.defaults) {
+                        if (!data[key])
+                            data[key] = route.defaults[key];
+                    }
+                    return new RouteMatch(route, data);
+                }
             }
             return null;
         }
