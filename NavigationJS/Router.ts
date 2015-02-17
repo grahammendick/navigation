@@ -9,6 +9,8 @@
         }
 
         match(path: string): RouteMatch {
+            path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
+            path = path.substring(0, 1) === '/' ? path : '/' + path;
             for (var i = 0; i < this.routes.length; i++) {
                 var data = this.routes[i].match(path);
                 if (data)
@@ -28,13 +30,23 @@
         }
     }
 
+    class Parameter {
+        name: string;
+        optional: boolean;
+
+        constructor(name: string, optional: boolean) {
+            this.name = name;
+            this.optional = optional;
+        }
+    }
+
     export class Route {
         path: string;
         defaults: any;
         dataTokens: any;
         private segments: Array<Segment> = [];
         private pattern: RegExp;
-        params: Array<string> = [];
+        private params: Array<Parameter> = [];
 
         constructor(path: string, defaults?: any, dataTokens?: any) {
             this.path = path;
@@ -46,14 +58,18 @@
         private parse() {
             var subPaths = this.path.split('/').reverse();
             var segment : Segment;
-            var subPatterns: Array<string> = [];
+            var pattern: string = '';
             for (var i = 0; i < subPaths.length; i++) {
                 segment = new Segment(subPaths[i], segment ? segment.mandatory : false, this.defaults);
                 this.segments.unshift(segment);
-                subPatterns.unshift(segment.pattern.source);
-                this.params = segment.params.concat(this.params);
+                pattern = segment.pattern.source + pattern;
+                var params: Array<Parameter> = [];
+                for (var j = 0; j < segment.params.length; j++) {
+                    params.push(new Parameter(segment.params[j], !segment.mandatory));
+                }
+                this.params = params.concat(this.params);
             }
-            this.pattern = new RegExp('^' + subPatterns.join('\/') + '$');
+            this.pattern = new RegExp('^' + pattern + '$');
         }
 
         match(path: string): any {
@@ -62,7 +78,9 @@
                 return null;
             var data = {};
             for (var i = 1; i < matches.length; i++) {
-                data[this.params[i - 1]] = matches[i];
+                var param = this.params[i - 1];
+                if (matches[i])
+                    data[param.name] = !param.optional ? matches[i] : matches[i].substring(1);
             }
             return data;
         }
@@ -87,18 +105,20 @@
         private parse() {
             var optional = false;
             var replace = (match: string, param: string) => {
-                if (param.slice(-1) === '?')
-                    param = param.substring(0, param.length - 1);
-                this.params.push(param);
-                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[param];
+                var key = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+                this.params.push(key);
+                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[key];
                 if (this.path.length === match.length && optionalOrDefault)
                     optional = true;
                 return '?'
             }
-            this.mandatory = this.mandatory || !optional;
             var pattern = this.path.replace(this.paramsPattern, replace);
+            this.mandatory = this.mandatory || !optional;
             pattern = pattern.replace(this.escapePattern, '\\$&');
-            pattern = pattern.replace(/\?/g, '([^/]+)' + (this.mandatory ? '' : '?'));
+            if (this.mandatory)
+                pattern = '\/' + pattern.replace(/\?/g, '([^/]+)');
+            else 
+                pattern = pattern.replace(/\?/, '(\/[^/]+)?');
             this.pattern = new RegExp(pattern);
         }
     }
