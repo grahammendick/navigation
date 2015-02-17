@@ -48,10 +48,9 @@
             var segments: Array<Segment> = [];
             var mandatory = false;
             for (var i = 0; i < subPaths.length; i++) {
-                var segment = new Segment(subPaths[i], mandatory);
-                segment.parse(this.defaults);
+                var segment = new Segment(subPaths[i], mandatory, this.defaults);
                 segments.push(segment);
-                mandatory = mandatory || segment.mandatory;
+                mandatory = segment.mandatory;
             }
             this.segments = segments.reverse();
             var subPatterns: Array<string> = [];
@@ -80,23 +79,27 @@
     class Segment {
         path: string;
         mandatory: boolean;
+        defaults: any;
         pattern: RegExp;
-        paramsPattern: RegExp = /\{([^}]+)\}/g;
-        escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
         params: Array<string> = [];
+        private paramsPattern: RegExp = /\{([^}]+)\}/g;
+        private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
 
-        constructor(path: string, mandatory: boolean) {
+        constructor(path: string, mandatory: boolean, defaults?: any) {
             this.path = path;
             this.mandatory = mandatory;
+            this.defaults = defaults;
+            this.parse();
         }
 
-        parse(defaults: any) {
+        private parse() {
             var optional = false;
             var replace = (match: string, param: string) => {
                 if (param.slice(-1) === '?')
                     param = param.substring(0, param.length - 1);
                 this.params.push(param);
-                if (this.path.length === match[0].length && (param.slice(-1) === '?' || defaults[param]))
+                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[param];
+                if (this.path.length === match.length && optionalOrDefault)
                     optional = true;
                 return '?'
             }
