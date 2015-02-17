@@ -51,10 +51,7 @@
                 segment = new Segment(subPaths[i], segment ? segment.mandatory : false, this.defaults);
                 this.segments.unshift(segment);
                 subPatterns.unshift(segment.pattern.source);
-                var params = segment.params.reverse();
-                for (var j = 0; j < params.length; j++) {
-                    this.params.unshift(params[j]);
-                }
+                this.params = segment.params.concat(this.params);
             }
             this.pattern = new RegExp('^' + subPatterns.join('\/') + '$');
         }
