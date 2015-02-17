@@ -37,10 +37,23 @@
         assert.equal(router.match('aab/c'), null);
     });
 
-    QUnit.test('a', function (assert) {
+    QUnit.test('OneParamRouteMatchTest', function (assert) {
         var router = new Navigation.Router();
-        var route = router.addRoute('a/{x}');
-        assert.equal(router.match('a/b').route, route);
+        var route = router.addRoute('ab/{x}');
+        var routeMatch = router.match('ab/cd');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'cd');
+    });
+
+    QUnit.test('OneParamRouteMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}');
+        assert.equal(router.match('abc/d'), null);
+        assert.equal(router.match('ab/d/e'), null);
+        assert.equal(router.match('a/b/d'), null);
+        assert.equal(router.match('abd'), null);
+        assert.equal(router.match('cab/d'), null);
     });
 }
  
