@@ -1,5 +1,5 @@
 ﻿module RouterTest {
-    QUnit.test('NoParamRouteMatchTest', function (assert) {
+    QUnit.test('NoParamOneSegmentMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc');
         var routeMatch = router.match('abc');
@@ -7,7 +7,7 @@
         assert.equal(Object.keys(routeMatch.data).length, 0);
     });
 
-    QUnit.test('NoParamRouteNonMatchTest', function (assert) {
+    QUnit.test('NoParamOneSegmentNonMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc');
         assert.equal(router.match('abd'), null);
@@ -18,7 +18,7 @@
         assert.equal(router.match('aabc'), null);
     });
 
-    QUnit.test('NoParamRouteMultipleSegmentMatchTest', function (assert) {
+    QUnit.test('NoParamTwoSegmentMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/c');
         var routeMatch = router.match('ab/c');
@@ -26,7 +26,7 @@
         assert.equal(Object.keys(routeMatch.data).length, 0);
     });
 
-    QUnit.test('NoParamRouteMultipleSegmentNonMatchTest', function (assert) {
+    QUnit.test('NoParamTwoSegmentNonMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/c');
         assert.equal(router.match('ab/d'), null);
@@ -37,7 +37,7 @@
         assert.equal(router.match('aab/c'), null);
     });
 
-    QUnit.test('OneParamRouteMatchTest', function (assert) {
+    QUnit.test('OneParamOneSegmentMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}');
         var routeMatch = router.match('ab/cd');
@@ -46,7 +46,7 @@
         assert.equal(routeMatch.data.x, 'cd');
     });
 
-    QUnit.test('OneParamRouteMatchTest', function (assert) {
+    QUnit.test('OneParamOneSegmentMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}');
         assert.equal(router.match('abc/d'), null);
