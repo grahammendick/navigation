@@ -8,12 +8,22 @@
             return route;
         }
 
-        match(path: string): Route {
+        match(path: string): RouteMatch {
             for (var i = 0; i < this.routes.length; i++) {
-                if (this.routes[i].match(path))
-                    return this.routes[i];
+                var data = this.routes[i].match(path);
+                if (data)
+                    return new RouteMatch(this.routes[i], data);
             }
             return null;
+        }
+    }
+
+    export class RouteMatch {
+        route: Route;
+        data: any;
+        constructor(route: Route, data: any) {
+            this.route = route;
+            this.data = data;
         }
     }
 
@@ -23,6 +33,7 @@
         dataTokens: any;
         private segments: Array<Segment> = [];
         private pattern: RegExp;
+        params: Array<string> = [];
 
         constructor(path: string, defaults?: any, dataTokens?: any) {
             this.path = path;
@@ -44,13 +55,24 @@
             this.segments = segments.reverse();
             var subPatterns: Array<string> = [];
             for (var i = 0; i < this.segments.length; i++) {
-                subPatterns.push(this.segments[i].pattern.source);
+                var segment = this.segments[i];
+                subPatterns.push(segment.pattern.source);
+                for (var j = 0; j < segment.params.length; j++) {
+                    this.params.push(segment.params[j]);
+                }
             }
             this.pattern = new RegExp('^' + subPatterns.join('\/') + '$');
         }
 
-        match(path: string) {
-            return this.pattern.test(path);
+        match(path: string): any {
+            var matches = this.pattern.exec(path);
+            if (!matches)
+                return null;
+            var data = {};
+            for (var i = 1; i < matches.length; i++) {
+                data[this.params[i - 1]] = matches[i];
+            }
+            return data;
         }
     }
 
@@ -87,4 +109,4 @@
             this.pattern = new RegExp(pattern);
         }    
     }
-} 
+}
