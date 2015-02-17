@@ -86,7 +86,7 @@
             for (var i = 1; i < matches.length; i++) {
                 var param = this.params[i - 1];
                 if (matches[i])
-                    data[param.name] = !param.optional ? matches[i] : matches[i].substring(1);
+                    data[param.name] = decodeURIComponent(!param.optional ? matches[i] : matches[i].substring(1));
             }
             return data;
         }
