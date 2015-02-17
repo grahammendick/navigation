@@ -10,6 +10,8 @@
     QUnit.test('NoParamOneSegmentNonMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc');
+        assert.equal(router.match(' abc'), null);
+        assert.equal(router.match('abc '), null);
         assert.equal(router.match('abd'), null);
         assert.equal(router.match('abcd'), null);
         assert.equal(router.match('dbc'), null);
@@ -29,6 +31,8 @@
     QUnit.test('NoParamTwoSegmentNonMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/c');
+        assert.equal(router.match(' ab/c'), null);
+        assert.equal(router.match('ab/c '), null);
         assert.equal(router.match('ab/d'), null);
         assert.equal(router.match('ab/cd'), null);
         assert.equal(router.match('a/b/c'), null);
@@ -49,6 +53,7 @@
     QUnit.test('OneParamTwoSegmentMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}');
+        assert.equal(router.match(' ab/cd'), null);
         assert.equal(router.match('abc/d'), null);
         assert.equal(router.match('ab/d/e'), null);
         assert.equal(router.match('a/b/d'), null);
