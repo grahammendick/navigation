@@ -10,7 +10,7 @@
 
         match(path: string): RouteMatch {
             path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
-            path = path.substring(0, 1) === '/' || path.length === 0  ? path : '/' + path;
+            path = (path.substring(0, 1) === '/' || path.length === 0) ? path : '/' + path;
             for (var i = 0; i < this.routes.length; i++) {
                 var route = this.routes[i];
                 var data = route.match(path);
