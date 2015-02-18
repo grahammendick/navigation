@@ -16,7 +16,7 @@
                 var data = route.match(path);
                 if (data) {
                     for (var key in route.defaults) {
-                        if (!data[key])
+                        if (data[key] == null)
                             data[key] = route.defaults[key];
                     }
                     return new RouteMatch(route, data);
