@@ -351,4 +351,28 @@
         assert.equal(router.match('ab'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('TwoParamOneOptionalTwoSegmentOneMixedMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}ab/{y?}');
+        var routeMatch = router.match('abcab/de');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 2);
+        assert.equal(routeMatch.data.x, 'abc');
+        assert.equal(routeMatch.data.y, 'de');
+        routeMatch = router.match('abcab');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'abc');
+    });
+
+    QUnit.test('TwoParamOneOptionalTwoSegmentOneMixedNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}ab/{y?}');
+        assert.equal(router.match('abcab /de'), null);
+        assert.equal(router.match('abcab/de/fg'), null);
+        assert.equal(router.match('abcab//'), null);
+        assert.equal(router.match('ab/de'), null);
+        assert.equal(router.match(''), null);
+    });
 }
