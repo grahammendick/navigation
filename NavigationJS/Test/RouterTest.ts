@@ -470,4 +470,29 @@
         assert.equal(router.match('aa//'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('TwoParamOneOptionalTwoSegmentDefaultMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y?}', { x: 'abc' });
+        var routeMatch = router.match('aa/bbb');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 2);
+        assert.equal(routeMatch.data.x, 'aa');
+        assert.equal(routeMatch.data.y, 'bbb');
+        routeMatch = router.match('aab');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'aab');
+        routeMatch = router.match('');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'abc');
+    });
+
+    QUnit.test('TwoParamOneOptionalTwoSegmentDefaultNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y?}', { x: 'abc' });
+        assert.equal(router.match('aa/bbb/e'), null);
+        assert.equal(router.match('aa//'), null);
+    });
 }
