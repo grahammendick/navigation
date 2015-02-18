@@ -153,11 +153,12 @@
     export class StateHandler implements IStateHandler {
         getNavigationLink(state: State, data: any): string {
             delete data[settings.stateIdKey];
-            var route = router.getRoute(state, data);
-            var routeData = router.getData(route);
+            var routeInfo = router.getRoute(state, data);
+            var route = routeInfo.route;
+            var routeData = routeInfo.data;
             var query: Array<string> = [];
             for (var key in data) {
-                if (!routeData || routeData[key] == null)
+                if (routeData[key] == null)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
             query.sort();
@@ -199,9 +200,18 @@
         }
     }
 
+    export class RouteInfo {
+        route: string;
+        data: any;
+        constructor(route: string, data: any) {
+            this.route = route;
+            this.data = data ? data : {};
+        }
+    }
+
     export interface IRouter {
         getData(route: string): any;
-        getRoute(state: State, data: any): string;
+        getRoute(state: State, data: any): RouteInfo;
         supportsDefaults: boolean;
         addRoutes(dialogs: Array<Dialog>);
     }
