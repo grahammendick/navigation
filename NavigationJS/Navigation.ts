@@ -154,17 +154,15 @@
         getNavigationLink(state: State, data: any): string {
             delete data[settings.stateIdKey];
             var routeInfo = router.getRoute(state, data);
-            var route = routeInfo.route;
-            var routeData = routeInfo.data;
             var query: Array<string> = [];
             for (var key in data) {
-                if (routeData[key] == null)
+                if (routeInfo.data[key] == null)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
             query.sort();
             if (query.length > 0)
-                route += '?' + query.join('&');
-            return route;
+                routeInfo.route += '?' + query.join('&');
+            return routeInfo.route;
         }
 
         navigateLink(state: State, url: string) {
