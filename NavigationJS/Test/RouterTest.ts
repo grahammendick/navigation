@@ -329,4 +329,26 @@
         assert.equal(router.match('ab'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('TwoParamOneMixedSegmentMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x}e{y}');
+        var routeMatch = router.match('abcdefgh');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 2);
+        assert.equal(routeMatch.data.x, 'cd');
+        assert.equal(routeMatch.data.y, 'fgh');
+    });
+
+    QUnit.test('TwoParamOneMixedSegmentNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x}e{y}');
+        assert.equal(router.match(' abcdefgh'), null);
+        assert.equal(router.match('ab/cdefgh'), null);
+        assert.equal(router.match('abcdefgh//'), null);
+        assert.equal(router.match('abcde'), null);
+        assert.equal(router.match('abc'), null);
+        assert.equal(router.match('ab'), null);
+        assert.equal(router.match(''), null);
+    });
 }
