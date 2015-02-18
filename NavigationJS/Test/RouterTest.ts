@@ -75,6 +75,7 @@
         assert.equal(router.match('a/b/d'), null);
         assert.equal(router.match('abd'), null);
         assert.equal(router.match('cab/d'), null);
+        assert.equal(router.match('ab'), null);
     });
 
     QUnit.test('TwoParamTwoSegmentMatchTest', function (assert) {
@@ -115,6 +116,7 @@
         assert.equal(router.match('ab/cd/efg/h'), null);
         assert.equal(router.match('ab//efg'), null);
         assert.equal(router.match('/cd/efg'), null);
+        assert.equal(router.match('ab'), null);
     });
 
     QUnit.test('TwoParamFourSegmentMatchTest', function (assert) {
@@ -155,6 +157,29 @@
         var route = router.addRoute('{x?}');
         assert.equal(router.match('ab/cd'), null);
         assert.equal(router.match('ab//'), null);
+    });
+
+    QUnit.test('OneOptionalParamTwoSegmentMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x?}');
+        var routeMatch = router.match('ab/cd');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'cd');
+        routeMatch = router.match('ab');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 0);
+    });
+
+    QUnit.test('OneOptionalParamTwoSegmentNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x?}');
+        assert.equal(router.match(' ab/cd'), null);
+        assert.equal(router.match('abc/d'), null);
+        assert.equal(router.match('ab/d/e'), null);
+        assert.equal(router.match('a/b/d'), null);
+        assert.equal(router.match('abd'), null);
+        assert.equal(router.match('cab/d'), null);
     });
 }
  
