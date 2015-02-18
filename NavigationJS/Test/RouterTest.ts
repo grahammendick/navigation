@@ -311,5 +311,22 @@
         assert.equal(router.match('ab//b/c/d'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('OneParamOneMixedSegmentMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x}');
+        var routeMatch = router.match('abcde');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'cde');
+    });
+
+    QUnit.test('OneParamOneMixedSegmentNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x}');
+        assert.equal(router.match('ab/cde'), null);
+        assert.equal(router.match('abcd//'), null);
+        assert.equal(router.match('ab'), null);
+        assert.equal(router.match(''), null);
+    });
 }
- 
