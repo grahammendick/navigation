@@ -66,12 +66,12 @@
             var segment : Segment;
             var pattern: string = '';
             for (var i = 0; i < subPaths.length; i++) {
-                segment = new Segment(subPaths[i], segment ? segment.mandatory : false, this.defaults);
+                segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
                 this.segments.unshift(segment);
                 pattern = segment.pattern + pattern;
                 var params: Array<Parameter> = [];
                 for (var j = 0; j < segment.params.length; j++) {
-                    params.push(new Parameter(segment.params[j], !segment.mandatory));
+                    params.push(new Parameter(segment.params[j], segment.optional));
                 }
                 this.params = params.concat(this.params);
             }
@@ -108,16 +108,16 @@
 
     class Segment {
         path: string;
-        mandatory: boolean;
+        optional: boolean;
         defaults: any;
         pattern: string;
         params: Array<string> = [];
         private paramsPattern: RegExp = /\{([^}]+)\}/g;
         private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
 
-        constructor(path: string, mandatory: boolean, defaults?: any) {
+        constructor(path: string, optional: boolean, defaults?: any) {
             this.path = path;
-            this.mandatory = mandatory;
+            this.optional = optional;
             this.defaults = defaults;
             this.parse();
         }
@@ -132,16 +132,16 @@
                 return '?';
             }
             this.pattern = this.path.replace(this.paramsPattern, replace);
-            this.mandatory = this.mandatory || !optional;
+            this.optional = this.optional && optional;
             this.pattern = this.pattern.replace(this.escapePattern, '\\$&');
-            if (this.mandatory)
+            if (!this.optional)
                 this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
             else 
                 this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');
         }
 
         build(data?: any): { path: string; optional: boolean } {
-            var optional = !this.mandatory;
+            var optional = this.optional;
             var replace = (match: string, param: string) => {
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
                 optional = optional && data[name] == null;
