@@ -31,13 +31,13 @@
             return data;
         }
 
-        getRoute(state: Navigation.State, data: any): Navigation.RouteInfo {
+        getRoute(state: Navigation.State, data: any): { route: string; data: any } {
             var encodedData = {};
             for (var k in data)
                 encodedData[k] = encodeURIComponent(data[k]);
             var route = state['_route'].interpolate(encodedData);
             var routeData = this.getData(route);
-            return new Navigation.RouteInfo(route, routeData);
+            return { route: route, data: routeData };
         }
 
         addRoutes(dialogs: Array<Navigation.Dialog>) {
