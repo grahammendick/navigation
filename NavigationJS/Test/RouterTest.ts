@@ -648,4 +648,23 @@
         assert.equal(router.match('ab'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('TwoParamTwoSegmentDefaultMandatoryMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y}', { x: 'ab' });
+        var routeMatch = router.match('aa/bbb');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 2);
+        assert.equal(routeMatch.data.x, 'aa');
+        assert.equal(routeMatch.data.y, 'bbb');
+    });
+
+    QUnit.test('TwoParamTwoSegmentDefaultMandatoryNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y}', { x: 'ab' });
+        assert.equal(router.match('aa/bbb/e'), null);
+        assert.equal(router.match('aa//'), null);
+        assert.equal(router.match('aa'), null);
+        assert.equal(router.match(''), null);
+    });
 }
