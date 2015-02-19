@@ -10,7 +10,7 @@
             return route;
         }
 
-        match(path: string): RouteMatch {
+        match(path: string): { route: Route; data: any } {
             path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
             path = (path.substring(0, 1) === '/' || path.length === 0) ? path : '/' + path;
             for (var i = 0; i < this.routes.length; i++) {
@@ -21,30 +21,10 @@
                         if (data[key] == null)
                             data[key] = route.defaults[key];
                     }
-                    return new RouteMatch(route, data);
+                    return { route: route, data: data };
                 }
             }
             return null;
-        }
-    }
-
-    export class RouteMatch {
-        route: Route;
-        data: any;
-
-        constructor(route: Route, data: any) {
-            this.route = route;
-            this.data = data;
-        }
-    }
-
-    class Parameter {
-        name: string;
-        optional: boolean;
-
-        constructor(name: string, optional: boolean) {
-            this.name = name;
-            this.optional = optional;
         }
     }
 
@@ -53,7 +33,7 @@
         defaults: any;
         private segments: Array<Segment> = [];
         private pattern: RegExp;
-        private params: Array<Parameter> = [];
+        private params: Array<{ name: string; optional: boolean }> = [];
 
         constructor(path: string, defaults?: any) {
             this.path = path;
@@ -69,9 +49,9 @@
                 segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
                 this.segments.unshift(segment);
                 pattern = segment.pattern + pattern;
-                var params: Array<Parameter> = [];
+                var params: Array<{ name: string; optional: boolean }> = [];
                 for (var j = 0; j < segment.params.length; j++) {
-                    params.push(new Parameter(segment.params[j], segment.optional));
+                    params.push({ name: segment.params[j], optional: segment.optional });
                 }
                 this.params = params.concat(this.params);
             }

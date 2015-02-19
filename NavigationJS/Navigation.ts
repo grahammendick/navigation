@@ -156,7 +156,7 @@
             var routeInfo = router.getRoute(state, data);
             var query: Array<string> = [];
             for (var key in data) {
-                if (routeInfo.data[key] == null)
+                if (!routeInfo.data || routeInfo.data[key] == null)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
             query.sort();
@@ -198,18 +198,9 @@
         }
     }
 
-    export class RouteInfo {
-        route: string;
-        data: any;
-        constructor(route: string, data: any) {
-            this.route = route;
-            this.data = data ? data : {};
-        }
-    }
-
     export interface IRouter {
         getData(route: string): any;
-        getRoute(state: State, data: any): RouteInfo;
+        getRoute(state: State, data: any): { route: string; data: any };
         supportsDefaults: boolean;
         addRoutes(dialogs: Array<Dialog>);
     }
