@@ -575,7 +575,7 @@
         assert.equal(routeMatch.data.someVar, 'someVal');
     });
 
-    QUnit.test('LeadingTrailSlashMatchTest', function (assert) {
+    QUnit.test('SlashMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('/abc/');
         var routeMatch = router.match('abc');
@@ -583,7 +583,7 @@
         assert.equal(Object.keys(routeMatch.data).length, 0);
     });
 
-    QUnit.test('MatchLeadingTrailSlashTest', function (assert) {
+    QUnit.test('MatchSlashTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc');
         var routeMatch = router.match('/abc/');
