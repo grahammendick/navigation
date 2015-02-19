@@ -711,4 +711,10 @@
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'aBc');
     });
+
+    QUnit.test('BuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('abc/{x}');
+        assert.equal(route.build({ x: 'de' }), '/abc/de');
+    });
 }
