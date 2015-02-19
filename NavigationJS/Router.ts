@@ -3,6 +3,8 @@
         private routes: Array<Route> = [];
 
         addRoute(path: string, defaults?: any): Route {
+            path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
+            path = path.substring(0, 1) === '/' ? path.substring(1) : path;
             var route = new Route(path, defaults);
             this.routes.push(route);
             return route;
