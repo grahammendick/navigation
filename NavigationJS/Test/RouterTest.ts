@@ -608,4 +608,22 @@
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'abc');
     });
+
+    QUnit.test('OneParamOptionalOneMixedSegmentMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x?}');
+        var routeMatch = router.match('abcde');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'cde');
+    });
+
+    QUnit.test('OneParamOptionalOneMixedSegmentNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x}');
+        assert.equal(router.match('ab/cde'), null);
+        assert.equal(router.match('abcd//'), null);
+        assert.equal(router.match('ab'), null);
+        assert.equal(router.match(''), null);
+    });
 }
