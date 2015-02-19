@@ -1,4 +1,20 @@
 ﻿module RouterTest {
+    QUnit.test('RootMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('');
+        var routeMatch = router.match('');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 0);
+    });
+
+    QUnit.test('RootNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('');
+        assert.equal(router.match(' '), null);
+        assert.equal(router.match('a'), null);
+        assert.equal(router.match('//'), null);
+    });
+
     QUnit.test('NoParamOneSegmentMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc');

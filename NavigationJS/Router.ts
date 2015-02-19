@@ -109,13 +109,12 @@
         }
 
         private parse() {
-            var optional = false;
+            var optional = this.path.length === 0;
             var replace = (match: string, param: string) => {
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
                 this.params.push(name);
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
-                if (this.path.length === match.length && optionalOrDefault)
-                    optional = true;
+                optional = this.path.length === match.length && optionalOrDefault;
                 return '?'
             }
             var pattern = this.path.replace(this.paramsPattern, replace);
