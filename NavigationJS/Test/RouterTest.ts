@@ -692,4 +692,14 @@
         assert.equal(router.match('ab/c'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('ExtraDefaultsMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}', { x: 'a', y: 'b' });
+        var routeMatch = router.match('');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 2);
+        assert.equal(routeMatch.data.x, 'a');
+        assert.equal(routeMatch.data.y, 'b');
+    });
 }
