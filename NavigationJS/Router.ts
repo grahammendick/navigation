@@ -124,7 +124,7 @@
             var optional = this.optional;
             var replace = (match: string, param: string) => {
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
-                optional = optional && data[name] == null;
+                optional = optional && (data[name] == null || data[name] === this.defaults[name]);
                 return data[name] != null ? data[name] : this.defaults[name];
             }
             return { path: this.path.replace(this.paramsPattern, replace), optional: optional };
