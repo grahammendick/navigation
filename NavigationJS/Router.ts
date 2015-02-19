@@ -2,8 +2,8 @@
     export class Router {
         private routes: Array<Route> = [];
 
-        addRoute(path: string, defaults?: any, dataTokens?: any): Route {
-            var route = new Route(path, defaults, dataTokens);
+        addRoute(path: string, defaults?: any): Route {
+            var route = new Route(path, defaults);
             this.routes.push(route);
             return route;
         }
@@ -49,15 +49,13 @@
     export class Route {
         path: string;
         defaults: any;
-        dataTokens: any;
         private segments: Array<Segment> = [];
         private pattern: RegExp;
         private params: Array<Parameter> = [];
 
-        constructor(path: string, defaults?: any, dataTokens?: any) {
+        constructor(path: string, defaults?: any) {
             this.path = path;
             this.defaults = defaults ? defaults : {};
-            this.dataTokens = dataTokens ? dataTokens : {};
             this.parse();
         }
 
