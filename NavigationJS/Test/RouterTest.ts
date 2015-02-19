@@ -540,4 +540,38 @@
         assert.equal(router.match('ab//'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('SpacesMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}');
+        var routeMatch = router.match('   a  ');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, '   a  ');
+    });
+
+    QUnit.test('MultiCharParamMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('a/{someVar}');
+        var routeMatch = router.match('a/someVal');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.someVar, 'someVal');
+    });
+
+    QUnit.test('LeadingTrailSlashMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('/abc/');
+        var routeMatch = router.match('abc');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 0);
+    });
+
+    QUnit.test('MatchLeadingTrailSlashTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('abc');
+        var routeMatch = router.match('/abc/');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 0);
+    });
 }
