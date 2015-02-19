@@ -92,7 +92,17 @@
         }
 
         build(data?: any): string {
-            return null;
+            data = data != null ? data : {};
+            var route = '';
+            var optional = true;
+            for (var i = this.segments.length - 1; i >= 0; i--) {
+                var segment = this.segments[i];
+                var pathInfo = segment.build(data);
+                optional = optional && pathInfo.optional;
+                if (!optional)
+                    route = '/' + pathInfo.path + route;
+            } 
+            return route;
         }
     }
 
@@ -119,7 +129,7 @@
                 this.params.push(name);
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 optional = this.path.length === match.length && optionalOrDefault;
-                return '?'
+                return '?';
             }
             this.pattern = this.path.replace(this.paramsPattern, replace);
             this.mandatory = this.mandatory || !optional;
@@ -128,6 +138,16 @@
                 this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
             else 
                 this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');
+        }
+
+        build(data?: any): { path: string; optional: boolean } {
+            var optional = !this.mandatory;
+            var replace = (match: string, param: string) => {
+                var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+                optional = optional && data[name] == null;
+                return data[name] != null ? data[name] : this.defaults[name];
+            }
+            return { path: this.path.replace(this.paramsPattern, replace), optional: optional };
         }
     }
 }
