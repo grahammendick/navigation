@@ -667,4 +667,29 @@
         assert.equal(router.match('aa'), null);
         assert.equal(router.match(''), null);
     });
+
+    QUnit.test('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x?}/{y}/c', { y: 'ee' });
+        var routeMatch = router.match('ab/cd/efg/c');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 2);
+        assert.equal(routeMatch.data.x, 'cd');
+        assert.equal(routeMatch.data.y, 'efg');
+    });
+
+    QUnit.test('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x?}/{y}/c', { y: 'ee' });
+        assert.equal(router.match(' ab/cd/efg/c'), null);
+        assert.equal(router.match('ab/cd/efg'), null);
+        assert.equal(router.match('ab/cd'), null);
+        assert.equal(router.match('ab'), null);
+        assert.equal(router.match('ab/cd/efg/c//'), null);
+        assert.equal(router.match('ab//efg/c'), null);
+        assert.equal(router.match('ab/cd//c'), null);
+        assert.equal(router.match('ab///c'), null);
+        assert.equal(router.match('ab/c'), null);
+        assert.equal(router.match(''), null);
+    });
 }
