@@ -68,7 +68,7 @@
             for (var i = 0; i < subPaths.length; i++) {
                 segment = new Segment(subPaths[i], segment ? segment.mandatory : false, this.defaults);
                 this.segments.unshift(segment);
-                pattern = segment.pattern.source + pattern;
+                pattern = segment.pattern + pattern;
                 var params: Array<Parameter> = [];
                 for (var j = 0; j < segment.params.length; j++) {
                     params.push(new Parameter(segment.params[j], !segment.mandatory));
@@ -96,7 +96,7 @@
         path: string;
         mandatory: boolean;
         defaults: any;
-        pattern: RegExp;
+        pattern: string;
         params: Array<string> = [];
         private paramsPattern: RegExp = /\{([^}]+)\}/g;
         private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
@@ -117,14 +117,13 @@
                 optional = this.path.length === match.length && optionalOrDefault;
                 return '?'
             }
-            var pattern = this.path.replace(this.paramsPattern, replace);
+            this.pattern = this.path.replace(this.paramsPattern, replace);
             this.mandatory = this.mandatory || !optional;
-            pattern = pattern.replace(this.escapePattern, '\\$&');
+            this.pattern = this.pattern.replace(this.escapePattern, '\\$&');
             if (this.mandatory)
-                pattern = '\/' + pattern.replace(/\?/g, '([^/]+)');
+                this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
             else 
-                pattern = pattern.replace(/\?/, '(\/[^/]+)?');
-            this.pattern = new RegExp(pattern);
+                this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');
         }
     }
 }
