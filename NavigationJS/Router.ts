@@ -75,7 +75,7 @@
                 }
                 this.params = params.concat(this.params);
             }
-            this.pattern = new RegExp('^' + pattern + '$');
+            this.pattern = new RegExp('^' + pattern + '$', 'i');
         }
 
         match(path: string): any {
@@ -89,6 +89,10 @@
                     data[param.name] = decodeURIComponent(!param.optional ? matches[i] : matches[i].substring(1));
             }
             return data;
+        }
+
+        build(data?: any): string {
+            return null;
         }
     }
 
