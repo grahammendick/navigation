@@ -82,7 +82,7 @@
                 if (!optional)
                     route = '/' + pathInfo.path + route;
             } 
-            return route;
+            return route.length !== 0 ? route : '/';
         }
     }
 
@@ -121,7 +121,7 @@
         }
 
         build(data?: any): { path: string; optional: boolean } {
-            var optional = this.optional && this.path.length !== 0;
+            var optional = this.optional;
             var replaceParam = (match: string, param: string) => {
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
                 optional = optional && (data[name] == null || data[name] === this.defaults[name]);
