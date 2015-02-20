@@ -83,11 +83,11 @@
                     { key: 't0', to: 's2' },
                     { key: 't1', to: 's3' },
                     { key: 't2', to: 's4' }]},
-                { key: 's2', route: 'd3s2/{char}/:number:', title: 's2', defaults: { emptyString: '', 'number': 4, char: 7 }, 
+                { key: 's2', route: 'd3s2/{char}/{number?}', title: 's2', defaults: { emptyString: '', 'number': 4, char: 7 }, 
                     defaultTypes: { 'string': 'string' }, transitions: [
                     { key: 't0', to: 's3' },
                     { key: 't1', to: 's4' }]},
-                { key: 's3', route: 'd3s3/:s:', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
+                { key: 's3', route: 'd3s3/{s?}', title: 's3', defaultTypes: { s1: 'string', s2: 'number', b1: 'boolean', n1: 'number' },
                         transitions: [
                     { key: 't0', to: 's4' }]},
                 { key: 's4', route: 'd3s4', title: 's4', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' }}
@@ -96,7 +96,7 @@
                 { key: 's0', route: 'd4s0', title: 's0', defaultTypes: { _0_1_2_3_4_5_ : 'number', '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' }, 
                     transitions: [
                     { key: 't0', to: 's1' }]},
-                { key: 's1', route: '{s1}/:s:', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
+                { key: 's1', route: '{s1}/{s?}', title: 's1', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd', b1: true, b2: false, b3: true, n1: 0, n2: 1, n3: 2 }, 
                     defaultTypes: { s1: 'string', s2: 'boolean', b1: 'boolean', b2: 'number', n1: 'number', n2: 'string' },  transitions: [
                     { key: 't0', to: 's2' }]},
                 { key: 's2', route: 'd4s2', title: 's2', transitions: [
