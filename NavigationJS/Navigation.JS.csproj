@@ -62,12 +62,10 @@
     <TypeScriptCompile Include="Test\RouterTest.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Test\crossroads.js" />
     <Content Include="Test\NavigationTest.html" />
     <Content Include="Test\qunit-1.17.1.css" />
     <Content Include="Test\qunit-1.17.1.js" />
     <Content Include="Test\RouterTest.html" />
-    <Content Include="Test\signals.js" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
