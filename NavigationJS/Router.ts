@@ -10,6 +10,10 @@
             return route;
         }
 
+        clearRoutes() {
+            this.routes = [];
+        }
+
         match(path: string): { route: Route; data: any } {
             path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
             path = (path.substring(0, 1) === '/' || path.length === 0) ? path : '/' + path;
