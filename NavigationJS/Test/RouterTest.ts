@@ -1003,4 +1003,22 @@
         assert.equal(route.build({ w: 'abc' }), '/ab');
         assert.equal(route.build(), '/ab');
     });
+
+    QUnit.test('SpacesBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}');
+        assert.equal(route.build({ x: '   a  ' }), '/' + encodeURIComponent('   a  '));
+    });
+
+    QUnit.test('MultiCharParamBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('a/{someVar}');
+        assert.equal(route.build({ someVar: 'someVal' }), '/a/someVal');
+    });
+
+    QUnit.test('SlashBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('/abc/');
+        assert.equal(route.build(), '/abc');
+    });
 }
