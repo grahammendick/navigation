@@ -207,6 +207,39 @@
 
     export var router: IRouter;
 
+    export class StateRouter implements IRouter {
+        router: Router = new Router();
+        supportsDefaults: boolean = true;
+
+        getData(route: string): any {
+            return this.router.match(route).data;
+        }
+
+        getRoute(state: State, data: any): { route: string; data: any } {
+            var route: Route = state['_route'];
+            var routeData = {};
+            for (var i = 0; i < route.params.length; i++) {
+                routeData[route.params[i].name] = data[route.params[i].name];
+            }
+            return { route: route.build(data), data: routeData };
+        }
+
+        addRoutes(dialogs: Array<Dialog>) {
+            var rootState: State;
+            for (var i = 0; i < dialogs.length; i++) {
+                for (var j = 0; j < dialogs[i]._states.length; j++) {
+                    var state = dialogs[i]._states[j];
+                    if (state.route.substr(0, 1) !== '{')
+                        state['_route'] = this.router.addRoute(state.route);
+                    else
+                        rootState = state;
+                }
+            }
+            if (rootState)
+                rootState['_route'] = this.router.addRoute(rootState.route);
+        }
+    }
+
     class NavigationData {
         static setDefaults(data: any, defaults: any) {
             for (var key in defaults) {
