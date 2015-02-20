@@ -205,8 +205,6 @@
         addRoutes(dialogs: Array<Dialog>);
     }
 
-    export var router: IRouter;
-
     export class StateRouter implements IRouter {
         router: Router = new Router();
         supportsDefaults: boolean = true;
@@ -230,15 +228,17 @@
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
                     var state = dialogs[i]._states[j];
                     if (state.route.substr(0, 1) !== '{')
-                        state['_route'] = this.router.addRoute(state.route);
+                        state['_route'] = this.router.addRoute(state.route, state.formattedDefaults);
                     else
                         rootState = state;
                 }
             }
             if (rootState)
-                rootState['_route'] = this.router.addRoute(rootState.route);
+                rootState['_route'] = this.router.addRoute(rootState.route, rootState.formattedDefaults);
         }
     }
+
+    export var router: IRouter = new StateRouter();
 
     class NavigationData {
         static setDefaults(data: any, defaults: any) {
