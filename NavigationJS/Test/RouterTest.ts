@@ -809,6 +809,18 @@
         assert.equal(route.params[0].name, 'x');
     });
 
+    QUnit.test('RootBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('');
+        assert.equal(route.build(), '/');
+    });
+
+    QUnit.test('NoParamOneSegmentBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('abc');
+        assert.equal(route.build(), '/abc');
+    });
+
     QUnit.test('BuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc/{x}');
