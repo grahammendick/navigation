@@ -223,6 +223,7 @@
         }
 
         addRoutes(dialogs: Array<Dialog>) {
+            this.router.clearRoutes();
             var rootState: State;
             for (var i = 0; i < dialogs.length; i++) {
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
