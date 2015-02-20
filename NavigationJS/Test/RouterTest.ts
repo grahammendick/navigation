@@ -1,4 +1,6 @@
 ﻿module RouterTest {
+    QUnit.module('MatchTest');
+
     QUnit.test('RootMatchTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('');
@@ -808,6 +810,8 @@
         assert.equal(route.params.length, 1);
         assert.equal(route.params[0].name, 'x');
     });
+
+    QUnit.module('BuildTest');
 
     QUnit.test('RootBuildTest', function (assert) {
         var router = new Navigation.Router();
