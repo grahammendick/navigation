@@ -1028,7 +1028,7 @@
         assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
     });
 
-    QUnit.test('ReservedRegexCharacterMatchTest', function (assert) {
+    QUnit.test('ReservedRegexCharacterBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('.+*\^$\[\](){}\'\{x}');
         assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\](){}\'\abc');
