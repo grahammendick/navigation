@@ -833,6 +833,19 @@
         assert.equal(route.build({ x: 'abcd' }), '/abcd');
     });
 
+    QUnit.test('OneParamTwoSegmentBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}');
+        assert.equal(route.build({ x: 'cd' }), '/ab/cd');
+    });
+
+    QUnit.test('TwoParamTwoSegmentMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y}');
+        var routeMatch = router.match('aa/bbb');
+        assert.equal(route.build({ x: 'aa', y: 'bbb' }), '/aa/bbb');
+    });
+
     QUnit.test('BuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('abc/{x}');
