@@ -677,8 +677,8 @@
 
     QUnit.test('ReservedRegexCharacterMatchTest', function (assert) {
         var router = new Navigation.Router();
-        var route = router.addRoute('.+*\^$\[\](){}\'\{x}');
-        var routeMatch = router.match('.+*\^$\[\](){}\'\abc');
+        var route = router.addRoute('.+*\^$\[\](){}\'/{x}');
+        var routeMatch = router.match('.+*\^$\[\](){}\'/abc');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'abc');
@@ -1040,7 +1040,7 @@
 
     QUnit.test('ReservedRegexCharacterBuildTest', function (assert) {
         var router = new Navigation.Router();
-        var route = router.addRoute('.+*\^$\[\](){}\'\{x}');
-        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\](){}\'\abc');
+        var route = router.addRoute('.+*\^$\[\](){}\'/{x}');
+        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\](){}\'/abc');
     });
 }
