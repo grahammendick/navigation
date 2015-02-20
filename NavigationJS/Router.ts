@@ -22,7 +22,7 @@
                 var data = route.match(path);
                 if (data) {
                     for (var key in route.defaults) {
-                        if (data[key] == null)
+                        if (!data[key])
                             data[key] = route.defaults[key];
                     }
                     return { route: route, data: data };
