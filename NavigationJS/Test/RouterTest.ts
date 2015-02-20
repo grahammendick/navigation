@@ -662,11 +662,15 @@
 
     QUnit.test('ReservedUrlCharacterMatchTest', function (assert) {
         var router = new Navigation.Router();
-        var route = router.addRoute('a/{*="()\'-_+~@:?><.;[],!£$%^#&}');
+        var route = router.addRoute('a/{*="()\'-_+~@:?><.;[],!£$%^#&}', { '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' });
         var routeMatch = router.match('a/*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+        var routeMatch = router.match('a');
+        assert.equal(routeMatch.route, route);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
         assert.equal(route.params.length, 1);
         assert.equal(route.params[0].name, '*="()\'-_+~@:?><.;[],!£$%^#&');
     });
@@ -1028,8 +1032,10 @@
 
     QUnit.test('ReservedUrlCharacterBuildTest', function (assert) {
         var router = new Navigation.Router();
-        var route = router.addRoute('a/{*="()\'-_+~@:?><.;[],!£$%^#&}');
+        var route = router.addRoute('a/{*="()\'-_+~@:?><.;[],!£$%^#&}', { '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' });
         assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
+        assert.equal(route.build(), '/a');
     });
 
     QUnit.test('ReservedRegexCharacterBuildTest', function (assert) {
