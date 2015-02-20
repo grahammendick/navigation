@@ -14,48 +14,6 @@
         }
     }
 
-    class CrossroadsRouter implements Navigation.IRouter {
-        private crossroads: any;
-        supportsDefaults: boolean = false;
-        constructor() {
-            this.crossroads = window['crossroads'];
-            this.crossroads.ignoreState = true;
-        }
-
-        getData(route: string): any {
-            var data = {};
-            var match = this.crossroads._getMatchedRoutes(route)[0];
-            for (var i = 0; i < match.params.length; i++) {
-                data[match.route._paramsIds[i]] = decodeURIComponent(match.params[i]);
-            }
-            return data;
-        }
-
-        getRoute(state: Navigation.State, data: any): { route: string; data: any } {
-            var encodedData = {};
-            for (var k in data)
-                encodedData[k] = encodeURIComponent(data[k]);
-            var route = state['_route'].interpolate(encodedData);
-            var routeData = this.getData(route);
-            return { route: route, data: routeData };
-        }
-
-        addRoutes(dialogs: Array<Navigation.Dialog>) {
-            this.crossroads.removeAllRoutes();
-            for (var i = 0; i < dialogs.length; i++) {
-                for (var j = 0; j < dialogs[i]._states.length; j++) {
-                    dialogs[i]._states[j]['_route'] = this.crossroads.addRoute(dialogs[i]._states[j].route);
-                }
-            }
-            if (dialogs[4]) {
-                this.crossroads.removeRoute(dialogs[4]._states[1]['_route']);
-                dialogs[4]._states[1]['_route'] = this.crossroads.addRoute(dialogs[4]._states[1].route);
-            }
-        }
-    }
-
-    Navigation.router = new CrossroadsRouter();
-
     function initStateInfo() {
         Navigation.StateInfoConfig.build([
             { key: 'd0', initial: 's0', title: 'd0', states: [
