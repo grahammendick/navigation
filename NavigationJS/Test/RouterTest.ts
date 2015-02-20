@@ -5,6 +5,7 @@
         var routeMatch = router.match('');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 0);
     });
 
     QUnit.test('RootNonMatchTest', function (assert) {
@@ -21,6 +22,7 @@
         var routeMatch = router.match('abc');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 0);
     });
 
     QUnit.test('NoParamOneSegmentNonMatchTest', function (assert) {
@@ -43,6 +45,7 @@
         var routeMatch = router.match('ab/c');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 0);
     });
 
     QUnit.test('NoParamTwoSegmentNonMatchTest', function (assert) {
@@ -74,6 +77,8 @@
         assert.equal(router.match('ab/cd'), null);
         assert.equal(router.match('ab//'), null);
         assert.equal(router.match(''), null);
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamTwoSegmentMatchTest', function (assert) {
@@ -83,6 +88,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'cd');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamTwoSegmentNonMatchTest', function (assert) {
@@ -106,6 +113,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'aa');
         assert.equal(routeMatch.data.y, 'bbb');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamTwoSegmentNonMatchTest', function (assert) {
@@ -125,6 +135,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'cd');
         assert.equal(routeMatch.data.y, 'efg');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamThreeSegmentNonMatchTest', function (assert) {
@@ -148,6 +161,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'yy');
         assert.equal(routeMatch.data.y, 'xyz');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamFourSegmentNonMatchTest', function (assert) {
@@ -172,6 +188,8 @@
         routeMatch = router.match('');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneOptionalParamOneSegmentNonMatchTest', function (assert) {
@@ -191,6 +209,8 @@
         routeMatch = router.match('ab');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneOptionalParamTwoSegmentNonMatchTest', function (assert) {
@@ -220,6 +240,9 @@
         var routeMatch = router.match('');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoOptionalParamTwoSegmentNonMatchTest', function (assert) {
@@ -244,6 +267,9 @@
         var routeMatch = router.match('ab');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoOptionalParamThreeSegmentNonMatchTest', function (assert) {
@@ -268,6 +294,9 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'aab');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalTwoSegmentNonMatchTest', function (assert) {
@@ -290,6 +319,9 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'cde');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalThreeSegmentNonMatchTest', function (assert) {
@@ -315,6 +347,9 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'yy');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalFourSegmentNonMatchTest', function (assert) {
@@ -335,6 +370,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'cde');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamOneMixedSegmentNonMatchTest', function (assert) {
@@ -354,6 +391,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'cd');
         assert.equal(routeMatch.data.y, 'fgh');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneMixedSegmentNonMatchTest', function (assert) {
@@ -380,6 +420,9 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'abc');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalTwoSegmentOneMixedNonMatchTest', function (assert) {
@@ -403,6 +446,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'cde');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamOneSegmentDefaultNonMatchTest', function (assert) {
@@ -423,6 +468,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'ccdd');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamTwoSegmentDefaultNonMatchTest', function (assert) {
@@ -455,6 +502,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'ab');
         assert.equal(routeMatch.data.y, 'c');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamTwoSegmentTwoDefaultNonMatchTest', function (assert) {
@@ -477,6 +527,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'aa');
         assert.equal(routeMatch.data.y, 'ab');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamTwoSegmentDefaultNonMatchTest', function (assert) {
@@ -503,6 +556,9 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'abc');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalTwoSegmentDefaultNonMatchTest', function (assert) {
@@ -543,6 +599,11 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.w, 'abc');
         assert.equal(routeMatch.data.x, 'de');
+        assert.equal(route.params.length, 4);
+        assert.equal(route.params[0].name, 'w');
+        assert.equal(route.params[1].name, 'x');
+        assert.equal(route.params[2].name, 'y');
+        assert.equal(route.params[3].name, 'z');
     });
 
     QUnit.test('FourParamTwoOptionalFiveSegmentDefaultNonMatchTest', function (assert) {
@@ -564,6 +625,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, '   a  ');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('MultiCharParamMatchTest', function (assert) {
@@ -573,6 +636,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.someVar, 'someVal');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'someVar');
     });
 
     QUnit.test('SlashMatchTest', function (assert) {
@@ -581,6 +646,7 @@
         var routeMatch = router.match('abc');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 0);
     });
 
     QUnit.test('MatchSlashTest', function (assert) {
@@ -589,6 +655,7 @@
         var routeMatch = router.match('/abc/');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 0);
+        assert.equal(route.params.length, 0);
     });
 
     QUnit.test('ReservedUrlCharacterMatchTest', function (assert) {
@@ -598,6 +665,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, '*="()\'-_+~@:?><.;[],!£$%^#&');
     });
 
     QUnit.test('ReservedRegexCharacterMatchTest', function (assert) {
@@ -607,6 +676,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'abc');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamOptionalMandatoryOneMixedSegmentMatchTest', function (assert) {
@@ -616,6 +687,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'cde');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('OneParamOptionalMandatoryOneMixedSegmentNonMatchTest', function (assert) {
@@ -625,6 +698,8 @@
         assert.equal(router.match('abcd//'), null);
         assert.equal(router.match('ab'), null);
         assert.equal(router.match(''), null);
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('TwoParamOneOptionalMandatoryThreeSegmentMatchTest', function (assert) {
@@ -635,6 +710,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'cd');
         assert.equal(routeMatch.data.y, 'efg');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalMandatoryThreeSegmentNonMatchTest', function (assert) {
@@ -647,6 +725,9 @@
         assert.equal(router.match('ab/cde'), null);
         assert.equal(router.match('ab'), null);
         assert.equal(router.match(''), null);
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamTwoSegmentDefaultMandatoryMatchTest', function (assert) {
@@ -657,6 +738,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'aa');
         assert.equal(routeMatch.data.y, 'bbb');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamTwoSegmentDefaultMandatoryNonMatchTest', function (assert) {
@@ -666,6 +750,9 @@
         assert.equal(router.match('aa//'), null);
         assert.equal(router.match('aa'), null);
         assert.equal(router.match(''), null);
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryMatchTest', function (assert) {
@@ -676,6 +763,9 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'cd');
         assert.equal(routeMatch.data.y, 'efg');
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryMatchTest', function (assert) {
@@ -691,6 +781,9 @@
         assert.equal(router.match('ab///c'), null);
         assert.equal(router.match('ab/c'), null);
         assert.equal(router.match(''), null);
+        assert.equal(route.params.length, 2);
+        assert.equal(route.params[0].name, 'x');
+        assert.equal(route.params[1].name, 'y');
     });
 
     QUnit.test('ExtraDefaultsMatchTest', function (assert) {
@@ -701,6 +794,8 @@
         assert.equal(Object.keys(routeMatch.data).length, 2);
         assert.equal(routeMatch.data.x, 'a');
         assert.equal(routeMatch.data.y, 'b');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('CaseInsensitiveMatchTest', function (assert) {
@@ -710,6 +805,8 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'aBc');
+        assert.equal(route.params.length, 1);
+        assert.equal(route.params[0].name, 'x');
     });
 
     QUnit.test('BuildTest', function (assert) {

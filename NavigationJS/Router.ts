@@ -33,7 +33,7 @@
         defaults: any;
         private segments: Array<Segment> = [];
         private pattern: RegExp;
-        private params: Array<{ name: string; optional: boolean }> = [];
+        params: Array<{ name: string; optional: boolean }> = [];
 
         constructor(path: string, defaults?: any) {
             this.path = path;
