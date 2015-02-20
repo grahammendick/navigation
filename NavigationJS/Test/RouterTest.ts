@@ -464,7 +464,7 @@
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'cde');
-        var routeMatch = router.match('ab');
+        routeMatch = router.match('ab');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'ccdd');
@@ -912,5 +912,46 @@
         var router = new Navigation.Router();
         var route = router.addRoute('ab{x}');
         assert.equal(route.build({ x: 'cde' }), '/abcde');
+    });
+
+    QUnit.test('TwoParamOneMixedSegmentBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab{x}e{y}');
+        assert.equal(route.build({ x: 'cd', y: 'fgh' }), '/abcdefgh');
+    });
+
+    QUnit.test('TwoParamOneOptionalTwoSegmentOneMixedMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}ab/{y?}');
+        assert.equal(route.build({ x: 'abc', y: 'de' }), '/abcab/de');
+        assert.equal(route.build({ x: 'abc' }), '/abcab');
+    });
+
+    QUnit.test('OneParamOneSegmentDefaultBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}', { x: 'cde' });
+        assert.equal(route.build({ x: 'ab' }), '/ab');
+        assert.equal(route.build({ x: 'cde' }), '/');
+        assert.equal(route.build(), '/');
+    });
+
+    QUnit.test('OneParamTwoSegmentDefaultBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}', { x: 'ccdd' });
+        assert.equal(route.build({ x: 'cde' }), '/ab/cde');
+        assert.equal(route.build({ x: 'ccdd' }), '/ab');
+        assert.equal(route.build(), '/ab');
+    });
+
+    QUnit.test('TwoParamTwoSegmentTwoDefaultMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y}', { x: 'ab', y: 'c' });
+        var routeMatch = router.match('aa/bbb');
+        assert.equal(route.build({ x: 'aa', y: 'bbb' }), '/aa/bbb');
+        assert.equal(route.build({ x: 'aa', y: 'c' }), '/aa');
+        assert.equal(route.build({ x: 'aa' }), '/aa');
+        assert.equal(route.build({ x: 'ab', y: 'c' }), '/');
+        assert.equal(route.build({ x: 'ab' }), '/');
+        assert.equal(route.build(), '/');
     });
 }
