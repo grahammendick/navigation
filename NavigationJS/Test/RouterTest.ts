@@ -943,15 +943,64 @@
         assert.equal(route.build(), '/ab');
     });
 
-    QUnit.test('TwoParamTwoSegmentTwoDefaultMatchTest', function (assert) {
+    QUnit.test('TwoParamTwoSegmentTwoDefaultBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('{x}/{y}', { x: 'ab', y: 'c' });
-        var routeMatch = router.match('aa/bbb');
         assert.equal(route.build({ x: 'aa', y: 'bbb' }), '/aa/bbb');
         assert.equal(route.build({ x: 'aa', y: 'c' }), '/aa');
+        assert.equal(route.build({ y: 'bbb' }), '/ab/bbb');
+        assert.equal(route.build({ y: 'c' }), '/');
         assert.equal(route.build({ x: 'aa' }), '/aa');
         assert.equal(route.build({ x: 'ab', y: 'c' }), '/');
         assert.equal(route.build({ x: 'ab' }), '/');
         assert.equal(route.build(), '/');
+    });
+
+    QUnit.test('TwoParamTwoSegmentDefaultBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y}', { y: 'ab' });
+        assert.equal(route.build({ x: 'aa', y: 'bbb' }), '/aa/bbb');
+        assert.equal(route.build({ x: 'aa', y: 'ab' }), '/aa');
+        assert.equal(route.build({ x: 'aa' }), '/aa');
+    });
+
+    QUnit.test('TwoParamOneOptionalTwoSegmentDefaultBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y?}', { x: 'abc' });
+        assert.equal(route.build({ x: 'aa', y: 'bbb' }), '/aa/bbb');
+        assert.equal(route.build({ x: 'abc', y: 'bbb' }), '/abc/bbb');
+        assert.equal(route.build({ y: 'bbb' }), '/abc/bbb');
+        assert.equal(route.build({ x: 'aab' }), '/aab');
+        assert.equal(route.build({ x: 'abc' }), '/');
+        assert.equal(route.build(), '/');
+    });
+
+    QUnit.test('FourParamTwoOptionalFiveSegmentDefaultBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{w}/{x}/{y?}/{z?}', { w: 'abc', x: 'de' });
+        assert.equal(route.build({ w: 'cd', x: 'ef', y: 'hi', z: 'jk' }), '/ab/cd/ef/hi/jk');
+        assert.equal(route.build({ w: 'cd', x: 'de', y: 'hi', z: 'jk' }), '/ab/cd/de/hi/jk');
+        assert.equal(route.build({ w: 'abc', x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
+        assert.equal(route.build({ w: 'abc', x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+        assert.equal(route.build({ x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
+        assert.equal(route.build({ x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+        assert.equal(route.build({ x: 'de', y: 'hi' }), '/ab/abc/de/hi');
+        assert.equal(route.build({ x: 'ef' }), '/ab/abc/ef');
+        assert.equal(route.build({ x: 'de' }), '/ab');
+        assert.equal(route.build({ y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+        assert.equal(route.build({ y: 'hi' }), '/ab/abc/de/hi');
+        assert.equal(route.build({ w: 'cde', x: 'fg', y: 'h' }), '/ab/cde/fg/h');
+        assert.equal(route.build({ w: 'abc', x: 'de', y: 'h' }), '/ab/abc/de/h');
+        assert.equal(route.build({ w: 'cde', y: 'h', z: 'jk' }), '/ab/cde/de/h/jk');
+        assert.equal(route.build({ w: 'abc', y: 'h', z: 'jk' }), '/ab/abc/de/h/jk');
+        assert.equal(route.build({ w: 'cde', y: 'h' }), '/ab/cde/de/h');
+        assert.equal(route.build({ w: 'abc', y: 'h' }), '/ab/abc/de/h');
+        assert.equal(route.build({ w: 'cc', x: 'def' }), '/ab/cc/def');
+        assert.equal(route.build({ w: 'cc', x: 'de' }), '/ab/cc');
+        assert.equal(route.build({ w: 'abc', x: 'de' }), '/ab');
+        assert.equal(route.build({ w: 'abc', x: 'def' }), '/ab/abc/def');
+        assert.equal(route.build({ w: 'ccdd' }), '/ab/ccdd');
+        assert.equal(route.build({ w: 'abc' }), '/ab');
+        assert.equal(route.build(), '/ab');
     });
 }
