@@ -10,21 +10,32 @@
 	self.goToFolder = function (folder) { };
 	self.goToMail = function (mail) { };
 
-	var dialogs = Navigation.StateInfoConfig.dialogs;
-	dialogs.webMail.states.folder.started = function () {
+	var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
+	var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
+	folderState.started = function () {
+		self.chosenFolderId(Navigation.StateContext.data.folder);
 	};
 
-	dialogs.webMail.states.mail.started = function () {
+	folderState.ended = function () {
+		self.chosenFolderData(null);
+	};
+
+	mailState.started = function () {
+		self.chosenFolderId(Navigation.StateContext.data.folder);
+	};
+
+	mailState.ended = function () {
+		self.chosenMailData(null);
 	};
 };
 
 Navigation.StateInfoConfig.build([
 	{ key: 'webMail', initial: 'folder', states: [
-		{ key: 'folder', route: '{folder}', defaults: {folder: 'inbox'}, transitions: [
+		{ key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, transitions: [
 			{ key: 'select', to: 'mail' }]},
-		{ key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'inbox' } }]}
+		{ key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' } }]}
 ]);
 
 ko.applyBindings(new WebmailViewModel());
 
-Navigation.StateController.navigateLink(Navigation.router.getData(window.location.hash).state, window.location.hash)
+Navigation.StateController.navigateLink(Navigation.router.getData(window.location.hash).state, window.location.hash);
