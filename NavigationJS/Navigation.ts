@@ -23,7 +23,7 @@
         trackCrumbTrail: boolean = true;
         stateHandler: IStateHandler = new StateHandler();
         ended: () => void = function () { };
-        started: () => void = function () { };
+        navigated: () => void = function () { };
         starting: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
     }
 
@@ -451,11 +451,9 @@
             } catch (e) {
                 throw new Error('Invalid Url');
             }
-            if (oldState !== state) {
-                if (oldState)
-                    oldState.ended();
-                state.started();
-            }
+            if (oldState && oldState !== state)
+                oldState.ended();
+            state.navigated();
         }
 
         static navigate(action: string, toData?: any) {
