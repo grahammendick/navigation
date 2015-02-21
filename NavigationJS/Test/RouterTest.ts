@@ -815,6 +815,33 @@
         assert.equal(route.params[0].name, 'x');
     });
 
+    QUnit.test('MultipleRoutesMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route1 = router.addRoute('ab/{x}');
+        var route2 = router.addRoute('cd/{x}');
+        var routeMatch = router.match('ab/ef');
+        assert.equal(routeMatch.route, route1);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'ef');
+        assert.equal(route1.params.length, 1);
+        assert.equal(route1.params[0].name, 'x');
+        routeMatch = router.match('cd/ef');
+        assert.equal(routeMatch.route, route2);
+        assert.equal(Object.keys(routeMatch.data).length, 1);
+        assert.equal(routeMatch.data.x, 'ef');
+        assert.equal(route2.params.length, 1);
+        assert.equal(route2.params[0].name, 'x');
+    });
+
+    QUnit.test('MultipleRoutesNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route1 = router.addRoute('ab/{x}');
+        var route2 = router.addRoute('cd/{x}');
+        assert.equal(router.match('aa/bbb'), null);
+        assert.equal(router.match('ab'), null);
+        assert.equal(router.match('cd'), null);
+    });
+
     QUnit.module('BuildTest');
 
     QUnit.test('RootBuildTest', function (assert) {
