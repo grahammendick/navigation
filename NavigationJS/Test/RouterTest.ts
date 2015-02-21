@@ -1219,4 +1219,10 @@
         var route = router.addRoute('{x}');
         assert.equal(route.build({ x: 'a', y: 'b' }), '/a');
     });
+
+    QUnit.test('EmptyStringNonMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}');
+        assert.equal(route.build({ x: '' }), null);
+    });
 }
