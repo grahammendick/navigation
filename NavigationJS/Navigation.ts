@@ -227,21 +227,21 @@
 
         addRoutes(dialogs: Array<Dialog>) {
             this.router = new Router();
-            var rootState: State;
+            var states: Array<State> = [];
             for (var i = 0; i < dialogs.length; i++) {
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
-                    var state = dialogs[i]._states[j];
-                    if (state.route.substr(0, 1) !== '{') {
-                        state['_route'] = this.router.addRoute(state.route, state.formattedDefaults);
-                        state['_route']['_state'] = state;
-                    } else {
-                        rootState = state;
-                    }
+                    states.push(dialogs[i]._states[j]);
                 }
             }
-            if (rootState) {
-                rootState['_route'] = this.router.addRoute(rootState.route, rootState.formattedDefaults);
-                rootState['_route']['_state'] = rootState;
+            states.sort((state1, state2) => {
+                var state1Order = state1.route.substring(0, 1) === '{' ? -1 : 0;
+                var state2Order = state2.route.substring(0, 1) === '{' ? -1 : 0;
+                return state2Order - state1Order;
+            });
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                state['_route'] = this.router.addRoute(state.route, state.formattedDefaults);
+                state['_route']['_state'] = state;
             }
         }
     }
