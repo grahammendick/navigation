@@ -11,7 +11,7 @@
 		Navigation.StateController.navigate('webMail', { folder: folder });
 	};
 	self.goToMail = function (mail) {
-		Navigation.StateController.navigate('select', { folder: Navigation.StateContext.data.folder, mailId: '1' });
+		Navigation.StateController.navigate('select', { folder: Navigation.StateContext.data.folder, mailId: mail.id });
 	};
 
 	var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
@@ -19,11 +19,14 @@
 
 	folderState.navigated = function () {
 		self.chosenFolderId(Navigation.StateContext.data.folder);
-		self.chosenFolderData({ mails: [{ from: '', to: '', subject: 'test', date: '' }] });
+		self.chosenFolderData({ mails: [{ from: '', to: '', subject: 'test', date: '', id: '1' }] });
 	};
 	folderState.ended = function () { self.chosenFolderData(null); };
 
-	mailState.navigated = function () { self.chosenFolderId(Navigation.StateContext.data.folder); };
+	mailState.navigated = function () {
+		self.chosenFolderId(Navigation.StateContext.data.folder);
+		self.chosenMailData({ from: '', to: '', subject: 'test', date: '', id: '1' });
+	};
 	mailState.ended = function () { self.chosenMailData(null); };
 };
 
