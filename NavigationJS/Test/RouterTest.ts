@@ -699,7 +699,7 @@
 
     QUnit.test('OneParamOptionalMandatoryOneMixedSegmentNonMatchTest', function (assert) {
         var router = new Navigation.Router();
-        var route = router.addRoute('ab{x}');
+        var route = router.addRoute('ab{x?}');
         assert.equal(router.match('ab/cde'), null);
         assert.equal(router.match('abcd//'), null);
         assert.equal(router.match('ab'), null);
@@ -841,10 +841,22 @@
         assert.equal(route.build({ x: 'abcd' }), '/abcd');
     });
 
+    QUnit.test('OneParamOneSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}');
+        assert.equal(route.build(), null);
+    });
+
     QUnit.test('OneParamTwoSegmentBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}');
         assert.equal(route.build({ x: 'cd' }), '/ab/cd');
+    });
+
+    QUnit.test('OneParamTwoSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}');
+        assert.equal(route.build(), null);
     });
 
     QUnit.test('TwoParamTwoSegmentBuildTest', function (assert) {
@@ -853,16 +865,40 @@
         assert.equal(route.build({ x: 'aa', y: 'bbb' }), '/aa/bbb');
     });
 
+    QUnit.test('TwoParamTwoSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y}');
+        assert.equal(route.build({ x: 'aa' }), null);
+        assert.equal(route.build({ y: 'bbb' }), null);
+        assert.equal(route.build(), null);
+    });
+
     QUnit.test('TwoParamThreeSegmentBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}/{y}');
         assert.equal(route.build({ x: 'cd', y: 'efg' }), '/ab/cd/efg');
     });
 
+    QUnit.test('TwoParamThreeSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}/{y}');
+        assert.equal(route.build({ x: 'cd' }), null);
+        assert.equal(route.build({ y: 'efg' }), null);
+        assert.equal(route.build(), null);
+    });
+
     QUnit.test('TwoParamFourSegmentBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}/c/{y}');
         assert.equal(route.build({ x: 'yy', y: 'xyz' }), '/ab/yy/c/xyz');
+    });
+
+    QUnit.test('TwoParamFourSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}/c/{y}');
+        assert.equal(route.build({ x: 'yy' }), null);
+        assert.equal(route.build({ y: 'xyz' }), null);
+        assert.equal(route.build(), null);
     });
 
     QUnit.test('OneOptionalParamOneSegmentBuildTest', function (assert) {
@@ -887,12 +923,24 @@
         assert.equal(route.build(), '/');
     });
 
+    QUnit.test('TwoOptionalParamTwoSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x?}/{y?}');
+        assert.equal(route.build({ y: 'bbb' }), null);
+    });
+
     QUnit.test('TwoOptionalParamThreeSegmentBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x?}/{y?}');
         assert.equal(route.build({ x: 'cd', y: 'efg' }), '/ab/cd/efg');
         assert.equal(route.build({ x: 'cde' }), '/ab/cde');
         assert.equal(route.build(), '/ab');
+    });
+
+    QUnit.test('TwoOptionalParamThreeSegmentBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x?}/{y?}');
+        assert.equal(route.build({ y: 'efg' }), null);
     });
 
     QUnit.test('TwoParamOneOptionalTwoSegmentBuildTest', function (assert) {
@@ -1036,6 +1084,12 @@
         assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
         assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
         assert.equal(route.build(), '/a');
+    });
+
+    QUnit.test('ReservedRegexCharacterBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('.+*\^$\[\](){}\'/{x}');
+        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\](){}\'/abc');
     });
 
     QUnit.test('ReservedRegexCharacterBuildTest', function (assert) {
