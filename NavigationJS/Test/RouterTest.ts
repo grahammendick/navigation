@@ -950,6 +950,13 @@
         assert.equal(route.build({ x: 'aab' }), '/aab');
     });
 
+    QUnit.test('TwoParamOneOptionalTwoSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}/{y?}');
+        assert.equal(route.build({ y: 'bbb' }), null);
+        assert.equal(route.build(), null);
+    });
+
     QUnit.test('TwoParamOneOptionalThreeSegmentBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}/{y?}');
@@ -957,11 +964,25 @@
         assert.equal(route.build({ x: 'cde' }), '/ab/cde');
     });
 
+    QUnit.test('TwoParamOneOptionalThreeSegmentBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}/{y?}');
+        assert.equal(route.build({ y: 'efg' }), null);
+        assert.equal(route.build(), null);
+    });
+
     QUnit.test('TwoParamOneOptionalFourSegmentNonBuildTest', function (assert) {
         var router = new Navigation.Router();
         var route = router.addRoute('ab/{x}/c/{y?}');
         assert.equal(route.build({ x: 'yy', y: 'xyz' }), '/ab/yy/c/xyz');
         assert.equal(route.build({ x: 'yy' }), '/ab/yy/c');
+    });
+
+    QUnit.test('TwoParamOneOptionalFourSegmentNonBuildTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('ab/{x}/c/{y?}');
+        assert.equal(route.build({ y: 'xyz' }), null);
+        assert.equal(route.build(), null);
     });
 
     QUnit.test('OneParamOneMixedSegmentBuildTest', function (assert) {
