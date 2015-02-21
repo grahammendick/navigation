@@ -4,10 +4,6 @@
     <title></title>
 </head>
 <body>
-    <script src="../../Router.js"></script>
-    <script src="../../Navigation.js"></script>
-    <script src="knockout-3.3.0.js"></script>
-    <script src="app.js"></script>
     <!-- Folders -->
     <ul class="folders" data-bind="foreach: folders">
         <li data-bind="text: $data,
@@ -38,5 +34,9 @@
         </div>
         <p class="message" data-bind="html: messageContent" />
     </div>
+    <script src="../../Router.js"></script>
+    <script src="../../Navigation.js"></script>
+    <script src="knockout-3.3.0.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
