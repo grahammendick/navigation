@@ -62,11 +62,15 @@
     <TypeScriptCompile Include="Test\RouterTest.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sample\Knockout\app.html" />
+    <Content Include="Sample\Knockout\app.js" />
+    <Content Include="Sample\Knockout\knockout-3.3.0.js" />
     <Content Include="Test\NavigationTest.html" />
     <Content Include="Test\qunit-1.17.1.css" />
     <Content Include="Test\qunit-1.17.1.js" />
     <Content Include="Test\RouterTest.html" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
   </PropertyGroup>
