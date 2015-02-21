@@ -7,26 +7,24 @@
 	self.chosenMailData = ko.observable();
 
 	// Behaviours    
-	self.goToFolder = function (folder) { Navigation.StateController.refresh({ folder: folder }); };
-	self.goToMail = function (mail) { };
+	self.goToFolder = function (folder) {
+		Navigation.StateController.navigate('webMail', { folder: folder });
+	};
+	self.goToMail = function (mail) {
+		Navigation.StateController.navigate('select', { folder: Navigation.StateContext.data.folder, mailId: '1' });
+	};
 
 	var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
 	var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
+
 	folderState.navigated = function () {
 		self.chosenFolderId(Navigation.StateContext.data.folder);
+		self.chosenFolderData({ mails: [{ from: '', to: '', subject: 'test', date: '' }] });
 	};
+	folderState.ended = function () { self.chosenFolderData(null); };
 
-	folderState.ended = function () {
-		self.chosenFolderData(null);
-	};
-
-	mailState.navigated = function () {
-		self.chosenFolderId(Navigation.StateContext.data.folder);
-	};
-
-	mailState.ended = function () {
-		self.chosenMailData(null);
-	};
+	mailState.navigated = function () { self.chosenFolderId(Navigation.StateContext.data.folder); };
+	mailState.ended = function () { self.chosenMailData(null); };
 };
 
 Navigation.StateInfoConfig.build([
