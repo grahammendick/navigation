@@ -174,7 +174,7 @@
 
         getNavigationData(state: State, url: string): any {
             var queryIndex = url.indexOf('?');
-            var data = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex));
+            var data = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
             data = data ? data : {};
             if (queryIndex >= 0) {
                 var query = url.substring(queryIndex + 1);
@@ -201,7 +201,7 @@
     }
 
     export interface IRouter {
-        getData(route: string): any;
+        getData(route: string): { state: State; data: any };
         getRoute(state: State, data: any): { route: string; data: any };
         supportsDefaults: boolean;
         addRoutes(dialogs: Array<Dialog>);
@@ -211,8 +211,9 @@
         router: Router;
         supportsDefaults: boolean = true;
 
-        getData(route: string): any {
-            return this.router.match(route).data;
+        getData(route: string): { state: State; data: any } {
+            var match = this.router.match(route);
+            return { state: match.route['_state'], data: this.router.match(route).data };
         }
 
         getRoute(state: State, data: any): { route: string; data: any } {
@@ -230,14 +231,18 @@
             for (var i = 0; i < dialogs.length; i++) {
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
                     var state = dialogs[i]._states[j];
-                    if (state.route.substr(0, 1) !== '{')
+                    if (state.route.substr(0, 1) !== '{') {
                         state['_route'] = this.router.addRoute(state.route, state.formattedDefaults);
-                    else
+                        state['_route']['_state'] = state;
+                    } else {
                         rootState = state;
+                    }
                 }
             }
-            if (rootState)
+            if (rootState) {
                 rootState['_route'] = this.router.addRoute(rootState.route, rootState.formattedDefaults);
+                rootState['_route']['_state'] = rootState;
+            }
         }
     }
 
