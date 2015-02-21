@@ -208,7 +208,7 @@
     }
 
     export class StateRouter implements IRouter {
-        router: Router = new Router();
+        router: Router;
         supportsDefaults: boolean = true;
 
         getData(route: string): any {
@@ -225,7 +225,7 @@
         }
 
         addRoutes(dialogs: Array<Dialog>) {
-            this.router.clearRoutes();
+            this.router = new Router();
             var rootState: State;
             for (var i = 0; i < dialogs.length; i++) {
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
