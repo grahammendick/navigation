@@ -154,6 +154,8 @@
         getNavigationLink(state: State, data: any): string {
             delete data[settings.stateIdKey];
             var routeInfo = router.getRoute(state, data);
+            if (routeInfo.route == null)
+                return null;
             var query: Array<string> = [];
             for (var key in data) {
                 if (!routeInfo.data || routeInfo.data[key] == null)
@@ -453,6 +455,8 @@
 
         static navigate(action: string, toData?: any) {
             var url = this.getNavigationLink(action, toData);
+            if (url == null)
+                throw new Error('Invalid route data');
             this.navigateLink(this.getNextState(action), url);
         }
 
@@ -469,6 +473,8 @@
 
         static navigateBack(distance: number) {
             var url = this.getNavigationBackLink(distance);
+            if (url == null)
+                throw new Error('Invalid route data');
             this.navigateLink(this.getCrumb(distance).state, url);
         }
 
@@ -478,6 +484,8 @@
 
         static refresh(toData?: any) {
             var url = this.getRefreshLink(toData);
+            if (url == null)
+                throw new Error('Invalid route data');
             this.navigateLink(StateContext.state, url);
         }
 

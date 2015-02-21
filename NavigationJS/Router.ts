@@ -83,11 +83,10 @@
                 var segment = this.segments[i];
                 var pathInfo = segment.build(data);
                 optional = optional && pathInfo.optional;
-                if (!optional) {
-                    if (!pathInfo.path)
-                        throw new Error('Missing route data')
+                if (pathInfo.path == null || (!optional && !pathInfo.path))
+                    return null;
+                if (!optional)
                     route = '/' + pathInfo.path + route;
-                }
             } 
             return route.length !== 0 ? route : '/';
         }
@@ -129,15 +128,17 @@
 
         build(data?: any): { path: string; optional: boolean } {
             var optional = this.optional;
+            var invalid = false;
             var replaceParam = (match: string, param: string) => {
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
                 optional = optional && (!data[name] || data[name] === this.defaults[name]);
                 var val = data[name] ? data[name] : this.defaults[name];
                 if (!optional && !val)
-                    throw new Error('Missing route data')
+                    invalid = true;
                 return encodeURIComponent(val);
             }
-            return { path: this.path.replace(this.paramsPattern, replaceParam), optional: optional };
+            var routePath = this.path.replace(this.paramsPattern, replaceParam);
+            return { path: !invalid ? routePath : null, optional: optional };
         }
     }
 }
