@@ -233,10 +233,10 @@
                     states.push(dialogs[i]._states[j]);
                 }
             }
-            states.sort((state1, state2) => {
-                var state1Order = state1.route.substring(0, 1) === '{' ? -1 : 0;
-                var state2Order = state2.route.substring(0, 1) === '{' ? -1 : 0;
-                return state2Order - state1Order;
+            states.sort((stateA, stateB) => {
+                var stateANumber = stateA.route.substring(0, 1) === '{' ? -1 : 0;
+                var stateBNumber = stateB.route.substring(0, 1) === '{' ? -1 : 0;
+                return stateBNumber - stateANumber;
             });
             for (var i = 0; i < states.length; i++) {
                 var state = states[i];
