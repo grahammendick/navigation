@@ -11,19 +11,18 @@
 	self.goToMail = function (mail) { };
 
 	var dialogs = Navigation.StateInfoConfig.dialogs;
-	dialogs.WebMail.states.Folder.started = function () {
-		alert('1');
+	dialogs.webMail.states.folder.started = function () {
 	};
 
-	dialogs.WebMail.states.Mail.started = function () {
+	dialogs.webMail.states.mail.started = function () {
 	};
 };
 
 Navigation.StateInfoConfig.build([
-	{ key: 'WebMail', initial: 'Folder', states: [
-		{ key: 'Folder', route: '{folder}', defaults: {folder: 'inbox'}, transitions: [
-			{ key: 'select', to: 'Mail' }]},
-		{ key: 'Mail', route: '{folder}/{mailId}', defaults: { folder: 'inbox' } }]}
+	{ key: 'webMail', initial: 'folder', states: [
+		{ key: 'folder', route: '{folder}', defaults: {folder: 'inbox'}, transitions: [
+			{ key: 'select', to: 'mail' }]},
+		{ key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'inbox' } }]}
 ]);
 
 ko.applyBindings(new WebmailViewModel());
