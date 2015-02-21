@@ -1213,4 +1213,10 @@
         assert.equal(route.build({ y: 'efg' }), null);
         assert.equal(route.build(), null);
     });
+
+    QUnit.test('ExtraDataMatchTest', function (assert) {
+        var router = new Navigation.Router();
+        var route = router.addRoute('{x}');
+        assert.equal(route.build({ x: 'a', y: 'b' }), '/a');
+    });
 }
