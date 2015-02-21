@@ -14,28 +14,28 @@
 		Navigation.StateController.navigate('select', { folder: Navigation.StateContext.data.folder, mailId: mail.id });
 	};
 
-	var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
-	var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
-
+	// Navigation
 	folderState.navigated = function () {
 		self.chosenFolderId(Navigation.StateContext.data.folder);
 		self.chosenFolderData({ mails: [{ from: '', to: '', subject: 'test', date: '', id: '1' }] });
 	};
 	folderState.ended = function () { self.chosenFolderData(null); };
-
 	mailState.navigated = function () {
 		self.chosenFolderId(Navigation.StateContext.data.folder);
-		self.chosenMailData({ from: '', to: '', subject: 'test', date: '', id: '1' });
+		self.chosenMailData({ from: '', to: '', subject: 'test', date: '', id: '1', messageContent: 'Hello' });
 	};
 	mailState.ended = function () { self.chosenMailData(null); };
 };
 
+// States
 Navigation.StateInfoConfig.build([
 	{ key: 'webMail', initial: 'folder', states: [
 		{ key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
 			{ key: 'select', to: 'mail' }]},
 		{ key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' } }]}
 ]);
+var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
+var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
 
 ko.applyBindings(new WebmailViewModel());
 
