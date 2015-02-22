@@ -25,6 +25,7 @@
         ended: () => void = function () { };
         // TODO - add changed data parameter to navigated method. If refresh navigation
         // holds just changed values, otherwise the same as StateContext data
+        // add StateContext data parameter to simplify code in navigated methods
         navigated: () => void = function () { };
         starting: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
     }
