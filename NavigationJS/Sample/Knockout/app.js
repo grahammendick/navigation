@@ -32,11 +32,11 @@ Navigation.StateInfoConfig.build([
 	{ key: 'webMail', initial: 'folder', states: [
 		{ key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
 			{ key: 'select', to: 'mail' }]},
-		{ key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' } }]}
+		{ key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, trackCrumbTrail: false }]}
 ]);
 var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
 var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
 
 ko.applyBindings(new WebmailViewModel());
 
-Navigation.StateController.navigateLink(Navigation.router.getData(window.location.hash).state, window.location.hash);
+Navigation.StateController.navigateLink(Navigation.router.getData(location.hash.substring(1)).state, location.hash.substring(1));

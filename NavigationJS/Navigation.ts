@@ -65,7 +65,6 @@
                     throw new Error('Invalid dialog initial key');
             }
             router.addRoutes(StateInfoConfig._dialogs);
-            //StateController.navigateLink(window.location.href)
         }
 
         private static processStates(dialog: Dialog, dialogObject: any) {
@@ -171,7 +170,7 @@
 
         navigateLink(state: State, url: string) {
             StateController.setStateContext(state, url);
-            //pushState - if url doesn't match window.location.href
+            //location.hash = url; //pushstate
         }
 
         getNavigationData(state: State, url: string): any {
@@ -272,6 +271,7 @@
         static state: State;
         static dialog: Dialog;
         static data: any;
+        static url: string;
 
         static newCurrentData(keys?: Array<string>): any {
             if (!keys) {
@@ -437,6 +437,7 @@
             var oldState = StateContext.state;
             try {
                 StateContext.state = state;
+                StateContext.url = url;
                 StateContext.dialog = state.parent;
                 var data = state.stateHandler.getNavigationData(state, url);
                 StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
@@ -499,6 +500,8 @@
         }
 
         static navigateLink(state: State, url: string) {
+            if (StateContext.url === url)
+                return;
             var oldState = StateContext.state;
             if (oldState !== state) {
                 try {
@@ -691,5 +694,7 @@
 
     ConverterFactory.init();
 
-    //On popState or hashChange call StateController.navigateLink(window.location.href)
+    window.onhashchange = () => {
+        StateController.navigateLink(router.getData(location.hash.substring(1)).state, location.hash.substring(1));
+    } //popstate
 }
