@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sample\Knockout\app.css" />
+    <Content Include="Sample\Knockout\app.data.js" />
     <Content Include="Sample\Knockout\app.html" />
     <Content Include="Sample\Knockout\app.js" />
     <Content Include="Sample\Knockout\knockout-3.3.0.js" />
