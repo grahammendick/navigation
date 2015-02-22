@@ -26,6 +26,8 @@
         // TODO - add changed data parameter to navigated method. If refresh navigation
         // holds just changed values, otherwise the same as StateContext data
         // add StateContext data parameter to simplify code in navigated methods
+        // StateContext data should be first parameter because that's needed more
+        // often than changed data
         navigated: () => void = function () { };
         starting: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
     }
