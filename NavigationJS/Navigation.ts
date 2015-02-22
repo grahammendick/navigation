@@ -25,10 +25,7 @@
         ended: () => void = function () { };
         // TODO - add changed data parameter to navigated method. If refresh navigation
         // holds just changed values, otherwise the same as StateContext data
-        // add StateContext data parameter to simplify code in navigated methods
-        // StateContext data should be first parameter because that's needed more
-        // often than changed data
-        navigated: () => void = function () { };
+        navigated: (data: any) => void = function (data: any) { };
         starting: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
     }
 
@@ -459,7 +456,7 @@
             }
             if (oldState && oldState !== state)
                 oldState.ended();
-            state.navigated();
+            state.navigated(StateContext.data);
         }
 
         static navigate(action: string, toData?: any) {

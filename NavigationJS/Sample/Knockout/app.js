@@ -11,14 +11,14 @@
 	self.goToMail = function (mail) { Navigation.StateController.navigate('select', { folder: mail.folder, mailId: mail.id }); };
 
 	// Navigation
-	folderState.navigated = function () {
-		self.chosenFolderId(Navigation.StateContext.data.folder);
-		self.chosenFolderData(getMails(Navigation.StateContext.data.folder));
+	folderState.navigated = function (data) {
+		self.chosenFolderId(data.folder);
+		self.chosenFolderData(getMails(data.folder));
 	};
 	folderState.ended = function () { self.chosenFolderData(null); };
-	mailState.navigated = function () {
-		self.chosenFolderId(Navigation.StateContext.data.folder);
-		self.chosenMailData(getMail(Navigation.StateContext.data.mailId));
+	mailState.navigated = function (data) {
+		self.chosenFolderId(data.folder);
+		self.chosenMailData(getMail(data.mailId));
 	};
 	mailState.ended = function () { self.chosenMailData(null); };
 };
