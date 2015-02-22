@@ -7,12 +7,8 @@
 	self.chosenMailData = ko.observable();
 
 	// Behaviours    
-	self.goToFolder = function (folder) {
-		Navigation.StateController.navigate('webMail', { folder: folder });
-	};
-	self.goToMail = function (mail) {
-		Navigation.StateController.navigate('select', { folder: Navigation.StateContext.data.folder, mailId: mail.id });
-	};
+	self.goToFolder = function (folder) { Navigation.StateController.navigate('webMail', { folder: folder }); };
+	self.goToMail = function (mail) { Navigation.StateController.navigate('select', { folder: mail.folder, mailId: mail.id }); };
 
 	// Navigation
 	folderState.navigated = function () {
