@@ -463,7 +463,7 @@
             var url = this.getNavigationLink(action, toData);
             if (url == null)
                 throw new Error('Invalid route data');
-            this.navigateLink(this.getNextState(action), url);
+            this.navigateLink(url, this.getNextState(action));
         }
 
         static getNavigationLink(action: string, toData?: any): string {
@@ -481,7 +481,7 @@
             var url = this.getNavigationBackLink(distance);
             if (url == null)
                 throw new Error('Invalid route data');
-            this.navigateLink(this.getCrumb(distance).state, url);
+            this.navigateLink(url, this.getCrumb(distance).state);
         }
 
         static getNavigationBackLink(distance: number): string {
@@ -492,16 +492,18 @@
             var url = this.getRefreshLink(toData);
             if (url == null)
                 throw new Error('Invalid route data');
-            this.navigateLink(StateContext.state, url);
+            this.navigateLink(url, StateContext.state);
         }
 
         static getRefreshLink(toData?: any): string {
             return CrumbTrailManager.getRefreshHref(toData);
         }
 
-        static navigateLink(state: State, url: string) {
+        static navigateLink(url: string, state?: State) {
             if (StateContext.url === url)
                 return;
+            if (!state)
+                state = router.getData(url).state;
             var oldState = StateContext.state;
             try {
                 var data = state.stateHandler.getNavigationData(state, url);
@@ -691,6 +693,6 @@
     ConverterFactory.init();
 
     window.onhashchange = () => {
-        StateController.navigateLink(router.getData(location.hash.substring(1)).state, location.hash.substring(1));
+        StateController.navigateLink(location.hash.substring(1));
     } //popstate
 }
