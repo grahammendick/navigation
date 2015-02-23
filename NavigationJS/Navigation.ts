@@ -696,7 +696,7 @@
         StateController.navigateLink(location.hash.substring(1));
     }
 
-    window.onhashchange = () => {
+    window.addEventListener('hashchange', () => {
         StateController.navigateLink(location.hash.substring(1));
-    } //popstate
+    }); //popstate
 }
