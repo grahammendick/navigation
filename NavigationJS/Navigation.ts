@@ -693,34 +693,41 @@
     ConverterFactory.init();
 
     export function start() {
-        StateController.navigateLink(location.hash.substring(1));
+        historyManager.navigateLink();
     }
 
     export interface IHistoryManager {
         addHistory(url: string);
+        navigateLink();
     }
 
-    export class HashHistoryManager {
+    export class HashHistoryManager implements IHistoryManager {
         constructor() {
-            window.addEventListener('hashchange', () => {
-                StateController.navigateLink(location.hash.substring(1));
-            });
+            window.removeEventListener('hashchange', this.navigateLink);
+            window.addEventListener('hashchange', this.navigateLink);
         }
 
         addHistory(url: string) {
             location.hash = url;
         }
+
+        navigateLink() {
+            StateController.navigateLink(location.hash.substring(1));
+        }
     }
 
-    export class HTML5HistoryManager {
+    export class HTML5HistoryManager implements IHistoryManager {
         constructor() {
-            window.addEventListener('popstate', () => {
-                StateController.navigateLink(location.href);
-            });
+            window.removeEventListener('popstate', this.navigateLink);
+            window.addEventListener('popstate', this.navigateLink);
         }
 
         addHistory(url: string) {
             window.history.pushState(null, null, url); 
+        }
+
+        navigateLink() {
+            StateController.navigateLink(location.href);
         }
     }
 
