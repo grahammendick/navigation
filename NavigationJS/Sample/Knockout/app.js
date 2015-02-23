@@ -15,12 +15,12 @@
 		self.chosenFolderId(data.folder);
 		self.chosenFolderData(getMails(data.folder));
 	};
-	folderState.ended = function () { self.chosenFolderData(null); };
+	folderState.dispose = function () { self.chosenFolderData(null); };
 	mailState.navigated = function (data) {
 		self.chosenFolderId(data.folder);
 		self.chosenMailData(getMail(data.mailId));
 	};
-	mailState.ended = function () { self.chosenMailData(null); };
+	mailState.dispose = function () { self.chosenMailData(null); };
 };
 
 // States
