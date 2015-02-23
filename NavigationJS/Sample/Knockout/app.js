@@ -35,4 +35,4 @@ var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
 
 ko.applyBindings(new WebmailViewModel());
 
-Navigation.StateController.navigateLink(Navigation.router.getData(location.hash.substring(1)).state, location.hash.substring(1));
+Navigation.StateController.navigateLink(location.hash.substring(1));
