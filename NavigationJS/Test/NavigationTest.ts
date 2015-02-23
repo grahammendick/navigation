@@ -1,5 +1,5 @@
 ﻿module NavigationTest {
-    export class StateHandler extends Navigation.StateHandler {
+    class StateHandler extends Navigation.StateHandler {
         truncateCrumbTrail(state: Navigation.State, crumbs: Array<Navigation.Crumb>): Array<Navigation.Crumb> {
             var newCrumbs: Array<Navigation.Crumb> = [];
             var d6Crumbs: Array<Navigation.Crumb> = [];
@@ -13,6 +13,12 @@
             return newCrumbs;
         }
     }
+
+    class VoidHistoryManager implements Navigation.IHistoryManager {
+        addHistory(url: string) {
+        }
+    }
+    Navigation.historyManager = new VoidHistoryManager();
 
     function initStateInfo() {
         Navigation.StateInfoConfig.build([
