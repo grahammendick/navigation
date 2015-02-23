@@ -692,6 +692,8 @@
 
     ConverterFactory.init();
 
+    export function start(){ StateController.navigateLink(location.hash.substring(1)); }
+
     window.onhashchange = () => {
         StateController.navigateLink(location.hash.substring(1));
     } //popstate
