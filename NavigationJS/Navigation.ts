@@ -23,10 +23,8 @@
         trackCrumbTrail: boolean = true;
         stateHandler: IStateHandler = new StateHandler();
         dispose: () => void = function () { };
-        // TODO - add changed data parameter to navigated method. If refresh navigation
-        // holds just changed values, otherwise the same as StateContext data
         navigated: (data: any) => void = function (data: any) { };
-        navigating: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
+        navigating: (data: any, url: string, navigate: () => void) => void = function (data, url, navigate) { navigate(); } 
     }
 
     export class Transition {
