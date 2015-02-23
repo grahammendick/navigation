@@ -22,11 +22,11 @@
         route: string;
         trackCrumbTrail: boolean = true;
         stateHandler: IStateHandler = new StateHandler();
-        ended: () => void = function () { };
+        dispose: () => void = function () { };
         // TODO - add changed data parameter to navigated method. If refresh navigation
         // holds just changed values, otherwise the same as StateContext data
         navigated: (data: any) => void = function (data: any) { };
-        starting: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
+        navigating: (data: any, url: string, start: () => void) => void = function (data, url, start) { start(); } 
     }
 
     export class Transition {
@@ -455,7 +455,7 @@
                 throw new Error('Invalid Url');
             }
             if (oldState && oldState !== state)
-                oldState.ended();
+                oldState.dispose();
             state.navigated(StateContext.data);
         }
 
@@ -503,20 +503,16 @@
             if (StateContext.url === url)
                 return;
             var oldState = StateContext.state;
-            if (oldState !== state) {
-                try {
-                    var data = state.stateHandler.getNavigationData(state, url);
-                    data = this.parseData(data, state);
-                } catch (e) {
-                    throw new Error('Invalid Url');
-                }
-                state.starting(data, url, () => {
-                    if (oldState === StateContext.state)
-                        state.stateHandler.navigateLink(state, url);
-                });
-            } else {
-                state.stateHandler.navigateLink(state, url);
+            try {
+                var data = state.stateHandler.getNavigationData(state, url);
+                data = this.parseData(data, state);
+            } catch (e) {
+                throw new Error('Invalid Url');
             }
+            state.navigating(data, url, () => {
+                if (oldState === StateContext.state)
+                    state.stateHandler.navigateLink(state, url);
+            });
         }
 
         private static parseData(data: any, state: State): any {
