@@ -170,7 +170,7 @@
 
         navigateLink(state: State, url: string) {
             StateController.setStateContext(state, url);
-            //location.hash = url; //pushstate
+            historyManager.addHistory(url);
         }
 
         getNavigationData(state: State, url: string): any {
@@ -696,7 +696,33 @@
         StateController.navigateLink(location.hash.substring(1));
     }
 
-    window.addEventListener('hashchange', () => {
-        StateController.navigateLink(location.hash.substring(1));
-    }); //popstate
+    export interface IHistoryManager {
+        addHistory(url: string);
+    }
+
+    export class HashHistoryManager {
+        constructor() {
+            window.addEventListener('hashchange', () => {
+                StateController.navigateLink(location.hash.substring(1));
+            });
+        }
+
+        addHistory(url: string) {
+            location.hash = url;
+        }
+    }
+
+    export class HTML5HistoryManager {
+        constructor() {
+            window.addEventListener('popstate', () => {
+                StateController.navigateLink(location.href);
+            });
+        }
+
+        addHistory(url: string) {
+            window.history.pushState(null, null, url); 
+        }
+    }
+
+    export var historyManager: IHistoryManager = new HashHistoryManager();
 }
