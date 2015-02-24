@@ -67,7 +67,6 @@
     <Content Include="Sample\Knockout\app.css" />
     <Content Include="Sample\Knockout\app.data.js" />
     <Content Include="Sample\Knockout\app.html" />
-    <Content Include="Sample\Knockout\app.js" />
     <Content Include="Sample\Knockout\knockout-3.3.0.js" />
     <Content Include="Test\NavigationTest.html" />
     <Content Include="Test\qunit-1.17.1.css" />
