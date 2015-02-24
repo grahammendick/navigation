@@ -7,20 +7,20 @@
 <body>
     <!-- Folders -->
     <ul class="folders" data-bind="foreach: folders">
-        <li data-bind="text: $data,
-                   css: { selected: $data == $root.chosenFolderId() },
-                   click: $root.goToFolder"></li>
+        <li data-bind="css: { selected: $data == $root.chosenFolderId() }">
+            <a data-bind="text: $data, navigationLink: 'webMail', toData: { folder: $data }"></a>
+        </li>
     </ul>
 
     <!-- Mails grid -->
     <table class="mails" data-bind="with: chosenFolderData">
         <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
         <tbody data-bind="foreach: mails">
-            <tr data-bind="click: $root.goToMail">
-                <td data-bind="text: from"></td>
-                <td data-bind="text: to"></td>
-                <td data-bind="text: subject"></td>
-                <td data-bind="text: date"></td>
+            <tr>
+                <td><a data-bind="text: from, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
+                <td><a data-bind="text: to, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
+                <td><a data-bind="text: subject, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
+                <td><a data-bind="text: date, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
             </tr>
         </tbody>
     </table>
@@ -39,6 +39,7 @@
     <script src="../../Router.js"></script>
     <script src="../../Navigation.js"></script>
     <script src="knockout-3.3.0.js"></script>
+    <script src="../../Navigation.Knockout.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
