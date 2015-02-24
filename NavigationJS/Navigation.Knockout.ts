@@ -19,4 +19,20 @@
             element.addEventListener('click', navigate);
         }
     };
+
+    ko.bindingHandlers['navigationBackLink'] = {
+        update: (element: Element, valueAccessor) => {
+            var distance = ko.utils.unwrapObservable<number>(valueAccessor());
+            var navigate = (e) => {
+                if (!e.ctrlKey && !e.shiftKey) {
+                    e.preventDefault();
+                    Navigation.StateController.navigateBack(distance);
+                }
+            }
+            var link = Navigation.StateController.getNavigationBackLink(distance);
+            element['href'] = Navigation.historyManager.getHref(link);
+            element.removeEventListener('click', navigate);
+            element.addEventListener('click', navigate);
+        }
+    };
 }
