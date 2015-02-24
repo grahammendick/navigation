@@ -60,6 +60,7 @@
 		        self.chosenMailData(getMail(data.mailId));
 	        };
 	        mailState.dispose = function () { self.chosenMailData(null); };
+	        Navigation.start();
         };
 
         // States
@@ -72,9 +73,7 @@
         var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
         var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
 
-        var viewModel = new WebmailViewModel();
-        Navigation.start();
-        ko.applyBindings(viewModel);
+        ko.applyBindings(new WebmailViewModel());
     </script>
 </body>
 </html>
