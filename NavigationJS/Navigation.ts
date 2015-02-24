@@ -708,7 +708,7 @@
         }
 
         addHistory(url: string) {
-            if (location.hash !== url)
+            if (location.hash.substring(1) !== url)
                 location.hash = url;
         }
 
