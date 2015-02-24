@@ -55,6 +55,8 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="knockout.d.ts" />
+    <TypeScriptCompile Include="Navigation.Knockout.ts" />
     <TypeScriptCompile Include="Navigation.ts" />
     <TypeScriptCompile Include="Router.ts" />
     <TypeScriptCompile Include="Test\NavigationTest.ts" />
