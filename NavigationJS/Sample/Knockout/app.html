@@ -49,17 +49,18 @@
 	        self.chosenFolderData = ko.observable();
 	        self.chosenMailData = ko.observable();
 
-	        // Navigation
-	        folderState.navigated = function (data) {
+            // Navigation
+	        var webMailDialog = Navigation.StateInfoConfig.dialogs.webMail;
+	        webMailDialog.states.folder.navigated = function (data) {
 		        self.chosenFolderId(data.folder);
 		        self.chosenFolderData(getMails(data.folder));
 	        };
-	        folderState.dispose = function () { self.chosenFolderData(null); };
-	        mailState.navigated = function (data) {
+	        webMailDialog.states.folder.dispose = function () { self.chosenFolderData(null); };
+	        webMailDialog.states.mail.navigated = function (data) {
 		        self.chosenFolderId(data.folder);
 		        self.chosenMailData(getMail(data.mailId));
 	        };
-	        mailState.dispose = function () { self.chosenMailData(null); };
+	        webMailDialog.states.mail.dispose = function () { self.chosenMailData(null); };
 	        Navigation.start();
         };
 
@@ -70,8 +71,6 @@
 			        { key: 'select', to: 'mail' }]},
 		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
         ]);
-        var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
-        var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
 
         ko.applyBindings(new WebmailViewModel());
     </script>
