@@ -691,14 +691,17 @@
 
     ConverterFactory.init();
 
-    export function start() {
-        historyManager.navigateLink();
+    export function start(url?: string) {
+        if (url)
+            StateController.navigateLink(url);
+        else
+            historyManager.navigateLink();
     }
 
     export interface IHistoryManager {
         addHistory(url: string);
         navigateLink();
-        getHref(url: string);
+        getHref(url: string): string;
     }
 
     export class HashHistoryManager implements IHistoryManager {
@@ -716,7 +719,7 @@
             StateController.navigateLink(location.hash.substring(1));
         }
 
-        getHref(url: string) {
+        getHref(url: string): string {
             return '#' + url;
         }
     }
@@ -737,7 +740,7 @@
             StateController.navigateLink(location.pathname.substring(settings.applicationPath.length));
         }
 
-        getHref(url: string) {
+        getHref(url: string): string {
             return settings.applicationPath + url;
         }
     }

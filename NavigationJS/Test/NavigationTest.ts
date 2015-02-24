@@ -17,7 +17,7 @@
     class VoidHistoryManager implements Navigation.IHistoryManager {
         addHistory(url: string) { }
         navigateLink() { }
-        getHref(url: string) { return url; }
+        getHref(url: string): string { return url; }
     }
     Navigation.historyManager = new VoidHistoryManager();
 
