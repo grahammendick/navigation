@@ -13,7 +13,8 @@
                     Navigation.StateController.navigate(action, data);
                 }
             }
-            element['href'] = '#' + Navigation.StateController.getNavigationLink(action, data);
+            var link = Navigation.StateController.getNavigationLink(action, data);
+            element['href'] = Navigation.historyManager.getHref(link);
             element.removeEventListener('click', navigate);
             element.addEventListener('click', navigate);
         }
