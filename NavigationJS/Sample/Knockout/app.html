@@ -50,17 +50,17 @@
 	        self.chosenMailData = ko.observable();
 
             // Navigation
-	        var webMailDialog = Navigation.StateInfoConfig.dialogs.webMail;
-	        webMailDialog.states.folder.navigated = function (data) {
+	        var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
+	        webMailStates.folder.navigated = function (data) {
 		        self.chosenFolderId(data.folder);
 		        self.chosenFolderData(getMails(data.folder));
 	        };
-	        webMailDialog.states.folder.dispose = function () { self.chosenFolderData(null); };
-	        webMailDialog.states.mail.navigated = function (data) {
+	        webMailStates.folder.dispose = function () { self.chosenFolderData(null); };
+	        webMailStates.mail.navigated = function (data) {
 		        self.chosenFolderId(data.folder);
 		        self.chosenMailData(getMail(data.mailId));
 	        };
-	        webMailDialog.states.mail.dispose = function () { self.chosenMailData(null); };
+	        webMailStates.mail.dispose = function () { self.chosenMailData(null); };
 	        Navigation.start();
         };
 
