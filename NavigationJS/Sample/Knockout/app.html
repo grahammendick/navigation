@@ -72,9 +72,9 @@
         var folderState = Navigation.StateInfoConfig.dialogs.webMail.states.folder;
         var mailState = Navigation.StateInfoConfig.dialogs.webMail.states.mail;
 
-        ko.applyBindings(new WebmailViewModel());
-
+        var viewModel = new WebmailViewModel();
         Navigation.start();
+        ko.applyBindings(viewModel);
     </script>
 </body>
 </html>
