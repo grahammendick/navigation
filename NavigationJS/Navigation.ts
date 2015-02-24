@@ -121,6 +121,7 @@
         previousStateIdKey: string = 'c1';
         returnDataKey: string = 'c2';
         crumbTrailKey: string = 'c3';
+        applicationPath: string = '';
     }
 
     export var settings: NavigationSettings = new NavigationSettings();
@@ -697,6 +698,7 @@
     export interface IHistoryManager {
         addHistory(url: string);
         navigateLink();
+        getHref(url: string);
     }
 
     export class HashHistoryManager implements IHistoryManager {
@@ -706,11 +708,16 @@
         }
 
         addHistory(url: string) {
-            location.hash = url;
+            if (location.hash !== url)
+                location.hash = url;
         }
 
         navigateLink() {
             StateController.navigateLink(location.hash.substring(1));
+        }
+
+        getHref(url: string) {
+            return '#' + url;
         }
     }
 
@@ -721,11 +728,17 @@
         }
 
         addHistory(url: string) {
-            window.history.pushState(null, null, url); 
+            url = this.getHref(url);
+            if (location.pathname !== url)
+                window.history.pushState(null, null, url); 
         }
 
         navigateLink() {
-            StateController.navigateLink(location.href);
+            StateController.navigateLink(location.pathname.substring(settings.applicationPath.length));
+        }
+
+        getHref(url: string) {
+            return settings.applicationPath + url;
         }
     }
 
