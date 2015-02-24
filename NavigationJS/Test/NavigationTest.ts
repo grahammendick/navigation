@@ -14,12 +14,7 @@
         }
     }
 
-    class VoidHistoryManager implements Navigation.IHistoryManager {
-        addHistory(url: string) { }
-        navigateLink() { }
-        getHref(url: string): string { return url; }
-    }
-    Navigation.historyManager = new VoidHistoryManager();
+    Navigation.historyManager = new Navigation.VoidHistoryManager();
 
     function initStateInfo() {
         Navigation.StateInfoConfig.build([
