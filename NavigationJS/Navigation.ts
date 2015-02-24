@@ -745,5 +745,17 @@
         }
     }
 
+    export class VoidHistoryManager implements IHistoryManager {
+        addHistory(url: string) {
+        }
+
+        navigateLink() {
+        }
+
+        getHref(url: string): string {
+            return url;
+        }
+    }
+
     export var historyManager: IHistoryManager = new HashHistoryManager();
 }
