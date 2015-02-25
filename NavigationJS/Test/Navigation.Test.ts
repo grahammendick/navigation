@@ -1,4 +1,4 @@
-﻿module NavigationTest {
+﻿module Navigation.Test {
     class StateHandler extends Navigation.StateHandler {
         truncateCrumbTrail(state: Navigation.State, crumbs: Array<Navigation.Crumb>): Array<Navigation.Crumb> {
             var newCrumbs: Array<Navigation.Crumb> = [];

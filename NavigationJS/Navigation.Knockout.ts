@@ -1,4 +1,4 @@
-﻿module NavigationKnockout {
+﻿module Navigation.Knockout {
     ko.bindingHandlers['navigationLink'] = {
         update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var action = ko.utils.unwrapObservable<string>(valueAccessor());
