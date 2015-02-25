@@ -35,4 +35,30 @@
             element.addEventListener('click', navigate);
         }
     };
+
+    ko.bindingHandlers['refreshLink'] = {
+        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            var dataValue = ko.utils.unwrapObservable<any>(valueAccessor());
+            var includeCurrentData: boolean = allBindings.get('includeCurrentData');
+            var currentDataKeys: string = allBindings.get('currentDataKeys');
+            var data = {};
+            if (currentDataKeys)
+                data = Navigation.StateContext.newCurrentData(currentDataKeys.trim().split(/\s*,\s*/));
+            if (includeCurrentData)
+                data = Navigation.StateContext.newCurrentData();
+            for (var key in dataValue) {
+                data[key] = ko.utils.unwrapObservable(dataValue[key]);
+            } 
+            var navigate = (e) => {
+                if (!e.ctrlKey && !e.shiftKey) {
+                    e.preventDefault();
+                    Navigation.StateController.refresh(data);
+                }
+            }
+            var link = Navigation.StateController.getRefreshLink(data);
+            element['href'] = Navigation.historyManager.getHref(link);
+            element.removeEventListener('click', navigate);
+            element.addEventListener('click', navigate);
+        }
+    };
 }
