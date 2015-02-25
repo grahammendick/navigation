@@ -692,22 +692,20 @@
     ConverterFactory.init();
 
     export function start(url?: string) {
-        if (url)
-            StateController.navigateLink(url);
-        else
-            historyManager.navigateLink();
+        StateController.navigateLink(url ? url : historyManager.getCurrentUrl());
     }
 
     export interface IHistoryManager {
         addHistory(url: string);
-        navigateLink();
+        getCurrentUrl(): string;
         getHref(url: string): string;
     }
 
     export class HashHistoryManager implements IHistoryManager {
         constructor() {
-            window.removeEventListener('hashchange', this.navigateLink);
-            window.addEventListener('hashchange', this.navigateLink);
+            var navigateHistory = () => StateController.navigateLink(this.getCurrentUrl());
+            window.removeEventListener('hashchange', navigateHistory);
+            window.addEventListener('hashchange', navigateHistory);
         }
 
         addHistory(url: string) {
@@ -715,8 +713,8 @@
                 location.hash = url;
         }
 
-        navigateLink() {
-            StateController.navigateLink(location.hash.substring(1));
+        getCurrentUrl(): string {
+            return location.hash.substring(1);
         }
 
         getHref(url: string): string {
@@ -726,8 +724,9 @@
 
     export class HTML5HistoryManager implements IHistoryManager {
         constructor() {
-            window.removeEventListener('popstate', this.navigateLink);
-            window.addEventListener('popstate', this.navigateLink);
+            var navigateHistory = () => StateController.navigateLink(this.getCurrentUrl());
+            window.removeEventListener('popstate', navigateHistory);
+            window.addEventListener('popstate', navigateHistory);
         }
 
         addHistory(url: string) {
@@ -736,8 +735,8 @@
                 window.history.pushState(null, null, url); 
         }
 
-        navigateLink() {
-            StateController.navigateLink(location.pathname.substring(settings.applicationPath.length));
+        getCurrentUrl(): string {
+            return location.pathname.substring(settings.applicationPath.length);
         }
 
         getHref(url: string): string {
@@ -749,7 +748,8 @@
         addHistory(url: string) {
         }
 
-        navigateLink() {
+        getCurrentUrl(): string {
+            return null;
         }
 
         getHref(url: string): string {
