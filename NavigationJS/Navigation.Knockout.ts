@@ -3,17 +3,15 @@
         update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var action = ko.utils.unwrapObservable<string>(valueAccessor());
             var dataValue = allBindings.get('toData');
-            var data = {};
-            for (var key in dataValue) {
-                data[key] = ko.utils.unwrapObservable(dataValue[key]);
-            } 
+            var includeCurrentData: boolean = allBindings.get('includeCurrentData');
+            var currentDataKeys: string = allBindings.get('currentDataKeys');
             var navigate = (e) => {
                 if (!e.ctrlKey && !e.shiftKey) {
                     e.preventDefault();
-                    Navigation.StateController.navigate(action, data);
+                    Navigation.StateController.navigate(action, getData(dataValue, includeCurrentData, currentDataKeys));
                 }
             }
-            var link = Navigation.StateController.getNavigationLink(action, data);
+            var link = Navigation.StateController.getNavigationLink(action, getData(dataValue, includeCurrentData, currentDataKeys));
             element['href'] = Navigation.historyManager.getHref(link);
             element.removeEventListener('click', navigate);
             element.addEventListener('click', navigate);
@@ -41,24 +39,28 @@
             var dataValue = ko.utils.unwrapObservable<any>(valueAccessor());
             var includeCurrentData: boolean = allBindings.get('includeCurrentData');
             var currentDataKeys: string = allBindings.get('currentDataKeys');
-            var data = {};
-            if (currentDataKeys)
-                data = Navigation.StateContext.newCurrentData(currentDataKeys.trim().split(/\s*,\s*/));
-            if (includeCurrentData)
-                data = Navigation.StateContext.newCurrentData();
-            for (var key in dataValue) {
-                data[key] = ko.utils.unwrapObservable(dataValue[key]);
-            } 
             var navigate = (e) => {
                 if (!e.ctrlKey && !e.shiftKey) {
                     e.preventDefault();
-                    Navigation.StateController.refresh(data);
+                    Navigation.StateController.refresh(getData(dataValue, includeCurrentData, currentDataKeys));
                 }
             }
-            var link = Navigation.StateController.getRefreshLink(data);
+            var link = Navigation.StateController.getRefreshLink(getData(dataValue, includeCurrentData, currentDataKeys));
             element['href'] = Navigation.historyManager.getHref(link);
             element.removeEventListener('click', navigate);
             element.addEventListener('click', navigate);
         }
     };
+
+    function getData(dataValue: any, includeCurrentData: boolean, currentDataKeys: string) {
+        var data = {};
+        if (currentDataKeys)
+            data = Navigation.StateContext.newCurrentData(currentDataKeys.trim().split(/\s*,\s*/));
+        if (includeCurrentData)
+            data = Navigation.StateContext.newCurrentData();
+        for (var key in dataValue) {
+            data[key] = ko.utils.unwrapObservable(dataValue[key]);
+        }
+        return data;
+    }
 }
