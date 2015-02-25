@@ -701,9 +701,10 @@
         getHref(url: string): string;
     }
 
+    var navigateHistory = () => StateController.navigateLink(historyManager.getCurrentUrl());
+
     export class HashHistoryManager implements IHistoryManager {
         constructor() {
-            var navigateHistory = () => StateController.navigateLink(this.getCurrentUrl());
             window.removeEventListener('hashchange', navigateHistory);
             window.addEventListener('hashchange', navigateHistory);
         }
@@ -724,7 +725,6 @@
 
     export class HTML5HistoryManager implements IHistoryManager {
         constructor() {
-            var navigateHistory = () => StateController.navigateLink(this.getCurrentUrl());
             window.removeEventListener('popstate', navigateHistory);
             window.addEventListener('popstate', navigateHistory);
         }
