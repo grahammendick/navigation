@@ -1,4 +1,4 @@
-﻿module Navigation {
+﻿module Navigation.Routing {
     export class Router {
         private routes: Array<Route> = [];
 
