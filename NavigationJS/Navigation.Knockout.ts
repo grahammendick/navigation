@@ -1,65 +1,67 @@
 ﻿module Navigation.Knockout {
     ko.bindingHandlers['navigationLink'] = {
-        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            var action = ko.utils.unwrapObservable<string>(valueAccessor());
-            var toData = allBindings.get('toData');
-            var includeCurrentData: boolean = allBindings.get('includeCurrentData');
-            var currentDataKeys: string = allBindings.get('currentDataKeys');
+        init: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var navigate = (e) => {
                 if (!e.ctrlKey && !e.shiftKey) {
                     e.preventDefault();
-                    Navigation.StateController.navigate(action, getData(toData, includeCurrentData, currentDataKeys));
+                    Navigation.StateController.navigate(ko.unwrap(valueAccessor()),
+                        getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
                 }
             }
-            var link = Navigation.StateController.getNavigationLink(action, getData(toData, includeCurrentData, currentDataKeys));
-            element['href'] = Navigation.historyManager.getHref(link);
-            element.removeEventListener('click', navigate);
             element.addEventListener('click', navigate);
+        },
+        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
+                getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+            element['href'] = Navigation.historyManager.getHref(link);
         }
     };
 
     ko.bindingHandlers['navigationBackLink'] = {
-        update: (element: Element, valueAccessor) => {
-            var distance = ko.utils.unwrapObservable<number>(valueAccessor());
+        init: (element: Element, valueAccessor) => {
             var navigate = (e) => {
                 if (!e.ctrlKey && !e.shiftKey) {
                     e.preventDefault();
-                    Navigation.StateController.navigateBack(distance);
+                    Navigation.StateController.navigateBack(ko.unwrap(valueAccessor()));
                 }
             }
-            var link = Navigation.StateController.getNavigationBackLink(distance);
-            element['href'] = Navigation.historyManager.getHref(link);
-            element.removeEventListener('click', navigate);
             element.addEventListener('click', navigate);
+        },
+        update: (element: Element, valueAccessor) => {
+            var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
+            element['href'] = Navigation.historyManager.getHref(link);
         }
     };
 
     ko.bindingHandlers['refreshLink'] = {
-        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            var toData = ko.utils.unwrapObservable<any>(valueAccessor());
-            var includeCurrentData: boolean = allBindings.get('includeCurrentData');
-            var currentDataKeys: string = allBindings.get('currentDataKeys');
+        init: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var navigate = (e) => {
                 if (!e.ctrlKey && !e.shiftKey) {
                     e.preventDefault();
-                    Navigation.StateController.refresh(getData(toData, includeCurrentData, currentDataKeys));
+                    Navigation.StateController.refresh(
+                        getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
                 }
             }
-            var link = Navigation.StateController.getRefreshLink(getData(toData, includeCurrentData, currentDataKeys));
-            element['href'] = Navigation.historyManager.getHref(link);
-            element.removeEventListener('click', navigate);
             element.addEventListener('click', navigate);
+        },
+        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            var link = Navigation.StateController.getRefreshLink(
+                getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+            element['href'] = Navigation.historyManager.getHref(link);
         }
     };
 
-    function getData(toData: any, includeCurrentData: boolean, currentDataKeys: string) {
+    function getData(toData, includeCurrentData, currentDataKeys) {
         var data = {};
+        toData = ko.unwrap(toData);
+        includeCurrentData = ko.unwrap(includeCurrentData);
+        currentDataKeys = ko.unwrap(currentDataKeys);
         if (currentDataKeys)
             data = Navigation.StateContext.newCurrentData(currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
             data = Navigation.StateContext.newCurrentData();
         for (var key in toData) {
-            data[key] = ko.utils.unwrapObservable(toData[key]);
+            data[key] = ko.unwrap(toData[key]);
         }
         return data;
     }
