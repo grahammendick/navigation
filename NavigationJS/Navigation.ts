@@ -49,18 +49,18 @@
                         dialog[key] = dialogObject[key];
                 }
                 if (!dialog.key)
-                    throw new Error('Dialog key is mandatory');
+                    throw new Error('key is mandatory for a Dialog');
                 if (this.dialogs[dialog.key])
-                    throw new Error('Duplicate dialog key');
+                    throw new Error('A Dialog with key ' +  dialog.key + ' already exists');
                 this._dialogs.push(dialog);
                 this.dialogs[dialog.key] = dialog;
                 this.processStates(dialog, dialogObject);
                 this.processTransitions(dialog, dialogObject);
                 dialog.initial = dialog.states[dialogObject.initial];
                 if (!dialogObject.initial)
-                    throw new Error('Dialog initial is mandatory');
+                    throw new Error('initial is mandatory for a Dialog');
                 if (!dialog.initial)
-                    throw new Error('Invalid dialog initial key');
+                    throw new Error(dialog.key + ' Dialog\'s initial key of ' + dialogObject.initial + ' does not match a child State key');
             }
             router.addRoutes(StateInfoConfig._dialogs);
         }
@@ -82,9 +82,9 @@
                     state.formattedDefaults[key] = CrumbTrailManager.formatURLObject(key, state.defaults[key], state);
                 }
                 if (!state.key)
-                    throw new Error('State key is mandatory');
+                    throw new Error('key is mandatory for a State');
                 if (dialog.states[state.key])
-                    throw new Error('Duplicate state key');
+                    throw new Error('A State with key ' + state.key + ' already exists for Dialog ' + dialog.key);
                 dialog._states.push(state);
                 dialog.states[state.key] = state;
             }
@@ -99,15 +99,15 @@
                         transition.index = j;
                         transition.key = transitionObject.key;
                         if (!transition.key)
-                            throw new Error('Transition key is mandatory');
+                            throw new Error('key is mandatory for a Transition');
                         transition.parent = dialog._states[i];
                         transition.to = dialog.states[transitionObject.to];
                         if (!transitionObject.to)
-                            throw new Error('Transition to is mandatory');
+                            throw new Error('to is mandatory for a Transition');
                         if (!transition.to)
-                            throw new Error('Invalid transition to key');
+                            throw new Error(dialog._states[i].key + ' State\'s Transition to key of ' + transition.key + ' does not match a sibling State key');
                         if (transition.parent.transitions[transition.key])
-                            throw new Error('Duplicate transition key');
+                            throw new Error('A Transition with key ' + transition.key + ' already exists for State ' + dialog._states[i].key);
                         transition.parent._transitions.push(transition);
                         transition.parent.transitions[transition.key] = transition;
                     }
