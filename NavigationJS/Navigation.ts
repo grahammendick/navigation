@@ -410,7 +410,7 @@
             try {
                 return ConverterFactory.getConverter(converterKey).convertFrom(this.decodeUrlValue(urlValue));
             } catch (e) {
-                throw new Error('Invalid Url');
+                throw new Error('The Url is invalid');
             }
         }
 
@@ -451,7 +451,7 @@
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
             } catch (e) {
-                throw new Error('Invalid Url');
+                throw new Error('The Url is invalid');
             }
             if (oldState && oldState !== state)
                 oldState.dispose();
@@ -461,7 +461,7 @@
         static navigate(action: string, toData?: any) {
             var url = this.getNavigationLink(action, toData);
             if (url == null)
-                throw new Error('Invalid route data');
+                throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             this.navigateLink(url, this.getNextState(action));
         }
 
@@ -479,7 +479,7 @@
         static navigateBack(distance: number) {
             var url = this.getNavigationBackLink(distance);
             if (url == null)
-                throw new Error('Invalid route data');
+                throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             this.navigateLink(url, this.getCrumb(distance).state);
         }
 
@@ -490,7 +490,7 @@
         static refresh(toData?: any) {
             var url = this.getRefreshLink(toData);
             if (url == null)
-                throw new Error('Invalid route data');
+                throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             this.navigateLink(url, StateContext.state);
         }
 
@@ -508,7 +508,7 @@
                 var data = state.stateHandler.getNavigationData(state, url);
                 data = this.parseData(data, state);
             } catch (e) {
-                throw new Error('Invalid Url');
+                throw new Error('The Url is invalid');
             }
             state.navigating(data, url, () => {
                 if (oldState === StateContext.state)
@@ -527,21 +527,19 @@
         }
 
         static getNextState(action: string): State {
-            if (!action)
-                throw new Error('action is required');
             var nextState: State = null;
             if (StateContext.state && StateContext.state.transitions[action])
                 nextState = StateContext.state.transitions[action].to;
             if (!nextState && StateInfoConfig.dialogs[action])
                 nextState = StateInfoConfig.dialogs[action].initial;
             if (!nextState)
-                throw new Error('invalid action');
+                throw new Error('The action parameter must be a Dialog key or a Transition key that is a child of the current State');
             return nextState;
         }
 
         private static getCrumb(distance: number): Crumb {
             if (distance > this.crumbs.length || distance <= 0)
-                throw new Error('Invalid distance');
+                throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.crumbs.length + ')');
             return this.crumbs[this.crumbs.length - distance];
         }
     }
@@ -668,9 +666,10 @@
 
         static getKeyFromObject(obj: any) {
             var fullType = typeof obj;
+            var type2: string;
             if (Object.prototype.toString.call(obj) === '[object Array]') {
                 var arr: Array<any> = obj;
-                var type2 = 'string';
+                type2 = 'string';
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i] != null) {
                         type2 = typeof arr[i];
@@ -680,7 +679,7 @@
                 fullType = type2 + 'array';
             }
             if (!this.typeToKeyList[fullType])
-                throw new Error('Invalid type');
+                throw new Error('No TypeConverter found for ' + !type2 ? fullType : type2);
             return this.typeToKeyList[fullType];
         }
 
