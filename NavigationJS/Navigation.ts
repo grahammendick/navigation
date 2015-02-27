@@ -706,6 +706,7 @@
 
     export class HashHistoryManager implements IHistoryManager {
         private andHTML5: boolean;
+
         constructor(andHTML5?: boolean) {
             this.andHTML5 = !!andHTML5;
             window.removeEventListener('hashchange', navigateHistory);
@@ -735,6 +736,7 @@
 
     export class HTML5HistoryManager implements IHistoryManager {
         private andHash: boolean;
+
         constructor(andHash?: boolean) {
             this.andHash = !!andHash;
             window.removeEventListener('popstate', navigateHistory);
