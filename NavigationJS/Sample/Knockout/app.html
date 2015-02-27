@@ -61,6 +61,7 @@
 		        self.chosenMailData(getMail(data.mailId));
 	        };
 	        webMailStates.mail.dispose = function () { self.chosenMailData(null); };
+	        Navigation.settings.applicationPath = '/navigation';
 	        Navigation.start();
         };
 
