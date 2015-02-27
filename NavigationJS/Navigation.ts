@@ -501,8 +501,10 @@
         static navigateLink(url: string, state?: State) {
             if (StateContext.url === url)
                 return;
-            if (!state)
-                state = router.getData(url).state;
+            if (!state) {
+                var queryIndex = url.indexOf('?');
+                state = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).state;
+            }
             var oldState = StateContext.state;
             try {
                 var data = state.stateHandler.getNavigationData(state, url);
@@ -722,7 +724,7 @@
         getCurrentUrl(): string {
             var url = location.hash.substring(1);
             if (!url && this.andHTML5)
-                url = location.pathname.substring(settings.applicationPath.length);
+                url = location.pathname.substring(settings.applicationPath.length) + location.search;
             return url;
         }
 
@@ -741,7 +743,7 @@
 
         addHistory(oldState: State, state: State, url: string) {
             url = settings.applicationPath + url;
-            if (location.pathname !== url) {
+            if (location.pathname + location.search !== url) {
                 if (oldState)
                     window.history.pushState(null, null, url);
                 else
@@ -750,7 +752,7 @@
         }
 
         getCurrentUrl(): string {
-            var url = location.pathname.substring(settings.applicationPath.length);
+            var url = location.pathname.substring(settings.applicationPath.length) + location.search;
             if ((!url || url === '/') && this.andHash)
                 url = location.hash.substring(1);
             return url;
