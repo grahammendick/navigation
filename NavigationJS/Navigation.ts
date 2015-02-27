@@ -501,12 +501,12 @@
         static navigateLink(url: string, state?: State) {
             if (StateContext.url === url)
                 return;
-            if (!state) {
-                var queryIndex = url.indexOf('?');
-                state = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).state;
-            }
-            var oldState = StateContext.state;
             try {
+                if (!state) {
+                    var queryIndex = url.indexOf('?');
+                    state = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).state;
+                }
+                var oldState = StateContext.state;
                 var data = state.stateHandler.getNavigationData(state, url);
                 data = this.parseData(data, state);
             } catch (e) {
