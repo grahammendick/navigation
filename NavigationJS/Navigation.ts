@@ -703,18 +703,27 @@
     var navigateHistory = () => StateController.navigateLink(historyManager.getCurrentUrl());
 
     export class HashHistoryManager implements IHistoryManager {
-        constructor() {
+        private andHTML5: boolean;
+        constructor(andHTML5?: boolean) {
+            this.andHTML5 = !!andHTML5;
             window.removeEventListener('hashchange', navigateHistory);
             window.addEventListener('hashchange', navigateHistory);
         }
 
         addHistory(oldState: State, state: State, url: string) {
-            if (location.hash.substring(1) !== url)
-                location.hash = url;
+            if (location.hash.substring(1) !== url) {
+                if (oldState)
+                    location.hash = url;
+                else
+                    location.replace(settings.applicationPath + url + '#' + url);
+            }
         }
 
         getCurrentUrl(): string {
-            return location.hash.substring(1);
+            var url = location.hash.substring(1);
+            if (!url && this.andHTML5)
+                url = location.pathname.substring(settings.applicationPath.length);
+            return url;
         }
 
         getHref(url: string): string {
@@ -723,19 +732,28 @@
     }
 
     export class HTML5HistoryManager implements IHistoryManager {
-        constructor() {
+        private andHash: boolean;
+        constructor(andHash?: boolean) {
+            this.andHash = !!andHash;
             window.removeEventListener('popstate', navigateHistory);
             window.addEventListener('popstate', navigateHistory);
         }
 
         addHistory(oldState: State, state: State, url: string) {
-            url = this.getHref(url);
-            if (location.pathname !== url)
-                window.history.pushState(null, null, url); 
+            url = settings.applicationPath + url;
+            if (location.pathname !== url) {
+                if (oldState)
+                    window.history.pushState(null, null, url);
+                else
+                    window.history.replaceState(null, null, url);
+            }
         }
 
         getCurrentUrl(): string {
-            return location.pathname.substring(settings.applicationPath.length);
+            var url = location.pathname.substring(settings.applicationPath.length);
+            if ((!url || url === '/') && this.andHash)
+                url = location.hash.substring(1);
+            return url;
         }
 
         getHref(url: string): string {
