@@ -145,7 +145,7 @@
 
     export interface IStateHandler {
         getNavigationLink(state: State, data: any): string;
-        navigateLink(state: State, url: string);
+        navigateLink(oldState: State, state: State, url: string);
         getNavigationData(state: State, url: string): any;
         truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb>;
     }
@@ -167,9 +167,9 @@
             return routeInfo.route;
         }
 
-        navigateLink(state: State, url: string) {
+        navigateLink(oldState: State, state: State, url: string) {
             StateController.setStateContext(state, url);
-            historyManager.addHistory(url);
+            historyManager.addHistory(oldState, state, url);
         }
 
         getNavigationData(state: State, url: string): any {
@@ -512,7 +512,7 @@
             }
             state.navigating(data, url, () => {
                 if (oldState === StateContext.state)
-                    state.stateHandler.navigateLink(state, url);
+                    state.stateHandler.navigateLink(oldState, state, url);
             });
         }
 
@@ -695,7 +695,7 @@
     }
 
     export interface IHistoryManager {
-        addHistory(url: string);
+        addHistory(oldState: State, state: State, url: string);
         getCurrentUrl(): string;
         getHref(url: string): string;
     }
@@ -708,7 +708,7 @@
             window.addEventListener('hashchange', navigateHistory);
         }
 
-        addHistory(url: string) {
+        addHistory(oldState: State, state: State, url: string) {
             if (location.hash.substring(1) !== url)
                 location.hash = url;
         }
@@ -728,7 +728,7 @@
             window.addEventListener('popstate', navigateHistory);
         }
 
-        addHistory(url: string) {
+        addHistory(oldState: State, state: State, url: string) {
             url = this.getHref(url);
             if (location.pathname !== url)
                 window.history.pushState(null, null, url); 
@@ -744,7 +744,7 @@
     }
 
     export class VoidHistoryManager implements IHistoryManager {
-        addHistory(url: string) {
+        addHistory(oldState: State, state: State, url: string) {
         }
 
         getCurrentUrl(): string {
