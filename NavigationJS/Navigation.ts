@@ -576,6 +576,8 @@
         }
 
         convertFrom(val: string): any {
+            if (val !== 'true' && val !== 'false')
+                throw Error(val + ' is not a valid boolean');
             return val === 'true';
         }
 
