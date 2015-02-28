@@ -707,8 +707,13 @@
 
         constructor(andHTML5?: boolean) {
             this.andHTML5 = !!andHTML5;
-            window.removeEventListener('hashchange', navigateHistory);
-            window.addEventListener('hashchange', navigateHistory);
+            if (window.addEventListener) {
+                window.removeEventListener('hashchange', navigateHistory);
+                window.addEventListener('hashchange', navigateHistory);
+            } else {
+                window.detachEvent('onhashchange', navigateHistory);
+                window.attachEvent('onhashchange', navigateHistory);
+            }
         }
 
         addHistory(oldState: State, state: State, url: string) {
