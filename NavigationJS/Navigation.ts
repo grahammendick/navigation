@@ -407,11 +407,7 @@
                 urlValue = arr[0];
                 converterKey = arr[1];
             }
-            try {
-                return ConverterFactory.getConverter(converterKey).convertFrom(this.decodeUrlValue(urlValue));
-            } catch (e) {
-                throw new Error('The Url is invalid');
-            }
+            return ConverterFactory.getConverter(converterKey).convertFrom(this.decodeUrlValue(urlValue));
         }
 
         static getRefreshHref(refreshData: any): string {
@@ -451,7 +447,7 @@
                 CrumbTrailManager.buildCrumbTrail();
                 this.crumbs = CrumbTrailManager.getCrumbs(true);
             } catch (e) {
-                throw new Error('The Url is invalid');
+                throw new Error('The Url is invalid\n' + e.message);
             }
             if (oldState && oldState !== state)
                 oldState.dispose();
@@ -510,7 +506,7 @@
                 var data = state.stateHandler.getNavigationData(state, url);
                 data = this.parseData(data, state);
             } catch (e) {
-                throw new Error('The Url is invalid');
+                throw new Error('The Url is invalid\n' + e.message);
             }
             state.navigating(data, url, () => {
                 if (oldState === StateContext.state)
@@ -594,6 +590,8 @@
         }
 
         convertFrom(val: string): any {
+            if (isNaN(+val))
+                throw Error(val + ' is not a valid number');
             return +val;
         }
 
