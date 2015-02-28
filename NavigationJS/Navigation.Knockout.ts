@@ -1,14 +1,10 @@
 ﻿module Navigation.Knockout {
     ko.bindingHandlers['navigationLink'] = {
-        init: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            var navigate = (e) => {
-                if (!e.ctrlKey && !e.shiftKey) {
-                    e.preventDefault();
-                    Navigation.StateController.navigate(ko.unwrap(valueAccessor()),
-                        getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-                }
-            }
-            element.addEventListener('click', navigate);
+        init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            addClickListener(element, () => {
+                Navigation.StateController.navigate(ko.unwrap(valueAccessor()),
+                    getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+            });
         },
         update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
@@ -18,14 +14,10 @@
     };
 
     ko.bindingHandlers['navigationBackLink'] = {
-        init: (element: Element, valueAccessor) => {
-            var navigate = (e) => {
-                if (!e.ctrlKey && !e.shiftKey) {
-                    e.preventDefault();
-                    Navigation.StateController.navigateBack(ko.unwrap(valueAccessor()));
-                }
-            }
-            element.addEventListener('click', navigate);
+        init: (element, valueAccessor) => {
+            addClickListener(element, () => {
+                Navigation.StateController.navigateBack(ko.unwrap(valueAccessor()));
+            });
         },
         update: (element: Element, valueAccessor) => {
             var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
@@ -34,15 +26,11 @@
     };
 
     ko.bindingHandlers['refreshLink'] = {
-        init: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            var navigate = (e) => {
-                if (!e.ctrlKey && !e.shiftKey) {
-                    e.preventDefault();
-                    Navigation.StateController.refresh(
-                        getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-                }
-            }
-            element.addEventListener('click', navigate);
+        init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            addClickListener(element, () => {
+                Navigation.StateController.refresh(
+                    getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+            });
         },
         update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var link = Navigation.StateController.getRefreshLink(
@@ -64,5 +52,18 @@
             data[key] = ko.unwrap(toData[key]);
         }
         return data;
+    }
+
+    function addClickListener(element, listener: () => void) {
+        var navigate = (e: MouseEvent) => {
+            if (!e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                listener();
+            }
+        }
+        if (window.addEventListener)
+            element.addEventListener('click', navigate);
+        else
+            element.attachEvent('click', navigate);
     }
 }
