@@ -272,16 +272,18 @@
         static data: any;
         static url: string;
 
-        static newCurrentData(keys?: Array<string>): any {
+        static includeCurrentData(data: any, keys?: Array<string>): any {
             if (!keys) {
                 keys = [];
                 for (var key in this.data)
                     keys.push(key);
             }
-            var data: any = {};
+            var newData: any = {};
             for (var i = 0; i < keys.length; i++)
-                data[keys[i]] = this.data[keys[i]];
-            return data;
+                newData[keys[i]] = this.data[keys[i]];
+            for (var key in data)
+                newData[key] = data[key];
+            return newData;
         }
 
         static clear(key?: string) {

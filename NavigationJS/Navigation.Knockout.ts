@@ -42,16 +42,12 @@
     function getData(toData, includeCurrentData, currentDataKeys) {
         var data = {};
         toData = ko.unwrap(toData);
-        includeCurrentData = ko.unwrap(includeCurrentData);
-        currentDataKeys = ko.unwrap(currentDataKeys);
-        if (currentDataKeys)
-            data = Navigation.StateContext.newCurrentData(currentDataKeys.trim().split(/\s*,\s*/));
-        if (includeCurrentData)
-            data = Navigation.StateContext.newCurrentData();
         for (var key in toData) {
             data[key] = ko.unwrap(toData[key]);
         }
-        return data;
+        includeCurrentData = ko.unwrap(includeCurrentData);
+        currentDataKeys = ko.unwrap(currentDataKeys);
+        return Navigation.StateContext.includeCurrentData(data, !currentDataKeys ? null : currentDataKeys.trim().split(/\s*,\s*/));
     }
 
     function addClickListener(element, listener: () => void) {
