@@ -47,7 +47,11 @@
         }
         includeCurrentData = ko.unwrap(includeCurrentData);
         currentDataKeys = ko.unwrap(currentDataKeys);
-        return Navigation.StateContext.includeCurrentData(data, !currentDataKeys ? null : currentDataKeys.trim().split(/\s*,\s*/));
+        if (currentDataKeys)
+            data = Navigation.StateContext.includeCurrentData(data, currentDataKeys.trim().split(/\s*,\s*/));
+        if (includeCurrentData)
+            data = Navigation.StateContext.includeCurrentData(data);
+        return data;
     }
 
     function addClickListener(element, listener: () => void) {
