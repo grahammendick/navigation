@@ -181,9 +181,11 @@
     });
 
     QUnit.test('NavigateCrossDialogLinkTest', function (assert) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('d1');
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d1');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
@@ -206,9 +208,11 @@
     });
 
     QUnit.test('NavigateCrossDialogWithoutTrailLinkTest', function (assert) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('d2');
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d2');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].initial);
         assert.equal(Navigation.StateContext.previousState, null);
@@ -227,8 +231,9 @@
     });
 
     QUnit.test('NavigateDialogDialogLinkTest', function (assert) {
-        Navigation.StateController.navigate('d0');
         var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d0');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].initial);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
@@ -245,8 +250,9 @@
     });
 
     QUnit.test('NavigateDialogDialogWithoutTrailLinkTest', function (assert) {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('d2');
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d2');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].initial);
         assert.equal(Navigation.StateContext.previousState, null);
@@ -265,8 +271,9 @@
     });
 
     QUnit.test('NavigateTransitionLinkTest', function (assert) {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0');
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.dialog.initial);
@@ -286,7 +293,8 @@
     });
 
     QUnit.test('NavigateTransitionFromWithoutTrailLinkTest', function (assert) {
-        Navigation.StateController.navigate('d2');
+        var link = Navigation.StateController.getNavigationLink('d2');
+        Navigation.StateController.navigateLink(link);
         var link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s1']);
@@ -309,10 +317,12 @@
         assert.ok(Navigation.StateController.crumbs[1].last);
     });
 
-    QUnit.test('NavigateTransitionTransitionTest', function (assert) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t1');
-        var link = Navigation.StateController.getNavigationLink('t1');
+    QUnit.test('NavigateTransitionTransitionLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t1');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t1');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
         assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
@@ -334,9 +344,11 @@
     });
 
     QUnit.test('NavigateTransitionTransitionToWithoutTrailLinkTest', function (assert) {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('t0');
+        var link = Navigation.StateController.getNavigationLink('d2');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
         assert.equal(Navigation.StateContext.previousState, null);
@@ -350,7 +362,8 @@
     });
 
     QUnit.test('NavigateInvalidActionLinkTest', function (assert) {
-        Navigation.StateController.navigate('d1');
+        var link = Navigation.StateController.getNavigationLink('d1');
+        Navigation.StateController.navigateLink(link);
         assert.throws(() => Navigation.StateController.getNavigationLink('t1'));
     });
 
@@ -360,7 +373,8 @@
     });
 
     QUnit.test('NavigateNullActionLinkTest', function (assert) {
-        Navigation.StateController.navigate('d1');
+        var link = Navigation.StateController.getNavigationLink('d1');
+        Navigation.StateController.navigateLink(link);
         assert.throws(() => Navigation.StateController.getNavigationLink(null));
     });
 
