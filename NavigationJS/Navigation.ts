@@ -460,7 +460,7 @@
             var url = this.getNavigationLink(action, toData);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            this.navigateLink(url, this.getNextState(action));
+            this._navigateLink(url, this.getNextState(action));
         }
 
         static getNavigationLink(action: string, toData?: any): string {
@@ -478,7 +478,7 @@
             var url = this.getNavigationBackLink(distance);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            this.navigateLink(url, this.getCrumb(distance).state);
+            this._navigateLink(url, this.getCrumb(distance).state);
         }
 
         static getNavigationBackLink(distance: number): string {
@@ -489,19 +489,24 @@
             var url = this.getRefreshLink(toData);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            this.navigateLink(url, StateContext.state);
+            this._navigateLink(url, StateContext.state);
         }
 
         static getRefreshLink(toData?: any): string {
             return CrumbTrailManager.getRefreshHref(toData);
         }
 
-        static navigateLink(url: string, state?: State) {
+        static navigateLink(url: string) {
             try {
-                if (!state) {
-                    var queryIndex = url.indexOf('?');
-                    state = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).state;
-                }
+                var state = router.getData(url.split('?')[0]).state;
+            } catch (e) {
+                throw new Error('The Url is invalid\n' + e.message);
+            }
+            this._navigateLink(url, state);
+        }
+
+        private static _navigateLink(url: string, state: State) {
+            try {
                 var oldState = StateContext.state;
                 var data = state.stateHandler.getNavigationData(state, url);
                 data = this.parseData(data, state);
