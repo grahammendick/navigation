@@ -62,7 +62,7 @@
                 if (!dialog.initial)
                     throw new Error(dialog.key + ' Dialog\'s initial key of ' + dialogObject.initial + ' does not match a child State key');
             }
-            router.addRoutes(StateInfoConfig._dialogs);
+            router.addRoutes(this._dialogs);
         }
 
         private static processStates(dialog: Dialog, dialogObject: any) {
@@ -497,8 +497,6 @@
         }
 
         static navigateLink(url: string, state?: State) {
-            if (StateContext.url === url)
-                return;
             try {
                 if (!state) {
                     var queryIndex = url.indexOf('?');
@@ -704,7 +702,11 @@
         getHref(url: string): string;
     }
 
-    var navigateHistory = () => StateController.navigateLink(historyManager.getCurrentUrl());
+    var navigateHistory = () => {
+        if (StateContext.url === historyManager.getCurrentUrl())
+            return;
+        StateController.navigateLink(historyManager.getCurrentUrl());
+    }
 
     export class HashHistoryManager implements IHistoryManager {
         private andHTML5: boolean;
