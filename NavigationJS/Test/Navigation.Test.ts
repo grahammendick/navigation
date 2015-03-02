@@ -1012,10 +1012,31 @@
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
+    QUnit.test('NavigateDialogDialogCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+    });
+
     QUnit.test('NavigateCrossDialogCustomTrailTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 2);
+    });
+
+    QUnit.test('NavigateCrossDialogCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
         assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 2);
@@ -1029,12 +1050,38 @@
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
+    QUnit.test('NavigateDialogDialogBackCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[0]);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
     QUnit.test('NavigateCrossDialogBackCustomTrailTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
         Navigation.StateController.refresh();
         Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+    });
+
+    QUnit.test('NavigateCrossDialogBackCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getRefreshLink();
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
@@ -1052,12 +1099,45 @@
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
+    QUnit.test('NavigateCrossDialogBackTwoCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateController.crumbs[1].state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(Navigation.StateController.crumbs[2].state, Navigation.StateInfoConfig.dialogs['d6'].states['s0']);
+        link = Navigation.StateController.getNavigationBackLink(2);
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+    });
+
     QUnit.test('NavigateDialogBackCustomTrailTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d6']._states[0]);
+        assert.equal(Navigation.StateController.crumbs.length, 2);
+    });
+
+    QUnit.test('NavigateDialogBackCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d6']._states[0]);
         assert.equal(Navigation.StateController.crumbs.length, 2);
     });
@@ -1070,6 +1150,24 @@
         Navigation.StateController.navigateBack(1);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[6]._states[0]);
         Navigation.StateController.navigateBack(1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+    });
+
+    QUnit.test('NavigateCrossDialogBackOneByOneCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[6]._states[0]);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
