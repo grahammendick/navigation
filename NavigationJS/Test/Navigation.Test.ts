@@ -719,6 +719,20 @@
         assert.throws(() => Navigation.StateController.navigateBack(2));
     });
 
+    QUnit.test('NavigateBackNavigateBackInvalidLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        try {
+            link = Navigation.StateController.getNavigationBackLink(1);
+            Navigation.StateController.navigateLink(link);
+        } catch (e) { }
+        assert.throws(() => Navigation.StateController.getNavigationBackLink(2));
+    });
+
     QUnit.test('NavigateBackNavigateBackWithoutTrailInvalidTest', function (assert) {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
@@ -731,6 +745,24 @@
         assert.throws(() => Navigation.StateController.navigateBack(1));
     });
 
+    QUnit.test('NavigateBackNavigateBackWithoutTrailInvalidLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d2');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        try {
+            link = Navigation.StateController.getNavigationBackLink(1);
+            Navigation.StateController.navigateLink(link);
+        } catch (e) { }
+        assert.throws(() => Navigation.StateController.getNavigationBackLink(1));
+    });
+
     QUnit.test('NavigateBackRefreshTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t3');
@@ -741,11 +773,40 @@
         assert.equal(Navigation.StateController.crumbs.length, 0);
     });
 
+    QUnit.test('NavigateBackRefreshLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getRefreshLink();
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0].initial);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
     QUnit.test('NavigateBackWithoutTrailRefreshTest', function (assert) {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
         Navigation.StateController.refresh();
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2].initial);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateContext.previousDialog, null);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
+    QUnit.test('NavigateBackWithoutTrailRefreshLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d2');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getRefreshLink();
+        Navigation.StateController.navigateLink(link);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2].initial);
         assert.equal(Navigation.StateContext.previousState, null);
         assert.equal(Navigation.StateContext.previousDialog, null);
