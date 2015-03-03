@@ -3279,12 +3279,50 @@
         assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
     });
 
+    QUnit.test('CrumbDataAndDefaultsCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '2' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+    });
+
     QUnit.test('CrumbDataAndDefaultsCustomTrailRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         var data = { s: 1, t: '2' };
         Navigation.StateController.navigate('t0', data);
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+    });
+
+    QUnit.test('CrumbDataAndDefaultsCustomTrailRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '2' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
@@ -3308,6 +3346,25 @@
         assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
     });
 
+    QUnit.test('NavigateOverrideCrumbDefaultsCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        var data = {};
+        data['string'] = 'World';
+        data['number'] = 0;
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
     QUnit.test('NavigateOverrideCrumbDefaultsCustomTrailRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         var data = {};
@@ -3317,6 +3374,25 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
+    QUnit.test('NavigateOverrideCrumbDefaultsCustomTrailRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        var data = {};
+        data['string'] = 'World';
+        data['number'] = 0;
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
         assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
@@ -3337,6 +3413,26 @@
         assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
     });
 
+    QUnit.test('OverrideCrumbDefaultsCustomTrailLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        var data = {};
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        var crumb = Navigation.StateController.crumbs[1];
+        crumb.data['string'] = 'Hello';
+        crumb.data['number'] = 0;
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
     QUnit.test('OverrideCrumbDefaultsCustomTrailRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         var data = {};
@@ -3344,6 +3440,26 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('d6');
         Navigation.StateController.navigateBack(1);
+        var crumb = Navigation.StateController.crumbs[1];
+        crumb.data['string'] = 'Hello';
+        crumb.data['number'] = 0;
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+    });
+
+    QUnit.test('OverrideCrumbDefaultsCustomTrailRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        var data = {};
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('d6');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
         var crumb = Navigation.StateController.crumbs[1];
         crumb.data['string'] = 'Hello';
         crumb.data['number'] = 0;
