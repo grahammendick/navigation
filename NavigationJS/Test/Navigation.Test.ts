@@ -1337,7 +1337,7 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
     });
 
-    QUnit.test('NavigateBackOneTest', function (assert) {
+    QUnit.test('NavigatedBackOneTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t2');
         var disposed, navigating, navigated;
@@ -1370,7 +1370,7 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s3']);
     });
 
-    QUnit.test('NavigateBackTwoTest', function (assert) {
+    QUnit.test('NavigatedBackTwoTest', function (assert) {
         Navigation.StateController.navigate('d0');
         var link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
@@ -1411,7 +1411,7 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
     });
 
-    QUnit.test('NavigateBackOneByOneTest', function (assert) {
+    QUnit.test('NavigatedBackOneByOneTest', function (assert) {
         Navigation.StateController.navigate('d0');
         var link = Navigation.StateController.getNavigationLink('t1');
         Navigation.StateController.navigateLink(link);
