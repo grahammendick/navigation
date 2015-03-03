@@ -2113,9 +2113,34 @@
         assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
     });
 
+    QUnit.test('ChangeCrumbDataNavigateBackLinkTest', function (assert) {
+        var data = {};
+        data['s'] = 'Hello';
+        var link = Navigation.StateController.getNavigationLink('d0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var crumb = Navigation.StateController.crumbs[0];
+        crumb.data['s'] = 'Changed';
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'Changed');
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+    });
+
     QUnit.test('NavigateDefaultsTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
+    QUnit.test('NavigateDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
         assert.strictEqual(Navigation.StateContext.data['_bool'], true);
         assert.strictEqual(Navigation.StateContext.data['number'], 1);
@@ -2129,9 +2154,31 @@
         assert.strictEqual(Navigation.StateContext.data['number'], 1);
     });
 
+    QUnit.test('NavigateDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
     QUnit.test('NavigationDataDefaultsTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
+        Navigation.StateContext.data['string'] = null;
+        Navigation.StateContext.data['number'] = 'Hello';
+        assert.strictEqual(Navigation.StateContext.data['string'], null);
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 'Hello');
+    });
+
+    QUnit.test('NavigationDataDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
         Navigation.StateContext.data['string'] = null;
         Navigation.StateContext.data['number'] = 'Hello';
         assert.strictEqual(Navigation.StateContext.data['string'], null);
@@ -2149,10 +2196,37 @@
         assert.strictEqual(Navigation.StateContext.data['number'], 'Hello');
     });
 
+    QUnit.test('NavigationDataDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateContext.data['string'] = null;
+        Navigation.StateContext.data['number'] = 'Hello';
+        assert.strictEqual(Navigation.StateContext.data['string'], null);
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 'Hello');
+    });
+
     QUnit.test('RemoveDefaultsTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
+        Navigation.StateContext.clear('emptyString');
+        Navigation.StateContext.clear('number');
+        Navigation.StateContext.clear('char');
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+    });
+
+    QUnit.test('RemoveDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
         Navigation.StateContext.clear('emptyString');
         Navigation.StateContext.clear('number');
         Navigation.StateContext.clear('char');
@@ -2173,11 +2247,41 @@
         assert.strictEqual(Navigation.StateContext.data['char'], 7);
     });
 
+    QUnit.test('RemoveDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateContext.clear('emptyString');
+        Navigation.StateContext.clear('number');
+        Navigation.StateContext.clear('char');
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+    });
+
     QUnit.test('NavigateDataAndDefaultsTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
         var data = { s: 1, t: '', 'number': '' };
         Navigation.StateController.navigate('t0', data);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+    });
+
+    QUnit.test('NavigateDataAndDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '', 'number': '' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
         assert.strictEqual(Navigation.StateContext.data['number'], 4);
         assert.strictEqual(Navigation.StateContext.data['char'], 7);
@@ -2197,6 +2301,21 @@
         assert.strictEqual(Navigation.StateContext.data['t'], undefined);
     });
 
+    QUnit.test('NavigateDataAndDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '', 'number': '' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+    });
+
     QUnit.test('NavigateOverrideDefaultsTest', function (assert) {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
@@ -2207,11 +2326,37 @@
         assert.strictEqual(Navigation.StateContext.data['char'], 5);
     });
 
+    QUnit.test('NavigateOverrideDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { emptyString: 2, 'number': 1, char: 5 };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], 2);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+    });
+
     QUnit.test('NavigateOverrideDefaultsRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0');
         var data = { emptyString: 2, 'number': 1, char: 5 };
         Navigation.StateController.navigate('t0', data);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], 2);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+    });
+
+    QUnit.test('NavigateOverrideDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { emptyString: 2, 'number': 1, char: 5 };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['emptyString'], 2);
         assert.strictEqual(Navigation.StateContext.data['number'], 1);
         assert.strictEqual(Navigation.StateContext.data['char'], 5);
@@ -2229,10 +2374,40 @@
         assert.strictEqual(Navigation.StateContext.data['char'], 5);
     });
 
+    QUnit.test('OverrideDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateContext.data['emptyString'] = 'Hello';
+        Navigation.StateContext.data['number'] = 4;
+        Navigation.StateContext.data['char'] = 5;
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+    });
+
     QUnit.test('OverrideDefaultsRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
+        Navigation.StateContext.data['emptyString'] = 'Hello';
+        Navigation.StateContext.data['number'] = 4;
+        Navigation.StateContext.data['char'] = 5;
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+    });
+
+    QUnit.test('OverrideDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
         Navigation.StateContext.data['emptyString'] = 'Hello';
         Navigation.StateContext.data['number'] = 4;
         Navigation.StateContext.data['char'] = 5;
@@ -2254,11 +2429,43 @@
         assert.strictEqual(Navigation.StateContext.data['t'], undefined);
     });
 
+    QUnit.test('ClearDataAndDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '2' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateContext.clear();
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+    });
+
     QUnit.test('ClearDataAndDefaultsRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0');
         var data = { s: 1, t: '2' };
         Navigation.StateController.navigate('t0', data);
+        Navigation.StateContext.clear();
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+    });
+
+    QUnit.test('ClearDataAndDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '2' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
         Navigation.StateContext.clear();
         assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
         assert.strictEqual(Navigation.StateContext.data['number'], 4);
@@ -2277,11 +2484,39 @@
         assert.strictEqual(Navigation.StateContext.data['number'], 1);
     });
 
+    QUnit.test('NavigateBackDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
     QUnit.test('NavigateBackDefaultsRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
+        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+    });
+
+    QUnit.test('NavigateBackDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(1);
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
         assert.strictEqual(Navigation.StateContext.data['_bool'], true);
         assert.strictEqual(Navigation.StateContext.data['number'], 1);
@@ -2302,6 +2537,27 @@
         assert.strictEqual(Navigation.StateContext.data['t'], '2');
     });
 
+    QUnit.test('NavigateBackDataAndDefaultsLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '2' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(2);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], '2');
+    });
+
     QUnit.test('NavigateBackDataAndDefaultsRouteTest', function (assert) {
         Navigation.StateController.navigate('d3');
         Navigation.StateController.navigate('t0');
@@ -2310,6 +2566,27 @@
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(2);
+        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+        assert.strictEqual(Navigation.StateContext.data['number'], 4);
+        assert.strictEqual(Navigation.StateContext.data['char'], 7);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], '2');
+    });
+
+    QUnit.test('NavigateBackDataAndDefaultsRouteLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d3');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        var data = { s: 1, t: '2' };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationBackLink(2);
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
         assert.strictEqual(Navigation.StateContext.data['number'], 4);
         assert.strictEqual(Navigation.StateContext.data['char'], 7);
