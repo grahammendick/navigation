@@ -1903,6 +1903,30 @@
         assert.strictEqual(Navigation.StateContext.data['n'], 2);
     });
 
+    QUnit.test('ChangeDynamicDataRefreshRouteOverrideLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        var data: any = {};
+        data.s = 'Hello';
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateContext.data.s = 'World';
+        Navigation.StateContext.data.d = '2000-1-3';
+        Navigation.StateContext.data.i = 3;
+        data = Navigation.StateContext.includeCurrentData({
+            s: 'Hello World',
+            i: null,
+            n: 2
+        });
+        link = Navigation.StateController.getRefreshLink(data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data.s, 'Hello World');
+        assert.strictEqual(Navigation.StateContext.data.d, '2000-1-3');
+        assert.strictEqual(Navigation.StateContext.data.i, undefined);
+        assert.strictEqual(Navigation.StateContext.data.n, 2);
+        assert.strictEqual(Navigation.StateContext.data['n'], 2);
+    });
+
     QUnit.test('NavigateWizardDataTest', function (assert) {
         Navigation.StateController.navigate('d0');
         var data = {
@@ -1911,6 +1935,23 @@
         };
         Navigation.StateController.navigate('t0', data);
         Navigation.StateController.navigate('t1', Navigation.StateContext.includeCurrentData(null));
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['n'], 5);
+        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+        assert.strictEqual(Navigation.StateContext.data['n'], 5);
+    });
+
+    QUnit.test('NavigateWizardDataLinkTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        var data = {
+            s: 'Hello',
+            n: 5
+        };
+        link = Navigation.StateController.getNavigationLink('t0', data);
+        Navigation.StateController.navigateLink(link);
+        link = Navigation.StateController.getNavigationLink('t1', Navigation.StateContext.includeCurrentData(null));
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
         assert.strictEqual(Navigation.StateController.crumbs[1].data['n'], 5);
         assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
@@ -1941,6 +1982,33 @@
         assert.strictEqual(Navigation.StateContext.data['t'], '3');
     });
 
+    QUnit.test('NavigateDataNavigateTransitionTransitionLinkTest', function (assert) {
+        var data = {};
+        data['s'] = 1;
+        var link = Navigation.StateController.getNavigationLink('d0', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+        data['s'] = 2;
+        data['t'] = '2';
+        link = Navigation.StateController.getNavigationLink('t1', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['s'], 2);
+        assert.strictEqual(Navigation.StateContext.data['t'], '2');
+        data['s'] = 3;
+        data['t'] = '3';
+        link = Navigation.StateController.getNavigationLink('t1', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 2);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+        assert.strictEqual(Navigation.StateContext.data['s'], 3);
+        assert.strictEqual(Navigation.StateContext.data['t'], '3');
+    });
+
     QUnit.test('NavigateDynamicDataNavigateTransitionTransitionTest', function (assert) {
         var data: any = {};
         data.s = 1;
@@ -1952,6 +2020,26 @@
         assert.strictEqual(Navigation.StateContext.data.s, '2');
         data.s = '3';
         Navigation.StateController.navigate('t1', data);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data.s, 1);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data.s, '2');
+        assert.strictEqual(Navigation.StateContext.data.s, '3');
+    });
+
+    QUnit.test('NavigateDynamicDataNavigateTransitionTransitionLinkTest', function (assert) {
+        var data: any = {};
+        data.s = 1;
+        var link = Navigation.StateController.getNavigationLink('d0', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        data.s = '2';
+        link = Navigation.StateController.getNavigationLink('t1', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data.s, 1);
+        assert.strictEqual(Navigation.StateContext.data.s, '2');
+        data.s = '3';
+        link = Navigation.StateController.getNavigationLink('t1', data);
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data.s, 1);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
         assert.strictEqual(Navigation.StateController.crumbs[1].data.s, '2');
@@ -1976,6 +2064,35 @@
         data['s'] = 3;
         data['t'] = '3';
         Navigation.StateController.navigate('t1', data);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 11);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], '22');
+        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+        assert.strictEqual(Navigation.StateContext.data['s'], 3);
+        assert.strictEqual(Navigation.StateContext.data['t'], '3');
+    });
+
+    QUnit.test('ChangeDataNavigateTransitionTransitionLinkTest', function (assert) {
+        var data = {};
+        data['s'] = 1;
+        var link = Navigation.StateController.getNavigationLink('d0', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data['s'], 1);
+        Navigation.StateContext.data['s'] = 11;
+        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+        data['s'] = 2;
+        data['t'] = '2';
+        link = Navigation.StateController.getNavigationLink('t1', data);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 11);
+        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
+        assert.strictEqual(Navigation.StateContext.data['s'], 2);
+        assert.strictEqual(Navigation.StateContext.data['t'], '2');
+        Navigation.StateContext.data['s'] = '22';
+        data['s'] = 3;
+        data['t'] = '3';
+        link = Navigation.StateController.getNavigationLink('t1', data);
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 11);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
         assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], '22');
