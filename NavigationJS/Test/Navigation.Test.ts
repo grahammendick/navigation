@@ -1187,6 +1187,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
     });
 
     QUnit.test('NavigatingCrossDialogTest', function (assert) {
@@ -1201,6 +1202,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
     });
 
     QUnit.test('NavigatedDialogDialogTest', function (assert) {
@@ -1217,6 +1219,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
     });
 
     QUnit.test('NavigatingDialogDialogTest', function (assert) {
@@ -1230,6 +1233,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
     });
 
     QUnit.test('NavigatedTransitionTest', function (assert) {
@@ -1246,6 +1250,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
     });
 
     QUnit.test('NavigatingTransitionTest', function (assert) {
@@ -1259,6 +1264,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
     });
 
     QUnit.test('NavigatedTransitionTransitionTest', function (assert) {
@@ -1276,6 +1282,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
     });
 
     QUnit.test('NavigatingTransitionTransitionTest', function (assert) {
@@ -1290,6 +1297,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s1']);
     });
 
     QUnit.test('NavigatedRefreshTest', function (assert) {
@@ -1309,6 +1317,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
     });
 
     QUnit.test('NavigatingRefreshTest', function (assert) {
@@ -1325,6 +1334,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
     });
 
     QUnit.test('NavigateBackOneTest', function (assert) {
@@ -1342,6 +1352,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
     });
 
     QUnit.test('NavigatingBackOneTest', function (assert) {
@@ -1356,6 +1367,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s3']);
     });
 
     QUnit.test('NavigateBackTwoTest', function (assert) {
@@ -1377,6 +1389,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
     });
 
     QUnit.test('NavigatingBackTwoTest', function (assert) {
@@ -1395,6 +1408,7 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
     });
 
     QUnit.test('NavigateBackOneByOneTest', function (assert) {
@@ -1413,6 +1427,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
         disposed = undefined;
         navigating = undefined;
         navigated = undefined;
@@ -1427,6 +1442,7 @@
         assert.strictEqual(disposed, true);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, true);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
     });
 
     QUnit.test('NavigatingBackOneByOneTest', function (assert) {
@@ -1442,17 +1458,16 @@
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
         disposed = undefined;
         navigating = undefined;
         navigated = undefined;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].dispose = () => disposed = true;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s0'].navigating = (data, url, navigate) => navigating = true;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s0'].navigated = () => navigated = true;
         var link = Navigation.StateController.getNavigationBackLink(1);
         Navigation.StateController.navigateLink(link);
         assert.strictEqual(disposed, undefined);
         assert.strictEqual(navigating, true);
         assert.strictEqual(navigated, undefined);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
     });
 
     var individualNavigationData = {};
