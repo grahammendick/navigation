@@ -4116,6 +4116,20 @@
         assert.equal(Navigation.StateController.getRefreshLink(), null);
     });
 
+    QUnit.test('NavigateInvalidNumberTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0', { 'number': 35 });
+        link = link.replace('number=35', 'number=invalid');
+        assert.throws(() => Navigation.StateController.navigateLink(link));
+    });
+
+    QUnit.test('NavigateInvalilBooleanTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0', { '_bool': false });
+        link = link.replace('_bool=false', '_bool=invalid');
+        assert.throws(() => Navigation.StateController.navigateLink(link));
+    });
+
     QUnit.module('StateInfoTest', {
         setup: () => {
             initStateInfo();
