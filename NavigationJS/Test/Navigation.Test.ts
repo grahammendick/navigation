@@ -1267,6 +1267,16 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
     });
 
+    QUnit.test('NavigatingNavigateTransitionTest', function (assert) {
+        var link = Navigation.StateController.getNavigationLink('d0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('t0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            Navigation.StateController.navigate('t0');
+        }
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+    });
+
     QUnit.test('NavigatedTransitionTransitionTest', function (assert) {
         Navigation.StateController.navigate('d2');
         var link = Navigation.StateController.getNavigationLink('t0');
