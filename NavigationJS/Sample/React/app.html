@@ -22,6 +22,12 @@
                 var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
 	            webMailStates.folder.navigated = function (data) {
                     self.props.mails = getMails(data.folder).mails;
+                    self.props.mailContent = <MailList mails={self.props.mails} />;
+                    self.setState({ chosenFolderId: data.folder });
+	            };
+	            webMailStates.mail.navigated = function (data) {
+                    self.props.mail = getMail(data.mailId);
+                    self.props.mailContent = <Mail mails={self.props.mail} />;
                     self.setState({ chosenFolderId: data.folder });
 	            };
             },
@@ -29,7 +35,7 @@
                 return (
                     <div>
                         <FolderList chosenFolderId={this.state.chosenFolderId} />
-                        <MailList mails={this.props.mails} />
+                        {this.props.mailContent}
                     </div>
                 );
             }
@@ -61,10 +67,10 @@
                 var mailNodes = this.props.mails.map(function (mail) {
                     return (
                         <tr>
-                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.from}</NavigationLink></td>
-                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.to}</NavigationLink></td>
-                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.subject}</NavigationLink></td>
-                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.date}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.from}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.to}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.subject}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.date}</NavigationLink></td>
                         </tr>
                     );
                 });
@@ -73,6 +79,13 @@
                         <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
                         <tbody>{mailNodes}</tbody>
                     </table>
+                );
+            }
+        });
+        var Mail = React.createClass({
+            render: function(){
+                return (
+                    <h1>Mail</h1>
                 );
             }
         });
