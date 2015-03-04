@@ -17,7 +17,7 @@
             getInitialState: function() {
                 return { chosenFolderId: ''};
             },
-            componentDidMount: function(){
+            componentWillMount : function(){
                 var self = this;
                 var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
 	            webMailStates.folder.navigated = function (data) {
