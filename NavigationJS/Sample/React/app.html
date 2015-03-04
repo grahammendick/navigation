@@ -15,20 +15,21 @@
     <script type="text/jsx">
         var WebMail = React.createClass({
             getInitialState: function() {
-                return { mails: []};
+                return { chosenFolderId: ''};
             },
             componentDidMount: function(){
                 var self = this;
                 var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
 	            webMailStates.folder.navigated = function (data) {
-                    self.setState({ mails: getMails(data.folder).mails });
+                    self.props.mails = getMails(data.folder).mails;
+                    self.setState({ chosenFolderId: data.folder });
 	            };
             },
             render: function() {
                 return (
                     <div>
-                        <FolderList />
-                        <MailList mails={this.state.mails} />
+                        <FolderList chosenFolderId={this.state.chosenFolderId} />
+                        <MailList mails={this.props.mails} />
                     </div>
                 );
             }
@@ -38,9 +39,11 @@
                 return { folders: ['Inbox', 'Archive', 'Sent', 'Spam']};
             },
             render: function() {
+                var chosenFolderId = this.props.chosenFolderId;
                 var folderNodes = this.state.folders.map(function (folder) {
+                    var className = chosenFolderId === folder ? 'selected' : null;
                     return (
-                        <li><NavigationLink action="webMail" toData={{folder: folder}}>{folder}</NavigationLink></li>
+                        <li className={className}><NavigationLink action="webMail" toData={{folder: folder}}>{folder}</NavigationLink></li>
                     );
                 });
                 return (
@@ -49,6 +52,11 @@
             }
         });
         var MailList = React.createClass({
+            getDefaultProps: function() {
+                return {
+                    mails: []
+                };
+            },
             render: function() {
                 var mailNodes = this.props.mails.map(function (mail) {
                     return (
