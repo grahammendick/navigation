@@ -61,8 +61,6 @@
 		        self.chosenMailData(getMail(data.mailId));
 	        };
 	        webMailStates.mail.dispose = function () { self.chosenMailData(null); };
-	        Navigation.settings.applicationPath = '/navigation';
-	        Navigation.start();
         };
 
         // States
@@ -72,8 +70,9 @@
 			        { key: 'select', to: 'mail' }]},
 		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
         ]);
-
         ko.applyBindings(new WebmailViewModel());
+        Navigation.settings.applicationPath = '/navigation';
+        Navigation.start();
     </script>
 </body>
 </html>
