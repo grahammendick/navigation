@@ -27,4 +27,4 @@
 .viewMail .mailInfo { background-color: #dae0e8; padding: 1em 1em 0.5em 1.25em; border-radius: 1em; }
 .viewMail .mailInfo h1 { margin-top: 0.2em; font-size: 130%; }
 .viewMail .mailInfo label { color: #777; font-weight: bold; min-width: 2.75em; text-align:right; display: inline-block; }
-.viewMail .message { padding: 0 1.25em; }
+.viewMail .message { padding: 0 1.25em; white-space: pre-wrap; }

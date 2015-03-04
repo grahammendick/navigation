@@ -87,7 +87,7 @@
                             <p><label>To</label>: <span>{this.props.mail.to}</span></p>
                             <p><label>Date</label>: <span>{this.props.mail.date}</span></p>
                         </div>
-                        <p className="message" dangerouslySetInnerHTML={{__html: this.props.mail.messageContent}} />
+                        <p className="message">{this.props.mail.messageContent}</p>
                     </div>
                 );
             }
