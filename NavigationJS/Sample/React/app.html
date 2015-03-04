@@ -58,11 +58,6 @@
             }
         });
         var MailList = React.createClass({
-            getDefaultProps: function() {
-                return {
-                    mails: []
-                };
-            },
             render: function() {
                 var mailNodes = this.props.mails.map(function (mail) {
                     return (
