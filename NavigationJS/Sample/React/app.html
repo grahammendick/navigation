@@ -15,7 +15,7 @@
     <script type="text/jsx">
         var WebMail = React.createClass({
             getInitialState: function() {
-                return { chosenFolderId: ''};
+                return { chosenFolderId: null };
             },
             componentWillMount : function(){
                 var self = this;
@@ -42,7 +42,7 @@
         });
         var FolderList = React.createClass({
             getInitialState: function() {
-                return { folders: ['Inbox', 'Archive', 'Sent', 'Spam']};
+                return { folders: ['Inbox', 'Archive', 'Sent', 'Spam'] };
             },
             render: function() {
                 var chosenFolderId = this.props.chosenFolderId;
