@@ -15,7 +15,14 @@
     <script type="text/jsx">
         var WebMail = React.createClass({
             getInitialState: function() {
-                return {mails: [{subject: 'hello1'}]};
+                return { mails: []};
+            },
+            componentDidMount: function(){
+                var self = this;
+                var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
+	            webMailStates.folder.navigated = function (data) {
+                    self.setState({ mails: getMails(data.folder).mails });
+	            };
             },
             render: function() {
                 return (
@@ -28,7 +35,7 @@
         });
         var FolderList = React.createClass({
             getInitialState: function() {
-                return {folders: ['Inbox', 'Archive', 'Sent', 'Spam']};
+                return { folders: ['Inbox', 'Archive', 'Sent', 'Spam']};
             },
             render: function() {
                 var folderNodes = this.state.folders.map(function (folder) {
@@ -58,10 +65,19 @@
                 );
             }
         });
+
+        // States
+        Navigation.StateInfoConfig.build([
+	        { key: 'webMail', initial: 'folder', states: [
+		        { key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
+			        { key: 'select', to: 'mail' }]},
+		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
+        ]);
         React.render(
             <WebMail />,
             document.getElementById('content')
         );
+        Navigation.start();
     </script>
 </body>
 </html>
