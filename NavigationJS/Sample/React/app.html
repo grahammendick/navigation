@@ -17,15 +17,18 @@
             render: function() {
                 return (
                     <div>
-                        <FolderList data={this.props.data} />
+                        <FolderList />
                         <MailList />
                     </div>
                 );
             }
         });
         var FolderList = React.createClass({
+            getInitialState: function() {
+                return {folders: ['Inbox', 'Archive', 'Sent', 'Spam']};
+            },
             render: function() {
-                var folderNodes = this.props.data.map(function (folder) {
+                var folderNodes = this.state.folders.map(function (folder) {
                     return (
                         <li><a>{folder}</a></li>
                     );
@@ -42,9 +45,8 @@
                 );
             }
         });
-        var folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
         React.render(
-            <WebMail data={folders}/>,
+            <WebMail />,
             document.getElementById('content')
         );
     </script>
