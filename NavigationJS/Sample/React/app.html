@@ -40,7 +40,7 @@
             render: function() {
                 var folderNodes = this.state.folders.map(function (folder) {
                     return (
-                        <li><a>{folder}</a></li>
+                        <li><NavigationLink action="webMail" toData={{folder: folder}}>{folder}</NavigationLink></li>
                     );
                 });
                 return (
