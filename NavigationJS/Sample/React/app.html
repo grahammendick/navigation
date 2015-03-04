@@ -11,6 +11,27 @@
     <script src="../../Navigation.React.js"></script>
 </head>
 <body>
-
+    <div id="content"></div>
+    <script type="text/jsx">
+        var FolderList = React.createClass({
+            render: function() {
+                var folderNodes = this.props.data.map(function (folder) {
+                  return (
+                    <li><a>{folder}</a></li>
+                  );
+                });
+                return (
+                  <ul className="folders">
+                    {folderNodes}
+                  </ul>
+                );
+            }
+        });
+        var folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
+        React.render(
+          <FolderList data={folders}/>,
+          document.getElementById('content')
+        );
+    </script>
 </body>
 </html>
