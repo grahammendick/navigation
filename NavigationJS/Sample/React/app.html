@@ -53,15 +53,18 @@
                 var mailNodes = this.props.mails.map(function (mail) {
                     return (
                         <tr>
-                            <td>{mail.from}</td>
-                            <td>{mail.to}</td>
-                            <td>{mail.subject}</td>
-                            <td>{mail.date}</td>
+                            <td><a>{mail.from}</a></td>
+                            <td><a>{mail.to}</a></td>
+                            <td><a>{mail.subject}</a></td>
+                            <td><a>{mail.date}</a></td>
                         </tr>
                     );
                 });
                 return (
-                    <table>{mailNodes}</table>
+                    <table className="mails">
+                        <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
+                        {mailNodes}
+                    </table>
                 );
             }
         });
