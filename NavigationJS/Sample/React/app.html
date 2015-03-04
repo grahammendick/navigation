@@ -14,11 +14,14 @@
     <div id="content"></div>
     <script type="text/jsx">
         var WebMail = React.createClass({
+            getInitialState: function() {
+                return {mails: [{subject: 'hello1'}]};
+            },
             render: function() {
                 return (
                     <div>
                         <FolderList />
-                        <MailList />
+                        <MailList mails={this.state.mails} />
                     </div>
                 );
             }
@@ -40,8 +43,18 @@
         });
         var MailList = React.createClass({
             render: function() {
+                var mailNodes = this.props.mails.map(function (mail) {
+                    return (
+                        <tr>
+                            <td>{mail.from}</td>
+                            <td>{mail.to}</td>
+                            <td>{mail.subject}</td>
+                            <td>{mail.date}</td>
+                        </tr>
+                    );
+                });
                 return (
-                    <div>hello</div>
+                    <table>{mailNodes}</table>
                 );
             }
         });
