@@ -57,17 +57,22 @@
   <ItemGroup>
     <TypeScriptCompile Include="knockout.d.ts" />
     <TypeScriptCompile Include="Navigation.Knockout.ts" />
+    <TypeScriptCompile Include="Navigation.React.ts" />
     <TypeScriptCompile Include="Navigation.ts" />
     <TypeScriptCompile Include="Navigation.Routing.ts" />
+    <TypeScriptCompile Include="react.d.ts" />
     <TypeScriptCompile Include="Test\Navigation.Test.ts" />
     <TypeScriptCompile Include="Test\qunit.d.ts" />
     <TypeScriptCompile Include="Test\Navigation.Routing.Test.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sample\Knockout\app.css" />
-    <Content Include="Sample\Knockout\app.data.js" />
+    <Content Include="Sample\app.css" />
+    <Content Include="Sample\app.data.js" />
     <Content Include="Sample\Knockout\app.html" />
     <Content Include="Sample\Knockout\knockout-3.3.0.js" />
+    <Content Include="Sample\React\app.html" />
+    <Content Include="Sample\React\JSXTransformer-0.12.2.js" />
+    <Content Include="Sample\React\react-0.12.2.js" />
     <Content Include="Test\Navigation.Test.html" />
     <Content Include="Test\qunit-1.17.1.css" />
     <Content Include="Test\qunit-1.17.1.js" />
@@ -82,6 +87,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
   </PropertyGroup>
