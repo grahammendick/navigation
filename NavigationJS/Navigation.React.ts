@@ -17,6 +17,6 @@
         delete data.toData;
         return (
             React.createElement('a', data)
-        )
+        );
     }
 });
