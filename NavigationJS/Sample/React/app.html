@@ -27,7 +27,7 @@
 	            };
 	            webMailStates.mail.navigated = function (data) {
                     self.props.mail = getMail(data.mailId);
-                    self.props.mailContent = <Mail mails={self.props.mail} />;
+                    self.props.mailContent = <Mail mail={self.props.mail} />;
                     self.setState({ chosenFolderId: data.folder });
 	            };
             },
@@ -85,7 +85,15 @@
         var Mail = React.createClass({
             render: function(){
                 return (
-                    <h1>Mail</h1>
+                    <div className="viewMail">
+                        <div className="mailInfo">
+                            <h1>{this.props.mail.subject}</h1>
+                            <p><label>From</label>: <span>{this.props.mail.from}</span></p>
+                            <p><label>To</label>: <span>{this.props.mail.to}</span></p>
+                            <p><label>Date</label>: <span>{this.props.mail.date}</span></p>
+                        </div>
+                        <p className="message" dangerouslySetInnerHTML={{__html: this.props.mail.messageContent}} />
+                    </div>
                 );
             }
         });
