@@ -20,12 +20,12 @@
             componentWillMount : function(){
                 var self = this;
                 var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
-	            webMailStates.folder.navigated = function (data) {
+                webMailStates.folder.navigated = function (data) {
                     self.props.mails = getMails(data.folder).mails;
                     self.props.webMailContent = <MailList mails={self.props.mails} />;
                     self.setState({ chosenFolderId: data.folder });
 	            };
-	            webMailStates.mail.navigated = function (data) {
+                webMailStates.mail.navigated = function (data) {
                     self.props.mail = getMail(data.mailId);
                     self.props.webMailContent = <Mail mail={self.props.mail} />;
                     self.setState({ chosenFolderId: data.folder });
