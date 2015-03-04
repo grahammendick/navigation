@@ -61,17 +61,17 @@
                 var mailNodes = this.props.mails.map(function (mail) {
                     return (
                         <tr>
-                            <td><a>{mail.from}</a></td>
-                            <td><a>{mail.to}</a></td>
-                            <td><a>{mail.subject}</a></td>
-                            <td><a>{mail.date}</a></td>
+                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.from}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.to}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.subject}</NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ mailId: mail.id }}>{mail.date}</NavigationLink></td>
                         </tr>
                     );
                 });
                 return (
                     <table className="mails">
                         <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
-                        {mailNodes}
+                        <tbody>{mailNodes}</tbody>
                     </table>
                 );
             }
