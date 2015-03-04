@@ -13,24 +13,39 @@
 <body>
     <div id="content"></div>
     <script type="text/jsx">
+        var WebMail = React.createClass({
+            render: function() {
+                return (
+                    <div>
+                        <FolderList data={this.props.data} />
+                        <MailList />
+                    </div>
+                );
+            }
+        });
         var FolderList = React.createClass({
             render: function() {
                 var folderNodes = this.props.data.map(function (folder) {
-                  return (
-                    <li><a>{folder}</a></li>
-                  );
+                    return (
+                        <li><a>{folder}</a></li>
+                    );
                 });
                 return (
-                  <ul className="folders">
-                    {folderNodes}
-                  </ul>
+                    <ul className="folders">{folderNodes}</ul>
+                );
+            }
+        });
+        var MailList = React.createClass({
+            render: function() {
+                return (
+                    <div>hello</div>
                 );
             }
         });
         var folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
         React.render(
-          <FolderList data={folders}/>,
-          document.getElementById('content')
+            <WebMail data={folders}/>,
+            document.getElementById('content')
         );
     </script>
 </body>
