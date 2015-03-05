@@ -2,10 +2,8 @@
     export var NavigationLink = React.createClass({
         render: function () {
             var props = cloneProps(this);
-            var includeCurrentData = props.includeCurrentData;
-            var currentDataKeys = props.currentDataKeys;
             var action = props.action;
-            var toData = getData(props.toData, includeCurrentData, currentDataKeys);
+            var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
             var link = Navigation.StateController.getNavigationLink(action, toData);
             props.href = Navigation.historyManager.getHref(link);
             props.onClick = getClickListener(() => Navigation.StateController.navigate(action, toData))
@@ -33,9 +31,7 @@
     export var RefreshLink = React.createClass({
         render: function () {
             var props = cloneProps(this);
-            var includeCurrentData = props.includeCurrentData;
-            var currentDataKeys = props.currentDataKeys;
-            var toData = getData(props.toData, includeCurrentData, currentDataKeys);
+            var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
             var link = Navigation.StateController.getRefreshLink(toData);
             props.href = Navigation.historyManager.getHref(link);
             props.onClick = getClickListener(() => Navigation.StateController.refresh(toData))
