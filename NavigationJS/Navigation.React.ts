@@ -16,6 +16,20 @@
         }
     });
 
+    export var NavigationBackLink = React.createClass({
+        render: function () {
+            var props = cloneProps(this);
+            var distance = props.distance;
+            var link = Navigation.StateController.getNavigationBackLink(distance);
+            props.href = Navigation.historyManager.getHref(link);
+            props.onClick = getClickListener(() => Navigation.StateController.navigateBack(distance))
+            clearProps(props);
+            return (
+                React.createElement('a', props)
+            );
+        }
+    });
+
     function cloneProps(elem: React.ReactElement<any, any>): any {
         var props = {};
         for (var key in elem.props) {
@@ -46,6 +60,8 @@
         delete props.toData;
         delete props.includeCurrentData;
         delete props.currentDataKeys;
+        delete props.distance;
     }
 }
 var NavigationLink = NavigationReact.NavigationLink;
+var NavigationBackLink = NavigationReact.NavigationBackLink;
