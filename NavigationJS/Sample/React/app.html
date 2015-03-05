@@ -30,6 +30,8 @@
                     self.props.webMailContent = <Mail mail={self.props.mail} />;
                     self.setState({ chosenFolderId: data.folder });
 	            };
+                Navigation.settings.applicationPath = '/navigation';
+                Navigation.start();
             },
             render: function() {
                 return (
@@ -101,8 +103,6 @@
             <WebMail />,
             document.getElementById('content')
         );
-        Navigation.settings.applicationPath = '/navigation';
-        Navigation.start();
     </script>
 </body>
 </html>
