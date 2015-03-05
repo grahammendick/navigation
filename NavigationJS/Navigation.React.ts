@@ -54,7 +54,7 @@
         return props;
     }
 
-    function getData(toData, includeCurrentData: boolean, currentDataKeys: string) {
+    function getData(toData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (includeCurrentData)
             toData = Navigation.StateContext.includeCurrentData(toData);
         if (currentDataKeys)
@@ -62,7 +62,7 @@
         return toData;
     }
 
-    function getClickListener(listener: () => void) {
+    function getClickListener(listener: () => void): (e: MouseEvent) => void {
         return (e: MouseEvent) => {
             if (!e.ctrlKey && !e.shiftKey) {
                 e.preventDefault();
