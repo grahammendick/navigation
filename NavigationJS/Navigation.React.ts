@@ -30,6 +30,22 @@
         }
     });
 
+    export var RefreshLink = React.createClass({
+        render: function () {
+            var props = cloneProps(this);
+            var includeCurrentData = props.includeCurrentData;
+            var currentDataKeys = props.currentDataKeys;
+            var toData = getData(props.toData, includeCurrentData, currentDataKeys);
+            var link = Navigation.StateController.getRefreshLink(toData);
+            props.href = Navigation.historyManager.getHref(link);
+            props.onClick = getClickListener(() => Navigation.StateController.refresh(toData))
+            clearProps(props);
+            return (
+                React.createElement('a', props)
+            );
+        }
+    });
+
     function cloneProps(elem: React.ReactElement<any, any>): any {
         var props = {};
         for (var key in elem.props) {
@@ -65,3 +81,4 @@
 }
 var NavigationLink = NavigationReact.NavigationLink;
 var NavigationBackLink = NavigationReact.NavigationBackLink;
+var RefreshLink = NavigationReact.RefreshLink;
