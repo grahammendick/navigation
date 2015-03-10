@@ -17,17 +17,18 @@
             getInitialState: function() {
                 return {};
             },
+            content: null,
             componentWillMount : function(){
                 var self = this;
                 var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
                 webMailStates.folder.navigated = function (data) {
-                    self.props.mails = getMails(data.folder).mails;
-                    self.props.webMailContent = <MailList mails={self.props.mails} />;
+                    var mails = getMails(data.folder).mails;
+                    self.content = <MailList mails={mails} />;
                     self.setState({ chosenFolderId: data.folder });
 	            };
                 webMailStates.mail.navigated = function (data) {
-                    self.props.mail = getMail(data.mailId);
-                    self.props.webMailContent = <Mail mail={self.props.mail} />;
+                    var mail = getMail(data.mailId);
+                    self.content = <Mail mail={mail} />;
                     self.setState({ chosenFolderId: data.folder });
 	            };
                 Navigation.settings.applicationPath = '/navigation';
@@ -37,7 +38,7 @@
                 return (
                     <div>
                         <FolderList chosenFolderId={this.state.chosenFolderId} />
-                        {this.props.webMailContent}
+                        {this.content}
                     </div>
                 );
             }
