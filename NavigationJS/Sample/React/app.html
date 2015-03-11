@@ -14,10 +14,10 @@
     <div id="content"></div>
     <script type="text/jsx">
         var WebMail = React.createClass({
+            content: null,
             getInitialState: function() {
                 return {};
             },
-            content: null,
             componentWillMount : function(){
                 var self = this;
                 var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
