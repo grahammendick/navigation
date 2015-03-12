@@ -1,0 +1,9 @@
+obj/
+bin/
+/packages
+*.csproj.user
+*.suo
+*.exe
+*.map
+NavigationJS/Navigation*.js
+NavigationJS/Test/Navigation*.js
