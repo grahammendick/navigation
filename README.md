@@ -20,8 +20,8 @@ Your application's home page no doubt has a menu of some kind. Each menu item ta
 Navigation.StateController.navigate('masterDetails')
 var href = Navigation.StateController.getNavigationLink('masterDetails');
 ```
-Once inside a Dialog, you can use a Transition to move to any other State inside the same Dialog. In a master details UI, selecting a record to move to the details State is a Transition. A State has a list of Transitions. Assign a Transition to the State it moves from and specify the State it moves to.
 <img src="https://navigation4asp.files.wordpress.com/2015/03/changingstate.png" alt="Changing State" align="right" />
+Once inside a Dialog, you can use a Transition to move to any other State inside the same Dialog. In a master details UI, selecting a record to move to the details State is a Transition. A State has a list of Transitions. Assign a Transition to the State it moves from and specify the State it moves to.
 ```JavaScript
 [{ key: 'masterDetails', initial: 'listing', states: [
     { key: 'listing', route: 'listing', transitions: [
@@ -46,11 +46,11 @@ Usually when a State changes you need to pass some data to the new State. In a m
 Navigation.StateController.navigate('select', { id: 10 });
 var href = Navigation.StateController.getNavigationLink('select', { id: 10 });
 ```
-<img src="https://navigation4asp.files.wordpress.com/2015/03/changingdata.png" alt="Changing Data" align="right" />
 Access the passed data from the StateContext.
 ```JavaScript
 var id = Navigation.StateContext.data.id;
 ```
+<img src="https://navigation4asp.files.wordpress.com/2015/03/changingdata.png" alt="Changing Data" align="right" />
 You can't pass data when navigating back. But there's no need because the Navigation trail tracks the data along with the State and restores the old data for you.
 
 Navigating does not have to involve a State change. Refreshing is where only the data changes. For example, going to the second page of master records on the listing State.
