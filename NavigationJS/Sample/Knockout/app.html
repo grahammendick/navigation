@@ -13,8 +13,13 @@
     </style>
 </head>
 <body>
-    <label for="name">Name</label>
-    <input id="name" data-bind="value: name" />
+    <div>
+        <label for="name">Name</label>
+        <input id="name" data-bind="value: name" />
+    </div>
+    Page Size
+    <a data-bind="refreshLink: { maximumRows: 5 }, includeCurrentData: true">5</a>
+    <a data-bind="refreshLink: { maximumRows: 10 }, includeCurrentData: true">10</a>
     <table>
         <thead>
             <tr>
@@ -41,7 +46,9 @@
 
 	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
 	        webMailStates.list.navigated = function (data) {
-	            self.people(search(data.name, data.sortExpression));
+	            var people = search(data.name, data.sortExpression);
+	            people = people.slice(0, data.maximumRows);
+	            self.people(people);
 	            self.sortExpression(data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name');
 	        };
 	        webMailStates.list.dispose = function () { };
@@ -53,7 +60,7 @@
 
         Navigation.StateInfoConfig.build([
 	        { key: 'person', initial: 'list', states: [
-		        { key: 'list', route: '{sortExpression}', defaults: {sortExpression: 'Name'}, trackCrumbTrail: false, transitions: [
+		        { key: 'list', route: '{maximumRows}/{sortExpression}', defaults: { maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, transitions: [
 			        { key: 'select', to: 'details' }]},
 		        { key: 'details', route: 'person' }]}
         ]);
