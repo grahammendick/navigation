@@ -363,7 +363,7 @@
                     data[key] = this.formatURLObject(key, navigationData[key], state);
             }
             if (state.trackCrumbTrail && StateContext.state) {
-                var returnDataString = this.formatReturnData(state, returnData);
+                var returnDataString = this.formatReturnData(StateContext.state, returnData);
                 if (returnDataString)
                     data[settings.returnDataKey] = returnDataString;
             }
@@ -443,7 +443,7 @@
                     StateContext.previousDialog = StateContext.previousState.parent;
                 CrumbTrailManager.returnData = {};
                 if (data[settings.returnDataKey])
-                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data[settings.returnDataKey], state);
+                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
                 CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
                 StateContext.data = this.parseData(data, state);
                 CrumbTrailManager.buildCrumbTrail();

@@ -13,49 +13,55 @@
     </style>
 </head>
 <body>
-    <div>
-        <label for="name">Name</label>
-        <input id="name" data-bind="value: name" />
-    </div>
-    Page size
-    <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>
-    <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true">10</a>
-    <table>
-        <thead>
-            <tr>
-                <th><a data-bind="refreshLink: { sortExpression: sortExpression }, includeCurrentData: true">Name</a></th>
-                <th>Date of Birth</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: people">
-            <tr>
-                <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
-                <td data-bind="text: dateOfBirth"></td>
-            </tr>
-        </tbody>
-    </table>
-    <ul>
-        <!-- ko if: previousVisible -->
-            <li><a data-bind="refreshLink: { startRowIndex: 0 }, includeCurrentData: true">First</a></li>
-            <li><a data-bind="refreshLink: { startRowIndex: previous }, includeCurrentData: true">Previous</a></li>
-        <!-- /ko -->
-        <!-- ko ifnot: previousVisible -->
-            <li>First</li>
-            <li>Previous</li>
-        <!-- /ko -->
-        <!-- ko if: nextVisible -->
-            <li><a data-bind="refreshLink: { startRowIndex: next }, includeCurrentData: true">Next</a></li>
-            <li><a data-bind="refreshLink: { startRowIndex: last }, includeCurrentData: true">Last</a></li>
-        <!-- /ko -->
-        <!-- ko ifnot: nextVisible -->
-            <li>Next</li>
-            <li>Last</li>
-        <!-- /ko -->
-    </ul>
-    Total Count <span data-bind="text: totalCount"></span>
+    <!-- ko ifnot: id -->
+        <div>
+            <label for="name">Name</label>
+            <input id="name" data-bind="value: name" />
+        </div>
+        Page size
+        <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>
+        <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true">10</a>
+        <table>
+            <thead>
+                <tr>
+                    <th><a data-bind="refreshLink: { sortExpression: sortExpression }, includeCurrentData: true">Name</a></th>
+                    <th>Date of Birth</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: people">
+                <tr>
+                    <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
+                    <td data-bind="text: dateOfBirth"></td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <!-- ko if: previousVisible -->
+                <li><a data-bind="refreshLink: { startRowIndex: 0 }, includeCurrentData: true">First</a></li>
+                <li><a data-bind="refreshLink: { startRowIndex: previous }, includeCurrentData: true">Previous</a></li>
+            <!-- /ko -->
+            <!-- ko ifnot: previousVisible -->
+                <li>First</li>
+                <li>Previous</li>
+            <!-- /ko -->
+            <!-- ko if: nextVisible -->
+                <li><a data-bind="refreshLink: { startRowIndex: next }, includeCurrentData: true">Next</a></li>
+                <li><a data-bind="refreshLink: { startRowIndex: last }, includeCurrentData: true">Last</a></li>
+            <!-- /ko -->
+            <!-- ko ifnot: nextVisible -->
+                <li>Next</li>
+                <li>Last</li>
+            <!-- /ko -->
+        </ul>
+        Total Count <span data-bind="text: totalCount"></span>
+    <!-- /ko -->
+    <!-- ko if: id -->
+        <a data-bind="navigationBackLink: 1">Person Search</a>
+    <!-- /ko -->
     <script type="text/javascript">
         function PersonViewModel() {
             var self = this;
+            self.id = ko.observable();
             self.name = ko.observable();
             self.people = ko.observableArray();
             self.sortExpression = ko.observable();
@@ -87,8 +93,9 @@
 	        };
 	        webMailStates.list.dispose = function () { };
 	        webMailStates.details.navigated = function (data) {
+	            self.id(data.id);
 	        };
-	        webMailStates.details.dispose = function () {  };
+	        webMailStates.details.dispose = function () { self.id(null); };
 	        Navigation.start();
         };
 
