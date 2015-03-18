@@ -13,10 +13,12 @@
     </style>
 </head>
 <body>
+    <label for="name">Name</label>
+    <input id="name" data-bind="value: name" />
     <table>
         <thead>
             <tr>
-                <th><a data-bind="refreshLink: { sortExpression: sortExpression }">Name</a></th>
+                <th><a data-bind="refreshLink: { sortExpression: sortExpression }, includeCurrentData: true">Name</a></th>
                 <th>Date of Birth</th>
             </tr>
         </thead>
@@ -30,8 +32,12 @@
     <script type="text/javascript">
         function PersonViewModel() {
             var self = this;
+            self.name = ko.observable();
             self.people = ko.observableArray();
             self.sortExpression = ko.observable();
+            self.name.subscribe(function (val) {
+                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val }));
+            });
 
 	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
 	        webMailStates.list.navigated = function (data) {
