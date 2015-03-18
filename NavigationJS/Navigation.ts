@@ -727,6 +727,8 @@
         }
 
         addHistory(oldState: State, state: State, url: string) {
+            if (state.title)
+                document.title = state.title;
             if (location.hash.substring(1) !== url) {
                 if (oldState)
                     location.hash = url;
@@ -757,6 +759,8 @@
         }
 
         addHistory(oldState: State, state: State, url: string) {
+            if (state.title)
+                document.title = state.title;
             url = settings.applicationPath + url;
             if (location.pathname + location.search !== url) {
                 if (oldState)

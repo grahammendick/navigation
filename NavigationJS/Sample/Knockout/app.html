@@ -83,7 +83,6 @@
 
 	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
 	        webMailStates.list.navigated = function (data) {
-	            document.title = 'Person Search';
 	            var people = search(data.name, data.sortExpression);
 	            var totalRowCount = people.length;
 	            people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
@@ -99,7 +98,6 @@
 	            self.totalCount(totalRowCount);
 	        };
 	        webMailStates.details.navigated = function (data) {
-	            document.title = 'Person Details';
 	            self.id(data.id);
 	            var person = getDetails(data.id);
 	            self.personName(person.name);
@@ -111,9 +109,9 @@
 
         Navigation.StateInfoConfig.build([
 	        { key: 'person', initial: 'list', states: [
-		        { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, transitions: [
+		        { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
 			        { key: 'select', to: 'details' }]},
-		        { key: 'details', route: 'person' }]}
+		        { key: 'details', route: 'person', title: 'Person Details', }]}
         ]);
         ko.applyBindings(new PersonViewModel());
     </script>
