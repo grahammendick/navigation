@@ -1,78 +1,50 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Navigation KO Webmail</title>
-    <link href="../../Sample/app.css" rel="stylesheet" />
+    <title>Navigation KO</title>
     <script src="../../Sample/app.data.js"></script>
     <script src="../../Navigation.Routing.js"></script>
     <script src="../../Navigation.js"></script>
     <script src="../../Sample/Knockout/knockout-3.3.0.js"></script>
     <script src="../../Navigation.Knockout.js"></script>
+    <style>
+        table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
+        ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+    </style>
 </head>
 <body>
-    <!-- Folders -->
-    <ul class="folders" data-bind="foreach: folders">
-        <li data-bind="css: { selected: $data == $root.chosenFolderId() }">
-            <a data-bind="text: $data, navigationLink: 'webMail', toData: { folder: $data }"></a>
-        </li>
-    </ul>
-
-    <!-- Mails grid -->
-    <table class="mails" data-bind="with: chosenFolderData">
-        <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
-        <tbody data-bind="foreach: mails">
+    <table>
+        <thead><tr><th>Name</th><th>Date of Birth</th></tr></thead>
+        <tbody data-bind="foreach: people">
             <tr>
-                <td><a data-bind="text: from, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-                <td><a data-bind="text: to, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-                <td><a data-bind="text: subject, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-                <td><a data-bind="text: date, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
+                <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
+                <td data-bind="text: dateOfBirth.toLocaleDateString()"></td>
             </tr>
         </tbody>
     </table>
-
-    <!-- Chosen mail -->
-    <div class="viewMail" data-bind="with: chosenMailData">
-        <div class="mailInfo">
-            <h1 data-bind="text: subject"></h1>
-            <p><label>From</label>: <span data-bind="text: from"></span></p>
-            <p><label>To</label>: <span data-bind="text: to"></span></p>
-            <p><label>Date</label>: <span data-bind="text: date"></span></p>
-        </div>
-        <p class="message" data-bind="text: messageContent" />
-    </div>
     <script type="text/javascript">
-        function WebmailViewModel() {
-	        // Data
-	        var self = this;
-	        self.folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
-	        self.chosenFolderId = ko.observable();
-	        self.chosenFolderData = ko.observable();
-	        self.chosenMailData = ko.observable();
+        function PersonViewModel() {
+            var self = this;
+            self.people = ko.observableArray();
 
-            // Navigation
-	        var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
-	        webMailStates.folder.navigated = function (data) {
-		        self.chosenFolderId(data.folder);
-		        self.chosenFolderData(getMails(data.folder));
+	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
+	        webMailStates.list.navigated = function (data) {
+	            self.people(search(data.name, data.sortExpression));
 	        };
-	        webMailStates.folder.dispose = function () { self.chosenFolderData(null); };
-	        webMailStates.mail.navigated = function (data) {
-		        self.chosenFolderId(data.folder);
-		        self.chosenMailData(getMail(data.mailId));
+	        webMailStates.list.dispose = function () { };
+	        webMailStates.details.navigated = function (data) {
 	        };
-	        webMailStates.mail.dispose = function () { self.chosenMailData(null); };
-	        Navigation.settings.applicationPath = '/navigation';
+	        webMailStates.details.dispose = function () {  };
 	        Navigation.start();
         };
 
-        // States
         Navigation.StateInfoConfig.build([
-	        { key: 'webMail', initial: 'folder', states: [
-		        { key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
-			        { key: 'select', to: 'mail' }]},
-		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
+	        { key: 'person', initial: 'list', states: [
+		        { key: 'list', route: '{sortExpression}', defaults: {sortExpression: 'Name'}, trackCrumbTrail: false, transitions: [
+			        { key: 'select', to: 'details' }]},
+		        { key: 'details', route: 'person' }]}
         ]);
-        ko.applyBindings(new WebmailViewModel());
+        ko.applyBindings(new PersonViewModel());
     </script>
 </body>
 </html>
