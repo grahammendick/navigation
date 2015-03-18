@@ -14,7 +14,12 @@
 </head>
 <body>
     <table>
-        <thead><tr><th>Name</th><th>Date of Birth</th></tr></thead>
+        <thead>
+            <tr>
+                <th><a data-bind="refreshLink: { sortExpression: sortExpression }">Name</a></th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
         <tbody data-bind="foreach: people">
             <tr>
                 <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
@@ -26,10 +31,12 @@
         function PersonViewModel() {
             var self = this;
             self.people = ko.observableArray();
+            self.sortExpression = ko.observable();
 
 	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
 	        webMailStates.list.navigated = function (data) {
 	            self.people(search(data.name, data.sortExpression));
+	            self.sortExpression(data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name');
 	        };
 	        webMailStates.list.dispose = function () { };
 	        webMailStates.details.navigated = function (data) {

@@ -95,12 +95,13 @@ function search(name, sortExpression) {
 	var searchPeople = [];
 	for (var i = 0; i < people.length; i++) {
 		var person = people[i];
-		if (!name || person.name.toUpperCase().indexOf(name.toUpperCase()) != -1)
+		if (!name || person.name.toUpperCase().indexOf(name.toUpperCase()) !== -1)
 			searchPeople.push(person);
 	}
 	if (sortExpression) {
 		searchPeople.sort(function (personA, personB) {
-			return !sortExpression.indexOf('DESC') ? personA < personB : personB < personA;
+			var mult = sortExpression.indexOf('DESC') === -1 ? -1 : 1;
+			return mult * (personA.name < personB.name ? 1 : -1);
 		});
 	}
 	return searchPeople;
