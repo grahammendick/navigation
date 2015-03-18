@@ -30,7 +30,7 @@
         <tbody data-bind="foreach: people">
             <tr>
                 <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
-                <td data-bind="text: dateOfBirth.toLocaleDateString()"></td>
+                <td data-bind="text: dateOfBirth"></td>
             </tr>
         </tbody>
     </table>
