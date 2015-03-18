@@ -17,7 +17,7 @@
         <label for="name">Name</label>
         <input id="name" data-bind="value: name" />
     </div>
-    Page Size
+    Page size
     <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>
     <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true">10</a>
     <table>
@@ -52,6 +52,7 @@
             <li>Last</li>
         <!-- /ko -->
     </ul>
+    Total Count <span data-bind="text: totalCount"></span>
     <script type="text/javascript">
         function PersonViewModel() {
             var self = this;
@@ -63,6 +64,7 @@
             self.next = ko.observable();
             self.nextVisible = ko.observable();
             self.last = ko.observable();
+            self.totalCount = ko.observable();
             self.name.subscribe(function (val) {
                 Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
             });
@@ -80,7 +82,8 @@
 	            self.next(data.startRowIndex + data.maximumRows);
 	            self.nextVisible(self.next() < totalRowCount);
 	            var remainder = totalRowCount % data.maximumRows;
-	            self.last(remainder != 0 ? totalRowCount - remainder : totalRowCount - dat.maximumRows)
+	            self.last(remainder != 0 ? totalRowCount - remainder : totalRowCount - dat.maximumRows);
+	            self.totalCount(totalRowCount);
 	        };
 	        webMailStates.list.dispose = function () { };
 	        webMailStates.details.navigated = function (data) {

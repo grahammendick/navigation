@@ -77,18 +77,18 @@ function getMail(mailId) {
 	return null;
 }
 var people = [
-	{ id: 1, name: 'Bob', dateOfBirth: new Date(1980, 12, 12) },
-	{ id: 2, name: 'Brenda', dateOfBirth: new Date(1970, 6, 1) },
-	{ id: 3, name: 'Barney', dateOfBirth: new Date(1960, 10, 25) },
-	{ id: 4, name: 'Billy', dateOfBirth: new Date(1980, 12, 12) },
-	{ id: 5, name: 'Bertha', dateOfBirth: new Date(1970, 6, 1) },
-	{ id: 6, name: 'Bert', dateOfBirth: new Date(1960, 10, 25) },
-	{ id: 7, name: 'Benny', dateOfBirth: new Date(1980, 12, 12) },
-	{ id: 8, name: 'Bella', dateOfBirth: new Date(1970, 6, 1) },
-	{ id: 9, name: 'Bridget', dateOfBirth: new Date(1960, 10, 25) },
-	{ id: 10, name: 'Beth', dateOfBirth: new Date(1980, 12, 12) },
-	{ id: 11, name: 'Brian', dateOfBirth: new Date(1970, 6, 1) },
-	{ id: 12, name: 'Bessie', dateOfBirth: new Date(1960, 10, 25) },
+	{ id: 1, name: 'Bob', dateOfBirth: new Date(1980, 11, 12) },
+	{ id: 2, name: 'Brenda', dateOfBirth: new Date(1970, 5, 1) },
+	{ id: 3, name: 'Barney', dateOfBirth: new Date(1960, 9, 26) },
+	{ id: 4, name: 'Billy', dateOfBirth: new Date(1980, 11, 12) },
+	{ id: 5, name: 'Bertha', dateOfBirth: new Date(1970, 5, 1) },
+	{ id: 6, name: 'Bert', dateOfBirth: new Date(1960, 9, 26) },
+	{ id: 7, name: 'Benny', dateOfBirth: new Date(1980, 11, 12) },
+	{ id: 8, name: 'Bella', dateOfBirth: new Date(1970, 5, 1) },
+	{ id: 9, name: 'Bridget', dateOfBirth: new Date(1960, 9, 26) },
+	{ id: 10, name: 'Beth', dateOfBirth: new Date(1980, 11, 12) },
+	{ id: 11, name: 'Brian', dateOfBirth: new Date(1970, 5, 1) },
+	{ id: 12, name: 'Bessie', dateOfBirth: new Date(1960, 9, 26) },
 ];
 
 function search(name, sortExpression) {
