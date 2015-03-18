@@ -161,7 +161,6 @@
                 if (!routeInfo.data || routeInfo.data[key] == null)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
-            query.sort();
             if (query.length > 0)
                 routeInfo.route += '?' + query.join('&');
             return routeInfo.route;
