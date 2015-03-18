@@ -18,8 +18,8 @@
         <input id="name" data-bind="value: name" />
     </div>
     Page Size
-    <a data-bind="refreshLink: { maximumRows: 5 }, includeCurrentData: true">5</a>
-    <a data-bind="refreshLink: { maximumRows: 10 }, includeCurrentData: true">10</a>
+    <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>
+    <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true">10</a>
     <table>
         <thead>
             <tr>
@@ -64,7 +64,7 @@
             self.nextVisible = ko.observable();
             self.last = ko.observable();
             self.name.subscribe(function (val) {
-                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val }));
+                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
             });
 
 	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
