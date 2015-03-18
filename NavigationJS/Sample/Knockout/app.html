@@ -83,7 +83,7 @@
 
 	        var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
 	        webMailStates.list.navigated = function (data) {
-	            var people = search(data.name, data.sortExpression);
+	            var people = personSearch.search(data.name, data.sortExpression);
 	            var totalRowCount = people.length;
 	            people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
 	            self.name(data.name);
@@ -99,7 +99,7 @@
 	        };
 	        webMailStates.details.navigated = function (data) {
 	            self.id(data.id);
-	            var person = getDetails(data.id);
+	            var person = personSearch.getDetails(data.id);
 	            self.personName(person.name);
 	            self.dateOfBirth(person.dateOfBirth);
 	        };
