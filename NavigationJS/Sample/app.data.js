@@ -106,3 +106,11 @@ function search(name, sortExpression) {
 	}
 	return searchPeople;
 }
+function getDetails(id) {
+	for (var i = 0; i < people.length; i++) {
+		var person = people[i];
+		if (person.id === id)
+			return person;
+	}
+	return null;
+}
