@@ -63,27 +63,24 @@ var Pager = React.createClass({
 	    var previous = this.props.startRowIndex - this.props.maximumRows;
 	    var next = this.props.startRowIndex + this.props.maximumRows;
 		var last = remainder != 0 ? this.props.totalRowCount - remainder : this.props.totalRowCount - this.props.maximumRows;
-		var first, previous, next, last;
+		var firstLink = 'First';
+		var previousLink = 'Previous';
+		var nextLink = 'Next';
+		var lastLink = 'Last';
 	    if (previous >= 0){
-			first = <RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</RefreshLink>;
-			previous = <RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</RefreshLink>;
-		} else {
-			first = <span>First</span>;
-			previous = <span>Previous</span>;
+			firstLink = <RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</RefreshLink>;
+			previousLink = <RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</RefreshLink>;
 		}
 	    if (next < this.props.totalRowCount){
-			next = <RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</RefreshLink>;
-			last = <RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>;
-		} else {
-			next = <span>Next</span>;
-			last = <span>Last</span>;
+			nextLink = <RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</RefreshLink>;
+			lastLink = <RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>;
 		}
 		return (
 			<ul>
-				<li>{first}</li>
-				<li>{previous}</li>
-				<li>{next}</li>
-				<li>{last}</li>
+				<li>{firstLink}</li>
+				<li>{previousLink}</li>
+				<li>{nextLink}</li>
+				<li>{lastLink}</li>
 			</ul>
 		);
 	}
@@ -97,7 +94,8 @@ var Details = React.createClass({
 		var self = this;
 		var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 		personStates.details.navigated = function (data) {
-			self.setState({ person: {} });
+		    var person = personSearch.getDetails(data.id);
+			self.setState({ person: person });
 		};
 		personStates.details.dispose = function () { 
 			self.setState({ person: null });
@@ -107,7 +105,13 @@ var Details = React.createClass({
 		if (this.state.person == null)
 			return null;
 		return (
-			<NavigationBackLink distance="1">Person Search</NavigationBackLink>
+			<div>
+				<NavigationBackLink distance="1">Person Search</NavigationBackLink>
+				<div>
+					Name: <span>{this.state.person.name}</span><br />
+					Date of Birth: <span>{this.state.person.dateOfBirth}</span>
+				</div>
+			</div>
 		);
 	}
 });
