@@ -76,12 +76,15 @@ var Pager = React.createClass({
 			lastLink = <RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>;
 		}
 		return (
-			<ul>
-				<li>{firstLink}</li>
-				<li>{previousLink}</li>
-				<li>{nextLink}</li>
-				<li>{lastLink}</li>
-			</ul>
+			<div>
+				<ul>
+					<li>{firstLink}</li>
+					<li>{previousLink}</li>
+					<li>{nextLink}</li>
+					<li>{lastLink}</li>
+				</ul>
+				Total Count {this.props.totalRowCount}
+			</div>
 		);
 	}
 });
@@ -108,8 +111,8 @@ var Details = React.createClass({
 			<div>
 				<NavigationBackLink distance="1">Person Search</NavigationBackLink>
 				<div>
-					Name: <span>{this.state.person.name}</span><br />
-					Date of Birth: <span>{this.state.person.dateOfBirth}</span>
+					Name: {this.state.person.name}<br />
+					Date of Birth: {this.state.person.dateOfBirth}
 				</div>
 			</div>
 		);
