@@ -14,7 +14,7 @@
             <table>
                 <thead>
 					<tr>
-						<th>Name</th>
+						<th><RefreshLink toData={{ sortExpression: this.props.sortExpression }} includeCurrentData={true}>Name</RefreshLink></th>
 						<th>Date of Birth</th>
 					</tr>
 				</thead>
@@ -41,9 +41,9 @@ Navigation.StateInfoConfig.build([
 		{ key: 'details', route: 'person', title: 'Person Details', }]}
 ]);
 
-function renderList(show, people){
+function renderList(show, people, sortExpression){
 	React.render(
-		<List show={show} people={people} />,
+		<List show={show} people={people} sortExpression={sortExpression} />,
 		document.getElementById('list')
 	);
 }
@@ -58,7 +58,8 @@ function renderDetails(show){
 var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 personStates.list.navigated = function (data) {
 	var people = personSearch.search(data.name, data.sortExpression);
-	renderList(true, people)
+	var sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+	renderList(true, people, sortExpression)
 };
 personStates.list.dispose = function () { 
 	renderList(false)
