@@ -55,13 +55,28 @@ var Pager = React.createClass({
 	    var previous = this.props.startRowIndex - this.props.maximumRows;
 	    var next = this.props.startRowIndex + this.props.maximumRows;
 		var last = remainder != 0 ? this.props.totalRowCount - remainder : this.props.totalRowCount - this.props.maximumRows;
+		var first, previous, next, last;
+	    if (previous >= 0){
+			first = <RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</RefreshLink>;
+			previous = <RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</RefreshLink>;
+		} else {
+			first = <span>First</span>;
+			previous = <span>Previous</span>;
+		}
+	    if (next < this.props.totalRowCount){
+			next = <RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</RefreshLink>;
+			last = <RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>;
+		} else {
+			next = <span>Next</span>;
+			last = <span>Last</span>;
+		}
 		return (
-			<div>
-				<RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</RefreshLink>&nbsp;
-				<RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</RefreshLink>&nbsp;
-				<RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</RefreshLink>&nbsp;
-				<RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>
-			</div>
+			<ul>
+				<li>{first}&nbsp;</li>
+				<li>{previous}&nbsp;</li>
+				<li>{next}&nbsp;</li>
+				<li>{last}</li>
+			</ul>
 		);
 	}
 });
