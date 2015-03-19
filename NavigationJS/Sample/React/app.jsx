@@ -1,8 +1,8 @@
 ﻿var List = React.createClass({
-	getInitialState: function() {
+	getInitialState: function () {
 		return {};
 	},
-  	componentDidMount: function(){
+  	componentDidMount: function (){
 		var self = this;
 		var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 		personStates.list.navigated = function (data) {
@@ -19,10 +19,10 @@
 			self.setState({ people: null });
 		}
 	},
-	nameChange: function(event){
+	nameChange: function (event) {
         Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
 	},
-	render: function(){
+	render: function () {
 		if (this.state.people == null)
 			return null;
         var people = this.state.people.map(function (person) {
@@ -58,7 +58,7 @@
 });
 
 var Pager = React.createClass({
-	render: function(){
+	render: function () {
 	    var remainder = this.props.totalRowCount % this.props.maximumRows;
 	    var previous = this.props.startRowIndex - this.props.maximumRows;
 	    var next = this.props.startRowIndex + this.props.maximumRows;
@@ -90,10 +90,10 @@ var Pager = React.createClass({
 });
 
 var Details = React.createClass({
-	getInitialState: function() {
+	getInitialState: function () {
 		return {};
 	},
-  	componentDidMount: function(){
+  	componentDidMount: function (){
 		var self = this;
 		var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 		personStates.details.navigated = function (data) {
@@ -104,7 +104,7 @@ var Details = React.createClass({
 			self.setState({ person: null });
 		}
 	},
-	render: function(){
+	render: function () {
 		if (this.state.person == null)
 			return null;
 		return (
