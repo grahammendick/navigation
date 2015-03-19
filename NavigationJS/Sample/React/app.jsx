@@ -5,7 +5,7 @@
         var people = this.props.people.map(function (person) {
             return (
                 <tr>
-                    <td>{person.name}</td>
+                    <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
                     <td>{person.dateOfBirth}</td>
                 </tr>
             );
@@ -24,6 +24,16 @@
 	}
 });
 
+var Details = React.createClass({
+	render: function(){
+		if (!this.props.show)
+			return null;
+		return (
+			<NavigationBackLink distance="1">Person Search</NavigationBackLink>
+		);
+	}
+});
+
 Navigation.StateInfoConfig.build([
 	{ key: 'person', initial: 'list', states: [
 		{ key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
@@ -31,18 +41,32 @@ Navigation.StateInfoConfig.build([
 		{ key: 'details', route: 'person', title: 'Person Details', }]}
 ]);
 
+function renderList(show, people){
+	React.render(
+		<List show={show} people={people} />,
+		document.getElementById('list')
+	);
+}
+
+function renderDetails(show){
+	React.render(
+		<Details show={show} />,
+		document.getElementById('details')
+	);
+}
+
 var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 personStates.list.navigated = function (data) {
 	var people = personSearch.search(data.name, data.sortExpression);
-	React.render(
-		<List show={true} people={people} />,
-		document.getElementById('content')
-	);
+	renderList(true, people)
 };
 personStates.list.dispose = function () { 
-	React.render(
-		<List show={false} />,
-		document.getElementById('content')
-	);
+	renderList(false)
+}
+personStates.details.navigated = function (data) {
+	renderDetails(true);
+};
+personStates.details.dispose = function () { 
+	renderDetails(false);
 }
 Navigation.start();
