@@ -19,9 +19,6 @@
 			self.setState({ people: null });
 		}
 	},
-	nameChange: function (event) {
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
-	},
 	render: function () {
 		if (this.state.people == null)
 			return null;
@@ -35,13 +32,7 @@
         });
         return (
 			<div>
-				<div>
-					<label htmlFor="name">Name</label>
-					<input id="name" defaultValue={this.props.name} onBlur={this.nameChange} />
-				</div>
-				Page size&nbsp;
-				<RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</RefreshLink>&nbsp;
-				<RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</RefreshLink>
+				<Filter name={this.props.name} />
 				<table>
 					<thead>
 						<tr>
@@ -52,6 +43,25 @@
 					<tbody>{people}</tbody>
 				</table>
 				<Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={this.props.totalRowCount} />
+			</div>
+        );
+	}
+});
+
+var Filter = React.createClass({
+	nameChange: function (event) {
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
+	},
+	render: function () {
+        return (
+			<div>
+				<div>
+					<label htmlFor="name">Name</label>
+					<input id="name" defaultValue={this.props.name} onBlur={this.nameChange} />
+				</div>
+				Page size&nbsp;
+				<RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</RefreshLink>&nbsp;
+				<RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</RefreshLink>
 			</div>
         );
 	}
