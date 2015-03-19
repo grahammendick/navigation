@@ -72,9 +72,9 @@ var Pager = React.createClass({
 		}
 		return (
 			<ul>
-				<li>{first}&nbsp;</li>
-				<li>{previous}&nbsp;</li>
-				<li>{next}&nbsp;</li>
+				<li>{first}</li>
+				<li>{previous}</li>
+				<li>{next}</li>
 				<li>{last}</li>
 			</ul>
 		);
