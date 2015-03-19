@@ -66,8 +66,7 @@
     <TypeScriptCompile Include="Test\Navigation.Routing.Test.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sample\app.css" />
-    <Content Include="Sample\app.data.js" />
+    <Content Include="Sample\personSearch.js" />
     <Content Include="Sample\Knockout\app.html" />
     <Content Include="Sample\Knockout\app.js" />
     <Content Include="Sample\Knockout\knockout-3.3.0.js" />
