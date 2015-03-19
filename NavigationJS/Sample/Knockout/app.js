@@ -38,7 +38,7 @@
 	    self.personName(person.name);
 	    self.dateOfBirth(person.dateOfBirth);
 	};
-	webMailStates.details.dispose = function () { self.id(null); };
+	personStates.details.dispose = function () { self.id(null); };
 	Navigation.start();
 };
 

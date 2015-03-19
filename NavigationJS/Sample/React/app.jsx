@@ -11,15 +11,20 @@
             );
         });
         return (
-            <table>
-                <thead>
-					<tr>
-						<th><RefreshLink toData={{ sortExpression: this.props.sortExpression }} includeCurrentData={true}>Name</RefreshLink></th>
-						<th>Date of Birth</th>
-					</tr>
-				</thead>
-                <tbody>{people}</tbody>
-            </table>
+			<div>
+				Page size&nbsp;
+				<RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</RefreshLink>&nbsp;
+				<RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</RefreshLink>
+				<table>
+					<thead>
+						<tr>
+							<th><RefreshLink toData={{ sortExpression: this.props.sortExpression }} includeCurrentData={true}>Name</RefreshLink></th>
+							<th>Date of Birth</th>
+						</tr>
+					</thead>
+					<tbody>{people}</tbody>
+				</table>
+			</div>
         );
 	}
 });
@@ -58,6 +63,7 @@ function renderDetails(show){
 var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 personStates.list.navigated = function (data) {
 	var people = personSearch.search(data.name, data.sortExpression);
+	people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
 	var sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
 	renderList(true, people, sortExpression)
 };
