@@ -7,6 +7,7 @@
 		var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 		personStates.list.navigated = function (data) {
 			var people = personSearch.search(data.name, data.sortExpression);
+			self.props.name = data.name;
 			self.props.totalRowCount = people.length;
 			self.props.startRowIndex = data.startRowIndex;
 			self.props.maximumRows = data.maximumRows;
@@ -17,6 +18,9 @@
 		personStates.list.dispose = function () { 
 			self.setState({ people: null });
 		}
+	},
+	nameChange: function(event){
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
 	},
 	render: function(){
 		if (this.state.people == null)
@@ -31,6 +35,10 @@
         });
         return (
 			<div>
+				<div>
+					<label htmlFor="name">Name</label>
+					<input id="name" defaultValue={this.props.name} onBlur={this.nameChange} />
+				</div>
 				Page size&nbsp;
 				<RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</RefreshLink>&nbsp;
 				<RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</RefreshLink>
