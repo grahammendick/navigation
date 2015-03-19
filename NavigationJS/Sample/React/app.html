@@ -2,16 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Navigation React Webmail</title>
-    <link href="../../Sample/app.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="content"></div>
     <script src="../../Sample/app.data.js"></script>
     <script src="../../Navigation.Routing.js"></script>
     <script src="../../Navigation.js"></script>
     <script src="../../Sample/React/react-0.12.2.js"></script>
     <script src="../../Sample/React/JSXTransformer-0.12.2.js"></script>
     <script src="../../Navigation.React.js"></script>
-</head>
-<body>
-    <div id="content"></div>
+    <script type="text/jsx" src="../../Sample/React/app.jsx"></script>
     <script type="text/jsx">
         var WebMail = React.createClass({
             content: null,
@@ -32,7 +32,6 @@
                     self.setState({ chosenFolderId: data.folder });
 	            };
                 Navigation.settings.applicationPath = '/navigation';
-                Navigation.start();
             },
             render: function() {
                 return (
@@ -93,17 +92,6 @@
                 );
             }
         });
-
-        Navigation.StateInfoConfig.build([
-	        { key: 'webMail', initial: 'folder', states: [
-		        { key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
-			        { key: 'select', to: 'mail' }]},
-		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
-        ]);
-        React.render(
-            <WebMail />,
-            document.getElementById('content')
-        );
     </script>
 </body>
 </html>

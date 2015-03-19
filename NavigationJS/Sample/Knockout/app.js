@@ -16,8 +16,8 @@
         Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
     });
 
-	var webMailStates = Navigation.StateInfoConfig.dialogs.person.states;
-	webMailStates.list.navigated = function (data) {
+	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
+	personStates.list.navigated = function (data) {
 	    var people = personSearch.search(data.name, data.sortExpression);
 	    var totalRowCount = people.length;
 	    people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
@@ -32,7 +32,7 @@
 	    self.last(remainder != 0 ? totalRowCount - remainder : totalRowCount - dat.maximumRows);
 	    self.totalCount(totalRowCount);
 	};
-	webMailStates.details.navigated = function (data) {
+	personStates.details.navigated = function (data) {
 	    self.id(data.id);
 	    var person = personSearch.getDetails(data.id);
 	    self.personName(person.name);
