@@ -7,6 +7,9 @@
 		var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 		personStates.list.navigated = function (data) {
 			var people = personSearch.search(data.name, data.sortExpression);
+			self.props.totalRowCount = people.length;
+			self.props.startRowIndex = data.startRowIndex;
+			self.props.maximumRows = data.maximumRows;
 			people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
 			self.props.sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
 			self.setState({ people: people });
@@ -40,8 +43,26 @@
 					</thead>
 					<tbody>{people}</tbody>
 				</table>
+				<Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={this.props.totalRowCount} />
 			</div>
         );
+	}
+});
+
+var Pager = React.createClass({
+	render: function(){
+	    var remainder = this.props.totalRowCount % this.props.maximumRows;
+	    var previous = this.props.startRowIndex - this.props.maximumRows;
+	    var next = this.props.startRowIndex + this.props.maximumRows;
+		var last = remainder != 0 ? this.props.totalRowCount - remainder : this.props.totalRowCount - this.props.maximumRows;
+		return (
+			<div>
+				<RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</RefreshLink>&nbsp;
+				<RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</RefreshLink>&nbsp;
+				<RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</RefreshLink>&nbsp;
+				<RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>
+			</div>
+		);
 	}
 });
 
@@ -83,5 +104,4 @@ React.render(
 	<Details show={false} />,
 	document.getElementById('details')
 );
-
 Navigation.start();

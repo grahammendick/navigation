@@ -29,7 +29,7 @@
 	    self.next(data.startRowIndex + data.maximumRows);
 	    self.nextVisible(self.next() < totalRowCount);
 	    var remainder = totalRowCount % data.maximumRows;
-	    self.last(remainder != 0 ? totalRowCount - remainder : totalRowCount - dat.maximumRows);
+	    self.last(remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows);
 	    self.totalCount(totalRowCount);
 	};
 	personStates.details.navigated = function (data) {
