@@ -1480,6 +1480,28 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
     });
 
+    QUnit.test('NavigatingNavigateTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var disposed = 0, navigating, navigated10, navigated01;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].dispose = () => disposed++;
+        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+            navigating = true;
+            Navigation.StateController.navigateLink(link);
+        }
+        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigated = () => navigated10 = true;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = () => navigated01 = true;
+        Navigation.StateController.navigate('d1');
+        assert.strictEqual(disposed, 1);
+        assert.strictEqual(navigating, true);
+        assert.strictEqual(navigated10, undefined);
+        assert.strictEqual(navigated01, true);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+    });
+
     QUnit.test('OnNavigatedTest', function (assert) {
         var oldStates: Array<State> = [];
         var states: Array<State> = [];
