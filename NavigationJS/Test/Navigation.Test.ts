@@ -1547,6 +1547,30 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
     });
 
+    QUnit.test('OnOffNavigatedDuplicateTest', function (assert) {
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        Navigation.StateController.onNavigated(navigatedHandler);
+        Navigation.StateController.offNavigated(navigatedHandler);
+        Navigation.StateController.onNavigated(navigatedHandler);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigated(navigatedHandler);
+        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates.length, 2);
+        assert.equal(states.length, 2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
     QUnit.test('OnNavigatedCopyTest', function (assert) {
         var oldStates: Array<State> = [];
         var states: Array<State> = [];
@@ -1626,6 +1650,7 @@
         Navigation.StateController.onNavigated(navigatedHandler);
         var link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
+        Navigation.StateController.offNavigated(navigatedHandler);
         Navigation.StateController.offNavigated(navigatedHandler);
         Navigation.StateController.navigate('d1');
         assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
