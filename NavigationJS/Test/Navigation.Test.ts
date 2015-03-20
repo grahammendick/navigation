@@ -1480,6 +1480,220 @@
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s4']);
     });
 
+    QUnit.test('NavigatingNavigateTest', function (assert) {
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var disposed = 0, navigating, navigated10, navigated01;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].dispose = () => disposed++;
+        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+            navigating = true;
+            Navigation.StateController.navigateLink(link);
+        }
+        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigated = () => navigated10 = true;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = () => navigated01 = true;
+        Navigation.StateController.navigate('d1');
+        assert.strictEqual(disposed, 1);
+        assert.strictEqual(navigating, true);
+        assert.strictEqual(navigated10, undefined);
+        assert.strictEqual(navigated01, true);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+    });
+
+    QUnit.test('OnNavigateTest', function (assert) {
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigate(navigatedHandler);
+        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates.length, 2);
+        assert.equal(states.length, 2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OnNavigateDuplicateTest', function (assert) {
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler);
+        Navigation.StateController.onNavigate(navigatedHandler);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigate(navigatedHandler);
+        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates.length, 2);
+        assert.equal(states.length, 2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OnOffNavigateDuplicateTest', function (assert) {
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler);
+        Navigation.StateController.offNavigate(navigatedHandler);
+        Navigation.StateController.onNavigate(navigatedHandler);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigate(navigatedHandler);
+        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates.length, 2);
+        assert.equal(states.length, 2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OnNavigateCopyTest', function (assert) {
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler1 = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        var navigatedHandler2 = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler1);
+        Navigation.StateController.onNavigate(navigatedHandler2);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigate(navigatedHandler1);
+        Navigation.StateController.offNavigate(navigatedHandler2);
+        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates[1], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates[2], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states[2], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates[3], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states[3], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates.length, 4);
+        assert.equal(states.length, 4);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OnNavigateMultipleTest', function (assert) {
+        var oldStates1: Array<State> = [];
+        var states1: Array<State> = [];
+        var oldStates2: Array<State> = [];
+        var states2: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler1 = (oldState, state, data) => {
+            oldStates1.push(oldState);
+            states1.push(state);
+        };
+        var navigatedHandler2 = (oldState, state, data) => {
+            oldStates2.push(oldState);
+            states2.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler1);
+        Navigation.StateController.onNavigate(navigatedHandler2);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigate(navigatedHandler1);
+        Navigation.StateController.offNavigate(navigatedHandler2);
+        assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates1[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states1[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates1.length, 2);
+        assert.equal(states1.length, 2);
+        assert.equal(oldStates2.length, 2);
+        assert.equal(states2.length, 2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OffNavigateTest', function (assert) {
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler = (oldState, state, data) => {
+            oldStates.push(oldState);
+            states.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.offNavigate(navigatedHandler);
+        Navigation.StateController.offNavigate(navigatedHandler);
+        Navigation.StateController.navigate('d1');
+        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates.length, 1);
+        assert.equal(states.length, 1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OffNavigateMultipleTest', function (assert) {
+        var oldStates1: Array<State> = [];
+        var states1: Array<State> = [];
+        var oldStates2: Array<State> = [];
+        var states2: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler1 = (oldState, state, data) => {
+            oldStates1.push(oldState);
+            states1.push(state);
+        };
+        var navigatedHandler2 = (oldState, state, data) => {
+            oldStates2.push(oldState);
+            states2.push(state);
+        };
+        Navigation.StateController.onNavigate(navigatedHandler1);
+        Navigation.StateController.onNavigate(navigatedHandler2);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.offNavigate(navigatedHandler1);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigate(navigatedHandler2);
+        assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates1.length, 1);
+        assert.equal(states1.length, 1);
+        assert.equal(oldStates2.length, 2);
+        assert.equal(states2.length, 2);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
     var individualNavigationData = {};
     individualNavigationData['string'] = 'Hello';
     individualNavigationData['boolean'] = true;

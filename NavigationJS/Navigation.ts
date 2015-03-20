@@ -428,6 +428,9 @@
 
     export class StateController {
         static crumbs: Array<Crumb>;
+        private static NAVIGATE_HANDLER_ID = 'navigateHandlerId';
+        private static navigateHandlerId: number = 1;
+        private static navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
 
         static setStateContext(state: State, url: string) {
             var oldState = StateContext.state;
@@ -453,7 +456,23 @@
             if (oldState && oldState !== state)
                 oldState.dispose();
             state.navigated(StateContext.data);
+            for (var id in this.navigateHandlers) {
+                this.navigateHandlers[id](oldState, state, StateContext.data);
+            }
         }
+
+        static onNavigate(handler: (oldState: State, state: State, data: any) => void) {
+            if (!handler[this.NAVIGATE_HANDLER_ID]) {
+                var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
+                handler[this.NAVIGATE_HANDLER_ID] = id;
+                this.navigateHandlers[id] = handler;
+            }
+        }
+
+        static offNavigate(handler: (oldState: State, state: State, data: any) => void) {
+            delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
+            delete handler[this.NAVIGATE_HANDLER_ID];
+        } 
 
         static navigate(action: string, toData?: any) {
             var url = this.getNavigationLink(action, toData);
