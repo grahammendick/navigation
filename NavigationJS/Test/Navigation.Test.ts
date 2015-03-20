@@ -1526,16 +1526,18 @@
     });
 
     QUnit.test('OnNavigatedMultipleTest', function (assert) {
-        var oldStates: Array<State> = [];
-        var states: Array<State> = [];
+        var oldStates1: Array<State> = [];
+        var states1: Array<State> = [];
+        var oldStates2: Array<State> = [];
+        var states2: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler1 = (oldState, state, data) => {
-            oldStates.push(oldState);
-            states.push(state);
+            oldStates1.push(oldState);
+            states1.push(state);
         };
         var navigatedHandler2 = (oldState, state, data) => {
-            oldStates.push(oldState);
-            states.push(state);
+            oldStates2.push(oldState);
+            states2.push(state);
         };
         Navigation.StateController.onNavigated(navigatedHandler1);
         Navigation.StateController.onNavigated(navigatedHandler2);
@@ -1544,16 +1546,18 @@
         Navigation.StateController.navigate('d1');
         Navigation.StateController.offNavigated(navigatedHandler1);
         Navigation.StateController.offNavigated(navigatedHandler2);
-        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates[1], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates[2], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(states[2], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(oldStates[3], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(states[3], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(oldStates.length, 4);
-        assert.equal(states.length, 4);
+        assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates1[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states1[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates1.length, 2);
+        assert.equal(states1.length, 2);
+        assert.equal(oldStates2.length, 2);
+        assert.equal(states2.length, 2);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
     });
 
@@ -1574,6 +1578,40 @@
         assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
         assert.equal(oldStates.length, 1);
         assert.equal(states.length, 1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    });
+
+    QUnit.test('OffNavigatedMultipleTest', function (assert) {
+        var oldStates1: Array<State> = [];
+        var states1: Array<State> = [];
+        var oldStates2: Array<State> = [];
+        var states2: Array<State> = [];
+        Navigation.StateController.navigate('d0');
+        var navigatedHandler1 = (oldState, state, data) => {
+            oldStates1.push(oldState);
+            states1.push(state);
+        };
+        var navigatedHandler2 = (oldState, state, data) => {
+            oldStates2.push(oldState);
+            states2.push(state);
+        };
+        Navigation.StateController.onNavigated(navigatedHandler1);
+        Navigation.StateController.onNavigated(navigatedHandler2);
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        Navigation.StateController.offNavigated(navigatedHandler1);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.offNavigated(navigatedHandler2);
+        assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+        assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.equal(oldStates1.length, 1);
+        assert.equal(states1.length, 1);
+        assert.equal(oldStates2.length, 2);
+        assert.equal(states2.length, 2);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
     });
 
