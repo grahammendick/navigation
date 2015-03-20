@@ -161,7 +161,6 @@
                 if (!routeInfo.data || routeInfo.data[key] == null)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
-            query.sort();
             if (query.length > 0)
                 routeInfo.route += '?' + query.join('&');
             return routeInfo.route;
@@ -363,7 +362,7 @@
                     data[key] = this.formatURLObject(key, navigationData[key], state);
             }
             if (state.trackCrumbTrail && StateContext.state) {
-                var returnDataString = this.formatReturnData(state, returnData);
+                var returnDataString = this.formatReturnData(StateContext.state, returnData);
                 if (returnDataString)
                     data[settings.returnDataKey] = returnDataString;
             }
@@ -443,7 +442,7 @@
                     StateContext.previousDialog = StateContext.previousState.parent;
                 CrumbTrailManager.returnData = {};
                 if (data[settings.returnDataKey])
-                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data[settings.returnDataKey], state);
+                    CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
                 CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
                 StateContext.data = this.parseData(data, state);
                 CrumbTrailManager.buildCrumbTrail();
@@ -728,6 +727,8 @@
         }
 
         addHistory(oldState: State, state: State, url: string) {
+            if (state.title)
+                document.title = state.title;
             if (location.hash.substring(1) !== url) {
                 if (oldState)
                     location.hash = url;
@@ -758,6 +759,8 @@
         }
 
         addHistory(oldState: State, state: State, url: string) {
+            if (state.title)
+                document.title = state.title;
             url = settings.applicationPath + url;
             if (location.pathname + location.search !== url) {
                 if (oldState)

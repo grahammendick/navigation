@@ -1,78 +1,67 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <title>Navigation KO Webmail</title>
-    <link href="../../Sample/app.css" rel="stylesheet" />
-    <script src="../../Sample/app.data.js"></script>
+    <title>Navigation Knockout</title>
+    <style>
+        table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
+        ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+    </style>
+</head>
+<body>
+    <!-- ko ifnot: id -->
+        <div>
+            <label for="name">Name</label>
+            <input id="name" data-bind="value: name" />
+        </div>
+        Page size
+        <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>
+        <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true">10</a>
+        <table>
+            <thead>
+                <tr>
+                    <th><a data-bind="refreshLink: { sortExpression: sortExpression }, includeCurrentData: true">Name</a></th>
+                    <th>Date of Birth</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: people">
+                <tr>
+                    <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
+                    <td data-bind="text: dateOfBirth"></td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <!-- ko if: previousVisible -->
+                <li><a data-bind="refreshLink: { startRowIndex: 0 }, includeCurrentData: true">First</a></li>
+                <li><a data-bind="refreshLink: { startRowIndex: previous }, includeCurrentData: true">Previous</a></li>
+            <!-- /ko -->
+            <!-- ko ifnot: previousVisible -->
+                <li>First</li>
+                <li>Previous</li>
+            <!-- /ko -->
+            <!-- ko if: nextVisible -->
+                <li><a data-bind="refreshLink: { startRowIndex: next }, includeCurrentData: true">Next</a></li>
+                <li><a data-bind="refreshLink: { startRowIndex: last }, includeCurrentData: true">Last</a></li>
+            <!-- /ko -->
+            <!-- ko ifnot: nextVisible -->
+                <li>Next</li>
+                <li>Last</li>
+            <!-- /ko -->
+        </ul>
+        Total Count <span data-bind="text: totalCount"></span>
+    <!-- /ko -->
+    <!-- ko if: id -->
+        <a data-bind="navigationBackLink: 1">Person Search</a>
+        <div>
+            Name: <span data-bind="text: personName"></span><br />
+            Date of Birth: <span data-bind="text: dateOfBirth"></span>
+        </div>
+    <!-- /ko -->
+    <script src="../../Sample/personSearch.js"></script>
     <script src="../../Navigation.Routing.js"></script>
     <script src="../../Navigation.js"></script>
     <script src="../../Sample/Knockout/knockout-3.3.0.js"></script>
     <script src="../../Navigation.Knockout.js"></script>
-</head>
-<body>
-    <!-- Folders -->
-    <ul class="folders" data-bind="foreach: folders">
-        <li data-bind="css: { selected: $data == $root.chosenFolderId() }">
-            <a data-bind="text: $data, navigationLink: 'webMail', toData: { folder: $data }"></a>
-        </li>
-    </ul>
-
-    <!-- Mails grid -->
-    <table class="mails" data-bind="with: chosenFolderData">
-        <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
-        <tbody data-bind="foreach: mails">
-            <tr>
-                <td><a data-bind="text: from, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-                <td><a data-bind="text: to, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-                <td><a data-bind="text: subject, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-                <td><a data-bind="text: date, navigationLink: 'select', toData: { folder: folder, mailId: id }"></a></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Chosen mail -->
-    <div class="viewMail" data-bind="with: chosenMailData">
-        <div class="mailInfo">
-            <h1 data-bind="text: subject"></h1>
-            <p><label>From</label>: <span data-bind="text: from"></span></p>
-            <p><label>To</label>: <span data-bind="text: to"></span></p>
-            <p><label>Date</label>: <span data-bind="text: date"></span></p>
-        </div>
-        <p class="message" data-bind="text: messageContent" />
-    </div>
-    <script type="text/javascript">
-        function WebmailViewModel() {
-	        // Data
-	        var self = this;
-	        self.folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
-	        self.chosenFolderId = ko.observable();
-	        self.chosenFolderData = ko.observable();
-	        self.chosenMailData = ko.observable();
-
-            // Navigation
-	        var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
-	        webMailStates.folder.navigated = function (data) {
-		        self.chosenFolderId(data.folder);
-		        self.chosenFolderData(getMails(data.folder));
-	        };
-	        webMailStates.folder.dispose = function () { self.chosenFolderData(null); };
-	        webMailStates.mail.navigated = function (data) {
-		        self.chosenFolderId(data.folder);
-		        self.chosenMailData(getMail(data.mailId));
-	        };
-	        webMailStates.mail.dispose = function () { self.chosenMailData(null); };
-	        Navigation.settings.applicationPath = '/navigation';
-	        Navigation.start();
-        };
-
-        // States
-        Navigation.StateInfoConfig.build([
-	        { key: 'webMail', initial: 'folder', states: [
-		        { key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
-			        { key: 'select', to: 'mail' }]},
-		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
-        ]);
-        ko.applyBindings(new WebmailViewModel());
-    </script>
+    <script src="../../Sample/Knockout/app.js"></script>
 </body>
 </html>

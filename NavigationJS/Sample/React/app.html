@@ -1,109 +1,21 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <title>Navigation React Webmail</title>
-    <link href="../../Sample/app.css" rel="stylesheet" />
-    <script src="../../Sample/app.data.js"></script>
+    <title>Navigation React</title>
+    <style>
+        table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
+        ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+    </style>
+</head>
+<body>
+    <div id="list"></div>
+    <div id="details"></div>
+    <script src="../../Sample/personSearch.js"></script>
     <script src="../../Navigation.Routing.js"></script>
     <script src="../../Navigation.js"></script>
     <script src="../../Sample/React/react-0.12.2.js"></script>
     <script src="../../Sample/React/JSXTransformer-0.12.2.js"></script>
     <script src="../../Navigation.React.js"></script>
-</head>
-<body>
-    <div id="content"></div>
-    <script type="text/jsx">
-        var WebMail = React.createClass({
-            content: null,
-            getInitialState: function() {
-                return {};
-            },
-            componentWillMount : function(){
-                var self = this;
-                var webMailStates = Navigation.StateInfoConfig.dialogs.webMail.states;
-                webMailStates.folder.navigated = function (data) {
-                    var mails = getMails(data.folder).mails;
-                    self.content = <MailList mails={mails} />;
-                    self.setState({ chosenFolderId: data.folder });
-	            };
-                webMailStates.mail.navigated = function (data) {
-                    var mail = getMail(data.mailId);
-                    self.content = <Mail mail={mail} />;
-                    self.setState({ chosenFolderId: data.folder });
-	            };
-                Navigation.settings.applicationPath = '/navigation';
-                Navigation.start();
-            },
-            render: function() {
-                return (
-                    <div>
-                        <FolderList chosenFolderId={this.state.chosenFolderId} />
-                        {this.content}
-                    </div>
-                );
-            }
-        });
-        var FolderList = React.createClass({
-            render: function() {
-                var folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
-                var chosenFolderId = this.props.chosenFolderId;
-                var folderNodes = folders.map(function (folder) {
-                    var className = chosenFolderId === folder ? 'selected' : null;
-                    return (
-                        <li className={className}><NavigationLink action="webMail" toData={{folder: folder}}>{folder}</NavigationLink></li>
-                    );
-                });
-                return (
-                    <ul className="folders">{folderNodes}</ul>
-                );
-            }
-        });
-        var MailList = React.createClass({
-            render: function() {
-                var mailNodes = this.props.mails.map(function (mail) {
-                    return (
-                        <tr>
-                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.from}</NavigationLink></td>
-                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.to}</NavigationLink></td>
-                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.subject}</NavigationLink></td>
-                            <td><NavigationLink action="select" toData={{ folder: mail.folder, mailId: mail.id }}>{mail.date}</NavigationLink></td>
-                        </tr>
-                    );
-                });
-                return (
-                    <table className="mails">
-                        <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
-                        <tbody>{mailNodes}</tbody>
-                    </table>
-                );
-            }
-        });
-        var Mail = React.createClass({
-            render: function(){
-                return (
-                    <div className="viewMail">
-                        <div className="mailInfo">
-                            <h1>{this.props.mail.subject}</h1>
-                            <p><label>From</label>: <span>{this.props.mail.from}</span></p>
-                            <p><label>To</label>: <span>{this.props.mail.to}</span></p>
-                            <p><label>Date</label>: <span>{this.props.mail.date}</span></p>
-                        </div>
-                        <p className="message">{this.props.mail.messageContent}</p>
-                    </div>
-                );
-            }
-        });
-
-        Navigation.StateInfoConfig.build([
-	        { key: 'webMail', initial: 'folder', states: [
-		        { key: 'folder', route: '{folder}', defaults: {folder: 'Inbox'}, trackCrumbTrail: false, transitions: [
-			        { key: 'select', to: 'mail' }]},
-		        { key: 'mail', route: '{folder}/{mailId}', defaults: { folder: 'Inbox' }, defaultTypes: { mailId: 'number' }, trackCrumbTrail: false }]}
-        ]);
-        React.render(
-            <WebMail />,
-            document.getElementById('content')
-        );
-    </script>
+    <script type="text/jsx" src="../../Sample/React/app.jsx"></script>
 </body>
 </html>
