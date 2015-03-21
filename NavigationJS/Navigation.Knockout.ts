@@ -11,14 +11,18 @@
             });
         },
         update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            element.removeAttribute('data-state-context-url');
             setNavigationLink(element, valueAccessor, allBindings);
         }
     };
 
     function setNavigationLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
-        var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
-            getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-        element.href = Navigation.historyManager.getHref(link);
+        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
+            var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
+                getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+            element.href = Navigation.historyManager.getHref(link);
+            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
+        }
     }
 
     ko.bindingHandlers['navigationBackLink'] = {
@@ -33,13 +37,17 @@
             });
         },
         update: (element, valueAccessor) => {
+            element.removeAttribute('data-state-context-url');
             setNavigationBackLink(element, valueAccessor);
         }
     };
 
     function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor) {
-        var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
-        element['href'] = Navigation.historyManager.getHref(link);
+        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
+            var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
+            element['href'] = Navigation.historyManager.getHref(link);
+            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
+        }
     }
 
     ko.bindingHandlers['refreshLink'] = {
@@ -54,14 +62,18 @@
             });
         },
         update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            element.removeAttribute('data-state-context-url');
             setRefreshLink(element, valueAccessor, allBindings);
         }
     };
 
     function setRefreshLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
-        var link = Navigation.StateController.getRefreshLink(
-            getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-        element['href'] = Navigation.historyManager.getHref(link);
+        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
+            var link = Navigation.StateController.getRefreshLink(
+                getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+            element['href'] = Navigation.historyManager.getHref(link);
+            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
+        }
     }
 
     function getData(toData, includeCurrentData, currentDataKeys) {
