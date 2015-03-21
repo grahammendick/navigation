@@ -77,8 +77,10 @@
     function addClickListener(element: HTMLAnchorElement) {
         var navigate = (e: MouseEvent) => {
             if (!e.ctrlKey && !e.shiftKey) {
-                e.preventDefault();
-                Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
+                if (element.href) {
+                    e.preventDefault();
+                    Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
+                }
             }
         }
         if (window.addEventListener)
