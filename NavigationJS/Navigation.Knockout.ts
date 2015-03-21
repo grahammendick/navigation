@@ -1,4 +1,4 @@
-﻿module Navigation.Knockout {
+﻿module NavigationKnockout {
     ko.bindingHandlers['navigationLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             addClickListener(element);
