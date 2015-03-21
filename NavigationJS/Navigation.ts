@@ -458,7 +458,8 @@
                 oldState.dispose();
             state.navigated(StateContext.data);
             for (var id in this.navigateHandlers) {
-                this.navigateHandlers[id](oldState, state, StateContext.data);
+                if (url === StateContext.url)
+                    this.navigateHandlers[id](oldState, state, StateContext.data);
             }
         }
 
@@ -526,6 +527,7 @@
 
         private static _navigateLink(url: string, state: State) {
             try {
+                var oldUrl = StateContext.url;
                 var oldState = StateContext.state;
                 var data = state.stateHandler.getNavigationData(state, url);
                 data = this.parseData(data, state);
@@ -533,7 +535,7 @@
                 throw new Error('The Url is invalid\n' + e.message);
             }
             state.navigating(data, url, () => {
-                if (oldState === StateContext.state)
+                if (oldUrl === StateContext.url)
                     state.stateHandler.navigateLink(oldState, state, url);
             });
         }
