@@ -13,12 +13,18 @@
     self.last = ko.observable();
     self.totalCount = ko.observable();
 
-	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
+    var personStates = Navigation.StateInfoConfig.dialogs.person.states;
+    var subscription;
 	personStates.list.navigated = function (data) {
 	    var people = personSearch.search(data.name, data.sortExpression);
 	    var totalRowCount = people.length;
 	    people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
+	    if (subscription)
+	        subscription.dispose();
 	    self.name(data.name);
+	    subscription = self.name.subscribe(function (val) {
+	        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
+	    });
 	    self.people(people);
 	    self.sortExpression(data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name');
 	    self.previous(data.startRowIndex - data.maximumRows);
@@ -37,9 +43,6 @@
 	};
 	personStates.details.dispose = function () { self.id(null); };
 	Navigation.start();
-	self.name.subscribe(function (val) {
-		Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
-	});
 };
 
 Navigation.StateInfoConfig.build([
