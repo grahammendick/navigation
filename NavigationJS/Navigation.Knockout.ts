@@ -2,13 +2,7 @@
     ko.bindingHandlers['navigationLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             addClickListener(element);
-            var navigateHandler = () => {
-                setNavigationLink(element, valueAccessor, allBindings);
-            }
-            Navigation.StateController.onNavigate(navigateHandler);
-            ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
-                Navigation.StateController.offNavigate(navigateHandler);
-            });
+            addNavigateHandler(element, () => setNavigationLink(element, valueAccessor, allBindings));
         },
         update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             element.removeAttribute('data-state-context-url');
@@ -28,13 +22,7 @@
     ko.bindingHandlers['navigationBackLink'] = {
         init: (element, valueAccessor) => {
             addClickListener(element);
-            var navigateHandler = () => {
-                setNavigationBackLink(element, valueAccessor);
-            }
-            Navigation.StateController.onNavigate(navigateHandler);
-            ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
-                Navigation.StateController.offNavigate(navigateHandler);
-            });
+            addNavigateHandler(element, () => setNavigationBackLink(element, valueAccessor));
         },
         update: (element, valueAccessor) => {
             element.removeAttribute('data-state-context-url');
@@ -53,13 +41,7 @@
     ko.bindingHandlers['refreshLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             addClickListener(element);
-            var navigateHandler = () => {
-                setRefreshLink(element, valueAccessor, allBindings);
-            }
-            Navigation.StateController.onNavigate(navigateHandler);
-            ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
-                Navigation.StateController.offNavigate(navigateHandler);
-            });
+            addNavigateHandler(element, () => setRefreshLink(element, valueAccessor, allBindings));
         },
         update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             element.removeAttribute('data-state-context-url');
@@ -102,5 +84,12 @@
             element.addEventListener('click', navigate);
         else
             element.attachEvent('click', navigate);
+    }
+
+    function addNavigateHandler(element, handler) {
+        Navigation.StateController.onNavigate(handler);
+        ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
+            Navigation.StateController.offNavigate(handler);
+        });
     }
 }
