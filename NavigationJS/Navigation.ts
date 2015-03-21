@@ -168,7 +168,8 @@
 
         navigateLink(oldState: State, state: State, url: string) {
             StateController.setStateContext(state, url);
-            historyManager.addHistory(oldState, state, url);
+            if (StateContext.url === url)
+                historyManager.addHistory(oldState, state, url);
         }
 
         getNavigationData(state: State, url: string): any {

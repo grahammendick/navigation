@@ -12,9 +12,6 @@
     self.nextVisible = ko.observable();
     self.last = ko.observable();
     self.totalCount = ko.observable();
-    self.name.subscribe(function (val) {
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
-    });
 
 	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 	personStates.list.navigated = function (data) {
@@ -40,6 +37,9 @@
 	};
 	personStates.details.dispose = function () { self.id(null); };
 	Navigation.start();
+	self.name.subscribe(function (val) {
+		Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
+	});
 };
 
 Navigation.StateInfoConfig.build([
