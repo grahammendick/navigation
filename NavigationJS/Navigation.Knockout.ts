@@ -1,10 +1,7 @@
 ﻿module Navigation.Knockout {
     ko.bindingHandlers['navigationLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            addClickListener(element, () => {
-                Navigation.StateController.navigate(ko.unwrap(valueAccessor()),
-                    getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-            });
+            addClickListener(element);
         },
         update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
@@ -15,9 +12,7 @@
 
     ko.bindingHandlers['navigationBackLink'] = {
         init: (element, valueAccessor) => {
-            addClickListener(element, () => {
-                Navigation.StateController.navigateBack(ko.unwrap(valueAccessor()));
-            });
+            addClickListener(element);
         },
         update: (element: Element, valueAccessor) => {
             var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
@@ -27,10 +22,7 @@
 
     ko.bindingHandlers['refreshLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            addClickListener(element, () => {
-                Navigation.StateController.refresh(
-                    getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-            });
+            addClickListener(element);
         },
         update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             var link = Navigation.StateController.getRefreshLink(
@@ -54,11 +46,11 @@
         return data;
     }
 
-    function addClickListener(element, listener: () => void) {
+    function addClickListener(element: HTMLAnchorElement) {
         var navigate = (e: MouseEvent) => {
             if (!e.ctrlKey && !e.shiftKey) {
                 e.preventDefault();
-                listener();
+                Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
             }
         }
         if (window.addEventListener)

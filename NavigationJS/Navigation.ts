@@ -723,6 +723,7 @@
         addHistory(oldState: State, state: State, url: string);
         getCurrentUrl(): string;
         getHref(url: string): string;
+        getUrl(anchor: HTMLAnchorElement): string;
     }
 
     var navigateHistory = () => {
@@ -766,6 +767,10 @@
         getHref(url: string): string {
             return '#' + url;
         }
+
+        getUrl(anchor: HTMLAnchorElement) {
+            return anchor.hash.substring(1);
+        }
     }
 
     export class HTML5HistoryManager implements IHistoryManager {
@@ -799,6 +804,10 @@
         getHref(url: string): string {
             return settings.applicationPath + url;
         }
+
+        getUrl(anchor: HTMLAnchorElement) {
+            return anchor.pathname.substring(settings.applicationPath.length) + anchor.search;
+        }
     }
 
     export class VoidHistoryManager implements IHistoryManager {
@@ -810,7 +819,11 @@
         }
 
         getHref(url: string): string {
-            return url;
+            return '#' + url;
+        }
+
+        getUrl(anchor: HTMLAnchorElement) {
+            return anchor.hash.substring(1);
         }
     }
 
