@@ -43,7 +43,6 @@
 	    self.dateOfBirth(person.dateOfBirth);
 	};
 	personStates.details.dispose = function () { self.id(null); };
-	Navigation.start();
 };
 
 Navigation.StateInfoConfig.build([
@@ -53,3 +52,4 @@ Navigation.StateInfoConfig.build([
 		{ key: 'details', route: 'person', title: 'Person Details', }]}
 ]);
 ko.applyBindings(new PersonViewModel());
+Navigation.start();
