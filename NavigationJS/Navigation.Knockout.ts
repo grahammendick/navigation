@@ -50,7 +50,11 @@
 
     function setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
         if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            element.href = Navigation.historyManager.getHref(linkAccessor());
+            try {
+                element.href = Navigation.historyManager.getHref(linkAccessor());
+            } catch (e) {
+                element.removeAttribute('href');
+            }
             element.setAttribute('data-state-context-url', Navigation.StateContext.url);
         }
     }
