@@ -23,7 +23,8 @@
 	        subscription.dispose();
 	    self.name(data.name);
 	    subscription = self.name.subscribe(function (val) {
-	        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null }));
+	    	var data = Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null });
+	        Navigation.StateController.refresh(data);
 	    });
 	    self.people(people);
 	    self.sortExpression(data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name');
