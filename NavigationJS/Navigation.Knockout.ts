@@ -11,12 +11,9 @@
     };
 
     function setNavigationLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
-        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
-                getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-            element.href = Navigation.historyManager.getHref(link);
-            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
-        }
+        setLink(element, () => Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
+            getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
+            );
     }
 
     ko.bindingHandlers['navigationBackLink'] = {
@@ -31,11 +28,7 @@
     };
 
     function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor) {
-        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
-            element['href'] = Navigation.historyManager.getHref(link);
-            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
-        }
+        setLink(element, () => Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor())));
     }
 
     ko.bindingHandlers['refreshLink'] = {
@@ -50,10 +43,14 @@
     };
 
     function setRefreshLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
+        setLink(element, () => Navigation.StateController.getRefreshLink(
+            getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
+            );
+    }
+
+    function setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
         if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            var link = Navigation.StateController.getRefreshLink(
-                getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-            element['href'] = Navigation.historyManager.getHref(link);
+            element.href = Navigation.historyManager.getHref(linkAccessor());
             element.setAttribute('data-state-context-url', Navigation.StateContext.url);
         }
     }
