@@ -2,34 +2,67 @@
     ko.bindingHandlers['navigationLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             addClickListener(element);
+            var navigateHandler = () => {
+                setNavigationLink(element, valueAccessor, allBindings);
+            }
+            Navigation.StateController.onNavigate(navigateHandler);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
+                Navigation.StateController.offNavigate(navigateHandler);
+            });
         },
-        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
-                getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-            element['href'] = Navigation.historyManager.getHref(link);
+        update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            setNavigationLink(element, valueAccessor, allBindings);
         }
     };
+
+    function setNavigationLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
+        var link = Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
+            getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+        element.href = Navigation.historyManager.getHref(link);
+    }
 
     ko.bindingHandlers['navigationBackLink'] = {
         init: (element, valueAccessor) => {
             addClickListener(element);
+            var navigateHandler = () => {
+                setNavigationBackLink(element, valueAccessor);
+            }
+            Navigation.StateController.onNavigate(navigateHandler);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
+                Navigation.StateController.offNavigate(navigateHandler);
+            });
         },
-        update: (element: Element, valueAccessor) => {
-            var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
-            element['href'] = Navigation.historyManager.getHref(link);
+        update: (element, valueAccessor) => {
+            setNavigationBackLink(element, valueAccessor);
         }
     };
+
+    function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor) {
+        var link = Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor()));
+        element['href'] = Navigation.historyManager.getHref(link);
+    }
 
     ko.bindingHandlers['refreshLink'] = {
         init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
             addClickListener(element);
+            var navigateHandler = () => {
+                setRefreshLink(element, valueAccessor, allBindings);
+            }
+            Navigation.StateController.onNavigate(navigateHandler);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
+                Navigation.StateController.offNavigate(navigateHandler);
+            });
         },
-        update: (element: Element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-            var link = Navigation.StateController.getRefreshLink(
-                getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
-            element['href'] = Navigation.historyManager.getHref(link);
+        update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+            setRefreshLink(element, valueAccessor, allBindings);
         }
     };
+
+    function setRefreshLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
+        var link = Navigation.StateController.getRefreshLink(
+            getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')));
+        element['href'] = Navigation.historyManager.getHref(link);
+    }
 
     function getData(toData, includeCurrentData, currentDataKeys) {
         var data = {};
