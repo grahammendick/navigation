@@ -14,8 +14,7 @@
             var action = props.action;
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
             setLink(this, props, () => Navigation.StateController.getNavigationLink(action, toData));
-            clearProps(props);
-            return React.createElement(props.href ? 'a' : 'span', props);
+            return createElement(props);
         }
     });
 
@@ -33,8 +32,7 @@
             var props = cloneProps(this);
             var distance = props.distance;
             setLink(this, props, () => Navigation.StateController.getNavigationBackLink(distance));
-            clearProps(props);
-            return React.createElement(props.href ? 'a' : 'span', props);
+            return createElement(props);
         }
     });
 
@@ -52,8 +50,7 @@
             var props = cloneProps(this);
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
             setLink(this, props, () => Navigation.StateController.getRefreshLink(toData));
-            clearProps(props);
-            return React.createElement(props.href ? 'a' : 'span', props);
+            return createElement(props);
         }
     });
 
@@ -91,12 +88,13 @@
         }
     }
 
-    function clearProps(props: any) {
+    function createElement(props: any) {
         delete props.action;
         delete props.toData;
         delete props.includeCurrentData;
         delete props.currentDataKeys;
         delete props.distance;
+        return React.createElement(props.href ? 'a' : 'span', props);
     }
 }
 var NavigationLink = NavigationReact.NavigationLink;
