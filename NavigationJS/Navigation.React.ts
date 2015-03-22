@@ -46,7 +46,7 @@
                 props.href = null;
             }
             clearProps(props);
-            return React.createElement('a', props);
+            return React.createElement(props.href ? 'a' : 'span', props);
         }
     });
 
@@ -71,7 +71,7 @@
                 props.href = null;
             }
             clearProps(props);
-            return React.createElement('a', props);
+            return React.createElement(props.href ? 'a' : 'span', props);
         }
     });
 
