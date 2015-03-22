@@ -13,13 +13,7 @@
             var props = cloneProps(this);
             var action = props.action;
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
-            try {
-                var link = Navigation.StateController.getNavigationLink(action, toData);
-                props.href = Navigation.historyManager.getHref(link);
-                props.onClick = (e) => onClick(e, this.getDOMNode());
-            } catch (e) {
-                props.href = null;
-            }
+            setLink(this, props, () => Navigation.StateController.getNavigationLink(action, toData));
             clearProps(props);
             return React.createElement(props.href ? 'a' : 'span', props);
         }
@@ -38,13 +32,7 @@
         render: function () {
             var props = cloneProps(this);
             var distance = props.distance;
-            try {
-                var link = Navigation.StateController.getNavigationBackLink(distance);
-                props.href = Navigation.historyManager.getHref(link);
-                props.onClick = (e) => onClick(e, this.getDOMNode());
-            } catch (e) {
-                props.href = null;
-            }
+            setLink(this, props, () => Navigation.StateController.getNavigationBackLink(distance));
             clearProps(props);
             return React.createElement(props.href ? 'a' : 'span', props);
         }
@@ -63,13 +51,7 @@
         render: function () {
             var props = cloneProps(this);
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
-            try {
-                var link = Navigation.StateController.getRefreshLink(toData);
-                props.href = Navigation.historyManager.getHref(link);
-                props.onClick = (e) => onClick(e, this.getDOMNode());
-            } catch (e) {
-                props.href = null;
-            }
+            setLink(this, props, () => Navigation.StateController.getRefreshLink(toData));
             clearProps(props);
             return React.createElement(props.href ? 'a' : 'span', props);
         }
@@ -81,6 +63,15 @@
             props[key] = elem.props[key];
         }
         return props;
+    }
+
+    function setLink(component: any, props: any, linkAccessor: () => string) {
+        try {
+            props.href = Navigation.historyManager.getHref(linkAccessor());
+            props.onClick = (e) => onClick(e, component.getDOMNode());
+        } catch (e) {
+            props.href = null;
+        }
     }
 
     function getData(toData, includeCurrentData: boolean, currentDataKeys: string): any {
