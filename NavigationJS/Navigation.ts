@@ -736,20 +736,25 @@
     }
 
     export class HashHistoryManager implements IHistoryManager {
-        constructor() {
-            if (window.addEventListener) {
-                window.removeEventListener('hashchange', navigateHistory);
-                window.addEventListener('hashchange', navigateHistory);
-            } else {
-                window.detachEvent('onhashchange', navigateHistory);
-                window.attachEvent('onhashchange', navigateHistory);
+        private disabled: boolean = false;
+
+        constructor(disable?: boolean) {
+            this.disabled = !!disable || (typeof window === 'undefined') || !('onhashchange' in window);
+            if (!this.disabled) {
+                if (window.addEventListener) {
+                    window.removeEventListener('hashchange', navigateHistory);
+                    window.addEventListener('hashchange', navigateHistory);
+                } else {
+                    window.detachEvent('onhashchange', navigateHistory);
+                    window.attachEvent('onhashchange', navigateHistory);
+                }
             }
         }
 
         addHistory(oldState: State, state: State, url: string) {
             if (state.title)
                 document.title = state.title;
-            if (location.hash.substring(1) !== url)
+            if (!this.disabled && location.hash.substring(1) !== url)
                 location.hash = url;
         }
 
