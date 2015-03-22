@@ -75,10 +75,10 @@
     }
 
     function getData(toData, includeCurrentData: boolean, currentDataKeys: string): any {
-        if (includeCurrentData)
-            toData = Navigation.StateContext.includeCurrentData(toData);
         if (currentDataKeys)
             toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+        if (includeCurrentData)
+            toData = Navigation.StateContext.includeCurrentData(toData);
         return toData;
     }
 
