@@ -168,7 +168,8 @@
 
         navigateLink(oldState: State, state: State, url: string) {
             StateController.setStateContext(state, url);
-            historyManager.addHistory(oldState, state, url);
+            if (StateContext.url === url)
+                historyManager.addHistory(oldState, state, url);
         }
 
         getNavigationData(state: State, url: string): any {
@@ -457,7 +458,8 @@
                 oldState.dispose();
             state.navigated(StateContext.data);
             for (var id in this.navigateHandlers) {
-                this.navigateHandlers[id](oldState, state, StateContext.data);
+                if (url === StateContext.url)
+                    this.navigateHandlers[id](oldState, state, StateContext.data);
             }
         }
 
@@ -525,6 +527,7 @@
 
         private static _navigateLink(url: string, state: State) {
             try {
+                var oldUrl = StateContext.url;
                 var oldState = StateContext.state;
                 var data = state.stateHandler.getNavigationData(state, url);
                 data = this.parseData(data, state);
@@ -532,7 +535,7 @@
                 throw new Error('The Url is invalid\n' + e.message);
             }
             state.navigating(data, url, () => {
-                if (oldState === StateContext.state)
+                if (oldUrl === StateContext.url)
                     state.stateHandler.navigateLink(oldState, state, url);
             });
         }
@@ -723,6 +726,7 @@
         addHistory(oldState: State, state: State, url: string);
         getCurrentUrl(): string;
         getHref(url: string): string;
+        getUrl(anchor: HTMLAnchorElement): string;
     }
 
     var navigateHistory = () => {
@@ -732,10 +736,7 @@
     }
 
     export class HashHistoryManager implements IHistoryManager {
-        private andHTML5: boolean;
-
-        constructor(andHTML5?: boolean) {
-            this.andHTML5 = !!andHTML5;
+        constructor() {
             if (window.addEventListener) {
                 window.removeEventListener('hashchange', navigateHistory);
                 window.addEventListener('hashchange', navigateHistory);
@@ -748,31 +749,27 @@
         addHistory(oldState: State, state: State, url: string) {
             if (state.title)
                 document.title = state.title;
-            if (location.hash.substring(1) !== url) {
-                if (oldState)
-                    location.hash = url;
-                else
-                    location.replace(settings.applicationPath + url + '#' + url);
-            }
+            if (location.hash.substring(1) !== url)
+                location.hash = url;
         }
 
         getCurrentUrl(): string {
-            var url = location.hash.substring(1);
-            if (!url && this.andHTML5)
-                url = location.pathname.substring(settings.applicationPath.length) + location.search;
-            return url;
+            return location.hash.substring(1);
         }
 
         getHref(url: string): string {
+            if (!url)
+                throw new Error('The Url is invalid');
             return '#' + url;
+        }
+
+        getUrl(anchor: HTMLAnchorElement) {
+            return anchor.hash.substring(1);
         }
     }
 
     export class HTML5HistoryManager implements IHistoryManager {
-        private andHash: boolean;
-
-        constructor(andHash?: boolean) {
-            this.andHash = !!andHash;
+        constructor() {
             window.removeEventListener('popstate', navigateHistory);
             window.addEventListener('popstate', navigateHistory);
         }
@@ -781,23 +778,22 @@
             if (state.title)
                 document.title = state.title;
             url = settings.applicationPath + url;
-            if (location.pathname + location.search !== url) {
-                if (oldState)
-                    window.history.pushState(null, null, url);
-                else
-                    window.history.replaceState(null, null, url);
-            }
+            if (location.pathname + location.search !== url)
+                window.history.pushState(null, null, url);
         }
 
         getCurrentUrl(): string {
-            var url = location.pathname.substring(settings.applicationPath.length) + location.search;
-            if ((!url || url === '/') && this.andHash)
-                url = location.hash.substring(1);
-            return url;
+            return location.pathname.substring(settings.applicationPath.length) + location.search;
         }
 
         getHref(url: string): string {
+            if (!url)
+                throw new Error('The Url is invalid');
             return settings.applicationPath + url;
+        }
+
+        getUrl(anchor: HTMLAnchorElement) {
+            return anchor.pathname.substring(settings.applicationPath.length) + anchor.search;
         }
     }
 
@@ -810,7 +806,13 @@
         }
 
         getHref(url: string): string {
-            return url;
+            if (!url)
+                throw new Error('The Url is invalid');
+            return '#' + url;
+        }
+
+        getUrl(anchor: HTMLAnchorElement) {
+            return anchor.hash.substring(1);
         }
     }
 
