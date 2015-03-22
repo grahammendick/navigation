@@ -14,7 +14,7 @@
         }
     }
 
-    Navigation.historyManager = new Navigation.VoidHistoryManager();
+    Navigation.historyManager = new Navigation.HashHistoryManager(true);
 
     function initStateInfo() {
         Navigation.StateInfoConfig.build([

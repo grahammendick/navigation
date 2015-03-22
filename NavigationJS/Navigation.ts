@@ -802,24 +802,5 @@
         }
     }
 
-    export class VoidHistoryManager implements IHistoryManager {
-        addHistory(oldState: State, state: State, url: string) {
-        }
-
-        getCurrentUrl(): string {
-            return null;
-        }
-
-        getHref(url: string): string {
-            if (!url)
-                throw new Error('The Url is invalid');
-            return '#' + url;
-        }
-
-        getUrl(anchor: HTMLAnchorElement) {
-            return anchor.hash.substring(1);
-        }
-    }
-
     export var historyManager: IHistoryManager = new HashHistoryManager();
 }
