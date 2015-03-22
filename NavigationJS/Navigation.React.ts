@@ -13,11 +13,15 @@
             var props = cloneProps(this);
             var action = props.action;
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
-            var link = Navigation.StateController.getNavigationLink(action, toData);
-            props.href = Navigation.historyManager.getHref(link);
-            props.onClick = (e) => onClick(e, this.getDOMNode());
+            try {
+                var link = Navigation.StateController.getNavigationLink(action, toData);
+                props.href = Navigation.historyManager.getHref(link);
+                props.onClick = (e) => onClick(e, this.getDOMNode());
+            } catch (e) {
+                props.href = null;
+            }
             clearProps(props);
-            return React.createElement('a', props);
+            return React.createElement(props.href ? 'a' : 'span', props);
         }
     });
 
@@ -34,9 +38,13 @@
         render: function () {
             var props = cloneProps(this);
             var distance = props.distance;
-            var link = Navigation.StateController.getNavigationBackLink(distance);
-            props.href = Navigation.historyManager.getHref(link);
-            props.onClick = (e) => onClick(e, this.getDOMNode());
+            try {
+                var link = Navigation.StateController.getNavigationBackLink(distance);
+                props.href = Navigation.historyManager.getHref(link);
+                props.onClick = (e) => onClick(e, this.getDOMNode());
+            } catch (e) {
+                props.href = null;
+            }
             clearProps(props);
             return React.createElement('a', props);
         }
@@ -55,9 +63,13 @@
         render: function () {
             var props = cloneProps(this);
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
-            var link = Navigation.StateController.getRefreshLink(toData);
-            props.href = Navigation.historyManager.getHref(link);
-            props.onClick = (e) => onClick(e, this.getDOMNode());
+            try {
+                var link = Navigation.StateController.getRefreshLink(toData);
+                props.href = Navigation.historyManager.getHref(link);
+                props.onClick = (e) => onClick(e, this.getDOMNode());
+            } catch (e) {
+                props.href = null;
+            }
             clearProps(props);
             return React.createElement('a', props);
         }
