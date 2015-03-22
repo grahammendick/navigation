@@ -169,7 +169,7 @@
         navigateLink(oldState: State, state: State, url: string) {
             StateController.setStateContext(state, url);
             if (StateContext.url === url)
-                historyManager.addHistory(oldState, state, url);
+                historyManager.addHistory(state, url);
         }
 
         getNavigationData(state: State, url: string): any {
@@ -726,7 +726,7 @@
     export interface IHistoryManager {
         disabled: boolean;
         init();
-        addHistory(oldState: State, state: State, url: string);
+        addHistory(state: State, url: string);
         getCurrentUrl(): string;
         getHref(url: string): string;
         getUrl(anchor: HTMLAnchorElement): string;
@@ -753,7 +753,7 @@
             }
         }
 
-        addHistory(oldState: State, state: State, url: string) {
+        addHistory(state: State, url: string) {
             if (state.title && (typeof document !== 'undefined'))
                 document.title = state.title;
             if (!this.disabled && location.hash.substring(1) !== url)
@@ -785,7 +785,7 @@
             }
         }
 
-        addHistory(oldState: State, state: State, url: string) {
+        addHistory(state: State, url: string) {
             if (state.title && (typeof document !== 'undefined'))
                 document.title = state.title;
             url = settings.applicationPath + url;
