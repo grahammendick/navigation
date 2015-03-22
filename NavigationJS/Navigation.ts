@@ -719,10 +719,13 @@
     ConverterFactory.init();
 
     export function start(url?: string) {
+        historyManager.init();
         StateController.navigateLink(url ? url : historyManager.getCurrentUrl());
     }
 
     export interface IHistoryManager {
+        disabled: boolean;
+        init();
         addHistory(oldState: State, state: State, url: string);
         getCurrentUrl(): string;
         getHref(url: string): string;
@@ -736,10 +739,9 @@
     }
 
     export class HashHistoryManager implements IHistoryManager {
-        private disabled: boolean = false;
+        disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
 
-        constructor(disable?: boolean) {
-            this.disabled = !!disable || (typeof window === 'undefined') || !('onhashchange' in window);
+        init() {
             if (!this.disabled) {
                 if (window.addEventListener) {
                     window.removeEventListener('hashchange', navigateHistory);
@@ -774,10 +776,9 @@
     }
 
     export class HTML5HistoryManager implements IHistoryManager {
-        private disabled: boolean = false;
+        disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
 
-        constructor(disable?: boolean) {
-            this.disabled = !!disable || (typeof window === 'undefined') || !(window.history && window.history.pushState);
+        init() {
             if (!this.disabled) {
                 window.removeEventListener('popstate', navigateHistory);
                 window.addEventListener('popstate', navigateHistory);
