@@ -6,7 +6,7 @@
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
             var link = Navigation.StateController.getNavigationLink(action, toData);
             props.href = Navigation.historyManager.getHref(link);
-            props.onClick = getClickListener(() => Navigation.StateController.navigate(action, toData))
+            props.onClick = (e) => onClick(e, this.getDOMNode());
             clearProps(props);
             return (
                 React.createElement('a', props)
@@ -20,7 +20,7 @@
             var distance = props.distance;
             var link = Navigation.StateController.getNavigationBackLink(distance);
             props.href = Navigation.historyManager.getHref(link);
-            props.onClick = getClickListener(() => Navigation.StateController.navigateBack(distance))
+            props.onClick = (e) => onClick(e, this.getDOMNode());
             clearProps(props);
             return (
                 React.createElement('a', props)
@@ -34,7 +34,7 @@
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);
             var link = Navigation.StateController.getRefreshLink(toData);
             props.href = Navigation.historyManager.getHref(link);
-            props.onClick = getClickListener(() => Navigation.StateController.refresh(toData))
+            props.onClick = (e) => onClick(e, this.getDOMNode());
             clearProps(props);
             return (
                 React.createElement('a', props)
@@ -58,13 +58,13 @@
         return toData;
     }
 
-    function getClickListener(listener: () => void): (e: MouseEvent) => void {
-        return (e: MouseEvent) => {
-            if (!e.ctrlKey && !e.shiftKey) {
+    function onClick(e: MouseEvent, element: HTMLAnchorElement) {
+        if (!e.ctrlKey && !e.shiftKey) {
+            if (element.href) {
                 e.preventDefault();
-                listener();
+                Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
             }
-        };
+        }
     }
 
     function clearProps(props: any) {
