@@ -774,16 +774,21 @@
     }
 
     export class HTML5HistoryManager implements IHistoryManager {
-        constructor() {
-            window.removeEventListener('popstate', navigateHistory);
-            window.addEventListener('popstate', navigateHistory);
+        private disabled: boolean = false;
+
+        constructor(disable?: boolean) {
+            this.disabled = !!disable || (typeof window === 'undefined') || !(window.history && window.history.pushState);
+            if (!this.disabled) {
+                window.removeEventListener('popstate', navigateHistory);
+                window.addEventListener('popstate', navigateHistory);
+            }
         }
 
         addHistory(oldState: State, state: State, url: string) {
             if (state.title)
                 document.title = state.title;
             url = settings.applicationPath + url;
-            if (location.pathname + location.search !== url)
+            if (!this.disabled && location.pathname + location.search !== url)
                 window.history.pushState(null, null, url);
         }
 
