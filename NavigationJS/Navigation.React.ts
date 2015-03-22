@@ -8,9 +8,7 @@
             props.href = Navigation.historyManager.getHref(link);
             props.onClick = (e) => onClick(e, this.getDOMNode());
             clearProps(props);
-            return (
-                React.createElement('a', props)
-            );
+            return React.createElement('a', props);
         }
     });
 
@@ -22,9 +20,7 @@
             props.href = Navigation.historyManager.getHref(link);
             props.onClick = (e) => onClick(e, this.getDOMNode());
             clearProps(props);
-            return (
-                React.createElement('a', props)
-            );
+            return React.createElement('a', props);
         }
     });
 
@@ -36,9 +32,7 @@
             props.href = Navigation.historyManager.getHref(link);
             props.onClick = (e) => onClick(e, this.getDOMNode());
             clearProps(props);
-            return (
-                React.createElement('a', props)
-            );
+            return React.createElement('a', props);
         }
     });
 
