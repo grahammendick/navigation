@@ -1,5 +1,14 @@
 ﻿module NavigationReact {
     export var NavigationLink = React.createClass({
+        onNavigate: function () {
+            this.forceUpdate();
+        },
+        componentDidMount: function () {
+            Navigation.StateController.onNavigate(this.onNavigate);
+        },
+        componentWillUnmount: function () {
+            Navigation.StateController.offNavigate(this.onNavigate);
+        },
         render: function () {
             var props = cloneProps(this);
             var action = props.action;
@@ -13,6 +22,15 @@
     });
 
     export var NavigationBackLink = React.createClass({
+        onNavigate: function () {
+            this.forceUpdate();
+        },
+        componentDidMount: function () {
+            Navigation.StateController.onNavigate(this.onNavigate);
+        },
+        componentWillUnmount: function () {
+            Navigation.StateController.offNavigate(this.onNavigate);
+        },
         render: function () {
             var props = cloneProps(this);
             var distance = props.distance;
@@ -25,6 +43,15 @@
     });
 
     export var RefreshLink = React.createClass({
+        onNavigate: function () {
+            this.forceUpdate();
+        },
+        componentDidMount: function () {
+            Navigation.StateController.onNavigate(this.onNavigate);
+        },
+        componentWillUnmount: function () {
+            Navigation.StateController.offNavigate(this.onNavigate);
+        },
         render: function () {
             var props = cloneProps(this);
             var toData = getData(props.toData, props.includeCurrentData, props.currentDataKeys);

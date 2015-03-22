@@ -13,7 +13,7 @@
     function setNavigationLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
         setLink(element, () => Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
             getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
-            );
+        );
     }
 
     ko.bindingHandlers['navigationBackLink'] = {
@@ -45,7 +45,7 @@
     function setRefreshLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
         setLink(element, () => Navigation.StateController.getRefreshLink(
             getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
-            );
+        );
     }
 
     function setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
