@@ -758,6 +758,8 @@
         }
 
         getHref(url: string): string {
+            if (!url)
+                throw new Error('The Url is invalid');
             return '#' + url;
         }
 
@@ -785,6 +787,8 @@
         }
 
         getHref(url: string): string {
+            if (!url)
+                throw new Error('The Url is invalid');
             return settings.applicationPath + url;
         }
 
@@ -802,6 +806,8 @@
         }
 
         getHref(url: string): string {
+            if (!url)
+                throw new Error('The Url is invalid');
             return '#' + url;
         }
 
