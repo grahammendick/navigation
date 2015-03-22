@@ -752,7 +752,7 @@
         }
 
         addHistory(oldState: State, state: State, url: string) {
-            if (state.title)
+            if (state.title && (typeof document !== 'undefined'))
                 document.title = state.title;
             if (!this.disabled && location.hash.substring(1) !== url)
                 location.hash = url;
@@ -785,7 +785,7 @@
         }
 
         addHistory(oldState: State, state: State, url: string) {
-            if (state.title)
+            if (state.title && (typeof document !== 'undefined'))
                 document.title = state.title;
             url = settings.applicationPath + url;
             if (!this.disabled && location.pathname + location.search !== url)
