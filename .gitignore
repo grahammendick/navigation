@@ -6,8 +6,7 @@ bin/
 *.exe
 *.map
 NavigationJS/Navigation*.js
-NavigationJS/Test/Navigation*.js
-NavigationJS/Test/*StateInfo*.js
+NavigationJS/Test/*.js
 NavigationJS/src/*.js
 NavigationJS/src/*/*.js
 node_modules
