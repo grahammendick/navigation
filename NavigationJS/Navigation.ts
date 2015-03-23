@@ -169,7 +169,7 @@
         navigateLink(oldState: State, state: State, url: string) {
             StateController.setStateContext(state, url);
             if (StateContext.url === url)
-                historyManager.addHistory(oldState, state, url);
+                historyManager.addHistory(state, url);
         }
 
         getNavigationData(state: State, url: string): any {
@@ -719,11 +719,14 @@
     ConverterFactory.init();
 
     export function start(url?: string) {
+        historyManager.init();
         StateController.navigateLink(url ? url : historyManager.getCurrentUrl());
     }
 
     export interface IHistoryManager {
-        addHistory(oldState: State, state: State, url: string);
+        disabled: boolean;
+        init();
+        addHistory(state: State, url: string);
         getCurrentUrl(): string;
         getHref(url: string): string;
         getUrl(anchor: HTMLAnchorElement): string;
@@ -736,20 +739,24 @@
     }
 
     export class HashHistoryManager implements IHistoryManager {
-        constructor() {
-            if (window.addEventListener) {
-                window.removeEventListener('hashchange', navigateHistory);
-                window.addEventListener('hashchange', navigateHistory);
-            } else {
-                window.detachEvent('onhashchange', navigateHistory);
-                window.attachEvent('onhashchange', navigateHistory);
+        disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
+
+        init() {
+            if (!this.disabled) {
+                if (window.addEventListener) {
+                    window.removeEventListener('hashchange', navigateHistory);
+                    window.addEventListener('hashchange', navigateHistory);
+                } else {
+                    window.detachEvent('onhashchange', navigateHistory);
+                    window.attachEvent('onhashchange', navigateHistory);
+                }
             }
         }
 
-        addHistory(oldState: State, state: State, url: string) {
-            if (state.title)
+        addHistory(state: State, url: string) {
+            if (state.title && (typeof document !== 'undefined'))
                 document.title = state.title;
-            if (location.hash.substring(1) !== url)
+            if (!this.disabled && location.hash.substring(1) !== url)
                 location.hash = url;
         }
 
@@ -769,16 +776,20 @@
     }
 
     export class HTML5HistoryManager implements IHistoryManager {
-        constructor() {
-            window.removeEventListener('popstate', navigateHistory);
-            window.addEventListener('popstate', navigateHistory);
+        disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
+
+        init() {
+            if (!this.disabled) {
+                window.removeEventListener('popstate', navigateHistory);
+                window.addEventListener('popstate', navigateHistory);
+            }
         }
 
-        addHistory(oldState: State, state: State, url: string) {
-            if (state.title)
+        addHistory(state: State, url: string) {
+            if (state.title && (typeof document !== 'undefined'))
                 document.title = state.title;
             url = settings.applicationPath + url;
-            if (location.pathname + location.search !== url)
+            if (!this.disabled && location.pathname + location.search !== url)
                 window.history.pushState(null, null, url);
         }
 
@@ -794,25 +805,6 @@
 
         getUrl(anchor: HTMLAnchorElement) {
             return anchor.pathname.substring(settings.applicationPath.length) + anchor.search;
-        }
-    }
-
-    export class VoidHistoryManager implements IHistoryManager {
-        addHistory(oldState: State, state: State, url: string) {
-        }
-
-        getCurrentUrl(): string {
-            return null;
-        }
-
-        getHref(url: string): string {
-            if (!url)
-                throw new Error('The Url is invalid');
-            return '#' + url;
-        }
-
-        getUrl(anchor: HTMLAnchorElement) {
-            return anchor.hash.substring(1);
         }
     }
 
