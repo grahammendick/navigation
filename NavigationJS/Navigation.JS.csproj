@@ -85,9 +85,11 @@
     <TypeScriptCompile Include="src\routing\Route.ts" />
     <TypeScriptCompile Include="src\routing\Router.ts" />
     <TypeScriptCompile Include="src\routing\Segment.ts" />
+    <TypeScriptCompile Include="src\settings.ts" />
     <TypeScriptCompile Include="src\start.ts" />
     <TypeScriptCompile Include="src\StateContext.ts" />
     <TypeScriptCompile Include="src\StateController.ts" />
+    <TypeScriptCompile Include="src\StateHandler.ts" />
     <TypeScriptCompile Include="src\StateRouter.ts" />
     <TypeScriptCompile Include="src\StringConverter.ts" />
     <TypeScriptCompile Include="src\TypeConverter.ts" />
@@ -121,6 +123,7 @@
   <ItemGroup />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 </Project>
