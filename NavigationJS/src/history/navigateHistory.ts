@@ -1,6 +1,6 @@
-﻿import historyManager = require('historyManager');
-import StateContext = require('StateContext');
-import StateController = require('StateController');
+﻿import historyManager = require('./historyManager');
+import StateContext = require('../StateContext');
+import StateController = require('../StateController');
 
 var navigateHistory = () => {
     if (StateContext.url === historyManager.getCurrentUrl())

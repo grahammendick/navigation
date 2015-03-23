@@ -1,7 +1,7 @@
-﻿import IHistoryManager = require('IHistoryManager');
-import navigateHistory = require('navigateHistory');
-import settings = require('settings');
-import State = require('config/State');
+﻿import IHistoryManager = require('./IHistoryManager');
+import navigateHistory = require('./navigateHistory');
+import settings = require('../settings');
+import State = require('../config/State');
 
 class HTML5HistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);

@@ -7,5 +7,7 @@ bin/
 *.map
 NavigationJS/Navigation*.js
 NavigationJS/Test/Navigation*.js
+NavigationJS/Test/*StateInfo*.js
 NavigationJS/src/*.js
 NavigationJS/src/*/*.js
+node_modules

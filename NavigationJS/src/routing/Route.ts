@@ -1,4 +1,4 @@
-﻿import Segment = require('Segment');
+﻿import Segment = require('./Segment');
 
 class Route {
     path: string;

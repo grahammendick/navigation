@@ -93,9 +93,13 @@
     <TypeScriptCompile Include="src\StateRouter.ts" />
     <TypeScriptCompile Include="src\StringConverter.ts" />
     <TypeScriptCompile Include="src\TypeConverter.ts" />
-    <TypeScriptCompile Include="Test\Navigation.Test.ts" />
-    <TypeScriptCompile Include="Test\qunit.d.ts" />
-    <TypeScriptCompile Include="Test\Navigation.Routing.Test.ts" />
+    <TypeScriptCompile Include="Test\assert.d.ts" />
+    <TypeScriptCompile Include="Test\initStateInfo.ts" />
+    <TypeScriptCompile Include="Test\mocha.d.ts" />
+    <TypeScriptCompile Include="Test\NavigationDataTest.ts" />
+    <TypeScriptCompile Include="Test\NavigationRoutingTest.ts" />
+    <TypeScriptCompile Include="Test\NavigationTest.ts" />
+    <TypeScriptCompile Include="Test\StateInfoTest.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sample\personSearch.js" />
@@ -105,10 +109,6 @@
     <Content Include="Sample\React\app.html" />
     <Content Include="Sample\React\JSXTransformer-0.12.2.js" />
     <Content Include="Sample\React\react-0.12.2.js" />
-    <Content Include="Test\Navigation.Test.html" />
-    <Content Include="Test\qunit-1.17.1.css" />
-    <Content Include="Test\qunit-1.17.1.js" />
-    <Content Include="Test\Navigation.Routing.Test.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />

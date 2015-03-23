@@ -1,4 +1,4 @@
-﻿import State = require('State');
+﻿import State = require('./State');
 
 class Dialog {
     _states: Array<State> = [];

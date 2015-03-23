@@ -1,4 +1,4 @@
-﻿import Route = require('Route');
+﻿import Route = require('./Route');
 
 class Router {
     private routes: Array<Route> = [];

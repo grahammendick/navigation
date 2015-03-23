@@ -1,4 +1,4 @@
-﻿import TypeConverter = require('TypeConverter');
+﻿import TypeConverter = require('./TypeConverter');
 
 class BooleanConverter extends TypeConverter {
     getType(): string {

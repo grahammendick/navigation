@@ -1,5 +1,5 @@
-﻿import historyManager = require('history/historyManager');
-import StateController = require('StateController');
+﻿import historyManager = require('./history/historyManager');
+import StateController = require('./StateController');
 
 function start(url?: string) {
     historyManager.init();

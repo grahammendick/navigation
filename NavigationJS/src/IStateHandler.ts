@@ -1,5 +1,5 @@
-﻿import Crumb = require('Crumb');
-import State = require('config/State');
+﻿import Crumb = require('./Crumb');
+import State = require('./config/State');
 
 interface IStateHandler {
     getNavigationLink(state: State, data: any): string;

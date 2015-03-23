@@ -1,11 +1,12 @@
-﻿import Crumb = require('Crumb');
-import CrumbTrailManager = require('CrumbTrailManager');
-import NavigationData = require('NavigationData');
-import router = require('router');
-import settings = require('settings');
-import State = require('config/State');
-import StateContext = require('StateContext');
-import StateInfoConfig = require('config/StateInfoConfig');
+﻿import ConverterFactory = require('./ConverterFactory');
+import Crumb = require('./Crumb');
+import CrumbTrailManager = require('./CrumbTrailManager');
+import NavigationData = require('./NavigationData');
+import router = require('./router');
+import settings = require('./settings');
+import State = require('./config/State');
+import StateContext = require('./StateContext');
+import StateInfoConfig = require('./config/StateInfoConfig');
 
 class StateController {
     static crumbs: Array<Crumb>;
@@ -26,7 +27,7 @@ class StateController {
                 StateContext.previousDialog = StateContext.previousState.parent;
             CrumbTrailManager.returnData = {};
             if (data[settings.returnDataKey])
-                CrumbTrailManager.returnData = CrumbTrailManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
+                CrumbTrailManager.returnData = ConverterFactory.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
             CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
             StateContext.data = this.parseData(data, state);
             CrumbTrailManager.buildCrumbTrail();
@@ -115,8 +116,10 @@ class StateController {
             throw new Error('The Url is invalid\n' + e.message);
         }
         state.navigating(data, url, () => {
-            if (oldUrl === StateContext.url)
+            if (oldUrl === StateContext.url) {
+                StateController.setStateContext(state, url);
                 state.stateHandler.navigateLink(oldState, state, url);
+            }
         });
     }
 
@@ -124,7 +127,7 @@ class StateController {
         var newData = {};
         for (var key in data) {
             if (key !== settings.previousStateIdKey && key !== settings.returnDataKey && key !== settings.crumbTrailKey)
-                newData[key] = CrumbTrailManager.parseURLString(key, data[key], state);
+                newData[key] = ConverterFactory.parseURLString(key, data[key], state);
         }
         NavigationData.setDefaults(newData, state.defaults);
         return newData;

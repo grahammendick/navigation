@@ -1,4 +1,4 @@
-﻿import State = require('config/State');
+﻿import State = require('../config/State');
 
 interface IHistoryManager {
     disabled: boolean;
