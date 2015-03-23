@@ -81,6 +81,7 @@
     <TypeScriptCompile Include="src\NavigationData.ts" />
     <TypeScriptCompile Include="src\NavigationSettings.ts" />
     <TypeScriptCompile Include="src\NumberConverter.ts" />
+    <TypeScriptCompile Include="src\ReturnDataManager.ts" />
     <TypeScriptCompile Include="src\router.ts" />
     <TypeScriptCompile Include="src\routing\Route.ts" />
     <TypeScriptCompile Include="src\routing\Router.ts" />

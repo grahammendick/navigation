@@ -1,6 +1,6 @@
-﻿import ConverterFactory = require('./ConverterFactory');
-import Crumb = require('./Crumb');
+﻿import Crumb = require('./Crumb');
 import NavigationData = require('./NavigationData');
+import ReturnDataManager = require('./ReturnDataManager');
 import router = require('./router');
 import settings = require('./settings');
 import State = require('./config/State');
@@ -22,7 +22,7 @@ class CrumbTrailManager {
         var trailString: string = '';
         for (var i = 0; i < crumbs.length; i++) {
             trailString += this.CRUMB_1_SEP + crumbs[i].state.id + this.CRUMB_2_SEP;
-            trailString += ConverterFactory.formatReturnData(crumbs[i].state, crumbs[i].data);
+            trailString += ReturnDataManager.formatReturnData(crumbs[i].state, crumbs[i].data);
         }
         this.crumbTrail = trailString ? trailString : null;
     }
@@ -39,7 +39,7 @@ class CrumbTrailManager {
             var navigationData: any = {};
             var data = trail.substring((trail.indexOf(this.CRUMB_2_SEP) + this.CRUMB_2_SEP.length)).split(this.CRUMB_1_SEP)[0];
             if (data)
-                navigationData = ConverterFactory.parseReturnData(data, state);
+                navigationData = ReturnDataManager.parseReturnData(data, state);
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
             crumbTrailArray.push(new Crumb(navigationData, state, setLast && last, this.getHref(state, navigationData, null)));
@@ -66,10 +66,10 @@ class CrumbTrailManager {
         for (var key in navigationData) {
             if (navigationData[key] != null && navigationData[key].toString()
                 && (!router.supportsDefaults || navigationData[key] !== state.defaults[key]))
-                data[key] = ConverterFactory.formatURLObject(key, navigationData[key], state);
+                data[key] = ReturnDataManager.formatURLObject(key, navigationData[key], state);
         }
         if (state.trackCrumbTrail && StateContext.state) {
-            var returnDataString = ConverterFactory.formatReturnData(StateContext.state, returnData);
+            var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
         }

@@ -1,6 +1,6 @@
-﻿import ConverterFactory = require('../ConverterFactory');
-import Dialog = require('./Dialog');
+﻿import Dialog = require('./Dialog');
 import CrumbTrailManager = require('../CrumbTrailManager');
+import ReturnDataManager = require('../ReturnDataManager');
 import router = require('../router');
 import State = require('./State');
 import Transition = require('./Transition');
@@ -50,7 +50,7 @@ class StateInfoConfig {
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
                     state.defaultTypes[key] = typeof state.defaults[key];
-                state.formattedDefaults[key] = ConverterFactory.formatURLObject(key, state.defaults[key], state);
+                state.formattedDefaults[key] = ReturnDataManager.formatURLObject(key, state.defaults[key], state);
             }
             if (!state.key)
                 throw new Error('key is mandatory for a State');
