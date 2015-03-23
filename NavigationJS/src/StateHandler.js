@@ -1,9 +1,10 @@
-﻿var StateController = require('StateController');
-var StateContext = require('StateContext');
+﻿var historyManager = require('history/historyManager');
+var router = require('router');
 
 var settings = require('settings');
-var router = require('router');
-var historyManager = require('history/historyManager');
+
+var StateContext = require('StateContext');
+var StateController = require('StateController');
 
 var StateHandler = (function () {
     function StateHandler() {

@@ -1,8 +1,8 @@
-﻿import TypeConverter = require('TypeConverter');
-import StringConverter = require('StringConverter');
+﻿import ArrayConverter = require('ArrayConverter');
 import BooleanConverter = require('BooleanConverter');
 import NumberConverter = require('NumberConverter');
-import ArrayConverter = require('ArrayConverter');
+import StringConverter = require('StringConverter');
+import TypeConverter = require('TypeConverter');
 
 class ConverterFactory {
     private static typeArray: { (): TypeConverter; }[];

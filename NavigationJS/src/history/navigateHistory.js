@@ -1,4 +1,4 @@
-﻿var historyManager = require('history/historyManager');
+﻿var historyManager = require('historyManager');
 var StateContext = require('StateContext');
 var StateController = require('StateController');
 

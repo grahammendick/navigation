@@ -1,9 +1,9 @@
-﻿var StateContext = require('StateContext');
-
-var CrumbTrailManager = require('CrumbTrailManager');
-var settings = require('settings');
-var router = require('router');
+﻿var CrumbTrailManager = require('CrumbTrailManager');
 var NavigationData = require('NavigationData');
+var router = require('router');
+var settings = require('settings');
+
+var StateContext = require('StateContext');
 var StateInfoConfig = require('config/StateInfoConfig');
 
 var StateController = (function () {

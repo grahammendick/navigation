@@ -1,6 +1,6 @@
-﻿import State = require('config/State');
-import CrumbTrailManager = require('CrumbTrailManager');
+﻿import CrumbTrailManager = require('CrumbTrailManager');
 import NavigationData = require('NavigationData');
+import State = require('config/State');
 
 class Crumb {
     data: any;

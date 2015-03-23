@@ -1,5 +1,5 @@
-﻿import navigateHistory = require('history/navigateHistory');
-import IHistoryManager = require('history/IHistoryManager');
+﻿import IHistoryManager = require('IHistoryManager');
+import navigateHistory = require('navigateHistory');
 import settings = require('settings');
 import State = require('config/State');
 

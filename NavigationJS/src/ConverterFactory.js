@@ -1,7 +1,7 @@
-﻿var StringConverter = require('StringConverter');
+﻿var ArrayConverter = require('ArrayConverter');
 var BooleanConverter = require('BooleanConverter');
 var NumberConverter = require('NumberConverter');
-var ArrayConverter = require('ArrayConverter');
+var StringConverter = require('StringConverter');
 
 var ConverterFactory = (function () {
     function ConverterFactory() {

@@ -1,7 +1,7 @@
 ﻿import Dialog = require('Dialog');
-import Transition = require('Transition');
 import IStateHandler = require('IStateHandler');
 import StateHandler = require('StateHandler');
+import Transition = require('Transition');
 
 class State {
     _transitions: Array<Transition> = [];

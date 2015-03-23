@@ -1,5 +1,4 @@
-﻿var navigateHistory = require('history/navigateHistory');
-
+﻿var navigateHistory = require('navigateHistory');
 var settings = require('settings');
 
 var HTML5HistoryManager = (function () {

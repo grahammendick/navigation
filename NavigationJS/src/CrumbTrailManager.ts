@@ -1,11 +1,11 @@
-﻿import StateContext = require('StateContext');
-import Crumb = require('Crumb');
-import State = require('config/State');
-import NavigationData = require('NavigationData');
+﻿import Crumb = require('Crumb');
 import ConverterFactory = require('ConverterFactory');
-import StateInfoConfig = require('config/StateInfoConfig');
-import settings = require('settings');
+import NavigationData = require('NavigationData');
 import router = require('router');
+import settings = require('settings');
+import State = require('config/State');
+import StateContext = require('StateContext');
+import StateInfoConfig = require('config/StateInfoConfig');
 
 class CrumbTrailManager {
     static returnData: any;

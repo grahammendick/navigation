@@ -1,8 +1,8 @@
 ﻿var Dialog = require('Dialog');
-var State = require('State');
-var Transition = require('Transition');
 var CrumbTrailManager = require('CrumbTrailManager');
 var router = require('router');
+var State = require('State');
+var Transition = require('Transition');
 
 var StateInfoConfig = (function () {
     function StateInfoConfig() {

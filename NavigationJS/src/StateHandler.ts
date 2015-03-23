@@ -1,11 +1,11 @@
-﻿import State = require('config/State');
-import IStateHandler = require('IStateHandler');
-import StateController = require('StateController');
-import StateContext = require('StateContext');
-import Crumb = require('Crumb');
-import settings = require('settings');
-import router = require('router');
+﻿import Crumb = require('Crumb');
 import historyManager = require('history/historyManager');
+import router = require('router');
+import IStateHandler = require('IStateHandler');
+import settings = require('settings');
+import State = require('config/State');
+import StateContext = require('StateContext');
+import StateController = require('StateController');
 
 class StateHandler implements IStateHandler {
     getNavigationLink(state: State, data: any): string {

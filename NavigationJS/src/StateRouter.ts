@@ -1,7 +1,7 @@
-﻿import State = require('config/State');
-import Dialog = require('config/Dialog');
+﻿import Dialog = require('config/Dialog');
 import IRouter = require('IRouter');
 import Router = require('routing/Router');
+import State = require('config/State');
 
 class StateRouter implements IRouter {
     router: Router;

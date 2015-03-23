@@ -1,4 +1,4 @@
-﻿var navigateHistory = require('history/navigateHistory');
+﻿var navigateHistory = require('navigateHistory');
 
 var HashHistoryManager = (function () {
     function HashHistoryManager() {

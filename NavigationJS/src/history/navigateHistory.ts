@@ -1,4 +1,4 @@
-﻿import historyManager = require('history/historyManager');
+﻿import historyManager = require('historyManager');
 import StateContext = require('StateContext');
 import StateController = require('StateController');
 

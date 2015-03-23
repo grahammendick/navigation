@@ -1,10 +1,10 @@
-﻿import StateContext = require('StateContext');
-import Crumb = require('Crumb');
-import State = require('config/State');
+﻿import Crumb = require('Crumb');
 import CrumbTrailManager = require('CrumbTrailManager');
-import settings = require('settings');
-import router = require('router');
 import NavigationData = require('NavigationData');
+import router = require('router');
+import settings = require('settings');
+import State = require('config/State');
+import StateContext = require('StateContext');
 import StateInfoConfig = require('config/StateInfoConfig');
 
 class StateController {

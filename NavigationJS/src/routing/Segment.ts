@@ -1,5 +1,4 @@
-﻿
-class Segment {
+﻿class Segment {
     path: string;
     optional: boolean;
     defaults: any;

@@ -1,11 +1,11 @@
-﻿var StateContext = require('StateContext');
-var Crumb = require('Crumb');
-
-var NavigationData = require('NavigationData');
+﻿var Crumb = require('Crumb');
 var ConverterFactory = require('ConverterFactory');
-var StateInfoConfig = require('config/StateInfoConfig');
-var settings = require('settings');
+var NavigationData = require('NavigationData');
 var router = require('router');
+var settings = require('settings');
+
+var StateContext = require('StateContext');
+var StateInfoConfig = require('config/StateInfoConfig');
 
 var CrumbTrailManager = (function () {
     function CrumbTrailManager() {

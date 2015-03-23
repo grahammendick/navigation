@@ -1,8 +1,8 @@
 ﻿import Dialog = require('Dialog');
-import State = require('State');
-import Transition = require('Transition');
 import CrumbTrailManager = require('CrumbTrailManager');
 import router = require('router');
+import State = require('State');
+import Transition = require('Transition');
 
 class StateInfoConfig {
     static _dialogs: Array<Dialog> = [];
