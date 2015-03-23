@@ -208,7 +208,7 @@
     }
 
     export class StateRouter implements IRouter {
-        router: Navigation.Routing.Router;
+        router: NavigationRouting.Router;
         supportsDefaults: boolean = true;
 
         getData(route: string): { state: State; data: any } {
@@ -217,7 +217,7 @@
         }
 
         getRoute(state: State, data: any): { route: string; data: any } {
-            var route: Navigation.Routing.Route = state['_route'];
+            var route: NavigationRouting.Route = state['_route'];
             var routeData = {};
             for (var i = 0; i < route.params.length; i++) {
                 routeData[route.params[i].name] = data[route.params[i].name];
@@ -226,7 +226,7 @@
         }
 
         addRoutes(dialogs: Array<Dialog>) {
-            this.router = new Navigation.Routing.Router();
+            this.router = new NavigationRouting.Router();
             var states: Array<State> = [];
             for (var i = 0; i < dialogs.length; i++) {
                 for (var j = 0; j < dialogs[i]._states.length; j++) {
