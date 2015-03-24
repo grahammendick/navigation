@@ -1,5 +1,4 @@
 ﻿import Crumb = require('./Crumb');
-import historyManager = require('./history/historyManager');
 import router = require('./router');
 import IStateHandler = require('./IStateHandler');
 import settings = require('./settings');
@@ -24,8 +23,6 @@ class StateHandler implements IStateHandler {
     }
 
     navigateLink(oldState: State, state: State, url: string) {
-        if (StateContext.url === url)
-            historyManager.addHistory(state, url);
     }
 
     getNavigationData(state: State, url: string): any {

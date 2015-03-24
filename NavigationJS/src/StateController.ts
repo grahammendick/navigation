@@ -1,5 +1,6 @@
 ﻿import Crumb = require('./Crumb');
 import CrumbTrailManager = require('./CrumbTrailManager');
+import historyManager = require('./history/historyManager');
 import NavigationData = require('./NavigationData');
 import ReturnDataManager = require('./ReturnDataManager');
 import router = require('./router');
@@ -15,7 +16,6 @@ class StateController {
     private static navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
 
     static setStateContext(state: State, url: string) {
-        var oldState = StateContext.state;
         try {
             StateContext.state = state;
             StateContext.url = url;
@@ -34,13 +34,6 @@ class StateController {
             this.crumbs = CrumbTrailManager.getCrumbs(true);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
-        }
-        if (oldState && oldState !== state)
-            oldState.dispose();
-        state.navigated(StateContext.data);
-        for (var id in this.navigateHandlers) {
-            if (url === StateContext.url)
-                this.navigateHandlers[id](oldState, state, StateContext.data);
         }
     }
 
@@ -117,8 +110,18 @@ class StateController {
         }
         state.navigating(data, url, () => {
             if (oldUrl === StateContext.url) {
-                StateController.setStateContext(state, url);
                 state.stateHandler.navigateLink(oldState, state, url);
+                StateController.setStateContext(state, url);
+                if (oldState && oldState !== state)
+                    oldState.dispose();
+                state.navigated(StateContext.data);
+                for (var id in this.navigateHandlers) {
+                    if (url === StateContext.url)
+                        this.navigateHandlers[id](oldState, state, StateContext.data);
+                }
+                if (url === StateContext.url) {
+                    historyManager.addHistory(state, url);
+                }
             }
         });
     }
