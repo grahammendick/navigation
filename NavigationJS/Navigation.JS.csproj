@@ -48,7 +48,7 @@
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
@@ -83,6 +83,7 @@
     <TypeScriptCompile Include="src\NumberConverter.ts" />
     <TypeScriptCompile Include="src\ReturnDataManager.ts" />
     <TypeScriptCompile Include="src\router.ts" />
+    <TypeScriptCompile Include="src\routing\NavigationRouting.d.ts" />
     <TypeScriptCompile Include="src\routing\Route.ts" />
     <TypeScriptCompile Include="src\routing\Router.ts" />
     <TypeScriptCompile Include="src\routing\Segment.ts" />
@@ -125,6 +126,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
     <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 </Project>

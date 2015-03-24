@@ -1,5 +1,6 @@
 ﻿import assert = require('assert');
 import initStateInfo = require('./initStateInfo');
+import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('NavigationTest', function () {
@@ -1363,8 +1364,8 @@ describe('NavigationTest', function () {
     });
 
     it('OnNavigateTest', function () {
-        var oldStates: Array<Navigation.State> = [];
-        var states: Array<Navigation.State> = [];
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler = (oldState, state, data) => {
             oldStates.push(oldState);
@@ -1385,8 +1386,8 @@ describe('NavigationTest', function () {
     });
 
     it('OnNavigateDuplicateTest', function () {
-        var oldStates: Array<Navigation.State> = [];
-        var states: Array<Navigation.State> = [];
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler = (oldState, state, data) => {
             oldStates.push(oldState);
@@ -1408,8 +1409,8 @@ describe('NavigationTest', function () {
     });
 
     it('OnOffNavigateDuplicateTest', function () {
-        var oldStates: Array<Navigation.State> = [];
-        var states: Array<Navigation.State> = [];
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler = (oldState, state, data) => {
             oldStates.push(oldState);
@@ -1432,8 +1433,8 @@ describe('NavigationTest', function () {
     });
 
     it('OnNavigateCopyTest', function () {
-        var oldStates: Array<Navigation.State> = [];
-        var states: Array<Navigation.State> = [];
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler1 = (oldState, state, data) => {
             oldStates.push(oldState);
@@ -1464,10 +1465,10 @@ describe('NavigationTest', function () {
     });
 
     it('OnNavigateMultipleTest', function () {
-        var oldStates1: Array<Navigation.State> = [];
-        var states1: Array<Navigation.State> = [];
-        var oldStates2: Array<Navigation.State> = [];
-        var states2: Array<Navigation.State> = [];
+        var oldStates1: Array<State> = [];
+        var states1: Array<State> = [];
+        var oldStates2: Array<State> = [];
+        var states2: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler1 = (oldState, state, data) => {
             oldStates1.push(oldState);
@@ -1500,8 +1501,8 @@ describe('NavigationTest', function () {
     });
 
     it('OffNavigateTest', function () {
-        var oldStates: Array<Navigation.State> = [];
-        var states: Array<Navigation.State> = [];
+        var oldStates: Array<State> = [];
+        var states: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler = (oldState, state, data) => {
             oldStates.push(oldState);
@@ -1521,10 +1522,10 @@ describe('NavigationTest', function () {
     });
 
     it('OffNavigateMultipleTest', function () {
-        var oldStates1: Array<Navigation.State> = [];
-        var states1: Array<Navigation.State> = [];
-        var oldStates2: Array<Navigation.State> = [];
-        var states2: Array<Navigation.State> = [];
+        var oldStates1: Array<State> = [];
+        var states1: Array<State> = [];
+        var oldStates2: Array<State> = [];
+        var states2: Array<State> = [];
         Navigation.StateController.navigate('d0');
         var navigatedHandler1 = (oldState, state, data) => {
             oldStates1.push(oldState);

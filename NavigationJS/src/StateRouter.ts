@@ -1,6 +1,8 @@
 ﻿import Dialog = require('./config/Dialog');
 import IRouter = require('./IRouter');
+import Route = require('./routing/Route');
 import Router = require('./routing/Router');
+import NavigationRouting = require('./routing/NavigationRouting');
 import State = require('./config/State');
 
 class StateRouter implements IRouter {
@@ -13,7 +15,7 @@ class StateRouter implements IRouter {
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
-        var route: NavigationRouting.Route = state['_route'];
+        var route: Route = state['_route'];
         var routeData = {};
         for (var i = 0; i < route.params.length; i++) {
             routeData[route.params[i].name] = data[route.params[i].name];
@@ -22,7 +24,7 @@ class StateRouter implements IRouter {
     }
 
     addRoutes(dialogs: Array<Dialog>) {
-        this.router = new Router();
+        this.router = new NavigationRouting.Router();
         var states: Array<State> = [];
         for (var i = 0; i < dialogs.length; i++) {
             for (var j = 0; j < dialogs[i]._states.length; j++) {
