@@ -1,4 +1,6 @@
-﻿class LinkUtility {
+﻿import Navigation = require('../Navigation');
+
+class LinkUtility {
     static cloneProps(elem: React.ReactElement<any, any>): any {
         var props = {};
         for (var key in elem.props) {

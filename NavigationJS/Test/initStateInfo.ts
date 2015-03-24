@@ -1,10 +1,12 @@
-﻿import Navigation = require('../src/Navigation');
+﻿import Crumb = require('../src/Crumb');
+import Navigation = require('../src/Navigation');
+import State = require('../src/config/State');
 import StateHandler = require('../src/StateHandler');
 
 class CustomStateHandler extends StateHandler {
-    truncateCrumbTrail(state: Navigation.State, crumbs: Array<Navigation.Crumb>): Array<Navigation.Crumb> {
-        var newCrumbs: Array<Navigation.Crumb> = [];
-        var d6Crumbs: Array<Navigation.Crumb> = [];
+    truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb> {
+        var newCrumbs: Array<Crumb> = [];
+        var d6Crumbs: Array<Crumb> = [];
         for (var i = 0; i < crumbs.length; i++) {
             if (crumbs[i].state.parent.key === 'd0' || crumbs[i].state.parent.key === 'd3')
                 newCrumbs.push(crumbs[i]);

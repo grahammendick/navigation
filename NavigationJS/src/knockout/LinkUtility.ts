@@ -1,4 +1,6 @@
-﻿class LinkUtility {
+﻿import Navigation = require('../Navigation');
+
+class LinkUtility {
     static setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
         if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
             try {

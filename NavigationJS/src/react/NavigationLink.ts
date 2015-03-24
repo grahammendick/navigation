@@ -1,4 +1,5 @@
 ﻿import LinkUtility = require('./LinkUtility');
+import Navigation = require('../Navigation');
 
 var NavigationLink = React.createClass({
     onNavigate: function () {
