@@ -77,6 +77,11 @@
     <TypeScriptCompile Include="src\history\navigateHistory.ts" />
     <TypeScriptCompile Include="src\IRouter.ts" />
     <TypeScriptCompile Include="src\IStateHandler.ts" />
+    <TypeScriptCompile Include="src\knockout\LinkUtility.ts" />
+    <TypeScriptCompile Include="src\knockout\NavigationBackLink.ts" />
+    <TypeScriptCompile Include="src\knockout\NavigationKnockout.ts" />
+    <TypeScriptCompile Include="src\knockout\NavigationLink.ts" />
+    <TypeScriptCompile Include="src\knockout\RefreshLink.ts" />
     <TypeScriptCompile Include="src\Navigation.ts" />
     <TypeScriptCompile Include="src\NavigationData.ts" />
     <TypeScriptCompile Include="src\NavigationSettings.ts" />
