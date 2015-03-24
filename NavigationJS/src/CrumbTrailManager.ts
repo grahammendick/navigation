@@ -16,7 +16,7 @@ class CrumbTrailManager {
     static buildCrumbTrail() {
         var crumbs = this.getCrumbs(false);
         if (StateContext.previousState)
-            crumbs.push(new Crumb(this.returnData, StateContext.previousState, false, this.getHref(StateContext.previousState, this.returnData, null)));
+            crumbs.push(new Crumb(this.returnData, StateContext.previousState, this.getHref(StateContext.previousState, this.returnData, null), false));
         crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
         crumbs.reverse();
         var trailString: string = '';
@@ -42,7 +42,7 @@ class CrumbTrailManager {
                 navigationData = ReturnDataManager.parseReturnData(data, state);
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
-            crumbTrailArray.push(new Crumb(navigationData, state, setLast && last, this.getHref(state, navigationData, null)));
+            crumbTrailArray.push(new Crumb(navigationData, state, this.getHref(state, navigationData, null), setLast && last));
             last = false;
             arrayCount++;
         }

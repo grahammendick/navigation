@@ -9,7 +9,7 @@ class Crumb {
     title: string;
     navigationLink; string;
 
-    constructor(data: any, state: State, last: boolean, link: string) {
+    constructor(data: any, state: State, link: string, last: boolean) {
         this.data = data ? data : {};
         this.state = state;
         this.last = last;
