@@ -12,9 +12,6 @@ gulp.task('test', function () {
         .pipe(mocha({ reporter: 'nyan' }));
 });
 
-
-var tasks = ['test'];
-
 function build(name, from, to) {
 	browserify(from, { standalone: name })
 		.plugin('tsify')
@@ -31,6 +28,8 @@ var items = [
 	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
 	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
 ];
+var tasks = ['test'];
+
 for (var i = 0; i < items.length; i++) {
 	(function (item) {
 		gulp.task(item.name, function () {
