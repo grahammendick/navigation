@@ -12,7 +12,13 @@ gulp.task('test', function () {
         .pipe(mocha({ reporter: 'nyan' }));
 });
 
-function build(from, to, name) {
+var items = [
+	{ name: 'Navigation', from: './src/Navigation.ts', to: 'navigation.js' },
+	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
+	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
+];
+
+function build(name, from, to) {
 	browserify(from, { standalone: name })
 		.plugin('tsify')
 		.bundle()
@@ -23,16 +29,11 @@ function build(from, to, name) {
 		.pipe(gulp.dest('./build'))
 }
 
-gulp.task('navigation', function () {
-	build('./src/Navigation.ts', 'navigation.js', 'Navigation')
+gulp.task('navigate', function () {
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		build(item.name, item.from, item.to)
+	}
 });
 
-gulp.task('navigationReact', function () {
-	build('./src/react/NavigationReact.ts', 'navigation.react.js', 'NavigationReact')
-});
-
-gulp.task('navigationKnockout', function () {
-	build('./src/knockout/NavigationKnockout.ts', 'navigation.knockout.js', 'NavigationKnockout')
-});
-
-gulp.task('build', ['test', 'navigation', 'navigationReact', 'navigationKnockout']);
+gulp.task('build', ['test', 'navigate']);
