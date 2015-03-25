@@ -13,7 +13,8 @@ gulp.task('test', function () {
 });
 
 gulp.task('build', function () {
-	browserify('./src/Navigation.js', { standalone: 'Navigation' })
+	browserify('./src/Navigation.ts', { standalone: 'Navigation' })
+		.plugin('tsify')
 		.bundle()
 		.pipe(source('navigation.js'))
 		.pipe(rename('navigation.js'))

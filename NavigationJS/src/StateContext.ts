@@ -27,8 +27,8 @@ class StateContext {
         if (key)
             this.data[key] = this.state.defaults[key];
         else {
-            for (var key in this.data) {
-                this.data[key] = this.state.defaults[key];
+            for (var dataKey in this.data) {
+                this.data[dataKey] = this.state.defaults[dataKey];
             }
         }
     }
