@@ -72,10 +72,8 @@
     <TypeScriptCompile Include="src\Crumb.ts" />
     <TypeScriptCompile Include="src\CrumbTrailManager.ts" />
     <TypeScriptCompile Include="src\history\HashHistoryManager.ts" />
-    <TypeScriptCompile Include="src\history\historyManager.ts" />
     <TypeScriptCompile Include="src\history\HTML5HistoryManager.ts" />
     <TypeScriptCompile Include="src\history\IHistoryManager.ts" />
-    <TypeScriptCompile Include="src\history\navigateHistory.ts" />
     <TypeScriptCompile Include="src\IRouter.ts" />
     <TypeScriptCompile Include="src\IStateHandler.ts" />
     <TypeScriptCompile Include="src\knockout\LinkUtility.ts" />
@@ -99,7 +97,6 @@
     <TypeScriptCompile Include="src\routing\Router.ts" />
     <TypeScriptCompile Include="src\routing\Segment.ts" />
     <TypeScriptCompile Include="src\settings.ts" />
-    <TypeScriptCompile Include="src\start.ts" />
     <TypeScriptCompile Include="src\StateContext.ts" />
     <TypeScriptCompile Include="src\StateController.ts" />
     <TypeScriptCompile Include="src\StateHandler.ts" />
