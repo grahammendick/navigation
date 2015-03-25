@@ -1,7 +1,7 @@
 ﻿import LinkUtility = require('./LinkUtility');
 import Navigation = require('../Navigation');
 
-ko.bindingHandlers['navigationBackLink'] = {
+var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
     init: (element, valueAccessor) => {
         LinkUtility.addClickListener(element);
         LinkUtility.addNavigateHandler(element, () => setNavigationBackLink(element, valueAccessor));
@@ -15,4 +15,4 @@ ko.bindingHandlers['navigationBackLink'] = {
 function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor) {
     LinkUtility.setLink(element, () => Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor())));
 }
- 
+export = NavigationBackLink;

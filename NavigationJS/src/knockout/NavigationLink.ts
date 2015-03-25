@@ -1,7 +1,7 @@
 ﻿import LinkUtility = require('./LinkUtility');
 import Navigation = require('../Navigation');
 
-ko.bindingHandlers['navigationLink'] = {
+var NavigationLink = ko.bindingHandlers['navigationLink'] = {
     init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
         LinkUtility.addClickListener(element);
         LinkUtility.addNavigateHandler(element, () => setNavigationLink(element, valueAccessor, allBindings));
@@ -17,3 +17,4 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor, allBinding
         LinkUtility.getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
     );
 }
+export = NavigationLink;

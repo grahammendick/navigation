@@ -24,8 +24,8 @@ gulp.task('navigation', function () {
 });
 
 gulp.task('navigationReact', function () {
-	browserify('./src/react/NavigationReact.js', { standalone: 'NavigationReact' })
-		//.plugin('tsify')
+	browserify('./src/react/NavigationReact.ts', { standalone: 'NavigationReact' })
+		.plugin('tsify')
 		.bundle()
 		.pipe(source('navigation.react.js'))
 		.pipe(rename('navigation.react.js'))
@@ -34,4 +34,15 @@ gulp.task('navigationReact', function () {
 		.pipe(gulp.dest('./build'))
 });
 
-gulp.task('build', ['navigation', 'navigationReact']);
+gulp.task('navigationKnockout', function () {
+	browserify('./src/knockout/NavigationKnockout.ts', { standalone: 'NavigationKnockout' })
+		.plugin('tsify')
+		.bundle()
+		.pipe(source('navigation.knockout.js'))
+		.pipe(rename('navigation.knockout.js'))
+		.pipe(derequire())
+		//.pipe(streamify(uglify()))
+		.pipe(gulp.dest('./build'))
+});
+
+gulp.task('build', ['navigation', 'navigationReact', 'navigationKnockout']);
