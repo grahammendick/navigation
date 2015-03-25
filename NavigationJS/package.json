@@ -1,0 +1,32 @@
+{
+  "name": "navigation",
+  "version": "0.0.1",
+  "description": "A Web library that adds a State machine layer on top of a Router",
+  "main": "navigation.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "gulp": "^3.8.11",
+    "gulp-rename": "^1.2.0",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^1.1.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":  "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grahammendick/navigation"
+  },
+  "keywords": [
+    "router"
+  ],
+  "author": "graham mendick",
+  "license": "Apache License 2.0",
+  "bugs": {
+    "url": "https://github.com/grahammendick/navigation/issues"
+  },
+  "homepage": "https://github.com/grahammendick/navigation"
+}

@@ -1,9 +1,9 @@
-﻿import historyManager = require('./history/historyManager');
+﻿import HistoryNavigator = require('./history/HistoryNavigator');
 import StateController = require('./StateController');
 
 function start(url?: string) {
-    historyManager.init();
-    StateController.navigateLink(url ? url : historyManager.getCurrentUrl());
+    HistoryNavigator.historyManager.init();
+    StateController.navigateLink(url ? url : HistoryNavigator.historyManager.getCurrentUrl());
 }
 export = start;
 

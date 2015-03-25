@@ -55,6 +55,7 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
     <TypeScriptCompile Include="src\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Navigation.Knockout.ts" />
     <TypeScriptCompile Include="Navigation.React.ts" />
@@ -114,6 +115,7 @@
     <TypeScriptCompile Include="Test\StateInfoTest.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gulpfile.js" />
     <Content Include="Sample\personSearch.js" />
     <Content Include="Sample\Knockout\app.html" />
     <Content Include="Sample\Knockout\app.js" />
@@ -125,6 +127,7 @@
   <ItemGroup>
     <Content Include="web.config" />
     <Content Include="Sample\React\app.jsx" />
+    <Content Include="package.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

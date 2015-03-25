@@ -1,6 +1,6 @@
 ﻿import Crumb = require('./Crumb');
 import CrumbTrailManager = require('./CrumbTrailManager');
-import historyManager = require('./history/historyManager');
+import HistoryNavigator = require('./history/HistoryNavigator');
 import NavigationData = require('./NavigationData');
 import ReturnDataManager = require('./ReturnDataManager');
 import router = require('./router');
@@ -120,7 +120,7 @@ class StateController {
                         this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
                 if (url === StateContext.url) {
-                    historyManager.addHistory(state, url);
+                    HistoryNavigator.historyManager.addHistory(state, url);
                 }
             }
         });
