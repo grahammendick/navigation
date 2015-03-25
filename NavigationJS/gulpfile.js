@@ -45,4 +45,4 @@ gulp.task('navigationKnockout', function () {
 		.pipe(gulp.dest('./build'))
 });
 
-gulp.task('build', ['navigation', 'navigationReact', 'navigationKnockout']);
+gulp.task('build', ['test', 'navigation', 'navigationReact', 'navigationKnockout']);
