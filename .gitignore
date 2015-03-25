@@ -9,4 +9,5 @@ NavigationJS/Navigation*.js
 NavigationJS/Test/*.js
 NavigationJS/src/*.js
 NavigationJS/src/*/*.js
+NavigationJS/build
 node_modules

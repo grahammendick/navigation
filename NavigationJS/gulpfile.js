@@ -14,5 +14,5 @@ gulp.task('build', function () {
 	  .pipe(source('navigation.js'))
 	  //.pipe(streamify(uglify()))
 	  .pipe(rename('navigation.js'))
-	  .pipe(gulp.dest('./'))
+	  .pipe(gulp.dest('./build'))
 })
