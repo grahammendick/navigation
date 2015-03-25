@@ -12,37 +12,27 @@ gulp.task('test', function () {
         .pipe(mocha({ reporter: 'nyan' }));
 });
 
-gulp.task('navigation', function () {
-	browserify('./src/Navigation.ts', { standalone: 'Navigation' })
+function build(from, to, name) {
+	browserify(from, { standalone: name })
 		.plugin('tsify')
 		.bundle()
-		.pipe(source('navigation.js'))
-		.pipe(rename('navigation.js'))
+		.pipe(source(to))
+		.pipe(rename(to))
 		.pipe(derequire())
 		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'))
+}
+
+gulp.task('navigation', function () {
+	build('./src/Navigation.ts', 'navigation.js', 'Navigation')
 });
 
 gulp.task('navigationReact', function () {
-	browserify('./src/react/NavigationReact.ts', { standalone: 'NavigationReact' })
-		.plugin('tsify')
-		.bundle()
-		.pipe(source('navigation.react.js'))
-		.pipe(rename('navigation.react.js'))
-		.pipe(derequire())
-		//.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build'))
+	build('./src/react/NavigationReact.ts', 'navigation.react.js', 'NavigationReact')
 });
 
 gulp.task('navigationKnockout', function () {
-	browserify('./src/knockout/NavigationKnockout.ts', { standalone: 'NavigationKnockout' })
-		.plugin('tsify')
-		.bundle()
-		.pipe(source('navigation.knockout.js'))
-		.pipe(rename('navigation.knockout.js'))
-		.pipe(derequire())
-		//.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build'))
+	build('./src/knockout/NavigationKnockout.ts', 'navigation.knockout.js', 'NavigationKnockout')
 });
 
 gulp.task('build', ['test', 'navigation', 'navigationReact', 'navigationKnockout']);
