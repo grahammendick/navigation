@@ -10,4 +10,5 @@ NavigationJS/Test/*.js
 NavigationJS/src/*.js
 NavigationJS/src/*/*.js
 NavigationJS/build
+NavigationJS/npm-debug.log
 node_modules
