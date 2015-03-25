@@ -59,8 +59,6 @@
     <TypeScriptCompile Include="src\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Navigation.Knockout.ts" />
     <TypeScriptCompile Include="Navigation.React.ts" />
-    <TypeScriptCompile Include="Navigation.ts" />
-    <TypeScriptCompile Include="Navigation.Routing.ts" />
     <TypeScriptCompile Include="src\react\react.d.ts" />
     <TypeScriptCompile Include="src\ArrayConverter.ts" />
     <TypeScriptCompile Include="src\BooleanConverter.ts" />
