@@ -25,7 +25,7 @@
         var people = this.state.people.map(function (person) {
             return (
                 <tr>
-                    <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
+                    <td><NavigationReact.NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
                     <td>{person.dateOfBirth}</td>
                 </tr>
             );
@@ -36,7 +36,7 @@
 				<table>
 					<thead>
 						<tr>
-							<th><RefreshLink toData={{ sortExpression: this.props.sortExpression }} includeCurrentData={true}>Name</RefreshLink></th>
+							<th><NavigationReact.RefreshLink toData={{ sortExpression: this.props.sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
 							<th>Date of Birth</th>
 						</tr>
 					</thead>
@@ -60,8 +60,8 @@ var Filter = React.createClass({
 					<input id="name" defaultValue={this.props.name} onBlur={this.nameChange} />
 				</div>
 				Page size&nbsp;
-				<RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</RefreshLink>&nbsp;
-				<RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</RefreshLink>
+				<NavigationReact.RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</NavigationReact.RefreshLink>&nbsp;
+				<NavigationReact.RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</NavigationReact.RefreshLink>
 			</div>
         );
 	}
@@ -78,12 +78,12 @@ var Pager = React.createClass({
 		var nextLink = 'Next';
 		var lastLink = 'Last';
 	    if (previous >= 0){
-			firstLink = <RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</RefreshLink>;
-			previousLink = <RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</RefreshLink>;
+			firstLink = <NavigationReact.RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</NavigationReact.RefreshLink>;
+			previousLink = <NavigationReact.RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</NavigationReact.RefreshLink>;
 		}
 	    if (next < this.props.totalRowCount){
-			nextLink = <RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</RefreshLink>;
-			lastLink = <RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</RefreshLink>;
+			nextLink = <NavigationReact.RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</NavigationReact.RefreshLink>;
+			lastLink = <NavigationReact.RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</NavigationReact.RefreshLink>;
 		}
 		return (
 			<div>
@@ -119,7 +119,7 @@ var Details = React.createClass({
 			return null;
 		return (
 			<div>
-				<NavigationBackLink distance="1">Person Search</NavigationBackLink>
+				<NavigationReact.NavigationBackLink distance="1">Person Search</NavigationReact.NavigationBackLink>
 				<div>
 					Name: {this.state.person.name}<br />
 					Date of Birth: {this.state.person.dateOfBirth}

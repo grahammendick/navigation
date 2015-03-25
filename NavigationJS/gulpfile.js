@@ -12,7 +12,7 @@ gulp.task('test', function () {
         .pipe(mocha({ reporter: 'nyan' }));
 });
 
-gulp.task('build', function () {
+gulp.task('navigation', function () {
 	browserify('./src/Navigation.ts', { standalone: 'Navigation' })
 		.plugin('tsify')
 		.bundle()
@@ -21,4 +21,17 @@ gulp.task('build', function () {
 		.pipe(derequire())
 		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'))
-})
+});
+
+gulp.task('navigationReact', function () {
+	browserify('./src/react/NavigationReact.js', { standalone: 'NavigationReact' })
+		//.plugin('tsify')
+		.bundle()
+		.pipe(source('navigation.react.js'))
+		.pipe(rename('navigation.react.js'))
+		.pipe(derequire())
+		//.pipe(streamify(uglify()))
+		.pipe(gulp.dest('./build'))
+});
+
+gulp.task('build', ['navigation', 'navigationReact']);
