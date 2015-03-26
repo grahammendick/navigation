@@ -1,4 +1,6 @@
-﻿import assert = require('assert');
+﻿/// <reference path="assert.d.ts" />
+/// <reference path="mocha.d.ts" />
+import assert = require('assert');
 import Router = require('../src/routing/Router');
 
 describe('MatchTest', function () {
