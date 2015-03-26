@@ -33,8 +33,14 @@ for (var i = 0; i < tests.length; i++) {
 }
 gulp.task('test', testTasks);
 
-function build(name, from, to) {
-	browserify(from, { standalone: name })
+var buildTasks = [];
+var builds = [
+	{ name: 'Navigation', from: './src/Navigation.ts', to: 'navigation.js' },
+	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
+	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
+];
+function buildTask(name, from, to) {
+	return browserify(from, { standalone: name })
 		.plugin('tsify')
 		.bundle()
 		.pipe(source(to))
@@ -43,21 +49,12 @@ function build(name, from, to) {
 		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'))
 }
-
-var items = [
-	{ name: 'Navigation', from: './src/Navigation.ts', to: 'navigation.js' },
-	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
-	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
-];
-var tasks = [];
-
-for (var i = 0; i < items.length; i++) {
-	(function (item) {
-		gulp.task(item.name, function () {
-			build(item.name, item.from, item.to)
+for (var i = 0; i < builds.length; i++) {
+	(function (build) {
+		gulp.task(build.name, function () {
+			return buildTask(build.name, build.from, build.to)
 		});
-	})(items[i]);
-	tasks.push(items[i].name);
+	})(builds[i]);
+	buildTasks.push(builds[i].name);
 }
-
-gulp.task('build', tasks);
+gulp.task('build', buildTasks);
