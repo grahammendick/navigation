@@ -12,7 +12,7 @@ var tests = [
 	{ name: 'NavigationRoutingTest', from: './test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
 	{ name: 'StateInfoTest', from: './test/StateInfoTest.ts', to: 'stateInfo.test.js' },
 	{ name: 'NavigationTest', from: './test/NavigationTest.ts', to: 'navigation.test.js' },
-	{ name: 'NavigationDataTest', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' },
+	{ name: 'NavigationDataTest', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' }
 ];
 function testTask(from, to) {
 	return browserify(from)
@@ -33,9 +33,11 @@ for (var i = 0; i < tests.length; i++) {
 }
 gulp.task('test', testTasks);
 
-var buildTasks = [];
-var builds = [
-	{ name: 'Navigation', from: './src/Navigation.ts', to: 'navigation.js' },
+gulp.task('Navigation', function () {
+	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js')
+});
+var buildTasks = ['Navigation'];
+var plugins = [
 	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
 	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
 ];
@@ -49,12 +51,12 @@ function buildTask(name, from, to) {
 		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'))
 }
-for (var i = 0; i < builds.length; i++) {
-	(function (build) {
-		gulp.task(build.name, function () {
-			return buildTask(build.name, build.from, build.to)
+for (var i = 0; i < plugins.length; i++) {
+	(function (plugin) {
+		gulp.task(plugin.name, ['Navigation'], function () {
+			return buildTask(plugin.name, plugin.from, plugin.to)
 		});
-	})(builds[i]);
-	buildTasks.push(builds[i].name);
+	})(plugins[i]);
+	buildTasks.push(plugins[i].name);
 }
 gulp.task('build', buildTasks);
