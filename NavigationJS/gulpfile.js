@@ -64,7 +64,7 @@ for (var i = 0; i < plugins.length; i++) {
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
-		gulp.task('Unfiy' + plugin.name, ['Build' + plugin.name], function () {
+		gulp.task('Unify' + plugin.name, ['Build' + plugin.name], function () {
 			return gulp.src(['./build/navigation.js', './build/' + plugin.to])
 				.pipe(concat(plugin.to))
 				.pipe(gulp.dest('./build'))
@@ -73,6 +73,6 @@ for (var i = 0; i < plugins.length; i++) {
 				.pipe(gulp.dest('./build'));
 		});
 	})(plugins[i]);
-	buildTasks.push('Unfiy' + plugins[i].name);
+	buildTasks.push('Unify' + plugins[i].name);
 }
 gulp.task('build', buildTasks);
