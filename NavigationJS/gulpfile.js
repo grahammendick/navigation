@@ -27,7 +27,7 @@ function testTask(from, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(gulp.dest('./build'))
-        .pipe(mocha({ reporter: 'nyan' }));
+        .pipe(mocha());
 }
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {
