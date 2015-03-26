@@ -38,13 +38,16 @@ for (var i = 0; i < tests.length; i++) {
 }
 gulp.task('test', testTasks);
 
-gulp.task('BuildNavigation', function () {
-	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js')
-		.pipe(rename('navigation.min.js'))
+gulp.task('BuildNavigationRouting', function () {
+	return buildTask('NavigationRouting', './src/routing/NavigationRouting.ts', 'navigation.routing.js')
+		.pipe(rename('navigation.routing.min.js'))
 		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'));
 });
-var buildTasks = ['BuildNavigation'];
+gulp.task('BuildNavigation', function () {
+	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js');
+});
+var buildTasks = ['BuildNavigationRouting','BuildNavigation'];
 function buildTask(name, from, to) {
 	return browserify(from, { standalone: name })
 		.plugin('tsify')
@@ -56,15 +59,24 @@ function buildTask(name, from, to) {
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
-		gulp.task('Build' + plugin.name, ['BuildNavigation'], function () {
+		gulp.task('Build' + plugin.name, function () {
 			return buildTask(plugin.name, plugin.from, plugin.to);
 		});
 	})(plugins[i]);
 	buildTasks.push('Build' + plugins[i].name);
 }
+gulp.task('UnifyNavigation', ['BuildNavigationRouting', 'BuildNavigation'], function () {
+	return gulp.src(['./build/navigation.routing.js', './build/navigation.js'])
+		.pipe(concat('navigation.js'))
+		.pipe(gulp.dest('./build'))
+		.pipe(rename('navigation.min.js'))
+		.pipe(streamify(uglify()))
+		.pipe(gulp.dest('./build'));
+});
+buildTasks.push('UnifyNavigation');
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
-		gulp.task('Unify' + plugin.name, ['Build' + plugin.name], function () {
+		gulp.task('Unify' + plugin.name, ['UnifyNavigation', 'Build' + plugin.name], function () {
 			return gulp.src(['./build/navigation.js', './build/' + plugin.to])
 				.pipe(concat(plugin.to))
 				.pipe(gulp.dest('./build'))
