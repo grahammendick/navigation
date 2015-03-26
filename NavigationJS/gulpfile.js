@@ -36,6 +36,9 @@ gulp.task('test', testTasks);
 
 gulp.task('Navigation', function () {
 	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js')
+		.pipe(rename('navigation.min.js'))
+		.pipe(streamify(uglify()))
+		.pipe(gulp.dest('./build'));
 });
 var buildTasks = ['Navigation'];
 var plugins = [
@@ -50,12 +53,12 @@ function buildTask(name, from, to) {
 		.pipe(rename(to))
 		.pipe(derequire())
 		//.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build'))
+		.pipe(gulp.dest('./build'));
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
 		gulp.task(plugin.name, ['Navigation'], function () {
-			return buildTask(plugin.name, plugin.from, plugin.to)
+			return buildTask(plugin.name, plugin.from, plugin.to);
 		});
 	})(plugins[i]);
 	buildTasks.push(plugins[i].name);
@@ -66,6 +69,9 @@ for (var i = 0; i < plugins.length; i++) {
 			return gulp.src(['./build/navigation.js', './build/' + plugin.to])
 				.pipe(concat(plugin.to))
 				.pipe(gulp.dest('./build'))
+				.pipe(rename(plugin.to.replace(/js$/, 'min.js')))
+				.pipe(streamify(uglify()))
+				.pipe(gulp.dest('./build'));
 		});
 	})(plugins[i]);
 	buildTasks.push(plugins[i].name + 'concat');
