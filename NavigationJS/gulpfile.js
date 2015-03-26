@@ -48,7 +48,7 @@ gulp.task('BuildNavigationRouting', function () {
 gulp.task('BuildNavigation', function () {
 	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js');
 });
-var buildTasks = ['BuildNavigationRouting','BuildNavigation'];
+var buildTasks = ['BuildNavigationRouting', 'BuildNavigation'];
 function buildTask(name, from, to) {
 	return browserify(from, { standalone: name })
 		.plugin('tsify')
