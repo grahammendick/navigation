@@ -21,11 +21,6 @@
     "./routing/NavigationRouting": "global:NavigationRouting",
     "../Navigation": "global:Navigation"
   },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
   "scripts": {
     "test": "gulp test",
     "build": "gulp build"

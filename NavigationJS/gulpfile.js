@@ -1,4 +1,5 @@
 ﻿var browserify = require('browserify');
+var browserifyShim = require('browserify-shim');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var derequire = require('gulp-derequire');
@@ -51,6 +52,7 @@ var buildTasks = ['BuildNavigationRouting','BuildNavigation'];
 function buildTask(name, from, to) {
 	return browserify(from, { standalone: name })
 		.plugin('tsify')
+		.transform(browserifyShim)
 		.bundle()
 		.pipe(source(to))
 		.pipe(rename(to))
