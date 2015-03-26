@@ -1,5 +1,6 @@
 ﻿var browserify = require('browserify');
 var gulp = require('gulp');
+var concat = require('gulp-concat');
 var derequire = require('gulp-derequire');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
@@ -58,5 +59,15 @@ for (var i = 0; i < plugins.length; i++) {
 		});
 	})(plugins[i]);
 	buildTasks.push(plugins[i].name);
+}
+for (var i = 0; i < plugins.length; i++) {
+	(function (plugin) {
+		gulp.task(plugin.name + 'concat', [plugin.name], function () {
+			return gulp.src(['./build/navigation.js', './build/' + plugin.to])
+				.pipe(concat(plugin.to))
+				.pipe(gulp.dest('./build'))
+		});
+	})(plugins[i]);
+	buildTasks.push(plugins[i].name + 'concat');
 }
 gulp.task('build', buildTasks);
