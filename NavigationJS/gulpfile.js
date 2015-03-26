@@ -8,13 +8,17 @@ var source = require('vinyl-source-stream');
 var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
 
-var testTasks = [];
 var tests = [
 	{ name: 'NavigationRouting', from: './test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
 	{ name: 'StateInfo', from: './test/StateInfoTest.ts', to: 'stateInfo.test.js' },
 	{ name: 'Navigation', from: './test/NavigationTest.ts', to: 'navigation.test.js' },
 	{ name: 'NavigationData', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' }
 ];
+var plugins = [
+	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
+	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
+];
+var testTasks = [];
 function testTask(from, to) {
 	return browserify(from)
 		.plugin('tsify')
@@ -41,10 +45,6 @@ gulp.task('BuildNavigation', function () {
 		.pipe(gulp.dest('./build'));
 });
 var buildTasks = ['BuildNavigation'];
-var plugins = [
-	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
-	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
-];
 function buildTask(name, from, to) {
 	return browserify(from, { standalone: name })
 		.plugin('tsify')
