@@ -5,10 +5,8 @@ bin/
 *.suo
 *.exe
 *.map
-NavigationJS/Navigation*.js
-NavigationJS/Test/*.js
-NavigationJS/src/*.js
-NavigationJS/src/*/*.js
+NavigationJS/**/*.js
+!NavigationJS/Sample/**/*.js
 NavigationJS/build
 NavigationJS/npm-debug.log
 node_modules
