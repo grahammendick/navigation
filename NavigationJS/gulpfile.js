@@ -10,10 +10,10 @@ var uglify = require('gulp-uglify');
 
 var testTasks = [];
 var tests = [
-	{ name: 'NavigationRoutingTest', from: './test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
-	{ name: 'StateInfoTest', from: './test/StateInfoTest.ts', to: 'stateInfo.test.js' },
-	{ name: 'NavigationTest', from: './test/NavigationTest.ts', to: 'navigation.test.js' },
-	{ name: 'NavigationDataTest', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' }
+	{ name: 'NavigationRouting', from: './test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
+	{ name: 'StateInfo', from: './test/StateInfoTest.ts', to: 'stateInfo.test.js' },
+	{ name: 'Navigation', from: './test/NavigationTest.ts', to: 'navigation.test.js' },
+	{ name: 'NavigationData', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' }
 ];
 function testTask(from, to) {
 	return browserify(from)
@@ -26,21 +26,21 @@ function testTask(from, to) {
 }
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {
-		gulp.task(test.name, function () {
+		gulp.task('Test' + test.name, function () {
 			return testTask(test.from, test.to)
 		});
 	})(tests[i]);
-	testTasks.push(tests[i].name);
+	testTasks.push('Test' + tests[i].name);
 }
 gulp.task('test', testTasks);
 
-gulp.task('Navigation', function () {
+gulp.task('BuildNavigation', function () {
 	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js')
 		.pipe(rename('navigation.min.js'))
 		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'));
 });
-var buildTasks = ['Navigation'];
+var buildTasks = ['BuildNavigation'];
 var plugins = [
 	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
 	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
@@ -52,20 +52,19 @@ function buildTask(name, from, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(derequire())
-		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build'));
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
-		gulp.task(plugin.name, ['Navigation'], function () {
+		gulp.task('Build' + plugin.name, ['BuildNavigation'], function () {
 			return buildTask(plugin.name, plugin.from, plugin.to);
 		});
 	})(plugins[i]);
-	buildTasks.push(plugins[i].name);
+	buildTasks.push('Build' + plugins[i].name);
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
-		gulp.task(plugin.name + 'concat', [plugin.name], function () {
+		gulp.task('Unfiy' + plugin.name, ['Build' + plugin.name], function () {
 			return gulp.src(['./build/navigation.js', './build/' + plugin.to])
 				.pipe(concat(plugin.to))
 				.pipe(gulp.dest('./build'))
@@ -74,6 +73,6 @@ for (var i = 0; i < plugins.length; i++) {
 				.pipe(gulp.dest('./build'));
 		});
 	})(plugins[i]);
-	buildTasks.push(plugins[i].name + 'concat');
+	buildTasks.push('Unfiy' + plugins[i].name);
 }
 gulp.task('build', buildTasks);
