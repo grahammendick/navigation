@@ -48,24 +48,67 @@
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="knockout.d.ts" />
-    <TypeScriptCompile Include="Navigation.Knockout.ts" />
-    <TypeScriptCompile Include="Navigation.React.ts" />
-    <TypeScriptCompile Include="Navigation.ts" />
-    <TypeScriptCompile Include="Navigation.Routing.ts" />
-    <TypeScriptCompile Include="react.d.ts" />
-    <TypeScriptCompile Include="Test\Navigation.Test.ts" />
-    <TypeScriptCompile Include="Test\qunit.d.ts" />
-    <TypeScriptCompile Include="Test\Navigation.Routing.Test.ts" />
+    <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
+    <TypeScriptCompile Include="src\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="src\react\react.d.ts" />
+    <TypeScriptCompile Include="src\ArrayConverter.ts" />
+    <TypeScriptCompile Include="src\BooleanConverter.ts" />
+    <TypeScriptCompile Include="src\config\Dialog.ts" />
+    <TypeScriptCompile Include="src\config\State.ts" />
+    <TypeScriptCompile Include="src\config\StateInfoConfig.ts" />
+    <TypeScriptCompile Include="src\config\Transition.ts" />
+    <TypeScriptCompile Include="src\ConverterFactory.ts" />
+    <TypeScriptCompile Include="src\Crumb.ts" />
+    <TypeScriptCompile Include="src\CrumbTrailManager.ts" />
+    <TypeScriptCompile Include="src\history\HashHistoryManager.ts" />
+    <TypeScriptCompile Include="src\history\HTML5HistoryManager.ts" />
+    <TypeScriptCompile Include="src\history\IHistoryManager.ts" />
+    <TypeScriptCompile Include="src\IRouter.ts" />
+    <TypeScriptCompile Include="src\IStateHandler.ts" />
+    <TypeScriptCompile Include="src\knockout\LinkUtility.ts" />
+    <TypeScriptCompile Include="src\knockout\NavigationBackLink.ts" />
+    <TypeScriptCompile Include="src\knockout\NavigationKnockout.ts" />
+    <TypeScriptCompile Include="src\knockout\NavigationLink.ts" />
+    <TypeScriptCompile Include="src\knockout\RefreshLink.ts" />
+    <TypeScriptCompile Include="src\Navigation.ts" />
+    <TypeScriptCompile Include="src\NavigationData.ts" />
+    <TypeScriptCompile Include="src\NavigationSettings.ts" />
+    <TypeScriptCompile Include="src\NumberConverter.ts" />
+    <TypeScriptCompile Include="src\react\LinkUtility.ts" />
+    <TypeScriptCompile Include="src\react\NavigationBackLink.ts" />
+    <TypeScriptCompile Include="src\react\NavigationLink.ts" />
+    <TypeScriptCompile Include="src\react\NavigationReact.ts" />
+    <TypeScriptCompile Include="src\react\RefreshLink.ts" />
+    <TypeScriptCompile Include="src\ReturnDataManager.ts" />
+    <TypeScriptCompile Include="src\router.ts" />
+    <TypeScriptCompile Include="src\routing\NavigationRouting.ts" />
+    <TypeScriptCompile Include="src\routing\Route.ts" />
+    <TypeScriptCompile Include="src\routing\Router.ts" />
+    <TypeScriptCompile Include="src\routing\Segment.ts" />
+    <TypeScriptCompile Include="src\settings.ts" />
+    <TypeScriptCompile Include="src\StateContext.ts" />
+    <TypeScriptCompile Include="src\StateController.ts" />
+    <TypeScriptCompile Include="src\StateHandler.ts" />
+    <TypeScriptCompile Include="src\StateRouter.ts" />
+    <TypeScriptCompile Include="src\StringConverter.ts" />
+    <TypeScriptCompile Include="src\TypeConverter.ts" />
+    <TypeScriptCompile Include="Test\assert.d.ts" />
+    <TypeScriptCompile Include="Test\initStateInfo.ts" />
+    <TypeScriptCompile Include="Test\mocha.d.ts" />
+    <TypeScriptCompile Include="Test\NavigationDataTest.ts" />
+    <TypeScriptCompile Include="Test\NavigationRoutingTest.ts" />
+    <TypeScriptCompile Include="Test\NavigationTest.ts" />
+    <TypeScriptCompile Include="Test\StateInfoTest.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gulpfile.js" />
     <Content Include="Sample\personSearch.js" />
     <Content Include="Sample\Knockout\app.html" />
     <Content Include="Sample\Knockout\app.js" />
@@ -73,14 +116,11 @@
     <Content Include="Sample\React\app.html" />
     <Content Include="Sample\React\JSXTransformer-0.12.2.js" />
     <Content Include="Sample\React\react-0.12.2.js" />
-    <Content Include="Test\Navigation.Test.html" />
-    <Content Include="Test\qunit-1.17.1.css" />
-    <Content Include="Test\qunit-1.17.1.js" />
-    <Content Include="Test\Navigation.Routing.Test.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
     <Content Include="Sample\React\app.jsx" />
+    <Content Include="package.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -91,6 +131,9 @@
   <ItemGroup />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 </Project>
