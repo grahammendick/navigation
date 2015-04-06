@@ -6,3 +6,6 @@ var codeMirror = CodeMirror.fromTextArea(code, {
 document.getElementById('run').addEventListener('click', function () {
 	eval('(' + codeMirror.getValue() + ')')({});
 });
+document.getElementById('cheat').addEventListener('click', function () {
+	codeMirror.setValue(tutorial.answer);
+});
