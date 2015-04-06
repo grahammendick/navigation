@@ -1,0 +1,1 @@
+document.getElementById('code').value = tutorial.exercise;
