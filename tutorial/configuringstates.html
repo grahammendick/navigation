@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Introduction</title>
+</head>
+<body>
+    <h1>Introduction</h1>
+    <p>
+        The Navigation library is a new kind of router for building Single Page Applications (SPAs). It works 
+        in all browsers and with all web libraries, from Angular to React. What follows is an interactive tutorial 
+        to get you familiar with it.
+    </p>
+    <p>
+        It's a series of coding Exercises, each one introducing a different Navigation topic. Edit the code and press 
+        the 'Run' button once you're happy. If you're correct, a button will appear to take you to the next Exercise. 
+        Don't worry if you get stuck. Pressing the 'Cheat' button reveals the answer and allows you to progress.
+    </p>
+    <h2>The Scenario</h2>
+    <p>
+        You've been tasked with building an application that allows users to edit a list of people. You're going to 
+        build it as a master details SPA, consisting of two views. The first will display a paged list of people. 
+        Clicking on a person in the list will take the user to the second, an editable view of that person's details.
+    </p>
+    <h2>Exercise 1: Configuring States</h2>
+    <p>
+        Your SPA has two routes: a 'people' route for the listing view and a 'person' route for the details view. 
+        The Navigation library thinks in in terms of States rather than routes. There's a 1 to 1 relationship 
+        between a State and a route. In this first exercise you'll create a listing State and a details State 
+        mapped to these two routes. You'll also wrap these States inside a Dialog. A Dialog groups related States 
+        togther, indicating which of them is the first to display.
+    </p>
+    <textarea>
+    </textarea>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * The following configuration tells the Navigation library\n\
+	 * about the State to route mapping in your SPA. Fill in the\n\
+	 * gaps by naming the Dialog and States. You can choose\n\
+	 * whatever names you want, but the more meaningful the\n\
+	 * better. Once named, set the Dialog's 'initial' property\n\
+	 * to the name you gave to the listing State.\n\
+	 */\n\
+	var dialogs = [{\n\
+		key: '?', initial: '?', states: [\n\
+			{ key: '?', route: 'people' },\n\
+    		{ key: '?', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'masterDetails', initial: 'listing', states: [\n\
+			{ key: 'listing', route: 'people' },\n\
+    		{ key: 'details', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+}"
+        }
+    </script>
+</body>
+</html>
