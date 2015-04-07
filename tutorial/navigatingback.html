@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigating Back</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 7: Navigating Back</h1>
+    <p>
+        After the user's edited a person's details, they'll want to return to the listing State to select a different 
+        person. Navigation keeps track of the States the user's navigate through, building up a dynamic breadcrumb trail. 
+        You can navigate back along this trail to return to a previously visited State. Navigating back 1 State would 
+        return the user to the listing State from the details State.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	dialog.states.x.navigated = function(){\n\
+		result.navigated = true;\n\
+	}\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Navigate back from the details State to the listing\n\
+	 * State. Replace the first blank by navigating along the\n\
+	 * Transition to reach the details State. Replace the\n\
+	 * second blank with the number of States to go back to\n\
+	 * return to the listing State.\n\
+	 */\n\
+	Navigation.StateController.navigate('z');\n\
+	?\n\
+	Navigation.StateController.navigateBack(?);\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	dialog.states.x.navigated = function(){\n\
+		result.navigated = true;\n\
+	}\n\
+	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.navigate('t');\n\
+	Navigation.StateController.navigateBack(1);\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
