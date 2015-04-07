@@ -48,6 +48,7 @@
 		delete result.navigated;
 		delete result.listing;
 		delete result.id;
+		delete result.pageNumber;
 	}
 	Navigation.StateHandler.prototype.navigateLink = function () {
 		clearResult();
@@ -57,12 +58,15 @@
 		resultCopy = {
 			navigated: result.navigated,
 			listing: result.listing,
-			id: result.id
+			id: result.id,
+			pageNumber: result.pageNumber
 		}
 	});
 	function runCode() {
 		next.style.display = 'none';
 		clearResult();
+		delete Navigation.StateContext.state;
+		delete Navigation.StateContext.data;
 		eval('(' + codeMirror.getValue() + ')')(result);
 		var dialog = Navigation.StateInfoConfig._dialogs[0];
 		var listing = dialog._states[0];

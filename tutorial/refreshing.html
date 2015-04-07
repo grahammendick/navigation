@@ -69,7 +69,7 @@
 	 * you can refresh it.\n\
 	 */\n\
 	 ?\n\
-	 Navigation.StateController.refresh(?)\n\
+	 Navigation.StateController.refresh(?);\n\
 }",
             answer:
 "function(result){\n\
@@ -89,7 +89,17 @@
 	}\n\
 	Navigation.StateController.navigate('z');\n\
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
-}"
+}",
+            test: function (listing, details, result) {
+                if (result.pageNumber !== 2)
+                    throw "'result.pageNumber' isn't set to 2";
+                if (Navigation.StateContext.data.pageNumber !== 2)
+                    throw "You didn't pass a pageNumber of 2 to the listing State";
+                if (Navigation.StateContext.state !== listing)
+                    throw "The current State isn't the listing State";
+                if (Navigation.StateContext.previousState !== listing)
+                    throw "The previous State isn't the listing State";
+            }
         }
     </script>
     <script src="navigation.js"></script>
