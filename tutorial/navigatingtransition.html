@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigating along a Transition</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 6: Navigating along a Transition</h1>
+    <p>
+        Now that the Transition's configured, you can navigate along it. You do this in the same way as navigating to
+        a Dialog, but passing in the Transition name instead of the Dialog name. If the current State isn't the listing
+        State then you can't navigate along its Transition. So this Exercise navigates to the Dialog immediately before
+        asking you to navigate along the Transition. In your SPA for real, these two navigations occur separately. 
+        Navigating to the Dialog happens when the user starts your SPA and navigating along the Transition when the user 
+        selects a person from the list.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	dialog.states.y.navigated = function(){\n\
+		result.navigated = true;\n\
+	}\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Navigate along the listing State's Transition. Replace\n\
+	 * the question mark below with a call to the 'navigate'\n\
+	 * function on the StateController. Pass in the name you\n\
+	 * gave to the Transition. This will navigate to the details\n\
+	 * State and call its State controller above.\n\
+	 */\n\
+	 Navigation.StateController.navigate('z');\n\
+	 ?\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	dialog.states.y.navigated = function(){\n\
+		result.navigated = true;\n\
+	}\n\
+	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.navigate('t');\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
