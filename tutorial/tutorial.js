@@ -27,6 +27,7 @@
 		lineNumbers: true,
 	});
 	function runCode() {
+		next.style.display = 'none';
 		eval('(' + codeMirror.getValue() + ')')({});
 		var dialog = Navigation.StateInfoConfig._dialogs[0];
 		var listing = dialog._states[0];
@@ -49,19 +50,17 @@
 			details: detailsName,
 			transition: transitionName
 		}));
+		next.style.display = 'block';
 	}
 	var run = document.getElementById('run');
 	var cheat = document.getElementById('cheat');
 	var next = document.getElementById('next');
 	run.addEventListener('click', function () {
-		next.style.display = 'none';
 		runCode();
-		next.style.display = 'block';
 	});
 	cheat.addEventListener('click', function () {
 		codeMirror.setValue(tutorial.answer);
 		runCode();
-		next.style.display = 'block';
 	});
 	next.addEventListener('click', function () {
 		location.href = exercises[tutorial.part] + '.html';
