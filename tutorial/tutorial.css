@@ -65,7 +65,8 @@ ol li a,ol li a:visited{
 	margin-right:1%;
 }
 button{
-	background-color:#e9e581;
+	background-color:#de1b1b;
+	color:#fff;
 	font-size: 16px;
 	width:15%;
 	margin-bottom:8px;
