@@ -3,26 +3,52 @@
 <head>
     <title>Accessing States</title>
     <link href="codemirror.css" rel="stylesheet" />
+    <link href="tutorial.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Exercise 2: Accessing States</h1>
-    <p>
-        If you've used a router before you've probably encountered a route handler. It's a function that's associated 
-        with a route and runs when that route is activated. Navigation has State controllers in place of route handlers. 
-        They serve the same purpose, except they're attached to States instead of routes.
-    </p>
-    <p>
-        It would be too limiting to have to define the listing controller at the same time as you created the listing 
-        State. Navigation provides access to the States after they've been configured and built so you can create the 
-        controller at the same time as you create your listing view model. You access the States through their parent 
-        Dialog. In this Exercise, you'll familiarise yourself with this access code. This will pave the way for creating 
-        State controllers in later Exercises.
-    </p>
-    <textarea id="code"></textarea>
-    <button id="run">Run</button>
-    <button id="cheat">Cheat</button>
+    <div id="header">
+        <div id="banner">Navigation</div>
+    </div>
+    <div id="content">
+        <div id="tutorial">
+            <h3>Exercises</h3>
+            <ol>
+                <li><a id="e1">Configuring States</a></li>
+                <li><a id="e2">Accessing States</a></li>
+                <li><a id="e3">Navigating to a Dialog</a></li>
+                <li><a id="e4">Creating a State Controller</a></li>
+                <li><a id="e5">Configuring a Transition</a></li>
+                <li><a id="e6">Navigating along a Transition</a></li>
+                <li><a id="e7">Navigating Back</a></li>
+                <li><a id="e8">Passing Data</a></li>
+                <li><a id="e9">Refreshing</a></li>
+                <li><a id="e10">Remembering Data</a></li>
+                <li><a id="e11">Tidying Up the Url</a></li>
+            </ol>
+        </div>
+        <div id="exercise">
+            <h1>Exercise 2: Accessing States</h1>
+            <p>
+                If you've used a router before you've probably encountered a route handler. It's a function that's associated
+                with a route and runs when that route is activated. Navigation has State controllers in place of route handlers.
+                They serve the same purpose, except they're attached to States instead of routes.
+            </p>
+            <p>
+                It would be too limiting to have to define the listing controller at the same time as you created the listing
+                State. Navigation provides access to the States after they've been configured and built so you can create the
+                controller at the same time as you create your listing view model. You access the States through their parent
+                Dialog. In this Exercise, you'll familiarise yourself with this access code. This will pave the way for creating
+                State controllers in later Exercises.
+            </p>
+            <textarea id="code"></textarea>
+            <button id="run">Run</button>
+            <button id="cheat">Cheat</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
     <script>
         var tutorial = {
+            part: 2,
             exercise:
 "function(result){\n\
 	var dialogs = [{\n\
@@ -63,4 +89,5 @@
     <script src="tutorial.js"></script>
     <script src="navigation.js"></script>
 </body>
+
 </html>
