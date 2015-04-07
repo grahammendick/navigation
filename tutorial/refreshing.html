@@ -3,21 +3,47 @@
 <head>
     <title>Refreshing</title>
     <link href="codemirror.css" rel="stylesheet" />
+    <link href="tutorial.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Exercise 9: Refreshing</h1>
-    <p>
-        The user has to page through the grid of people because there are too many to show all at once. As the user pages 
-        through the grid you want to keep them on the listing State but pass the new page number into the listing State 
-        controller. Changing data without changing State is called refreshing. This is the third and final type of 
-        navigation - the other two you've met are forward (to a Dialog or along a Transtion) and back. In this Exercise, 
-        you'll refresh the pageNumber of the listing State.
-    </p>
-    <textarea id="code"></textarea>
-    <button id="run">Run</button>
-    <button id="cheat">Cheat</button>
+    <div id="header">
+        <div id="banner">Navigation</div>
+    </div>
+    <div id="content">
+        <div id="tutorial">
+            <h3>Exercises</h3>
+            <ol>
+                <li><a id="e1">Configuring States</a></li>
+                <li><a id="e2">Accessing States</a></li>
+                <li><a id="e3">Navigating to a Dialog</a></li>
+                <li><a id="e4">Creating a State Controller</a></li>
+                <li><a id="e5">Configuring a Transition</a></li>
+                <li><a id="e6">Navigating along a Transition</a></li>
+                <li><a id="e7">Navigating Back</a></li>
+                <li><a id="e8">Passing Data</a></li>
+                <li><a id="e9">Refreshing</a></li>
+                <li><a id="e10">Remembering Data</a></li>
+                <li><a id="e11">Tidying Up the Url</a></li>
+            </ol>
+        </div>
+        <div id="exercise">
+            <h1>Exercise 9: Refreshing</h1>
+            <p>
+                The user has to page through the grid of people because there are too many to show all at once. As the user pages
+                through the grid you want to keep them on the listing State but pass the new page number into the listing State
+                controller. Changing data without changing State is called refreshing. This is the third and final type of
+                navigation - the other two you've met are forward (to a Dialog or along a Transtion) and back. In this Exercise,
+                you'll refresh the pageNumber of the listing State.
+            </p>
+            <textarea id="code"></textarea>
+            <button id="run">Run</button>
+            <button id="cheat">Cheat</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
     <script>
         var tutorial = {
+            part: 9,
             exercise:
 "function(result){\n\
 	var dialogs = [{\n\
@@ -68,4 +94,5 @@
     <script src="tutorial.js"></script>
     <script src="navigation.js"></script>
 </body>
+
 </html>
