@@ -75,6 +75,8 @@ button{
 	letter-spacing:1px;
     font-family:'Lucida Grande',Calibri,Helvetica,Arial,sans-serif;
 }
-#next{
+button#next{
 	display:none;
+	background-color:#e9e581;
+	color:#000;
 }
