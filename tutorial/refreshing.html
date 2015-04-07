@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Refreshing</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 9: Refreshing</h1>
+    <p>
+        The user has to page through the grid of people because there are too many to show all at once. As the user pages 
+        through the grid you want to keep them on the listing State but pass the new page number into the listing State 
+        controller. Changing data without changing State is called refreshing. This is the third and final type of 
+        navigation - the other two you've met are forward (to a Dialog or along a Transtion) and back. In this Exercise, 
+        you'll refresh the pageNumber of the listing State.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	dialog.states.x.navigated = function(data){\n\
+		result.pageNumber = data.pageNumber;\n\
+	}\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Refresh the listing State passing a pageNumber of 2.\n\
+	 * Remember, you must navigate to the listing State before\n\
+	 * you can refresh it.\n\
+	 */\n\
+	 ?\n\
+	 Navigation.StateController.refresh(?)\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	dialog.states.x.navigated = function(data){\n\
+		result.pageNumber = data.pageNumber;\n\
+	}\n\
+	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.refresh({ pageNumber: 2 });\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
