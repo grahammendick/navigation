@@ -50,7 +50,9 @@
 		delete result.id;
 		delete result.pageNumber;
 	}
-	Navigation.StateHandler.prototype.navigateLink = function () {
+	var lastState;
+	Navigation.StateHandler.prototype.navigateLink = function (oldState) {
+		lastState = oldState;
 		clearResult();
 	};
 	var resultCopy;
@@ -65,6 +67,7 @@
 	function runCode() {
 		next.style.display = 'none';
 		clearResult();
+		lastState = null;
 		delete Navigation.StateContext.state;
 		delete Navigation.StateContext.data;
 		eval('(' + codeMirror.getValue() + ')')(result);
@@ -74,7 +77,7 @@
 		if (resultCopy)
 			result = resultCopy;
 		if (tutorial.test)
-			tutorial.test(listing, details, result);
+			tutorial.test(listing, details, result, lastState);
 		var settings = getSettings();
 		settings.part = Math.max(settings.part, tutorial.part + 1);
 		var nameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;

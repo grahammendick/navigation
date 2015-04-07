@@ -113,7 +113,17 @@
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
 	Navigation.StateController.navigate('t');\n\
 	Navigation.StateController.navigateBack(1);\n\
-}"
+}",
+            test: function (listing, details, result, lastState) {
+                if (Navigation.StateContext.url !== '/people/2')
+                    throw "The current url isn't '/people/2'";
+                if (Navigation.StateContext.data.pageNumber !== 2)
+                    throw "You didn't remember a pageNumber of 2";
+                if (Navigation.StateContext.state !== listing)
+                    throw "The current State isn't the listing State";
+                if (lastState !== details)
+                    throw "The previous State isn't the details State";
+            }
         }
     </script>
     <script src="navigation.js"></script>
