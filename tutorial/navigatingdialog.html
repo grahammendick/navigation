@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigating to a Dialog</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 3: Navigating to a Dialog</h1>
+    <p>
+        In a traditional router, you move between views by changing the route. In Navigation, you move between views 
+        by navigating to a different State. One way to do this is by navigating to a Dialog. Doing so will set the 
+        current State to that specified in the Dialog's initial property.
+    </p>
+    <p>
+        When a user starts up your SPA, you need to show them the people listing first. This is the same as saying you 
+        need the current State set to the listing State. In this Exercise, you'll achieve exactly that by navigating 
+        to your Dialog.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people' },\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Ensure the current State is set to the listing State by\n\
+	 * navigating to your Dialog. Replace the blank below with\n\
+	 * a call to the 'navigate' function on the StateController,\n\
+	 * passing in the name of your Dialog as a string.\n\
+	 */\n\
+	Navigation.StateController.?;\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people' \n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	Navigation.StateController.navigate('z');\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
