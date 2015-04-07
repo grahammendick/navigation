@@ -43,6 +43,9 @@ ol li.available.active{
 	font-style:italic;
 	font-weight:bold;
 }
+ol li a,ol li a:visited{
+	color:#000;
+}
 #tutorial{
 	width:26%;
 	float:left;
