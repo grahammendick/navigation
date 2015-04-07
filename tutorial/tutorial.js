@@ -12,10 +12,11 @@
 		'rememberingdata',
 		'tidyingurl',
 	];
-	function getNames() {
+	function getSettings() {
 		var names = localStorage.getItem('tutorial');
 		if (!names) {
 			return {
+				part: 1,
 				dialog: 'masterDetails',
 				listing: 'listing',
 				details: 'details',
@@ -24,15 +25,19 @@
 		}
 		return JSON.parse(names);
 	}
-	for (var i = 0; i < exercises.length; i++) {
-		var exercise = document.getElementById('e' + (i + 1));
-		if (i < tutorial.part) {
-			exercise.parentNode.className = 'available';
-			if (i + 1 == tutorial.part)
-				exercise.parentNode.className += ' active';
-			exercise.href = exercises[i] + '.html';
+	function setExercises() {
+		for (var i = 0; i < exercises.length; i++) {
+			var exercise = document.getElementById('e' + (i + 1));
+			var part = getSettings().part;
+			if (i < part) {
+				exercise.parentNode.className = 'available';
+				if (i + 1 == tutorial.part)
+					exercise.parentNode.className += ' active';
+				exercise.href = exercises[i] + '.html';
+			}
 		}
 	}
+	setExercises();
 	var code = document.getElementById('code');
 	code.value = tutorial.exercise;
 	var codeMirror = CodeMirror.fromTextArea(code, {
@@ -44,18 +49,20 @@
 		var dialog = Navigation.StateInfoConfig._dialogs[0];
 		var listing = dialog._states[0];
 		var details = dialog._states[1];
-		var names = getNames();
+		var settings = getSettings();
+		settings.part = Math.max(settings.part, tutorial.part + 1);
 		var nameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
 		if (nameRegex.exec(listing.key) && nameRegex.exec(details.key)) {
-			names.dialog = dialog.key;
-			names.listing = listing.key;
-			names.details = details.key;
-			names.transition = 'select';
+			settings.dialog = dialog.key;
+			settings.listing = listing.key;
+			settings.details = details.key;
+			settings.transition = 'select';
 			if (listing._transitions.length !== 0)
-				names.transition = listing._transitions[0].key;
+				settings.transition = listing._transitions[0].key;
 		}
-		localStorage.setItem('tutorial', JSON.stringify(names));
+		localStorage.setItem('tutorial', JSON.stringify(settings));
 		next.style.display = 'block';
+		setExercises();
 	}
 	var run = document.getElementById('run');
 	var cheat = document.getElementById('cheat');
