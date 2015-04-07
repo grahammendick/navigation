@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accessing States</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 2: Accessing States</h1>
+    <p>
+        If you've used a router before you've probably encountered a route handler. It's a function that's associated 
+        with a route and runs when that route is activated. Navigation has State controllers in place of route handlers. 
+        They serve the same purpose, except they're attached to States instead of routes.
+    </p>
+    <p>
+        It would be too limiting to have to define the listing controller at the same time as you created the listing 
+        State. Navigation provides access to the States after they've been configured and built so you can create the 
+        controller at the same time as you create your listing view model. You access the States through their parent 
+        Dialog. In this Exercise, you'll familiarise yourself with this access code. This will pave the way for creating 
+        State controllers in later Exercises.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people' },\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Complete the Dialog and listing State access code below\n\
+	 * by filling in the two missing properties. The property\n\
+	 * names must match the names you've configured above. \n\
+	 */\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var masterDetails = dialogs.?;\n\
+	result.listing = masterDetails.states.?;\n\
+	result.details = masterDetails.states.y;\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people' },\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var masterDetails = dialogs.z;\n\
+	result.listing = masterDetails.states.x;\n\
+	result.details = masterDetails.states.y;\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
