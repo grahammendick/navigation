@@ -3,20 +3,46 @@
 <head>
     <title>Configuring a Transition</title>
     <link href="codemirror.css" rel="stylesheet" />
+    <link href="tutorial.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Exercise 5: Configuring a Transition</h1>
-    <p>
-        When a user selects a person from the grid you need to move them to the details view. You need to navigate from 
-        the listing State to the details State. To navigate between States within a Dialog you use a Transition. You 
-        create a Transition as part of the configuration, adding it below the State you want to move from and specifying 
-        the State to move to. In this Exercise, you'll create the Transition before navigating along it in the next one.
-    </p>
-    <textarea id="code"></textarea>
-    <button id="run">Run</button>
-    <button id="cheat">Cheat</button>
+    <div id="header">
+        <div id="banner">Navigation</div>
+    </div>
+    <div id="content">
+        <div id="tutorial">
+            <h3>Exercises</h3>
+            <ol>
+                <li><a id="e1">Configuring States</a></li>
+                <li><a id="e2">Accessing States</a></li>
+                <li><a id="e3">Navigating to a Dialog</a></li>
+                <li><a id="e4">Creating a State Controller</a></li>
+                <li><a id="e5">Configuring a Transition</a></li>
+                <li><a id="e6">Navigating along a Transition</a></li>
+                <li><a id="e7">Navigating Back</a></li>
+                <li><a id="e8">Passing Data</a></li>
+                <li><a id="e9">Refreshing</a></li>
+                <li><a id="e10">Remembering Data</a></li>
+                <li><a id="e11">Tidying Up the Url</a></li>
+            </ol>
+        </div>
+        <div id="exercise">
+            <h1>Exercise 5: Configuring a Transition</h1>
+            <p>
+                When a user selects a person from the grid you need to move them to the details view. You need to navigate from
+                the listing State to the details State. To navigate between States within a Dialog you use a Transition. You
+                create a Transition as part of the configuration, adding it below the State you want to move from and specifying
+                the State to move to. In this Exercise, you'll create the Transition before navigating along it in the next one.
+            </p>
+            <textarea id="code"></textarea>
+            <button id="run">Run</button>
+            <button id="cheat">Cheat</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
     <script>
         var tutorial = {
+            part: 5,
             exercise:
 "function(result){\n\
 	/*-------------------------EXERCISE-------------------------\n\
@@ -53,4 +79,5 @@
     <script src="tutorial.js"></script>
     <script src="navigation.js"></script>
 </body>
+
 </html>

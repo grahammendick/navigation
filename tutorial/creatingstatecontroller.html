@@ -3,21 +3,47 @@
 <head>
     <title>Creating a State Controller</title>
     <link href="codemirror.css" rel="stylesheet" />
+    <link href="tutorial.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Exercise 4: Creating a State Controller</h1>
-    <p>
-        State controllers are Navigation's equivalent of route Handlers. A State controller is a function attached 
-        to a State's navigated property that is called when that State is navigated to. It lets you do any setup work 
-        needed by your view. In a listing State controller you'd fetch the first page of people and bind them to the 
-        grid. In this Exercise, you'll create a listing State controller and demonstrate it's called after navigating 
-        to the Dialog.
-    </p>
-    <textarea id="code"></textarea>
-    <button id="run">Run</button>
-    <button id="cheat">Cheat</button>
+    <div id="header">
+        <div id="banner">Navigation</div>
+    </div>
+    <div id="content">
+        <div id="tutorial">
+            <h3>Exercises</h3>
+            <ol>
+                <li><a id="e1">Configuring States</a></li>
+                <li><a id="e2">Accessing States</a></li>
+                <li><a id="e3">Navigating to a Dialog</a></li>
+                <li><a id="e4">Creating a State Controller</a></li>
+                <li><a id="e5">Configuring a Transition</a></li>
+                <li><a id="e6">Navigating along a Transition</a></li>
+                <li><a id="e7">Navigating Back</a></li>
+                <li><a id="e8">Passing Data</a></li>
+                <li><a id="e9">Refreshing</a></li>
+                <li><a id="e10">Remembering Data</a></li>
+                <li><a id="e11">Tidying Up the Url</a></li>
+            </ol>
+        </div>
+        <div id="exercise">
+            <h1>Exercise 4: Creating a State Controller</h1>
+            <p>
+                State controllers are Navigation's equivalent of route Handlers. A State controller is a function attached
+                to a State's navigated property that is called when that State is navigated to. It lets you do any setup work
+                needed by your view. In a listing State controller you'd fetch the first page of people and bind them to the
+                grid. In this Exercise, you'll create a listing State controller and demonstrate it's called after navigating
+                to the Dialog.
+            </p>
+            <textarea id="code"></textarea>
+            <button id="run">Run</button>
+            <button id="cheat">Cheat</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
     <script>
         var tutorial = {
+            part: 4,
             exercise:
 "function(result){\n\
 	var dialogs = [{\n\
@@ -63,4 +89,5 @@
     <script src="tutorial.js"></script>
     <script src="navigation.js"></script>
 </body>
+
 </html>
