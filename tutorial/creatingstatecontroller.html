@@ -84,7 +84,11 @@
 		result.navigated = true;\n\
 	};\n\
 	Navigation.StateController.navigate('z');\n\
-}"
+}",
+            test: function (listing, details, result) {
+                if (!result.navigated)
+                    throw "'result.navigated' isn't set to true";
+            }
         }
     </script>
     <script src="codemirror.js"></script>

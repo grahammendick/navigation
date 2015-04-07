@@ -77,7 +77,11 @@
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
 	Navigation.StateController.navigate('z');\n\
-}"
+}",
+            test: function (listing) {
+                if (Navigation.StateContext.state !== listing)
+                    throw "The current state isn't the listing State";
+            }
         }
     </script>
     <script src="codemirror.js"></script>
