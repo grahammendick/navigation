@@ -74,3 +74,6 @@ button{
 	letter-spacing:1px;
     font-family:'Lucida Grande',Calibri,Helvetica,Arial,sans-serif;
 }
+#next{
+	display:none;
+}

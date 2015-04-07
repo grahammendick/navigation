@@ -26,10 +26,20 @@
 	var codeMirror = CodeMirror.fromTextArea(code, {
 		lineNumbers: true,
 	});
-	document.getElementById('run').addEventListener('click', function () {
+	var run = document.getElementById('run');
+	var cheat = document.getElementById('cheat');
+	var next = document.getElementById('next');
+	run.addEventListener('click', function () {
+		next.style.display = 'none';
 		eval('(' + codeMirror.getValue() + ')')({});
+		next.style.display = 'block';
 	});
-	document.getElementById('cheat').addEventListener('click', function () {
+	cheat.addEventListener('click', function () {
 		codeMirror.setValue(tutorial.answer);
+		eval('(' + codeMirror.getValue() + ')')({});
+		next.style.display = 'block';
+	});
+	next.addEventListener('click', function () {
+		location.href = exercises[tutorial.part] + '.html';
 	});
 })(tutorial);
