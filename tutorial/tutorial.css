@@ -63,6 +63,7 @@ ol li a,ol li a:visited{
     float:left;
     margin-bottom:10px;
 	margin-right:1%;
+	font-size:13px;
 }
 button{
 	background-color:#de1b1b;
@@ -79,4 +80,10 @@ button#next{
 	display:none;
 	background-color:#e9e581;
 	color:#000;
+}
+button#run.pass::after{
+	content: '\2714';
+}
+button#run.fail::after{
+	content: '\2718';
 }

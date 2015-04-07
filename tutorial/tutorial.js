@@ -70,15 +70,21 @@
 		lastState = null;
 		delete Navigation.StateContext.state;
 		delete Navigation.StateContext.data;
-		eval('(' + codeMirror.getValue() + ')')(result);
-		var dialog = Navigation.StateInfoConfig._dialogs[0];
-		test();
-		var listing = dialog._states[0];
-		var details = dialog._states[1];
-		if (resultCopy)
-			result = resultCopy;
-		if (tutorial.test)
-			tutorial.test(listing, details, result, lastState);
+		try{
+			eval('(' + codeMirror.getValue() + ')')(result);
+			var dialog = Navigation.StateInfoConfig._dialogs[0];
+			test();
+			var listing = dialog._states[0];
+			var details = dialog._states[1];
+			if (resultCopy)
+				result = resultCopy;
+			if (tutorial.test)
+				tutorial.test(listing, details, result, lastState);
+		} catch (e) {
+			run.className = 'fail';
+			throw e;
+		}
+		run.className = 'pass';
 		var settings = getSettings();
 		settings.part = Math.max(settings.part, tutorial.part + 1);
 		var nameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
