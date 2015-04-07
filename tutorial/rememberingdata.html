@@ -93,7 +93,17 @@
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
 	Navigation.StateController.navigate('t');\n\
 	Navigation.StateController.navigateBack(1);\n\
-}"
+}",
+            test: function (listing, details, result) {
+                if (result.pageNumber !== 2)
+                    throw "'result.pageNumber' isn't set to 2";
+                if (Navigation.StateContext.data.pageNumber !== 2)
+                    throw "You didn't remember a pageNumber of 2";
+                if (Navigation.StateContext.state !== listing)
+                    throw "The current State isn't the listing State";
+                if (Navigation.StateContext.previousState !== details)
+                    throw "The previous State isn't the details State";
+            }
         }
     </script>
     <script src="navigation.js"></script>
