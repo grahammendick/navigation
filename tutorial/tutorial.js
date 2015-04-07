@@ -12,6 +12,18 @@
 		'rememberingdata',
 		'tidyingurl',
 	];
+	function getNames() {
+		var names = localStorage.getItem('tutorial');
+		if (!names) {
+			return {
+				dialog: 'masterDetails',
+				listing: 'listing',
+				details: 'details',
+				transition: 'select'
+			}
+		}
+		return JSON.parse(names);
+	}
 	for (var i = 0; i < exercises.length; i++) {
 		var exercise = document.getElementById('e' + (i + 1));
 		if (i < tutorial.part) {
@@ -32,24 +44,17 @@
 		var dialog = Navigation.StateInfoConfig._dialogs[0];
 		var listing = dialog._states[0];
 		var details = dialog._states[1];
-		var dialogName = 'masterDetails';
-		var listingName = 'listing';
-		var detailsName = 'details';
-		var transitionName = 'select';
+		var names = getNames();
 		var nameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
 		if (nameRegex.exec(listing.key) && nameRegex.exec(details.key)) {
-			dialogName = dialog.key;
-			listingName = listing.key;
-			detailsName = details.key;
+			names.dialog = dialog.key;
+			names.listing = listing.key;
+			names.details = details.key;
+			names.transition = 'select';
 			if (listing._transitions.length !== 0)
-				transitionName = listing._transitions[0].key;
+				names.transition = listing._transitions[0].key;
 		}
-		localStorage.setItem('tutorial', JSON.stringify({
-			dialog: dialogName,
-			listing: listingName,
-			details: detailsName,
-			transition: transitionName
-		}));
+		localStorage.setItem('tutorial', JSON.stringify(names));
 		next.style.display = 'block';
 	}
 	var run = document.getElementById('run');
