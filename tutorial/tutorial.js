@@ -72,6 +72,7 @@
 		delete Navigation.StateContext.data;
 		eval('(' + codeMirror.getValue() + ')')(result);
 		var dialog = Navigation.StateInfoConfig._dialogs[0];
+		test();
 		var listing = dialog._states[0];
 		var details = dialog._states[1];
 		if (resultCopy)
@@ -92,6 +93,21 @@
 		localStorage.setItem('tutorial', JSON.stringify(settings));
 		next.style.display = 'block';
 		setExercises();
+	}
+	function test() {
+		if (Navigation.StateInfoConfig._dialogs.length !== 1)
+			throw "There should be exactly one Dialog"
+		var dialog = Navigation.StateInfoConfig._dialogs[0];
+		if (dialog._states.length !== 2)
+			throw "There should be exactly two States"
+		if (dialog.initial !== dialog._states[0])
+			throw "The Dialog's initial State should be the first State"
+		if (dialog._states[1]._transitions.length !== 0)
+			throw "The details State shouldn't have any Transitions"
+		if (tutorial.part > 4) {
+			if (dialog._states[0]._transitions.length !== 1)
+				throw "The listing State should have exactly one Transition"
+		}
 	}
 	var run = document.getElementById('run');
 	var cheat = document.getElementById('cheat');
