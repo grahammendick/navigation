@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Passing Data</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 8: Passing Data</h1>
+    <p>
+        When a user selects a person to edit, you need to pass the id of the person to the details State. You need this id 
+        so you can fetch the person in the details State controller. The navigate function you use to change State allows 
+        you to pass this data in the second parameter. A copy of this data is then passed in to your State controller. In 
+        this Exercise, you'll pass an id from the listing state and access it in the details State controller.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Pass an id of 10 from the listing State to the details\n\
+	 * State. Retrieve the id from the data object passed in to\n\
+	 * the details State controller and assign it to the \n\
+	 * 'result.id' property. \n\
+	 */\n\
+	dialog.states.y.navigated = function(data){\n\
+		result.id = ?;\n\
+	}\n\
+	Navigation.StateController.navigate(?);\n\
+	Navigation.StateController.navigate(?, { id: 10 });\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 't', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	result.id = null;\n\
+	dialog.states.y.navigated = function(data){\n\
+		result.id = data.id;\n\
+	}\n\
+	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.navigate('t', { id: 10 });\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
