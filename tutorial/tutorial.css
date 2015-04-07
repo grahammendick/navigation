@@ -57,7 +57,7 @@ ol li a,ol li a:visited{
 	padding:0 1%;
 }
 .CodeMirror {
-    border:1px solid black;
+    border:2px solid #de1b1b;
     height:450px;
     width:82%;
     float:left;
