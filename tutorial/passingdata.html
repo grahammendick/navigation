@@ -90,7 +90,17 @@
 	}\n\
 	Navigation.StateController.navigate('z');\n\
 	Navigation.StateController.navigate('t', { id: 10 });\n\
-}"
+}",
+            test: function (listing, details, result) {
+                if (result.id !== 10)
+                    throw "'result.id' isn't set to 10";
+                if (Navigation.StateContext.data.id !== 10)
+                    throw "You didn't pass an id of 10 to the details State";
+                if (Navigation.StateContext.state !== details)
+                    throw "The current State isn't the details State";
+                if (Navigation.StateContext.previousState !== listing)
+                    throw "The previous State isn't the listing State";
+            }
         }
     </script>
     <script src="navigation.js"></script>

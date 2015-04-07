@@ -94,9 +94,10 @@
 	Navigation.StateController.navigate('t');\n\
 }",
             test: function (listing, details) {
-                if (Navigation.StateContext.state !== details 
-                    || Navigation.StateContext.previousState !== listing)
+                if (Navigation.StateContext.state !== details)
                     throw "The current State isn't the details State";
+                if (Navigation.StateContext.previousState !== listing)
+                    throw "The previous State isn't the listing State";
             }
         }
     </script>
