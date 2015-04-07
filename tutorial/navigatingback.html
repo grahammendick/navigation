@@ -92,7 +92,13 @@
 	Navigation.StateController.navigate('z');\n\
 	Navigation.StateController.navigate('t');\n\
 	Navigation.StateController.navigateBack(1);\n\
-}"
+}",
+            test: function (listing, details) {
+                if (Navigation.StateContext.state !== listing)
+                    throw "The current State isn't the listing State";
+                if (Navigation.StateContext.previousState !== details)
+                    throw "You haven't navigated back from the details State";
+            }
         }
     </script>
     <script src="navigation.js"></script>
