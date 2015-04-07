@@ -153,21 +153,35 @@ module.exports = Segment;
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Navigation = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 var StateContext = _dereq_('./StateContext');
 var StateController = _dereq_('./StateController');
+var Dialog = _dereq_('./config/Dialog');
+var State = _dereq_('./config/State');
+var Transition = _dereq_('./config/Transition');
 var StateInfoConfig = _dereq_('./config/StateInfoConfig');
 var HistoryNavigator = _dereq_('./history/HistoryNavigator');
 var HashHistoryManager = _dereq_('./history/HashHistoryManager');
 var HTML5HistoryManager = _dereq_('./history/HTML5HistoryManager');
+var Crumb = _dereq_('./Crumb');
+var StateHandler = _dereq_('./StateHandler');
+var StateRouter = _dereq_('./StateRouter');
+var NavigationSettings = _dereq_('./NavigationSettings');
 var router = _dereq_('./router');
 var settings = _dereq_('./settings');
 var Navigation = (function () {
     function Navigation() {
     }
+    Navigation.Dialog = Dialog;
+    Navigation.State = State;
+    Navigation.Transition = Transition;
     Navigation.StateInfoConfig = StateInfoConfig;
-    Navigation.StateContext = StateContext;
-    Navigation.StateController = StateController;
     Navigation.HashHistoryManager = HashHistoryManager;
     Navigation.HTML5HistoryManager = HTML5HistoryManager;
     Navigation.historyManager = HistoryNavigator.historyManager;
+    Navigation.Crumb = Crumb;
+    Navigation.NavigationSettings = NavigationSettings;
+    Navigation.StateContext = StateContext;
+    Navigation.StateController = StateController;
+    Navigation.StateHandler = StateHandler;
+    Navigation.StateRouter = StateRouter;
     Navigation.router = router;
     Navigation.settings = settings;
     Navigation.start = function (url) {
@@ -178,7 +192,7 @@ var Navigation = (function () {
 })();
 module.exports = Navigation;
 
-},{"./StateContext":11,"./StateController":12,"./config/StateInfoConfig":19,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./router":24,"./settings":25}],2:[function(_dereq_,module,exports){
+},{"./Crumb":5,"./NavigationSettings":8,"./StateContext":11,"./StateController":12,"./StateHandler":13,"./StateRouter":14,"./config/Dialog":17,"./config/State":18,"./config/StateInfoConfig":19,"./config/Transition":20,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./router":24,"./settings":25}],2:[function(_dereq_,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
