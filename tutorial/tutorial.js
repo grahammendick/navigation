@@ -46,7 +46,6 @@
 	var result = {};
 	function clearResult() {
 		delete result.navigated;
-		delete result.listing;
 	}
 	Navigation.StateHandler.prototype.navigateLink = function () {
 		clearResult();
@@ -54,7 +53,6 @@
 	Navigation.StateController.onNavigate(function () {
 		result = {
 			navigated: result.navigated,
-			listing: result.listing
 		}
 	});
 	function runCode() {
