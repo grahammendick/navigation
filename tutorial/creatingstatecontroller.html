@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Creating a State Controller</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 4: Creating a State Controller</h1>
+    <p>
+        State controllers are Navigation's equivalent of route Handlers. A State controller is a function attached 
+        to a State's navigated property that is called when that State is navigated to. It lets you do any setup work 
+        needed by your view. In a listing State controller you'd fetch the first page of people and bind them to the 
+        grid. In this Exercise, you'll create a listing State controller and demonstrate it's called after navigating 
+        to the Dialog.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people' },\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Create a listing State controller by replacing the blank\n\
+	 * with a function. Set 'result.navigated = true;' in the \n\
+	 * body of the function to verify your controller's called\n\
+	 * when the listing State is subsequently navigated to.\n\
+	 */\n\
+	result.navigated = false;\n\
+	dialog.states.x.navigated = ?;\n\
+	Navigation.StateController.navigate('z');\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people' },\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
+	var dialog = dialogs.z;\n\
+	result.navigated = false;\n\
+	dialog.states.x.navigated = function(){\n\
+		result.navigated = true;\n\
+	};\n\
+	Navigation.StateController.navigate('z');\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
