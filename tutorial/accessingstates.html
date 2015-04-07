@@ -84,7 +84,11 @@
 	var masterDetails = dialogs.z;\n\
 	result.listing = masterDetails.states.x;\n\
 	result.details = masterDetails.states.y;\n\
-}"
+}",
+            test: function (listing, details, result) {
+                if (listing !== result.listing)
+                    throw "'result.listing' doesn't match the listing State";
+            }
         }
     </script>
     <script src="codemirror.js"></script>

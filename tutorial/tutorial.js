@@ -45,10 +45,13 @@
 	});
 	function runCode() {
 		next.style.display = 'none';
-		eval('(' + codeMirror.getValue() + ')')({});
+		var result = {};
+		eval('(' + codeMirror.getValue() + ')')(result);
 		var dialog = Navigation.StateInfoConfig._dialogs[0];
 		var listing = dialog._states[0];
 		var details = dialog._states[1];
+		if (tutorial.test)
+			tutorial.test(listing, details, result);
 		var settings = getSettings();
 		settings.part = Math.max(settings.part, tutorial.part + 1);
 		var nameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
