@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuring a Transition</title>
+    <link href="codemirror.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Exercise 5: Configuring a Transition</h1>
+    <p>
+        When a user selects a person from the grid you need to move them to the details view. You need to navigate from 
+        the listing State to the details State. To navigate between States within a Dialog you use a Transition. You 
+        create a Transition as part of the configuration, adding it below the State you want to move from and specifying 
+        the State to move to. In this Exercise, you'll create the Transition before navigating along it in the next one.
+    </p>
+    <textarea id="code"></textarea>
+    <button id="run">Run</button>
+    <button id="cheat">Cheat</button>
+    <script>
+        var tutorial = {
+            exercise:
+"function(result){\n\
+	/*-------------------------EXERCISE-------------------------\n\
+	 * Complete the configuration of the listing State's child\n\
+	 * Transition. Give it a meaningful name and specify that\n\
+	 * it navigates to the details State.\n\
+	 */\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: '?', to: '?' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+}",
+            answer:
+"function(result){\n\
+	var dialogs = [{\n\
+		key: 'z', initial: 'x', states: [\n\
+			{ key: 'x', route: 'people', transitions: [\n\
+				{ key: 'select', to: 'y' }\n\
+			]},\n\
+    		{ key: 'y', route: 'person' }\n\
+		]\n\
+	}];\n\
+	Navigation.StateInfoConfig.build(dialogs);\n\
+}"
+        }
+    </script>
+    <script src="codemirror.js"></script>
+    <script src="javascript.js"></script>
+    <script src="tutorial.js"></script>
+    <script src="navigation.js"></script>
+</body>
+</html>
