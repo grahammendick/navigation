@@ -31,8 +31,10 @@
 			var part = getSettings().part;
 			if (i < part) {
 				exercise.parentNode.className = 'available';
-				if (i + 1 == tutorial.part)
+				if (i + 1 === tutorial.part)
 					exercise.parentNode.className += ' active';
+				if (i + 1 === part)
+					exercise.parentNode.className += ' last';
 				exercise.href = exercises[i] + '.html';
 			}
 		}
@@ -86,7 +88,7 @@
 		}
 		run.className = 'pass';
 		var settings = getSettings();
-		settings.part = Math.max(settings.part, tutorial.part + 1);
+		settings.part = Math.max(settings.part, Math.min(tutorial.part + 1, 11));
 		var nameRegex = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
 		if (nameRegex.exec(listing.key) && nameRegex.exec(details.key)) {
 			settings.dialog = dialog.key;

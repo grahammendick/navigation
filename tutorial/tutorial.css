@@ -39,6 +39,14 @@ ol li{
 ol li.available{
 	background-color:#e9e581;
 }
+ol li:first-child{
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+}
+ol li.last{
+	border-bottom-left-radius:10px;
+	border-bottom-right-radius:10px;
+}
 ol li.available.active{
 	font-style:italic;
 	font-weight:bold;
