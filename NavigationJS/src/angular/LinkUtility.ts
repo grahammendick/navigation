@@ -29,15 +29,6 @@ class LinkUtility {
         });
     }
 
-    static onClick(e: JQueryEventObject, element: HTMLAnchorElement) {
-        if (!e.ctrlKey && !e.shiftKey) {
-            if (element.href) {
-                e.preventDefault();
-                Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
-            }
-        }
-    }
-
     static addNavigateHandler(element: ng.IAugmentedJQuery, handler) {
         Navigation.StateController.onNavigate(handler);
         element.on('$destroy', () => {
