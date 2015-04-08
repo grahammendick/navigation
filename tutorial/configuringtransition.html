@@ -54,11 +54,11 @@
 	 * it navigates to the details State.\n\
 	 */\n\
 	var dialogs = [{\n\
-		key: 'z', initial: 'x', states: [\n\
-			{ key: 'x', route: 'people', transitions: [\n\
+		key: '{dialog}', initial: '{listing}', states: [\n\
+			{ key: '{listing}', route: 'people', transitions: [\n\
 				{ key: '?', to: '?' }\n\
 			]},\n\
-    		{ key: 'y', route: 'person' }\n\
+    		{ key: '{details}', route: 'person' }\n\
 		]\n\
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
@@ -66,11 +66,11 @@
             answer:
 "function(result){\n\
 	var dialogs = [{\n\
-		key: 'z', initial: 'x', states: [\n\
-			{ key: 'x', route: 'people', transitions: [\n\
-				{ key: 'select', to: 'y' }\n\
+		key: '{dialog}', initial: '{listing}', states: [\n\
+			{ key: '{listing}', route: 'people', transitions: [\n\
+				{ key: 'select', to: '{details}' }\n\
 			]},\n\
-    		{ key: 'y', route: 'person' }\n\
+    		{ key: '{details}', route: 'person' }\n\
 		]\n\
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
