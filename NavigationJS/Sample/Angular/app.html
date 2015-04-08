@@ -1,13 +1,15 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <title>Navigation Angular</title>
+    <script src="angular.min.js"></script>
+    <script src="../../build/navigation.angular.js"></script>
+    <script src="app.js"></script>
 </head>
 <body>
     <div ng-controller="PersonController">
         <a navigation-link="action">Test</a>
+        <span ng-bind="action"></span>
     </div>
-    <script src="angular.min.js"></script>
-    <script src="app.js"></script>
 </body>
 </html>

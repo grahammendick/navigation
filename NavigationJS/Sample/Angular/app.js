@@ -1,6 +1,8 @@
 ﻿function PersonController($scope) {
 	$scope.action = 'select';
 }
+angular.module('app', ['NavigationAngular'])
+	.controller('PersonController', PersonController);
 
 Navigation.StateInfoConfig.build([
 	{ key: 'person', initial: 'list', states: [

@@ -13,6 +13,6 @@ var NavigationLink = () => {
         }
     };
 
-angular.module('NavigationAngular')
-    .directive('NavigationLink', NavigationLink);
+angular.module('NavigationAngular', [])
+    .directive('navigationLink', NavigationLink);
 export = NavigationLink;
