@@ -1,5 +1,8 @@
 ﻿function PersonController($scope) {
 	$scope.action = 'select';
+	$scope.changeAction = function () {
+		$scope.action = $scope.action === 'a' ? 'select' : 'a';
+	}
 }
 angular.module('app', ['NavigationAngular'])
 	.controller('PersonController', PersonController);

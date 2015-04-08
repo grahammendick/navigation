@@ -3,12 +3,15 @@
 var NavigationLink = () => {
         return {
             restrict: 'A',
-            link: (scope, element, attrs) => {
-                try {
-                    var navigationLink = Navigation.StateController.getNavigationLink(attrs.navigationLink);
-                    element.href = Navigation.historyManager.getHref(navigationLink);
-                } catch (e) {
-                }
+            link: (scope: ng.IScope, element, attrs: ng.IAttributes) => {
+                scope.$watch(attrs['navigationLink'], function (value) {
+                    try {
+                        var navigationLink = Navigation.StateController.getNavigationLink(value);
+                        attrs.$set('href', Navigation.historyManager.getHref(navigationLink));
+                    } catch (e) {
+                        attrs.$set('href', null);
+                    }
+                });
             }
         }
     };
