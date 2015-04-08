@@ -18,7 +18,7 @@ class LinkUtility {
     }
 
     static addClickListener(element: ng.IAugmentedJQuery) {
-        element.bind('click', (e) => {
+        element.on('click', (e) => {
             var anchor = <HTMLAnchorElement> element[0];
             if (!e.ctrlKey && !e.shiftKey) {
                 if (anchor.href) {
