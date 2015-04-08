@@ -40,8 +40,16 @@
 		}
 	}
 	setExercises();
+	function setNames(code) {
+		var settings = getSettings();
+		code = code.replace(/{dialog}/g, settings.dialog);
+		code = code.replace(/{listing}/g, settings.listing);
+		code = code.replace(/{details}/g, settings.details);
+		code = code.replace(/{transition}/g, settings.transition);
+		return code;
+	}
 	var code = document.getElementById('code');
-	code.value = tutorial.exercise;
+	code.value = setNames(tutorial.exercise);
 	var codeMirror = CodeMirror.fromTextArea(code, {
 		lineNumbers: true,
 	});
@@ -124,7 +132,7 @@
 		runCode();
 	});
 	cheat.addEventListener('click', function () {
-		codeMirror.setValue(tutorial.answer);
+		codeMirror.setValue(setNames(tutorial.answer));
 		runCode();
 	});
 	next.addEventListener('click', function () {
