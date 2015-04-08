@@ -50,14 +50,14 @@
             exercise:
 "function(result){\n\
 	var dialogs = [{\n\
-		key: 'z', initial: 'x', states: [\n\
-			{ key: 'x', route: 'people' },\n\
-    		{ key: 'y', route: 'person' }\n\
+		key: '{dialog}', initial: '{listing}', states: [\n\
+			{ key: '{listing}', route: 'people' },\n\
+    		{ key: '{details}', route: 'person' }\n\
 		]\n\
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
-	var dialog = dialogs.z;\n\
+	var dialog = dialogs.{dialog};\n\
 	/*-------------------------EXERCISE-------------------------\n\
 	 * Create a listing State controller by replacing the blank\n\
 	 * with a function. Set 'result.navigated = true;' in the \n\
@@ -65,25 +65,25 @@
 	 * when the listing State is subsequently navigated to.\n\
 	 */\n\
 	result.navigated = false;\n\
-	dialog.states.x.navigated = ?;\n\
-	Navigation.StateController.navigate('z');\n\
+	dialog.states.{listing}.navigated = ?;\n\
+	Navigation.StateController.navigate('{dialog}');\n\
 }",
             answer:
 "function(result){\n\
 	var dialogs = [{\n\
-		key: 'z', initial: 'x', states: [\n\
-			{ key: 'x', route: 'people' },\n\
-    		{ key: 'y', route: 'person' }\n\
+		key: '{dialog}', initial: '{listing}', states: [\n\
+			{ key: '{listing}', route: 'people' },\n\
+    		{ key: '{details}', route: 'person' }\n\
 		]\n\
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
-	var dialog = dialogs.z;\n\
+	var dialog = dialogs.{dialog};\n\
 	result.navigated = false;\n\
-	dialog.states.x.navigated = function(){\n\
+	dialog.states.{listing}.navigated = function(){\n\
 		result.navigated = true;\n\
 	};\n\
-	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.navigate('{dialog}');\n\
 }",
             test: function (listing, details, result) {
                 if (!result.navigated)
