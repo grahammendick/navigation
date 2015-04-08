@@ -79,39 +79,39 @@
      * default value.\n\
 	 */\n\
 	var dialogs = [{\n\
-		key: 'z', initial: 'x', states: [\n\
-			{ key: 'x', route: '?', \n\
+		key: '{dialog}', initial: '{listing}', states: [\n\
+			{ key: '{listing}', route: '?', \n\
 				defaults: { ? }, \n\
 				trackCrumbTrail: false, transitions: [\n\
-				{ key: 't', to: 'y' }\n\
+				{ key: '{transition}', to: '{details}' }\n\
 			]},\n\
-    		{ key: 'y', route: 'person/{id}', \n\
+    		{ key: '{details}', route: 'person/{id}', \n\
 				defaults: { id: 0 } }\n\
 		]\n\
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
-	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.navigate('{dialog}');\n\
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
-	Navigation.StateController.navigate('t');\n\
+	Navigation.StateController.navigate('{transition}');\n\
 	Navigation.StateController.navigateBack(1);\n\
 }",
             answer:
 "function(result){\n\
 	var dialogs = [{\n\
-		key: 'z', initial: 'x', states: [\n\
-			{ key: 'x', route: 'people/{pageNumber}', \n\
+		key: '{dialog}', initial: '{listing}', states: [\n\
+			{ key: '{listing}', route: 'people/{pageNumber}', \n\
 				defaults: { pageNumber: 0 }, \n\
 				trackCrumbTrail: false, transitions: [\n\
-				{ key: 't', to: 'y' }\n\
+				{ key: '{transition}', to: '{details}' }\n\
 			]},\n\
-    		{ key: 'y', route: 'person/{id}', \n\
+    		{ key: '{details}', route: 'person/{id}', \n\
 				defaults: { id: 0 } }\n\
 		]\n\
 	}];\n\
 	Navigation.StateInfoConfig.build(dialogs);\n\
-	Navigation.StateController.navigate('z');\n\
+	Navigation.StateController.navigate('{dialog}');\n\
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
-	Navigation.StateController.navigate('t');\n\
+	Navigation.StateController.navigate('{transition}');\n\
 	Navigation.StateController.navigateBack(1);\n\
 }",
             test: function (listing, details, result, lastState) {
