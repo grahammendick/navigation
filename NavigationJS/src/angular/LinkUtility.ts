@@ -4,7 +4,6 @@ class LinkUtility {
     static setLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
         try {
             attrs.$set('href', Navigation.historyManager.getHref(linkAccessor()));
-            element.bind('click', (e) => this.onClick(e, <HTMLAnchorElement> element[0]));
         } catch (e) {
             attrs.$set('href', null);
         }
@@ -18,6 +17,18 @@ class LinkUtility {
         return toData;
     }
 
+    static addClickListener(element: ng.IAugmentedJQuery) {
+        element.bind('click', (e) => {
+            var anchor = <HTMLAnchorElement> element[0];
+            if (!e.ctrlKey && !e.shiftKey) {
+                if (anchor.href) {
+                    e.preventDefault();
+                    Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(anchor));
+                }
+            }
+        });
+    }
+
     static onClick(e: JQueryEventObject, element: HTMLAnchorElement) {
         if (!e.ctrlKey && !e.shiftKey) {
             if (element.href) {
@@ -25,6 +36,13 @@ class LinkUtility {
                 Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
             }
         }
+    }
+
+    static addNavigateHandler(element: ng.IAugmentedJQuery, handler) {
+        Navigation.StateController.onNavigate(handler);
+        element.on('$destroy', () => {
+            Navigation.StateController.offNavigate(handler);
+        });
     }
 }
 export = LinkUtility; 

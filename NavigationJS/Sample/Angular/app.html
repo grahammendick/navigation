@@ -9,6 +9,7 @@
 <body>
     <div ng-controller="PersonController">
         <a navigation-link="action" to-data="{ id: id }" a="something">Test</a>
+        <a navigation-link="'person'" to-data="{ test: 2}" a="something">Test</a>
         <span ng-bind="action"></span>
         <button ng-click="changeAction()">action</button>
         <button ng-click="changeId()">id</button>
