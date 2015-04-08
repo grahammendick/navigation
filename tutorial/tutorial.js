@@ -12,6 +12,7 @@
 		'rememberingdata',
 		'tidyingurl',
 	];
+
 	function getSettings() {
 		var names = localStorage.getItem('tutorial');
 		if (!names) {
@@ -25,6 +26,7 @@
 		}
 		return JSON.parse(names);
 	}
+
 	function setExercises() {
 		for (var i = 0; i < exercises.length; i++) {
 			var exercise = document.getElementById('e' + (i + 1));
@@ -39,7 +41,21 @@
 			}
 		}
 	}
+
+	var result = {};
+	var lastState;
+	var resultCopy;
+	var run = document.getElementById('run');
+	var cheat = document.getElementById('cheat');
+	var next = document.getElementById('next');
+	var code = document.getElementById('code');
+
 	setExercises();
+	code.value = setNames(tutorial.exercise);
+	var codeMirror = CodeMirror.fromTextArea(code, {
+		lineNumbers: true,
+	});
+
 	function setNames(code) {
 		var settings = getSettings();
 		code = code.replace(/{dialog}/g, settings.dialog);
@@ -48,24 +64,19 @@
 		code = code.replace(/{transition}/g, settings.transition);
 		return code;
 	}
-	var code = document.getElementById('code');
-	code.value = setNames(tutorial.exercise);
-	var codeMirror = CodeMirror.fromTextArea(code, {
-		lineNumbers: true,
-	});
-	var result = {};
+
 	function clearResult() {
 		delete result.navigated;
 		delete result.listing;
 		delete result.id;
 		delete result.pageNumber;
 	}
-	var lastState;
+
 	Navigation.StateHandler.prototype.navigateLink = function (oldState) {
 		lastState = oldState;
 		clearResult();
 	};
-	var resultCopy;
+
 	Navigation.StateController.onNavigate(function () {
 		resultCopy = {
 			navigated: result.navigated,
@@ -74,19 +85,20 @@
 			pageNumber: result.pageNumber
 		}
 	});
-	var run = document.getElementById('run');
-	var cheat = document.getElementById('cheat');
-	var next = document.getElementById('next');
+
 	run.addEventListener('click', function () {
 		runCode();
 	});
+
 	cheat.addEventListener('click', function () {
 		codeMirror.setValue(setNames(tutorial.answer));
 		runCode();
 	});
+
 	next.addEventListener('click', function () {
 		location.href = exercises[tutorial.part] + '.html';
 	});
+
 	function runCode() {
 		next.style.display = 'none';
 		clearResult();
@@ -124,6 +136,7 @@
 			next.style.display = 'block';
 		setExercises();
 	}
+
 	function test() {
 		if (Navigation.StateInfoConfig._dialogs.length !== 1)
 			throw "There should be exactly one Dialog"
