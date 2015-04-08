@@ -1,4 +1,6 @@
-﻿function PersonController($scope) {
+﻿var app = angular.module('app', ['NavigationAngular']);
+
+app.controller('PersonController', ['$scope', function ($scope) {
 	$scope.action = 'select';
 	$scope.id = 1;
 	$scope.something = 2;
@@ -9,11 +11,9 @@
 		$scope.id = $scope.id + 1;
 	}
 	$scope.changeSomething = function () {
-		$scope.something = $scope.something  + 1;
+		$scope.something = $scope.something + 1;
 	}
-}
-angular.module('app', ['NavigationAngular'])
-	.controller('PersonController', PersonController);
+}]);
 
 Navigation.StateInfoConfig.build([
 	{ key: 'person', initial: 'list', states: [
