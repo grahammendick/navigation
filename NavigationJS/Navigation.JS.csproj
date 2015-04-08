@@ -55,6 +55,9 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\angular\angular.d.ts" />
+    <TypeScriptCompile Include="src\angular\jquery.d.ts" />
+    <TypeScriptCompile Include="src\angular\NavigationLink.ts" />
     <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
     <TypeScriptCompile Include="src\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="src\react\react.d.ts" />
