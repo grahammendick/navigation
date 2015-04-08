@@ -74,6 +74,19 @@
 			pageNumber: result.pageNumber
 		}
 	});
+	var run = document.getElementById('run');
+	var cheat = document.getElementById('cheat');
+	var next = document.getElementById('next');
+	run.addEventListener('click', function () {
+		runCode();
+	});
+	cheat.addEventListener('click', function () {
+		codeMirror.setValue(setNames(tutorial.answer));
+		runCode();
+	});
+	next.addEventListener('click', function () {
+		location.href = exercises[tutorial.part] + '.html';
+	});
 	function runCode() {
 		next.style.display = 'none';
 		clearResult();
@@ -126,17 +139,4 @@
 				throw "The listing State should have exactly one Transition"
 		}
 	}
-	var run = document.getElementById('run');
-	var cheat = document.getElementById('cheat');
-	var next = document.getElementById('next');
-	run.addEventListener('click', function () {
-		runCode();
-	});
-	cheat.addEventListener('click', function () {
-		codeMirror.setValue(setNames(tutorial.answer));
-		runCode();
-	});
-	next.addEventListener('click', function () {
-		location.href = exercises[tutorial.part] + '.html';
-	});
 })(tutorial);
