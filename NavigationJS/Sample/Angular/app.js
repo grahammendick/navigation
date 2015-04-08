@@ -1,7 +1,15 @@
 ﻿function PersonController($scope) {
 	$scope.action = 'select';
+	$scope.id = 1;
+	$scope.something = 2;
 	$scope.changeAction = function () {
 		$scope.action = $scope.action === 'a' ? 'select' : 'a';
+	}
+	$scope.changeId = function () {
+		$scope.id = $scope.id + 1;
+	}
+	$scope.changeSomething = function () {
+		$scope.something = $scope.something  + 1;
 	}
 }
 angular.module('app', ['NavigationAngular'])
