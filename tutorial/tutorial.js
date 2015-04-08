@@ -107,7 +107,8 @@
 				settings.transition = listing._transitions[0].key;
 		}
 		localStorage.setItem('tutorial', JSON.stringify(settings));
-		next.style.display = 'block';
+		if (tutorial.part < 11)
+			next.style.display = 'block';
 		setExercises();
 	}
 	function test() {

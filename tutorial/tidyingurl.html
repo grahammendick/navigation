@@ -6,6 +6,7 @@
     <link href="tutorial.css" rel="stylesheet" />
     <style>
         .CodeMirror { height:410px; }
+        #congrats { display: none; }
     </style>
 </head>
 <body>
@@ -43,23 +44,25 @@
                 by changing the listing State's route and setting a default value for pageNumber. Make sure you check the url after
                 successfully completing this Exercise.
             </p>
-            <h2>Congratulations!</h2>
-            <p>
-                You've finished the tutorial. Before you start using Navigation you should know about Navigation plugins. These
-                plugins bridge the gap between your UI binding library of choice and the Navigation library. They let you use the
-                binding syntax you're familiar with to build navigation Hyperlinks. Here's a Hyperlink that navigates back from
-                the details State to the listing State using the React Navigation plugin:
-                &lt;NavigationBackLink distance="1"&gt;People&lt;/NavigationLink&gt;
-                There are currently plugins for Angular, Knockout and React. To see them in action I've built the SPA from this
-                tutorial using each of these libraries.
-                <ul>
-                    <li><a href="">Angular SPA Example</a></li>
-                    <li><a href="">Knockout SPA Example</a></li>
-                    <li><a href="">React SPA Example</a></li>
-                </ul>
-                If you've got any questions about this tutorial or would like to write a plugin for your UI library, get in
-                touch <a href="https://twitter.com/grahammendick">@grahammendick.</a>
-            </p>
+            <div id="congrats">
+                <h2>Congratulations!</h2>
+                <p>
+                    You've finished the tutorial. Before you start using Navigation you should know about Navigation plugins. These
+                    plugins bridge the gap between your UI binding library of choice and the Navigation library. They let you use the
+                    binding syntax you're familiar with to build navigation Hyperlinks. Here's a Hyperlink that navigates back from
+                    the details State to the listing State using the React Navigation plugin:
+                    &lt;NavigationBackLink distance="1"&gt;People&lt;/NavigationLink&gt;
+                    There are currently plugins for Angular, Knockout and React. To see them in action I've built the SPA from this
+                    tutorial using each of these libraries.
+                    <ul>
+                        <li><a href="">Angular SPA Example</a></li>
+                        <li><a href="">Knockout SPA Example</a></li>
+                        <li><a href="">React SPA Example</a></li>
+                    </ul>
+                    If you've got any questions about this tutorial or would like to write a plugin for your UI library, get in
+                    touch <a href="https://twitter.com/grahammendick">@grahammendick.</a>
+                </p>
+            </div>
             <textarea id="code"></textarea>
             <button id="run">Run</button>
             <button id="cheat">Cheat</button>
@@ -123,6 +126,7 @@
                     throw "The current State isn't the listing State";
                 if (lastState !== details)
                     throw "The previous State isn't the details State";
+                document.getElementById('congrats').style.display = 'block';
             }
         }
     </script>
