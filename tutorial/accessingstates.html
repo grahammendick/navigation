@@ -88,6 +88,8 @@
             test: function (listing, details, result) {
                 if (listing !== result.listing)
                     throw "'result.listing' doesn't match the listing State";
+                if (details !== result.details)
+                    throw "'result.details' doesn't match the details State";
             }
         }
     </script>
