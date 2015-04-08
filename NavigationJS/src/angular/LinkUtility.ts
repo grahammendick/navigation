@@ -4,7 +4,7 @@ class LinkUtility {
     static setLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
         try {
             attrs.$set('href', Navigation.historyManager.getHref(linkAccessor()));
-        element.bind('click', (e) => this.onClick(e, <HTMLAnchorElement> element[0]));
+            element.bind('click', (e) => this.onClick(e, <HTMLAnchorElement> element[0]));
         } catch (e) {
             attrs.$set('href', null);
         }
