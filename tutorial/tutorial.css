@@ -95,3 +95,8 @@ button#run.pass::after{
 button#run.fail::after{
 	content: '\2718';
 }
+p code{
+	display:block;
+	padding:5px 20px;
+	font-size:14px;
+}
