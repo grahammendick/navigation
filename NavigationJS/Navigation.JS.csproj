@@ -57,6 +57,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="src\angular\angular.d.ts" />
     <TypeScriptCompile Include="src\angular\jquery.d.ts" />
+    <TypeScriptCompile Include="src\angular\LinkUtility.ts" />
     <TypeScriptCompile Include="src\angular\NavigationAngular.ts" />
     <TypeScriptCompile Include="src\angular\NavigationLink.ts" />
     <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
