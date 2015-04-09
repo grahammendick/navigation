@@ -13,6 +13,10 @@ app.controller('PersonController', function ($scope) {
 	$scope.nextVisible;
 	$scope.last;
 	$scope.totalCount;
+	$scope.nameChange = function (e) {
+		var data = Navigation.StateContext.includeCurrentData({ name: $scope.name, startRowIndex: null });
+		Navigation.StateController.refresh(data);
+	};
 
 	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 	var subscription;
@@ -20,6 +24,7 @@ app.controller('PersonController', function ($scope) {
 		var people = personSearch.search(data.name, data.sortExpression);
 		var totalRowCount = people.length;
 		$scope.people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
+		$scope.name = data.name;
 		$scope.sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
 		$scope.previous = data.startRowIndex - data.maximumRows;
 		$scope.previousVisible = $scope.previous >= 0;
