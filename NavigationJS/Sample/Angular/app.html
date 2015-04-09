@@ -8,6 +8,7 @@
         <a navigation-link="action" to-data="{ id: id }" a="something">Test</a>
         <a navigation-link="'person'" to-data="{ test: 2}" a="something">Test</a>
         <a navigation-back-link="1">Back</a>
+        <a refresh-link="{ a: id }" include-current-data="true">Refresh</a>
         <span ng-bind="action"></span>
         <button ng-click="changeAction()">action</button>
         <button ng-click="changeId()">id</button>
