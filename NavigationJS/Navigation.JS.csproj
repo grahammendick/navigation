@@ -59,7 +59,9 @@
     <TypeScriptCompile Include="src\angular\jquery.d.ts" />
     <TypeScriptCompile Include="src\angular\LinkUtility.ts" />
     <TypeScriptCompile Include="src\angular\NavigationAngular.ts" />
+    <TypeScriptCompile Include="src\angular\NavigationBackLink.ts" />
     <TypeScriptCompile Include="src\angular\NavigationLink.ts" />
+    <TypeScriptCompile Include="src\angular\RefreshLink.ts" />
     <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
     <TypeScriptCompile Include="src\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="src\react\react.d.ts" />
