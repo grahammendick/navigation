@@ -17,7 +17,8 @@ var tests = [
 ];
 var plugins = [
 	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
-	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' }
+	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' },
+	{ name: 'NavigationAngular', from: './src/angular/NavigationAngular.ts', to: 'navigation.angular.js' }
 ];
 var testTasks = [];
 function testTask(from, to) {
