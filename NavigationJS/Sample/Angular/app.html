@@ -12,7 +12,7 @@
         <div ng-if="!id">
             <div>
                 <label for="name">Name</label>
-                <input id="name" ng-model="name" ng-blur="nameChange()" />
+                <input id="name" ng-model="$parent.name" ng-blur="nameChange()" />
             </div>
             Page size
             <a refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true">5</a>
