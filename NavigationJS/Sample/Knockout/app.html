@@ -11,7 +11,7 @@
     <!-- ko ifnot: id -->
         <div>
             <label for="name">Name</label>
-            <input id="name" data-bind="value: name" />
+            <input id="name" data-bind="value: name, event: { blur: nameChange }" />
         </div>
         Page size
         <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>

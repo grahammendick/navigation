@@ -12,20 +12,17 @@
 	self.nextVisible = ko.observable();
 	self.last = ko.observable();
 	self.totalCount = ko.observable();
+	self.nameChange = function () {
+		var data = Navigation.StateContext.includeCurrentData({ name: self.name(), startRowIndex: null });
+		Navigation.StateController.refresh(data);
+	};
 
 	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
-	var subscription;
 	personStates.list.navigated = function (data) {
 		var people = personSearch.search(data.name, data.sortExpression);
 		var totalRowCount = people.length;
 		people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
-		if (subscription)
-			subscription.dispose();
 		self.name(data.name);
-		subscription = self.name.subscribe(function (val) {
-			var data = Navigation.StateContext.includeCurrentData({ name: val, startRowIndex: null });
-			Navigation.StateController.refresh(data);
-		});
 		self.people(people);
 		self.sortExpression(data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name');
 		self.previous(data.startRowIndex - data.maximumRows);
