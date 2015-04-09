@@ -7,6 +7,12 @@ app.controller('PersonController', function ($scope) {
 	$scope.sortExpression;
 	$scope.personName;
 	$scope.dateOfBirth;
+	$scope.previous;
+	$scope.previousVisible;
+	$scope.next;
+	$scope.nextVisible;
+	$scope.last;
+	$scope.totalCount;
 
 	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 	var subscription;
@@ -15,6 +21,13 @@ app.controller('PersonController', function ($scope) {
 		var totalRowCount = people.length;
 		$scope.people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
 		$scope.sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+		$scope.previous = data.startRowIndex - data.maximumRows;
+		$scope.previousVisible = $scope.previous >= 0;
+		$scope.next = data.startRowIndex + data.maximumRows;
+		$scope.nextVisible = $scope.next < totalRowCount;
+		var remainder = totalRowCount % data.maximumRows;
+		$scope.last = remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows;
+		$scope.totalCount = totalRowCount;
 	};
 	personStates.details.navigated = function (data) {
 		$scope.id = data.id;
