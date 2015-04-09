@@ -9,7 +9,7 @@
 </head>
 <body>
     <div ng-controller="PersonController">
-        <div ng-hide="id">
+        <div ng-if="!id">
             <div>
                 <label for="name">Name</label>
                 <input id="name" ng-model="name" ng-blur="nameChange()" />
@@ -42,7 +42,7 @@
                 <li ng-hide="nextVisible">Last</li>
             </ul>
         </div>
-        <div ng-show="id">
+        <div ng-if="id">
             <a navigation-back-link="1">Person Search</a>
             <div>
                 Name: {{personName}}<br />
