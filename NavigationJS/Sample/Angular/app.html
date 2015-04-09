@@ -14,24 +14,27 @@
                 <label for="name">Name</label>
                 <input id="name" data-bind="value: name" />
             </div>
+            Page size
+            <a refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true">5</a>
+            <a refresh-link="{ maximumRows: 10, startRowIndex: null }" include-current-data="true">10</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th><a refresh-link="{ sortExpression: sortExpression }" include-current-data="true">Name</a></th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="person in people">
+                    <tr>
+                        <td><a navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
+                        <td>{{person.dateOfBirth}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        Page size
-        <a refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true">5</a>
-        <a refresh-link="{ maximumRows: 10, startRowIndex: null }" include-current-data="true">10</a>
-        <table>
-            <thead>
-                <tr>
-                    <th><a refresh-link="{ sortExpression: sortExpression }" include-current-data="true">Name</a></th>
-                    <th>Date of Birth</th>
-                </tr>
-            </thead>
-            <tbody ng-repeat="person in people">
-                <tr>
-                    <td><a navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
-                    <td>{{person.dateOfBirth}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div ng-show="id">
+            <a navigation-back-link="1">Person Search</a>
+        </div>
     </div>
     <script src="../../Sample/personSearch.js"></script>
     <script src="angular.min.js"></script>
