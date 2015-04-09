@@ -1,18 +1,16 @@
 ﻿var app = angular.module('app', ['NavigationAngular']);
 
 app.controller('PersonController', function ($scope) {
-	$scope.action = 'select';
-	$scope.id = 1;
-	$scope.something = 2;
-	$scope.changeAction = function () {
-		$scope.action = $scope.action === 'a' ? 'select' : 'a';
-	}
-	$scope.changeId = function () {
-		$scope.id = $scope.id + 1;
-	}
-	$scope.changeSomething = function () {
-		$scope.something = $scope.something + 1;
-	}
+	$scope.id;
+	$scope.name;
+	$scope.people;
+
+	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
+	var subscription;
+	personStates.list.navigated = function (data) {
+		$scope.people = personSearch.search(data.name, data.sortExpression);
+	};
+	Navigation.start();
 });
 
 Navigation.StateInfoConfig.build([
@@ -21,4 +19,3 @@ Navigation.StateInfoConfig.build([
 			{ key: 'select', to: 'details' }]},
 		{ key: 'details', route: 'person', title: 'Person Details', }]}
 ]);
-Navigation.start();
