@@ -32,14 +32,14 @@
                 </tbody>
             </table>
             <ul>
-                <li ng-show="previousVisible"><a refresh-link="{ startRowIndex: 0 }" include-current-data="true">First</a></li>
-                <li ng-show="previousVisible"><a refresh-link="{ startRowIndex: previous }" include-current-data="true">Previous</a></li>
-                <li ng-hide="previousVisible">First</li>
-                <li ng-hide="previousVisible">Previous</li>
-                <li ng-show="nextVisible"><a refresh-link="{ startRowIndex: next }" include-current-data="true">Next</a></li>
-                <li ng-show="nextVisible"><a refresh-link="{ startRowIndex: last }" include-current-data="true">Last</a></li>
-                <li ng-hide="nextVisible">Next</li>
-                <li ng-hide="nextVisible">Last</li>
+                <li ng-if="previousVisible"><a refresh-link="{ startRowIndex: 0 }" include-current-data="true">First</a></li>
+                <li ng-if="previousVisible"><a refresh-link="{ startRowIndex: previous }" include-current-data="true">Previous</a></li>
+                <li ng-if="!previousVisible">First</li>
+                <li ng-if="!previousVisible">Previous</li>
+                <li ng-if="nextVisible"><a refresh-link="{ startRowIndex: next }" include-current-data="true">Next</a></li>
+                <li ng-if="nextVisible"><a refresh-link="{ startRowIndex: last }" include-current-data="true">Last</a></li>
+                <li ng-if="!nextVisible">Next</li>
+                <li ng-if="!nextVisible">Last</li>
             </ul>
         </div>
         <div ng-if="id">
