@@ -8,8 +8,14 @@ app.controller('PersonController', function ($scope) {
 	var personStates = Navigation.StateInfoConfig.dialogs.person.states;
 	var subscription;
 	personStates.list.navigated = function (data) {
-		$scope.people = personSearch.search(data.name, data.sortExpression);
+		var people = personSearch.search(data.name, data.sortExpression);
+		var totalRowCount = people.length;
+		$scope.people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
 	};
+	Navigation.StateController.onNavigate(function () {
+		if (!$scope.$$phase)
+			$scope.$apply();
+	})
 	Navigation.start();
 });
 
