@@ -4,6 +4,7 @@ app.controller('PersonController', function ($scope) {
 	$scope.id;
 	$scope.name;
 	$scope.people;
+	$scope.sortExpression;
 	$scope.personName;
 	$scope.dateOfBirth;
 
@@ -13,6 +14,7 @@ app.controller('PersonController', function ($scope) {
 		var people = personSearch.search(data.name, data.sortExpression);
 		var totalRowCount = people.length;
 		$scope.people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
+		$scope.sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
 	};
 	personStates.details.navigated = function (data) {
 		$scope.id = data.id;
