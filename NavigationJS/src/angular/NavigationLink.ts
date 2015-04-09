@@ -26,7 +26,4 @@ function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes,
         LinkUtility.getData(toData, includeCurrentData, currentDataKeys))
     );
 }
-
-angular.module('NavigationAngular', [])
-    .directive('navigationLink', NavigationLink);
 export = NavigationLink;
