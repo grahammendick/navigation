@@ -31,9 +31,7 @@ class LinkUtility {
 
     static addNavigateHandler(element: ng.IAugmentedJQuery, handler) {
         Navigation.StateController.onNavigate(handler);
-        element.on('$destroy', () => {
-            Navigation.StateController.offNavigate(handler);
-        });
+        element.on('$destroy', () => Navigation.StateController.offNavigate(handler));
     }
 }
 export = LinkUtility; 

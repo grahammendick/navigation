@@ -44,9 +44,7 @@ class LinkUtility {
 
     static addNavigateHandler(element, handler) {
         Navigation.StateController.onNavigate(handler);
-        ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
-            Navigation.StateController.offNavigate(handler);
-        });
+        ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(handler));
     }
 }
 export = LinkUtility;
