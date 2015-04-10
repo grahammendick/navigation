@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigation React</title>
+    <link href="../example.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div id="banner">Navigation</div>
+    </div>
+    <div id="content">
+        <div id="example">
+            <h3>Examples</h3>
+            <ul>
+                <li><a href="../angular/navigation.html">Navigation Angular</a></li>
+                <li><a href="../knockout/navigation.html">Navigation Knockout</a></li>
+                <li class="active"><a href="../react/navigation.html">Navigation React</a></li>
+            </ul>
+        </div>
+        <div id="plugin">
+            <h1>Navigation React</h1>
+            <p>
+            </p>
+            <div id="navigation">
+                <div id="listing"></div>
+                <div id="details"></div>
+            </div>
+        </div>
+    </div>
+    <script src="../personSearch.js"></script>
+    <script src="react-0.12.2.min.js"></script>
+    <script src="JSXTransformer-0.12.2.js"></script>
+    <script src="navigation.react.js"></script>
+    <script type="text/jsx">
+        var Listing = React.createClass({
+	        getInitialState: function () {
+		        return {};
+	        },
+  	        componentDidMount: function (){
+		        var self = this;
+		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+		        personStates.listing.navigated = function (data) {
+                    var people = personSearch.getList();
+                    var start = (data.pageNumber - 1) * 10;
+                    people = people.slice(start, start + 10);
+			        self.setState({ people: people });
+		        };
+		        personStates.listing.dispose = function () { 
+			        self.setState({ people: null });
+		        }
+	        },
+	        render: function () {
+		        if (this.state.people == null)
+			        return null;
+                var people = this.state.people.map(function (person) {
+                    return (
+                        <tr>
+                            <td><NavigationReact.NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                            <td>{person.dateOfBirth}</td>
+                        </tr>
+                    );
+                });
+                return (
+			        <div>
+				        <table>
+					        <thead>
+						        <tr>
+							        <th>Name</th>
+							        <th>Date of Birth</th>
+						        </tr>
+					        </thead>
+					        <tbody>{people}</tbody>
+				        </table>
+                        <div id="pager">
+                            Go to page
+                            <NavigationReact.RefreshLink toData={{ pageNumber: 1 }}>1</NavigationReact.RefreshLink>
+                            <NavigationReact.RefreshLink toData={{ pageNumber: 2 }}>2</NavigationReact.RefreshLink>
+                        </div>
+                    </div>
+                );
+	        }
+        });
+        // Exercise 1: Configuring States
+        // Exercise 5: Configuring a Transition
+        // Exercise 11: Tidying Up the Url
+        var dialogs = [{
+    	    key: 'masterDetails', initial: 'listing', states: [
+    		    { key: 'listing', route: 'people/{pageNumber}',
+    			    defaults: { pageNumber: 1 },
+    			    trackCrumbTrail: false, transitions: [
+    			    { key: 'select', to: 'details' }
+    		    ]},
+    		    { key: 'details', route: 'person/{id}',
+    			    defaults: { id: 0 } }
+    	    ]
+        }];
+        Navigation.StateInfoConfig.build(dialogs);
+        React.render(
+	        <Listing />,
+	        document.getElementById('listing')
+        );
+        if (location.hash) {
+            Navigation.start();
+        } else {
+            // Exercise 3: Navigating to a Dialog
+            Navigation.StateController.navigate('masterDetails');
+        }
+    </script>
+</body>
+</html>
