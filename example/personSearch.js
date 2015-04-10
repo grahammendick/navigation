@@ -14,20 +14,8 @@ var personSearch = (function () {
 		{ id: 12, name: 'Bessie', dateOfBirth: '25/10/1960' },
 	];
 
-	function search(name, sortExpression) {
-		var searchPeople = [];
-		for (var i = 0; i < people.length; i++) {
-			var person = people[i];
-			if (!name || person.name.toUpperCase().indexOf(name.toUpperCase()) !== -1)
-				searchPeople.push(person);
-		}
-		if (sortExpression) {
-			searchPeople.sort(function (personA, personB) {
-				var mult = sortExpression.indexOf('DESC') === -1 ? -1 : 1;
-				return mult * (personA.name < personB.name ? 1 : -1);
-			});
-		}
-		return searchPeople;
+	function getList() {
+		return people;
 	}
 	function getDetails(id) {
 		for (var i = 0; i < people.length; i++) {
@@ -38,7 +26,7 @@ var personSearch = (function () {
 		return null;
 	}
 	return {
-		search: search,
+		getList: getList,
 		getDetails: getDetails
 	}
 })();
