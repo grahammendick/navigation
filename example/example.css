@@ -75,6 +75,7 @@ ul li a,ul li a:visited,#navigation a, #navigation a:visited{
 #navigation h2{
 	padding-bottom:5px;
 	font-weight:normal;
+	font-size:20px;
 }
 table{
 	border-collapse:collapse;
