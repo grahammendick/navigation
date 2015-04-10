@@ -61,7 +61,7 @@
                     );
                 });
                 return (
-			        <div>
+			        <div id="listing">
 				        <table>
 					        <thead>
 						        <tr>
@@ -80,7 +80,40 @@
                 );
 	        }
         });
-        // Exercise 1: Configuring States
+        var Details = React.createClass({
+	        getInitialState: function () {
+		        return {};
+	        },
+  	        componentDidMount: function (){
+		        var self = this;
+		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+		        personStates.details.navigated = function (data) {
+		            var person = personSearch.getDetails(data.id);
+			        self.setState({ person: person });
+		        };
+		        personStates.details.dispose = function () { 
+			        self.setState({ person: null });
+		        }
+	        },
+	        render: function () {
+		        if (this.state.person == null)
+			        return null;
+		        return (
+			        <div id="details">
+				        <NavigationReact.NavigationBackLink distance="1">Person Search</NavigationReact.NavigationBackLink>
+				        <div id="info">
+                            <h2>{this.state.person.name}</h2>
+                            <div className="label">Date of Birth</div>
+                            <div>{this.state.person.dateOfBirth}</div>
+                            <div className="label">Email</div>
+                            <div>{this.state.person.email}</div>
+                            <div className="label">Phone</div>
+                            <div>{this.state.person.phone}</div>
+				        </div>
+			        </div>
+		        );
+	        }
+        });        // Exercise 1: Configuring States
         // Exercise 5: Configuring a Transition
         // Exercise 11: Tidying Up the Url
         var dialogs = [{
@@ -98,6 +131,10 @@
         React.render(
 	        <Listing />,
 	        document.getElementById('listing')
+        );
+        React.render(
+	        <Details />,
+	        document.getElementById('details')
         );
         if (location.hash) {
             Navigation.start();
