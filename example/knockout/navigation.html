@@ -44,11 +44,11 @@
                 </div>
                 <!-- /ko -->
                 <!-- ko if: id -->
-                <a href="">Person Search</a>
-                <div id="details">
-                    <h2>Bob Smith</h2>
+                <a data-bind="navigationBackLink: 1">Person Search</a>
+                <div id="details" data-bind="with: person">
+                    <h2 data-bind="text: name"></h2>
                     <div class="label">Date of Birth</div>
-                    <div class="field">12/10/1980</div>
+                    <div data-bind="text: dateOfBirth"></div>
                     <div class="label">Email</div>
                     <div class="field">bob@email.com</div>
                     <div class="label">Phone</div>
@@ -94,7 +94,10 @@
 	    }];
 	    Navigation.StateInfoConfig.build(dialogs);
 	    ko.applyBindings(new PersonViewModel());
-	    Navigation.StateController.navigate('masterDetails');
+	    if (location.hash)
+	        Navigation.start();
+        else
+	        Navigation.StateController.navigate('masterDetails');
     </script>
 </body>
 </html>
