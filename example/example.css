@@ -72,6 +72,10 @@ ul li a,ul li a:visited,#navigation a, #navigation a:visited{
 	width:400px;
 	margin:auto;
 }
+#navigation h2{
+	padding-bottom:5px;
+	font-weight:normal;
+}
 table{
 	border-collapse:collapse;
 	margin:20px auto 5px auto;
@@ -111,7 +115,4 @@ td{
 	margin-left:50px;
 	width: 100px;
 	float:left;
-}
-.container h2{
-	padding-bottom:5px;
 }
