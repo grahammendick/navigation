@@ -41,6 +41,8 @@
 	        },
   	        componentDidMount: function (){
 		        var self = this;
+                // Exercise 2: Accessing States
+                // Exercise 4: Creating a State Controller
 		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 		        personStates.listing.navigated = function (data) {
                     var people = personSearch.getList();
@@ -58,6 +60,8 @@
                 var people = this.state.people.map(function (person) {
                     return (
                         <tr>
+                            {/* Exercise 6: Navigating along a Transition */}
+                            {/* Exercise 8: Passing Data */}
                             <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
@@ -76,6 +80,7 @@
 				        </table>
                         <div id="pager">
                             Go to page
+                            {/* Exercise 9: Refreshing */}
                             <RefreshLink toData={{ pageNumber: 1 }}>1</RefreshLink>
                             <RefreshLink toData={{ pageNumber: 2 }}>2</RefreshLink>
                         </div>
@@ -89,6 +94,8 @@
 	        },
   	        componentDidMount: function (){
 		        var self = this;
+                // Exercise 2: Accessing States
+                // Exercise 4: Creating a State Controller
 		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 		        personStates.details.navigated = function (data) {
 		            var person = personSearch.getDetails(data.id);
@@ -103,6 +110,8 @@
 			        return null;
 		        return (
 			        <div id="details">
+                        {/* Exercise 7: Navigating Back */}
+                        {/* Exercise 10: Remembering Data */}
 				        <NavigationBackLink distance="1">Person Search</NavigationBackLink>
 				        <div id="info">
                             <h2>{this.state.person.name}</h2>
@@ -116,7 +125,8 @@
 			        </div>
 		        );
 	        }
-        });        // Exercise 1: Configuring States
+        });        
+        // Exercise 1: Configuring States
         // Exercise 5: Configuring a Transition
         // Exercise 11: Tidying Up the Url
         var dialogs = [{
