@@ -32,6 +32,9 @@
     <script src="JSXTransformer-0.12.2.js"></script>
     <script src="navigation.react.js"></script>
     <script type="text/jsx">
+        var NavigationBackLink = NavigationReact.NavigationBackLink;
+        var NavigationLink = NavigationReact.NavigationLink;
+        var RefreshLink = NavigationReact.RefreshLink;
         var Listing = React.createClass({
 	        getInitialState: function () {
 		        return {};
@@ -55,7 +58,7 @@
                 var people = this.state.people.map(function (person) {
                     return (
                         <tr>
-                            <td><NavigationReact.NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                            <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
                     );
@@ -73,8 +76,8 @@
 				        </table>
                         <div id="pager">
                             Go to page
-                            <NavigationReact.RefreshLink toData={{ pageNumber: 1 }}>1</NavigationReact.RefreshLink>
-                            <NavigationReact.RefreshLink toData={{ pageNumber: 2 }}>2</NavigationReact.RefreshLink>
+                            <RefreshLink toData={{ pageNumber: 1 }}>1</RefreshLink>
+                            <RefreshLink toData={{ pageNumber: 2 }}>2</RefreshLink>
                         </div>
                     </div>
                 );
@@ -100,7 +103,7 @@
 			        return null;
 		        return (
 			        <div id="details">
-				        <NavigationReact.NavigationBackLink distance="1">Person Search</NavigationReact.NavigationBackLink>
+				        <NavigationBackLink distance="1">Person Search</NavigationBackLink>
 				        <div id="info">
                             <h2>{this.state.person.name}</h2>
                             <div className="label">Date of Birth</div>
