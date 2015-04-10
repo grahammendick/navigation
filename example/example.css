@@ -52,7 +52,7 @@ ul li.active{
 	font-style:italic;
 	font-weight:bold;
 }
-ul li a,ol li a:visited{
+ul li a,ul li a:visited,#plugin a, #plugin a:visited{
 	color:#000;
 }
 #example{

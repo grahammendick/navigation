@@ -22,32 +22,6 @@
             <p>
             </p>
             <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Date of Birth</th>
-                </tr>
-                <tr>
-                    <td><a href="">Bob Smith</a></td>
-                    <td>12/10/1980</td>
-                </tr>
-                <tr>
-                    <td>Bob</td>
-                    <td>12/10/1980</td>
-                </tr>
-                <tr>
-                    <td>Bob</td>
-                    <td>12/10/1980</td>
-                </tr>
-                <tr>
-                    <td>Bob</td>
-                    <td>12/10/1980</td>
-                </tr>
-                <tr>
-                    <td>Bob</td>
-                    <td>12/10/1980</td>
-                </tr>
-            </table>
-            <table>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -77,7 +51,7 @@
     </div>
     <script src="../personSearch.js"></script>
     <script src="knockout-3.3.0.js"></script>
-    <script src="navigation.angular.js"></script>
+    <script src="navigation.knockout.js"></script>
     <script>
         function PersonViewModel() {
             var self = this;
@@ -85,8 +59,8 @@
             self.people = ko.observableArray();
             self.person = ko.observable();
 
-            var personStates = Navigation.StateInfoConfig.dialogs.person.states;
-            personStates.list.navigated = function (data) {
+            var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+            personStates.listing.navigated = function (data) {
                 var people = personSearch.search();
                 var start = (data.pageNumber - 1) * 10;
                 self.people(people.slice(start, start + 10));
@@ -101,7 +75,7 @@
 	    var dialogs = [{
 		    key: 'masterDetails', initial: 'listing', states: [
 			    { key: 'listing', route: 'people/{pageNumber}', 
-				    defaults: { pageNumber: 0 }, 
+				    defaults: { pageNumber: 1 }, 
 				    trackCrumbTrail: false, transitions: [
 				    { key: 'select', to: 'details' }
 			    ]},
@@ -111,7 +85,7 @@
 	    }];
 	    Navigation.StateInfoConfig.build(dialogs);
 	    ko.applyBindings(new PersonViewModel());
-	    Navigation.start();
+	    Navigation.StateController.navigate('masterDetails');
     </script>
 </body>
 </html>
