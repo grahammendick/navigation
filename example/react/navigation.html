@@ -68,16 +68,16 @@
                     );
                 });
                 return (
-			        <div id="listing">
-				        <table>
-					        <thead>
-						        <tr>
-							        <th>Name</th>
-							        <th>Date of Birth</th>
-						        </tr>
-					        </thead>
-					        <tbody>{people}</tbody>
-				        </table>
+                    <div id="listing">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date of Birth</th>
+                                </tr>
+                            </thead>
+                        <tbody>{people}</tbody>
+                        </table>
                         <div id="pager">
                             Go to page
                             {/* Exercise 9: Refreshing */}
@@ -108,12 +108,12 @@
 	        render: function () {
 		        if (this.state.person == null)
 			        return null;
-		        return (
-			        <div id="details">
+                return (
+                    <div id="details">
                         {/* Exercise 7: Navigating Back */}
                         {/* Exercise 10: Remembering Data */}
-				        <NavigationBackLink distance="1">People</NavigationBackLink>
-				        <div id="info">
+                        <NavigationBackLink distance="1">People</NavigationBackLink>
+                        <div id="info">
                             <h2>{this.state.person.name}</h2>
                             <div className="label">Date of Birth</div>
                             <div>{this.state.person.dateOfBirth}</div>
@@ -121,8 +121,8 @@
                             <div>{this.state.person.email}</div>
                             <div className="label">Phone</div>
                             <div>{this.state.person.phone}</div>
-				        </div>
-			        </div>
+                        </div>
+                    </div>
 		        );
 	        }
         });        
