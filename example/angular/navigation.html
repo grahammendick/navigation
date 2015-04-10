@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Navigation Angular</title>
+    <link href="../example.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div id="banner">Navigation</div>
+    </div>
+    <div id="content">
+        <div id="example">
+            <h3>Examples</h3>
+            <ul>
+                <li class="active"><a href="../angular/navigation.html">Navigation Angular</a></li>
+                <li><a href="../knockout/navigation.html">Navigation Knockout</a></li>
+                <li><a href="../react/navigation.html">Navigation React</a></li>
+            </ul>
+        </div>
+        <div id="plugin">
+            <h1>Navigation Angular</h1>
+            <p>
+            </p>
+            <div id="navigation" ng-controller="PersonController">
+                <div id="listing" ng-if="!id">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date of Birth</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="person in people">
+                            <tr>
+                                <!-- Exercise 6: Navigating along a Transition -->
+                                <!-- Exercise 8: Passing Data -->
+                                <td><a navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
+                                <td>{{person.dateOfBirth}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="pager">
+                        Go to page
+                        <!-- Exercise 9: Refreshing -->
+                        <a refresh-link="{ pageNumber: 1 }">1</a>
+                        <a refresh-link="{ pageNumber: 2 }">2</a>
+                    </div>
+                </div>
+                <div id="details" ng-if="id">
+                    <!-- Exercise 7: Navigating Back -->
+                    <!-- Exercise 10: Remembering Data -->
+                    <a navigation-back-link="1">Person Search</a>
+                    <div id="info">
+                        <h2>{{person.name}}</h2>
+                        <div class="label">Date of Birth</div>
+                        <div>{{person.dateOfBirth}}</div>
+                        <div class="label">Email</div>
+                        <div>{{person.email}}</div>
+                        <div class="label">Phone</div>
+                        <div>{{person.phone}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../personSearch.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="navigation.angular.js"></script>
+    <script>
+        var app = angular.module('app', ['NavigationAngular']);
+        app.controller('PersonController', function ($scope) {
+            $scope.id;
+            $scope.people;
+            $scope.person;
+            // Exercise 2: Accessing States
+            // Exercise 4: Creating a State Controller
+            var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+            personStates.listing.navigated = function (data) {
+                var people = personSearch.getList();
+                var start = (data.pageNumber - 1) * 10;
+                $scope.people = people.slice(start, start + 10);
+            };
+            personStates.details.navigated = function (data) {
+                $scope.id = data.id;
+                $scope.person = personSearch.getDetails(data.id);
+            };
+            personStates.details.dispose = function () { $scope.id = null; };
+            Navigation.StateController.onNavigate(function () {
+                if (!$scope.$$phase)
+                    $scope.$apply();
+            })
+            if (location.hash) {
+                Navigation.start();
+            } else {
+                // Exercise 3: Navigating to a Dialog
+                Navigation.StateController.navigate('masterDetails');
+            }
+        });
+        // Exercise 1: Configuring States
+        // Exercise 5: Configuring a Transition
+        // Exercise 11: Tidying Up the Url
+        var dialogs = [{
+    	    key: 'masterDetails', initial: 'listing', states: [
+    		    { key: 'listing', route: 'people/{pageNumber}', 
+    			    defaults: { pageNumber: 1 }, 
+    			    trackCrumbTrail: false, transitions: [
+    			    { key: 'select', to: 'details' }
+    		    ]},
+    		    { key: 'details', route: 'person/{id}', 
+    			    defaults: { id: 0 } }
+    	    ]
+        }];
+        Navigation.StateInfoConfig.build(dialogs);
+    </script>
+</body>
+</html>
