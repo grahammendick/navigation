@@ -21,21 +21,29 @@
             <h1>Navigation Knockout</h1>
             <p>
             </p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date of Birth</th>
-                    </tr>
-                </thead>
-                <tbody data-bind="foreach: people">
-                    <tr>
-                        <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
-                        <td data-bind="text: dateOfBirth"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="container">
+            <div id="navigation">
+                <!-- ko ifnot: id -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date of Birth</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: people">
+                        <tr>
+                            <td><a data-bind="text: name, navigationLink: 'select', toData: { id: id }"></a></td>
+                            <td data-bind="text: dateOfBirth"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="pager">
+                    Go to page 
+                    <a data-bind="refreshLink: { pageNumber: 1 }">1</a>
+                    <a data-bind="refreshLink: { pageNumber: 2 }">2</a>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: id -->
                 <a href="">Person Search</a>
                 <div id="details">
                     <h2>Bob Smith</h2>
@@ -46,6 +54,7 @@
                     <div class="label">Phone</div>
                     <div class="field">555 8579</div>
                 </div>
+                <!-- /ko -->
             </div>
         </div>
     </div>
