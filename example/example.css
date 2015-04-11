@@ -93,7 +93,7 @@ th{
 	font-weight:normal;
 }
 th, td{
-	padding:5px;
+	padding:4px;
 }
 td{
 	padding-left: 20px;
@@ -116,4 +116,12 @@ td{
 	margin-left:50px;
 	width: 100px;
 	float:left;
+}
+p a{
+	color:#000;
+}
+p code{
+	display:block;
+	padding:5px 20px;
+	font-size:14px;
 }
