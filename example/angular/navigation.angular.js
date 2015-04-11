@@ -175,7 +175,7 @@ var Navigation = (function () {
     Navigation.StateInfoConfig = StateInfoConfig;
     Navigation.HashHistoryManager = HashHistoryManager;
     Navigation.HTML5HistoryManager = HTML5HistoryManager;
-    Navigation.historyManager = HistoryNavigator.historyManager;
+    Navigation.historyManager = HistoryNavigator.historyManager = new HashHistoryManager();
     Navigation.Crumb = Crumb;
     Navigation.NavigationSettings = NavigationSettings;
     Navigation.StateContext = StateContext;
@@ -190,6 +190,11 @@ var Navigation = (function () {
     };
     return Navigation;
 })();
+HistoryNavigator.navigateHistory = function () {
+    if (StateContext.url === HistoryNavigator.historyManager.getCurrentUrl())
+        return;
+    StateController.navigateLink(HistoryNavigator.historyManager.getCurrentUrl());
+};
 module.exports = Navigation;
 
 },{"./Crumb":5,"./NavigationSettings":8,"./StateContext":11,"./StateController":12,"./StateHandler":13,"./StateRouter":14,"./config/Dialog":17,"./config/State":18,"./config/StateInfoConfig":19,"./config/Transition":20,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./router":24,"./settings":25}],2:[function(_dereq_,module,exports){
@@ -1050,23 +1055,14 @@ var HashHistoryManager = (function () {
 module.exports = HashHistoryManager;
 
 },{"./HistoryNavigator":23}],23:[function(_dereq_,module,exports){
-var HashHistoryManager = _dereq_('./HashHistoryManager');
-var StateContext = _dereq_('../StateContext');
-var StateController = _dereq_('../StateController');
 var HistoryNavigator = (function () {
     function HistoryNavigator() {
     }
-    HistoryNavigator.historyManager = new HashHistoryManager();
-    HistoryNavigator.navigateHistory = function () {
-        if (StateContext.url === HistoryNavigator.historyManager.getCurrentUrl())
-            return;
-        StateController.navigateLink(HistoryNavigator.historyManager.getCurrentUrl());
-    };
     return HistoryNavigator;
 })();
 module.exports = HistoryNavigator;
 
-},{"../StateContext":11,"../StateController":12,"./HashHistoryManager":22}],24:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 var StateRouter = _dereq_('./StateRouter');
 var router = new StateRouter();
 module.exports = router;

@@ -99,19 +99,14 @@
                 if (!$scope.$$phase)
                     $scope.$apply();
             })
-            if (location.hash) {
-                Navigation.start();
-            } else {
-                // Exercise 3: Navigating to a Dialog
-                Navigation.StateController.navigate('masterDetails');
-            }
+            Navigation.start();
         });
         // Exercise 1: Configuring States
         // Exercise 5: Configuring a Transition
         // Exercise 11: Tidying Up the Url
         var dialogs = [{
     	    key: 'masterDetails', initial: 'listing', states: [
-    		    { key: 'listing', route: 'people/{pageNumber}', 
+    		    { key: 'listing', route: '{pageNumber}', 
     			    defaults: { pageNumber: 1 }, 
     			    trackCrumbTrail: false, transitions: [
     			    { key: 'select', to: 'details' }
