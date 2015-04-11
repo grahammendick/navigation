@@ -54,35 +54,35 @@
             }
         });
         var Listing = React.createClass({
-	        getInitialState: function () {
-		        return {};
-	        },
-  	        componentDidMount: function (){
-		        var self = this;
-                        // Exercise 2: Accessing States
-                        // Exercise 4: Creating a State Controller
-		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-		        personStates.listing.navigated = function (data) {
-                        var people = personSearch.getList();
-                        var start = (data.pageNumber - 1) * 10;
-                        people = people.slice(start, start + 10);
-			        self.setState({ people: people });
-		        };
-		        personStates.listing.dispose = function () { 
-			        self.setState({ people: null });
-		        }
-	        },
-	        render: function () {
-		        if (this.state.people == null)
-			        return null;
+            getInitialState: function () {
+                return {};
+            },
+            componentDidMount: function (){
+                var self = this;
+                // Exercise 2: Accessing States
+                // Exercise 4: Creating a State Controller
+                var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+                personStates.listing.navigated = function (data) {
+                    var people = personSearch.getList();
+                    var start = (data.pageNumber - 1) * 10;
+                    people = people.slice(start, start + 10);
+                    self.setState({ people: people });
+                };
+                personStates.listing.dispose = function () { 
+                    self.setState({ people: null });
+                }
+            },
+            render: function () {
+                if (this.state.people == null)
+                    return null;
                 var people = this.state.people.map(function (person) {
-                        return (
-                            <tr>
-                                {/* Exercise 6: Navigating along a Transition */}
-                                {/* Exercise 8: Passing Data */}
-                                <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
-                                <td>{person.dateOfBirth}</td>
-                            </tr>
+                    return (
+                        <tr>
+                            {/* Exercise 6: Navigating along a Transition */}
+                            {/* Exercise 8: Passing Data */}
+                            <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
+                            <td>{person.dateOfBirth}</td>
+                        </tr>
                     );
                 });
                 return (
@@ -104,28 +104,28 @@
                         </div>
                     </div>
                 );
-	        }
+        }
         });
         var Details = React.createClass({
-	        getInitialState: function () {
-		        return {};
-	        },
-  	        componentDidMount: function (){
-		        var self = this;
-                        // Exercise 2: Accessing States
-                        // Exercise 4: Creating a State Controller
-		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-		        personStates.details.navigated = function (data) {
-		            var person = personSearch.getDetails(data.id);
-			        self.setState({ person: person });
-		        };
-		        personStates.details.dispose = function () { 
-			        self.setState({ person: null });
-		        }
-	        },
-	        render: function () {
-		        if (this.state.person == null)
-			        return null;
+            getInitialState: function () {
+                return {};
+            },
+            componentDidMount: function (){
+                var self = this;
+                // Exercise 2: Accessing States
+                // Exercise 4: Creating a State Controller
+                var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+                personStates.details.navigated = function (data) {
+                    var person = personSearch.getDetails(data.id);
+                    self.setState({ person: person });
+                };
+                personStates.details.dispose = function () { 
+                    self.setState({ person: null });
+                }
+            },
+            render: function () {
+                if (this.state.person == null)
+                    return null;
                 return (
                     <div id="details">
                         {/* Exercise 7: Navigating Back */}
@@ -141,35 +141,35 @@
                             <div>{this.state.person.phone}</div>
                         </div>
                     </div>
-		        );
-	        }
+                );
+            }
         });        
         // Exercise 1: Configuring States
         // Exercise 5: Configuring a Transition
         // Exercise 11: Tidying Up the Url
         var dialogs = [{
-    	    key: 'masterDetails', initial: 'listing', states: [
-    		    { key: 'listing', route: '{pageNumber}',
-    			    defaults: { pageNumber: 1 },
-    			    trackCrumbTrail: false, transitions: [
-    			    { key: 'select', to: 'details' }
-    		    ]},
-    		    { key: 'details', route: 'person/{id}',
-    			    defaults: { id: 0 } }
-    	    ]
+            key: 'masterDetails', initial: 'listing', states: [
+                { key: 'listing', route: '{pageNumber}',
+                    defaults: { pageNumber: 1 },
+                    trackCrumbTrail: false, transitions: [
+                    { key: 'select', to: 'details' }
+                    ]},
+                { key: 'details', route: 'person/{id}',
+                    defaults: { id: 0 } }
+            ]
         }];
         Navigation.StateInfoConfig.build(dialogs);
         React.render(
-	        <MenuItem />,
-	        document.getElementById('menuItem')
+            <MenuItem />,
+            document.getElementById('menuItem')
         );
         React.render(
-	        <Listing />,
-	        document.getElementById('listing')
+            <Listing />,
+            document.getElementById('listing')
         );
         React.render(
-	        <Details />,
-	        document.getElementById('details')
+            <Details />,
+            document.getElementById('details')
         );
         Navigation.start();
     </script>
