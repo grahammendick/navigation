@@ -19,7 +19,7 @@
             <ul>
                 <li><a href="../angular/navigation.html">Navigation Angular</a></li>
                 <li><a href="../knockout/navigation.html">Navigation Knockout</a></li>
-                <li class="active"><a href="../react/navigation.html">Navigation React</a></li>
+                <li id="menuItem" class="active"></li>
             </ul>
         </div>
         <div id="plugin">
@@ -45,6 +45,14 @@
         var NavigationBackLink = NavigationReact.NavigationBackLink;
         var NavigationLink = NavigationReact.NavigationLink;
         var RefreshLink = NavigationReact.RefreshLink;
+        var MenuItem = React.createClass({
+            render: function () {
+                return (
+                    // Exercise 3: Navigating to a Dialog
+                    <NavigationLink action="masterDetails">Navigation React</NavigationLink>
+                );
+            }
+        });
         var Listing = React.createClass({
 	        getInitialState: function () {
 		        return {};
@@ -67,7 +75,7 @@
 	        render: function () {
 		        if (this.state.people == null)
 			        return null;
-                        var people = this.state.people.map(function (person) {
+                var people = this.state.people.map(function (person) {
                         return (
                             <tr>
                                 {/* Exercise 6: Navigating along a Transition */}
@@ -151,6 +159,10 @@
     	    ]
         }];
         Navigation.StateInfoConfig.build(dialogs);
+        React.render(
+	        <MenuItem />,
+	        document.getElementById('menuItem')
+        );
         React.render(
 	        <Listing />,
 	        document.getElementById('listing')

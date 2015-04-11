@@ -4,7 +4,7 @@
     <title>Navigation Angular</title>
     <link href="../example.css" rel="stylesheet" />
 </head>
-<body>
+<body ng-controller="PersonController">
     <div id="header">
         <div id="banner">
             <a id="home" href="../../index.html">Navigation</a>
@@ -17,7 +17,8 @@
         <div id="example">
             <h3>Examples</h3>
             <ul>
-                <li class="active"><a href="../angular/navigation.html">Navigation Angular</a></li>
+                <!-- Exercise 3: Navigating to a Dialog -->
+                <li class="active"><a navigation-link="'masterDetails'">Navigation Angular</a></li>
                 <li><a href="../knockout/navigation.html">Navigation Knockout</a></li>
                 <li><a href="../react/navigation.html">Navigation React</a></li>
             </ul>
@@ -31,7 +32,7 @@
                 Angular syntax. Here's the Hyperlink that goes to page 2:
                 <code>&lt;a refresh-link="{ pageNumber: 2 }"&gt;2&lt;/a&gt;</code>
             </p>
-            <div id="navigation" ng-controller="PersonController">
+            <div id="navigation">
                 <div id="listing" ng-if="!id">
                     <table>
                         <thead>
