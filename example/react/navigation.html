@@ -46,13 +46,13 @@
 	        },
   	        componentDidMount: function (){
 		        var self = this;
-                // Exercise 2: Accessing States
-                // Exercise 4: Creating a State Controller
+                        // Exercise 2: Accessing States
+                        // Exercise 4: Creating a State Controller
 		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 		        personStates.listing.navigated = function (data) {
-                    var people = personSearch.getList();
-                    var start = (data.pageNumber - 1) * 10;
-                    people = people.slice(start, start + 10);
+                        var people = personSearch.getList();
+                        var start = (data.pageNumber - 1) * 10;
+                        people = people.slice(start, start + 10);
 			        self.setState({ people: people });
 		        };
 		        personStates.listing.dispose = function () { 
@@ -62,14 +62,14 @@
 	        render: function () {
 		        if (this.state.people == null)
 			        return null;
-                var people = this.state.people.map(function (person) {
-                    return (
-                        <tr>
-                            {/* Exercise 6: Navigating along a Transition */}
-                            {/* Exercise 8: Passing Data */}
-                            <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
-                            <td>{person.dateOfBirth}</td>
-                        </tr>
+                        var people = this.state.people.map(function (person) {
+                        return (
+                            <tr>
+                                {/* Exercise 6: Navigating along a Transition */}
+                                {/* Exercise 8: Passing Data */}
+                                <td><NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationLink></td>
+                                <td>{person.dateOfBirth}</td>
+                            </tr>
                     );
                 });
                 return (
@@ -81,7 +81,7 @@
                                     <th>Date of Birth</th>
                                 </tr>
                             </thead>
-                        <tbody>{people}</tbody>
+                            <tbody>{people}</tbody>
                         </table>
                         <div id="pager">
                             Go to page
@@ -99,8 +99,8 @@
 	        },
   	        componentDidMount: function (){
 		        var self = this;
-                // Exercise 2: Accessing States
-                // Exercise 4: Creating a State Controller
+                        // Exercise 2: Accessing States
+                        // Exercise 4: Creating a State Controller
 		        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 		        personStates.details.navigated = function (data) {
 		            var person = personSearch.getDetails(data.id);
