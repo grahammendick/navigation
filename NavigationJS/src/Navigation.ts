@@ -21,7 +21,7 @@ class Navigation {
     static StateInfoConfig = StateInfoConfig;
     static HashHistoryManager = HashHistoryManager;
     static HTML5HistoryManager = HTML5HistoryManager;
-    static historyManager = HistoryNavigator.historyManager;
+    static historyManager = HistoryNavigator.historyManager = new HashHistoryManager();
     static Crumb = Crumb;
     static NavigationSettings = NavigationSettings;
     static StateContext = StateContext;
@@ -35,4 +35,9 @@ class Navigation {
         StateController.navigateLink(url ? url : HistoryNavigator.historyManager.getCurrentUrl());
     };
 } 
+HistoryNavigator.navigateHistory = () => {
+    if (StateContext.url === HistoryNavigator.historyManager.getCurrentUrl())
+        return;
+    StateController.navigateLink(HistoryNavigator.historyManager.getCurrentUrl());
+}
 export = Navigation;

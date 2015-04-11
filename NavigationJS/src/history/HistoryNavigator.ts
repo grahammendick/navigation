@@ -1,14 +1,7 @@
-﻿import HashHistoryManager = require('./HashHistoryManager');
-import IHistoryManager = require('./IHistoryManager');
-import StateContext = require('../StateContext');
-import StateController = require('../StateController');
+﻿import IHistoryManager = require('./IHistoryManager');
 
 class HistoryNavigator {
-    static historyManager: IHistoryManager = new HashHistoryManager(); 
-    static navigateHistory = () => {
-        if (StateContext.url === HistoryNavigator.historyManager.getCurrentUrl())
-            return;
-        StateController.navigateLink(HistoryNavigator.historyManager.getCurrentUrl());
-    }
+    static historyManager: IHistoryManager; 
+    static navigateHistory: () => void;
 }
 export = HistoryNavigator;
