@@ -1,11 +1,35 @@
 <html>
 <head>
     <title>Navigation</title>
+    <link href="github.css" rel="stylesheet" />
     <style>
 body{
     margin:0;
     background-color:#f8f8f8;
     font-family:Calibri,Helvetica,Arial,sans-serif;
+}
+#header{
+	border-bottom:4px solid #de1b1b;
+	margin-bottom:7px;
+}
+#banner{
+    background-color:#2b2b2b;
+    color:#fff;
+    padding:10px 40px;
+	margin-bottom:3px;
+}
+#banner a#home{
+    font-size:25px;
+	margin-right:60px;
+    text-decoration:none;
+}
+#banner a{
+    color:#fff;
+	font-size:18px;
+	margin-right:20px;
+}
+#banner a.active{
+	color:#e9e581;
 }
 #content{
     width:800px;
@@ -14,13 +38,10 @@ body{
 a{
     color:#000;
 }
-strong, strong a{
-    color:#de1b1b;
-}
 img{
-    width:80px;
+    width:60px;
     position:absolute;
-    top:50px;
+    top:102px;
     margin-left:10px;
     clear:left;
     display:block;
@@ -29,29 +50,13 @@ p{
     margin-top:0;
     margin-bottom:8px;
 }
-.panel{
-    background-color:#2b2b2b;
-    color:#fff;
-    width:300px;
-    border-radius:20px;
-    height:350px;
-    float:left;
-    margin:20px;
-    box-sizing:border-box;
-    font-size:18px;
-}
-.first{
-    margin-left:70px;
-}
 h1{
-    font-size:60px;
+    font-size:50px;
     margin:0 0 10px 0;
     font-weight:normal;
     font-family:'Times New Roman';
     text-decoration:underline;
     float:left;
-}
-h1 a{
     color:#0000ee;
 }
 h2{
@@ -67,59 +72,169 @@ h2{
     text-decoration:underline;
     border-bottom:2px solid white;
 }
-div.text{
-    padding:20px;
-    background-color:#fff;
-    height:213px;
-    margin:10px;
-    color:#000;
-    border-bottom-left-radius:10px;
-    border-bottom-right-radius:10px;
-}
 #description{
     clear:left;
-    font-size:19px;
-    margin:15px 100px 0px 100px;
+    margin:15px 10px 20px 80px;
+}
+pre{
+    float:left;
+    margin-right:10px;
+}
+code.html.hljs{
+    width:300px;
+}
+code.hljs{
+    width:400px;
+    background-color:#fff;
+    padding-left:30px;
+    border:1px solid #de1b1b;
+    font-size:12px;
+}
+a.button{
+    padding: 10px 20px;
+    font-size:18px;
+    text-decoration:none;
+    margin-right:20px;
+	background-color:#e9e581;
+	color:#000;
+    display:block;
+    float:left;
+    width:150px;
+    text-align:center;
+}
+.holder{
+    width:420px;
+    margin:auto;
+    height:60px;
 }
     </style>
 </head>
 <body>
+    <div id="header">
+        <div id="banner">
+            <a class="active" id="home" href="index.html">Navigation</a>
+            <a href="tutorial/configuringstates.html">Tutorial</a>
+            <a href="example/angular/navigation.html">Examples</a>
+            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+        </div>
+    </div>
     <div id="content">
-        <h1><a href="https://github.com/grahammendick/navigation">Navigation</a></h1>
-        <a href="https://github.com/grahammendick/navigation"><img alt="cursor hand" src="cursor.png" /></a>
+        <h1>Navigation</h1>
+        <img alt="cursor hand" src="cursor.png" />
         <p id="description">
-            Navigation is <strong>a new kind of router</strong> for building Single Page Applications.
-            It works in <strong>all browsers</strong> and with <strong>all web libraries</strong>, from Angular to React. 
-            Try the interactive tutorial or take a look at the live examples.
+            Navigation is a new kind of router. It works in all browsers and with all web libraries, from Angular to React. 
         </p>
-        <div class="panel first">
-            <a href="tutorial/configuringstates.html"><h2>TUTORIAL</h2></a>
-            <div class="text">
-                <p>
-                    This interactive tutorial will take you from Navigation zero to Navigation hero in next to no time.
-                </p>
-                <p>
-                    Complete the code exercises in your browser and run them to see if you're right. By the end,
-                    <strong>you won't look at routing in the same way ever again</strong>.
-                </p>
-            </div>
+        <div class="holder">
+            <a class="button" href="tutorial/configuringstates.html">Interactive Tutorial</a>
+            <a class="button" href="example/angular/navigation.html">Live Examples</a>
         </div>
-        <div class="panel">
-            <a href="example/angular/navigation.html"><h2>EXAMPLES</h2></a>
-            <div class="text">
-                <p>
-                    See the things you learned from the tutorial put into action in these live example Single Page 
-                    Applications.
-                </p>
-                <p>
-                    There are examples for <strong><a href="example/angular/navigation.html">Angular</a></strong>, 
-                    <strong><a href="example/knockout/navigation.html">Knockout</a></strong> and 
-                    <strong><a href="example/react/navigation.html">React</a></strong>. 
-                    If you want to build one for your favourite UI library, please get in touch 
-                    <a href="https://twitter.com/grahammendick">@grahammendick</a>.
-                </p>
-            </div>
+        <div style="clear:both"></div>
+        <div id="question" style="display:none">
+            <label>
+                How many things do you have?
+                <select id="things">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            </label>
+            <button id="next">Next</button>
         </div>
+        <div id="answer" style="display:none">
+            Thanks! I'm glad you have 
+            <span id="count"></span> things.
+            <button id="goBack">Back</button>
+        </div>
+        <pre><code class="html">
+&lt;div id="question" style="display:none"&gt;
+&lt;label&gt;
+    How many things do you have?
+    &lt;select id="things"&gt;
+        &lt;option&gt;1&lt;/option&gt;
+        &lt;option&gt;2&lt;/option&gt;
+        &lt;option&gt;3&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/label&gt;
+&lt;button id="next"&gt;Next&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id="answer" style="display:none"&gt;
+    Thanks! I'm glad you have 
+    &lt;span id="count"&gt;&lt;/span&gt; things.
+    &lt;button id="goBack"&gt;Back&lt;/button&gt;
+&lt;/div&gt;
+        </code></pre>
+        <pre><code class="javascript">
+// Add some comments
+Navigation.StateInfoConfig.build([{
+    key: 'quiz', initial: 'question', states: [
+        { key: 'question', route: '', 
+          defaults: { count: 2 }, transitions: [
+            { key: 'next', to: 'answer' }
+        ]},
+        { key: 'answer', route: 'thanks/{count}' }
+    ]
+}]);
+next.onclick = function (e) {
+    var data = { count: things.value };
+    Navigation.StateController.navigate('next', data);
+}
+goBack.onclick = function (e) {
+    Navigation.StateController.navigateBack(1);
+}
+var dialogs = Navigation.StateInfoConfig.dialogs;
+var quiz = dialogs.quiz;
+quiz.states.question.navigated = function () {
+    question.style.display = 'block';
+}
+quiz.states.question.dispose = function () {
+    question.style.display = 'none';
+}
+quiz.states.answer.navigated = function (data) {
+    answer.style.display = 'block';
+    count.textContent = data.count;
+}
+quiz.states.answer.dispose = function () {
+    answer.style.display = 'none';
+}
+Navigation.start();
+        </code></pre>
+        <script src="tutorial/navigation.js"></script>
+        <script src="highlight.pack.js"></script>
+        <script>
+            Navigation.StateInfoConfig.build([{
+	            key: 'quiz', initial: 'question', states: [
+                    { key: 'question', route: '', 
+                      defaults: { count: 2 }, transitions: [
+                        { key: 'next', to: 'answer' }
+                    ]},
+                    { key: 'answer', route: 'thanks/{count}' }
+                ]
+            }]);
+            next.onclick = function (e) {
+                var data = { count: things.value };
+                Navigation.StateController.navigate('next', data);
+            }
+            goBack.onclick = function (e) {
+                Navigation.StateController.navigateBack(1);
+            }
+            var dialogs = Navigation.StateInfoConfig.dialogs;
+            var quiz = dialogs.quiz;
+            quiz.states.question.navigated = function () {
+                question.style.display = 'block';
+            }
+            quiz.states.question.dispose = function () {
+                question.style.display = 'none';
+            }
+            quiz.states.answer.navigated = function (data) {
+                answer.style.display = 'block';
+                count.textContent = data.count;
+            }
+            quiz.states.answer.dispose = function () {
+                answer.style.display = 'none';
+            }
+            Navigation.start();
+            hljs.initHighlightingOnLoad();
+        </script>
 </div>
 </body>
 </html>
