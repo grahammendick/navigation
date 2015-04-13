@@ -16,6 +16,7 @@ body{
 #banner a#home{
     font-size:25px;
 	margin-right:60px;
+    text-decoration:none;
 }
 #banner a{
     color:#fff;
