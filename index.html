@@ -232,20 +232,20 @@ goBack.onclick = function (e) {
 }
 var dialogs = Navigation.StateInfoConfig.dialogs;
 var quiz = dialogs.quiz;
-// When in the question State show the question.
+// When in the question State, show the question.
 quiz.states.question.navigated = function () {
     question.style.display = 'block';
 }
-// When not in the question State hide the question.
+// When not in the question State, hide the question.
 quiz.states.question.dispose = function () {
     question.style.display = 'none';
 }
-// When in the answer State show the answer.
+// When in the answer State, show the answer.
 quiz.states.answer.navigated = function (data) {
     answer.style.display = 'block';
     count.textContent = data.count;
 }
-// When not in the answer State hide the answer.
+// When not in the answer State, hide the answer.
 quiz.states.answer.dispose = function () {
     answer.style.display = 'none';
 }
