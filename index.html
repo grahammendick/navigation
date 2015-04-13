@@ -126,7 +126,8 @@ h3{
     text-align:center;
     font-weight:normal;
     font-size:24px;
-    margin:5px;
+    margin:0 0 10px 0;
+    clear:both;
 }
     </style>
 </head>
@@ -204,7 +205,9 @@ h3{
             </p>
         </div>
         <pre id="javascript"><code class="javascript">
-// Add some comments
+// Configure the the question and answer States. 
+// Map each State to a route. Configure a Transition 
+// so you can move from question to answer.
 Navigation.StateInfoConfig.build([{
     key: 'quiz', initial: 'question', states: [
         { key: 'question', route: '', 
@@ -214,28 +217,36 @@ Navigation.StateInfoConfig.build([{
         { key: 'answer', route: 'thanks/{count}' }
     ]
 }]);
+// Navigate forward from question to answer, passing
+// the number selected.
 next.onclick = function (e) {
     var data = { count: things.value };
     Navigation.StateController.navigate('next', data);
 }
+// Navigate backward from answer to question.
 goBack.onclick = function (e) {
     Navigation.StateController.navigateBack(1);
 }
 var dialogs = Navigation.StateInfoConfig.dialogs;
 var quiz = dialogs.quiz;
+// When in the question State show the question.
 quiz.states.question.navigated = function () {
     question.style.display = 'block';
 }
+// When not in the question State hide the question.
 quiz.states.question.dispose = function () {
     question.style.display = 'none';
 }
+// When in the answer State show the answer.
 quiz.states.answer.navigated = function (data) {
     answer.style.display = 'block';
     count.textContent = data.count;
 }
+// When not in the answer State hide the answer.
 quiz.states.answer.dispose = function () {
     answer.style.display = 'none';
 }
+// Tell Navigation you're ready to go.
 Navigation.start();
         </code></pre>
         <pre><code class="html">
