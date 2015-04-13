@@ -88,7 +88,7 @@
 	 * setting the listing State's route and the pageNumber's\n\
      * default value to 1.\n\
 	 */\n\
-	var dialogs = [{\n\
+	Navigation.StateInfoConfig.build([{\n\
 		key: '{dialog}', initial: '{listing}', states: [\n\
 			{ key: '{listing}', route: '?', \n\
 				defaults: { ? }, \n\
@@ -98,8 +98,7 @@
     		{ key: '{details}', route: 'person/{id}', \n\
 				defaults: { id: 0 } }\n\
 		]\n\
-	}];\n\
-	Navigation.StateInfoConfig.build(dialogs);\n\
+	}]);\n\
 	Navigation.StateController.navigate('{dialog}');\n\
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
 	Navigation.StateController.navigate('{transition}');\n\
@@ -107,7 +106,7 @@
 }",
             answer:
 "function(result){\n\
-	var dialogs = [{\n\
+	Navigation.StateInfoConfig.build([{\n\
 		key: '{dialog}', initial: '{listing}', states: [\n\
 			{ key: '{listing}', route: 'people/{pageNumber}', \n\
 				defaults: { pageNumber: 1 }, \n\
@@ -117,8 +116,7 @@
     		{ key: '{details}', route: 'person/{id}', \n\
 				defaults: { id: 0 } }\n\
 		]\n\
-	}];\n\
-	Navigation.StateInfoConfig.build(dialogs);\n\
+	}]);\n\
 	Navigation.StateController.navigate('{dialog}');\n\
 	Navigation.StateController.refresh({ pageNumber: 2 });\n\
 	Navigation.StateController.navigate('{transition}');\n\

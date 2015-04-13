@@ -54,13 +54,12 @@
             part: 4,
             exercise:
 "function(result){\n\
-	var dialogs = [{\n\
+	Navigation.StateInfoConfig.build([{\n\
 		key: '{dialog}', initial: '{listing}', states: [\n\
 			{ key: '{listing}', route: 'people' },\n\
     		{ key: '{details}', route: 'person' }\n\
 		]\n\
-	}];\n\
-	Navigation.StateInfoConfig.build(dialogs);\n\
+	}]);\n\
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
 	var dialog = dialogs.{dialog};\n\
 	/*-------------------------EXERCISE-------------------------\n\
@@ -75,13 +74,12 @@
 }",
             answer:
 "function(result){\n\
-	var dialogs = [{\n\
+	Navigation.StateInfoConfig.build([{\n\
 		key: '{dialog}', initial: '{listing}', states: [\n\
 			{ key: '{listing}', route: 'people' },\n\
     		{ key: '{details}', route: 'person' }\n\
 		]\n\
-	}];\n\
-	Navigation.StateInfoConfig.build(dialogs);\n\
+	}]);\n\
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
 	var dialog = dialogs.{dialog};\n\
 	result.navigated = false;\n\

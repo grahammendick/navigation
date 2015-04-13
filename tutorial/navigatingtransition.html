@@ -55,15 +55,14 @@
             part: 6,
             exercise:
 "function(result){\n\
-	var dialogs = [{\n\
+	Navigation.StateInfoConfig.build([{\n\
 		key: '{dialog}', initial: '{listing}', states: [\n\
 			{ key: '{listing}', route: 'people', transitions: [\n\
 				{ key: '{transition}', to: '{details}' }\n\
 			]},\n\
     		{ key: '{details}', route: 'person' }\n\
 		]\n\
-	}];\n\
-	Navigation.StateInfoConfig.build(dialogs);\n\
+	}]);\n\
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
 	var dialog = dialogs.{dialog};\n\
 	dialog.states.{details}.navigated = function(){\n\
@@ -81,15 +80,14 @@
 }",
             answer:
 "function(result){\n\
-	var dialogs = [{\n\
+	Navigation.StateInfoConfig.build([{\n\
 		key: '{dialog}', initial: '{listing}', states: [\n\
 			{ key: '{listing}', route: 'people', transitions: [\n\
 				{ key: '{transition}', to: '{details}' }\n\
 			]},\n\
     		{ key: '{details}', route: 'person' }\n\
 		]\n\
-	}];\n\
-	Navigation.StateInfoConfig.build(dialogs);\n\
+	}]);\n\
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
 	var dialog = dialogs.{dialog};\n\
 	dialog.states.{details}.navigated = function(){\n\
