@@ -78,7 +78,10 @@ h2{
 }
 pre{
     float:left;
-    margin-right:10px;
+    margin:0px;
+}
+pre#javascript{
+    float:right;
 }
 code.html.hljs{
     width:300px;
@@ -107,6 +110,9 @@ a.button{
     margin:auto;
     height:60px;
 }
+#example{
+    padding:20px;
+}
     </style>
 </head>
 <body>
@@ -128,42 +134,30 @@ a.button{
             <a class="button" href="tutorial/configuringstates.html">Interactive Tutorial</a>
             <a class="button" href="example/angular/navigation.html">Live Examples</a>
         </div>
-        <div style="clear:both"></div>
-        <div id="question" style="display:none">
-            <label>
-                How many things do you have?
-                <select id="things">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
-            </label>
-            <button id="next">Next</button>
+        <div style="float:left; width:350px">
+            <p>
+                Some text
+            </p>
+            <div id="example">
+                <div id="question" style="display:none">
+                    <label>
+                        How many things do you have?
+                        <select id="things">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </label>
+                    <button id="next">Next</button>
+                </div>
+                <div id="answer" style="display:none">
+                    Thanks! I'm glad you have
+                    <span id="count"></span> things.
+                    <button id="goBack">Back</button>
+                </div>
+            </div>
         </div>
-        <div id="answer" style="display:none">
-            Thanks! I'm glad you have 
-            <span id="count"></span> things.
-            <button id="goBack">Back</button>
-        </div>
-        <pre><code class="html">
-&lt;div id="question" style="display:none"&gt;
-&lt;label&gt;
-    How many things do you have?
-    &lt;select id="things"&gt;
-        &lt;option&gt;1&lt;/option&gt;
-        &lt;option&gt;2&lt;/option&gt;
-        &lt;option&gt;3&lt;/option&gt;
-    &lt;/select&gt;
-&lt;/label&gt;
-&lt;button id="next"&gt;Next&lt;/button&gt;
-&lt;/div&gt;
-&lt;div id="answer" style="display:none"&gt;
-    Thanks! I'm glad you have 
-    &lt;span id="count"&gt;&lt;/span&gt; things.
-    &lt;button id="goBack"&gt;Back&lt;/button&gt;
-&lt;/div&gt;
-        </code></pre>
-        <pre><code class="javascript">
+        <pre id="javascript"><code class="javascript">
 // Add some comments
 Navigation.StateInfoConfig.build([{
     key: 'quiz', initial: 'question', states: [
@@ -197,6 +191,24 @@ quiz.states.answer.dispose = function () {
     answer.style.display = 'none';
 }
 Navigation.start();
+        </code></pre>
+        <pre><code class="html">
+&lt;div id="question" style="display:none"&gt;
+&lt;label&gt;
+    How many things do you have?
+    &lt;select id="things"&gt;
+        &lt;option&gt;1&lt;/option&gt;
+        &lt;option&gt;2&lt;/option&gt;
+        &lt;option&gt;3&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/label&gt;
+&lt;button id="next"&gt;Next&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id="answer" style="display:none"&gt;
+    Thanks! I'm glad you have 
+    &lt;span id="count"&gt;&lt;/span&gt; things.
+    &lt;button id="goBack"&gt;Back&lt;/button&gt;
+&lt;/div&gt;
         </code></pre>
         <script src="tutorial/navigation.js"></script>
         <script src="highlight.pack.js"></script>
