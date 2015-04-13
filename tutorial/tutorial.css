@@ -33,9 +33,11 @@ body{
 }
 h1,h2{
 	margin:0;
+	font-weight:normal;
 }
 h3{
 	margin:12px 0;
+	font-weight:normal;
 }
 p{
 	margin:5px 0 14px 0;
