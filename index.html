@@ -44,7 +44,7 @@ a{
 img{
     width:60px;
     position:absolute;
-    top:102px;
+    top:100px;
     margin-left:10px;
     clear:left;
     display:block;
@@ -129,6 +129,9 @@ h3{
     margin:0 0 10px 0;
     clear:both;
 }
+#example p{
+    padding:5px;
+}
     </style>
 </head>
 <body>
@@ -153,19 +156,22 @@ h3{
         <div class="panel">
             <h2>Goldilocks</h2>
             <p>
-                Most routers do either too little or too much. Routers should build Hyperlinks but shouldn't load views. Navigation is the Goldilocks of routers, it does just the right amount.
+                Most routers do either too little or too much. Routers should build Hyperlinks but shouldn't load views. 
+                Navigation is the Goldilocks of routers, it does just the right amount.
             </p>
         </div>
         <div class="panel">
             <h2>Breadcrumbs</h2>
             <p>
-                Navigation tracks the route a user takes, building a dynamic breadcrumb trail. Returning to one of these breadcrumbs recreates the page as the user last saw it.
+                Navigation tracks the journey a user takes, building a dynamic breadcrumb trail. Returning to one of these 
+                breadcrumbs recreates the page as the user last saw it.
             </p>
         </div>
         <div class="panel">
             <h2>Plugins</h2>
             <p>
-                Navigation works with all web libraries. Navigation plugins allow you to build Hyperlinks using your library's UI binding syntax. There are plugins for Angular, Knockout and React.
+                Navigation works with all web libraries. Navigation plugins allow you to build Hyperlinks using your 
+                library's UI binding syntax. There are plugins for Angular, Knockout and React.
             </p>
         </div>
         <h3>Navigating Forward and Back</h3>
@@ -189,19 +195,15 @@ h3{
                 </div>
             </div>
             <p>
-                Some text sdfaksdf sdf sl;fks dl;fsdfs
-                dff aslfk sdkf;slfks;ldfk sd f;lsdkf ;sldkf s
-                sd fsdfksl ;dfksd sdf;las kd;fs dfsdf sd. sdf s
-                sdf  fsdf asf sf
-                sdfs d ffsadafas kfsdla sfsa f nvklvoew
-                fsd fd f
+                Try out navigating by running the example above. Press the 'Next' button to navigate forward, then press 
+                the 'Back' button to navigate back. Have a look at the JavaScript and HTML for this example.
             </p>
             <p>
-                Some text sdfaksdf sdf sl;fks dl;fsdfs
-                dff aslfk sdkf;slfks;ldfk sd f;lsdkf ;sldkf s
-                sd fsdfksl ;dfksd sdf;las kd;fs dfsdf sd
-                sdf sdfsdf
-                dsf sdf sf sdf sdfdtwe4rtert erer tery
+                Navigation is a State machine. You configure States and the movement between them. Each State represents 
+                a route. You attach methods to States that get called when that State is entered or exited.
+            </p>
+            <p>
+                Navigation keeps the url in step as you navigate and pass data between States. Navigation tracks previous States allowing you to navigate back to them.
             </p>
         </div>
         <pre id="javascript"><code class="javascript">
@@ -223,7 +225,7 @@ next.onclick = function (e) {
     var data = { count: things.value };
     Navigation.StateController.navigate('next', data);
 }
-// Navigate backward from answer to question.
+// Navigate back from answer to question.
 goBack.onclick = function (e) {
     Navigation.StateController.navigateBack(1);
 }
