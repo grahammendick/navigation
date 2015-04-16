@@ -29,7 +29,7 @@ Once inside a Dialog, you can use a Transition to move to any other State inside
     { key: 'details', route: 'details' }]
 }];
 ```
-The same methods used to navigate to a Dialog work for navigating along a Transition. But pass the Transition key instead of the Dialog key. i.e. 'select' rather than 'details'.
+The same methods used to navigate to a Dialog work for navigating along a Transition. But pass the Transition key instead of the Dialog key. i.e. _'select'_ rather than _'details'_.
 ```JavaScript
 Navigation.StateController.navigate('select');
 var href = Navigation.StateController.getNavigationLink('select');
