@@ -7,6 +7,7 @@ var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var streamify = require('gulp-streamify');
+var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
 var tests = [
@@ -91,3 +92,9 @@ for (var i = 0; i < plugins.length; i++) {
 	buildTasks.push('Unify' + plugins[i].name);
 }
 gulp.task('build', buildTasks);
+
+gulp.task('package', function () {
+	var tsResult = gulp.src('src/*.ts')
+		.pipe(typescript())
+		.pipe(gulp.dest('./build/npm/lib'));
+})
