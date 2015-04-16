@@ -94,7 +94,7 @@ for (var i = 0; i < plugins.length; i++) {
 gulp.task('build', buildTasks);
 
 gulp.task('package', function () {
-	var tsResult = gulp.src('src/*.ts')
+	return gulp.src('src/*.ts')
 		.pipe(typescript())
 		.pipe(gulp.dest('./build/npm/lib'));
 })
