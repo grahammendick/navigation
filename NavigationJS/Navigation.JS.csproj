@@ -116,6 +116,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
+    <Content Include="npm\knockout.js" />
+    <Content Include="npm\navigation.js" />
     <Content Include="sample\angular\angular.min.js" />
     <Content Include="sample\angular\app.html" />
     <Content Include="sample\angular\app.js" />
