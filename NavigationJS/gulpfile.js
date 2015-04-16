@@ -28,7 +28,7 @@ function testTask(from, to) {
 		.bundle()
 		.pipe(source(to))
 		.pipe(rename(to))
-		.pipe(gulp.dest('./build'))
+		.pipe(gulp.dest('./build/npm/dist'))
         .pipe(mocha());
 }
 for (var i = 0; i < tests.length; i++) {
@@ -45,7 +45,7 @@ gulp.task('BuildNavigationRouting', function () {
 	return buildTask('NavigationRouting', './src/routing/NavigationRouting.ts', 'navigation.routing.js')
 		.pipe(rename('navigation.routing.min.js'))
 		.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build'));
+		.pipe(gulp.dest('./build/npm/dist'));
 });
 gulp.task('BuildNavigation', function () {
 	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js');
@@ -59,7 +59,7 @@ function buildTask(name, from, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(derequire())
-		.pipe(gulp.dest('./build'));
+		.pipe(gulp.dest('./build/npm/dist'));
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
@@ -70,23 +70,23 @@ for (var i = 0; i < plugins.length; i++) {
 	buildTasks.push('Build' + plugins[i].name);
 }
 gulp.task('UnifyNavigation', ['BuildNavigationRouting', 'BuildNavigation'], function () {
-	return gulp.src(['./build/navigation.routing.js', './build/navigation.js'])
+	return gulp.src(['./build/npm/dist/navigation.routing.js', './build/npm/dist/navigation.js'])
 		.pipe(concat('navigation.js'))
-		.pipe(gulp.dest('./build'))
+		.pipe(gulp.dest('./build/npm/dist'))
 		.pipe(rename('navigation.min.js'))
 		.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build'));
+		.pipe(gulp.dest('./build/npm/dist'));
 });
 buildTasks.push('UnifyNavigation');
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
 		gulp.task('Unify' + plugin.name, ['UnifyNavigation', 'Build' + plugin.name], function () {
-			return gulp.src(['./build/navigation.js', './build/' + plugin.to])
+			return gulp.src(['./build/npm/dist/navigation.js', './build/npm/dist/' + plugin.to])
 				.pipe(concat(plugin.to))
-				.pipe(gulp.dest('./build'))
+				.pipe(gulp.dest('./build/npm/dist'))
 				.pipe(rename(plugin.to.replace(/js$/, 'min.js')))
 				.pipe(streamify(uglify()))
-				.pipe(gulp.dest('./build'));
+				.pipe(gulp.dest('./build/npm/dist'));
 		});
 	})(plugins[i]);
 	buildTasks.push('Unify' + plugins[i].name);
