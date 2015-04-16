@@ -1,5 +1,6 @@
 ﻿import LinkUtility = require('./LinkUtility');
 import Navigation = require('../Navigation');
+import ko = require('knockout');
 
 var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
     init: (element, valueAccessor) => {

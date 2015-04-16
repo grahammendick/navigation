@@ -21,6 +21,7 @@
   "browserify-shim": {
     "./routing/NavigationRouting": "global:NavigationRouting",
     "../Navigation": "global:Navigation",
+    "knockout": "global:ko",
     "react":  "global:React"
   },
   "scripts": {
