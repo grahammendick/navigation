@@ -1,4 +1,6 @@
 ﻿import Navigation = require('../Navigation');
+import angular = require('angular');
+import jquery = require('jquery');
 
 class LinkUtility {
     static setLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {

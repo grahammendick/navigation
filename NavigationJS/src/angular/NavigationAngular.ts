@@ -1,8 +1,7 @@
-﻿/// <reference path="angular.d.ts" />
-/// <reference path="jquery.d.ts" />
-import NavigationBackLink = require('./NavigationBackLink');
+﻿import NavigationBackLink = require('./NavigationBackLink');
 import NavigationLink = require('./NavigationLink');
 import RefreshLink = require('./RefreshLink');
+import angular = require('angular');
 
 class NavigationAngular {
     static NavigationBackLink = NavigationBackLink;
