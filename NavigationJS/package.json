@@ -20,7 +20,8 @@
   },
   "browserify-shim": {
     "./routing/NavigationRouting": "global:NavigationRouting",
-    "../Navigation": "global:Navigation"
+    "../Navigation": "global:Navigation",
+    "react":  "global:React"
   },
   "scripts": {
     "test": "gulp test",
