@@ -1,4 +1,5 @@
 ﻿import Navigation = require('../Navigation');
+import React = require('react');
 
 class LinkUtility {
     static cloneProps(elem: React.ReactElement<any, any>): any {

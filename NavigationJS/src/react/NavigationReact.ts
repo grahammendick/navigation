@@ -1,5 +1,4 @@
-﻿/// <reference path="react.d.ts" />
-import NavigationBackLink = require('./NavigationBackLink');
+﻿import NavigationBackLink = require('./NavigationBackLink');
 import NavigationLink = require('./NavigationLink');
 import RefreshLink = require('./RefreshLink');
 
