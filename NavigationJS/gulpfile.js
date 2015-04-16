@@ -93,12 +93,16 @@ for (var i = 0; i < plugins.length; i++) {
 }
 gulp.task('build', buildTasks);
 
+gulp.task('npm', function () {
+	return gulp.src('./npm/*')
+		.pipe(gulp.dest('./build/npm/'));
+});
 var ts = ['./src/Navigation.ts'];
 for (var i = 0; i < plugins.length; i++) {
 	ts.push(plugins[i].from);
 }
-gulp.task('package', function () {
+gulp.task('package', ['npm'], function () {
 	return gulp.src(ts)
 		.pipe(typescript())
 		.pipe(gulp.dest('./build/npm/lib'));
-})
+});
