@@ -1,1 +1,4 @@
+/packages
+*.suo
+*.exe
 Navigation*/
