@@ -11,7 +11,7 @@ var personSearch = (function () {
 		{ id: 9, name: 'Ryan Ruecker', dateOfBirth: '01/09/1980', email: 'ryan@navigation.com', phone: '555 0009' },
 		{ id: 10, name: 'Kaci Hoppe', dateOfBirth: '01/10/1980', email: 'kaci@navigation.com', phone: '555 0010' },
 		{ id: 11, name: 'Fernando Dietrich', dateOfBirth: '01/11/1980', email: 'fernando@navigation.com', phone: '555 0011' },
-		{ id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012' },
+		{ id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012' }
 	];
 
 	function getList() {
