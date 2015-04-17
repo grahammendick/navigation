@@ -1,4 +1,5 @@
 ﻿import Navigation = require('../Navigation');
+import ko = require('knockout');
 
 class LinkUtility {
     static setLink(element: HTMLAnchorElement, linkAccessor: () => string) {

@@ -1,5 +1,6 @@
 ﻿import LinkUtility = require('./LinkUtility');
 import Navigation = require('../Navigation');
+import angular = require('angular');
 
 var RefreshLink = () => {
     return {

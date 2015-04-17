@@ -116,6 +116,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
+    <Content Include="npm\angular.js" />
+    <Content Include="npm\knockout.js" />
+    <Content Include="npm\navigation.js" />
+    <Content Include="npm\react.js" />
+    <Content Include="npm\routing.js" />
     <Content Include="sample\angular\angular.min.js" />
     <Content Include="sample\angular\app.html" />
     <Content Include="sample\angular\app.js" />
@@ -131,6 +136,8 @@
     <Content Include="web.config" />
     <Content Include="sample\react\app.jsx" />
     <Content Include="package.json" />
+    <Content Include="npm\package.json" />
+    <Content Include="npm\README.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
