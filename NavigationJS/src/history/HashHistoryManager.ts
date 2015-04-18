@@ -7,13 +7,10 @@ class HashHistoryManager implements IHistoryManager {
 
     init() {
         if (!this.disabled) {
-            if (window.addEventListener) {
-                window.removeEventListener('hashchange', HistoryNavigator.navigateHistory);
+            if (window.addEventListener)
                 window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
-            } else {
-                window.detachEvent('onhashchange', HistoryNavigator.navigateHistory);
+            else
                 window.attachEvent('onhashchange', HistoryNavigator.navigateHistory);
-            }
         }
     }
 

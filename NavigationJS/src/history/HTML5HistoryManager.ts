@@ -7,10 +7,8 @@ class HTML5HistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
 
     init() {
-        if (!this.disabled) {
-            window.removeEventListener('popstate', HistoryNavigator.navigateHistory);
+        if (!this.disabled)
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
-        }
     }
 
     addHistory(state: State, url: string) {
