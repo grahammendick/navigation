@@ -4,6 +4,7 @@ import State = require('../config/State');
 
 class HashHistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
+    keepQueryIdentifier: boolean = false;
 
     init() {
         if (!this.disabled) {
@@ -37,10 +38,14 @@ class HashHistoryManager implements IHistoryManager {
     }
 
     private encode(url: string): string {
+        if (this.keepQueryIdentifier)
+            return url;
         return url.replace('?', '#');
     }
 
     private decode(hash: string): string {
+        if (this.keepQueryIdentifier)
+            return hash;
         return hash.replace('#', '?');
     }
 }
