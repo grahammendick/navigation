@@ -988,10 +988,8 @@ var HTML5HistoryManager = (function () {
         this.disabled = (typeof window === 'undefined') || !(window.history && window.history.pushState);
     }
     HTML5HistoryManager.prototype.init = function () {
-        if (!this.disabled) {
-            window.removeEventListener('popstate', HistoryNavigator.navigateHistory);
+        if (!this.disabled)
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
-        }
     };
     HTML5HistoryManager.prototype.addHistory = function (state, url) {
         if (state.title && (typeof document !== 'undefined'))
@@ -1020,35 +1018,43 @@ var HistoryNavigator = _dereq_('./HistoryNavigator');
 var HashHistoryManager = (function () {
     function HashHistoryManager() {
         this.disabled = (typeof window === 'undefined') || !('onhashchange' in window);
+        this.replaceQueryIdentifier = false;
     }
     HashHistoryManager.prototype.init = function () {
         if (!this.disabled) {
-            if (window.addEventListener) {
-                window.removeEventListener('hashchange', HistoryNavigator.navigateHistory);
+            if (window.addEventListener)
                 window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
-            }
-            else {
-                window.detachEvent('onhashchange', HistoryNavigator.navigateHistory);
+            else
                 window.attachEvent('onhashchange', HistoryNavigator.navigateHistory);
-            }
         }
     };
     HashHistoryManager.prototype.addHistory = function (state, url) {
         if (state.title && (typeof document !== 'undefined'))
             document.title = state.title;
+        url = this.encode(url);
         if (!this.disabled && location.hash.substring(1) !== url)
             location.hash = url;
     };
     HashHistoryManager.prototype.getCurrentUrl = function () {
-        return location.hash.substring(1);
+        return this.decode(location.hash.substring(1));
     };
     HashHistoryManager.prototype.getHref = function (url) {
         if (!url)
             throw new Error('The Url is invalid');
-        return '#' + url;
+        return '#' + this.encode(url);
     };
     HashHistoryManager.prototype.getUrl = function (anchor) {
-        return anchor.hash.substring(1);
+        return this.decode(anchor.hash.substring(1));
+    };
+    HashHistoryManager.prototype.encode = function (url) {
+        if (!this.replaceQueryIdentifier)
+            return url;
+        return url.replace('?', '#');
+    };
+    HashHistoryManager.prototype.decode = function (hash) {
+        if (!this.replaceQueryIdentifier)
+            return hash;
+        return hash.replace('#', '?');
     };
     return HashHistoryManager;
 })();

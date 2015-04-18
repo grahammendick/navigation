@@ -988,10 +988,8 @@ var HTML5HistoryManager = (function () {
         this.disabled = (typeof window === 'undefined') || !(window.history && window.history.pushState);
     }
     HTML5HistoryManager.prototype.init = function () {
-        if (!this.disabled) {
-            window.removeEventListener('popstate', HistoryNavigator.navigateHistory);
+        if (!this.disabled)
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
-        }
     };
     HTML5HistoryManager.prototype.addHistory = function (state, url) {
         if (state.title && (typeof document !== 'undefined'))
@@ -1020,35 +1018,43 @@ var HistoryNavigator = _dereq_('./HistoryNavigator');
 var HashHistoryManager = (function () {
     function HashHistoryManager() {
         this.disabled = (typeof window === 'undefined') || !('onhashchange' in window);
+        this.replaceQueryIdentifier = false;
     }
     HashHistoryManager.prototype.init = function () {
         if (!this.disabled) {
-            if (window.addEventListener) {
-                window.removeEventListener('hashchange', HistoryNavigator.navigateHistory);
+            if (window.addEventListener)
                 window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
-            }
-            else {
-                window.detachEvent('onhashchange', HistoryNavigator.navigateHistory);
+            else
                 window.attachEvent('onhashchange', HistoryNavigator.navigateHistory);
-            }
         }
     };
     HashHistoryManager.prototype.addHistory = function (state, url) {
         if (state.title && (typeof document !== 'undefined'))
             document.title = state.title;
+        url = this.encode(url);
         if (!this.disabled && location.hash.substring(1) !== url)
             location.hash = url;
     };
     HashHistoryManager.prototype.getCurrentUrl = function () {
-        return location.hash.substring(1);
+        return this.decode(location.hash.substring(1));
     };
     HashHistoryManager.prototype.getHref = function (url) {
         if (!url)
             throw new Error('The Url is invalid');
-        return '#' + url;
+        return '#' + this.encode(url);
     };
     HashHistoryManager.prototype.getUrl = function (anchor) {
-        return anchor.hash.substring(1);
+        return this.decode(anchor.hash.substring(1));
+    };
+    HashHistoryManager.prototype.encode = function (url) {
+        if (!this.replaceQueryIdentifier)
+            return url;
+        return url.replace('?', '#');
+    };
+    HashHistoryManager.prototype.decode = function (hash) {
+        if (!this.replaceQueryIdentifier)
+            return hash;
+        return hash.replace('#', '?');
     };
     return HashHistoryManager;
 })();
@@ -1075,7 +1081,6 @@ module.exports = settings;
 },{"./NavigationSettings":8}]},{},[1])(1)
 });
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.NavigationReact = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-/// <reference path="react.d.ts" />
 var NavigationBackLink = _dereq_('./NavigationBackLink');
 var NavigationLink = _dereq_('./NavigationLink');
 var RefreshLink = _dereq_('./RefreshLink');
@@ -1092,6 +1097,7 @@ module.exports = NavigationReact;
 },{"./NavigationBackLink":3,"./NavigationLink":4,"./RefreshLink":5}],2:[function(_dereq_,module,exports){
 (function (global){
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
+var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
 var LinkUtility = (function () {
     function LinkUtility() {
     }
@@ -1144,6 +1150,7 @@ module.exports = LinkUtility;
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
+var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
 var NavigationBackLink = React.createClass({
     onNavigate: function () {
         this.forceUpdate();
@@ -1168,6 +1175,7 @@ module.exports = NavigationBackLink;
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
+var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
 var NavigationLink = React.createClass({
     onNavigate: function () {
         this.forceUpdate();
@@ -1193,6 +1201,7 @@ module.exports = NavigationLink;
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
+var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
 var RefreshLink = React.createClass({
     onNavigate: function () {
         this.forceUpdate();
