@@ -17,22 +17,31 @@ class HashHistoryManager implements IHistoryManager {
     addHistory(state: State, url: string) {
         if (state.title && (typeof document !== 'undefined'))
             document.title = state.title;
+        url = this.encode(url);
         if (!this.disabled && location.hash.substring(1) !== url)
             location.hash = url;
     }
 
     getCurrentUrl(): string {
-        return location.hash.substring(1);
+        return this.decode(location.hash.substring(1));
     }
 
     getHref(url: string): string {
         if (!url)
             throw new Error('The Url is invalid');
-        return '#' + url;
+        return '#' + this.encode(url);
     }
 
     getUrl(anchor: HTMLAnchorElement) {
-        return anchor.hash.substring(1);
+        return this.decode(anchor.hash.substring(1));
+    }
+
+    private encode(url: string): string {
+        return url.replace('?', '#');
+    }
+
+    private decode(hash: string): string {
+        return hash.replace('#', '?');
     }
 }
 export = HashHistoryManager;
