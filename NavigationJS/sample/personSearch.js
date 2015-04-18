@@ -11,7 +11,7 @@
 		{ id: 9, name: 'Bridget', dateOfBirth: '25/10/1960' },
 		{ id: 10, name: 'Beth', dateOfBirth: '12/12/1980' },
 		{ id: 11, name: 'Brian', dateOfBirth: '01/06/1970' },
-		{ id: 12, name: 'Bessie', dateOfBirth: '25/10/1960' },
+		{ id: 12, name: 'Bessie', dateOfBirth: '25/10/1960' }
 	];
 
 	function search(name, sortExpression) {
