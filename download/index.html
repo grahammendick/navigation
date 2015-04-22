@@ -50,7 +50,7 @@ h1,h2{
     color:#de1b1b;
     text-decoration:none;
 }
-code{
+pre code{
     padding:10px;
     background-color:#fff;
     border:1px solid #000;
@@ -76,23 +76,23 @@ em{
     </div>
     <div id="content">
         <h1>Downloads</h1>
-        Navigation works great with UI binding libraries. If you're using Angular, Knockout or React get the
+        Navigation works great with UI binding libraries. If you're using Angular, Knockout or React, get the
         flavour of Navigation that works best for you from the <a href="#plugins">Plugins section</a>. Don't
         worry if you're not using one of these, Navigation works great on its own, too.
         <h2 class="download" id="Navigation"><a href="navigation-1.0.0.min.js">Navigation 1.0.0</a></h2>
         The minified version of Navigation.
-        <code>&lt;script src="navigation-1.0.0.min.js"&gt;&lt;/script&gt;</code>
+        <pre><code>&lt;script src="navigation-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
         <em>The <a href="navigation-1.0.0.js">non-minified version of Navigation</a> is also available.</em>
         <h2 id="plugins">Plugins</h2>
         <h3 class="download" id="NavigationAngular"><a href="navigation.angular-1.0.0.min.js">Navigation Angular 1.0.0</a></h3>
         The minified version of Navigation Angular. It includes the Navigation source so you only need to 
         reference this one JavaScript file.
-        <code>&lt;script src="navigation.angular-1.0.0.min.js"&gt;&lt;/script&gt;</code>
+        <pre><code>&lt;script src="navigation.angular-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
         <em>The <a href="navigation.angular-1.0.0.js">non-minified version of Navigation Angular</a> is also available.</em>
         <h3 class="download" id="NavigationKnockout"><a href="navigation.knockout-1.0.0.min.js">Navigation Knockout 1.0.0</a></h3>
         The minified version of Navigation Knockout. It includes the Navigation source so you only need to
         reference this one JavaScript file.
-        <code>&lt;script src="navigation.knockout-1.0.0.min.js"&gt;&lt;/script&gt;</code>
+        <pre><code>&lt;script src="navigation.knockout-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
         <em>The <a href="navigation.knockout-1.0.0.js">non-minified version of Navigation Knockout</a> is also available.</em>
         <h3 class="download" id="NavigationReact"><a href="navigation.react-1.0.0.min.js">Navigation React 1.0.0</a></h3>
         The minified version of Navigation React. It includes the Navigation source so you only need to
@@ -100,16 +100,13 @@ em{
         <code>&lt;script src="navigation.react-1.0.0.min.js"&gt;&lt;/script&gt;</code>
         <em>The <a href="navigation.react-1.0.0.js">non-minified version of Navigation React</a> is also available.</em>
         <h2>Bower</h2>
-        <code>
-            bower install navigation
-        </code>
+        <pre><code>bower install navigation</code></pre>
         <h2>npm</h2>
-        <code>
-            npm install navigation
-        </code>
+        <pre><code>npm install navigation</code></pre>
         <pre><code>var Navigation = require('navigation');
 Navigation.StateInfoConfig.build([...]);
 </code></pre>
+        You can also require the Navigation plugins, e.g., <code>var NavigationReact = require('navigation/react');</code>
         <pre><code>var NavigationReact = require('navigation/react');
 var NavigationBackLink = NavigationReact.NavigationBackLink;
 ...
