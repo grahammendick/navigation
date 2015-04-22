@@ -41,6 +41,24 @@ h1,h2{
     margin:0;
     font-weight:normal;
 }
+h3{
+    margin:5px 0;
+}
+.download{
+    font-size:20px;
+    font-weight:bold;
+}
+.download a{
+    color:#de1b1b;
+    text-decoration:none;
+}
+code{
+    padding:10px;
+    background-color:#fff;
+    border:1px solid #de1b1b;
+    display:block;
+    margin:5px 0;
+}
     </style>
 </head>
 <body>
@@ -55,6 +73,29 @@ h1,h2{
     </div>
     <div id="content">
         <h1>Downloads</h1>
-</div>
+        <h2 class="download" id="Navigation"><a href="">Navigation 0.1.0</a></h2>
+        <h2>npm</h2>
+        <code>
+            npm install navigation
+        </code>
+        <pre><code>var Navigation = require('navigation');
+Navigation.StateInfoConfig.build([...]);
+</code></pre>
+        <pre><code>var NavigationReact = require('navigation/react');
+var NavigationBackLink = NavigationReact.NavigationBackLink;
+...
+var BackLink = React.createClass({
+    render: function () {
+        return (
+            React.createElement(NavigationBackLink, {distance: "1"}, "Go Back")
+        );
+    }
+});
+...</code></pre>
+        <h2>Bower</h2>
+        <code>
+            bower install navigation
+        </code>
+    </div>
 </body>
 </html>
