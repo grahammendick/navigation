@@ -1556,4 +1556,16 @@ describe('NavigationTest', function () {
         assert.equal(states2.length, 2);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
     });
+
+    it('NavigatingNavigateAndContinueTest', function () {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+            Navigation.StateController.navigate('t0');
+            navigate();
+        }
+        Navigation.StateController.navigate('d1');
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
+    });
 });
