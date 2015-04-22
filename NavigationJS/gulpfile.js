@@ -64,7 +64,10 @@ function buildTask(name, from, to) {
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
 		gulp.task('Build' + plugin.name, function () {
-			return buildTask(plugin.name, plugin.from, plugin.to);
+			return buildTask(plugin.name, plugin.from, plugin.to)
+				.pipe(rename(plugin.to.replace(/js$/, 'min.js')))
+				.pipe(streamify(uglify()))
+				.pipe(gulp.dest('./build/npm/dist'));
 		});
 	})(plugins[i]);
 	buildTasks.push('Build' + plugins[i].name);
@@ -78,19 +81,6 @@ gulp.task('UnifyNavigation', ['BuildNavigationRouting', 'BuildNavigation'], func
 		.pipe(gulp.dest('./build/npm/dist'));
 });
 buildTasks.push('UnifyNavigation');
-for (var i = 0; i < plugins.length; i++) {
-	(function (plugin) {
-		gulp.task('Unify' + plugin.name, ['UnifyNavigation', 'Build' + plugin.name], function () {
-			return gulp.src(['./build/npm/dist/navigation.js', './build/npm/dist/' + plugin.to])
-				.pipe(concat(plugin.to))
-				.pipe(gulp.dest('./build/npm/dist'))
-				.pipe(rename(plugin.to.replace(/js$/, 'min.js')))
-				.pipe(streamify(uglify()))
-				.pipe(gulp.dest('./build/npm/dist'));
-		});
-	})(plugins[i]);
-	buildTasks.push('Unify' + plugins[i].name);
-}
 gulp.task('build', buildTasks);
 
 gulp.task('npm', function () {
