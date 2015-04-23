@@ -37,25 +37,30 @@ body{
 a{
     color:#000;
 }
-h1,h2{
+h1,h2,h3{
     margin:0;
     font-weight:normal;
 }
-.download{
-    margin:5px 0 0 0;
-    font-size:20px;
-    font-weight:bold;
+h2,h3{
+    margin-top:10px;
 }
-.download a{
+p{
+    margin:7px 0;
+}
+a.download{
+    margin:5px 0 0 0;
+    font-size:18px;
+    display:inline-block;
     color:#de1b1b;
-    text-decoration:none;
+}
+pre{
+    margin:10px 0;
 }
 pre code{
     padding:10px;
     background-color:#fff;
     border:1px solid #000;
     display:block;
-    margin:5px 0;
 }
 em{
     font-size:14px;
@@ -76,49 +81,48 @@ em{
     </div>
     <div id="content">
         <h1>Downloads</h1>
-        Navigation works great with UI binding libraries. If you're using Angular, Knockout or React, get the
-        flavour of Navigation that works best for you from the <a href="#plugins">Plugins section</a>. Don't
-        worry if you're not using one of these, Navigation works great on its own, too.
-        <h2 class="download" id="Navigation"><a href="navigation-1.0.0.min.js">Navigation 1.0.0</a></h2>
-        The minified version of Navigation.
+        <p>
+            You can start using Navigation today by either downloading the latest version or using a package
+            manager to get at the code. The details are outlined in the <a href="#navigation">first setup 
+            step</a> below. Once you've completed this step then, if you're using Angular, Knockout or React,
+            you should follow the additional <a href="#plugins">plugin setup step</a>. This will let you build 
+            Hyperlinks in your library's binding syntax.
+        </p>
+        <h2 id="navigation">1. Navigation</h2>
+        <a class="download" href="navigation-1.0.0.min.js">Navigation 1.0.0 (minified)</a>
         <pre><code>&lt;script src="navigation-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation-1.0.0.js">non-minified version of Navigation</a> is also available.</em>
-        <h2 id="plugins">Plugins</h2>
-        <h3 class="download" id="NavigationAngular"><a href="navigation.angular-1.0.0.min.js">Navigation Angular 1.0.0</a></h3>
-        The minified version of Navigation Angular. It includes the Navigation source so you only need to 
-        reference this one JavaScript file.
-        <pre><code>&lt;script src="navigation.angular-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation.angular-1.0.0.js">non-minified version of Navigation Angular</a> is also available.</em>
-        <h3 class="download" id="NavigationKnockout"><a href="navigation.knockout-1.0.0.min.js">Navigation Knockout 1.0.0</a></h3>
-        The minified version of Navigation Knockout. It includes the Navigation source so you only need to
-        reference this one JavaScript file.
-        <pre><code>&lt;script src="navigation.knockout-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation.knockout-1.0.0.js">non-minified version of Navigation Knockout</a> is also available.</em>
-        <h3 class="download" id="NavigationReact"><a href="navigation.react-1.0.0.min.js">Navigation React 1.0.0</a></h3>
-        The minified version of Navigation React. It includes the Navigation source so you only need to
-        reference this one JavaScript file.
-        <pre><code>&lt;script src="navigation.react-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation.react-1.0.0.js">non-minified version of Navigation React</a> is also available.</em>
-        <h2>Bower</h2>
-        <pre><code>bower install navigation</code></pre>
-        <h2>npm</h2>
+        <a class="download" href="navigation-1.0.0.js">Navigation 1.0.0 (non-minified)</a>
+        <pre><code>&lt;script src="navigation-1.0.0.js"&gt;&lt;/script&gt;</code></pre>
+        <h3>npm</h3>
         <pre><code>npm install navigation</code></pre>
-        You can then require Navigation.
         <pre><code>var Navigation = require('navigation');
+
 Navigation.StateInfoConfig.build([...]);
 </code></pre>
-        You can also require the Navigation plugins, e.g., <code>var NavigationReact = require('navigation/react');</code>
+        <h3>Bower</h3>
+        <pre><code>bower install navigation</code></pre>
+        <h2 id="plugins">2. Navigation Plugins</h2>
+        <a class="download" href="navigation.angular-1.0.0.min.js">Navigation Angular 1.0.0 (minified)</a>
+        <pre><code>&lt;script src="navigation.angular-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
+        <a class="download" href="navigation.angular-1.0.0.js">Navigation Angular 1.0.0 (non-minified)</a>
+        <pre><code>&lt;script src="navigation.angular-1.0.0.js"&gt;&lt;/script&gt;</code></pre>
+        <a class="download" href="navigation.knockout-1.0.0.min.js">Navigation Knockout 1.0.0 (minified)</a>
+        <pre><code>&lt;script src="navigation.knockout-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
+        <a class="download" href="navigation.knockout-1.0.0.js">Navigation Knockout 1.0.0 (non-minified)</a>
+        <pre><code>&lt;script src="navigation.knockout-1.0.0.js"&gt;&lt;/script&gt;</code></pre>
+        <a class="download" href="navigation.react-1.0.0.min.js">Navigation React 1.0.0 (minified)</a>
+        <pre><code>&lt;script src="navigation.react-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
+        <a class="download" href="navigation.react-1.0.0.js">Navigation React 1.0.0 (non-minified)</a>
+        <pre><code>&lt;script src="navigation.react-1.0.0.js"&gt;&lt;/script&gt;</code></pre>
+        <h3>npm</h3>
+        The npm install of navigation gives access to all the plugins.
         <pre><code>var NavigationReact = require('navigation/react');
 var NavigationBackLink = NavigationReact.NavigationBackLink;
-...
-var BackLink = React.createClass({
-    render: function () {
-        return (
-            React.createElement(NavigationBackLink, {distance: "1"}, "Go Back")
-        );
-    }
-});
-...</code></pre>
+
+React.createElement(NavigationBackLink, {distance: "1"}, "Go Back")
+</code></pre>
+        <h3>Bower</h3>
+        The bower install of navigation includes all the plugins as separate files.
     </div>
 </body>
 </html>
