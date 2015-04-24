@@ -4,42 +4,42 @@
 
 declare module Navigation {
     class Dialog {
-        public _states: State[];
-        public states: {
+        _states: State[];
+        states: {
             [index: string]: State;
         };
-        public index: number;
-        public initial: State;
-        public key: string;
-        public title: string;
+        index: number;
+        initial: State;
+        key: string;
+        title: string;
     }
 
     class State {
-        public _transitions: Transition[];
-        public transitions: {
+        _transitions: Transition[];
+        transitions: {
             [index: string]: Transition;
         };
-        public parent: Dialog;
-        public index: number;
-        public id: string;
-        public key: string;
-        public defaults: any;
-        public defaultTypes: any;
-        public formattedDefaults: any;
-        public title: string;
-        public route: string;
-        public trackCrumbTrail: boolean;
-        public stateHandler: IStateHandler;
-        public dispose: () => void;
-        public navigated: (data: any) => void;
-        public navigating: (data: any, url: string, navigate: () => void) => void;
+        parent: Dialog;
+        index: number;
+        id: string;
+        key: string;
+        defaults: any;
+        defaultTypes: any;
+        formattedDefaults: any;
+        title: string;
+        route: string;
+        trackCrumbTrail: boolean;
+        stateHandler: IStateHandler;
+        dispose: () => void;
+        navigated: (data: any) => void;
+        navigating: (data: any, url: string, navigate: () => void) => void;
     }
 
     class Transition {
-        public to: State;
-        public parent: State;
-        public index: number;
-        public key: string;
+        to: State;
+        parent: State;
+        index: number;
+        key: string;
     }
 
     class StateInfoConfig {
@@ -60,22 +60,22 @@ declare module Navigation {
     }
 
     class HashHistoryManager implements IHistoryManager {
-        public disabled: boolean;
-        public replaceQueryIdentifier: boolean;
-        public init(): void;
-        public addHistory(state: State, url: string): void;
-        public getCurrentUrl(): string;
-        public getHref(url: string): string;
-        public getUrl(anchor: HTMLAnchorElement): string;
+        disabled: boolean;
+        replaceQueryIdentifier: boolean;
+        init(): void;
+        addHistory(state: State, url: string): void;
+        getCurrentUrl(): string;
+        getHref(url: string): string;
+        getUrl(anchor: HTMLAnchorElement): string;
     }
 
     class HTML5HistoryManager implements IHistoryManager {
-        public disabled: boolean;
-        public init(): void;
-        public addHistory(state: State, url: string): void;
-        public getCurrentUrl(): string;
-        public getHref(url: string): string;
-        public getUrl(anchor: HTMLAnchorElement): string;
+        disabled: boolean;
+        init(): void;
+        addHistory(state: State, url: string): void;
+        getCurrentUrl(): string;
+        getHref(url: string): string;
+        getUrl(anchor: HTMLAnchorElement): string;
     }
 
     export var historyManager: IHistoryManager;
@@ -88,21 +88,21 @@ declare module Navigation {
     }
 
     class Crumb {
-        public data: any;
-        public state: State;
-        public last: boolean;
-        public title: string;
-        public navigationLink: any;
-        public string: any;
+        data: any;
+        state: State;
+        last: boolean;
+        title: string;
+        navigationLink: any;
+        string: any;
         constructor(data: any, state: State, link: string, last: boolean);
     }
 
     class NavigationSettings {
-        public stateIdKey: string;
-        public previousStateIdKey: string;
-        public returnDataKey: string;
-        public crumbTrailKey: string;
-        public applicationPath: string;
+        stateIdKey: string;
+        previousStateIdKey: string;
+        returnDataKey: string;
+        crumbTrailKey: string;
+        applicationPath: string;
     }
 
     class StateContext {
@@ -131,4 +131,43 @@ declare module Navigation {
         static navigateLink(url: string): void;
         static getNextState(action: string): State;
     }
+
+    class StateHandler implements IStateHandler {
+        getNavigationLink(state: State, data: any): string;
+        navigateLink(oldState: State, state: State, url: string): void;
+        getNavigationData(state: State, url: string): any;
+        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
+    }
+
+    interface IRouter {
+        getData(route: string): {
+            state: State;
+            data: any;
+        };
+        getRoute(state: State, data: any): {
+            route: string;
+            data: any;
+        };
+        supportsDefaults: boolean;
+        addRoutes(dialogs: Dialog[]): any;
+    }
+
+    class StateRouter implements IRouter {
+        supportsDefaults: boolean;
+        getData(route: string): {
+            state: State;
+            data: any;
+        };
+        getRoute(state: State, data: any): {
+            route: string;
+            data: any;
+        };
+        addRoutes(dialogs: Dialog[]): void;
+    }
+
+    export var router: IRouter;
+
+    export var settings: NavigationSettings;
+
+    export var start: (url?: string) => void;
 }
