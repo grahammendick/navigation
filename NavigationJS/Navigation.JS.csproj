@@ -64,6 +64,7 @@
     <TypeScriptCompile Include="src\angular\RefreshLink.ts" />
     <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
     <TypeScriptCompile Include="src\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="src\navigation.d.ts" />
     <TypeScriptCompile Include="src\react\react.d.ts" />
     <TypeScriptCompile Include="src\ArrayConverter.ts" />
     <TypeScriptCompile Include="src\BooleanConverter.ts" />
