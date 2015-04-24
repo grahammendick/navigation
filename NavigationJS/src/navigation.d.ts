@@ -42,6 +42,44 @@ declare module Navigation {
         public key: string;
     }
 
+    class StateInfoConfig {
+        static _dialogs: Dialog[];
+        static dialogs: {
+            [index: string]: Dialog;
+        };
+        static build(dialogs: any[]): void;
+    }
+
+    interface IHistoryManager {
+        disabled: boolean;
+        init(): any;
+        addHistory(state: State, url: string): any;
+        getCurrentUrl(): string;
+        getHref(url: string): string;
+        getUrl(anchor: HTMLAnchorElement): string;
+    }
+
+    class HashHistoryManager implements IHistoryManager {
+        public disabled: boolean;
+        public replaceQueryIdentifier: boolean;
+        public init(): void;
+        public addHistory(state: State, url: string): void;
+        public getCurrentUrl(): string;
+        public getHref(url: string): string;
+        public getUrl(anchor: HTMLAnchorElement): string;
+    }
+
+    class HTML5HistoryManager implements IHistoryManager {
+        public disabled: boolean;
+        public init(): void;
+        public addHistory(state: State, url: string): void;
+        public getCurrentUrl(): string;
+        public getHref(url: string): string;
+        public getUrl(anchor: HTMLAnchorElement): string;
+    }
+
+    export var historyManager: IHistoryManager;
+
     interface IStateHandler {
         getNavigationLink(state: State, data: any): string;
         navigateLink(oldState: State, state: State, url: string): any;
@@ -59,6 +97,14 @@ declare module Navigation {
         constructor(data: any, state: State, link: string, last: boolean);
     }
 
+    class NavigationSettings {
+        public stateIdKey: string;
+        public previousStateIdKey: string;
+        public returnDataKey: string;
+        public crumbTrailKey: string;
+        public applicationPath: string;
+    }
+
     class StateContext {
         static previousState: State;
         static previousDialog: Dialog;
@@ -68,5 +114,21 @@ declare module Navigation {
         static url: string;
         static includeCurrentData(data: any, keys?: string[]): any;
         static clear(key?: string): void;
+    }
+
+    class StateController {
+        static crumbs: Crumb[];
+        static setStateContext(state: State, url: string): void;
+        static onNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        static offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        static navigate(action: string, toData?: any): void;
+        static getNavigationLink(action: string, toData?: any): string;
+        static canNavigateBack(distance: number): boolean;
+        static navigateBack(distance: number): void;
+        static getNavigationBackLink(distance: number): string;
+        static refresh(toData?: any): void;
+        static getRefreshLink(toData?: any): string;
+        static navigateLink(url: string): void;
+        static getNextState(action: string): State;
     }
 }
