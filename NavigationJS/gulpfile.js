@@ -41,16 +41,10 @@ for (var i = 0; i < tests.length; i++) {
 }
 gulp.task('test', testTasks);
 
-gulp.task('BuildNavigationRouting', function () {
-	return buildTask('NavigationRouting', './src/routing/NavigationRouting.ts', 'navigation.routing.js')
-		.pipe(rename('navigation.routing.min.js'))
-		.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build/npm/dist'));
-});
 gulp.task('BuildNavigation', function () {
 	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js');
 });
-var buildTasks = ['BuildNavigationRouting', 'BuildNavigation'];
+var buildTasks = ['BuildNavigation'];
 function buildTask(name, from, to) {
 	return browserify(from, { standalone: name })
 		.plugin('tsify')
@@ -59,28 +53,19 @@ function buildTask(name, from, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(derequire())
+		.pipe(gulp.dest('./build/npm/dist'))
+		.pipe(rename(to.replace(/js$/, 'min.js')))
+		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build/npm/dist'));
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
 		gulp.task('Build' + plugin.name, function () {
-			return buildTask(plugin.name, plugin.from, plugin.to)
-				.pipe(rename(plugin.to.replace(/js$/, 'min.js')))
-				.pipe(streamify(uglify()))
-				.pipe(gulp.dest('./build/npm/dist'));
+			return buildTask(plugin.name, plugin.from, plugin.to);
 		});
 	})(plugins[i]);
 	buildTasks.push('Build' + plugins[i].name);
 }
-gulp.task('UnifyNavigation', ['BuildNavigationRouting', 'BuildNavigation'], function () {
-	return gulp.src(['./build/npm/dist/navigation.routing.js', './build/npm/dist/navigation.js'])
-		.pipe(concat('navigation.js'))
-		.pipe(gulp.dest('./build/npm/dist'))
-		.pipe(rename('navigation.min.js'))
-		.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build/npm/dist'));
-});
-buildTasks.push('UnifyNavigation');
 gulp.task('build', buildTasks);
 
 gulp.task('npm', function () {

@@ -96,7 +96,6 @@
     <TypeScriptCompile Include="src\react\RefreshLink.ts" />
     <TypeScriptCompile Include="src\ReturnDataManager.ts" />
     <TypeScriptCompile Include="src\router.ts" />
-    <TypeScriptCompile Include="src\routing\NavigationRouting.ts" />
     <TypeScriptCompile Include="src\routing\Route.ts" />
     <TypeScriptCompile Include="src\routing\Router.ts" />
     <TypeScriptCompile Include="src\routing\Segment.ts" />

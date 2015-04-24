@@ -1,5 +1,5 @@
 ﻿import Crumb = require('../src/Crumb');
-import Navigation = require('../src/Navigation');
+import Navigation = require('../src/navigation');
 import State = require('../src/config/State');
 import StateHandler = require('../src/StateHandler');
 
