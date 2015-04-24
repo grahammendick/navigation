@@ -28,7 +28,7 @@ function testTask(from, to) {
 		.bundle()
 		.pipe(source(to))
 		.pipe(rename(to))
-		.pipe(gulp.dest('./build/npm/dist'))
+		.pipe(gulp.dest('./build/dist'))
         .pipe(mocha());
 }
 for (var i = 0; i < tests.length; i++) {
@@ -53,10 +53,10 @@ function buildTask(name, from, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(derequire())
-		.pipe(gulp.dest('./build/npm/dist'))
+		.pipe(gulp.dest('./build/dist'))
 		.pipe(rename(to.replace(/js$/, 'min.js')))
 		.pipe(streamify(uglify()))
-		.pipe(gulp.dest('./build/npm/dist'));
+		.pipe(gulp.dest('./build/dist'));
 }
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
@@ -70,7 +70,7 @@ gulp.task('build', buildTasks);
 
 gulp.task('npm', function () {
 	return gulp.src('./npm/*')
-		.pipe(gulp.dest('./build/npm/'));
+		.pipe(gulp.dest('./build/'));
 });
 var ts = ['./src/Navigation.ts'];
 for (var i = 0; i < plugins.length; i++) {
@@ -79,5 +79,5 @@ for (var i = 0; i < plugins.length; i++) {
 gulp.task('package', ['npm'], function () {
 	return gulp.src(ts)
 		.pipe(typescript({ removeComments: true }))
-		.pipe(gulp.dest('./build/npm/lib'));
+		.pipe(gulp.dest('./build/lib'));
 });
