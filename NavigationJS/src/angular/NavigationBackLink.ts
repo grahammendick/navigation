@@ -1,5 +1,5 @@
 ﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('../Navigation');
+import Navigation = require('navigation');
 import angular = require('angular');
 
 var NavigationBackLink = () => {
