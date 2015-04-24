@@ -1,4 +1,5 @@
-﻿import NavigationBackLink = require('./NavigationBackLink');
+﻿/// <reference path="../navigation.d.ts" /> 
+import NavigationBackLink = require('./NavigationBackLink');
 import NavigationLink = require('./NavigationLink');
 import RefreshLink = require('./RefreshLink');
 
