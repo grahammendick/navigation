@@ -20,7 +20,7 @@
   },
   "browserify-shim": {
     "./routing/NavigationRouting": "global:NavigationRouting",
-    "../Navigation": "global:Navigation",
+    "navigation": "global:Navigation",
     "angular": "global:angular",
     "knockout": "global:ko",
     "react":  "global:React"
