@@ -68,15 +68,11 @@ for (var i = 0; i < plugins.length; i++) {
 }
 gulp.task('build', buildTasks);
 
-gulp.task('npm', function () {
-	return gulp.src('./npm/*')
-		.pipe(gulp.dest('./build/'));
-});
 var ts = ['./src/Navigation.ts'];
 for (var i = 0; i < plugins.length; i++) {
 	ts.push(plugins[i].from);
 }
-gulp.task('package', ['npm'], function () {
+gulp.task('package', function () {
 	return gulp.src(ts)
 		.pipe(typescript({ removeComments: true }))
 		.pipe(gulp.dest('./build/lib'));
