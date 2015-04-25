@@ -11,6 +11,8 @@ import Crumb = require('./Crumb');
 import StateHandler = require('./StateHandler');
 import StateRouter = require('./StateRouter');
 import NavigationSettings = require('./NavigationSettings');
+import Route = require('./routing/Route');
+import Router = require('./routing/Router');
 import router = require('./router');
 import settings = require('./settings');
 
@@ -28,6 +30,8 @@ class Navigation {
     static StateController = StateController;
     static StateHandler = StateHandler;
     static StateRouter = StateRouter;
+    static Route = Route;
+    static Router = Router;
     static router = router;
     static settings = settings;
     static start = (url?: string) => {

@@ -165,6 +165,26 @@ declare module Navigation {
         addRoutes(dialogs: Dialog[]): void;
     }
 
+    class Route {
+        path: string;
+        defaults: any;
+        params: {
+            name: string;
+            optional: boolean;
+        }[];
+        constructor(path: string, defaults?: any);
+        match(path: string): any;
+        build(data?: any): string;
+    }
+
+    class Router {
+        addRoute(path: string, defaults?: any): Route;
+        match(path: string): {
+            route: Route;
+            data: any;
+        };
+    }
+
     export var router: IRouter;
 
     export var settings: NavigationSettings;
