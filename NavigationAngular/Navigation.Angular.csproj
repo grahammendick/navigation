@@ -18,6 +18,9 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="sample\angular.min.js" />
+    <Content Include="sample\app.html" />
+    <Content Include="sample\app.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

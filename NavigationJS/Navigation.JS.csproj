@@ -96,20 +96,10 @@
     <TypeScriptCompile Include="test\StateInfoTest.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="sample\angular\angular.min.js" />
-    <Content Include="sample\angular\app.html" />
-    <Content Include="sample\angular\app.js" />
     <Content Include="sample\personSearch.js" />
-    <Content Include="sample\knockout\app.html" />
-    <Content Include="sample\knockout\app.js" />
-    <Content Include="sample\knockout\knockout-3.3.0.js" />
-    <Content Include="sample\react\app.html" />
-    <Content Include="sample\react\JSXTransformer-0.12.2.js" />
-    <Content Include="sample\react\react-0.12.2.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
-    <Content Include="sample\react\app.jsx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
