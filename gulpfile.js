@@ -11,15 +11,15 @@ var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
 var tests = [
-	{ name: 'NavigationRouting', from: './test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
-	{ name: 'StateInfo', from: './test/StateInfoTest.ts', to: 'stateInfo.test.js' },
-	{ name: 'Navigation', from: './test/NavigationTest.ts', to: 'navigation.test.js' },
-	{ name: 'NavigationData', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' }
+	{ name: 'NavigationRouting', from: './NavigationJS/test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
+	{ name: 'StateInfo', from: './NavigationJS/test/StateInfoTest.ts', to: 'stateInfo.test.js' },
+	{ name: 'Navigation', from: './NavigationJS/test/NavigationTest.ts', to: 'navigation.test.js' },
+	{ name: 'NavigationData', from: './NavigationJS/test/NavigationDataTest.ts', to: 'navigationData.test.js' }
 ];
 var plugins = [
-	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
-	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' },
-	{ name: 'NavigationAngular', from: './src/angular/NavigationAngular.ts', to: 'navigation.angular.js' }
+	{ name: 'NavigationReact', from: './NavigationReact/src/NavigationReact.ts', to: 'navigation.react.js' },
+	{ name: 'NavigationKnockout', from: './NavigationKnockout/src/NavigationKnockout.ts', to: 'navigation.knockout.js' },
+	{ name: 'NavigationAngular', from: './NavigationAngular/src/NavigationAngular.ts', to: 'navigation.angular.js' }
 ];
 var testTasks = [];
 function testTask(from, to) {
@@ -42,7 +42,7 @@ for (var i = 0; i < tests.length; i++) {
 gulp.task('test', testTasks);
 
 gulp.task('BuildNavigation', function () {
-	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js');
+	return buildTask('Navigation', './NavigationJS/src/Navigation.ts', 'navigation.js');
 });
 var buildTasks = ['BuildNavigation'];
 function buildTask(name, from, to) {
@@ -68,7 +68,7 @@ for (var i = 0; i < plugins.length; i++) {
 }
 gulp.task('build', buildTasks);
 
-var ts = ['./src/navigation.d.ts', './src/Navigation.ts'];
+var ts = ['./NavigationJS/src/Navigation.ts'];
 for (var i = 0; i < plugins.length; i++) {
 	ts.push(plugins[i].from);
 }
