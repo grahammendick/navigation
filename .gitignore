@@ -2,3 +2,7 @@
 *.suo
 *.exe
 Navigation*/
+build/dist
+build/lib
+npm-debug.log
+node_modules
