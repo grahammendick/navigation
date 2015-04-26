@@ -21,15 +21,6 @@
     <Content Include="sample\app.html" />
     <Content Include="sample\app.js" />
     <Content Include="sample\knockout-3.3.0.js" />
-    <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="src\knockout.d.ts" />
