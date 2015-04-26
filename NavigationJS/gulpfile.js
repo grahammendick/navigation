@@ -74,6 +74,6 @@ for (var i = 0; i < plugins.length; i++) {
 }
 gulp.task('package', function () {
 	return gulp.src(ts)
-		.pipe(typescript({ removeComments: true }))
+		.pipe(typescript())
 		.pipe(gulp.dest('./build/lib'));
 });
