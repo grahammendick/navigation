@@ -5,7 +5,7 @@ import Router = require('./routing/Router');
 import State = require('./config/State');
 
 class StateRouter implements IRouter {
-    private router: Router;
+    router: Router;
     supportsDefaults: boolean = true;
 
     getData(route: string): { state: State; data: any } {

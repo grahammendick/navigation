@@ -153,6 +153,7 @@ declare module Navigation {
     }
 
     class StateRouter implements IRouter {
+        router: Router;
         supportsDefaults: boolean;
         getData(route: string): {
             state: State;
