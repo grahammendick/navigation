@@ -11,15 +11,15 @@ var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
 var tests = [
-	{ name: 'NavigationRouting', from: './test/NavigationRoutingTest.ts', to: 'navigationRouting.test.js' },
-	{ name: 'StateInfo', from: './test/StateInfoTest.ts', to: 'stateInfo.test.js' },
-	{ name: 'Navigation', from: './test/NavigationTest.ts', to: 'navigation.test.js' },
-	{ name: 'NavigationData', from: './test/NavigationDataTest.ts', to: 'navigationData.test.js' }
+	{ name: 'NavigationRouting', to: 'navigationRouting.test.js' },
+	{ name: 'StateInfo', to: 'stateInfo.test.js' },
+	{ name: 'Navigation', to: 'navigation.test.js' },
+	{ name: 'NavigationData', to: 'navigationData.test.js' }
 ];
 var plugins = [
-	{ name: 'NavigationReact', from: './src/react/NavigationReact.ts', to: 'navigation.react.js' },
-	{ name: 'NavigationKnockout', from: './src/knockout/NavigationKnockout.ts', to: 'navigation.knockout.js' },
-	{ name: 'NavigationAngular', from: './src/angular/NavigationAngular.ts', to: 'navigation.angular.js' }
+	{ name: 'NavigationReact', to: 'navigation.react.js' },
+	{ name: 'NavigationKnockout', to: 'navigation.knockout.js' },
+	{ name: 'NavigationAngular', to: 'navigation.angular.js' }
 ];
 var testTasks = [];
 function testTask(from, to) {
@@ -34,17 +34,21 @@ function testTask(from, to) {
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {
 		gulp.task('Test' + test.name, function () {
-			return testTask(test.from, test.to)
+			return testTask('./NavigationJS/test/' + test.name + 'Test.ts', test.to)
 		});
 	})(tests[i]);
 	testTasks.push('Test' + tests[i].name);
 }
 gulp.task('test', testTasks);
 
-gulp.task('BuildNavigation', function () {
-	return buildTask('Navigation', './src/Navigation.ts', 'navigation.js');
-});
 var buildTasks = ['BuildNavigation'];
+var packageTasks = ['PackageNavigation'];
+gulp.task('BuildNavigation', function () {
+	return buildTask('Navigation', './NavigationJS/src/Navigation.ts', 'navigation.js');
+});
+gulp.task('PackageNavigation', function () {
+	return packageTask('Navigation', './NavigationJS/src/Navigation.ts');
+})
 function buildTask(name, from, to) {
 	return browserify(from, { standalone: name })
 		.plugin('tsify')
@@ -58,22 +62,24 @@ function buildTask(name, from, to) {
 		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build/dist'));
 }
+function packageTask(name, from) {
+	return gulp.src(from)
+		.pipe(typescript())
+		.pipe(gulp.dest('./build/lib/' + name));
+}
+
 for (var i = 0; i < plugins.length; i++) {
 	(function (plugin) {
+		var from = './' + plugin.name + '/src/' + plugin.name + '.ts';
 		gulp.task('Build' + plugin.name, function () {
-			return buildTask(plugin.name, plugin.from, plugin.to);
+			return buildTask(plugin.name, from, plugin.to);
+		});
+		gulp.task('Package' + plugin.name, function () {
+			return packageTask(plugin.name, from);
 		});
 	})(plugins[i]);
 	buildTasks.push('Build' + plugins[i].name);
+	packageTasks.push('Package' + plugins[i].name);
 }
 gulp.task('build', buildTasks);
-
-var ts = ['./src/navigation.d.ts', './src/Navigation.ts'];
-for (var i = 0; i < plugins.length; i++) {
-	ts.push(plugins[i].from);
-}
-gulp.task('package', function () {
-	return gulp.src(ts)
-		.pipe(typescript())
-		.pipe(gulp.dest('./build/lib'));
-});
+gulp.task('package', packageTasks);

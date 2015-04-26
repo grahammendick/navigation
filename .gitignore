@@ -5,10 +5,10 @@ bin/
 *.suo
 *.exe
 *.map
-NavigationJS/**/*.js
-!NavigationJS/Sample/**/*.js
-!NavigationJS/npm/*.js
-NavigationJS/**/*.d.ts
+Navigation*/src/**/*.js
+Navigation*/test/**/*.js
+!Navigation*/sample/**/*.js
+**/*.d.ts
 !navigation.d.ts
 !angular.d.ts
 !jquery.d.ts
@@ -16,6 +16,7 @@ NavigationJS/**/*.d.ts
 !react.d.ts
 !assert.d.ts
 !mocha.d.ts
-NavigationJS/build
-NavigationJS/npm-debug.log
+build/dist
+build/lib
+npm-debug.log
 node_modules
