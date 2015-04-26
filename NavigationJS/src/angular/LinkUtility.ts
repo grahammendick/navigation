@@ -1,4 +1,4 @@
-﻿import Navigation = require('../Navigation');
+﻿import Navigation = require('navigation');
 import angular = require('angular');
 import jquery = require('jquery');
 

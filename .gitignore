@@ -8,6 +8,14 @@ bin/
 NavigationJS/**/*.js
 !NavigationJS/Sample/**/*.js
 !NavigationJS/npm/*.js
+NavigationJS/**/*.d.ts
+!navigation.d.ts
+!angular.d.ts
+!jquery.d.ts
+!knockout.d.ts
+!react.d.ts
+!assert.d.ts
+!mocha.d.ts
 NavigationJS/build
 NavigationJS/npm-debug.log
 node_modules

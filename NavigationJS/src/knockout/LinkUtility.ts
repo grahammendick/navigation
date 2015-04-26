@@ -1,4 +1,4 @@
-﻿import Navigation = require('../Navigation');
+﻿import Navigation = require('navigation');
 import ko = require('knockout');
 
 class LinkUtility {

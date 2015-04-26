@@ -1,5 +1,5 @@
 ﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('../Navigation');
+import Navigation = require('navigation');
 import ko = require('knockout');
 
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
