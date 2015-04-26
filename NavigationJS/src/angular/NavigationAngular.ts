@@ -1,5 +1,4 @@
-﻿/// <reference path="../navigation.d.ts" /> 
-import NavigationBackLink = require('./NavigationBackLink');
+﻿import NavigationBackLink = require('./NavigationBackLink');
 import NavigationLink = require('./NavigationLink');
 import RefreshLink = require('./RefreshLink');
 import angular = require('angular');

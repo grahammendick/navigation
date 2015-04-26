@@ -3,7 +3,7 @@
 import assert = require('assert');
 import initStateInfo = require('./initStateInfo');
 import State = require('../src/config/State');
-import Navigation = require('../src/navigation');
+import Navigation = require('../src/Navigation');
 
 describe('NavigationTest', function () {
     beforeEach(function () {

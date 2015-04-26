@@ -2,7 +2,7 @@
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
 import initStateInfo = require('./initStateInfo');
-import Navigation = require('../src/navigation');
+import Navigation = require('../src/Navigation');
 
 describe('StateInfoTest', function () {
     beforeEach(function () {

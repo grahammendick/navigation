@@ -68,7 +68,7 @@ for (var i = 0; i < plugins.length; i++) {
 }
 gulp.task('build', buildTasks);
 
-var ts = ['./src/Navigation.ts'];
+var ts = ['./src/navigation.d.ts', './src/Navigation.ts'];
 for (var i = 0; i < plugins.length; i++) {
 	ts.push(plugins[i].from);
 }
