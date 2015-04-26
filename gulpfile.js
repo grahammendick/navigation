@@ -68,12 +68,21 @@ for (var i = 0; i < plugins.length; i++) {
 }
 gulp.task('build', buildTasks);
 
-var ts = ['./NavigationJS/src/Navigation.ts'];
-for (var i = 0; i < plugins.length; i++) {
-	ts.push(plugins[i].from);
-}
-gulp.task('package', function () {
-	return gulp.src(ts)
+gulp.task('PackageNavigation', function () {
+	return packageTask('Navigation', './NavigationJS/src/Navigation.ts');
+})
+var packageTasks = ['PackageNavigation'];
+function packageTask(name, from) {
+	return gulp.src(from)
 		.pipe(typescript())
-		.pipe(gulp.dest('./build/lib'));
-});
+		.pipe(gulp.dest('./build/lib/' + name));
+}
+for (var i = 0; i < plugins.length; i++) {
+	(function (plugin) {
+		gulp.task('Package' + plugin.name, function () {
+			return packageTask(plugin.name, plugin.from);
+		});
+	})(plugins[i]);
+	packageTasks.push('Package' + plugins[i].name);
+}
+gulp.task('package', packageTasks);
