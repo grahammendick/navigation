@@ -78,8 +78,6 @@ declare module Navigation {
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
-    export var historyManager: IHistoryManager;
-
     interface IStateHandler {
         getNavigationLink(state: State, data: any): string;
         navigateLink(oldState: State, state: State, url: string): any;
@@ -98,6 +96,8 @@ declare module Navigation {
     }
 
     class NavigationSettings {
+        router: IRouter;
+        historyManager: IHistoryManager;
         stateIdKey: string;
         previousStateIdKey: string;
         returnDataKey: string;
@@ -185,8 +185,6 @@ declare module Navigation {
             data: any;
         };
     }
-
-    export var router: IRouter;
 
     export var settings: NavigationSettings;
 

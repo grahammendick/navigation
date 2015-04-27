@@ -3,7 +3,6 @@ import CrumbTrailManager = require('./CrumbTrailManager');
 import HistoryNavigator = require('./history/HistoryNavigator');
 import NavigationData = require('./NavigationData');
 import ReturnDataManager = require('./ReturnDataManager');
-import router = require('./router');
 import settings = require('./settings');
 import State = require('./config/State');
 import StateContext = require('./StateContext');
@@ -92,7 +91,7 @@ class StateController {
 
     static navigateLink(url: string) {
         try {
-            var state = router.getData(url.split('?')[0]).state;
+            var state = settings.router.getData(url.split('?')[0]).state;
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -120,7 +119,7 @@ class StateController {
                         this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
                 if (url === StateContext.url) {
-                    HistoryNavigator.historyManager.addHistory(state, url);
+                    settings.historyManager.addHistory(state, url);
                 }
             }
         });

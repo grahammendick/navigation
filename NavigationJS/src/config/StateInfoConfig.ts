@@ -1,7 +1,7 @@
 ﻿import Dialog = require('./Dialog');
 import CrumbTrailManager = require('../CrumbTrailManager');
 import ReturnDataManager = require('../ReturnDataManager');
-import router = require('../router');
+import settings = require('../settings');
 import State = require('./State');
 import Transition = require('./Transition');
 
@@ -33,7 +33,7 @@ class StateInfoConfig {
             if (!dialog.initial)
                 throw new Error(dialog.key + ' Dialog\'s initial key of ' + dialogObject.initial + ' does not match a child State key');
         }
-        router.addRoutes(this._dialogs);
+        settings.router.addRoutes(this._dialogs);
     }
 
     private static processStates(dialog: Dialog, dialogObject: any) {

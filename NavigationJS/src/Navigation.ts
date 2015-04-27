@@ -13,7 +13,6 @@ import StateRouter = require('./StateRouter');
 import NavigationSettings = require('./NavigationSettings');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
-import router = require('./router');
 import settings = require('./settings');
 
 class Navigation {
@@ -23,7 +22,6 @@ class Navigation {
     static StateInfoConfig = StateInfoConfig;
     static HashHistoryManager = HashHistoryManager;
     static HTML5HistoryManager = HTML5HistoryManager;
-    static historyManager = HistoryNavigator.historyManager = new HashHistoryManager();
     static Crumb = Crumb;
     static NavigationSettings = NavigationSettings;
     static StateContext = StateContext;
@@ -32,16 +30,15 @@ class Navigation {
     static StateRouter = StateRouter;
     static Route = Route;
     static Router = Router;
-    static router = router;
     static settings = settings;
     static start = (url?: string) => {
-        HistoryNavigator.historyManager.init();
-        StateController.navigateLink(url ? url : HistoryNavigator.historyManager.getCurrentUrl());
+        settings.historyManager.init();
+        StateController.navigateLink(url ? url : settings.historyManager.getCurrentUrl());
     };
 } 
 HistoryNavigator.navigateHistory = () => {
-    if (StateContext.url === HistoryNavigator.historyManager.getCurrentUrl())
+    if (StateContext.url === settings.historyManager.getCurrentUrl())
         return;
-    StateController.navigateLink(HistoryNavigator.historyManager.getCurrentUrl());
+    StateController.navigateLink(settings.historyManager.getCurrentUrl());
 }
 export = Navigation;

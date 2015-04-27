@@ -12,7 +12,7 @@ class LinkUtility {
 
     static setLink(component: any, props: any, linkAccessor: () => string) {
         try {
-            props.href = Navigation.historyManager.getHref(linkAccessor());
+            props.href = Navigation.settings.historyManager.getHref(linkAccessor());
             props.onClick = (e) => this.onClick(e, component.getDOMNode());
         } catch (e) {
             props.href = null;
@@ -31,7 +31,7 @@ class LinkUtility {
         if (!e.ctrlKey && !e.shiftKey) {
             if (element.href) {
                 e.preventDefault();
-                Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
+                Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
             }
         }
     }

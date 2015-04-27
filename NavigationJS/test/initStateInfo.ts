@@ -18,7 +18,7 @@ class CustomStateHandler extends StateHandler {
     }
 }
 
-Navigation.historyManager.disabled = true;
+Navigation.settings.historyManager.disabled = true;
 
 function initStateInfo() {
     Navigation.StateInfoConfig.build([

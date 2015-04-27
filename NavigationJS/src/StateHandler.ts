@@ -1,5 +1,4 @@
 ﻿import Crumb = require('./Crumb');
-import router = require('./router');
 import IStateHandler = require('./IStateHandler');
 import settings = require('./settings');
 import State = require('./config/State');
@@ -9,7 +8,7 @@ import StateController = require('./StateController');
 class StateHandler implements IStateHandler {
     getNavigationLink(state: State, data: any): string {
         delete data[settings.stateIdKey];
-        var routeInfo = router.getRoute(state, data);
+        var routeInfo = settings.router.getRoute(state, data);
         if (routeInfo.route == null)
             return null;
         var query: Array<string> = [];
@@ -27,7 +26,7 @@ class StateHandler implements IStateHandler {
 
     getNavigationData(state: State, url: string): any {
         var queryIndex = url.indexOf('?');
-        var data = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
+        var data = settings.router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);

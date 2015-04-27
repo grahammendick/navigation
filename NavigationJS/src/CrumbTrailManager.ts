@@ -1,7 +1,6 @@
 ﻿import Crumb = require('./Crumb');
 import NavigationData = require('./NavigationData');
 import ReturnDataManager = require('./ReturnDataManager');
-import router = require('./router');
 import settings = require('./settings');
 import State = require('./config/State');
 import StateContext = require('./StateContext');
@@ -65,7 +64,7 @@ class CrumbTrailManager {
         NavigationData.setDefaults(navigationData, state.defaults);
         for (var key in navigationData) {
             if (navigationData[key] != null && navigationData[key].toString()
-                && (!router.supportsDefaults || navigationData[key] !== state.defaults[key]))
+                && (!settings.router.supportsDefaults || navigationData[key] !== state.defaults[key]))
                 data[key] = ReturnDataManager.formatURLObject(key, navigationData[key], state);
         }
         if (state.trackCrumbTrail && StateContext.state) {
