@@ -1,5 +1,5 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import HistoryNavigator = require('./HistoryNavigator');
+import navigateHistory = require('./navigateHistory');
 import settings = require('../settings');
 import State = require('../config/State');
 
@@ -8,7 +8,7 @@ class HTML5HistoryManager implements IHistoryManager {
 
     init() {
         if (!this.disabled)
-            window.addEventListener('popstate', HistoryNavigator.navigateHistory);
+            window.addEventListener('popstate', navigateHistory);
     }
 
     addHistory(state: State, url: string) {

@@ -4,7 +4,7 @@ import Dialog = require('./config/Dialog');
 import State = require('./config/State');
 import Transition = require('./config/Transition');
 import StateInfoConfig = require('./config/StateInfoConfig');
-import HistoryNavigator = require('./history/HistoryNavigator');
+import navigateHistory = require('./history/navigateHistory');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HTML5HistoryManager = require('./history/HTML5HistoryManager');
 import Crumb = require('./Crumb');
@@ -36,7 +36,7 @@ class Navigation {
         StateController.navigateLink(url ? url : settings.historyManager.getCurrentUrl());
     };
 } 
-HistoryNavigator.navigateHistory = () => {
+navigateHistory = () => {
     if (StateContext.url === settings.historyManager.getCurrentUrl())
         return;
     StateController.navigateLink(settings.historyManager.getCurrentUrl());

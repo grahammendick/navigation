@@ -1,5 +1,5 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import HistoryNavigator = require('./HistoryNavigator');
+import navigateHistory = require('./navigateHistory');
 import State = require('../config/State');
 
 class HashHistoryManager implements IHistoryManager {
@@ -9,9 +9,9 @@ class HashHistoryManager implements IHistoryManager {
     init() {
         if (!this.disabled) {
             if (window.addEventListener)
-                window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
+                window.addEventListener('hashchange', navigateHistory);
             else
-                window.attachEvent('onhashchange', HistoryNavigator.navigateHistory);
+                window.attachEvent('onhashchange', navigateHistory);
         }
     }
 
