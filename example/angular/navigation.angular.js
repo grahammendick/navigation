@@ -24,7 +24,7 @@ var LinkUtility = (function () {
     }
     LinkUtility.setLink = function (element, attrs, linkAccessor) {
         try {
-            attrs.$set('href', Navigation.historyManager.getHref(linkAccessor()));
+            attrs.$set('href', Navigation.settings.historyManager.getHref(linkAccessor()));
         }
         catch (e) {
             attrs.$set('href', null);
@@ -43,7 +43,7 @@ var LinkUtility = (function () {
             if (!e.ctrlKey && !e.shiftKey) {
                 if (anchor.href) {
                     e.preventDefault();
-                    Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(anchor));
+                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(anchor));
                 }
             }
         });

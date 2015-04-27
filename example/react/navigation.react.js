@@ -29,7 +29,7 @@ var LinkUtility = (function () {
     LinkUtility.setLink = function (component, props, linkAccessor) {
         var _this = this;
         try {
-            props.href = Navigation.historyManager.getHref(linkAccessor());
+            props.href = Navigation.settings.historyManager.getHref(linkAccessor());
             props.onClick = function (e) { return _this.onClick(e, component.getDOMNode()); };
         }
         catch (e) {
@@ -47,7 +47,7 @@ var LinkUtility = (function () {
         if (!e.ctrlKey && !e.shiftKey) {
             if (element.href) {
                 e.preventDefault();
-                Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
+                Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
             }
         }
     };

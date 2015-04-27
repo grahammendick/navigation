@@ -14,7 +14,6 @@ var StateRouter = _dereq_('./StateRouter');
 var NavigationSettings = _dereq_('./NavigationSettings');
 var Route = _dereq_('./routing/Route');
 var Router = _dereq_('./routing/Router');
-var router = _dereq_('./router');
 var settings = _dereq_('./settings');
 var Navigation = (function () {
     function Navigation() {
@@ -25,7 +24,6 @@ var Navigation = (function () {
     Navigation.StateInfoConfig = StateInfoConfig;
     Navigation.HashHistoryManager = HashHistoryManager;
     Navigation.HTML5HistoryManager = HTML5HistoryManager;
-    Navigation.historyManager = HistoryNavigator.historyManager = new HashHistoryManager();
     Navigation.Crumb = Crumb;
     Navigation.NavigationSettings = NavigationSettings;
     Navigation.StateContext = StateContext;
@@ -34,22 +32,21 @@ var Navigation = (function () {
     Navigation.StateRouter = StateRouter;
     Navigation.Route = Route;
     Navigation.Router = Router;
-    Navigation.router = router;
     Navigation.settings = settings;
     Navigation.start = function (url) {
-        HistoryNavigator.historyManager.init();
-        StateController.navigateLink(url ? url : HistoryNavigator.historyManager.getCurrentUrl());
+        settings.historyManager.init();
+        StateController.navigateLink(url ? url : settings.historyManager.getCurrentUrl());
     };
     return Navigation;
 })();
 HistoryNavigator.navigateHistory = function () {
-    if (StateContext.url === HistoryNavigator.historyManager.getCurrentUrl())
+    if (StateContext.url === settings.historyManager.getCurrentUrl())
         return;
-    StateController.navigateLink(HistoryNavigator.historyManager.getCurrentUrl());
+    StateController.navigateLink(settings.historyManager.getCurrentUrl());
 };
 module.exports = Navigation;
 
-},{"./Crumb":5,"./NavigationSettings":8,"./StateContext":11,"./StateController":12,"./StateHandler":13,"./StateRouter":14,"./config/Dialog":17,"./config/State":18,"./config/StateInfoConfig":19,"./config/Transition":20,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./router":24,"./routing/Route":25,"./routing/Router":26,"./settings":28}],2:[function(_dereq_,module,exports){
+},{"./Crumb":5,"./NavigationSettings":8,"./StateContext":11,"./StateController":12,"./StateHandler":13,"./StateRouter":14,"./config/Dialog":17,"./config/State":18,"./config/StateInfoConfig":19,"./config/Transition":20,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./routing/Route":24,"./routing/Router":25,"./settings":27}],2:[function(_dereq_,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -193,7 +190,6 @@ module.exports = Crumb;
 var Crumb = _dereq_('./Crumb');
 var NavigationData = _dereq_('./NavigationData');
 var ReturnDataManager = _dereq_('./ReturnDataManager');
-var router = _dereq_('./router');
 var settings = _dereq_('./settings');
 var StateContext = _dereq_('./StateContext');
 var StateInfoConfig = _dereq_('./config/StateInfoConfig');
@@ -249,7 +245,7 @@ var CrumbTrailManager = (function () {
         navigationData = NavigationData.clone(navigationData);
         NavigationData.setDefaults(navigationData, state.defaults);
         for (var key in navigationData) {
-            if (navigationData[key] != null && navigationData[key].toString() && (!router.supportsDefaults || navigationData[key] !== state.defaults[key]))
+            if (navigationData[key] != null && navigationData[key].toString() && (!settings.router.supportsDefaults || navigationData[key] !== state.defaults[key]))
                 data[key] = ReturnDataManager.formatURLObject(key, navigationData[key], state);
         }
         if (state.trackCrumbTrail && StateContext.state) {
@@ -270,7 +266,7 @@ var CrumbTrailManager = (function () {
 })();
 module.exports = CrumbTrailManager;
 
-},{"./Crumb":5,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./router":24,"./settings":28}],7:[function(_dereq_,module,exports){
+},{"./Crumb":5,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./settings":27}],7:[function(_dereq_,module,exports){
 var NavigationData = (function () {
     function NavigationData() {
     }
@@ -291,8 +287,12 @@ var NavigationData = (function () {
 module.exports = NavigationData;
 
 },{}],8:[function(_dereq_,module,exports){
+var StateRouter = _dereq_('./StateRouter');
+var HashHistoryManager = _dereq_('./history/HashHistoryManager');
 var NavigationSettings = (function () {
     function NavigationSettings() {
+        this.router = new StateRouter();
+        this.historyManager = new HashHistoryManager();
         this.stateIdKey = 'c0';
         this.previousStateIdKey = 'c1';
         this.returnDataKey = 'c2';
@@ -303,7 +303,7 @@ var NavigationSettings = (function () {
 })();
 module.exports = NavigationSettings;
 
-},{}],9:[function(_dereq_,module,exports){
+},{"./StateRouter":14,"./history/HashHistoryManager":22}],9:[function(_dereq_,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -333,14 +333,14 @@ module.exports = NumberConverter;
 
 },{"./TypeConverter":16}],10:[function(_dereq_,module,exports){
 var ConverterFactory = _dereq_('./ConverterFactory');
-var router = _dereq_('./router');
+var settings = _dereq_('./settings');
 var ReturnDataManager = (function () {
     function ReturnDataManager() {
     }
     ReturnDataManager.formatReturnData = function (state, returnData) {
         var returnDataArray = [];
         for (var key in returnData) {
-            if (returnData[key] != null && returnData[key].toString() && (!router.supportsDefaults || returnData[key] !== state.defaults[key]))
+            if (returnData[key] != null && returnData[key].toString() && (!settings.router.supportsDefaults || returnData[key] !== state.defaults[key]))
                 returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state));
         }
         return returnDataArray.join(this.RET_3_SEP);
@@ -388,7 +388,7 @@ var ReturnDataManager = (function () {
 })();
 module.exports = ReturnDataManager;
 
-},{"./ConverterFactory":4,"./router":24}],11:[function(_dereq_,module,exports){
+},{"./ConverterFactory":4,"./settings":27}],11:[function(_dereq_,module,exports){
 var StateContext = (function () {
     function StateContext() {
     }
@@ -420,10 +420,8 @@ module.exports = StateContext;
 
 },{}],12:[function(_dereq_,module,exports){
 var CrumbTrailManager = _dereq_('./CrumbTrailManager');
-var HistoryNavigator = _dereq_('./history/HistoryNavigator');
 var NavigationData = _dereq_('./NavigationData');
 var ReturnDataManager = _dereq_('./ReturnDataManager');
-var router = _dereq_('./router');
 var settings = _dereq_('./settings');
 var StateContext = _dereq_('./StateContext');
 var StateInfoConfig = _dereq_('./config/StateInfoConfig');
@@ -498,7 +496,7 @@ var StateController = (function () {
     };
     StateController.navigateLink = function (url) {
         try {
-            var state = router.getData(url.split('?')[0]).state;
+            var state = settings.router.getData(url.split('?')[0]).state;
         }
         catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
@@ -528,7 +526,7 @@ var StateController = (function () {
                         _this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
                 if (url === StateContext.url) {
-                    HistoryNavigator.historyManager.addHistory(state, url);
+                    settings.historyManager.addHistory(state, url);
                 }
             }
         });
@@ -564,15 +562,14 @@ var StateController = (function () {
 })();
 module.exports = StateController;
 
-},{"./CrumbTrailManager":6,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./history/HistoryNavigator":23,"./router":24,"./settings":28}],13:[function(_dereq_,module,exports){
-var router = _dereq_('./router');
+},{"./CrumbTrailManager":6,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./settings":27}],13:[function(_dereq_,module,exports){
 var settings = _dereq_('./settings');
 var StateHandler = (function () {
     function StateHandler() {
     }
     StateHandler.prototype.getNavigationLink = function (state, data) {
         delete data[settings.stateIdKey];
-        var routeInfo = router.getRoute(state, data);
+        var routeInfo = settings.router.getRoute(state, data);
         if (routeInfo.route == null)
             return null;
         var query = [];
@@ -588,7 +585,7 @@ var StateHandler = (function () {
     };
     StateHandler.prototype.getNavigationData = function (state, url) {
         var queryIndex = url.indexOf('?');
-        var data = router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
+        var data = settings.router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
@@ -615,7 +612,7 @@ var StateHandler = (function () {
 })();
 module.exports = StateHandler;
 
-},{"./router":24,"./settings":28}],14:[function(_dereq_,module,exports){
+},{"./settings":27}],14:[function(_dereq_,module,exports){
 var Router = _dereq_('./routing/Router');
 var StateRouter = (function () {
     function StateRouter() {
@@ -656,7 +653,7 @@ var StateRouter = (function () {
 })();
 module.exports = StateRouter;
 
-},{"./routing/Router":26}],15:[function(_dereq_,module,exports){
+},{"./routing/Router":25}],15:[function(_dereq_,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -735,7 +732,7 @@ module.exports = State;
 },{"../StateHandler":13}],19:[function(_dereq_,module,exports){
 var Dialog = _dereq_('./Dialog');
 var ReturnDataManager = _dereq_('../ReturnDataManager');
-var router = _dereq_('../router');
+var settings = _dereq_('../settings');
 var State = _dereq_('./State');
 var Transition = _dereq_('./Transition');
 var StateInfoConfig = (function () {
@@ -766,7 +763,7 @@ var StateInfoConfig = (function () {
             if (!dialog.initial)
                 throw new Error(dialog.key + ' Dialog\'s initial key of ' + dialogObject.initial + ' does not match a child State key');
         }
-        router.addRoutes(this._dialogs);
+        settings.router.addRoutes(this._dialogs);
     };
     StateInfoConfig.processStates = function (dialog, dialogObject) {
         for (var i = 0; i < dialogObject.states.length; i++) {
@@ -822,7 +819,7 @@ var StateInfoConfig = (function () {
 })();
 module.exports = StateInfoConfig;
 
-},{"../ReturnDataManager":10,"../router":24,"./Dialog":17,"./State":18,"./Transition":20}],20:[function(_dereq_,module,exports){
+},{"../ReturnDataManager":10,"../settings":27,"./Dialog":17,"./State":18,"./Transition":20}],20:[function(_dereq_,module,exports){
 var Transition = (function () {
     function Transition() {
     }
@@ -863,7 +860,7 @@ var HTML5HistoryManager = (function () {
 })();
 module.exports = HTML5HistoryManager;
 
-},{"../settings":28,"./HistoryNavigator":23}],22:[function(_dereq_,module,exports){
+},{"../settings":27,"./HistoryNavigator":23}],22:[function(_dereq_,module,exports){
 var HistoryNavigator = _dereq_('./HistoryNavigator');
 var HashHistoryManager = (function () {
     function HashHistoryManager() {
@@ -919,11 +916,6 @@ var HistoryNavigator = (function () {
 module.exports = HistoryNavigator;
 
 },{}],24:[function(_dereq_,module,exports){
-var StateRouter = _dereq_('./StateRouter');
-var router = new StateRouter();
-module.exports = router;
-
-},{"./StateRouter":14}],25:[function(_dereq_,module,exports){
 var Segment = _dereq_('./Segment');
 var Route = (function () {
     function Route(path, defaults) {
@@ -981,7 +973,7 @@ var Route = (function () {
 })();
 module.exports = Route;
 
-},{"./Segment":27}],26:[function(_dereq_,module,exports){
+},{"./Segment":26}],25:[function(_dereq_,module,exports){
 var Route = _dereq_('./Route');
 var Router = (function () {
     function Router() {
@@ -1014,7 +1006,7 @@ var Router = (function () {
 })();
 module.exports = Router;
 
-},{"./Route":25}],27:[function(_dereq_,module,exports){
+},{"./Route":24}],26:[function(_dereq_,module,exports){
 var Segment = (function () {
     function Segment(path, optional, defaults) {
         this.params = [];
@@ -1061,7 +1053,7 @@ var Segment = (function () {
 })();
 module.exports = Segment;
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 var NavigationSettings = _dereq_('./NavigationSettings');
 var settings = new NavigationSettings();
 module.exports = settings;

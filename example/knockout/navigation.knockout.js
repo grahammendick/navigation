@@ -22,7 +22,7 @@ var LinkUtility = (function () {
     LinkUtility.setLink = function (element, linkAccessor) {
         if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
             try {
-                element.href = Navigation.historyManager.getHref(linkAccessor());
+                element.href = Navigation.settings.historyManager.getHref(linkAccessor());
             }
             catch (e) {
                 element.removeAttribute('href');
@@ -52,7 +52,7 @@ var LinkUtility = (function () {
                         e.preventDefault();
                     else
                         e['returnValue'] = false;
-                    Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
+                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }
             }
         };
