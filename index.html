@@ -214,8 +214,7 @@ h3{
 // so you can move from question to answer.
 Navigation.StateInfoConfig.build([{
     key: 'quiz', initial: 'question', states: [
-        { key: 'question', route: '', 
-          defaults: { count: 2 }, transitions: [
+        { key: 'question', route: '', transitions: [
             { key: 'next', to: 'answer' }
         ]},
         { key: 'answer', route: 'thanks/{count}' }
@@ -277,8 +276,7 @@ Navigation.start();
         <script>
             Navigation.StateInfoConfig.build([{
 	            key: 'quiz', initial: 'question', states: [
-                    { key: 'question', route: '', 
-                      defaults: { count: 2 }, transitions: [
+                    { key: 'question', route: '', transitions: [
                         { key: 'next', to: 'answer' }
                     ]},
                     { key: 'answer', route: 'thanks/{count}' }
