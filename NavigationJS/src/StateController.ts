@@ -1,5 +1,6 @@
 ﻿import Crumb = require('./Crumb');
 import CrumbTrailManager = require('./CrumbTrailManager');
+import HistoryNavigator = require('./history/HistoryNavigator');
 import NavigationData = require('./NavigationData');
 import ReturnDataManager = require('./ReturnDataManager');
 import settings = require('./settings');

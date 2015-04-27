@@ -55,7 +55,7 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\history\navigateHistory.ts" />
+    <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
     <TypeScriptCompile Include="src\navigation.d.ts" />
     <TypeScriptCompile Include="src\ArrayConverter.ts" />
     <TypeScriptCompile Include="src\BooleanConverter.ts" />
