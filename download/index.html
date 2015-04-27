@@ -1,73 +1,7 @@
 <html>
 <head>
-    <title>Download</title>
-    <style>
-body{
-    margin:0;
-    background-color:#f8f8f8;
-    font-family:Calibri,Helvetica,Arial,sans-serif;
-}
-#header{
-    border-bottom:4px solid #de1b1b;
-    margin-bottom:7px;
-}
-#banner{
-    background-color:#2b2b2b;
-    color:#fff;
-    padding:10px 40px;
-    margin-bottom:3px;
-}
-#banner a#home{
-    font-size:25px;
-    margin-right:60px;
-    text-decoration:none;
-}
-#banner a{
-    color:#fff;
-    font-size:18px;
-    margin-right:20px;
-}
-#banner a.active{
-    color:#e9e581;
-}
-#content{
-    width:700px;
-    margin:10px auto;
-}
-a{
-    color:#000;
-}
-h1,h2,h3{
-    margin:0;
-    font-weight:normal;
-}
-h2,h3{
-    margin-top:10px;
-}
-p{
-    margin:7px 0;
-}
-a.download{
-    margin:5px 0 0 0;
-    font-size:18px;
-    display:inline-block;
-    color:#de1b1b;
-}
-pre{
-    margin:10px 0;
-}
-pre code{
-    padding:10px;
-    background-color:#fff;
-    border:1px solid #000;
-    display:block;
-}
-em{
-    font-size:14px;
-    display:block;
-    margin-bottom:10px;
-}
-    </style>
+    <title>Navigation Downloads</title>
+    <link href="download.css" rel="stylesheet" />
 </head>
 <body>
     <div id="header">
@@ -75,50 +9,23 @@ em{
             <a id="home" href="../index.html">Navigation</a>
             <a href="../tutorial/configuringstates.html">Tutorial</a>
             <a href="../example/angular/navigation.html">Examples</a>
-            <a class="active" href="download/index.html">Download</a>
+            <a class="active" href="index.html">Download</a>
             <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
         </div>
     </div>
     <div id="content">
-        <h1>Downloads</h1>
+        <h1>Navigation Downloads</h1>
         <p>
-            You can start using Navigation today by either downloading the latest version or using a package
-            manager to get at the code. The details are outlined in the <a href="#navigation">first setup 
-            step</a> below. Once you've completed this step then, if you're using Angular, Knockout or React,
-            you should follow the additional <a href="#plugins">plugin setup step</a>. This will let you build 
-            Hyperlinks in your library's binding syntax.
         </p>
-        <h2 id="navigation">1. Navigation</h2>
+        <h2>File</h2>
         <a class="download" href="navigation-1.0.0.min.js">Navigation 1.0.0</a>
         <pre><code>&lt;script src="navigation-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
         <em>The <a href="navigation-1.0.0.js">non-minified version of Navigation</a> is also available.</em>
-        <h3>npm</h3>
+        <h2>npm</h2>
         <pre><code>npm install navigation</code></pre>
-        <pre><code>var Navigation = require('navigation');
-
-Navigation.StateInfoConfig.build([...]);
-</code></pre>
-        <h3>Bower</h3>
+        <pre><code>var Navigation = require('navigation');</code></pre>
+        <h2>Bower</h2>
         <pre><code>bower install navigation</code></pre>
-        <h2 id="plugins">2. Navigation Plugins</h2>
-        <a class="download" href="navigation.angular-1.0.0.min.js">Navigation Angular 1.0.0</a>
-        <pre><code>&lt;script src="navigation.angular-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation.angular-1.0.0.js">non-minified version of Navigation Angular</a> is also available.</em>
-        <a class="download" href="navigation.knockout-1.0.0.min.js">Navigation Knockout 1.0.0</a>
-        <pre><code>&lt;script src="navigation.knockout-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation.knockout-1.0.0.js">non-minified version of Navigation Knockout</a> is also available.</em>
-        <a class="download" href="navigation.react-1.0.0.min.js">Navigation React 1.0.0</a>
-        <pre><code>&lt;script src="navigation.react-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The <a href="navigation.react-1.0.0.js">non-minified version of Navigation React</a> is also available.</em>
-        <h3>npm</h3>
-        <p>No further npm install required. The npm install of navigation gives access to all the plugins.</p>
-        <pre><code>var NavigationReact = require('navigation/react');
-var NavigationBackLink = NavigationReact.NavigationBackLink;
-
-React.createElement(NavigationBackLink, {distance: "1"}, "Back");
-</code></pre>
-        <h3>Bower</h3>
-        <p>No further bower install required. The bower install of navigation includes all the plugins as separate files.</p>
     </div>
 </body>
 </html>
