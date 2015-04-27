@@ -1,155 +1,3 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.NavigationRouting = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-var Route = _dereq_('./Route');
-var Router = _dereq_('./Router');
-var NavigationRouting = (function () {
-    function NavigationRouting() {
-    }
-    NavigationRouting.Route = Route;
-    NavigationRouting.Router = Router;
-    return NavigationRouting;
-})();
-module.exports = NavigationRouting;
-
-},{"./Route":2,"./Router":3}],2:[function(_dereq_,module,exports){
-var Segment = _dereq_('./Segment');
-var Route = (function () {
-    function Route(path, defaults) {
-        this.segments = [];
-        this.params = [];
-        this.path = path;
-        this.defaults = defaults ? defaults : {};
-        this.parse();
-    }
-    Route.prototype.parse = function () {
-        var subPaths = this.path.split('/').reverse();
-        var segment;
-        var pattern = '';
-        for (var i = 0; i < subPaths.length; i++) {
-            segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
-            this.segments.unshift(segment);
-            pattern = segment.pattern + pattern;
-            var params = [];
-            for (var j = 0; j < segment.params.length; j++) {
-                params.push({ name: segment.params[j], optional: segment.optional });
-            }
-            this.params = params.concat(this.params);
-        }
-        this.pattern = new RegExp('^' + pattern + '$', 'i');
-    };
-    Route.prototype.match = function (path) {
-        var matches = this.pattern.exec(path);
-        if (!matches)
-            return null;
-        var data = {};
-        for (var i = 1; i < matches.length; i++) {
-            var param = this.params[i - 1];
-            if (matches[i])
-                data[param.name] = decodeURIComponent(!param.optional ? matches[i] : matches[i].substring(1));
-        }
-        return data;
-    };
-    Route.prototype.build = function (data) {
-        data = data != null ? data : {};
-        var route = '';
-        var optional = true;
-        for (var i = this.segments.length - 1; i >= 0; i--) {
-            var segment = this.segments[i];
-            var pathInfo = segment.build(data);
-            optional = optional && pathInfo.optional;
-            if (!optional) {
-                if (pathInfo.path == null)
-                    return null;
-                route = '/' + pathInfo.path + route;
-            }
-        }
-        return route.length !== 0 ? route : '/';
-    };
-    return Route;
-})();
-module.exports = Route;
-
-},{"./Segment":4}],3:[function(_dereq_,module,exports){
-var Route = _dereq_('./Route');
-var Router = (function () {
-    function Router() {
-        this.routes = [];
-    }
-    Router.prototype.addRoute = function (path, defaults) {
-        path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
-        path = path.substring(0, 1) === '/' ? path.substring(1) : path;
-        var route = new Route(path, defaults);
-        this.routes.push(route);
-        return route;
-    };
-    Router.prototype.match = function (path) {
-        path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
-        path = (path.substring(0, 1) === '/' || path.length === 0) ? path : '/' + path;
-        for (var i = 0; i < this.routes.length; i++) {
-            var route = this.routes[i];
-            var data = route.match(path);
-            if (data) {
-                for (var key in route.defaults) {
-                    if (!data[key])
-                        data[key] = route.defaults[key];
-                }
-                return { route: route, data: data };
-            }
-        }
-        return null;
-    };
-    return Router;
-})();
-module.exports = Router;
-
-},{"./Route":2}],4:[function(_dereq_,module,exports){
-var Segment = (function () {
-    function Segment(path, optional, defaults) {
-        this.params = [];
-        this.paramsPattern = /\{([^}]+)\}/g;
-        this.escapePattern = /[\.+*\^$\[\](){}']/g;
-        this.path = path;
-        this.optional = optional;
-        this.defaults = defaults;
-        this.parse();
-    }
-    Segment.prototype.parse = function () {
-        var _this = this;
-        var optional = this.path.length === 0;
-        var replaceParam = function (match, param) {
-            var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
-            _this.params.push(name);
-            var optionalOrDefault = param.slice(-1) === '?' || _this.defaults[name];
-            optional = _this.path.length === match.length && optionalOrDefault;
-            return '?';
-        };
-        this.pattern = this.path.replace(this.paramsPattern, replaceParam);
-        this.optional = this.optional && optional;
-        this.pattern = this.pattern.replace(this.escapePattern, '\\$&');
-        if (!this.optional)
-            this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
-        else
-            this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');
-    };
-    Segment.prototype.build = function (data) {
-        var _this = this;
-        var optional = this.optional;
-        var blank = false;
-        var replaceParam = function (match, param) {
-            var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
-            optional = optional && (!data[name] || data[name] === _this.defaults[name]);
-            var val = data[name] ? data[name] : _this.defaults[name];
-            blank = blank || !val;
-            return encodeURIComponent(val);
-        };
-        var routePath = this.path.replace(this.paramsPattern, replaceParam);
-        return { path: !blank ? routePath : null, optional: optional };
-    };
-    return Segment;
-})();
-module.exports = Segment;
-
-},{}]},{},[1])(1)
-});
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Navigation = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 var StateContext = _dereq_('./StateContext');
 var StateController = _dereq_('./StateController');
@@ -164,6 +12,8 @@ var Crumb = _dereq_('./Crumb');
 var StateHandler = _dereq_('./StateHandler');
 var StateRouter = _dereq_('./StateRouter');
 var NavigationSettings = _dereq_('./NavigationSettings');
+var Route = _dereq_('./routing/Route');
+var Router = _dereq_('./routing/Router');
 var router = _dereq_('./router');
 var settings = _dereq_('./settings');
 var Navigation = (function () {
@@ -182,6 +32,8 @@ var Navigation = (function () {
     Navigation.StateController = StateController;
     Navigation.StateHandler = StateHandler;
     Navigation.StateRouter = StateRouter;
+    Navigation.Route = Route;
+    Navigation.Router = Router;
     Navigation.router = router;
     Navigation.settings = settings;
     Navigation.start = function (url) {
@@ -197,7 +49,7 @@ HistoryNavigator.navigateHistory = function () {
 };
 module.exports = Navigation;
 
-},{"./Crumb":5,"./NavigationSettings":8,"./StateContext":11,"./StateController":12,"./StateHandler":13,"./StateRouter":14,"./config/Dialog":17,"./config/State":18,"./config/StateInfoConfig":19,"./config/Transition":20,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./router":24,"./settings":25}],2:[function(_dereq_,module,exports){
+},{"./Crumb":5,"./NavigationSettings":8,"./StateContext":11,"./StateController":12,"./StateHandler":13,"./StateRouter":14,"./config/Dialog":17,"./config/State":18,"./config/StateInfoConfig":19,"./config/Transition":20,"./history/HTML5HistoryManager":21,"./history/HashHistoryManager":22,"./history/HistoryNavigator":23,"./router":24,"./routing/Route":25,"./routing/Router":26,"./settings":28}],2:[function(_dereq_,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -418,7 +270,7 @@ var CrumbTrailManager = (function () {
 })();
 module.exports = CrumbTrailManager;
 
-},{"./Crumb":5,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./router":24,"./settings":25}],7:[function(_dereq_,module,exports){
+},{"./Crumb":5,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./router":24,"./settings":28}],7:[function(_dereq_,module,exports){
 var NavigationData = (function () {
     function NavigationData() {
     }
@@ -712,7 +564,7 @@ var StateController = (function () {
 })();
 module.exports = StateController;
 
-},{"./CrumbTrailManager":6,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./history/HistoryNavigator":23,"./router":24,"./settings":25}],13:[function(_dereq_,module,exports){
+},{"./CrumbTrailManager":6,"./NavigationData":7,"./ReturnDataManager":10,"./StateContext":11,"./config/StateInfoConfig":19,"./history/HistoryNavigator":23,"./router":24,"./settings":28}],13:[function(_dereq_,module,exports){
 var router = _dereq_('./router');
 var settings = _dereq_('./settings');
 var StateHandler = (function () {
@@ -763,9 +615,8 @@ var StateHandler = (function () {
 })();
 module.exports = StateHandler;
 
-},{"./router":24,"./settings":25}],14:[function(_dereq_,module,exports){
-(function (global){
-var NavigationRouting = (typeof window !== "undefined" ? window.NavigationRouting : typeof global !== "undefined" ? global.NavigationRouting : null);
+},{"./router":24,"./settings":28}],14:[function(_dereq_,module,exports){
+var Router = _dereq_('./routing/Router');
 var StateRouter = (function () {
     function StateRouter() {
         this.supportsDefaults = true;
@@ -783,7 +634,7 @@ var StateRouter = (function () {
         return { route: route.build(data), data: routeData };
     };
     StateRouter.prototype.addRoutes = function (dialogs) {
-        this.router = new NavigationRouting.Router();
+        this.router = new Router();
         var states = [];
         for (var i = 0; i < dialogs.length; i++) {
             for (var j = 0; j < dialogs[i]._states.length; j++) {
@@ -805,8 +656,7 @@ var StateRouter = (function () {
 })();
 module.exports = StateRouter;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(_dereq_,module,exports){
+},{"./routing/Router":26}],15:[function(_dereq_,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -1013,7 +863,7 @@ var HTML5HistoryManager = (function () {
 })();
 module.exports = HTML5HistoryManager;
 
-},{"../settings":25,"./HistoryNavigator":23}],22:[function(_dereq_,module,exports){
+},{"../settings":28,"./HistoryNavigator":23}],22:[function(_dereq_,module,exports){
 var HistoryNavigator = _dereq_('./HistoryNavigator');
 var HashHistoryManager = (function () {
     function HashHistoryManager() {
@@ -1074,6 +924,144 @@ var router = new StateRouter();
 module.exports = router;
 
 },{"./StateRouter":14}],25:[function(_dereq_,module,exports){
+var Segment = _dereq_('./Segment');
+var Route = (function () {
+    function Route(path, defaults) {
+        this.segments = [];
+        this.params = [];
+        this.path = path;
+        this.defaults = defaults ? defaults : {};
+        this.parse();
+    }
+    Route.prototype.parse = function () {
+        var subPaths = this.path.split('/').reverse();
+        var segment;
+        var pattern = '';
+        for (var i = 0; i < subPaths.length; i++) {
+            segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
+            this.segments.unshift(segment);
+            pattern = segment.pattern + pattern;
+            var params = [];
+            for (var j = 0; j < segment.params.length; j++) {
+                params.push({ name: segment.params[j], optional: segment.optional });
+            }
+            this.params = params.concat(this.params);
+        }
+        this.pattern = new RegExp('^' + pattern + '$', 'i');
+    };
+    Route.prototype.match = function (path) {
+        var matches = this.pattern.exec(path);
+        if (!matches)
+            return null;
+        var data = {};
+        for (var i = 1; i < matches.length; i++) {
+            var param = this.params[i - 1];
+            if (matches[i])
+                data[param.name] = decodeURIComponent(!param.optional ? matches[i] : matches[i].substring(1));
+        }
+        return data;
+    };
+    Route.prototype.build = function (data) {
+        data = data != null ? data : {};
+        var route = '';
+        var optional = true;
+        for (var i = this.segments.length - 1; i >= 0; i--) {
+            var segment = this.segments[i];
+            var pathInfo = segment.build(data);
+            optional = optional && pathInfo.optional;
+            if (!optional) {
+                if (pathInfo.path == null)
+                    return null;
+                route = '/' + pathInfo.path + route;
+            }
+        }
+        return route.length !== 0 ? route : '/';
+    };
+    return Route;
+})();
+module.exports = Route;
+
+},{"./Segment":27}],26:[function(_dereq_,module,exports){
+var Route = _dereq_('./Route');
+var Router = (function () {
+    function Router() {
+        this.routes = [];
+    }
+    Router.prototype.addRoute = function (path, defaults) {
+        path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
+        path = path.substring(0, 1) === '/' ? path.substring(1) : path;
+        var route = new Route(path, defaults);
+        this.routes.push(route);
+        return route;
+    };
+    Router.prototype.match = function (path) {
+        path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;
+        path = (path.substring(0, 1) === '/' || path.length === 0) ? path : '/' + path;
+        for (var i = 0; i < this.routes.length; i++) {
+            var route = this.routes[i];
+            var data = route.match(path);
+            if (data) {
+                for (var key in route.defaults) {
+                    if (!data[key])
+                        data[key] = route.defaults[key];
+                }
+                return { route: route, data: data };
+            }
+        }
+        return null;
+    };
+    return Router;
+})();
+module.exports = Router;
+
+},{"./Route":25}],27:[function(_dereq_,module,exports){
+var Segment = (function () {
+    function Segment(path, optional, defaults) {
+        this.params = [];
+        this.paramsPattern = /\{([^}]+)\}/g;
+        this.escapePattern = /[\.+*\^$\[\](){}']/g;
+        this.path = path;
+        this.optional = optional;
+        this.defaults = defaults;
+        this.parse();
+    }
+    Segment.prototype.parse = function () {
+        var _this = this;
+        var optional = this.path.length === 0;
+        var replaceParam = function (match, param) {
+            var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+            _this.params.push(name);
+            var optionalOrDefault = param.slice(-1) === '?' || _this.defaults[name];
+            optional = _this.path.length === match.length && optionalOrDefault;
+            return '?';
+        };
+        this.pattern = this.path.replace(this.paramsPattern, replaceParam);
+        this.optional = this.optional && optional;
+        this.pattern = this.pattern.replace(this.escapePattern, '\\$&');
+        if (!this.optional)
+            this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
+        else
+            this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');
+    };
+    Segment.prototype.build = function (data) {
+        var _this = this;
+        var optional = this.optional;
+        var blank = false;
+        var replaceParam = function (match, param) {
+            var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+            optional = optional && (!data[name] || data[name] === _this.defaults[name]);
+            var val = data[name] ? data[name] : _this.defaults[name];
+            blank = blank || !val;
+            return encodeURIComponent(val);
+        };
+        var routePath = this.path.replace(this.paramsPattern, replaceParam);
+        return { path: !blank ? routePath : null, optional: optional };
+    };
+    return Segment;
+})();
+module.exports = Segment;
+
+},{}],28:[function(_dereq_,module,exports){
 var NavigationSettings = _dereq_('./NavigationSettings');
 var settings = new NavigationSettings();
 module.exports = settings;
