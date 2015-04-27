@@ -22,14 +22,25 @@
         <a class="download" href="navigation.knockout-1.0.0.min.js">Navigation Knockout 1.0.0</a>
         <pre><code>&lt;script src="navigation-1.0.0.min.js"&gt;&lt;/script&gt;
 &lt;script src="navigation.knockout-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The non-minified versions of <a href="navigation-1.0.0.js">Navigation</a> and 
-        <a href="navigation.knockout-1.0.0.js">Navigation Knockout</a> are also available.</em>
+        <em>
+            The non-minified versions of <a href="navigation-1.0.0.js">Navigation</a> and 
+            <a href="navigation.knockout-1.0.0.js">Navigation Knockout</a> are also available.
+        </em>
         <h2>npm</h2>
+        <em>
+            Because navigation is a <strong>peer dependency</strong> of navigation-knockout, installing
+            navigation-knockout isn't guaranteed to install navigation. The safest option is to install
+            navigation and then install navigation-knockout.
+        </em>
         <pre><code>npm install navigation
 npm install navigation-knockout</code></pre>
         <pre><code>var Navigation = require('navigation');
 var NavigationKnockout = require('navigation-knockout');</code></pre>
         <h2>Bower</h2>
+        <em>
+            Because navigation is a <strong>dependency</strong> of navigation-knockout, installing navigation-knockout
+            will also install navigation.
+        </em>
         <pre><code>bower install navigation-knockout</code></pre>
     </div>
 </body>

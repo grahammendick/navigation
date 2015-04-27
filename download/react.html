@@ -22,14 +22,25 @@
         <a class="download" href="navigation.react-1.0.0.min.js">Navigation React 1.0.0</a>
         <pre><code>&lt;script src="navigation-1.0.0.min.js"&gt;&lt;/script&gt;
 &lt;script src="navigation.react-1.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
-        <em>The non-minified versions of <a href="navigation-1.0.0.js">Navigation</a> and 
-        <a href="navigation.react-1.0.0.js">Navigation React</a> are also available.</em>
+        <em>
+            The non-minified versions of <a href="navigation-1.0.0.js">Navigation</a> and 
+            <a href="navigation.react-1.0.0.js">Navigation React</a> are also available.
+        </em>
         <h2>npm</h2>
+        <em>
+            Because navigation is a <strong>peer dependency</strong> of navigation-react, installing
+            navigation-react isn't guaranteed to install navigation. The safest option is to install
+            navigation and then install navigation-react.
+        </em>
         <pre><code>npm install navigation
 npm install navigation-react</code></pre>
         <pre><code>var Navigation = require('navigation');
 var NavigationReact = require('navigation-react');</code></pre>
         <h2>Bower</h2>
+        <em>
+            Because navigation is a <strong>dependency</strong> of navigation-react, installing navigation-react
+            will also install navigation.
+        </em>
         <pre><code>bower install navigation-react</code></pre>
     </div>
 </body>
