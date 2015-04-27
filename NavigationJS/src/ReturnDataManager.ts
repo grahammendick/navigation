@@ -1,6 +1,6 @@
 ﻿import ConverterFactory = require('./ConverterFactory');
-import router = require('./router');
 import State = require('./config/State');
+import settings = require('./settings');
 
 class ReturnDataManager {
     private static SEPARATOR = '_';
@@ -12,7 +12,7 @@ class ReturnDataManager {
         var returnDataArray: Array<string> = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()
-                && (!router.supportsDefaults || returnData[key] !== state.defaults[key]))
+                && (!settings.router.supportsDefaults || returnData[key] !== state.defaults[key]))
                 returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state));
         }
         return returnDataArray.join(this.RET_3_SEP);

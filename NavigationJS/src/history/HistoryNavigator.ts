@@ -1,7 +1,4 @@
-﻿import IHistoryManager = require('./IHistoryManager');
-
-class HistoryNavigator {
-    static historyManager: IHistoryManager; 
+﻿class HistoryNavigator {
     static navigateHistory: () => void;
 }
 export = HistoryNavigator;
