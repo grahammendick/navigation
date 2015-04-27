@@ -5,7 +5,7 @@ import jquery = require('jquery');
 class LinkUtility {
     static setLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
         try {
-            attrs.$set('href', Navigation.historyManager.getHref(linkAccessor()));
+            attrs.$set('href', Navigation.settings.historyManager.getHref(linkAccessor()));
         } catch (e) {
             attrs.$set('href', null);
         }
@@ -25,7 +25,7 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey) {
                 if (anchor.href) {
                     e.preventDefault();
-                    Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(anchor));
+                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(anchor));
                 }
             }
         });

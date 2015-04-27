@@ -5,7 +5,7 @@ class LinkUtility {
     static setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
         if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
             try {
-                element.href = Navigation.historyManager.getHref(linkAccessor());
+                element.href = Navigation.settings.historyManager.getHref(linkAccessor());
             } catch (e) {
                 element.removeAttribute('href');
             }
@@ -36,7 +36,7 @@ class LinkUtility {
                         e.preventDefault();
                     else
                         e['returnValue'] = false;
-                    Navigation.StateController.navigateLink(Navigation.historyManager.getUrl(element));
+                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }
             }
         }
