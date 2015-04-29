@@ -1,19 +1,20 @@
 {
   "name": "navigation",
-  "version": "0.0.1",
-  "description": "A Web library that adds a State machine layer on top of a Router",
+  "version": "1.0.0",
+  "description": "A JavaScript library that adds a State machine layer on top of a Router",
   "main": "navigation.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/grahammendick/navigation"
   },
   "keywords": [
-    "router"
+    "router",
+    "navigation"
   ],
-  "author": "graham mendick",
+  "author": "Graham Mendick",
   "license": "Apache License 2.0",
   "bugs": {
     "url": "https://github.com/grahammendick/navigation/issues"
   },
-  "homepage": "https://github.com/grahammendick/navigation"
+  "homepage": "http://grahammendick.github.io/navigation/"
 }
