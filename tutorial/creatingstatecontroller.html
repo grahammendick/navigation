@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Creating a State Controller</title>
+    <title>Creating a State Navigator</title>
     <link href="codemirror.css" rel="stylesheet" />
     <link href="tutorial.css" rel="stylesheet" />
     <style>
@@ -25,7 +25,7 @@
                 <li><a id="e1">Configuring States</a></li>
                 <li><a id="e2">Accessing States</a></li>
                 <li><a id="e3">Navigating to a Dialog</a></li>
-                <li><a id="e4">Creating a State Controller</a></li>
+                <li><a id="e4">Creating a State Navigator</a></li>
                 <li><a id="e5">Configuring a Transition</a></li>
                 <li><a id="e6">Navigating along a Transition</a></li>
                 <li><a id="e7">Navigating Back</a></li>
@@ -36,12 +36,12 @@
             </ol>
         </div>
         <div id="exercise">
-            <h1>Exercise 4: Creating a State Controller</h1>
+            <h1>Exercise 4: Creating a State Navigator</h1>
             <p>
-                State controllers are Navigation's equivalent of route Handlers. A State controller is a function attached
+                State navigators are Navigation's equivalent of route Handlers. A State navigator is a function attached
                 to a State's navigated property that is called when that State is navigated to. It lets you do any setup work
-                needed by your view. In a listing State controller you'd fetch the first page of people and bind them to the
-                grid. In this exercise, you'll create a listing State controller and demonstrate it's called after navigating
+                needed by your view. In a listing State navigator you'd fetch the first page of people and bind them to the
+                grid. In this exercise, you'll create a listing State navigator and demonstrate it's called after navigating
                 to the Dialog.
             </p>
             <textarea id="code"></textarea>
@@ -64,9 +64,9 @@
 	var dialogs = Navigation.StateInfoConfig.dialogs;\n\
 	var dialog = dialogs.{dialog};\n\
 	/*-------------------------EXERCISE-------------------------\n\
-	 * Create a listing State controller by replacing the blank\n\
+	 * Create a listing State navigator by replacing the blank\n\
 	 * with a function. Set 'result.navigated = true;' in the \n\
-	 * body of the function to verify your controller's called\n\
+	 * body of the function to verify your navigator's called\n\
 	 * when the listing State is subsequently navigated to.\n\
 	 */\n\
 	result.navigated = false;\n\

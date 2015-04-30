@@ -25,7 +25,7 @@
                 <li><a id="e1">Configuring States</a></li>
                 <li><a id="e2">Accessing States</a></li>
                 <li><a id="e3">Navigating to a Dialog</a></li>
-                <li><a id="e4">Creating a State Controller</a></li>
+                <li><a id="e4">Creating a State Navigator</a></li>
                 <li><a id="e5">Configuring a Transition</a></li>
                 <li><a id="e6">Navigating along a Transition</a></li>
                 <li><a id="e7">Navigating Back</a></li>
@@ -39,15 +39,15 @@
             <h1>Exercise 2: Accessing States</h1>
             <p>
                 If you've used a router before you've probably encountered a route handler. It's a function that's associated
-                with a route and runs when that route is activated. Navigation has State controllers in place of route handlers.
+                with a route and runs when that route is activated. Navigation has State navigators in place of route handlers.
                 They serve the same purpose, except they're attached to States instead of routes.
             </p>
             <p>
-                It would be too limiting to have to define the listing controller at the same time as you created the listing
+                It would be too limiting to have to define the listing navigator at the same time as you created the listing
                 State. Navigation provides access to the States after they've been configured and built so you can create the
-                controller at the same time as you create your listing view model. You access the States through their parent
+                navigator at the same time as you create your listing view model. You access the States through their parent
                 Dialog. In this exercise, you'll familiarise yourself with this access code. This will pave the way for creating
-                State controllers in later Exercises.
+                State navigators in later Exercises.
             </p>
             <textarea id="code"></textarea>
             <button id="run">Run</button>
