@@ -3,7 +3,7 @@
 		'configuringstates',
 		'accessingstates',
 		'navigatingdialog',
-		'creatingstatecontroller',
+		'creatingstatenavigator',
 		'configuringtransition',
 		'navigatingtransition',
 		'navigatingback',
