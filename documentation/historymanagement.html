@@ -62,18 +62,24 @@
                 If you don't like Navigation's opinions on history management then you can implement your own history manager.
             </p>
             <p>
-                Perhaps your app's JavaScript only works in evergreen browsers and, for full browser support, you want to fall back to server rendering
-                for the other browsers. Here's a history manager you could set for these non-evergreen browsers so that it goes back to the server when 
-                a navigation happens.
+                Perhaps your app's JavaScript only works if Promises are available but, for full browser support, you'll to fall back 
+                to server rendering for the other browsers:
             </p>
             <pre><code class="javascript">Navigation.settings.historyManager = {
     init: function(){
         // Listen for Url changes and navigate when it does
+        window.addEventListener('popstate', function(){
+            Navigation.StateController.navigateLink(location.search);
+        });
     },
     addHistory: function(state, url){
         // Set the current Url from the url passed in
-       if (location.search !== url)
-            location.href = url;
+       if (location.search !== url){
+            if (typeof Promise !== 'undefined')
+                window.history.pushState(null, null, url);
+            else
+                location.href = url;
+        }
     },
     getCurrentUrl: function(){
         // Return the current Url
@@ -89,7 +95,7 @@
         // Return the Url for the anchor passed in
         return anchor.search;
     }
-}</code></pre>
+};</code></pre>
         </div>
     </div>
     <script src="../highlight.pack.js"></script>
