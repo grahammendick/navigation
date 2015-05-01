@@ -59,27 +59,16 @@
             </p>
             <h2>Custom History</h2>
             <p>
-                If you don't like Navigation's opinions on history management then you can implement your own history manager.
-            </p>
-            <p>
-                Perhaps your app's JavaScript only works if Promises are available and, rather than polyfilling, you'll to fall back 
-                to server rendering for the other browsers:
+                If you don't like Navigation's opinions on history management then you can implement your own history manager. Here's a history
+                manager that uses HTML5 history's replaceState.
             </p>
             <pre><code class="javascript">Navigation.settings.historyManager = {
     init: function(){
         // Listen for Url changes and navigate when it does
-        window.addEventListener('popstate', function(){
-            Navigation.StateController.navigateLink(location.search);
-        });
     },
     addHistory: function(state, url){
         // Set the current Url from the url passed in
-       if (location.search !== url){
-            if (typeof Promise !== 'undefined')
-                window.history.pushState(null, null, url);
-            else
-                location.href = url;
-        }
+        window.history.replaceState(null, null, url);
     },
     getCurrentUrl: function(){
         // Return the current Url
