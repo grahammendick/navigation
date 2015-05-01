@@ -58,24 +58,37 @@
                 only has one Url scheme, the query identifier will be replaced in all browsers.
             </p>
             <h2>Custom History</h2>
-            <p>If you don't like Navigation's opinions on history management then you can implement your own history manager:</p>
+            <p>
+                If you don't like Navigation's opinions on history management then you can implement your own history manager.
+            </p>
+            <p>
+                Perhaps your app's JavaScript only works in evergreen browsers and, for full browser support, you want to fall back to server rendering
+                for the other browsers. Here's a history manager you could set for these non-evergreen browsers so that it goes back to the server when 
+                a navigation happens.
+            </p>
             <pre><code class="javascript">Navigation.settings.historyManager = {
-    disabled: false, // History disabled indicator
     init: function(){
-        // Listen to Url changes
+        // Listen for Url changes and navigate when it does
     },
     addHistory: function(state, url){
         // Set the current Url from the url passed in
+       if (location.search !== url)
+            location.href = url;
     },
     getCurrentUrl: function(){
         // Return the current Url
+        return location.search;
     },
+
+    // The following two functions are only used by the Navigation plugins
     getHref: function(url){
         // Return the Href for the url passed in
+        return url;
     },
     getUrl: function(anchor){
         // Return the Url for the anchor passed in
-    },
+        return anchor.search;
+    }
 }</code></pre>
         </div>
     </div>
