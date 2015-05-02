@@ -66,19 +66,21 @@
     init: function(){
         // Listen for Url changes and navigate when it does
         window.addEventListener('popstate', function(){
-            Navigation.StateController.navigateLink(location.search);
+            Navigation.StateController.navigateLink(location.pathname + location.search);
         });
     },
     addHistory: function(state, url){
         // Set the current Url from the url passed in
-        if (state.key !== 'listing')
-            window.history.pushState(null, null, url);
-        else
-            window.history.replaceState(null, null, url);
+        if (location.pathname + location.search !== url){
+            if (state.key !== 'listing')
+                window.history.pushState(null, null, url);
+            else
+                window.history.replaceState(null, null, url);
+        }
     },
     getCurrentUrl: function(){
         // Return the current Url
-        return location.search;
+        return location.pathname + location.search;
     },
 
     // The following two functions are only used by the Navigation plugins
@@ -88,7 +90,7 @@
     },
     getUrl: function(anchor){
         // Return the Url for the anchor passed in
-        return anchor.search;
+        return anchor.pathname + anchor.search;
     }
 };</code></pre>
         </div>

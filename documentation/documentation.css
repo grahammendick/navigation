@@ -80,6 +80,7 @@ ul li a,ul li a:visited,#navigation a, #navigation a:visited{
 	color:#000;
 }
 code.hljs{
+	font-size:12px;
     background-color:#fff;
 	padding:10px 20px;
     border:2px solid #de1b1b;
