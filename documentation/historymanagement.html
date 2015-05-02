@@ -27,7 +27,9 @@
             <p>
                 Navigation supports Hash or HTML5 history. By default it's configured to use Hash history but you can
                 change this to HTML5 history:
-                <pre><code class="javascript">Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();</code></pre>
+                <pre><code class="javascript">Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();
+//If your urls look like http://domain/app/route, you need to set the application path
+Navigation.settings.applicationPath = '/app';</code></pre>
                 <em>Make sure you set this before calling <code>Navigation.start();</code></em>
             </p>
             <h2>Browser Support</h2>
