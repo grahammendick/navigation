@@ -30,7 +30,7 @@
                 <pre><code class="javascript">Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();
 //If your urls look like http://domain/app/route, you need to set the application path
 Navigation.settings.applicationPath = '/app';</code></pre>
-                <em>Make sure you set this before calling <code>Navigation.start();</code></em>
+                <em>Make sure you set the history manager before calling <code>Navigation.start();</code></em>
             </p>
             <h2>Browser Support</h2>
             <p>
@@ -40,15 +40,11 @@ Navigation.settings.applicationPath = '/app';</code></pre>
                 will be fully functional (assuming your application code works in Internet Explorer 9) but the Url won't change.
             </p>
             <p>
-                You might have seen other routers use HTML5 history in modern browsers and fall back to Hash history in older browsers. 
-                Having two different Url schemes creates problems. Imagine you've got an email campaign and you need to send out a deep 
-                link to one of your pages. What Url do you sent out? Even if you could send two different emails, one with the Hashed 
-                Url and one with the HTML5 Url, you don't know which user would need which email. So, you choose to mail out the HTML5 one 
-                because it's a cleaner Url. But now you have to put in code for old browsers to handle HMTL5 Urls. Not only is this code 
-                tricky to write, but how do you get your hands on all the browsers that don't support HTML5 history in order to test this code?
-            </p>
-            <p>
-                With Navigation, you don't have this problem because there's only ever one Url scheme in place.
+                Some routers fall back to Hash history if HTML5 History isn't available, but supporting two different Url schemes causes problems.
+                Imagine you're emailing your users with a hyperlink to a promotional offer. 95% of your users are on modern browsers, so
+                you send out the HTML5 hyperlink. Because this Url doesn't work for the older browsers, you're in the unenviable position
+                of having to do difficult development to cater for those 5%. That runs counter to principle of progressive enhancement. With
+                Navigation, you don't have this problem because there's only ever one Url scheme in place.
             </p>
             <h3>Hash History and Internet Explorer 6 & 7</h3>
             <p>
