@@ -52,8 +52,8 @@ Navigation.settings.applicationPath = '/app';</code></pre>
                 <pre><code class="javascript">Navigation.settings.historyManager.replaceQueryIdentifier = true;</code></pre>
             </p>
             <p>
-                Those browsers handling of a '?' in the Url's hash are buggy and the above setting will replace it with a '#'. Because Navigation
-                only has one Url scheme, the query identifier will be replaced in all browsers.
+                Internet Explorer 6 and 7 are buggy when a '?' appears in the Url's hash. The above setting replaces the '?' with a '#'. Navigation 
+                only has one Url scheme, so this setting applies in all browsers.
             </p>
             <h2>Custom History</h2>
             <p>
