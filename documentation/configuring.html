@@ -58,26 +58,30 @@ var inboxDialog = {
                 <pre><code class="javascript">Navigation.StateInfoConfig.build([ inboxDialog, composeDialog ]);</code></pre>
                 <em>Your Dialogs and Transitions will come into play when <a href="changingstate.html">Changing State</a>.</em>
             </p>
-            
-            
             <h2>Router</h2>
             <p>
-                Under the covers is the Router. Each State must be assigned a route so that as you move between States the Url changes.
-                You can specify route parameters using '{param}'. The mail details state has the id of the mail selected as a route parameter.
-                You can make that parameter optional '{param?}'. The list State has the folder specified as an optional parameter. So it will match
-                a blank route as well as 'inbox' or 'sent' so you can use this same dialog to display the different email folders, e.g. inbox, sent,
-                draft etc. There's more on this in [Changing Data].
-            <pre><code class="javascript">{
-    key: 'email', initial: 'list', states: [
-        { key: 'list', route: '{folder?}', transitions: [
-            { key: 'select', to: 'details' },
-            { key: 'compose', to: 'new' },
+                The only time you ever refer to a route is during configuration. Each State must be assigned a route. As you move between States, Navigation
+                keeps the Url in step with the current State's route. The route pattern matching rules are:
+            </p>
+            <dl>
+                <dt>foo</dt>
+                <dd>Matches 'foo' but not 'foo/bar'</dd>
+                <dt>foo/{param}</dt>
+                <dd>Matches 'foo/bar' but not 'foo'</dd>
+                <dt>foo/{param?}</dt>
+                <dd>Matches 'foo' and 'foo/bar'</dd>
+            </dl>
+            <p>
+                Here's the inbox Dialog updated with routes set for the two States:
+                <pre><code class="javascript">var inboxDialog = {
+    key: 'inbox', initial: 'listing', states: [
+        { key: 'listing', route: '', transitions: [
+            { key: 'select', to: 'details' }
         ]},
-        { key: 'details', route: 'mail/{id}' },
-        { key: 'new', route: 'newmail' }
+        { key: 'details', route: 'mail/{id}' }
     ]
-}
-</code></pre>
+}</code></pre>
+                <em>Optional parameters are covered in more detail in <a href="changingdata.html">Changing Data</a>.</em>
             </p>
             <h2>Custom Router</h2>
             <p>
