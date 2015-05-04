@@ -42,6 +42,9 @@ h3{
 p{
 	margin:5px 0 14px 0;
 }
+p a,em a{
+	color:#000;
+}
 #nav{
 	width:26%;
 	float:left;
