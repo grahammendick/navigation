@@ -44,15 +44,7 @@
 }</code></pre>
             </p>
             <p>
-                But you also need to see your contacts.
-                <pre><code class="javascript">var contactDialog = {
-    key: 'contact', initial: 'list', states: [
-        { key: 'list' }
-    ]
-}</code></pre>
-            </p>
-            <p>
-                Once you've set up all your dialogs, pass them as an array to Navigation:
+                But you also need to see your contacts. Once you've set up all your dialogs, pass them as an array to Navigation:
                 <pre><code class="javascript">Navigation.StateInfoConfig.build([ emailDialog, contactDialog ]);</code></pre>
             </p>
             <h2>Router</h2>
