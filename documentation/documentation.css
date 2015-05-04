@@ -85,3 +85,13 @@ code.hljs{
 	padding:10px 20px;
     border:2px solid #de1b1b;
 }
+dt{
+	float: left;
+	width:100px;
+	text-align:right;
+	margin-right:10px;
+	font-weight:bold;
+}
+dd{
+	font-style:italic;
+}

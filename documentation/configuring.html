@@ -26,27 +26,40 @@
         <div id="doc">
             <h1>Configuring</h1>
             <p>
-                Many routers implement a State machine layer under the covers. Navigation reverses this by exposing a State machine
-                layer and keeping the routes under covers. Each State maps to a view in your application. Let's take an example of
-                an mail app. There's your inbox and you can either open a mail or write a new one. Your inbox is one State, clicking
-                on a mail or clicking to compose a new mail are Transitions. The first goes to the mail details view and the second
-                to a new mail view, both of which are States. These three States are grouped together inside an email Dialog which
-                indicates the inbox is the first state.
-                <pre><code class="javascript">var emailDialog = {
-    key: 'email', initial: 'list', states: [
+                Navigation isn't like other routers. Other routers implement a State machine under the covers and make you pass in the route
+                you want to navigate to. Navigation reverses this, by exposing the State machine layer and hiding away the route building.
+                Navigation's State machine layer is made up of three elements:
+            </p>
+            <dl>
+                <dt>State</dt>
+                <dd>A view in your application</dd>
+                <dt>Dialog</dt>
+                <dd>A logical grouping of States</dd>
+                <dt>Transition</dt>
+                <dd>A navigation between States within the same Dialog</dd>
+            </dl>
+            <p>
+                For example, in an email application, you need a State that lists your emails and one that shows a mail's details. You need to
+                navigate from the list to the details. An 'inbox' Dialog that groups these two States would look like:
+            <pre><code class="javascript">// inbox Dialog has two child States
+// list State has a child Transition to the details State
+var inboxDialog = {
+    key: 'inbox', initial: 'list', states: [
         { key: 'list', transitions: [
-            { key: 'select', to: 'details' },
-            { key: 'compose', to: 'new' },
+            { key: 'select', to: 'details' }
         ]},
-        { key: 'details' },
-        { key: 'new' }
+        { key: 'details' }
     ]
 }</code></pre>
             </p>
             <p>
-                But you also need to see your contacts. Once you've set up all your dialogs, pass them as an array to Navigation:
-                <pre><code class="javascript">Navigation.StateInfoConfig.build([ emailDialog, contactDialog ]);</code></pre>
+                You also need a State for composing new emails. Because it's not related to your inbox activities, it would to go inside a new Dialog.
+                Your list of Dialogs is then passed to Navigation:
+                <pre><code class="javascript">Navigation.StateInfoConfig.build([ inboxDialog, composeDialog ]);</code></pre>
             </p>
+
+
+            
             <h2>Router</h2>
             <p>
                 Under the covers is the Router. Each State must be assigned a route so that as you move between States the Url changes.
