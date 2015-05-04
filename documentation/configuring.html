@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>Configuring</title>
+    <link href="../github.css" rel="stylesheet" />
+    <link href="documentation.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div id="banner">
+            <a id="home" href="../index.html">Navigation</a>
+            <a href="../tutorial/configuringstates.html">Tutorial</a>
+            <a href="../example/angular/navigation.html">Examples</a>
+            <a href="../download/index.html">Download</a>
+            <a class="active" href="historymanagement.html">Documentation</a>
+            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="nav">
+            <h3></h3>
+            <ul>
+                <li class="active"><a href="configuring.html">Configuring</a></li>
+                <li><a href="managinghistory.html">Managing History</a></li>
+            </ul>
+        </div>
+        <div id="doc">
+            <h1>Configuring</h1>
+            <p>
+                Many routers implement a State machine layer under the covers. Navigation reverses this by exposing a State machine
+                layer and keeping the routes under covers. Each State maps to a view in your application. Let's take an example of
+                an mail app. There's your inbox and you can either open a mail or write a new one. Your inbox is one State, clicking
+                on a mail or clicking to compose a new mail are Transitions. The first goes to the mail details view and the second
+                to a new mail view, both of which are States. These three States are grouped together inside an email Dialog which
+                indicates the inbox is the first state.
+                <pre><code class="javascript">var emailDialog = {
+    key: 'email', initial: 'list', states: [
+        { key: 'list', transitions: [
+            { key: 'select', to: 'details' },
+            { key: 'compose', to: 'new' },
+        ]},
+        { key: 'details' },
+        { key: 'new' }
+    ]
+}</code></pre>
+            </p>
+            <p>
+                But you also need to see your contacts.
+                <pre><code class="javascript">var contactDialog = {
+    key: 'contact', initial: 'list', states: [
+        { key: 'list' }
+    ]
+}</code></pre>
+            </p>
+            <p>
+                Once you've set up all your dialogs, pass them as an array to Navigation:
+                <pre><code class="javascript">Navigation.StateInfoConfig.build([ emailDialog, contactDialog ]);</code></pre>
+            </p>
+            <h2>Router</h2>
+            <p>
+                Under the covers is the Router. Each State must be assigned a route so that as you move between States the Url changes.
+                You can specify route parameters using '{param}'. The mail details state has the id of the mail selected as a route parameter.
+                You can make that parameter optional '{param?}'. The list State has the folder specified as an optional parameter. So it will match
+                a blank route as well as 'inbox' or 'sent' so you can use this same dialog to display the different email folders, e.g. inbox, sent,
+                draft etc. There's more on this in [Changing Data].
+            <pre><code class="javascript">{
+    key: 'email', initial: 'list', states: [
+        { key: 'list', route: '{folder?}', transitions: [
+            { key: 'select', to: 'details' },
+            { key: 'compose', to: 'new' },
+        ]},
+        { key: 'details', route: 'mail/{id}' },
+        { key: 'new', route: 'newmail' }
+    ]
+}
+</code></pre>
+            </p>
+            <h2>Custom Router</h2>
+            <p>
+                If you don't like the built in Router plugin your own.
+                It doesn't have slugs so you might want to switch it for a one that does like [Crossroads].
+                If you do then have to change route syntax to match your router. Have to call private
+                method, might need to do the same? Crossroads example
+                Need a function that turns a route into State and data and vice versa.
+                <pre><code class="javascript">var crossroadsRouter = {
+    getData: function(route) {
+        var data = {};
+        var match = crossroads._getMatchedRoutes(route)[0];
+        for (var i = 0; i < match.params.length; i++) {
+            data[match.route._paramsIds[i]] = decodeURIComponent(match.params[i]);
+        }
+        return { state: match.route._state, data: data };
+    },
+    getRoute: function(state, data) {
+        var encodedData = {};
+        for (var key in data)
+            encodedData[key] = encodeURIComponent(data[key]);
+        var route = state._route.interpolate(encodedData);
+        var routeData = this.getData(route);
+        return { route: route, data: routeData };
+    },
+    addRoutes: function(dialogs) {
+        for (var i = 0; i < dialogs.length; i++) {
+            for (var j = 0; j < dialogs[i]._states.length; j++) {
+	    var state = dialogs[i]._states[j];
+                state._route = crossroads.addRoute(state.route);
+                state._route._state = state;
+            }
+        }
+    }
+}
+crossroads.ignoreState = true;
+Navigation.router = crossroadsRouter;</code></pre>
+            </p>
+            <p>
+                Left as an exercise how to change addRoutes so that the blank route is added last to avoid matching everything.
+                Set the custom router before configuring your Dialogs.
+            </p>
+        </div>
+    </div>
+    <script src="../highlight.pack.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>
