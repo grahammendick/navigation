@@ -22,6 +22,14 @@
                 <li><a href="configuring.html">Configuring</a></li>
                 <li class="active"><a href="changingstate.html">Changing State</a></li>
                 <li><a href="managinghistory.html">Managing History</a></li>
+                <li>
+                    Customising
+                    <ul>
+                        <li><a href="customising/routing.html">Routing</a></li>
+                        <li><a href="customising/history.html">History</a></li>
+                        <li><a href="customising/hyperlinks.html">Hyperlinks</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <div id="doc">
@@ -78,33 +86,6 @@
             <p>
                 Turning off breadcrumb trail tracking, turns off back navigation. To retun to the inbox, you'd have to navigate to the 'inbox' Dialog
                 instead. You'll see in <a href="changingdata.html">Changing Data</a>, that navigating back has advantages over navigating to the 'inbox' Dialog.
-            </p>
-            <h2>Hyperlinks</h2>
-            <p>
-                Without Hyperlinks, your single page application can't be fully SEO or user-friendy. You can generate Hrefs by calling the getNavigationLink
-                and getNavigationBackLink functions instead of navigate and navigateBack. Here's how to create a Hyperlink that navigates to the 'inbox' Dialog:
-                <pre><code class="javascript">var anchor = document.getElementById('id');
-// Get the link to navigate to the 'inbox' Dialog
-var navigationLink = Navigation.StateController.getNavigationLink('inbox');
-// Ask the history manager to turn the link into an Href 
-anchor.href = Navigation.settings.historyManager.getHref(navigationLink);
-</code></pre>
-            </p>
-            <p>
-                To prevent the Hyperlink going back to the server, you must intercept it's click event and navigate on the client:
-                <pre><code class="javascript">anchor.addEventListener('click', function(e){
-    if (!e.ctrlKey && !e.shiftKey) {
-        e.preventDefault();
-        // Ask the history manager to turn the Href back into a link
-        var navigationLink = Navigation.settings.historyManager.getUrl(anchor);
-        // Navigate to the 'inbox' Dialog
-        Navigation.StateController.navigateLink(navigationLink);
-    }
-});</code></pre>
-            </p>
-            <p>
-                There are Navigation plugins for <a href="plugin/angular.html">Angular</a>, <a href="plugin/knockout.html">Knockout</a> and <a href="plugin/react.html">React</a>
-                that take care of this work for you, letting you build hyperlinks in that library's binding syntax.
             </p>
         </div>
     </div>
