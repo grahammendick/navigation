@@ -109,7 +109,7 @@ var inboxDialog = {
             encodedData[key] = encodeURIComponent(data[key]);
         // Ask crossroads to build the route
         var route = state._route.interpolate(encodedData);
-        var routeData = this.getData(route);
+        var routeData = this.getData(route).data;
         return { route: route, data: routeData };
     },
     // Add the configured routes to the underlying router
