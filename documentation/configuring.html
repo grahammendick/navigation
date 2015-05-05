@@ -89,7 +89,7 @@ var inboxDialog = {
                 sounds odd at first, but makes sense when you realise that all the logic sits in the State machine layer above the router.
             </p>
             <p>
-                For example, Navigation doesn't support catch-all parameters but the <a href="https://millermedeiros.github.io/crossroads.js/">Crossroads router</a>
+                For example, Navigation doesn't support catch-all parameters but the <a href="http://millermedeiros.github.io/crossroads.js/">Crossroads router</a>
                 does. If you plumb in Crossroads, you can define a route foo/{params*} that matches both 'foo/bar' and 'foo/bar/foo':
                 <pre><code class="javascript">Navigation.settings.router = {
     // Return the state and data for the passed in route
