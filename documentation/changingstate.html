@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>Changing State</title>
+    <link href="../github.css" rel="stylesheet" />
+    <link href="documentation.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div id="banner">
+            <a id="home" href="../index.html">Navigation</a>
+            <a href="../tutorial/configuringstates.html">Tutorial</a>
+            <a href="../example/angular/navigation.html">Examples</a>
+            <a href="../download/index.html">Download</a>
+            <a class="active" href="historymanagement.html">Documentation</a>
+            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="nav">
+            <h3></h3>
+            <ul>
+                <li><a href="configuring.html">Configuring</a></li>
+                <li class="active"><a href="configuring.html">Changing State</a></li>
+                <li><a href="managinghistory.html">Managing History</a></li>
+            </ul>
+        </div>
+        <div id="doc">
+            <h1>Changing State</h1>
+            <p>
+                Navigation is a State machine. Instead of changing routes, you change States. One way to change State is by navigating to
+                a Dialog. This sets the current State to the Dialog's 'initial' State.
+            </p>
+            <p>
+                Returning to the email example from the <a href="configuring.html">Configuring</a> section, the 'inbox' Dialog looks like:
+                <pre><code class="javascript">var inboxDialog = {
+    key: 'inbox', initial: 'listing', states: [
+        { key: 'listing', route: '', transitions: [
+            { key: 'select', to: 'details' }
+        ]},
+        { key: 'details', route: 'mail/{id}' }
+    ]
+}</code></pre>
+            </p>
+            <p>
+                You can set the current State to the 'listing' State by navigating to the 'inbox' Dialog. The string you pass to the navigate
+                function must match the Dialog's key:
+                <pre><code class="javascript">Navigation.StateController.navigate('inbox');</code></pre>
+            </p>
+            <p>
+                Another way to change State is by navigating along a child Transition of the current State. This sets the current State to the
+                Transition's 'to' State. Assuming the current State is the 'listing' State, you can navigate along its child Transition to set
+                the current State to the 'details' State. The string you pass to the navigate function must match the Transition's key:
+                <pre><code class="javascript">Navigation.StateController.navigate('select');</code></pre>
+            </p>
+            <h2>Back Navigation</h2>
+            <p>
+                Navigating back is another way to change State. Navigation keeps track of States as they're visited, building a dynamic breadcrumb
+                trail. You can navigate back any distance along this trail. In the email example, to return to the inbox after having read an email
+                you'd navigate back 1 State:
+                <pre><code class="javascript">Navigation.StateController.navigateBack(1);</code></pre>
+            </p>
+            <p>
+                The breadcrumb trail is stored in the Url. This means back navigation works even when returning to a bookmarked url or using the
+                browser back button. To keep the breadcrumb trail length in check, it's started afresh each time you navigate to a Dialog.
+            </p>
+            <p>
+                If you're using <a href="managinghistory.html">HTML5 history</a>, you might not want the breadcrumb trail appearing in your pretty Urls.
+                You can turn it off by setting a State's 'trackCrumbTrail' to false:
+                <pre><code class="javascript">var inboxDialog = {
+    key: 'inbox', initial: 'listing', states: [
+        { key: 'listing', route: '', trackCrumbTrail: false, transitions: [
+            { key: 'select', to: 'details' }
+        ]},
+        { key: 'details', route: 'mail/{id}', trackCrumbTrail: false }
+    ]
+}</code></pre>
+            </p>
+            <p>
+                Turning off breadcrumb trail tracking, turns off back navigation. To retun to the inbox, you'd have to navigate to the 'inbox' Dialog
+                instead. You'll see in <a href="changingdata.html">Changing Data</a>, that navigating back has advantages over navigating to the 'inbox' Dialog.
+            </p>
+            <h2>Hyperlinks</h2>
+            <p>
+                Without Hyperlinks, your single page application can't be fully SEO or user-friendy. You can generate Hrefs by calling the getNavigationLink
+                and getNavigationBackLink functions instead of navigate and navigateBack. Here's how to create a Hyperlink that navigates to the 'inbox' Dialog:
+                <pre><code class="javascript">var anchor = document.getElementById('id');
+// Get the link to navigate to the 'inbox' Dialog
+var navigationLink = Navigation.StateController.getNavigationLink('inbox');
+// Ask the history manager to turn the link into an Href 
+anchor.href = Navigation.settings.historyManager.getHref(navigationLink);
+</code></pre>
+            </p>
+            <p>
+                To prevent the Hyperlink going back to the server, you must intercept it's click event and navigate on the client:
+                <pre><code class="javascript">anchor.addEventListener('click', function(e){
+    if (!e.ctrlKey && !e.shiftKey) {
+        e.preventDefault();
+        // Ask the history manager to turn the Href back into a link
+        var navigationLink = Navigation.settings.historyManager.getUrl(anchor);
+        // Navigate to the 'inbox' Dialog
+        Navigation.StateController.navigateLink(navigationLink);
+    }
+});</code></pre>
+            </p>
+            <p>
+                There are Navigation plugins for <a href="plugin/angular.html">Angular</a>, <a href="plugin/knockout.html">Knockout</a> and <a href="plugin/react.html">React</a>
+                that take care of this work for you, letting you build hyperlinks in that library's binding syntax.
+            </p>
+        </div>
+    </div>
+    <script src="../highlight.pack.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>
