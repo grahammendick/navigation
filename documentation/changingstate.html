@@ -67,18 +67,23 @@ Navigation.StateController.navigate('select');</code></pre>
             </p>
             <p>
                 You can only navigate along a child Transition of the current State. If the user was composing a new mail, they wouldn't be able to
-                navigate along the 'select' Transition. Their only option would be to return to the inbox by navigation to the 'inbox' Dialog.
+                navigate along the 'select' Transition. Their only option would be to return to the inbox by navigating to the 'inbox' Dialog.
             </p>
             <h2>Back Navigation</h2>
             <p>
-                Navigating back is another way to change State. Navigation keeps track of States as they're visited, building a dynamic breadcrumb
-                trail. You can navigate back any distance along this trail. In the email example, to return to the inbox after having read an email
-                you'd navigate back 1 State:
+                A breadcrumb trail is a navigation aid that allows a user to return to any view they visited en route to the current view. By keeping
+                track of visited States as you navigate along Transitions, Navigation builds a dynamic breadcrumb trail. Navigating back a distance
+                along this trail is another way of changing State.
+            </p>
+            <p>
+                When the user selects a mail from their inbox, they navigate along the 'select' Transition, building a breadcrumb trail of length 1.
+                To return to the 'listing' State you can navigate back 1 State.
                 <pre><code class="javascript">Navigation.StateController.navigateBack(1);</code></pre>
             </p>
             <p>
-                The breadcrumb trail is stored in the Url. This means back navigation works even when returning to a bookmarked url or using the
-                browser back button. To keep the breadcrumb trail length in check, it's started afresh each time you navigate to a Dialog.
+                If a user bookmarks their open mail and comes back another day to read it in full, you'd still be able to navigate back to the inbox.
+                That's because the breadcrumb trail is stored in the Url. The Url length is kept in check because the breadcrumb trail is cleared out
+                each time you navigate to a Dialog.
             </p>
             <p>
                 If you're using <a href="managinghistory.html">HTML5 history</a>, you might not want the breadcrumb trail appearing in your pretty Urls.
