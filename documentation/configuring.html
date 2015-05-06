@@ -42,7 +42,7 @@
             </dl>
             <p>
                 For example, in an email application, you need a State that lists your emails and one that shows a mail's details. You need a
-                Transition to navigate from the list to the details. An 'inbox' Dialog that groups these two States would look like:
+                Transition to navigate from the first to the second. An 'inbox' Dialog that groups these two States would look like:
             <pre><code class="javascript">// inbox Dialog has two child States
 // listing State has a child Transition to the details State
 var inboxDialog = {
@@ -56,7 +56,7 @@ var inboxDialog = {
             </p>
             <p>
                 You also need a State for composing new emails. Because it's not related to your inbox activities, it would to go inside a new Dialog.
-                Your list of Dialogs is then passed to Navigation:
+                Your complete list of Dialogs is passed to Navigation:
                 <pre><code class="javascript">Navigation.StateInfoConfig.build([ inboxDialog, composeDialog ]);</code></pre>
                 <em>Your Dialogs and Transitions will come into play when <a href="changingstate.html">Changing State</a>.</em>
             </p>
