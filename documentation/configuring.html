@@ -52,11 +52,17 @@ var inboxDialog = {
         ]},
         { key: 'details' }
     ]
-}</code></pre>
+};</code></pre>
             </p>
             <p>
                 You also need a State for composing new emails. Because it's not related to your inbox activities, it would to go inside a new Dialog.
-                Your complete list of Dialogs is passed to Navigation:
+                <pre><code class="javascript">var composeDialog = {
+    key: 'compose', initial: 'new', states: [
+        { key: 'new' }
+    ]
+};</code></pre>
+
+                Once complete, your list of Dialogs is passed to Navigation:
                 <pre><code class="javascript">Navigation.StateInfoConfig.build([ inboxDialog, composeDialog ]);</code></pre>
                 <em>Your Dialogs and Transitions will come into play when <a href="changingstate.html">Changing State</a>.</em>
             </p>
@@ -82,7 +88,7 @@ var inboxDialog = {
         ]},
         { key: 'details', route: 'mail/{id}' }
     ]
-}</code></pre>
+};</code></pre>
                 <em>Optional parameters are covered in more detail in <a href="changingdata.html">Changing Data</a>.</em>
             </p>
         </div>
