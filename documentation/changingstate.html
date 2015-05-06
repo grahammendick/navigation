@@ -28,11 +28,12 @@
         <div id="doc">
             <h1>Changing State</h1>
             <p>
-                Navigation is a State machine. Instead of changing routes, you change States. One way to change State is by navigating to
-                a Dialog. This sets the current State to the Dialog's 'initial' State.
+                A State is equivalent to a view in your application. Going to a different view is the same as changing the current State.
+                Typically, you change views in response to a user action, like selecting a menu option or clicking a button. Dialogs and
+                Transitions represent these user interactions and are used to navigate between States. 
             </p>
             <p>
-                Returning to the email example from the <a href="configuring.html">Configuring</a> section, the 'inbox' Dialog looks like:
+                It's time for a reminder of the <a href="configuring.html">email application configuration:</a> 
                 <pre><code class="javascript">var inboxDialog = {
     key: 'inbox', initial: 'listing', states: [
         { key: 'listing', route: '', transitions: [
@@ -40,18 +41,33 @@
         ]},
         { key: 'details', route: 'mail/{id}' }
     ]
-}</code></pre>
+};
+var composeDialog = {
+    key: 'compose', initial: 'new', states: [
+        { key: 'new', route: 'mail' }
+    ]
+};</code></pre>
             </p>
             <p>
-                You can set the current State to the 'listing' State by navigating to the 'inbox' Dialog. The string you pass to the navigate
-                function must match the Dialog's key:
-                <pre><code class="javascript">Navigation.StateController.navigate('inbox');</code></pre>
+                When a user's viewing their inbox, the current State's set to the 'listing' State of the 'inbox' Dialog. From there, the user
+                can choose to either compose a new mail or select a mail to view. Composing a mail corresponds to navigating to the 'compose'
+                Dialog; selecting a mail to view corresponds to navigating along the 'select' Transition.
             </p>
             <p>
-                Another way to change State is by navigating along a child Transition of the current State. This sets the current State to the
-                Transition's 'to' State. Assuming the current State is the 'listing' State, you can navigate along its child Transition to set
-                the current State to the 'details' State. The string you pass to the navigate function must match the Transition's key:
-                <pre><code class="javascript">Navigation.StateController.navigate('select');</code></pre>
+                You navigate to a Dialog by passing the key of that Dialog to the navigate function on the StateController. This sets the current
+                State to the one specified in that Dialog's 'initial' property.
+                <pre><code class="javascript">// Sets the current State to the 'new' State of the 'compose' Dialog
+Navigation.StateController.navigate('compose');</code></pre>
+            </p>
+            <p>
+                You navigate along a Transition by passing the key of that Transition to the navigate function on the StateController. This sets the
+                current State to the one specified in that Transition's 'to' property.
+                <pre><code class="javascript">// Sets the current State to the 'details' State of the 'inbox' Dialog
+Navigation.StateController.navigate('select');</code></pre>
+            </p>
+            <p>
+                You can only navigate along a child Transition of the current State. If the user was composing a new mail, they wouldn't be able to
+                navigate along the 'select' Transition. Their only option would be to return to the inbox by navigation to the 'inbox' Dialog.
             </p>
             <h2>Back Navigation</h2>
             <p>
