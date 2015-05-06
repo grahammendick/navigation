@@ -87,19 +87,16 @@ Navigation.StateController.navigate('select');</code></pre>
             </p>
             <p>
                 If you're using <a href="managinghistory.html">HTML5 history</a>, you might not want the breadcrumb trail appearing in your pretty Urls.
-                You can turn it off by setting a State's 'trackCrumbTrail' to false:
+                You can turn it off by setting a State's 'trackCrumbTrail' property to false. You can safely turn it off on the 'listing' State, but
+                turning it off on the 'details' State would stop back navigation working.
                 <pre><code class="javascript">var inboxDialog = {
     key: 'inbox', initial: 'listing', states: [
         { key: 'listing', route: '', trackCrumbTrail: false, transitions: [
             { key: 'select', to: 'details' }
         ]},
-        { key: 'details', route: 'mail/{id}', trackCrumbTrail: false }
+        { key: 'details', route: 'mail/{id}' }
     ]
 }</code></pre>
-            </p>
-            <p>
-                Turning off breadcrumb trail tracking, turns off back navigation. To retun to the inbox, you'd have to navigate to the 'inbox' Dialog
-                instead. You'll see in <a href="changingdata.html">Changing Data</a>, that navigating back has advantages over navigating to the 'inbox' Dialog.
             </p>
         </div>
     </div>
