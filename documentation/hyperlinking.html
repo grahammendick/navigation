@@ -28,30 +28,54 @@
         <div id="doc">
             <h1>Hyperlinking</h1>
             <p>
-                Without Hyperlinks, your single page application can't be fully SEO or user-friendy. You can generate Hrefs by calling the getNavigationLink
-                and getNavigationBackLink functions instead of navigate and navigateBack. Here's how to create a Hyperlink that navigates to the 'inbox' Dialog:
-                <pre><code class="javascript">var anchor = document.getElementById('id');
-// Get the link to navigate to the 'inbox' Dialog
-var navigationLink = Navigation.StateController.getNavigationLink('inbox');
-// Ask the history manager to turn the link into an Href 
-anchor.href = Navigation.settings.historyManager.getHref(navigationLink);
-</code></pre>
-            </p>
-            <p>
-                To prevent the Hyperlink going back to the server, you must intercept it's click event and navigate on the client:
-                <pre><code class="javascript">anchor.addEventListener('click', function(e){
+                Hyperlinks are important. Here's the basis of a good Hyperlink implementation in a Single Page Application:
+                <pre><code>// HTML
+&lt;a id="anchor" href="some/route" /&gt;
+
+// JavaScript
+anchor.addEventListener('click', function(e){
     if (!e.ctrlKey && !e.shiftKey) {
         e.preventDefault();
-        // Ask the history manager to turn the Href back into a link
-        var navigationLink = Navigation.settings.historyManager.getUrl(anchor);
-        // Navigate to the 'inbox' Dialog
-        Navigation.StateController.navigateLink(navigationLink);
+	// Navigate to 'some/route' client side
     }
 });</code></pre>
             </p>
             <p>
-                There are Navigation plugins for <a href="plugin/angular.html">Angular</a>, <a href="plugin/knockout.html">Knockout</a> and <a href="plugin/react.html">React</a>
-                that take care of this work for you, letting you build hyperlinks in that library's binding syntax.
+                The href attribute makes it act like a Hyperlink while the click listener prevents a trip to the server. If either one of these
+                ingredients is missing then your user experience will suffer.
+            </p>
+            <p>
+                There are Navigation plugins for <a href="pluggingin/angular.html">Angular</a>, <a href="pluggingin/knockout.html">Knockout</a> and 
+                <a href="pluggingin/react.html">React</a> that let you build winning Hyperlinks with one line of UI code. For example, here's how to
+                build a Hyperlink in React that navigates back 1 State along the breadcrumb trail:
+                <pre><code class="html">&lt;NavigationBackLink distance="1"&gt;Return&lt;/NavigationBackLink&gt;</code></pre>
+            </p>
+            <p>
+                If you're not using one of these UI frameworks or you're interested in how these plugins are built, then read on.
+            </p>
+            <p>
+                Each of the three navigating functions on the StateController has a counterpart, with matching parameters, which help to build Hyperlinks:
+                navigate/getNavigationLink, navigateBack/getNavigationBackLink and refresh/getRefreshLink. These counterpart functions return a link which
+                you can pass to the StateController's navigateLink function. For example, the following two code snippets are navigationally identical:
+                <pre><code class="javascript">Navigation.StateController.navigateBack(1);</code></pre>
+                <pre><code class="javascript">var link = Navigation.StateController.getNavigationBackLink(1);
+Navigation.StateController.navigateLink(link);</code></pre>
+            </p>
+            <p>
+                Before you can set this returned link as a Hyperlink's href attribute, it needs to be modified by the <a href="managinghistory.html">history manager</a>,
+                for example, the Hash history manager prepends a '#'. Here's what your winning Hyperlink code looks like without a Navigation plugin:
+                <pre><code class="javascript">// HTML
+var link = Navigation.StateController.getNavigationBackLink(1);
+anchor.href = Navigation.settings.historyManager.getHref(link);
+
+// JavaScript
+anchor.addEventListener('click', function(e){
+    if (!e.ctrlKey && !e.shiftKey) {
+        e.preventDefault();
+        var link = Navigation.settings.historyManager.getUrl(anchor);
+        Navigation.StateController.navigateLink(link);
+    }
+});</code></pre>
             </p>
         </div>
     </div>
