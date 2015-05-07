@@ -63,7 +63,7 @@ Navigation.StateController.navigateLink(link);</code></pre>
             </p>
             <p>
                 Before you can set this returned link as a Hyperlink's href attribute, it needs to be modified by the <a href="managinghistory.html">history manager</a>,
-                for example, the Hash history manager prepends a '#'. Here's what your winning Hyperlink code looks like without a Navigation plugin:
+                for example, the Hash history manager prepends a '#':
                 <pre><code class="javascript">// HTML
 var link = Navigation.StateController.getNavigationBackLink(1);
 anchor.href = Navigation.settings.historyManager.getHref(link);
