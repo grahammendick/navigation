@@ -39,7 +39,7 @@
         { key: 'listing', route: '', transitions: [
             { key: 'select', to: 'details' }
         ]},
-        { key: 'details', route: 'mail/{id?}' }
+        { key: 'details', route: 'mail' }
     ]
 };
 var composeDialog = {
@@ -94,7 +94,7 @@ Navigation.StateController.navigate('select');</code></pre>
         { key: 'listing', route: '', trackCrumbTrail: false, transitions: [
             { key: 'select', to: 'details' }
         ]},
-        { key: 'details', route: 'mail/{id?}' }
+        { key: 'details', route: 'mail' }
     ]
 }</code></pre>
             </p>
