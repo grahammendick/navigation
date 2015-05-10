@@ -45,7 +45,7 @@ var listing = inbox.states.listing;</code></pre>
                 To create a State Navigator, you assign a function to that State's navigated property. Whenever that State is navigated to, the function is
                 called along with any data passed during the navigation. Here's a State Navigator for the 'details' State that has the mail id passed in:
                 <pre><code class="javascript">var details = inbox.states.details;
-details.navigated = function(data){
+details.navigated = function(data) {
     var id = data.id;
     // Fetch and display the mail details
 }</code></pre>
@@ -55,7 +55,7 @@ details.navigated = function(data){
                 a back navigation or a refresh. For example, the following 'listing' State Navigator will be called after paging through the inbox (refresh)
                 and after returning from the mail details (back).
                 <pre><code class="javascript">var listing = inbox.states.listing;
-listing.navigated = function(data){
+listing.navigated = function(data) {
     var pageNumber = data.pageNumber;
     // Fetch and display a page of the inbox
 }</code></pre>
@@ -73,7 +73,7 @@ listing.navigated = function(data){
                 mail, the 'listing' State's dispose function is called first, followed by the 'details' State's navigated function. Paging through the inbox won't
                 trigger the dispose function because a refresh navigation doesn't change States.
                 <pre><code class="javascript">var listing = inbox.states.listing;
-listing.dispose = function(){
+listing.dispose = function() {
     // Hide the inbox
 }</code></pre>
                 <em>It's a State's navigated and dispose functions taken together that make up a State Navigator.</em>
