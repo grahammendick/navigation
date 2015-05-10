@@ -1,0 +1,87 @@
+<html>
+<head>
+    <title>Handling Navigation</title>
+    <link href="../github.css" rel="stylesheet" />
+    <link href="documentation.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div id="banner">
+            <a id="home" href="../index.html">Navigation</a>
+            <a href="../tutorial/configuringstates.html">Tutorial</a>
+            <a href="../example/angular/navigation.html">Examples</a>
+            <a href="../download/index.html">Download</a>
+            <a class="active" href="configuring.html">Documentation</a>
+            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="nav">
+            <h3></h3>
+            <ul>
+                <li><a href="configuring.html">Configuring</a></li>
+                <li><a href="changingstate.html">Changing State</a></li>
+                <li><a href="changingdata.html">Changing Data</a></li>
+                <li class="active"><a href="changingdata.html">Handling Navigation</a></li>
+                <li><a href="hyperlinking.html">Hyperlinking</a></li>
+                <li><a href="managinghistory.html">Managing History</a></li>
+            </ul>
+        </div>
+        <div id="doc">
+            <h1>Handling Navigation</h1>
+            <p>
+                After a navigation's happened, you need to take some action. In the email application example, when a user selects a mail from their inbox,
+                you need to fetch and display the mail's details.
+            </p>
+            <p>
+                To be notified after a navigation takes place, you need a State Navigator. This is a function assigned to a State that's called when that
+                State becomes current. Things would get messy if you had to create the State Navigator as part of the <a href="configuring.html">configuration</a>.
+                So, Navigation provides access to Dialogs and States post configuration, via the StateInfoConfig object. The keys from the configuration become the
+                property names, for example, here's how to access the 'inbox' Dialog and it's 'listing' State:
+                <pre><code class="javascript">var inbox = Navigation.StateInfoConfig.dialogs.inbox;
+var listing = inbox.states.listing;</code></pre>
+            </p>
+            <p>
+                To create a State Navigator, you assign a function to that State's navigated property. Whenever that State is navigated to, the function is
+                called along with any data passed during the navigation. Here's a State Navigator for the 'details' State that has the mail id passed in:
+                <pre><code class="javascript">var details = inbox.states.details;
+details.navigated = function(data){
+    var id = data.id;
+    // Fetch and display the mail details
+}</code></pre>
+            </p>
+            <p>
+                The State Navigator isn't aware of the type of navigation that triggered it. It could've been a navigation to a Dialog or along a Transition,
+                a back navigation or a refresh. For example, the following 'listing' State Navigator will be called after paging through the inbox (refresh)
+                and after returning from the mail details (back).
+                <pre><code class="javascript">var listing = inbox.states.listing;
+listing.navigated = function(data){
+    var pageNumber = data.pageNumber;
+    // Fetch and display a page of the inbox
+}</code></pre>
+            </p>
+            <p>
+                If you're using Navigation client side, once your State Navigators are created, you should call <code>Navigation.start()</code>. This executes
+                an initial navigation to match the current State to the browser Url.
+            </p>
+            <p>
+                As well as showing the new view after a navigation, you also need to hide the old one. When a user selects a mail, you need to hide the inbox.
+                The navigated function assigned to the 'details' State isn't the right place for this logic, because it shouldn't know anything about the inbox view.
+            </p>
+            <p>
+                You can assign a function to the dispose property of a State that gets called whenever that State is navigated away from. When a user selects a
+                mail, the 'listing' State's dispose function is called first, followed by the 'details' State's navigated function. Paging through the inbox won't
+                trigger the dispose function because a refresh navigation doesn't change States.
+                <pre><code class="javascript">var listing = inbox.states.listing;
+listing.dispose = function(){
+    // Hide the inbox
+}</code></pre>
+            </p>
+        </div>
+    </div>
+    <script src="../highlight.pack.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>
