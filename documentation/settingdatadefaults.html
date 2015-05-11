@@ -35,7 +35,7 @@
                 ball rolling by calling <code>Navigation.Start()</code>. This executes an initial navigation to match the current State to the browser Url.
                 On first load, the browser Url will be the root Url, which will trigger the 'listing' State Navigator passing an undefined pageNumber:
                 <pre><code class="javascript">listing.navigated = function(data) {
-    // On first load, the pageNumber's undefined
+    // The pageNumber can be undefined
     var pageNumber = data.pageNumber;
 }</code></pre>
             </p>
