@@ -61,6 +61,8 @@ listing.navigated = function(data) {
 }</code></pre>
             </p>
             <p>
+                Once your State Navigators are created, you should call <code>Navigation.start()</code>. This executes an initial navigation to match the current
+                State to the browser Url. If you're using Navigation server side, the Url should be passed in, <code>Navigation.start(url)</code>.
             </p>
             <p>
                 As well as showing the new view after a navigation, you also need to hide the old one. When a user selects a mail, you need to hide the inbox.
