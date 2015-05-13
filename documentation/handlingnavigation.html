@@ -76,7 +76,7 @@ listing.navigated = function(data) {
             </p>
             <p>
                 As well as showing the new view after a navigation, you also need to hide the old one. When a user selects a mail, you need to hide the inbox.
-                The navigated function assigned to the 'details' State isn't the right place for this logic, because it shouldn't know anything about the inbox view.
+                The State Navigator assigned to the 'details' State isn't the right place for this logic, because it shouldn't know anything about the inbox view.
             </p>
             <p>
                 You can assign a function to the dispose property of a State that gets called whenever that State is navigated away from. When a user selects a
@@ -86,7 +86,7 @@ listing.navigated = function(data) {
 listing.dispose = function() {
     // Hide the inbox
 }</code></pre>
-                <em>It's a State's navigated and dispose functions taken together that make up a State Navigator.</em>
+                <em>It is a State's navigated and dispose functions taken together that make up a State Navigator.</em>
             </p>
         </div>
     </div>

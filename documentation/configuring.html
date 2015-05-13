@@ -56,8 +56,8 @@
                 For example, in an email application, you need a State that lists your emails and one that shows a mail's details. In order to
                 select a mail from the list, you need a Transition that navigates from the first State to the second. An 'inbox' Dialog that
                 groups these two States would look like:
-            <pre><code class="javascript">// inbox Dialog has two child States
-// listing State has a child Transition to the details State
+            <pre><code class="javascript">// 'inbox' Dialog has two child States
+// 'listing' State has a child Transition to the 'details' State
 var inboxDialog = {
     key: 'inbox', initial: 'listing', states: [
         { key: 'listing', transitions: [
@@ -68,7 +68,7 @@ var inboxDialog = {
 };</code></pre>
             </p>
             <p>
-                You also need a State for composing new emails. Because it's not related to your inbox activities, it would to go inside a new Dialog.
+                You also need a State for composing new emails. Because it's not related to your inbox activities, it would go inside a new Dialog.
                 <pre><code class="javascript">var composeDialog = {
     key: 'compose', initial: 'new', states: [
         { key: 'new' }

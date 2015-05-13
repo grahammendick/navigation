@@ -62,7 +62,7 @@ Navigation.StateController.refresh(data);</code></pre>
                 populate the current sort order for you. You call the includeCurrentData function on the StateContext object, passing your new data
                 together with the keys of the current data that you want to keep. Here's the same navigation to the second page of the sorted inbox,
                 this time circumventing the sorting component:
-                <pre><code class="javascript">// Includes the pageNumber and current sort order
+                <pre><code class="javascript">// Includes the new pageNumber and current sort order
 var data = Navigation.StateContext.includeCurrentData({ pageNumber: 2 }, ['sort']);
 Navigation.StateController.refresh(data);</code></pre>
             </p>
@@ -74,9 +74,9 @@ Navigation.StateController.refresh(data);</code></pre>
             </p>
             <p>
                 But, listing the current data keys is overkill when the intention of the paging navigation is to retain all the current data except the
-                page number. If you just pass the new data to includeCurrentData, omitting the second parameter, then it includes all the current data by
+                page number. If you pass just the new data to includeCurrentData, omitting the second parameter, then it includes all the current data by
                 default. Here's the same navigation to the second page of the sorted and filtered inbox:
-                <pre><code class="javascript">// Includes the pageNumber, current sort order and current filter
+                <pre><code class="javascript">// Includes the new pageNumber, current sort order and current filter
 var data = Navigation.StateContext.includeCurrentData({ pageNumber: 2 });
 Navigation.StateController.refresh(data);</code></pre>
             </p>
