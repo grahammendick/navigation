@@ -1,0 +1,96 @@
+<html>
+<head>
+    <title>Navigation Knockout</title>
+    <link href="../../github.css" rel="stylesheet" />
+    <link href="../documentation.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div id="banner">
+            <a id="home" href="../../index.html">Navigation</a>
+            <a href="../../tutorial/configuringstates.html">Tutorial</a>
+            <a href="../../example/angular/navigation.html">Examples</a>
+            <a href="../../download/index.html">Download</a>
+            <a class="active" href="../configuring.html">Documentation</a>
+            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="nav">
+            <h3></h3>
+            <ul>
+                <li><a href="../configuring.html">Configuring</a></li>
+                <li><a href="../changingstate.html">Changing State</a></li>
+                <li><a href="../changingdata.html">Changing Data</a></li>
+                <li><a href="../rememberingdata.html">Remembering Data</a></li>
+                <li><a href="../handlingnavigation.html">Handling Navigation</a></li>
+                <li><a href="../settingdatadefaults.html">Setting Data Defaults</a></li>
+                <li><a href="../hyperlinking.html">Hyperlinking</a></li>
+                <li>Working With:
+                    <ul>
+                        <li class="active"><a href="workingwith/knockout.html">Knockout</a></li>
+                    </ul>
+                </li>
+                <li><a href="../managinghistory.html">Managing History</a></li>
+            </ul>
+        </div>
+        <div id="doc">
+            <h1>Navigation Knockout</h1>
+            <p>
+                Navigation Knockout is a plugin that lets you build Hyperlinks using Knockout's binding syntax. What follows is a series of code snippets
+                taking you through the Knockout required for the different types of navigation. <strong>Each code snippet begins with a comment to remind
+                you of the JavaScript for the navigation, followed by the equivalent Hyperlink navigation written in Knockout.</strong>
+            </p>
+            <h2>Navigation to a Dialog</h2>
+            <p>
+                <pre><code class="html">&lt;!-- Navigation.StateController.navigate('inbox'); --&gt;
+&lt;a data-bind="navigationLink: 'inbox'"&gt;&lt;/a&gt;</code></pre>
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- Navigation.StateController.navigate('inbox', { pageNumber: 2 }); --&gt;
+&lt;a data-bind="navigationLink: 'inbox', toData: { pageNumber: 2 }"&gt;&lt;/a&gt;</code></pre>
+            </p>
+            <h2>Navigation along a Transition</h2>
+            <p>
+                <pre><code class="html">&lt;!-- Navigation.StateController.navigate('select'); --&gt;
+&lt;a data-bind="navigationLink: 'select'"&gt;&lt;/a&gt;</code></pre>
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- Navigation.StateController.navigate('select', { id: 10 }); --&gt;
+&lt;a data-bind="navigationLink: 'select', toData: { id: 10 }"&gt;&lt;/a&gt;</code></pre>
+            </p>
+            <h2>Back Navigation</h2>
+            <p>
+                <pre><code class="html">&lt;!-- Navigation.StateController.navigateBack(1); --&gt;
+&lt;a data-bind="navigationBackLink: 1"&gt;&lt;/a&gt;</code></pre>
+            </p>
+            <h2>Refresh Navigation</h2>
+            <p>
+                <pre><code class="html">&lt;!-- Navigation.StateController.refresh({ pageNumber: 2 }); --&gt;
+&lt;a data-bind="refreshLink: { pageNumber: 2 }"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- 
+var data = Navigation.StateContext.includeCurrentData({ pageNumber: 2 }, ['sort','filter']);
+Navigation.StateController.refresh(data); 
+--&gt;
+&lt;a data-bind="refreshLink: { pageNumber: 2 }, currentDataKeys: 'sort,filter'"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- 
+var data = Navigation.StateContext.includeCurrentData({ pageNumber: 2 });
+Navigation.StateController.refresh(data); 
+--&gt;
+&lt;a data-bind="refreshLink: { pageNumber: 2 }, includeCurrentData: true"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
+        </div>
+    </div>
+    <script src="../../highlight.pack.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>

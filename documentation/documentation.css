@@ -61,6 +61,9 @@ ul{
 	margin:0;
 	border-radius:10px;
 }
+ul ul{
+	padding-left:25px;
+}
 ul li{
 	padding:5px 0 5px 10px;
 }
