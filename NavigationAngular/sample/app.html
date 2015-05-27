@@ -24,8 +24,8 @@
                         <th>Date of Birth</th>
                     </tr>
                 </thead>
-                <tbody ng-repeat="person in people">
-                    <tr>
+                <tbody>
+                    <tr ng-repeat="person in people">
                         <td><a navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
                         <td>{{person.dateOfBirth}}</td>
                     </tr>
