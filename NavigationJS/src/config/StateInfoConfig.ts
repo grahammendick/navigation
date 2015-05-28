@@ -1,14 +1,16 @@
 ﻿import Dialog = require('./Dialog');
+import IDialog = require('./IDialog');
 import CrumbTrailManager = require('../CrumbTrailManager');
 import ReturnDataManager = require('../ReturnDataManager');
 import settings = require('../settings');
 import State = require('./State');
+import IState = require('./IState');
 import Transition = require('./Transition');
+import ITransition = require('./ITransition');
 
 class StateInfoConfig {
     static _dialogs: Array<Dialog> = [];
     static dialogs: { [index: string]: Dialog } = {};
-    static build(dialogs: Array<any>) {
         this._dialogs = [];
         this.dialogs = {};
         for (var i = 0; i < dialogs.length; i++) {
