@@ -25,8 +25,18 @@ declare module Navigation {
         key: string;
     }
     
+    /**
+     * Configures dialog information. Represents a logical grouping of child State elements.
+     * Navigating across different dialogs will initialise the crumb trail
+     */
     class Dialog implements IDialog<State, { [index: string]: State; }> {
+        /**
+         * Gets the State children by index
+         */
         _states: State[];
+        /**
+         * Gets the State children
+         */
         states: {
             [index: string]: State;
         };
