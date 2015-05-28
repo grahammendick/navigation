@@ -11,6 +11,7 @@ import ITransition = require('./ITransition');
 class StateInfoConfig {
     static _dialogs: Array<Dialog> = [];
     static dialogs: { [index: string]: Dialog } = {};
+    static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
         this._dialogs = [];
         this.dialogs = {};
         for (var i = 0; i < dialogs.length; i++) {
@@ -38,7 +39,7 @@ class StateInfoConfig {
         settings.router.addRoutes(this._dialogs);
     }
 
-    private static processStates(dialog: Dialog, dialogObject: any) {
+    private static processStates(dialog: Dialog, dialogObject: IDialog<string, IState<ITransition<string>[]>[]>) {
         for (var i = 0; i < dialogObject.states.length; i++) {
             var stateObject = dialogObject.states[i];
             var state = new State();
@@ -63,7 +64,7 @@ class StateInfoConfig {
         }
     }
 
-    private static processTransitions(dialog: Dialog, dialogObject: any) {
+    private static processTransitions(dialog: Dialog, dialogObject: IDialog<string, IState<ITransition<string>[]>[]>) {
         for (var i = 0; i < dialogObject.states.length; i++) {
             if (dialogObject.states[i].transitions) {
                 for (var j = 0; j < dialogObject.states[i].transitions.length; j++) {
