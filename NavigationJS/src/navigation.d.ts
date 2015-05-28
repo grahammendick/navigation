@@ -3,7 +3,29 @@
 } 
 
 declare module Navigation {
-    class Dialog {
+    interface IDialog<TState, TStates> {
+        states: TStates;
+        initial: TState;
+        key: string;
+        title?: string;
+    }
+
+    interface IState<TTransitions> {
+        transitions?: TTransitions;
+        key: string;
+        defaults?: any;
+        defaultTypes?: any;
+        title?: string;
+        route: string;
+        trackCrumbTrail?: boolean;
+    }
+
+    interface ITransition<TState> {
+        to: TState;
+        key: string;
+    }
+    
+    class Dialog implements IDialog<State, { [index: string]: State; }> {
         _states: State[];
         states: {
             [index: string]: State;
@@ -14,7 +36,7 @@ declare module Navigation {
         title: string;
     }
 
-    class State {
+    class State implements IState<{ [index: string]: Transition; }> {
         _transitions: Transition[];
         transitions: {
             [index: string]: Transition;
@@ -35,7 +57,7 @@ declare module Navigation {
         navigating: (data: any, url: string, navigate: () => void) => void;
     }
 
-    class Transition {
+    class Transition implements ITransition<State> {
         to: State;
         parent: State;
         index: number;
@@ -47,7 +69,7 @@ declare module Navigation {
         static dialogs: {
             [index: string]: Dialog;
         };
-        static build(dialogs: any[]): void;
+        static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
     }
 
     interface IHistoryManager {
