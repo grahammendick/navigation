@@ -55,6 +55,9 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\config\IDialog.ts" />
+    <TypeScriptCompile Include="src\config\IState.ts" />
+    <TypeScriptCompile Include="src\config\ITransition.ts" />
     <TypeScriptCompile Include="src\history\HistoryNavigator.ts" />
     <TypeScriptCompile Include="src\navigation.d.ts" />
     <TypeScriptCompile Include="src\ArrayConverter.ts" />

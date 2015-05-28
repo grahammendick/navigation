@@ -213,7 +213,7 @@ describe('StateInfoTest', function () {
 
     it('MissingDialogKeyTest', function () {
         assert.throws(() => {
-            Navigation.StateInfoConfig.build([
+            Navigation.StateInfoConfig.build(<any> [
             { initial: 's0', title: 'd0', states: [
                 { key: 's0', route: 'd0s0', title: 's0'}]}
             ]);
@@ -231,7 +231,7 @@ describe('StateInfoTest', function () {
 
     it('MissingDialogInitialTest', function () {
         assert.throws(() => {
-            Navigation.StateInfoConfig.build([
+            Navigation.StateInfoConfig.build(<any> [
             { key: 'd0', title: 'd0', states: [
                 { key: 's0', route: 'd0s0', title: 's0'}]}
             ]);
@@ -249,7 +249,7 @@ describe('StateInfoTest', function () {
 
     it('MissingStateKeyTest', function () {
         assert.throws(() => {
-            Navigation.StateInfoConfig.build([
+            Navigation.StateInfoConfig.build(<any> [
             { key: 'd0', initial: 's0', title: 'd0', states: [
                 { key: 's0', route: 'd0s0', title: 's0'},
                 { route: 'd0s1', title: 's1' }]}
@@ -269,7 +269,7 @@ describe('StateInfoTest', function () {
 
     it('MissingTransitionKeyTest', function () {
         assert.throws(() => {
-            Navigation.StateInfoConfig.build([
+            Navigation.StateInfoConfig.build(<any> [
             { key: 'd0', initial: 's0', title: 'd0', states: [
                 { key: 's0', route: 'd0s0', title: 's0', transitions: [
                     { to: 's1' }]},
@@ -291,7 +291,7 @@ describe('StateInfoTest', function () {
 
     it('MissingTransitionToTest', function () {
         assert.throws(() => {
-            Navigation.StateInfoConfig.build([
+            Navigation.StateInfoConfig.build(<any> [
             { key: 'd0', initial: 's0', title: 'd0', states: [
                 { key: 's0', route: 'd0s0', title: 's0', transitions: [
                     { key: 't0' }]},
