@@ -263,22 +263,53 @@ declare module Navigation {
          */
         getCurrentUrl(): string;
         /**
-         * Gets an href from the url
+         * Gets an Href from the url
          */
         getHref(url: string): string;
         /**
-         * Gets a url from the anchor 
+         * Gets a Url from the anchor 
          */
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
+    /**
+     * Manages history using the browser Url's hash. If used in a browser
+     * without the hashchange event or outside of a browser environment, then
+     * history is disabled
+     */
     class HashHistoryManager implements IHistoryManager {
+        /**
+         * Gets or sets a value indicating whether to disable browser history.
+         * Set to true if used in a browser without the hashchange event or 
+         * outside of a browser environment
+         */
         disabled: boolean;
+        /**
+         * Gets or sets a value indicating whether to use '#' in place of '?'
+         * in Urls. Set to true for Internet explorer 6 and 7 support
+         */
         replaceQueryIdentifier: boolean;
+        /**
+         * Registers a listener for the hashchange event
+         */
         init(): void;
+        /**
+         * Sets the browser Url's hash to the url
+         * @param state The State navigated to
+         * @param url The current url 
+         */
         addHistory(state: State, url: string): void;
+        /**
+         * Gets the current location
+         */
         getCurrentUrl(): string;
+        /**
+         * Gets an Href from the url
+         */
         getHref(url: string): string;
+        /**
+         * Gets a Url from the anchor 
+         */
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
