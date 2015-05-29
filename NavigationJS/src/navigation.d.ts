@@ -302,13 +302,39 @@ declare module Navigation {
         truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
+    /**
+     * Represents one piece of the crumb trail and holds the information need
+     * to return to and recreate the State as previously visited. In a single
+     * crumb trail no two crumbs can have the same State but all must have the
+     * same Dialog
+     */
     class Crumb {
+        /**
+         * Gets the Context Data held at the time of navigating away from this
+         * State
+         */
         data: any;
+        /**
+         * Gets the configuration information associated with this navigation
+         */
         state: State;
+        /**
+         * Gets a value indicating whether the Crumb is the last in the crumb
+         * trail
+         */
         last: boolean;
+        /**
+         * Gets the State Title
+         */
         title: string;
-        navigationLink: any;
-        string: any;
+        /**
+         * Gets the hyperlink navigation to return to the State and pass the
+         * associated Data
+         */
+        navigationLink: string;
+        /**
+         * Initializes a new instance of the Crumb class
+         */
         constructor(data: any, state: State, link: string, last: boolean);
     }
 
