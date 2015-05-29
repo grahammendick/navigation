@@ -366,15 +366,56 @@ declare module Navigation {
         applicationPath: string;
     }
 
+    /**
+     * Provides static properties for accessing context sensitive navigation
+     * information. Holds the current State and NavigationData. Also holds the
+     * previous State (this is not the same as the previous Crumb)
+     */
     class StateContext {
+        /**
+         * Gets the State navigated away from to reach the current State
+         */
         static previousState: State;
+        /**
+         * Gets the parent of the PreviousState property
+         */
         static previousDialog: Dialog;
+        /**
+         * Gets the current State
+         */
         static state: State;
+        /**
+         * Gets the parent of the State property
+         */
         static dialog: Dialog;
+        /**
+         * Gets the NavigationData for the current State. It can be accessed.
+         * Will become the data stored in a Crumb when part of a crumb trail
+         */
         static data: any;
+        /**
+         * Gets the current Url
+         */
         static url: string;
-        static includeCurrentData(data: any, keys?: string[]): any;
-        static clear(key?: string): void;
+        /** 
+         * Combines the data with all the current NavigationData
+         * @param The data to add to the current NavigationData
+         */
+        static includeCurrentData(data: any): any;
+        /** 
+         * Combines the data with a subset of the current NavigationData
+         * @param The data to add to the current NavigationData
+         */
+        static includeCurrentData(data: any, keys: string[]): any;
+        /**
+         * Removes all items from the NavigationData
+         */
+        static clear(): void;
+        /**
+         * Removes a single item from the NavigationData
+         * @param The key of the item to remove
+         */
+        static clear(key: string): void;
     }
 
     class StateController {
