@@ -742,16 +742,50 @@ declare module Navigation {
         addRoutes(dialogs: Dialog[]): void;
     }
 
+    /**
+     * Holds information about a route
+     */
     class Route {
+        /**
+         * Gets the path pattern of a route
+         */
         path: string;
+        /**
+         * Gets the default parameter values
+         */
         defaults: any;
-        params: {
-            name: string;
-            optional: boolean;
-        }[];
-        constructor(path: string, defaults?: any);
+        /**
+         * Gets the list of parameters
+         */
+        params: { name: string; optional: boolean; }[];
+        /**
+         * Initializes a new instance of the Route class
+         * @param path The route pattern 
+         */
+        constructor(path: string);
+        /**
+         * Initializes a new instance of the Route class
+         * @param path The route pattern 
+         * @param defaults The default parameter values 
+         */
+        constructor(path: string, defaults: any);
+        /**
+         * Gets the matching data for the path
+         * @param path The path to match
+         * @returns The matched data or null if there's no match
+         */
         match(path: string): any;
-        build(data?: any): string;
+        /**
+         * Gets the route populated with default values
+         * @returns The built route
+         */
+        build(): string;
+        /**
+         * Gets the route populated with data and default values
+         * @param The data for the route parameters
+         * @returns The built route
+         */
+        build(data: any): string;
     }
 
     /**
