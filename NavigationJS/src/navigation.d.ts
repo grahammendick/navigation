@@ -313,12 +313,39 @@ declare module Navigation {
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
+    /**
+     * Manages history using the HTML5 history api. If used in a browser
+     * without the HTML5 history api or outside of a browser environment, then
+     * history is disabled
+     */
     class HTML5HistoryManager implements IHistoryManager {
+        /**
+         * Gets or sets a value indicating whether to disable browser history.
+         * Set to true if used in a browser without the HTML5 history api or 
+         * outside of a browser environment
+         */
         disabled: boolean;
+        /**
+         * Registers a listener for the popstate event
+         */
         init(): void;
+        /**
+         * Sets the browser Url to the url using pushState
+         * @param state The State navigated to
+         * @param url The current url 
+         */
         addHistory(state: State, url: string): void;
+        /**
+         * Gets the current location
+         */
         getCurrentUrl(): string;
+        /**
+         * Gets an Href from the url
+         */
         getHref(url: string): string;
+        /**
+         * Gets a Url from the anchor 
+         */
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
