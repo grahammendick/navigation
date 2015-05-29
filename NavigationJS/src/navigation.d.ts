@@ -535,7 +535,15 @@ declare module Navigation {
          * @param url The current Url
          */
         static setStateContext(state: State, url: string): void;
+        /**
+         * Registers a navigate event listener
+         * @param handler The navigate event listener
+         */
         static onNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        /**
+         * Unregisters a navigate event listener
+         * @param handler The navigate event listener
+         */
         static offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
         /**
          * Navigates to a State. Depending on the action will either navigate
