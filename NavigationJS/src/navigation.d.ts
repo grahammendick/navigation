@@ -213,11 +213,25 @@ declare module Navigation {
         key: string;
     }
 
+    /**
+     * Provides static access to the Dialog, State and Transition configuration
+     */
     class StateInfoConfig {
+        /**
+         * Gets a collection of Dialog information, by index, with their child
+         * State information and grandchild Transition information
+         */
         static _dialogs: Dialog[];
+        /**
+         * Gets a collection of Dialog information with their child State
+         * information and grandchild Transition information
+         */
         static dialogs: {
             [index: string]: Dialog;
         };
+        /**
+         * Builds the Dialog, State and Transition configuration
+         */
         static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
     }
 
