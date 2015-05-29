@@ -719,20 +719,14 @@ declare module Navigation {
          * @param route The route to match
          * @returns The matched State and data
          */
-        getData(route: string): {
-            state: State;
-            data: any;
-        };
+        getData(route: string): { state: State; data: any; };
         /**
          * Gets the matching route and data for the state and data
          * @param The state to match
          * @param The data to match
          * @returns The matched route and data
          */
-        getRoute(state: State, data: any): {
-            route: string;
-            data: any;
-        };
+        getRoute(state: State, data: any): { route: string; data: any; };
         /**
          * Registers all route configuration information with the underlying
          * Navigation Router
