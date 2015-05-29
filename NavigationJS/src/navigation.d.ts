@@ -754,12 +754,29 @@ declare module Navigation {
         build(data?: any): string;
     }
 
+    /**
+     * The default Navigation router implementation
+     */
     class Router {
-        addRoute(path: string, defaults?: any): Route;
-        match(path: string): {
-            route: Route;
-            data: any;
-        };
+        /**
+         * Registers a route
+         * @param path The route path
+         * @returns The parsed Route
+         */
+        addRoute(path: string): Route;
+        /**
+         * Registers a route with default parameters
+         * @param path The route path
+         * @param defaults The route parameter defaults
+         * @returns The parsed Route
+         */
+        addRoute(path: string, defaults: any): Route;
+        /**
+         * Gets the matching route and data for the path
+         * @param route The path to match
+         * @returns The matched route and data
+         */
+        match(path: string): { route: Route; data: any; };
     }
 
     export var settings: NavigationSettings;
