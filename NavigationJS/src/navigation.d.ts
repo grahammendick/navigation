@@ -669,17 +669,35 @@ declare module Navigation {
         truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
+    /**
+     * Defines a contract a class must implement in order build and parse
+     * State routes
+     */
     interface IRouter {
-        getData(route: string): {
-            state: State;
-            data: any;
-        };
-        getRoute(state: State, data: any): {
-            route: string;
-            data: any;
-        };
+        /**
+         * Gets the matching State and data for the route
+         * @param route The route to match
+         * @returns The matched State and data
+         */
+        getData(route: string): { state: State; data: any; };
+        /**
+         * Gets the matching route and data for the state and data
+         * @param The state to match
+         * @param The data to match
+         * @returns The matched route and data
+         */
+        getRoute(state: State, data: any): { route: string; data: any; };
+        /**
+         * Gets or sets a value indicating whether the route matching supports
+         * default parameter values
+         */
         supportsDefaults: boolean;
-        addRoutes(dialogs: Dialog[]): any;
+        /**
+         * Registers all route configuration information
+         * @param dialogs Collection of Dialogs with their child State route
+         * information
+         */
+        addRoutes(dialogs: Dialog[]): void;
     }
 
     class StateRouter implements IRouter {
