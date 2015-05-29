@@ -67,8 +67,20 @@ declare module Navigation {
         trackCrumbTrail?: boolean;
     }
 
+    /**
+     * Configures transition information. A child of a State element it
+     * represents a possible navigation from its Parent to a sibling State
+     */
     interface ITransition<TState> {
+        /**
+         * Gets the state to navigate to if the Key is passed as an action
+         * parameter to the StateController
+         */
         to: TState;
+        /**
+         * Gets the key, unique within a Parent, which is passed as the action
+         * parameter to the StateController when navigating
+         */
         key: string;
     }
     
@@ -176,10 +188,28 @@ declare module Navigation {
         navigating: (data: any, url: string, navigate: () => void) => void;
     }
 
+    /**
+     * Configures transition information. A child of a State element it
+     * represents a possible navigation from its Parent to a sibling State
+     */
     class Transition implements ITransition<State> {
+        /**
+         * Gets the state to navigate to if the Key is passed as an action
+         * parameter to the StateController
+         */
         to: State;
+        /**
+         * Gets the parent State configuration item
+         */
         parent: State;
+        /**
+         * Gets the number of the transition within its Parent
+         */
         index: number;
+        /**
+         * Gets the key, unique within a Parent, which is passed as the action
+         * parameter to the StateController when navigating
+         */
         key: string;
     }
 
