@@ -807,7 +807,15 @@ declare module Navigation {
         match(path: string): { route: Route; data: any; };
     }
 
+    /**
+     * Gets the Navigation settings
+     */
     export var settings: NavigationSettings;
 
+    /**
+     * Initializes the history manager and navigates to the current location.
+     * If used outside of a browser environment, pass in the Url to navigate to
+     * @param url If used outside of a browser, the url to navigate to 
+     */
     export var start: (url?: string) => void;
 }
