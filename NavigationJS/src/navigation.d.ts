@@ -200,9 +200,8 @@ declare module Navigation {
          */
         navigated: (data: any) => void;
         /**
-         * Called on the new State before navigating to it. Allows the new
-         * State to preload assets before disposing of the current State. Call
-         * navigate after the assets have returned 
+         * Called on the new State before navigating to it. If the navigate
+         * function isn't called the new State won't be navigated to
          * @param data The new NavigationData
          * @param url The new target location
          * @param navigate The function to call to continue to navigate 
