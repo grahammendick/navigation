@@ -239,12 +239,36 @@ declare module Navigation {
         static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
     }
 
+    /**
+     * Defines a contract a class must implement in order to manage the browser
+     * Url
+     */
     interface IHistoryManager {
+        /**
+         * Gets or sets a value indicating whether to disable browser history
+         */
         disabled: boolean;
+        /**
+         * Registers browser history event listeners
+         */
         init(): any;
-        addHistory(state: State, url: string): any;
+        /**
+         * Adds browser history
+         * @param state The State navigated to
+         * @param url The current url 
+         */
+        addHistory(state: State, url: string): void;
+        /**
+         * Gets the current location
+         */
         getCurrentUrl(): string;
+        /**
+         * Gets an href from the url
+         */
         getHref(url: string): string;
+        /**
+         * Gets a url from the anchor 
+         */
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
