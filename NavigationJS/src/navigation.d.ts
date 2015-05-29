@@ -338,13 +338,31 @@ declare module Navigation {
         constructor(data: any, state: State, link: string, last: boolean);
     }
 
+    /**
+     * Provides access to the Navigation Settings configuration
+     */
     class NavigationSettings {
         router: IRouter;
         historyManager: IHistoryManager;
+        /**
+         * Gets or sets the key that identifies the StateId
+         */
         stateIdKey: string;
+        /**
+         * Gets or sets the key that identifies the PreviousStateId
+         */
         previousStateIdKey: string;
+        /**
+         * Gets or sets the key that identifies the ReturnData
+         */
         returnDataKey: string;
+        /**
+         * Gets or sets the key that identifies the CrumbTrail
+         */
         crumbTrailKey: string;
+        /**
+         * Gets or sets the application path
+         */
         applicationPath: string;
     }
 
