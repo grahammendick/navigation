@@ -552,10 +552,38 @@ declare module Navigation {
         static getNextState(action: string): State;
     }
 
+    /**
+     * Implementation of IStateHandler that builds and parses navigation links
+     */
     class StateHandler implements IStateHandler {
+        /**
+         * Gets a link that navigates to the state passing the data
+         * @param state The State to navigate to
+         * @param data The data to pass when navigating
+         * @returns The navigation link
+         */
         getNavigationLink(state: State, data: any): string;
+        /**
+         * Navigates to the url
+         * @param oldState
+         * @param state The State to navigate to
+         * @param url The target location
+         */
         navigateLink(oldState: State, state: State, url: string): void;
+        /**
+         * Gets the data parsed from the url
+         * @param state The State navigated to
+         * @param url The current url
+         * @returns The navigation data
+         */
         getNavigationData(state: State, url: string): any;
+        /**
+         * Truncates the crumb trail whenever a repeated or initial State is
+         * encountered
+         * @param The State navigated to
+         * @param The Crumb collection representing the crumb trail
+         * @returns Truncated crumb trail
+         */
         truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
