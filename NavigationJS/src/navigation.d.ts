@@ -1,4 +1,8 @@
-﻿declare module 'navigation' {
+﻿// Type definitions for Navigation 1.0
+// Project: http://grahammendick.github.io/navigation/
+// Definitions by: Graham Mendick <https://github.com/grahammendick>
+// Definitions: https://github.com/borisyankov/DefinitelyTyped
+declare module 'navigation' {
     export = Navigation;
 } 
 
