@@ -231,6 +231,8 @@ declare module Navigation {
         };
         /**
          * Builds the Dialog, State and Transition configuration
+         * @para dialogs A collection of Dialog information with their child
+         * State information and grandchild Transition information
          */
         static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
     }
@@ -263,10 +265,38 @@ declare module Navigation {
         getUrl(anchor: HTMLAnchorElement): string;
     }
 
+    /**
+     * Defines a contract a class must implement in order to build and parse
+     * navigation links
+     */
     interface IStateHandler {
+        /**
+         * Gets a link that navigates to the state passing the data
+         * @param state The State to navigate to
+         * @param data The data to pass when navigating
+         * @returns The navigation link
+         */
         getNavigationLink(state: State, data: any): string;
-        navigateLink(oldState: State, state: State, url: string): any;
+        /**
+         * Navigates to the url
+         * @param oldState
+         * @param state The State to navigate to
+         * @param url The target location
+         */
+        navigateLink(oldState: State, state: State, url: string): void;
+        /**
+         * Gets the data parsed from the url
+         * @param state The State navigated to
+         * @param url The current url
+         * @returns The navigation data
+         */
         getNavigationData(state: State, url: string): any;
+        /**
+         * Truncates the crumb trail
+         * @param The State navigated to
+         * @param The Crumb collection representing the crumb trail
+         * @returns Truncated crumb trail
+         */
         truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
