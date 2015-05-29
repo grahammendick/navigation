@@ -4,9 +4,9 @@
 
 declare module Navigation {
     /**
-     * Configures dialog information. Represents a logical grouping of child
-     * State elements. Navigating across different dialogs will initialise the
-     * crumb trail
+     * Defines a contract a class must implement in order to represent a
+     * logical grouping of child State elements. Navigating across different
+     * dialogs will initialise the crumb trail
      */
     interface IDialog<TState, TStates> {
         /**
@@ -30,8 +30,9 @@ declare module Navigation {
     }
 
     /**
-     * Configures state information. A child of a Dialog element, it 
-     * represents the endpoint of a navigation
+     * Defines a contract a class must implement in order to configure state 
+     * information. A child of a Dialog element, it represents the endpoint of
+     * a navigation
      */
     interface IState<TTransitions> {
         /**
@@ -68,8 +69,9 @@ declare module Navigation {
     }
 
     /**
-     * Configures transition information. A child of a State element it
-     * represents a possible navigation from its Parent to a sibling State
+     * Defines a contract a class must implement in order to configure 
+     * transition information. A child of a State element it represents a
+     * possible navigation from its Parent to a sibling State
      */
     interface ITransition<TState> {
         /**
