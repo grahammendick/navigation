@@ -400,11 +400,13 @@ declare module Navigation {
         /** 
          * Combines the data with all the current NavigationData
          * @param The data to add to the current NavigationData
+         * @returns The combined data
          */
         static includeCurrentData(data: any): any;
         /** 
          * Combines the data with a subset of the current NavigationData
          * @param The data to add to the current NavigationData
+         * @returns The combined data
          */
         static includeCurrentData(data: any, keys: string[]): any;
         /**
