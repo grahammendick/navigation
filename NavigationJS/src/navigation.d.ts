@@ -700,17 +700,45 @@ declare module Navigation {
         addRoutes(dialogs: Dialog[]): void;
     }
 
+    /**
+     * Implementation of IRouter that builds and parses State routes using the
+     * Navigation Router
+     */
     class StateRouter implements IRouter {
+        /**
+         * Gets the underlying Navigation Router 
+         */
         router: Router;
+        /**
+         * Gets true, indicating the underlying Navigation Router supports
+         * defaults
+         */
         supportsDefaults: boolean;
+        /**
+         * Gets the matching State and data for the route
+         * @param route The route to match
+         * @returns The matched State and data
+         */
         getData(route: string): {
             state: State;
             data: any;
         };
+        /**
+         * Gets the matching route and data for the state and data
+         * @param The state to match
+         * @param The data to match
+         * @returns The matched route and data
+         */
         getRoute(state: State, data: any): {
             route: string;
             data: any;
         };
+        /**
+         * Registers all route configuration information with the underlying
+         * Navigation Router
+         * @param dialogs Collection of Dialogs with their child State route
+         * information
+         */
         addRoutes(dialogs: Dialog[]): void;
     }
 
