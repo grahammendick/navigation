@@ -420,19 +420,135 @@ declare module Navigation {
         static clear(key: string): void;
     }
 
+    /**
+     * Manages all navigation. These can be forward using an action parameter;
+     * backward via a Crumb; or refreshing the current State
+     */
     class StateController {
+        /**
+         * Gets a Crumb collection representing the crumb trail, ordered oldest
+         * Crumb first
+         */
         static crumbs: Crumb[];
+        /**
+         * Sets the Context Data with the data returned from the current
+         * State's IStateHandler
+         * @param state The current State
+         * @param url The current Url
+         */
         static setStateContext(state: State, url: string): void;
         static onNavigate(handler: (oldState: State, state: State, data: any) => void): void;
         static offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
-        static navigate(action: string, toData?: any): void;
-        static getNavigationLink(action: string, toData?: any): string;
+        /**
+         * Navigates to a State. Depending on the action will either navigate
+         * to the 'to' State of a Transition or the 'initial' State of a
+         * Dialog. It passes no NavigationData
+         * @param action The key of a child Transition or the key of a Dialog
+         * @throws action does not match the key of a child Transition or the
+         * key of a Dialog; or there is NavigationData that cannot be converted
+         * to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        static navigate(action: string): void;
+        /**
+         * Navigates to a State. Depending on the action will either navigate
+         * to the 'to' State of a Transition or the 'initial' State of a
+         * Dialog
+         * @param action The key of a child Transition or the key of a Dialog
+         * @param toData The NavigationData to be passed to the next State and
+         * stored in the StateContext
+         * @throws action does not match the key of a child Transition or the
+         * key of a Dialog; or there is NavigationData that cannot be converted
+         * to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        static navigate(action: string, toData: any): void;
+        /**
+         * Gets a Url to navigate to a State. Depending on the action will
+         * either navigate to the 'to' State of a Transition or the 'initial'
+         * State of a Dialog. It passes no NavigationData
+         * @param action The key of a child Transition or the key of a Dialog
+         * @returns Url that will navigate to State specified in the action
+         * @throws action does not match the key of a child Transition or the
+         * key of a Dialog; or there is NavigationData that cannot be converted
+         * to a String
+         */
+        static getNavigationLink(action: string): string;
+        /**
+         * Gets a Url to navigate to a State. Depending on the action will
+         * either navigate to the 'to' State of a Transition or the 'initial'
+         * State of a Dialog
+         * @param action The key of a child Transition or the key of a Dialog
+         * @param toData The NavigationData to be passed to the next State and
+         * stored in the StateContext
+         * @returns Url that will navigate to State specified in the action
+         * @throws action does not match the key of a child Transition or the
+         * key of a Dialog; or there is NavigationData that cannot be converted
+         * to a String
+         */
+        static getNavigationLink(action: string, toData: any): string;
+        /**
+         * Determines if the distance specified is within the bounds of the
+         * crumb trail represented by the Crumbs collection
+         */
         static canNavigateBack(distance: number): boolean;
+        /**
+         * Navigates back to the Crumb contained in the crumb trail,
+         * represented by the Crumbs collection, as specified by the distance.
+         * In the crumb trail no two crumbs can have the same State but all
+         * must have the same Dialog
+         * @param distance Starting at 1, the number of Crumb steps to go back
+         * @throws canNavigateBack returns false for this distance
+         * @throws A mandatory route parameter has not been supplied a value
+         */
         static navigateBack(distance: number): void;
+        /**
+         * Gets a Url to navigate to a Crumb contained in the crumb trail, 
+         * represented by the Crumbs collection, as specified by the distance.
+         * In the crumb trail no two crumbs can have the same State but all
+         * must have the same Dialog
+         * @param distance Starting at 1, the number of Crumb steps to go back
+         * @throws canNavigateBack returns false for this distance
+         */
         static getNavigationBackLink(distance: number): string;
-        static refresh(toData?: any): void;
-        static getRefreshLink(toData?: any): string;
+        /**
+         * Navigates to the current State passing no NavigationData
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        static refresh(): void;
+        /**
+         * Navigates to the current State
+         * @param toData The NavigationData to be passed to the current State
+         * and stored in the StateContext
+         * @throws There is NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        static refresh(toData: any): void;
+        /**
+         * Gets a Url to navigate to the current State passing no 
+         * NavigationData
+         */
+        static getRefreshLink(): string;
+        /**
+         * Gets a Url to navigate to the current State
+         * @param toData The NavigationData to be passed to the current State
+         * and stored in the StateContext
+         * @returns Url that will navigate to the current State
+         * @throws There is NavigationData that cannot be converted to a String
+         */
+        static getRefreshLink(toData: any): string;
+        /**
+         * Navigates to the url
+         * @param url The target location
+         */
         static navigateLink(url: string): void;
+        /**
+         * Gets the next State. Depending on the action will either return the
+         * 'to' State of a Transition or the 'initial' State of a Dialog
+         * @param action The key of a child Transition or the key of a Dialog
+         * @throws action does not match the key of a child Transition or the
+         * key of a Dialog
+         */
         static getNextState(action: string): State;
     }
 
