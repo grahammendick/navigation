@@ -379,7 +379,7 @@ declare module Navigation {
         getNavigationLink(state: State, data: any): string;
         /**
          * Navigates to the url
-         * @param oldState
+         * @param oldState The current State
          * @param state The State to navigate to
          * @param url The target location
          */
@@ -663,7 +663,7 @@ declare module Navigation {
         getNavigationLink(state: State, data: any): string;
         /**
          * Navigates to the url
-         * @param oldState
+         * @param oldState The current State
          * @param state The State to navigate to
          * @param url The target location
          */
