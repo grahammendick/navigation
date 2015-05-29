@@ -4,8 +4,9 @@
 
 declare module Navigation {
     /**
-     * Configures dialog information. Represents a logical grouping of child State elements.
-     * Navigating across different dialogs will initialise the crumb trail
+     * Configures dialog information. Represents a logical grouping of child
+     * State elements. Navigating across different dialogs will initialise the
+     * crumb trail
      */
     interface IDialog<TState, TStates> {
         /**
@@ -13,8 +14,8 @@ declare module Navigation {
          */
         states: TStates;
         /**
-         * Gets the state to navigate to if the Key is passed as an action parameter
-         * to the StateController
+         * Gets the state to navigate to if the Key is passed as an action
+         * parameter to the StateController
          */
         initial: TState;
         /**
@@ -28,13 +29,41 @@ declare module Navigation {
         title?: string;
     }
 
+    /**
+     * Configures state information. A child of a Dialog element, it 
+     * represents the endpoint of a navigation
+     */
     interface IState<TTransitions> {
+        /**
+         * Gets the Transition children
+         */
         transitions?: TTransitions;
+        /**
+         * Gets the key, unique within a Parent, used by Dialog and Transition
+         * elements to specify navigation configuration
+         */
         key: string;
+        /**
+         * Gets the default NavigationData for this State
+         */
         defaults?: any;
+        /**
+         * Gets the default NavigationData Types for  this State
+         */
         defaultTypes?: any;
+        /**
+         * Gets the textual description of the state
+         */
         title?: string;
+        /**
+         * Gets the route Url pattern
+         */
         route: string;
+        /**
+         * Gets a value that indicates whether to maintain crumb trail 
+         * information e.g PreviousState. This can be used together with Route
+         * to produce user friendly Urls 
+         */
         trackCrumbTrail?: boolean;
     }
 
@@ -44,8 +73,9 @@ declare module Navigation {
     }
     
     /**
-     * Configures dialog information. Represents a logical grouping of child State elements.
-     * Navigating across different dialogs will initialise the crumb trail
+     * Configures dialog information. Represents a logical grouping of child 
+     * State elements. Navigating across different dialogs will initialise the
+     * crumb trail
      */
     class Dialog implements IDialog<State, { [index: string]: State; }> {
         /**
@@ -63,8 +93,8 @@ declare module Navigation {
          */
         index: number;
         /**
-         * Gets the state to navigate to if the Key is passed as an action parameter
-         * to the StateController
+         * Gets the state to navigate to if the Key is passed as an action 
+         * parameter to the StateController
          */
         initial: State;
         /**
@@ -78,21 +108,68 @@ declare module Navigation {
         title: string;
     }
 
+    /**
+     * Configures state information. A child of a Dialog element, it 
+     * represents the endpoint of a navigation
+     */
     class State implements IState<{ [index: string]: Transition; }> {
+        /**
+         * Gets the Transition children by index
+         */
         _transitions: Transition[];
+        /**
+         * Gets the Transition children
+         */
         transitions: {
             [index: string]: Transition;
         };
+        /**
+         * Gets the parent Dialog configuration item
+         */
         parent: Dialog;
+        /**
+         * Gets the number of the state within its Parent
+         */
         index: number;
+        /**
+         * Gets the unique identifier for this State
+         */
         id: string;
+        /**
+         * Gets the key, unique within a Parent, used by Dialog and Transition
+         * elements to specify navigation configuration
+         */
         key: string;
+        /**
+         * Gets the default NavigationData for this State
+         */
         defaults: any;
+        /**
+         * Gets the default NavigationData Types for  this State
+         */
         defaultTypes: any;
+        /**
+         * Gets the formatted default NavigationData for this State
+         */
         formattedDefaults: any;
+        /**
+         * Gets the textual description of the state
+         */
         title: string;
+        /**
+         * Gets the route Url pattern
+         */
         route: string;
+        /**
+         * Gets a value that indicates whether to maintain crumb trail 
+         * information e.g PreviousState. This can be used together with Route
+         * to produce user friendly Urls 
+         */
         trackCrumbTrail: boolean;
+        /**
+         * Gets or sets the IStateHandler responsible for building and parsing
+         * avigation links to this State
+         */
         stateHandler: IStateHandler;
         dispose: () => void;
         navigated: (data: any) => void;
