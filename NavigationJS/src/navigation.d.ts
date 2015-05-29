@@ -185,8 +185,24 @@ declare module Navigation {
          * avigation links to this State
          */
         stateHandler: IStateHandler;
+        /**
+         * Called on the old State (this is not the same as the previous 
+         * State) after navigating to a different State
+         */
         dispose: () => void;
+        /**
+         * Called on the current State after navigating to it
+         * @param data The current NavigationData
+         */
         navigated: (data: any) => void;
+        /**
+         * Called on the new State before navigating to it. Allows the new
+         * State to preload assets before disposing of the current State. Call
+         * navigate after the assets have returned 
+         * @param data The new NavigationData
+         * @param url The new target location
+         * @param navigate The function to call to continue to navigate 
+         */
         navigating: (data: any, url: string, navigate: () => void) => void;
     }
 
