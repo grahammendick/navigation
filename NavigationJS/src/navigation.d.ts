@@ -3,10 +3,28 @@
 } 
 
 declare module Navigation {
+    /**
+     * Configures dialog information. Represents a logical grouping of child State elements.
+     * Navigating across different dialogs will initialise the crumb trail
+     */
     interface IDialog<TState, TStates> {
+        /**
+         * Gets the State children
+         */
         states: TStates;
+        /**
+         * Gets the state to navigate to if the Key is passed as an action parameter
+         * to the StateController
+         */
         initial: TState;
+        /**
+         * Gets the key, unique across dialogs, which is passed as the action
+         * parameter to the StateController when navigating
+         */
         key: string;
+        /**
+         * Gets the textual description of the dialog
+         */
         title?: string;
     }
 
@@ -40,9 +58,23 @@ declare module Navigation {
         states: {
             [index: string]: State;
         };
+        /**
+         * Gets the number of the dialog
+         */
         index: number;
+        /**
+         * Gets the state to navigate to if the Key is passed as an action parameter
+         * to the StateController
+         */
         initial: State;
+        /**
+         * Gets the key, unique across dialogs, which is passed as the action
+         * parameter to the StateController when navigating
+         */
         key: string;
+        /**
+         * Gets the textual description of the dialog
+         */
         title: string;
     }
 
