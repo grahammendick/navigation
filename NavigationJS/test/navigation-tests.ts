@@ -13,26 +13,25 @@ Navigation.StateInfoConfig.build([
 	]}
 ]);
 
-// StateInfo
+// StateInfo Configuration
 var dialogs = Navigation.StateInfoConfig.dialogs;
 var home = dialogs['home'];
 var homePage = home.states['page'];
 var homeKey = home.key;
 var homePageKey = homePage.key;
-homePage = home.initial;
+console.log(homePage === home.initial);
 var person = dialogs['person'];
 var personList = person.states['list'];
 var personDetails = person.states['details'];
 var personListSelect = personList.transitions['select'];
-personList = personListSelect.parent;
-personDetails = personListSelect.to;
+console.log(personList === personListSelect.parent);
+console.log(personDetails === personListSelect.to);
 var pageDefault = personList.defaults.page;
 var idDefaultType = personDetails.defaultTypes.id;
 
 // Navigation Events
 Navigation.StateController.onNavigate((oldState, state, data) => {
-	var oldDialog = oldState.parent;
-	var newDialog = state.parent;
+	console.log(oldState.parent === state.parent);
 });
 personList.dispose = () => {
 }
@@ -57,8 +56,17 @@ var link = Navigation.StateController.getNavigationLink('person');
 link = Navigation.StateController.getRefreshLink();
 link = Navigation.StateController.getRefreshLink({ page: 2 });
 link = Navigation.StateController.getNavigationLink('select', { id: 10 });
+var nextDialog = Navigation.StateController.getNextState('select').parent;
+console.log(person === nextDialog);
 Navigation.StateController.navigateLink(link);
 link = Navigation.StateController.getNavigationBackLink(1);
 var crumb = Navigation.StateController.crumbs[0];
 link = crumb.navigationLink;
+
+// Navigation Data
+var data = { more: true };
+data = Navigation.StateContext.includeCurrentData(data, ['id']);
+data = Navigation.StateContext.includeCurrentData(data);
+Navigation.StateContext.clear('more');
+Navigation.StateContext.clear();
 
