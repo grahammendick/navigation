@@ -49,9 +49,8 @@ Navigation.StateController.navigate('person');
 Navigation.StateController.refresh();
 Navigation.StateController.refresh({ page: 2 });
 Navigation.StateController.navigate('select', { id: 10 });
-if (Navigation.StateController.canNavigateBack(1)){
-	Navigation.StateController.navigateBack(1);	
-}
+console.log(Navigation.StateController.canNavigateBack(1));
+Navigation.StateController.navigateBack(1);
 
 // Navigation Link
 var link = Navigation.StateController.getNavigationLink('person');
