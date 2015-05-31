@@ -251,7 +251,7 @@ declare module Navigation {
         };
         /**
          * Builds the Dialog, State and Transition configuration
-         * @para dialogs A collection of Dialog information with their child
+         * @param dialogs A collection of Dialog information with their child
          * State information and grandchild Transition information
          */
         static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
