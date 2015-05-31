@@ -15,7 +15,18 @@ Navigation.StateInfoConfig.build([
 Navigation.start('home');
 
 Navigation.StateController.navigate('person');
+Navigation.StateController.refresh();
 Navigation.StateController.refresh({ page: 2 });
 Navigation.StateController.navigate('select', { id: 10 });
-Navigation.StateController.navigateBack(1);
+if (Navigation.StateController.canNavigateBack(1)){
+	Navigation.StateController.navigateBack(1);	
+}
+
+var link: string = Navigation.StateController.getNavigationLink('person');
+link = Navigation.StateController.getRefreshLink();
+link = Navigation.StateController.getRefreshLink({ page: 2 });
+link = Navigation.StateController.getNavigationLink('select', { id: 10 });
+Navigation.StateController.navigateLink(link);
+link = Navigation.StateController.getNavigationBackLink(1);	
+
 
