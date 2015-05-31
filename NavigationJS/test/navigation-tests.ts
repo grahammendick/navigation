@@ -40,12 +40,12 @@ if (Navigation.StateController.canNavigateBack(1)){
 }
 
 // Navigation Link
-var link: string = Navigation.StateController.getNavigationLink('person');
+var link = Navigation.StateController.getNavigationLink('person');
 link = Navigation.StateController.getRefreshLink();
 link = Navigation.StateController.getRefreshLink({ page: 2 });
 link = Navigation.StateController.getNavigationLink('select', { id: 10 });
 Navigation.StateController.navigateLink(link);
 link = Navigation.StateController.getNavigationBackLink(1);
-var crumb: Navigation.Crumb = Navigation.StateController.crumbs[0];
+var crumb = Navigation.StateController.crumbs[0];
 link = crumb.navigationLink;
 
