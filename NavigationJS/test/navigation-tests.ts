@@ -1,6 +1,6 @@
 /// <reference path="../src/navigation.d.ts" />
 
-// StateInfo Configuration
+// Configuration
 Navigation.StateInfoConfig.build([
 	{ key: 'home', initial: 'page', states: [
 		{ key: 'page', route: '' }
@@ -12,6 +12,8 @@ Navigation.StateInfoConfig.build([
 		{ key: 'details', route: 'person/{id}', defaultTypes: { id: 'number' } }
 	]}
 ]);
+
+// StateInfo
 var dialogs = Navigation.StateInfoConfig.dialogs;
 var home = dialogs['home'];
 var homePage = home.states['page'];
@@ -26,6 +28,8 @@ console.log(personList === personListSelect.parent);
 console.log(personDetails === personListSelect.to);
 var pageDefault = personList.defaults.page;
 var idDefaultType = personDetails.defaultTypes.id;
+
+// StateNavigator
 personList.dispose = () => {
 }
 personList.navigating = (data, url, navigate) => {
@@ -40,20 +44,8 @@ Navigation.StateController.onNavigate((oldState, state, data) => {
 });
 Navigation.start('home');
 Navigation.StateController.navigate('person');
-console.log(home === Navigation.StateContext.previousDialog);
-console.log(homePage === Navigation.StateContext.previousState);
-console.log(person === Navigation.StateContext.dialog);
-console.log(personList === Navigation.StateContext.state);
-console.log('/people' === Navigation.StateContext.url);
-console.log(1 === Navigation.StateContext.data.page)
-Navigation.StateController.refresh({ page: 2 });
-var data = Navigation.StateContext.includeCurrentData({ sort: 'name' }, ['page']);
-Navigation.StateController.refresh(data);
-Navigation.StateContext.clear('sort');
-var data = Navigation.StateContext.includeCurrentData({ pageSize: 10 });
-Navigation.StateController.refresh(data);
-Navigation.StateContext.clear();
 Navigation.StateController.refresh();
+Navigation.StateController.refresh({ page: 2 });
 Navigation.StateController.navigate('select', { id: 10 });
 if (Navigation.StateController.canNavigateBack(1)){
 	Navigation.StateController.navigateBack(1);	
@@ -71,3 +63,22 @@ link = Navigation.StateController.getNavigationBackLink(1);
 var crumb = Navigation.StateController.crumbs[0];
 link = crumb.navigationLink;
 
+// StateContext
+Navigation.StateController.navigate('home');
+Navigation.StateController.navigate('person');
+console.log(home === Navigation.StateContext.previousDialog);
+console.log(homePage === Navigation.StateContext.previousState);
+console.log(person === Navigation.StateContext.dialog);
+console.log(personList === Navigation.StateContext.state);
+console.log('/people' === Navigation.StateContext.url);
+console.log(1 === Navigation.StateContext.data.page)
+
+// Navigation Data
+Navigation.StateController.refresh({ page: 2 });
+var data = Navigation.StateContext.includeCurrentData({ sort: 'name' }, ['page']);
+Navigation.StateController.refresh(data);
+Navigation.StateContext.clear('sort');
+var data = Navigation.StateContext.includeCurrentData({ pageSize: 10 });
+Navigation.StateController.refresh(data);
+Navigation.StateContext.clear();
+Navigation.StateController.refresh();
