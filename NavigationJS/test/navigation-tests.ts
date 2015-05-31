@@ -30,18 +30,20 @@ var pageDefault = personList.defaults.page;
 var idDefaultType = personDetails.defaultTypes.id;
 
 // StateNavigator
-personList.dispose = () => {
-}
+personList.dispose = () => {};
 personList.navigating = (data, url, navigate) => {
 	navigate();
-}
-personList.navigated = (data) => {	
-}
+};
+personList.navigated = (data) => {};
+
+// Navigation Event
+var navigationListener = 
+(oldState: Navigation.State, state: Navigation.State, data) => {
+	Navigation.StateController.offNavigate(navigationListener);
+};
+Navigation.StateController.onNavigate(navigationListener);
 
 // Navigation
-Navigation.StateController.onNavigate((oldState, state, data) => {
-	console.log(oldState.parent === state.parent);
-});
 Navigation.start('home');
 Navigation.StateController.navigate('person');
 Navigation.StateController.refresh();
