@@ -29,6 +29,19 @@ personDetails = personListSelect.to;
 var pageDefault = personList.defaults.page;
 var idDefaultType = personDetails.defaultTypes.id;
 
+// Navigation Events
+Navigation.StateController.onNavigate((oldState, state, data) => {
+	var oldDialog = oldState.parent;
+	var newDialog = state.parent;
+});
+personList.dispose = () => {
+}
+personList.navigating = (data, url, navigate) => {
+	navigate();
+}
+personList.navigated = (data) => {	
+}
+
 // Navigation
 Navigation.start('home');
 Navigation.StateController.navigate('person');
