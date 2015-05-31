@@ -42,6 +42,12 @@ personList.navigated = (data) => {
 // Navigation
 Navigation.start('home');
 Navigation.StateController.navigate('person');
+console.log(home === Navigation.StateContext.previousDialog);
+console.log(homePage === Navigation.StateContext.previousState);
+console.log(person === Navigation.StateContext.dialog);
+console.log(personList === Navigation.StateContext.state);
+console.log('/people' === Navigation.StateContext.url);
+console.log(1 === Navigation.StateContext.data.page)
 Navigation.StateController.refresh();
 Navigation.StateController.refresh({ page: 2 });
 Navigation.StateController.navigate('select', { id: 10 });
