@@ -1,6 +1,6 @@
 /// <reference path="../src/navigation.d.ts" />
 
-// Configuration
+// StateInfo Configuration
 Navigation.StateInfoConfig.build([
 	{ key: 'home', initial: 'page', states: [
 		{ key: 'page', route: '' }
@@ -12,8 +12,6 @@ Navigation.StateInfoConfig.build([
 		{ key: 'details', route: 'person/{id}', defaultTypes: { id: 'number' } }
 	]}
 ]);
-
-// StateInfo Configuration
 var dialogs = Navigation.StateInfoConfig.dialogs;
 var home = dialogs['home'];
 var homePage = home.states['page'];
