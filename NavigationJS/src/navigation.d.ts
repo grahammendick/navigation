@@ -200,8 +200,7 @@ declare module Navigation {
          */
         navigated: (data: any) => void;
         /**
-         * Called on the new State before navigating to it. If the navigate
-         * function isn't called the new State won't be navigated to
+         * Called on the new State before navigating to it
          * @param data The new NavigationData
          * @param url The new target location
          * @param navigate The function to call to continue to navigate 
