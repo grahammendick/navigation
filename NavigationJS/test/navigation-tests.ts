@@ -19,13 +19,13 @@ var home = dialogs['home'];
 var homePage = home.states['page'];
 var homeKey = home.key;
 var homePageKey = homePage.key;
-console.log(homePage === home.initial);
+homePage = home.initial;
 var person = dialogs['person'];
 var personList = person.states['list'];
 var personDetails = person.states['details'];
 var personListSelect = personList.transitions['select'];
-console.log(personList === personListSelect.parent);
-console.log(personDetails === personListSelect.to);
+personList = personListSelect.parent;
+personDetails = personListSelect.to;
 var pageDefault = personList.defaults.page;
 var idDefaultType = personDetails.defaultTypes.id;
 
@@ -49,7 +49,7 @@ Navigation.StateController.navigate('person');
 Navigation.StateController.refresh();
 Navigation.StateController.refresh({ page: 2 });
 Navigation.StateController.navigate('select', { id: 10 });
-console.log(Navigation.StateController.canNavigateBack(1));
+var canGoBack: boolean = Navigation.StateController.canNavigateBack(1);
 Navigation.StateController.navigateBack(1);
 
 // Navigation Link
@@ -58,7 +58,7 @@ link = Navigation.StateController.getRefreshLink();
 link = Navigation.StateController.getRefreshLink({ page: 2 });
 link = Navigation.StateController.getNavigationLink('select', { id: 10 });
 var nextDialog = Navigation.StateController.getNextState('select').parent;
-console.log(person === nextDialog);
+person = nextDialog;
 Navigation.StateController.navigateLink(link);
 link = Navigation.StateController.getNavigationBackLink(1);
 var crumb = Navigation.StateController.crumbs[0];
@@ -67,12 +67,12 @@ link = crumb.navigationLink;
 // StateContext
 Navigation.StateController.navigate('home');
 Navigation.StateController.navigate('person');
-console.log(home === Navigation.StateContext.previousDialog);
-console.log(homePage === Navigation.StateContext.previousState);
-console.log(person === Navigation.StateContext.dialog);
-console.log(personList === Navigation.StateContext.state);
-console.log('/people' === Navigation.StateContext.url);
-console.log(1 === Navigation.StateContext.data.page)
+home = Navigation.StateContext.previousDialog;
+homePage = Navigation.StateContext.previousState;
+person === Navigation.StateContext.dialog;
+personList === Navigation.StateContext.state;
+var url: string = Navigation.StateContext.url;
+var page: number = Navigation.StateContext.data.page;
 
 // Navigation Data
 Navigation.StateController.refresh({ page: 2 });
