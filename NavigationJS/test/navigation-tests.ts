@@ -26,11 +26,6 @@ console.log(personList === personListSelect.parent);
 console.log(personDetails === personListSelect.to);
 var pageDefault = personList.defaults.page;
 var idDefaultType = personDetails.defaultTypes.id;
-
-// Navigation Events
-Navigation.StateController.onNavigate((oldState, state, data) => {
-	console.log(oldState.parent === state.parent);
-});
 personList.dispose = () => {
 }
 personList.navigating = (data, url, navigate) => {
@@ -40,6 +35,9 @@ personList.navigated = (data) => {
 }
 
 // Navigation
+Navigation.StateController.onNavigate((oldState, state, data) => {
+	console.log(oldState.parent === state.parent);
+});
 Navigation.start('home');
 Navigation.StateController.navigate('person');
 console.log(home === Navigation.StateContext.previousDialog);
@@ -48,8 +46,14 @@ console.log(person === Navigation.StateContext.dialog);
 console.log(personList === Navigation.StateContext.state);
 console.log('/people' === Navigation.StateContext.url);
 console.log(1 === Navigation.StateContext.data.page)
-Navigation.StateController.refresh();
 Navigation.StateController.refresh({ page: 2 });
+var data = Navigation.StateContext.includeCurrentData({ sort: 'name' }, ['page']);
+Navigation.StateController.refresh(data);
+Navigation.StateContext.clear('sort');
+var data = Navigation.StateContext.includeCurrentData({ pageSize: 10 });
+Navigation.StateController.refresh(data);
+Navigation.StateContext.clear();
+Navigation.StateController.refresh();
 Navigation.StateController.navigate('select', { id: 10 });
 if (Navigation.StateController.canNavigateBack(1)){
 	Navigation.StateController.navigateBack(1);	
@@ -66,11 +70,4 @@ Navigation.StateController.navigateLink(link);
 link = Navigation.StateController.getNavigationBackLink(1);
 var crumb = Navigation.StateController.crumbs[0];
 link = crumb.navigationLink;
-
-// Navigation Data
-var data = { more: true };
-data = Navigation.StateContext.includeCurrentData(data, ['id']);
-data = Navigation.StateContext.includeCurrentData(data);
-Navigation.StateContext.clear('more');
-Navigation.StateContext.clear();
 
