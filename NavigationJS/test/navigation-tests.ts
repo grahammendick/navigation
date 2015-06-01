@@ -1,5 +1,26 @@
 /// <reference path="../src/navigation.d.ts" />
 
+// History Manager
+class LogHistoryManager extends Navigation.HashHistoryManager  {
+    addHistory(state: Navigation.State, url: string) {
+		console.log('add history');
+		super.addHistory(state, url);
+    }
+}
+
+// State Router
+class LogStateRouter extends Navigation.StateRouter {
+    getData(route: string): { state: Navigation.State; data: any } {
+		console.log('get data');
+		return super.getData(route);
+    }
+}
+
+// Settings
+Navigation.settings.router = new LogStateRouter();
+Navigation.settings.historyManager = new LogHistoryManager();
+Navigation.settings.stateIdKey = 'state';
+
 // Configuration
 Navigation.StateInfoConfig.build([
 	{ key: 'home', initial: 'page', states: [
@@ -35,6 +56,17 @@ personList.navigating = (data, url, navigate) => {
 	navigate();
 };
 personList.navigated = (data) => {};
+
+// State Handler
+class LogStateHandler extends Navigation.StateHandler {
+    getNavigationData(state: Navigation.State, url: string): any {
+		console.log('get navigation data');
+		super.getNavigationData(state, url);
+    }
+}
+homePage.stateHandler = new LogStateHandler();
+personList.stateHandler = new LogStateHandler();
+personDetails.stateHandler = new LogStateHandler();
 
 // Navigation Event
 var navigationListener = 
