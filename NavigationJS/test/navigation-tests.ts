@@ -70,7 +70,7 @@ personDetails.stateHandler = new LogStateHandler();
 
 // Navigation Event
 var navigationListener = 
-(oldState: Navigation.State, state: Navigation.State, data) => {
+(oldState: Navigation.State, state: Navigation.State, data: any) => {
 	Navigation.StateController.offNavigate(navigationListener);
 };
 Navigation.StateController.onNavigate(navigationListener);
