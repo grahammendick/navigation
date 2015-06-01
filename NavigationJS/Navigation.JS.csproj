@@ -92,6 +92,7 @@
     <TypeScriptCompile Include="test\assert.d.ts" />
     <TypeScriptCompile Include="test\initStateInfo.ts" />
     <TypeScriptCompile Include="test\mocha.d.ts" />
+    <TypeScriptCompile Include="test\navigation-tests.ts" />
     <TypeScriptCompile Include="test\NavigationDataTest.ts" />
     <TypeScriptCompile Include="test\NavigationRoutingTest.ts" />
     <TypeScriptCompile Include="test\NavigationTest.ts" />
