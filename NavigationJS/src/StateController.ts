@@ -41,11 +41,11 @@ class StateController {
             if (data[settings.returnDataKey])
                 CrumbTrailManager.returnData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
         } else {
-            var previousCrumb = CrumbTrailManager.getCrumbs(false).pop();
-            if (previousCrumb){
-                StateContext.previousState = previousCrumb.state;
+            var previousStateCrumb = CrumbTrailManager.getCrumbs(false).pop();
+            if (previousStateCrumb){
+                StateContext.previousState = previousStateCrumb.state;
                 StateContext.previousDialog = StateContext.previousState.parent;
-                CrumbTrailManager.returnData = previousCrumb.data;
+                CrumbTrailManager.returnData = previousStateCrumb.data;
             }
         }
     }
