@@ -21,6 +21,10 @@ class StateController {
             StateContext.dialog = state.parent;
             var data = state.stateHandler.getNavigationData(state, url);
             StateContext.data = this.parseData(data, state);
+            StateContext.previousState = null;
+            StateContext.previousDialog = null;
+            CrumbTrailManager.returnData = {};
+            CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
             this.setPreviousStateContext(data);
             CrumbTrailManager.buildCrumbTrail();
             this.crumbs = CrumbTrailManager.getCrumbs(true, settings.combineCrumbTrail);
@@ -30,10 +34,6 @@ class StateController {
     }
     
     private static setPreviousStateContext(data: any){
-        CrumbTrailManager.returnData = {};
-        StateContext.previousState = null;
-        StateContext.previousDialog = null;
-        CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
         if (!settings.combineCrumbTrail){
             StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
             if (StateContext.previousState)
