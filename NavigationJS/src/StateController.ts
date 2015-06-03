@@ -29,8 +29,14 @@ class StateController {
                 CrumbTrailManager.returnData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
             CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
             StateContext.data = this.parseData(data, state);
+            var previousCrumb = CrumbTrailManager.getCrumbs(false).pop();
+            if (previousCrumb){
+                StateContext.previousState = previousCrumb.state;
+                StateContext.previousDialog = StateContext.previousState.parent;
+                CrumbTrailManager.returnData = previousCrumb.data;
+            }
             CrumbTrailManager.buildCrumbTrail();
-            this.crumbs = CrumbTrailManager.getCrumbs(true);
+            this.crumbs = CrumbTrailManager.getCrumbs(true, true);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }

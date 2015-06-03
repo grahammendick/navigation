@@ -148,8 +148,9 @@ describe('NavigationDataTest', function () {
 
     it('InvalidArrayDataTest', function () {
         Navigation.StateController.navigate('d0');
-        Navigation.StateContext.data['item'] = [new Date()];
-        assert.throws(() => Navigation.StateController.navigate('t0'));
+        var data = {}
+        data['item'] = [new Date()];
+        assert.throws(() => Navigation.StateController.navigate('t0', data));
     });
 
     it('InvalidDataGetNavigationLinkTest', function () {
@@ -372,6 +373,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('d0');
         Navigation.StateContext.data['s'] = '';
         Navigation.StateContext.data['t'] = '1';
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         Navigation.StateController.navigateBack(1);
         assert.strictEqual(Navigation.StateContext.data['s'], undefined);
@@ -383,6 +385,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigateLink(link);
         Navigation.StateContext.data['s'] = '';
         Navigation.StateContext.data['t'] = '1';
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationBackLink(1);
@@ -426,6 +430,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('d0', data);
         Navigation.StateContext.data['s'] = 'World';
         Navigation.StateContext.data['i'] = 2;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'World');
         assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], 2);
@@ -441,6 +446,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigateLink(link);
         Navigation.StateContext.data['s'] = 'World';
         Navigation.StateContext.data['i'] = 2;
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 'World');
@@ -457,6 +464,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('d0', data);
         Navigation.StateContext.data['s'] = null;
         Navigation.StateContext.data['i'] = 2;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], 2);
@@ -472,6 +480,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigateLink(link);
         Navigation.StateContext.data['s'] = null;
         Navigation.StateContext.data['i'] = 2;
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
@@ -487,6 +497,7 @@ describe('NavigationDataTest', function () {
         data['s'] = 'Hello';
         Navigation.StateController.navigate('d0', data);
         Navigation.StateContext.clear();
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], undefined);
@@ -501,6 +512,8 @@ describe('NavigationDataTest', function () {
         var link = Navigation.StateController.getNavigationLink('d0', data);
         Navigation.StateController.navigateLink(link);
         Navigation.StateContext.clear();
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
@@ -517,6 +530,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('d0', data);
         Navigation.StateContext.clear('s');
         Navigation.StateContext.data['i'] = 2;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['i'], 2);
@@ -532,6 +546,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigateLink(link);
         Navigation.StateContext.clear('s');
         Navigation.StateContext.data['i'] = 2;
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
@@ -883,6 +899,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('d0', data);
         assert.strictEqual(Navigation.StateContext.data['s'], 1);
         Navigation.StateContext.data['s'] = 11;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         assert.strictEqual(Navigation.StateContext.data['t'], undefined);
         data['s'] = 2;
         data['t'] = '2';
@@ -892,6 +909,7 @@ describe('NavigationDataTest', function () {
         assert.strictEqual(Navigation.StateContext.data['s'], 2);
         assert.strictEqual(Navigation.StateContext.data['t'], '2');
         Navigation.StateContext.data['s'] = '22';
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         data['s'] = 3;
         data['t'] = '3';
         Navigation.StateController.navigate('t1', data);
@@ -910,6 +928,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['s'], 1);
         Navigation.StateContext.data['s'] = 11;
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         assert.strictEqual(Navigation.StateContext.data['t'], undefined);
         data['s'] = 2;
         data['t'] = '2';
@@ -920,6 +940,8 @@ describe('NavigationDataTest', function () {
         assert.strictEqual(Navigation.StateContext.data['s'], 2);
         assert.strictEqual(Navigation.StateContext.data['t'], '2');
         Navigation.StateContext.data['s'] = '22';
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         data['s'] = 3;
         data['t'] = '3';
         link = Navigation.StateController.getNavigationLink('t1', data);
@@ -2330,6 +2352,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateContext.data['emptyString'] = 1;
         Navigation.StateContext.data['number'] = 4;
         Navigation.StateContext.data['char'] = null;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         var link = Navigation.StateController.getNavigationLink('t0');
         assert.equal(link.indexOf('number'), -1);
         assert.equal(link.indexOf('char'), -1);
@@ -2343,6 +2366,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateContext.data['emptyString'] = 1;
         Navigation.StateContext.data['number'] = 4;
         Navigation.StateContext.data['char'] = null;
+        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+        Navigation.StateController.navigateLink(link);
         var link = Navigation.StateController.getNavigationLink('t0');
         assert.equal(link.indexOf('number'), -1);
         assert.equal(link.indexOf('char'), -1);
@@ -2367,6 +2392,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateContext.data['_bool'] = null;
         Navigation.StateContext.data['string'] = 'Hello';
         Navigation.StateContext.data['number'] = 0;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         var link = Navigation.StateController.getNavigationBackLink(1);
         assert.equal(link.indexOf('string'), -1);
@@ -2380,6 +2406,7 @@ describe('NavigationDataTest', function () {
         Navigation.StateContext.data['number'] = 1;
         Navigation.StateContext.data['_bool'] = '';
         Navigation.StateContext.data['string'] = 4;
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         Navigation.StateController.navigate('t0');
         var link = Navigation.StateController.crumbs[1].navigationLink;
         assert.equal(link.indexOf('_bool'), -1);
@@ -2391,8 +2418,8 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('d2');
         Navigation.StateContext.data['_number'] = 1;
         Navigation.StateContext.data['string'] = 'Hello';
+        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
         var link = Navigation.StateController.getNavigationLink('t0');
-        assert.notEqual(link.indexOf('c1'), -1);
         assert.notEqual(link.indexOf('_number'), -1);
         assert.notEqual(link.indexOf('string'), -1);
     });
