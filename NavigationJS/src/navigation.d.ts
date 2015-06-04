@@ -464,6 +464,11 @@ declare module Navigation {
          * Gets or sets the application path
          */
         applicationPath: string;
+        /**
+         * Gets or sets a value indicating whether the PreviousStateId and
+         * ReturnData should be part of the CrumbTrail
+         */
+        combineCrumbTrail: boolean;
     }
 
     /**

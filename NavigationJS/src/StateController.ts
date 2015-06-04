@@ -20,19 +20,33 @@ class StateController {
             StateContext.url = url;
             StateContext.dialog = state.parent;
             var data = state.stateHandler.getNavigationData(state, url);
-            StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
-            StateContext.previousDialog = null;
-            if (StateContext.previousState)
-                StateContext.previousDialog = StateContext.previousState.parent;
-            CrumbTrailManager.returnData = {};
-            if (data[settings.returnDataKey])
-                CrumbTrailManager.returnData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
-            CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
             StateContext.data = this.parseData(data, state);
+            StateContext.previousState = null;
+            StateContext.previousDialog = null;
+            CrumbTrailManager.returnData = {};
+            CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
+            this.setPreviousStateContext(data);
             CrumbTrailManager.buildCrumbTrail();
-            this.crumbs = CrumbTrailManager.getCrumbs(true);
+            this.crumbs = CrumbTrailManager.getCrumbs(true, settings.combineCrumbTrail);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
+        }
+    }
+    
+    private static setPreviousStateContext(data: any){
+        if (!settings.combineCrumbTrail){
+            StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
+            if (StateContext.previousState)
+                StateContext.previousDialog = StateContext.previousState.parent;
+            if (data[settings.returnDataKey])
+                CrumbTrailManager.returnData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
+        } else {
+            var previousStateCrumb = CrumbTrailManager.getCrumbs(false).pop();
+            if (previousStateCrumb){
+                StateContext.previousState = previousStateCrumb.state;
+                StateContext.previousDialog = StateContext.previousState.parent;
+                CrumbTrailManager.returnData = previousStateCrumb.data;
+            }
         }
     }
 

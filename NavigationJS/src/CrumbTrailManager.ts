@@ -14,9 +14,11 @@ class CrumbTrailManager {
 
     static buildCrumbTrail() {
         var crumbs = this.getCrumbs(false);
-        if (StateContext.previousState)
-            crumbs.push(new Crumb(this.returnData, StateContext.previousState, this.getHref(StateContext.previousState, this.returnData, null), false));
+        if (!settings.combineCrumbTrail && StateContext.previousState)
+            crumbs.push(new Crumb(this.returnData, StateContext.previousState, this.getHref(StateContext.previousState, this.returnData, null), false));        
         crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
+        if (settings.combineCrumbTrail)
+            crumbs.push(new Crumb(StateContext.data, StateContext.state, this.getHref(StateContext.state, StateContext.data, null), false));
         crumbs.reverse();
         var trailString: string = '';
         for (var i = 0; i < crumbs.length; i++) {
@@ -26,7 +28,7 @@ class CrumbTrailManager {
         this.crumbTrail = trailString ? trailString : null;
     }
 
-    static getCrumbs(setLast: boolean): Array<Crumb> {
+    static getCrumbs(setLast: boolean, skipLatest?: boolean): Array<Crumb> {
         var crumbTrailArray: Array<Crumb> = [];
         var arrayCount = 0;
         var trail = this.crumbTrail;
@@ -41,8 +43,11 @@ class CrumbTrailManager {
                 navigationData = ReturnDataManager.parseReturnData(data, state);
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
-            crumbTrailArray.push(new Crumb(navigationData, state, this.getHref(state, navigationData, null), setLast && last));
-            last = false;
+            if (!skipLatest) {
+                crumbTrailArray.push(new Crumb(navigationData, state, this.getHref(state, navigationData, null), setLast && last));
+                last = false;
+            }
+            skipLatest = false;
             arrayCount++;
         }
         crumbTrailArray.reverse();
@@ -58,7 +63,7 @@ class CrumbTrailManager {
     static getHref(state: State, navigationData: any, returnData: any): string {
         var data = {};
         data[settings.stateIdKey] = state.id;
-        if (state.trackCrumbTrail && StateContext.state)
+        if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state)
             data[settings.previousStateIdKey] = StateContext.state.id;
         navigationData = NavigationData.clone(navigationData);
         NavigationData.setDefaults(navigationData, state.defaults);
@@ -67,7 +72,7 @@ class CrumbTrailManager {
                 && (!settings.router.supportsDefaults || navigationData[key] !== state.defaults[key]))
                 data[key] = ReturnDataManager.formatURLObject(key, navigationData[key], state);
         }
-        if (state.trackCrumbTrail && StateContext.state) {
+        if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
             var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
