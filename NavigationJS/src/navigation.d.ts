@@ -469,7 +469,6 @@ declare module Navigation {
          * ReturnData should be part of the CrumbTrail
          */
         combineCrumbTrail: boolean;
-        
     }
 
     /**
