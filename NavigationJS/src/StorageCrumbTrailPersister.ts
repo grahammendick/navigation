@@ -32,7 +32,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 			var state = this.fromCode(matches[1]);
 			var count = this.fromCode(matches[2]);
 			var item: string = this.storage.getItem(count.toString());
-			if (item.indexOf(dialog + state + '=') !== 0)
+			if (!item || item.indexOf(dialog + state + '=') !== 0)
 				return null;
 			return item.substring(item.indexOf('='));
 		}
