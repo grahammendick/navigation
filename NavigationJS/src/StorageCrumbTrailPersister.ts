@@ -4,7 +4,7 @@ import settings = require('./settings');
 
 class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private maxLength: number = 500;
-	private historySize: number = 50;
+	private historySize: number = 100;
 	private storage: Storage;
 	private count: number = 0;
 	
