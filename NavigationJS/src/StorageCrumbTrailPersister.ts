@@ -27,10 +27,10 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail && crumbTrail.match(/^[a-z]/i)){
-			var matches = crumbTrail.match(/[a-z]\d*/i);
-			var dialog = this.fromCode(matches[0]);
-			var state = this.fromCode(matches[1]);
-			var count = this.fromCode(matches[2]);
+			var codes = crumbTrail.match(/[a-z]\d*/i);
+			var dialog = StorageCrumbTrailPersister.fromCode(codes[0]);
+			var state = StorageCrumbTrailPersister.fromCode(codes[1]);
+			var count = StorageCrumbTrailPersister.fromCode(codes[2]);
 			var item: string = this.storage.getItem('CrumbTrail' + count.toString());
 			if (!item || item.indexOf(dialog + state + '=') !== 0)
 				return null;
@@ -43,9 +43,9 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail.length > this.maxLength){
-			var dialogCode = this.toCode(StateContext.state.parent.index);
-			var stateCode = this.toCode(StateContext.state.index);
-			var countCode = this.toCode(this.count);
+			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.state.parent.index);
+			var stateCode = StorageCrumbTrailPersister.toCode(StateContext.state.index);
+			var countCode = StorageCrumbTrailPersister.toCode(this.count);
 			var key = dialogCode + stateCode + countCode;
 			if (this.count >= this.historySize)
 				this.storage.removeItem((this.count - this.historySize).toString());
@@ -56,14 +56,14 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		return crumbTrail;
 	}
 	
-	private toCode(val: number): string {
+	private static toCode(val: number): string {
 		var rem = val & 52;
 		var div = Math.floor(val / 52);
 		var baseCharCode = rem < 26 ? 97 : 65 - 26; 
 		return String.fromCharCode(baseCharCode + rem) + rem.toString();
 	}
 	
-	private fromCode(val: string): number {
+	private static fromCode(val: string): number {
 		var rem = val.match(/^[a-z]/i)[0].charCodeAt(0);
 		var div = +val.match(/\d*/)[0];
 		return div * 52 + rem;
