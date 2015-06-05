@@ -14,8 +14,8 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		this.storage = storage;
 		if (!this.storage){
 			try{
-				localStorage.setItem('StorageCrumbTrailPersister', 'test');
-				localStorage.removeItem('StorageCrumbTrailPersister');
+				localStorage.setItem('CrumbTrail', 'CrumbTrail');
+				localStorage.removeItem('CrumbTrail');
 				this.storage = localStorage;
 			} catch(e){
 				this.storage = new InProcStorage();
@@ -31,7 +31,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 			var dialog = this.fromCode(matches[0]);
 			var state = this.fromCode(matches[1]);
 			var count = this.fromCode(matches[2]);
-			var item: string = this.storage.getItem(count.toString());
+			var item: string = this.storage.getItem('CrumbTrail' + count.toString());
 			if (!item || item.indexOf(dialog + state + '=') !== 0)
 				return null;
 			return item.substring(item.indexOf('='));
@@ -49,7 +49,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 			var key = dialogCode + stateCode + countCode;
 			if (this.count >= this.historySize)
 				this.storage.removeItem((this.count - this.historySize).toString());
-			this.storage.setItem(this.count.toString(), key + '=' + crumbTrail);
+			this.storage.setItem('CrumbTrail' + this.count.toString(), key + '=' + crumbTrail);
 			this.count++;
 			return key;
 		}
