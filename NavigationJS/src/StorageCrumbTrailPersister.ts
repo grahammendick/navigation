@@ -11,8 +11,8 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	constructor(maxLength?: number, historySize?: number, storage?: Storage) {
 		super();
 		settings.combineCrumbTrail = true;
-		this.maxLength = !maxLength ? 500 : maxLength;
-		this.historySize = !historySize ? 100 : historySize;
+		this.maxLength = maxLength == null ? 500 : maxLength;
+		this.historySize = historySize == null ? 100 : historySize;
 		this.storage = storage;
 		if (!this.storage) {
 			try {
@@ -29,12 +29,9 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail && crumbTrail.match(/^[a-z]/i)) {
-			var codes = crumbTrail.match(/[a-z]\d*/i);
-			var dialog = StorageCrumbTrailPersister.fromCode(codes[0]);
-			var state = StorageCrumbTrailPersister.fromCode(codes[1]);
-			var count = StorageCrumbTrailPersister.fromCode(codes[2]);
-			var item: string = this.storage.getItem('CrumbTrail' + count.toString());
-			if (!item || item.indexOf(dialog + state + '=') !== 0)
+			var codes = crumbTrail.match(/[a-z]\d*/ig);
+			var item: string = this.storage.getItem('CrumbTrail' + codes[2]);
+			if (!item || item.indexOf(codes[0] + codes[1] + '=') !== 0)
 				return null;
 			return item.substring(item.indexOf('=') + 1);
 		}
@@ -48,26 +45,19 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.dialog.index);
 			var stateCode = StorageCrumbTrailPersister.toCode(StateContext.state.index);
 			var countCode = StorageCrumbTrailPersister.toCode(this.count);
-			var key = dialogCode + stateCode + countCode;
 			if (this.count >= this.historySize)
-				this.storage.removeItem((this.count - this.historySize).toString());
-			this.storage.setItem('CrumbTrail' + this.count.toString(), key + '=' + crumbTrail);
+				this.storage.removeItem(StorageCrumbTrailPersister.toCode(this.count - this.historySize));
+			this.storage.setItem('CrumbTrail' + countCode, dialogCode + stateCode + '=' + crumbTrail);
 			this.count++;
-			return key;
+			return dialogCode + stateCode + countCode;
 		}
 		return crumbTrail;
 	}
 	
 	private static toCode(val: number): string {
-		var rem = val & 52;
+		var rem = val % 52;
 		var div = Math.floor(val / 52);
 		return String.fromCharCode((rem < 26 ? 97 : 39) + rem) + rem.toString();
-	}
-	
-	private static fromCode(val: string): number {
-		var rem = val.match(/^[a-z]/i)[0].charCodeAt(0);
-		var div = +val.match(/\d*/)[0];
-		return div * 52 + rem;
 	}
 }
 
