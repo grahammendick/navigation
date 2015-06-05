@@ -12,12 +12,12 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		super();
 		settings.combineCrumbTrail = true;
 		this.storage = storage;
-		if (!this.storage){
-			try{
+		if (!this.storage) {
+			try {
 				localStorage.setItem('CrumbTrail', 'CrumbTrail');
 				localStorage.removeItem('CrumbTrail');
 				this.storage = localStorage;
-			} catch(e){
+			} catch(e) {
 				this.storage = new InProcStorage();
 			}
 		}
@@ -26,7 +26,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	load(crumbTrail: string): string {
 		if (!crumbTrail)
 			return crumbTrail;
-		if (crumbTrail && crumbTrail.match(/^[a-z]/i)){
+		if (crumbTrail && crumbTrail.match(/^[a-z]/i)) {
 			var codes = crumbTrail.match(/[a-z]\d*/i);
 			var dialog = StorageCrumbTrailPersister.fromCode(codes[0]);
 			var state = StorageCrumbTrailPersister.fromCode(codes[1]);
@@ -42,7 +42,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	save(crumbTrail: string): string {
 		if (!crumbTrail)
 			return crumbTrail;
-		if (crumbTrail.length > this.maxLength){
+		if (crumbTrail.length > this.maxLength) {
 			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.state.parent.index);
 			var stateCode = StorageCrumbTrailPersister.toCode(StateContext.state.index);
 			var countCode = StorageCrumbTrailPersister.toCode(this.count);
