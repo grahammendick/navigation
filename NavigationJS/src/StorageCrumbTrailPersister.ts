@@ -6,7 +6,6 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private maxLength: number;
 	private historySize: number;
 	private storage: Storage;
-	private count: number = 0;
 	
 	constructor(maxLength?: number, historySize?: number, storage?: Storage) {
 		super();
@@ -23,6 +22,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 				this.storage = new InProcStorage();
 			}
 		}
+		this.storage.setItem('CrumbTrailCount', '0');
 	}
 	
 	load(crumbTrail: string): string {
@@ -42,13 +42,14 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail.length > this.maxLength) {
+			var count = +this.storage.getItem('CrumbTrailCount');
 			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.dialog.index);
 			var stateCode = StorageCrumbTrailPersister.toCode(StateContext.state.index);
-			var countCode = StorageCrumbTrailPersister.toCode(this.count);
-			if (this.count >= this.historySize)
-				this.storage.removeItem(StorageCrumbTrailPersister.toCode(this.count - this.historySize));
+			var countCode = StorageCrumbTrailPersister.toCode(count);
+			if (count >= this.historySize)
+				this.storage.removeItem(StorageCrumbTrailPersister.toCode(count - this.historySize));
 			this.storage.setItem('CrumbTrail' + countCode, dialogCode + stateCode + '=' + crumbTrail);
-			this.count++;
+			this.storage.setItem('CrumbTrailCount', (count + 1).toString());
 			return dialogCode + stateCode + countCode;
 		}
 		return crumbTrail;
@@ -57,7 +58,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private static toCode(val: number): string {
 		var rem = val % 52;
 		var div = Math.floor(val / 52);
-		return String.fromCharCode((rem < 26 ? 97 : 39) + rem) + rem.toString();
+		return String.fromCharCode((rem < 26 ? 97 : 39) + rem) + div.toString();
 	}
 }
 
