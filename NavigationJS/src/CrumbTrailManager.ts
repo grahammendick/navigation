@@ -25,7 +25,7 @@ class CrumbTrailManager {
             trailString += this.CRUMB_1_SEP + crumbs[i].state.id + this.CRUMB_2_SEP;
             trailString += ReturnDataManager.formatReturnData(crumbs[i].state, crumbs[i].data);
         }
-        this.crumbTrail = trailString ? trailString : null;
+        this.crumbTrail = settings.crumbTrailPersister.save(trailString ? trailString : null);
     }
 
     static getCrumbs(setLast: boolean, skipLatest?: boolean): Array<Crumb> {

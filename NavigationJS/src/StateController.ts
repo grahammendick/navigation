@@ -24,7 +24,7 @@ class StateController {
             StateContext.previousState = null;
             StateContext.previousDialog = null;
             CrumbTrailManager.returnData = {};
-            CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
+            CrumbTrailManager.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
             this.setPreviousStateContext(data);
             CrumbTrailManager.buildCrumbTrail();
             this.crumbs = CrumbTrailManager.getCrumbs(true, settings.combineCrumbTrail);
