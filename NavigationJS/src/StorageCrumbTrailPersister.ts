@@ -43,7 +43,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail.length > this.maxLength) {
-			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.state.parent.index);
+			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.dialog.index);
 			var stateCode = StorageCrumbTrailPersister.toCode(StateContext.state.index);
 			var countCode = StorageCrumbTrailPersister.toCode(this.count);
 			var key = dialogCode + stateCode + countCode;
