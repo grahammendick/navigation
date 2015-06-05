@@ -24,6 +24,18 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	}
 	
 	load(crumbTrail: string): string {
+		if (!crumbTrail)
+			return crumbTrail;
+		if (crumbTrail && crumbTrail.match(/^[a-z]/i)){
+			var matches = crumbTrail.match(/[a-z]\d*/i);
+			var dialog = this.fromCode(matches[0]);
+			var state = this.fromCode(matches[1]);
+			var count = this.fromCode(matches[2]);
+			var item: string = this.storage.getItem(count.toString());
+			if (item.indexOf(dialog + state + '=') !== 0)
+				return null;
+			return item.substring(item.indexOf('='));
+		}
 		return crumbTrail;
 	}
 	
@@ -31,9 +43,9 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail.length > this.maxLength){
-			var dialogCode = this.getCode(StateContext.state.parent.index);
-			var stateCode = this.getCode(StateContext.state.index);
-			var countCode = this.getCode(this.count);
+			var dialogCode = this.toCode(StateContext.state.parent.index);
+			var stateCode = this.toCode(StateContext.state.index);
+			var countCode = this.toCode(this.count);
 			var key = dialogCode + stateCode + countCode;
 			if (this.count >= this.historySize)
 				this.storage.removeItem((this.count - this.historySize).toString());
@@ -44,11 +56,17 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		return crumbTrail;
 	}
 	
-	private getCode(val: number): string {
+	private toCode(val: number): string {
 		var rem = val & 52;
 		var div = Math.floor(val / 52);
 		var baseCharCode = rem < 26 ? 97 : 65 - 26; 
 		return String.fromCharCode(baseCharCode + rem) + rem.toString();
+	}
+	
+	private fromCode(val: string): number {
+		var rem = val.match(/^[a-z]/i)[0].charCodeAt(0);
+		var div = +val.match(/\d*/)[0];
+		return div * 52 + rem;
 	}
 }
 
