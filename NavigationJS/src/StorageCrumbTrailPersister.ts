@@ -70,8 +70,9 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 }
 
 class InProcStorage implements Storage {
-	length: number = 0;
 	private store: any = {};
+	length: number;
+	remainingSpace: number;
     [key: string]: any;
     [index: number]: string;
 	
