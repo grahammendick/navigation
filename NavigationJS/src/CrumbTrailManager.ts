@@ -9,6 +9,7 @@ import StateInfoConfig = require('./config/StateInfoConfig');
 class CrumbTrailManager {
     static returnData: any;
     static crumbTrail: string;
+    static crumbTrailKey: string;
     private static CRUMB_1_SEP = '4_';
     private static CRUMB_2_SEP = '5_';
 
@@ -25,7 +26,8 @@ class CrumbTrailManager {
             trailString += this.CRUMB_1_SEP + crumbs[i].state.id + this.CRUMB_2_SEP;
             trailString += ReturnDataManager.formatReturnData(crumbs[i].state, crumbs[i].data);
         }
-        this.crumbTrail = settings.crumbTrailPersister.save(trailString ? trailString : null);
+        this.crumbTrail = trailString ? trailString : null;
+        this.crumbTrailKey = settings.crumbTrailPersister.save(this.crumbTrail);
     }
 
     static getCrumbs(setLast: boolean, skipLatest?: boolean): Array<Crumb> {
@@ -78,7 +80,7 @@ class CrumbTrailManager {
                 data[settings.returnDataKey] = returnDataString;
         }
         if (this.crumbTrail && state.trackCrumbTrail)
-            data[settings.crumbTrailKey] = this.crumbTrail;
+            data[settings.crumbTrailKey] = this.crumbTrailKey;
         return state.stateHandler.getNavigationLink(state, data);
     }
 
