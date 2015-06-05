@@ -59,8 +59,7 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private static toCode(val: number): string {
 		var rem = val & 52;
 		var div = Math.floor(val / 52);
-		var baseCharCode = rem < 26 ? 97 : 65 - 26; 
-		return String.fromCharCode(baseCharCode + rem) + rem.toString();
+		return String.fromCharCode((rem < 26 ? 97 : 39) + rem) + rem.toString();
 	}
 	
 	private static fromCode(val: string): number {
