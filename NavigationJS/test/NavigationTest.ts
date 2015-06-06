@@ -1748,4 +1748,26 @@ describe('NavigationTest', function () {
         assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
+
+    it('NavigateUncombinedToCombinedCrumbTrail', function () {
+        Navigation.settings.combineCrumbTrail = false;
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.settings.combineCrumbTrail = true;
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 2);
+    });
+
+    it('NavigateCombinedToUnombinedCrumbTrail', function () {
+        Navigation.settings.combineCrumbTrail = true;
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.settings.combineCrumbTrail = false;
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 2);
+    });
 });
