@@ -22,8 +22,6 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 				this.storage = new InProcStorage();
 			}
 		}
-		if (this.storage.getItem('CrumbTrailCount') == null)
-			this.storage.setItem('CrumbTrailCount', '0');
 	}
 	
 	load(crumbTrail: string): string {
