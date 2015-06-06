@@ -46,9 +46,11 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 				count = +this.storage.getItem('CrumbTrailCount');
 			var dialogCode = StorageCrumbTrailPersister.toCode(StateContext.dialog.index);
 			var stateCode = StorageCrumbTrailPersister.toCode(StateContext.state.index);
-			var countCode = StorageCrumbTrailPersister.toCode(count);
-			if (count >= this.historySize)
-				this.storage.removeItem('CrumbTrail' + StorageCrumbTrailPersister.toCode(count - this.historySize));
+			var countCode = StorageCrumbTrailPersister.toCode(count % (10 * this.historySize));
+			if (count >= this.historySize) {
+				var purgeCode = StorageCrumbTrailPersister.toCode((count - this.historySize) % (10 * this.historySize));
+				this.storage.removeItem('CrumbTrail' + purgeCode);
+			}
 			this.storage.setItem('CrumbTrail' + countCode, dialogCode + stateCode + '=' + crumbTrail);
 			this.storage.setItem('CrumbTrailCount', (count + 1).toString());
 			return dialogCode + stateCode + countCode;
