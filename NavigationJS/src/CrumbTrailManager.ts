@@ -79,7 +79,7 @@ class CrumbTrailManager {
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
         }
-        if (this.crumbTrail && state.trackCrumbTrail)
+        if (this.crumbTrailKey && state.trackCrumbTrail)
             data[settings.crumbTrailKey] = this.crumbTrailKey;
         return state.stateHandler.getNavigationLink(state, data);
     }
