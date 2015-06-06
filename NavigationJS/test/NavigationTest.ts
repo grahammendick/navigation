@@ -1589,4 +1589,99 @@ describe('NavigationTest', function () {
         assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
     });
+
+    it('NavigateTransitionStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        assert.notEqual(link.indexOf('aaa'), -1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+    });
+
+    it('NavigateTransitionTransitionStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        Navigation.StateController.navigate('d1');
+        Navigation.StateController.navigate('t0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.StateController.navigateLink(link);
+        assert.notEqual(link.indexOf('bbb'), -1);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[1]._states[2]);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[1]._states[1]);
+        assert.equal(Navigation.StateController.crumbs.length, 2);
+    });
+
+    it('Navigate26TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 26; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaz'), -1);
+    });
+
+    it('Navigate27TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 27; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaA'), -1);
+    });
+
+    it('Navigate52TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 52; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaZ'), -1);
+    });
+
+    it('Navigate53TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 53; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaa1'), -1);
+    });
+
+    it('Navigate78TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 78; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaz1'), -1);
+    });
+
+    it('Navigate79TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 79; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaA1'), -1);
+    });
+
+    it('Navigate104TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 104; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaZ1'), -1);
+    });
+
+    it('Navigate207TimesStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        for(var i = 0; i < 207; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaY3'), -1);
+    });
 });
