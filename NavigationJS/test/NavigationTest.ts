@@ -1684,4 +1684,22 @@ describe('NavigationTest', function () {
         var link = Navigation.StateController.getRefreshLink();
         assert.notEqual(link.indexOf('aaY3'), -1);
     });
+
+    it('Navigate50TimesNoRecycleStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
+        for(var i = 0; i < 50; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaX'), -1);
+    });
+
+    it('Navigate51TimesRecycleStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
+        for(var i = 0; i < 51; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        var link = Navigation.StateController.getRefreshLink();
+        assert.notEqual(link.indexOf('aaa'), -1);
+    });
 });
