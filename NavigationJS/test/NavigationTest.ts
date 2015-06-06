@@ -1702,4 +1702,28 @@ describe('NavigationTest', function () {
         var link = Navigation.StateController.getRefreshLink();
         assert.notEqual(link.indexOf('aaa'), -1);
     });
+
+    it('Navigate4TimesNoEmptyStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        for(var i = 0; i < 4; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+        assert.equal(Navigation.StateController.crumbs.length, 1);
+    });
+
+    it('Navigate5TimesEmptyStorageTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        for(var i = 0; i < 5; i++) {
+            Navigation.StateController.navigate('d0');
+        }
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateContext.previousState, null);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
 });
