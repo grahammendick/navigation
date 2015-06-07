@@ -520,8 +520,17 @@ declare module Navigation {
      * Provides access to the Navigation Settings configuration
      */
     class NavigationSettings {
+        /**
+         * Gets or sets the builder and parser of State routes
+         */
         router: IRouter;
+        /**
+         * Gets or sets the manager of the browser Url
+         */
         historyManager: IHistoryManager;
+        /**
+         * Gets or sets the crumb trail persistence mechanism
+         */
         crumbTrailPersister: CrumbTrailPersister;
         /**
          * Gets or sets the key that identifies the StateId
