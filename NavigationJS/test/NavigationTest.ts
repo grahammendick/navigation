@@ -1749,6 +1749,18 @@ describe('NavigationTest', function () {
         assert.equal(Navigation.StateController.crumbs.length, 1);
     });
 
+    it('NavigateStorageMismtachTest', function () {
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigateLink(link);
+        assert.equal(Navigation.StateController.crumbs.length, 0);
+    });
+
     it('NavigateUncombinedToCombinedCrumbTrail', function () {
         Navigation.settings.combineCrumbTrail = false;
         Navigation.StateController.navigate('d0');
