@@ -367,11 +367,31 @@ declare module Navigation {
         getUrl(anchor: HTMLAnchorElement): string;
     }
     
+    /**
+     * Provides the base functionality for crumb trail persistence mechanisms
+     */
     class CrumbTrailPersister {
+        /**
+         * Overridden by derived classes to return the persisted crumb trail
+         * @param crumbTrail The key, returned from the save function, to 
+         * identify the persisted crumb trail
+         * @returns The crumb trail holding navigation and data information
+         */
         load(crumbTrail: string): string;
+        /**
+         * Overridden by derived classes to persist the crumb trail
+         * @param crumbTrail The crumb trail holding navigation and data 
+         * information
+         * @returns The key to be passed to load function for crumb trail
+         * retrieval
+         */
         save(crumbTrail: string): string;
     }    
 
+    /**
+     * Persists crumb trails, over a specified length, in localStorage. 
+     * Prevents the creation of unmanageably long Urls
+     */
     class StorageCrumbTrailPersister extends CrumbTrailPersister {
         constructor();
         constructor(maxLength: number);
