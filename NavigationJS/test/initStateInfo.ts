@@ -143,5 +143,7 @@ function initStateInfo() {
     var dialogs: any = Navigation.StateInfoConfig.dialogs;
     dialogs.d6.states.s0.stateHandler = new CustomStateHandler();
     dialogs.d6.states.s1.stateHandler = new CustomStateHandler();
+    Navigation.settings.combineCrumbTrail = false;
+    Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
 }
 export = initStateInfo;

@@ -7,6 +7,8 @@ import StateInfoConfig = require('./config/StateInfoConfig');
 import HistoryNavigator = require('./history/HistoryNavigator');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HTML5HistoryManager = require('./history/HTML5HistoryManager');
+import CrumbTrailPersister = require('./CrumbTrailPersister');
+import StorageCrumbTrailPersister = require('./StorageCrumbTrailPersister');
 import Crumb = require('./Crumb');
 import StateHandler = require('./StateHandler');
 import StateRouter = require('./StateRouter');
@@ -22,6 +24,8 @@ class Navigation {
     static StateInfoConfig = StateInfoConfig;
     static HashHistoryManager = HashHistoryManager;
     static HTML5HistoryManager = HTML5HistoryManager;
+    static CrumbTrailPersister = CrumbTrailPersister;
+    static StorageCrumbTrailPersister = StorageCrumbTrailPersister;
     static Crumb = Crumb;
     static NavigationSettings = NavigationSettings;
     static StateContext = StateContext;

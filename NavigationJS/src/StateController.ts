@@ -24,17 +24,18 @@ class StateController {
             StateContext.previousState = null;
             StateContext.previousDialog = null;
             CrumbTrailManager.returnData = {};
-            CrumbTrailManager.crumbTrail = data[settings.crumbTrailKey];
-            this.setPreviousStateContext(data);
-            CrumbTrailManager.buildCrumbTrail();
+            CrumbTrailManager.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
+            var uncombined = !!data[settings.previousStateIdKey];
+            this.setPreviousStateContext(uncombined, data);
+            CrumbTrailManager.buildCrumbTrail(uncombined);
             this.crumbs = CrumbTrailManager.getCrumbs(true, settings.combineCrumbTrail);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
     }
     
-    private static setPreviousStateContext(data: any){
-        if (!settings.combineCrumbTrail){
+    private static setPreviousStateContext(uncombined: boolean, data: any){
+        if (uncombined){
             StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;

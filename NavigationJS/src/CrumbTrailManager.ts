@@ -9,12 +9,13 @@ import StateInfoConfig = require('./config/StateInfoConfig');
 class CrumbTrailManager {
     static returnData: any;
     static crumbTrail: string;
+    static crumbTrailKey: string;
     private static CRUMB_1_SEP = '4_';
     private static CRUMB_2_SEP = '5_';
 
-    static buildCrumbTrail() {
+    static buildCrumbTrail(uncombined: boolean) {
         var crumbs = this.getCrumbs(false);
-        if (!settings.combineCrumbTrail && StateContext.previousState)
+        if (uncombined)
             crumbs.push(new Crumb(this.returnData, StateContext.previousState, this.getHref(StateContext.previousState, this.returnData, null), false));        
         crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
         if (settings.combineCrumbTrail)
@@ -26,6 +27,7 @@ class CrumbTrailManager {
             trailString += ReturnDataManager.formatReturnData(crumbs[i].state, crumbs[i].data);
         }
         this.crumbTrail = trailString ? trailString : null;
+        this.crumbTrailKey = settings.crumbTrailPersister.save(this.crumbTrail);
     }
 
     static getCrumbs(setLast: boolean, skipLatest?: boolean): Array<Crumb> {
@@ -77,8 +79,8 @@ class CrumbTrailManager {
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
         }
-        if (this.crumbTrail && state.trackCrumbTrail)
-            data[settings.crumbTrailKey] = this.crumbTrail;
+        if (this.crumbTrailKey && state.trackCrumbTrail)
+            data[settings.crumbTrailKey] = this.crumbTrailKey;
         return state.stateHandler.getNavigationLink(state, data);
     }
 
