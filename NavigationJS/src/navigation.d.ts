@@ -366,6 +366,20 @@ declare module Navigation {
          */
         getUrl(anchor: HTMLAnchorElement): string;
     }
+    
+    class CrumbTrailPersister {
+        load(crumbTrail: string): string;
+        save(crumbTrail: string): string;
+    }    
+
+    class StorageCrumbTrailPersister extends CrumbTrailPersister {
+        constructor();
+        constructor(maxLength: number);
+        constructor(maxLength: number, historySize: number);
+        constructor(maxLength: number, historySize: number, storage: Storage);
+        load(crumbTrail: string): string;
+        save(crumbTrail: string): string;
+    }
 
     /**
      * Defines a contract a class must implement in order to build and parse
@@ -444,6 +458,7 @@ declare module Navigation {
     class NavigationSettings {
         router: IRouter;
         historyManager: IHistoryManager;
+        crumbTrailPersister: CrumbTrailPersister;
         /**
          * Gets or sets the key that identifies the StateId
          */
