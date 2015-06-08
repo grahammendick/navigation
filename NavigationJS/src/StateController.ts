@@ -138,7 +138,7 @@ class StateController {
                 }
             }
         };
-        oldState.unloading(url, () => {
+        oldState.unloading(state, url, () => {
             if (oldUrl === StateContext.url)
                 state.navigating(data, url, navigate);
         });

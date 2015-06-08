@@ -18,7 +18,7 @@ class State implements IState<{ [index: string]: Transition }> {
     route: string;
     trackCrumbTrail: boolean = true;
     stateHandler: IStateHandler = new StateHandler();
-    unloading: (url: string, unload: () => void) => void = function (url, unload) { unload(); };
+    unloading: (state: State, url: string, unload: () => void) => void = function (state, url, unload) { unload(); };
     navigating: (data: any, url: string, navigate: () => void) => void = function (data, url, navigate) { navigate(); };
     dispose: () => void = function () { };
     navigated: (data: any) => void = function (data: any) { };
