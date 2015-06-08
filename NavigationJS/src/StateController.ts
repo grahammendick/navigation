@@ -104,7 +104,7 @@ class StateController {
         return CrumbTrailManager.getRefreshHref(toData);
     }
 
-    static navigateLink(url: string) {
+    static navigateLink(url: string, history?: boolean) {
         try {
             var state = settings.router.getData(url.split('?')[0]).state;
         } catch (e) {
