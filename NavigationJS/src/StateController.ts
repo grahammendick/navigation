@@ -123,14 +123,14 @@ class StateController {
             throw new Error('The Url is invalid\n' + e.message);
         }
         var navigateContinuation =  this.getNavigateContinuation(oldState, oldUrl, state, url);
-        if (oldState) {
-            oldState.unloading(state, data, url, () => {
-                if (oldUrl === StateContext.url)
-                    state.navigating(data, url, navigateContinuation, history);
-            }, history);
-        } else {
+        var unloadingContinuation = () => {
+            if (oldUrl === StateContext.url)
+                state.navigating(data, url, navigateContinuation, history);
+        };
+        if (oldState)
+            oldState.unloading(state, data, url, unloadingContinuation, history);
+        else
             state.navigating(data, url, navigateContinuation, history);
-        }
     }
     
     private static getNavigateContinuation(oldState: State, oldUrl: string, state: State, url: string): () => void {
