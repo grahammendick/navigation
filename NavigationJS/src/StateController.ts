@@ -145,9 +145,8 @@ class StateController {
                     if (url === StateContext.url)
                         this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
-                if (url === StateContext.url) {
+                if (url === StateContext.url)
                     settings.historyManager.addHistory(state, url);
-                }
             }
         };
     }
