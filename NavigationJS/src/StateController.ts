@@ -122,7 +122,19 @@ class StateController {
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        var navigate =  () => {
+        var navigateContinuation =  this.getNavigateContinuation(oldState, oldUrl, state, url);
+        if (oldState){
+            oldState.unloading(state, url, () => {
+                if (oldUrl === StateContext.url)
+                    state.navigating(data, url, navigateContinuation);
+            });
+        } else {
+            state.navigating(data, url, navigateContinuation);
+        }
+    }
+    
+    private static getNavigateContinuation(oldState: State, oldUrl: string, state: State, url: string): () => void {
+        return () => {
             if (oldUrl === StateContext.url) {
                 state.stateHandler.navigateLink(oldState, state, url);
                 StateController.setStateContext(state, url);
@@ -138,14 +150,6 @@ class StateController {
                 }
             }
         };
-        if (oldState){
-            oldState.unloading(state, url, () => {
-                if (oldUrl === StateContext.url)
-                    state.navigating(data, url, navigate);
-            });
-        } else {
-            state.navigating(data, url, navigate);
-        }
     }
 
     private static parseData(data: any, state: State): any {
