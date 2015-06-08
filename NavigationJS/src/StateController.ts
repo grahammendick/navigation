@@ -122,7 +122,7 @@ class StateController {
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        state.navigating(data, url, () => {
+        var navigate =  () => {
             if (oldUrl === StateContext.url) {
                 state.stateHandler.navigateLink(oldState, state, url);
                 StateController.setStateContext(state, url);
@@ -137,6 +137,10 @@ class StateController {
                     settings.historyManager.addHistory(state, url);
                 }
             }
+        };
+        state.unloading(url, () => {
+            if (oldUrl === StateContext.url)
+                state.navigating(data, url, navigate);
         });
     }
 
