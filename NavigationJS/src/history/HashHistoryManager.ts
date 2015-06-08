@@ -1,6 +1,7 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
 import HistoryNavigator = require('./HistoryNavigator');
 import State = require('../config/State');
+import StateContext = require('../StateContext');
 
 class HashHistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
@@ -16,7 +17,8 @@ class HashHistoryManager implements IHistoryManager {
     }
 
     addHistory(state: State, url: string) {
-        if (state.title && (typeof document !== 'undefined'))
+        url = url != null ? url : StateContext.url;
+        if (state && state.title && (typeof document !== 'undefined'))
             document.title = state.title;
         url = this.encode(url);
         if (!this.disabled && location.hash.substring(1) !== url)
