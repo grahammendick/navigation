@@ -110,10 +110,10 @@ class StateController {
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        this._navigateLink(url, state);
+        this._navigateLink(url, state, history);
     }
 
-    private static _navigateLink(url: string, state: State) {
+    private static _navigateLink(url: string, state: State, history?: boolean) {
         try {
             var oldUrl = StateContext.url;
             var oldState = StateContext.state;
@@ -126,10 +126,10 @@ class StateController {
         if (oldState){
             oldState.unloading(state, data, url, () => {
                 if (oldUrl === StateContext.url)
-                    state.navigating(data, url, navigateContinuation);
-            });
+                    state.navigating(data, url, navigateContinuation, history);
+            }, history);
         } else {
-            state.navigating(data, url, navigateContinuation);
+            state.navigating(data, url, navigateContinuation, history);
         }
     }
     
