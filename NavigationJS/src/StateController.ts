@@ -124,7 +124,7 @@ class StateController {
         }
         var navigateContinuation =  this.getNavigateContinuation(oldState, oldUrl, state, url);
         if (oldState){
-            oldState.unloading(state, url, () => {
+            oldState.unloading(state, data, url, () => {
                 if (oldUrl === StateContext.url)
                     state.navigating(data, url, navigateContinuation);
             });
