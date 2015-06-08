@@ -138,10 +138,14 @@ class StateController {
                 }
             }
         };
-        oldState.unloading(state, url, () => {
-            if (oldUrl === StateContext.url)
-                state.navigating(data, url, navigate);
-        });
+        if (oldState){
+            oldState.unloading(state, url, () => {
+                if (oldUrl === StateContext.url)
+                    state.navigating(data, url, navigate);
+            });
+        } else {
+            state.navigating(data, url, navigate);
+        }
     }
 
     private static parseData(data: any, state: State): any {
