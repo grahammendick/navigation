@@ -2762,7 +2762,7 @@ describe('NavigationDataTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink(link));
     });
 
-    it('NavigateInvalilBooleanTest', function () {
+    it('NavigateInvalidBooleanTest', function () {
         Navigation.StateController.navigate('d0');
         var link = Navigation.StateController.getNavigationLink('t0', { '_bool': false });
         link = link.replace('_bool=false', '_bool=invalid');
