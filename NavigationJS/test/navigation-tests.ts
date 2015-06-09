@@ -9,6 +9,19 @@ module NavigationTests {
 	    }
 	}
 	
+	// Crumb Trail Persister
+	class LogCrumbTrailPersister extends Navigation.CrumbTrailPersister {
+		load(crumbTrail: string): string {
+			console.log('load');
+			return crumbTrail;
+		}
+		
+		save(crumbTrail: string): string {
+			console.log('save');
+			return crumbTrail;
+		}
+	}
+	
 	// State Router
 	class LogStateRouter extends Navigation.StateRouter {
 	    getData(route: string): { state: Navigation.State; data: any } {
@@ -20,6 +33,7 @@ module NavigationTests {
 	// Settings
 	Navigation.settings.router = new LogStateRouter();
 	Navigation.settings.historyManager = new LogHistoryManager();
+	Navigation.settings.crumbTrailPersister = new LogCrumbTrailPersister();
 	Navigation.settings.stateIdKey = 'state';
 	
 	// Configuration
