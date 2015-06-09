@@ -1843,6 +1843,28 @@ describe('NavigationTest', function () {
         assert.strictEqual(navigating, undefined);
     });
 
+    it('UnloadingNavigateUrlAndContinueTest', function () {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateController.navigate('t0');
+        var unloading;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].unloading = (state, data, url, unload) => {
+            if (!unloading) {
+                unloading = true;
+                Navigation.StateController.navigateLink(url);
+            }
+            unload();
+        }
+        var navigating = 0;
+        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+            navigating++;
+            navigate();
+        }
+        Navigation.StateController.navigate('d1');
+        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        assert.strictEqual(navigating, 1);
+    });
+
     it('NavigatingNavigateAndContinueTest', function () {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('t0');
