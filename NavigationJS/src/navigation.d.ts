@@ -186,9 +186,19 @@ declare module Navigation {
         trackCrumbTrail: boolean;
         /**
          * Gets or sets the IStateHandler responsible for building and parsing
-         * avigation links to this State
+         * navigation links to this State
          */
         stateHandler: IStateHandler;
+        /**
+         * Called on the old State (this is not the same as the previous 
+         * State) before navigating to a different State
+         * @param state The new State
+         * @param data The new NavigationData
+         * @param url The new target location
+         * @param unload The function to call to continue to navigate
+         * @param history A value indicating whether browser history was used
+         */
+        unloading: (state: State, data: any, url: string, unload: () => void, history?: boolean) => void;
         /**
          * Called on the old State (this is not the same as the previous 
          * State) after navigating to a different State
@@ -203,9 +213,10 @@ declare module Navigation {
          * Called on the new State before navigating to it
          * @param data The new NavigationData
          * @param url The new target location
-         * @param navigate The function to call to continue to navigate 
+         * @param navigate The function to call to continue to navigate
+         * @param history A value indicating whether browser history was used
          */
-        navigating: (data: any, url: string, navigate: () => void) => void;
+        navigating: (data: any, url: string, navigate: () => void, history?: boolean) => void;
     }
 
     /**
