@@ -763,6 +763,12 @@ declare module Navigation {
          */
         static navigateLink(url: string): void;
         /**
+         * Navigates to the url
+         * @param url The target location
+         * @param history A value indicating whether browser history was used
+         */
+        static navigateLink(url: string, history: boolean): void;
+        /**
          * Gets the next State. Depending on the action will either return the
          * 'to' State of a Transition or the 'initial' State of a Dialog
          * @param action The key of a child Transition or the key of a Dialog
