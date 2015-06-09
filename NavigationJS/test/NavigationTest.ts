@@ -1898,6 +1898,40 @@ describe('NavigationTest', function () {
         assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
     });
 
+    it('NavigateHistoryTest', function () {
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        var unloadingHistory, navigatingHistory;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
+            unloadingHistory = history; 
+            unload();
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
+            navigatingHistory = history;
+            navigate();
+        }
+        Navigation.StateController.navigateLink(link, true);
+        assert.strictEqual(unloadingHistory, true);
+        assert.strictEqual(navigatingHistory, true);
+    });
+
+    it('NavigateNonHistoryTest', function () {
+        Navigation.StateController.navigate('d0');
+        var link = Navigation.StateController.getNavigationLink('t0');
+        var unloadingHistory, navigatingHistory;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
+            unloadingHistory = history; 
+            unload();
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
+            navigatingHistory = history;
+            navigate();
+        }
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(unloadingHistory, false);
+        assert.strictEqual(navigatingHistory, false);
+    });
+
     it('NavigateTransitionStorageTest', function () {
         Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
         Navigation.StateController.navigate('d0');
