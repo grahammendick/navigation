@@ -2,6 +2,7 @@
 import HistoryNavigator = require('./HistoryNavigator');
 import settings = require('../settings');
 import State = require('../config/State');
+import StateContext = require('../StateContext');
 
 class HTML5HistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
@@ -12,7 +13,8 @@ class HTML5HistoryManager implements IHistoryManager {
     }
 
     addHistory(state: State, url: string) {
-        if (state.title && (typeof document !== 'undefined'))
+        url = url != null ? url : StateContext.url;
+        if (state && state.title && (typeof document !== 'undefined'))
             document.title = state.title;
         url = settings.applicationPath + url;
         if (!this.disabled && location.pathname + location.search !== url)

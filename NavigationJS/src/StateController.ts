@@ -104,16 +104,16 @@ class StateController {
         return CrumbTrailManager.getRefreshHref(toData);
     }
 
-    static navigateLink(url: string) {
+    static navigateLink(url: string, history?: boolean) {
         try {
             var state = settings.router.getData(url.split('?')[0]).state;
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        this._navigateLink(url, state);
+        this._navigateLink(url, state, history);
     }
 
-    private static _navigateLink(url: string, state: State) {
+    private static _navigateLink(url: string, state: State, history?: boolean) {
         try {
             var oldUrl = StateContext.url;
             var oldState = StateContext.state;
@@ -122,7 +122,19 @@ class StateController {
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        state.navigating(data, url, () => {
+        var navigateContinuation =  this.getNavigateContinuation(oldState, oldUrl, state, url);
+        var unloadContinuation = () => {
+            if (oldUrl === StateContext.url)
+                state.navigating(data, url, navigateContinuation, !!history);
+        };
+        if (oldState)
+            oldState.unloading(state, data, url, unloadContinuation, !!history);
+        else
+            state.navigating(data, url, navigateContinuation, !!history);
+    }
+    
+    private static getNavigateContinuation(oldState: State, oldUrl: string, state: State, url: string): () => void {
+        return () => {
             if (oldUrl === StateContext.url) {
                 state.stateHandler.navigateLink(oldState, state, url);
                 StateController.setStateContext(state, url);
@@ -133,11 +145,10 @@ class StateController {
                     if (url === StateContext.url)
                         this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
-                if (url === StateContext.url) {
+                if (url === StateContext.url)
                     settings.historyManager.addHistory(state, url);
-                }
             }
-        });
+        };
     }
 
     private static parseData(data: any, state: State): any {

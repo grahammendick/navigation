@@ -186,9 +186,19 @@ declare module Navigation {
         trackCrumbTrail: boolean;
         /**
          * Gets or sets the IStateHandler responsible for building and parsing
-         * avigation links to this State
+         * navigation links to this State
          */
         stateHandler: IStateHandler;
+        /**
+         * Called on the old State (this is not the same as the previous 
+         * State) before navigating to a different State
+         * @param state The new State
+         * @param data The new NavigationData
+         * @param url The new target location
+         * @param unload The function to call to continue to navigate
+         * @param history A value indicating whether browser history was used
+         */
+        unloading: (state: State, data: any, url: string, unload: () => void, history?: boolean) => void;
         /**
          * Called on the old State (this is not the same as the previous 
          * State) after navigating to a different State
@@ -203,9 +213,10 @@ declare module Navigation {
          * Called on the new State before navigating to it
          * @param data The new NavigationData
          * @param url The new target location
-         * @param navigate The function to call to continue to navigate 
+         * @param navigate The function to call to continue to navigate
+         * @param history A value indicating whether browser history was used
          */
-        navigating: (data: any, url: string, navigate: () => void) => void;
+        navigating: (data: any, url: string, navigate: () => void, history?: boolean) => void;
     }
 
     /**
@@ -512,6 +523,14 @@ declare module Navigation {
         navigationLink: string;
         /**
          * Initializes a new instance of the Crumb class
+         * @param data The Context Data held at the time of navigating away
+         * from this State
+         * @param state The configuration information associated with this
+         * navigation
+         * @param link The hyperlink navigation to return to the State and pass
+         * the associated Data
+         * @param last A value indicating whether the Crumb is the last in the
+         * crumb trail
          */
         constructor(data: any, state: State, link: string, last: boolean);
     }
@@ -743,6 +762,12 @@ declare module Navigation {
          * @param url The target location
          */
         static navigateLink(url: string): void;
+        /**
+         * Navigates to the url
+         * @param url The target location
+         * @param history A value indicating whether browser history was used
+         */
+        static navigateLink(url: string, history: boolean): void;
         /**
          * Gets the next State. Depending on the action will either return the
          * 'to' State of a Transition or the 'initial' State of a Dialog

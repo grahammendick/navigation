@@ -43,6 +43,6 @@ class Navigation {
 HistoryNavigator.navigateHistory = () => {
     if (StateContext.url === settings.historyManager.getCurrentUrl())
         return;
-    StateController.navigateLink(settings.historyManager.getCurrentUrl());
+    StateController.navigateLink(settings.historyManager.getCurrentUrl(), true);
 }
 export = Navigation;
