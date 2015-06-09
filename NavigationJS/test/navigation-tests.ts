@@ -110,6 +110,7 @@ module NavigationTests {
 	link = Navigation.StateController.getNavigationBackLink(1);
 	var crumb = Navigation.StateController.crumbs[0];
 	link = crumb.navigationLink;
+	Navigation.StateController.navigateLink(link, true);
 	
 	// StateContext
 	Navigation.StateController.navigate('home');
