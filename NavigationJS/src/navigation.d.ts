@@ -523,6 +523,14 @@ declare module Navigation {
         navigationLink: string;
         /**
          * Initializes a new instance of the Crumb class
+         * @param data The Context Data held at the time of navigating away
+         * from this State
+         * @param state The configuration information associated with this
+         * navigation
+         * @param link The hyperlink navigation to return to the State and pass
+         * the associated Data
+         * @param last A value indicating whether the Crumb is the last in the
+         * crumb trail
          */
         constructor(data: any, state: State, link: string, last: boolean);
     }
