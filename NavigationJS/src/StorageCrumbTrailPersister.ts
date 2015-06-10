@@ -69,8 +69,8 @@ class InProcStorage implements Storage {
 	private store: any = {};
 	length: number;
 	remainingSpace: number;
-    [key: string]: any;
-    [index: number]: string;
+	[key: string]: any;
+	[index: number]: string;
 	
 	clear() { throw new Error('Not implemented'); }
 	
