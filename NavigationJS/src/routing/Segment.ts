@@ -42,7 +42,7 @@
             blank = blank || !val;
             return encodeURIComponent(val);
         }
-            var routePath = this.path.replace(this.paramsPattern, replaceParam);
+        var routePath = this.path.replace(this.paramsPattern, replaceParam);
         return { path: !blank ? routePath : null, optional: optional };
     }
 }
