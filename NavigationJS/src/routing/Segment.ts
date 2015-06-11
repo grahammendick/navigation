@@ -37,24 +37,6 @@
         }
         if (!this.optional)
             this.pattern = '\/' + this.pattern;
-        
-        
-        /*
-        var optional = this.path.length === 0;
-        var replaceParam = (match: string, param: string) => {
-            var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
-            this.params.push(name);
-            var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
-            optional = this.path.length === match.length && optionalOrDefault;
-            return '?';
-        }
-        this.pattern = this.path.replace(this.paramsPattern, replaceParam);
-        this.optional = this.optional && optional;
-        this.pattern = this.pattern.replace(this.escapePattern, '\\$&');
-        if (!this.optional)
-            this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
-        else
-            this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');*/
     }
 
     build(data?: any): { path: string; optional: boolean } {
