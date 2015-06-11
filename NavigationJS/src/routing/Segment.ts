@@ -5,7 +5,6 @@
     pattern: string = '';
     params: Array<string> = [];
     private subSegments: Array<{ name: string; param: boolean }> = [];
-    private paramsPattern: RegExp = /\{([^}]+)\}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
     private itemPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
 
