@@ -1197,14 +1197,8 @@ describe('BuildTest', function () {
 
     it('ReservedRegexCharacterBuildTest', function () {
         var router = new Router();
-        var route = router.addRoute('.+*\^$\[\](){}\'/{x}');
-        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\](){}\'/abc');
-    });
-
-    it('ReservedRegexCharacterBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('.+*\^$\[\](){}\'/{x}');
-        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\](){}\'/abc');
+        var route = router.addRoute('.+*\^$\[\]()\'/{x}');
+        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\]()\'/abc');
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentBuildTest', function () {
