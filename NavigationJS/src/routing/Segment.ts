@@ -2,7 +2,7 @@
     path: string;
     optional: boolean;
     defaults: any;
-    pattern: string;
+    pattern: string = '';
     params: Array<string> = [];
     private paramsPattern: RegExp = /\{([^}]+)\}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
@@ -16,10 +16,8 @@
     }
 
     private parse() {
-        this.pattern = '';
-        if (this.path.length === 0) {
+        if (this.path.length === 0)
             return;
-        }
         var matches = this.path.match(this.itemPattern);
         for (var i = 0; i < matches.length; i++) {
             var item = matches[i];
