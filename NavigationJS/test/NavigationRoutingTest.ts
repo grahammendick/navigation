@@ -697,8 +697,8 @@ describe('MatchTest', function () {
 
     it('ReservedRegexCharacterMatchTest', function () {
         var router = new Router();
-        var route = router.addRoute('.+*\^$\[\](){}\'/{x}');
-        var routeMatch = router.match('.+*\^$\[\](){}\'/abc');
+        var route = router.addRoute('.+*\^$\[\]()\'/{x}');
+        var routeMatch = router.match('.+*\^$\[\]()\'/abc');
         assert.equal(routeMatch.route, route);
         assert.equal(Object.keys(routeMatch.data).length, 1);
         assert.equal(routeMatch.data.x, 'abc');

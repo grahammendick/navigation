@@ -6,6 +6,7 @@
     params: Array<string> = [];
     private paramsPattern: RegExp = /\{([^}]+)\}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
+    private itemPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
 
     constructor(path: string, optional: boolean, defaults?: any) {
         this.path = path;
@@ -15,6 +16,31 @@
     }
 
     private parse() {
+        var optional = this.path.length === 0;
+        var matches = this.path.match(this.itemPattern);
+        this.pattern = '';
+        if (matches) {
+            for (var i = 0; i < matches.length; i++) {
+                var item = matches[i];
+                if (item.charAt(0) == '{'){
+                    var param = item.substring(1, item.length - 1);
+                    var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+                    this.params.push(name);
+                    var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
+                    optional = this.path.length === item.length && optionalOrDefault;
+                    this.optional = this.optional && optional;
+                    this.pattern += !this.optional ? '([^/]+)' : '(\/[^/]+)?';
+                } else {
+                    this.pattern += item.replace(this.escapePattern, '\\$&');
+                }
+            }
+        }
+        this.optional = this.optional && optional;
+        if (!this.optional)
+            this.pattern = '\/' + this.pattern;
+        
+        
+        /*
         var optional = this.path.length === 0;
         var replaceParam = (match: string, param: string) => {
             var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
@@ -29,7 +55,7 @@
         if (!this.optional)
             this.pattern = '\/' + this.pattern.replace(/\?/g, '([^/]+)');
         else
-            this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');
+            this.pattern = this.pattern.replace(/\?/, '(\/[^/]+)?');*/
     }
 
     build(data?: any): { path: string; optional: boolean } {
