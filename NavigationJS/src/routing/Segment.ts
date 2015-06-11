@@ -16,23 +16,24 @@
     }
 
     private parse() {
-        var optional = this.path.length === 0;
-        var matches = this.path.match(this.itemPattern);
         this.pattern = '';
-        if (matches) {
-            for (var i = 0; i < matches.length; i++) {
-                var item = matches[i];
-                if (item.charAt(0) == '{'){
-                    var param = item.substring(1, item.length - 1);
-                    var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
-                    this.params.push(name);
-                    var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
-                    optional = this.path.length === item.length && optionalOrDefault;
-                    this.optional = this.optional && optional;
-                    this.pattern += !this.optional ? '([^/]+)' : '(\/[^/]+)?';
-                } else {
-                    this.pattern += item.replace(this.escapePattern, '\\$&');
-                }
+        if (this.path.length === 0) {
+            return;
+        }
+        var optional = false;
+        var matches = this.path.match(this.itemPattern);
+        for (var i = 0; i < matches.length; i++) {
+            var item = matches[i];
+            if (item.charAt(0) == '{'){
+                var param = item.substring(1, item.length - 1);
+                var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+                this.params.push(name);
+                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
+                optional = this.path.length === item.length && optionalOrDefault;
+                this.optional = this.optional && optional;
+                this.pattern += !this.optional ? '([^/]+)' : '(\/[^/]+)?';
+            } else {
+                this.pattern += item.replace(this.escapePattern, '\\$&');
             }
         }
         this.optional = this.optional && optional;
