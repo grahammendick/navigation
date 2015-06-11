@@ -4,7 +4,7 @@
     defaults: any;
     pattern: string = '';
     params: Array<string> = [];
-    private parts: Array<{ name: string; param: boolean }> = [];
+    private subSegments: Array<{ name: string; param: boolean }> = [];
     private paramsPattern: RegExp = /\{([^}]+)\}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
     private itemPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
@@ -21,19 +21,19 @@
             return;
         var matches = this.path.match(this.itemPattern);
         for (var i = 0; i < matches.length; i++) {
-            var part = matches[i];
-            if (part.charAt(0) == '{') {
-                var param = part.substring(1, part.length - 1);
+            var subSegment = matches[i];
+            if (subSegment.charAt(0) == '{') {
+                var param = subSegment.substring(1, subSegment.length - 1);
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
                 this.params.push(name);
-                this.parts.push({ name: name, param: true });
+                this.subSegments.push({ name: name, param: true });
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
-                this.optional = this.optional && this.path.length === part.length && optionalOrDefault;
+                this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
                 this.pattern += !this.optional ? '([^/]+)' : '(\/[^/]+)?';
             } else {
                 this.optional = false;
-                this.parts.push({ name: part, param: false });
-                this.pattern += part.replace(this.escapePattern, '\\$&');
+                this.subSegments.push({ name: subSegment, param: false });
+                this.pattern += subSegment.replace(this.escapePattern, '\\$&');
             }
         }
         if (!this.optional)
@@ -44,13 +44,13 @@
         var routePath = '';
         var optional = this.optional;
         var blank = false;
-        for(var i = 0; i < this.parts.length; i++) {
-            var part = this.parts[i];
-            if (!part.param) {
-                routePath += part.name;
+        for(var i = 0; i < this.subSegments.length; i++) {
+            var subSegment = this.subSegments[i];
+            if (!subSegment.param) {
+                routePath += subSegment.name;
             } else {
-                var val = data[part.name];
-                var defaultVal = this.defaults[part.name];
+                var val = data[subSegment.name];
+                var defaultVal = this.defaults[subSegment.name];
                 optional = optional && (!val || val === defaultVal);
                 val = val ? val : defaultVal;
                 blank = blank || !val;
