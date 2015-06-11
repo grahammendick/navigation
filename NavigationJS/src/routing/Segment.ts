@@ -21,7 +21,7 @@
         var matches = this.path.match(this.itemPattern);
         for (var i = 0; i < matches.length; i++) {
             var item = matches[i];
-            if (item.charAt(0) == '{'){
+            if (item.charAt(0) == '{') {
                 var param = item.substring(1, item.length - 1);
                 var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
                 this.params.push(name);
