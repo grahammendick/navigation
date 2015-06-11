@@ -23,7 +23,7 @@
             optional = this.path.length === match.length && optionalOrDefault;
             return '?';
         }
-            this.pattern = this.path.replace(this.paramsPattern, replaceParam);
+        this.pattern = this.path.replace(this.paramsPattern, replaceParam);
         this.optional = this.optional && optional;
         this.pattern = this.pattern.replace(this.escapePattern, '\\$&');
         if (!this.optional)
