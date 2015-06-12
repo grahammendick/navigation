@@ -31,7 +31,7 @@ class ArrayConverter extends TypeConverter {
 
     convertTo(val: any): string {
         var formatArray = [];
-        var arr: Array<any> = val;
+        var arr: any[] = val;
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] != null)
                 formatArray.push(this.converter.convertTo(arr[i]).replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));

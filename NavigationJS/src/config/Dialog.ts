@@ -2,7 +2,7 @@
 import IDialog = require('./IDialog');
 
 class Dialog implements IDialog<State, { [index: string]: State }> {
-    _states: Array<State> = [];
+    _states: State[] = [];
     states: { [index: string]: State } = {};
     index: number;
     initial: State;

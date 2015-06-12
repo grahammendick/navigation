@@ -9,7 +9,7 @@ class ReturnDataManager {
     private static RET_3_SEP = '3_';
 
     static formatReturnData(state: State, returnData: any): string {
-        var returnDataArray: Array<string> = [];
+        var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()
                 && (!settings.router.supportsDefaults || returnData[key] !== state.defaults[key]))

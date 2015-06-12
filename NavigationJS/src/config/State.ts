@@ -5,7 +5,7 @@ import StateHandler = require('../StateHandler');
 import Transition = require('./Transition');
 
 class State implements IState<{ [index: string]: Transition }> {
-    _transitions: Array<Transition> = [];
+    _transitions: Transition[] = [];
     transitions: { [index: string]: Transition } = {};
     parent: Dialog;
     index: number;

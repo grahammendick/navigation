@@ -9,7 +9,7 @@ import Transition = require('./Transition');
 import ITransition = require('./ITransition');
 
 class StateInfoConfig {
-    static _dialogs: Array<Dialog> = [];
+    static _dialogs: Dialog[] = [];
     static dialogs: { [index: string]: Dialog } = {};
     static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
         this._dialogs = [];

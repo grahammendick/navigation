@@ -9,7 +9,7 @@ class StateContext {
     static data: any;
     static url: string;
 
-    static includeCurrentData(data: any, keys?: Array<string>): any {
+    static includeCurrentData(data: any, keys?: string[]): any {
         if (!keys) {
             keys = [];
             for (var key in this.data)

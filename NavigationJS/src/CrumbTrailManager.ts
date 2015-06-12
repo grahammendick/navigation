@@ -30,8 +30,8 @@ class CrumbTrailManager {
         this.crumbTrailKey = settings.crumbTrailPersister.save(this.crumbTrail);
     }
 
-    static getCrumbs(setLast: boolean, skipLatest?: boolean): Array<Crumb> {
-        var crumbTrailArray: Array<Crumb> = [];
+    static getCrumbs(setLast: boolean, skipLatest?: boolean): Crumb[] {
+        var crumbTrailArray: Crumb[] = [];
         var arrayCount = 0;
         var trail = this.crumbTrail;
         var crumbTrailSize = !trail ? 0 : trail.split(this.CRUMB_1_SEP).length - 1;

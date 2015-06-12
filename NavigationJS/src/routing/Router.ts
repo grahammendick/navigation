@@ -1,7 +1,7 @@
 ﻿import Route = require('./Route');
 
 class Router {
-    private routes: Array<Route> = [];
+    private routes: Route[] = [];
 
     addRoute(path: string, defaults?: any): Route {
         path = path.slice(-1) === '/' ? path.substring(0, path.length - 1) : path;

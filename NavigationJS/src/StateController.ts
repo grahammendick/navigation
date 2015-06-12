@@ -9,7 +9,7 @@ import StateContext = require('./StateContext');
 import StateInfoConfig = require('./config/StateInfoConfig');
 
 class StateController {
-    static crumbs: Array<Crumb>;
+    static crumbs: Crumb[];
     private static NAVIGATE_HANDLER_ID = 'navigateHandlerId';
     private static navigateHandlerId: number = 1;
     private static navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};

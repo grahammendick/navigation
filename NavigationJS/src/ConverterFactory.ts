@@ -32,7 +32,7 @@ class ConverterFactory {
         var fullType = typeof obj;
         var type2: string;
         if (Object.prototype.toString.call(obj) === '[object Array]') {
-            var arr: Array<any> = obj;
+            var arr: any[] = obj;
             type2 = 'string';
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] != null) {
