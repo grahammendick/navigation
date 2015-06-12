@@ -23,13 +23,13 @@ class StateRouter implements IRouter {
         }
         paramsKey = paramsKey.slice(0, -1);
         var stateRouteInfo: { route: Route; data: any; count: number } = state['_routeInfo'][paramsKey];
-        var routePath = null;
+        var stateRoutePath = null;
         if (stateRouteInfo) {
-            routePath = stateRouteInfo.route.build(data);
+            stateRoutePath = stateRouteInfo.route.build(data);
         } else {
             for(var i = 0; i < routes.length; i++) {
                 var route = routes[i];
-                routePath = route.build(data);
+                var routePath = route.build(data);
                 if (routePath) {
                     var routeInfo = { route: route, data: {}, count: 0 };
                     for (var j = 0; j < route.params.length; j++) {
@@ -38,13 +38,15 @@ class StateRouter implements IRouter {
                             routeInfo.count++;
                         }
                     }
-                    if (!stateRouteInfo || routeInfo.count > stateRouteInfo.count)
+                    if (!stateRouteInfo || routeInfo.count > stateRouteInfo.count) {
                         stateRouteInfo = routeInfo;
+                        stateRoutePath = routePath;
+                    }
                 }
             }
             state['_routeInfo'][paramsKey] = stateRouteInfo;
         }
-        return { route: routePath, data: stateRouteInfo ? stateRouteInfo.data : {} };
+        return { route: stateRoutePath, data: stateRouteInfo ? stateRouteInfo.data : {} };
     }
 
     addRoutes(dialogs: Dialog[]) {
