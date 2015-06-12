@@ -23,7 +23,7 @@
             var subSegment = matches[i];
             if (subSegment.charAt(0) == '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
-                var name = param.slice(-1) === '?' ? param.substring(0, param.length - 1) : param;
+                var name = param.slice(-1) === '?' ? param.slice(0, -1) : param;
                 this.params.push(name);
                 this.subSegments.push({ name: name, param: true });
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
