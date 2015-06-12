@@ -69,8 +69,8 @@ class StateRouter implements IRouter {
             }
         }
         states.sort((stateA, stateB) => {
-            var stateANumber = stateA.route.substring(0, 1) === '{' ? -1 : 0;
-            var stateBNumber = stateB.route.substring(0, 1) === '{' ? -1 : 0;
+            var stateANumber = stateA.route.charAt(0) === '{' ? -1 : 0;
+            var stateBNumber = stateB.route.charAt(0) === '{' ? -1 : 0;
             return stateBNumber - stateANumber;
         });
         for (var i = 0; i < states.length; i++) {
