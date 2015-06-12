@@ -14,24 +14,37 @@ class StateRouter implements IRouter {
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
-        var routes: Route[] = state['_routes'];
-        var stateRouteInfo = { route: null, data: {}, params: -1 }; 
-        for(var i = 0; i < routes.length; i++) {
-            var route = routes[i];
-            var routePath = route.build(data);
-            var routeInfo = { route: routePath, data: {}, params: 0 };
-            if (routePath) {
-                for (var j = 0; j < route.params.length; j++) {
-                    if (data[route.params[i].name]) {
-                        routeInfo.data[route.params[i].name] = {};
-                        routeInfo.params++;
-                    }
-                }
-                if (routeInfo.params > stateRouteInfo.params)
-                    stateRouteInfo = routeInfo;
-            }
+        var routes: Route[] = state['_routeInfo'].routes;
+        var params = state['_routeInfo'].params;
+        var paramsKey = '';
+        for(var key in params) {
+            if (data[key])
+                paramsKey += key + ',';
         }
-        return { route: stateRouteInfo.route, data: stateRouteInfo.data };
+        paramsKey = paramsKey.slice(0, -1);
+        var stateRouteInfo: { route: Route; data: any; count: number } = state['_routeInfo'][paramsKey];
+        var routePath = null;
+        if (stateRouteInfo) {
+            routePath = stateRouteInfo.route.build(data);
+        } else {
+            for(var i = 0; i < routes.length; i++) {
+                var route = routes[i];
+                routePath = route.build(data);
+                if (routePath) {
+                    var routeInfo = { route: route, data: {}, count: 0 };
+                    for (var j = 0; j < route.params.length; j++) {
+                        if (data[route.params[j].name]) {
+                            routeInfo.data[route.params[j].name] = {};
+                            routeInfo.count++;
+                        }
+                    }
+                    if (!stateRouteInfo || routeInfo.count > stateRouteInfo.count)
+                        stateRouteInfo = routeInfo;
+                }
+            }
+            state['_routeInfo'][paramsKey] = stateRouteInfo;
+        }
+        return { route: routePath, data: stateRouteInfo ? stateRouteInfo.data : {} };
     }
 
     addRoutes(dialogs: Dialog[]) {
@@ -50,13 +63,19 @@ class StateRouter implements IRouter {
         for (var i = 0; i < states.length; i++) {
             var state = states[i];
             var stateRoutes: Route[] = [];
+            var params = {};
             var routes = state.route.split(',');
             for(var j = 0; j < routes.length; j++) {
                 var stateRoute = this.router.addRoute(routes[j], state.formattedDefaults);
+                for(var k = 0; k < stateRoute.params.length; k++){
+                    var param = stateRoute.params[k];
+                    if (!params[param.name])
+                        params[param.name] = {};
+                }
                 stateRoutes.push(stateRoute);
                 stateRoute['_state'] = state;
             }
-            state['_routes'] = stateRoutes;
+            state['_routeInfo'] = { routes: stateRoutes, params: params };
         }
     }
 }
