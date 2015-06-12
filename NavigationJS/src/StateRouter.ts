@@ -75,25 +75,27 @@ class StateRouter implements IRouter {
             return stateBNumber - stateANumber;
         });
         for (var i = 0; i < states.length; i++) {
-            var state = states[i];
-            var stateRoutes: Route[] = [];
-            var params = {};
-            var paramsCount = 0;
-            var routes = state.route.split(',');
-            for(var j = 0; j < routes.length; j++) {
-                var stateRoute = this.router.addRoute(routes[j], state.formattedDefaults);
-                for(var k = 0; k < stateRoute.params.length; k++){
-                    var param = stateRoute.params[k];
-                    if (!params[param.name]) {
-                        params[param.name] = paramsCount;
-                        paramsCount++;
-                    }
-                }
-                stateRoutes.push(stateRoute);
-                stateRoute['_state'] = state;
-            }
-            state['_routeInfo'] = { routes: stateRoutes, params: params };
+            this.addStateRoutes(states[i]);
         }
+    }
+    
+    private addStateRoutes(state: State) {
+        var routeInfo: { routes: Route[]; params: any} = {routes: [], params: {}}; 
+        var count = 0;
+        var routes = state.route.split(',');
+        for(var i = 0; i < routes.length; i++) {
+            var route = this.router.addRoute(routes[i], state.formattedDefaults);
+            for(var j = 0; j < route.params.length; j++){
+                var param = route.params[j];
+                if (!routeInfo.params[param.name]) {
+                    routeInfo.params[param.name] = count;
+                    count++;
+                }
+            }
+            routeInfo.routes.push(route);
+            route['_state'] = state;
+        }
+        state['_routeInfo'] = { routes: routeInfo.routes, params: routeInfo.params };
     }
 }
 export = StateRouter;
