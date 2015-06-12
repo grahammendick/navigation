@@ -15,11 +15,11 @@ class StateRouter implements IRouter {
 
     getRoute(state: State, data: any): { route: string; data: any } {
         var routes: Route[] = state['_routes'];
-        var stateRouteInfo = { data: {}, params: -1 }; 
+        var stateRouteInfo = { route: null, data: {}, params: -1 }; 
         for(var i = 0; i < routes.length; i++) {
             var route = routes[i];
             var routePath = route.build(data);
-            var routeInfo = { data: {}, params: 0 };
+            var routeInfo = { route: routePath, data: {}, params: 0 };
             if (routePath) {
                 for (var j = 0; j < route.params.length; j++) {
                     if (data[route.params[i].name]) {
@@ -31,7 +31,7 @@ class StateRouter implements IRouter {
                     stateRouteInfo = routeInfo;
             }
         }
-        return { route: route.build(data), data: stateRouteInfo.data };
+        return { route: stateRouteInfo.route, data: stateRouteInfo.data };
     }
 
     addRoutes(dialogs: Dialog[]) {
