@@ -19,7 +19,7 @@ class StateRouter implements IRouter {
         var paramsKey = '';
         for(var key in params) {
             if (data[key])
-                paramsKey += key + ',';
+                paramsKey += params[key] + ',';
         }
         paramsKey = paramsKey.slice(0, -1);
         var stateRouteInfo: { route: Route; data: any; count: number } = state['_routeInfo'][paramsKey];
@@ -64,13 +64,16 @@ class StateRouter implements IRouter {
             var state = states[i];
             var stateRoutes: Route[] = [];
             var params = {};
+            var paramsCount = 0;
             var routes = state.route.split(',');
             for(var j = 0; j < routes.length; j++) {
                 var stateRoute = this.router.addRoute(routes[j], state.formattedDefaults);
                 for(var k = 0; k < stateRoute.params.length; k++){
                     var param = stateRoute.params[k];
-                    if (!params[param.name])
-                        params[param.name] = {};
+                    if (!params[param.name]) {
+                        params[param.name] = paramsCount;
+                        paramsCount++;
+                    }
                 }
                 stateRoutes.push(stateRoute);
                 stateRoute['_state'] = state;
