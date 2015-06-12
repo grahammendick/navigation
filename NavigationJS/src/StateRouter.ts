@@ -22,31 +22,43 @@ class StateRouter implements IRouter {
                 paramsKey += params[key] + ',';
         }
         paramsKey = paramsKey.slice(0, -1);
-        var stateRouteInfo: { route: Route; data: any; count: number } = state['_routeInfo'][paramsKey];
-        var stateRoutePath = null;
-        if (stateRouteInfo) {
-            stateRoutePath = stateRouteInfo.route.build(data);
+        var routeInfo: { route: Route; data: any; } = state['_routeInfo'][paramsKey];
+        var routePath = null;
+        if (routeInfo) {
+            routePath = routeInfo.route.build(data);
         } else {
-            for(var i = 0; i < routes.length; i++) {
-                var route = routes[i];
-                var routePath = route.build(data);
-                if (routePath) {
-                    var routeInfo = { route: route, data: {}, count: 0 };
-                    for (var j = 0; j < route.params.length; j++) {
-                        if (data[route.params[j].name]) {
-                            routeInfo.data[route.params[j].name] = {};
-                            routeInfo.count++;
-                        }
-                    }
-                    if (!stateRouteInfo || routeInfo.count > stateRouteInfo.count) {
-                        stateRouteInfo = routeInfo;
-                        stateRoutePath = routePath;
+            var bestMatch = StateRouter.findBestMatch(routes, data);
+            if (bestMatch) {
+                routePath = bestMatch.routePath;
+                routeInfo = { route: bestMatch.route, data: bestMatch.data };
+                state['_routeInfo'][paramsKey] = routeInfo;
+            }
+        }
+        return { route: routePath, data: routeInfo ? routeInfo.data : {} };
+    }
+    
+    private static findBestMatch(routes: Route[], data: any): { route: Route; data: any; routePath: string } {
+        var bestMatch: { route: Route; data: any; routePath: string };
+        var bestMatchCount = -1;
+        for(var i = 0; i < routes.length; i++) {
+            var route = routes[i];
+            var routePath = route.build(data);
+            if (routePath) {
+                var count = 0;
+                var routeData = {};
+                for (var j = 0; j < route.params.length; j++) {
+                    if (data[route.params[j].name]) {
+                        routeData[route.params[j].name] = {};
+                        count++;
                     }
                 }
+                if (count > bestMatchCount) {
+                    bestMatch = { route: route, data: routeData, routePath: routePath };
+                    bestMatchCount = count;
+                }
             }
-            state['_routeInfo'][paramsKey] = stateRouteInfo;
         }
-        return { route: stateRoutePath, data: stateRouteInfo ? stateRouteInfo.data : {} };
+        return bestMatch;
     }
 
     addRoutes(dialogs: Dialog[]) {
