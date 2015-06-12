@@ -14,12 +14,24 @@ class StateRouter implements IRouter {
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
-        var route: Route = state['_route'];
-        var routeData = {};
-        for (var i = 0; i < route.params.length; i++) {
-            routeData[route.params[i].name] = data[route.params[i].name];
+        var routes: Route[] = state['_routes'];
+        var stateRouteInfo = { data: {}, params: -1 }; 
+        for(var i = 0; i < routes.length; i++) {
+            var route = routes[i];
+            var routePath = route.build(data);
+            var routeInfo = { data: {}, params: 0 };
+            if (routePath) {
+                for (var j = 0; j < route.params.length; j++) {
+                    if (data[route.params[i].name]) {
+                        routeInfo.data[route.params[i].name] = {};
+                        routeInfo.params++;
+                    }
+                }
+                if (routeInfo.params > stateRouteInfo.params)
+                    stateRouteInfo = routeInfo;
+            }
         }
-        return { route: route.build(data), data: routeData };
+        return { route: route.build(data), data: stateRouteInfo.data };
     }
 
     addRoutes(dialogs: Dialog[]) {
@@ -37,8 +49,14 @@ class StateRouter implements IRouter {
         });
         for (var i = 0; i < states.length; i++) {
             var state = states[i];
-            state['_route'] = this.router.addRoute(state.route, state.formattedDefaults);
-            state['_route']['_state'] = state;
+            var stateRoutes: Route[] = [];
+            var routes = state.route.split(',');
+            for(var j = 0; j < routes.length; j++) {
+                var stateRoute = this.router.addRoute(routes[j], state.formattedDefaults);
+                stateRoutes.push(stateRoute);
+                stateRoute['_state'] = state;
+            }
+            state['_routes'] = stateRoutes;
         }
     }
 }
