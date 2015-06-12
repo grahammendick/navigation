@@ -95,7 +95,7 @@ class StateRouter implements IRouter {
             routeInfo.routes.push(route);
             route['_state'] = state;
         }
-        state['_routeInfo'] = { routes: routeInfo.routes, params: routeInfo.params };
+        state['_routeInfo'] = routeInfo;
     }
 }
 export = StateRouter;
