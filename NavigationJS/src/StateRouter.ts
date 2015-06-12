@@ -14,27 +14,26 @@ class StateRouter implements IRouter {
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
-        var routes: Route[] = state['_routeInfo'].routes;
-        var params = state['_routeInfo'].params;
+        var routeInfo: {routes: Route[]; params: {}; matches: {} } = state['_routeInfo'];
         var paramsKey = '';
-        for(var key in params) {
+        for(var key in routeInfo.params) {
             if (data[key])
-                paramsKey += params[key] + ',';
+                paramsKey += routeInfo.params[key] + ',';
         }
         paramsKey = paramsKey.slice(0, -1);
-        var routeInfo: { route: Route; data: any; } = state['_routeInfo'][paramsKey];
+        var routeMatch: { route: Route; data: any; } = routeInfo.matches[paramsKey];
         var routePath: string = null;
-        if (routeInfo) {
-            routePath = routeInfo.route.build(data);
+        if (routeMatch) {
+            routePath = routeMatch.route.build(data);
         } else {
-            var bestMatch = StateRouter.findBestMatch(routes, data);
+            var bestMatch = StateRouter.findBestMatch(routeInfo.routes, data);
             if (bestMatch) {
                 routePath = bestMatch.routePath;
-                routeInfo = { route: bestMatch.route, data: bestMatch.data };
-                state['_routeInfo'][paramsKey] = routeInfo;
+                routeMatch = { route: bestMatch.route, data: bestMatch.data };
+                routeInfo.matches[paramsKey] = routeMatch;
             }
         }
-        return { route: routePath, data: routeInfo ? routeInfo.data : {} };
+        return { route: routePath, data: routeMatch ? routeMatch.data : {} };
     }
     
     private static findBestMatch(routes: Route[], data: any): { route: Route; data: any; routePath: string } {
@@ -80,7 +79,7 @@ class StateRouter implements IRouter {
     }
     
     private addStateRoutes(state: State) {
-        var routeInfo: { routes: Route[]; params: any} = {routes: [], params: {}}; 
+        var routeInfo = { routes: new Array<Route>(), params: {}, matches: {} }; 
         var count = 0;
         var routes = state.route.split(',');
         for(var i = 0; i < routes.length; i++) {
