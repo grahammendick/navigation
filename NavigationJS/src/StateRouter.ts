@@ -22,9 +22,9 @@ class StateRouter implements IRouter {
         return { route: route.build(data), data: routeData };
     }
 
-    addRoutes(dialogs: Array<Dialog>) {
+    addRoutes(dialogs: Dialog[]) {
         this.router = new Router();
-        var states: Array<State> = [];
+        var states: State[] = [];
         for (var i = 0; i < dialogs.length; i++) {
             for (var j = 0; j < dialogs[i]._states.length; j++) {
                 states.push(dialogs[i]._states[j]);

@@ -11,7 +11,7 @@ class StateHandler implements IStateHandler {
         var routeInfo = settings.router.getRoute(state, data);
         if (routeInfo.route == null)
             return null;
-        var query: Array<string> = [];
+        var query: string[] = [];
         for (var key in data) {
             if (!routeInfo.data || routeInfo.data[key] == null)
                 query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
@@ -39,8 +39,8 @@ class StateHandler implements IStateHandler {
         return data;
     }
 
-    truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb> {
-        var newCrumbs: Array<Crumb> = [];
+    truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
+        var newCrumbs: Crumb[] = [];
         if (state.parent.initial === state)
             return newCrumbs;
         for (var i = 0; i < crumbs.length; i++) {

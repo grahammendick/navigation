@@ -3,8 +3,8 @@
     optional: boolean;
     defaults: any;
     pattern: string = '';
-    params: Array<string> = [];
-    private subSegments: Array<{ name: string; param: boolean }> = [];
+    params: string[] = [];
+    private subSegments: { name: string; param: boolean }[] = [];
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
     private itemPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
 

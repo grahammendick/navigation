@@ -3,9 +3,9 @@
 class Route {
     path: string;
     defaults: any;
-    private segments: Array<Segment> = [];
+    private segments: Segment[] = [];
     private pattern: RegExp;
-    params: Array<{ name: string; optional: boolean }> = [];
+    params: { name: string; optional: boolean }[] = [];
 
     constructor(path: string, defaults?: any) {
         this.path = path;
@@ -21,7 +21,7 @@ class Route {
             segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
             this.segments.unshift(segment);
             pattern = segment.pattern + pattern;
-            var params: Array<{ name: string; optional: boolean }> = [];
+            var params: { name: string; optional: boolean }[] = [];
             for (var j = 0; j < segment.params.length; j++) {
                 params.push({ name: segment.params[j], optional: segment.optional });
             }
