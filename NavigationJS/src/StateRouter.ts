@@ -14,7 +14,7 @@ class StateRouter implements IRouter {
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
-        var routeInfo: {routes: Route[]; params: {}; matches: {} } = state['_routeInfo'];
+        var routeInfo: { routes: Route[]; params: {}; matches: {} } = state['_routeInfo'];
         var paramsKey = '';
         for(var key in routeInfo.params) {
             if (data[key])
@@ -84,7 +84,7 @@ class StateRouter implements IRouter {
         var routes = state.route.split(',');
         for(var i = 0; i < routes.length; i++) {
             var route = this.router.addRoute(routes[i], state.formattedDefaults);
-            for(var j = 0; j < route.params.length; j++){
+            for(var j = 0; j < route.params.length; j++) {
                 var param = route.params[j];
                 if (!routeInfo.params[param.name]) {
                     routeInfo.params[param.name] = count;
