@@ -23,7 +23,7 @@ class StateRouter implements IRouter {
         }
         paramsKey = paramsKey.slice(0, -1);
         var routeInfo: { route: Route; data: any; } = state['_routeInfo'][paramsKey];
-        var routePath = null;
+        var routePath: string = null;
         if (routeInfo) {
             routePath = routeInfo.route.build(data);
         } else {
