@@ -5,8 +5,8 @@
     pattern: string = '';
     params: string[] = [];
     private subSegments: { name: string; param: boolean }[] = [];
+    private subSegmentPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
-    private itemPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
 
     constructor(path: string, optional: boolean, defaults?: any) {
         this.path = path;
@@ -18,7 +18,7 @@
     private parse() {
         if (this.path.length === 0)
             return;
-        var matches = this.path.match(this.itemPattern);
+        var matches = this.path.match(this.subSegmentPattern);
         for (var i = 0; i < matches.length; i++) {
             var subSegment = matches[i];
             if (subSegment.charAt(0) == '{') {
