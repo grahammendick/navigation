@@ -56,26 +56,31 @@ describe('MatchTest', function () {
     });
 
     it('NoParamTwoSegmentMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/c');
-        var routeMatch = router.match('ab/c');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 0);
-        assert.equal(route.params.length, 0);
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('ab/c');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
+        Navigation.StateController.navigateLink('ab/c?x=ab');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'ab');
     });
 
     it('NoParamTwoSegmentNonMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/c');
-        assert.equal(router.match(' ab/c'), null);
-        assert.equal(router.match('ab/c '), null);
-        assert.equal(router.match('ab/d'), null);
-        assert.equal(router.match('ab/cd'), null);
-        assert.equal(router.match('a/b/c'), null);
-        assert.equal(router.match('abc'), null);
-        assert.equal(router.match('ad/c'), null);
-        assert.equal(router.match('aab/c'), null);
-        assert.equal(router.match(''), null);
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/ ab/c'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/c '), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/d'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/a/b/c'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/abc'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ad/c'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/aab/c'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
     });
 
     it('OneParamOneSegmentMatchTest', function () {
@@ -877,9 +882,12 @@ describe('BuildTest', function () {
     });
 
     it('NoParamTwoSegmentBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/c');
-        assert.equal(route.build(), '/ab/c');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d'), '/ab/c');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab/c?x=ab');
     });
 
     it('OneParamOneSegmentBuildTest', function () {
