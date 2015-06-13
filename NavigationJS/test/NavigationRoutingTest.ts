@@ -812,14 +812,17 @@ describe('MatchTest', function () {
     });
 
     it('SpacesMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('{x}');
-        var routeMatch = router.match('   a  ');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 1);
-        assert.equal(routeMatch.data.x, '   a  ');
-        assert.equal(route.params.length, 1);
-        assert.equal(route.params[0].name, 'x');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('   a  ');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, '   a  ');
+        Navigation.StateController.navigateLink('   a  ?y=   b  ');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, '   a  ');
+        assert.equal(Navigation.StateContext.data.y, '   b  ');
     });
 
     it('MultiCharParamMatchTest', function () {
@@ -1498,9 +1501,12 @@ describe('BuildTest', function () {
     });
 
     it('SpacesBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('{x}');
-        assert.equal(route.build({ x: '   a  ' }), '/%20%20%20a%20%20');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: '   a  ' }), '/%20%20%20a%20%20');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: '   a  ', y: '   b  ' }), '/%20%20%20a%20%20?y=%20%20%20b%20%20');
     });
 
     it('MultiCharParamBuildTest', function () {
