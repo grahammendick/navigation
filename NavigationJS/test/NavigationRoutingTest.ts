@@ -2,8 +2,28 @@
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
 import Router = require('../src/routing/Router');
+import Navigation = require('../src/Navigation');
 
 describe('MatchTest', function () {
+    it('RootMatchTest', function () {
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '' }]}
+            ]);
+        Navigation.StateController.navigateLink('/');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
+    });
+
+    it('RootNonMatchTest', function () {
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '' }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/ '), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/a'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('//'), /Url is invalid/, '');
+    });
+
     it('RootMatchTest', function () {
         var router = new Router();
         var route = router.addRoute('');
@@ -848,11 +868,14 @@ describe('MatchTest', function () {
 
 describe('BuildTest', function () {
     it('RootBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('');
-        assert.equal(route.build(), '/');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '', trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d'), '/');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/?x=ab');
     });
-
+    
     it('NoParamOneSegmentBuildTest', function () {
         var router = new Router();
         var route = router.addRoute('abc');
