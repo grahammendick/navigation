@@ -826,6 +826,20 @@ describe('MatchTest', function () {
     });
 
     it('MultiCharParamMatchTest', function () {
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('a/someVal');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.someVar, 'someVal');
+        Navigation.StateController.navigateLink('a/someVal?anotherVar=anotherVal');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.someVar, 'someVal');
+        assert.equal(Navigation.StateContext.data.anotherVar, 'anotherVal');
+    });
+
+    it('MultiCharParamMatchTest', function () {
         var router = new Router();
         var route = router.addRoute('a/{someVar}');
         var routeMatch = router.match('a/someVal');
@@ -1510,9 +1524,12 @@ describe('BuildTest', function () {
     });
 
     it('MultiCharParamBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('a/{someVar}');
-        assert.equal(route.build({ someVar: 'someVal' }), '/a/someVal');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal' }), '/a/someVal');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal', anotherVar: 'anotherVal' }), '/a/someVal?anotherVar=anotherVal');
     });
 
     it('SlashBuildTest', function () {
