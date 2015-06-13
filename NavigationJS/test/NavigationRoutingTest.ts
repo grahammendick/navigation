@@ -1000,15 +1000,19 @@ describe('MatchTest', function () {
     });
 
     it('ExtraDefaultsMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('{x}', { x: 'a', y: 'b' });
-        var routeMatch = router.match('');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 2);
-        assert.equal(routeMatch.data.x, 'a');
-        assert.equal(routeMatch.data.y, 'b');
-        assert.equal(route.params.length, 1);
-        assert.equal(route.params[0].name, 'x');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'a');
+        assert.equal(Navigation.StateContext.data.y, 'b');
+        Navigation.StateController.navigateLink('?z=c');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.x, 'a');
+        assert.equal(Navigation.StateContext.data.y, 'b');
+        assert.equal(Navigation.StateContext.data.z, 'c');
     });
 
     it('CaseInsensitiveMatchTest', function () {
@@ -1629,15 +1633,11 @@ describe('BuildTest', function () {
         assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
     });
 
-    it('ExtraDataMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('{x}');
-        assert.equal(route.build({ x: 'a', y: 'b' }), '/a');
-    });
-
     it('EmptyStringNonMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('{x}');
-        assert.equal(route.build({ x: '' }), null);
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '' }), null);
     });
 })
