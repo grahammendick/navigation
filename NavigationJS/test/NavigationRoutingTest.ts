@@ -740,53 +740,75 @@ describe('MatchTest', function () {
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/{w}/{x}/{y?}/{z?}', { w: 'abc', x: 'de' });
-        var routeMatch = router.match('ab/cd/ef/hi/jk');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 4);
-        assert.equal(routeMatch.data.w, 'cd');
-        assert.equal(routeMatch.data.x, 'ef');
-        assert.equal(routeMatch.data.y, 'hi');
-        assert.equal(routeMatch.data.z, 'jk');
-        routeMatch = router.match('ab/cde/fg/h');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 3);
-        assert.equal(routeMatch.data.w, 'cde');
-        assert.equal(routeMatch.data.x, 'fg');
-        assert.equal(routeMatch.data.y, 'h');
-        routeMatch = router.match('ab/cc/def');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 2);
-        assert.equal(routeMatch.data.w, 'cc');
-        assert.equal(routeMatch.data.x, 'def');
-        routeMatch = router.match('ab/ccdd');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 2);
-        assert.equal(routeMatch.data.w, 'ccdd');
-        assert.equal(routeMatch.data.x, 'de');
-        routeMatch = router.match('ab');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 2);
-        assert.equal(routeMatch.data.w, 'abc');
-        assert.equal(routeMatch.data.x, 'de');
-        assert.equal(route.params.length, 4);
-        assert.equal(route.params[0].name, 'w');
-        assert.equal(route.params[1].name, 'x');
-        assert.equal(route.params[2].name, 'y');
-        assert.equal(route.params[3].name, 'z');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/ab/cd/ef/hi/jk');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 4);
+        assert.equal(Navigation.StateContext.data.w, 'cd');
+        assert.equal(Navigation.StateContext.data.x, 'ef');
+        assert.equal(Navigation.StateContext.data.y, 'hi');
+        assert.equal(Navigation.StateContext.data.z, 'jk');
+        Navigation.StateController.navigateLink('/ab/cd/ef/hi/jk?a=lm');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 5);
+        assert.equal(Navigation.StateContext.data.w, 'cd');
+        assert.equal(Navigation.StateContext.data.x, 'ef');
+        assert.equal(Navigation.StateContext.data.y, 'hi');
+        assert.equal(Navigation.StateContext.data.z, 'jk');
+        assert.equal(Navigation.StateContext.data.a, 'lm');
+        Navigation.StateController.navigateLink('/ab/cde/fg/h');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.w, 'cde');
+        assert.equal(Navigation.StateContext.data.x, 'fg');
+        assert.equal(Navigation.StateContext.data.y, 'h');
+        Navigation.StateController.navigateLink('/ab/cde/fg/h?a=i');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 4);
+        assert.equal(Navigation.StateContext.data.w, 'cde');
+        assert.equal(Navigation.StateContext.data.x, 'fg');
+        assert.equal(Navigation.StateContext.data.y, 'h');
+        assert.equal(Navigation.StateContext.data.a, 'i');
+        Navigation.StateController.navigateLink('/ab/cc/def');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.w, 'cc');
+        assert.equal(Navigation.StateContext.data.x, 'def');
+        Navigation.StateController.navigateLink('/ab/cc/def?a=gg');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.w, 'cc');
+        assert.equal(Navigation.StateContext.data.x, 'def');
+        assert.equal(Navigation.StateContext.data.a, 'gg');
+        Navigation.StateController.navigateLink('/ab/ccdd');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.w, 'ccdd');
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        Navigation.StateController.navigateLink('/ab/ccdd?a=fg');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.w, 'ccdd');
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.a, 'fg');
+        Navigation.StateController.navigateLink('/ab');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.w, 'abc');
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        Navigation.StateController.navigateLink('/ab?a=fg');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.w, 'abc');
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.a, 'fg');
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultNonMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/{w}/{x}/{y?}/{z?}', { w: 'abc', x: 'de' });
-        assert.equal(router.match(' ab/cde/fg/h'), null);
-        assert.equal(router.match('ab/cde/fg/h/ij/k'), null);
-        assert.equal(router.match('ab/cde/fg/h//'), null);
-        assert.equal(router.match('ab/cde/fg//'), null);
-        assert.equal(router.match('ab/cd//'), null);
-        assert.equal(router.match('ab//'), null);
-        assert.equal(router.match(''), null);
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/ ab/cde/fg/h'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg/h/ij/k'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg/h//'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg//'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/cd//'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
     });
 
     it('SpacesMatchTest', function () {
@@ -1405,46 +1427,74 @@ describe('BuildTest', function () {
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/{w}/{x}/{y?}/{z?}', { w: 'abc', x: 'de' });
-        assert.equal(route.build({ w: 'cd', x: 'ef', y: 'hi', z: 'jk' }), '/ab/cd/ef/hi/jk');
-        assert.equal(route.build({ w: 'cd', x: 'de', y: 'hi', z: 'jk' }), '/ab/cd/de/hi/jk');
-        assert.equal(route.build({ w: 'abc', x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
-        assert.equal(route.build({ w: 'abc', x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
-        assert.equal(route.build({ x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
-        assert.equal(route.build({ x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
-        assert.equal(route.build({ x: 'de', y: 'hi' }), '/ab/abc/de/hi');
-        assert.equal(route.build({ x: 'ef' }), '/ab/abc/ef');
-        assert.equal(route.build({ x: 'de' }), '/ab');
-        assert.equal(route.build({ y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
-        assert.equal(route.build({ y: 'hi' }), '/ab/abc/de/hi');
-        assert.equal(route.build({ w: 'cde', x: 'fg', y: 'h' }), '/ab/cde/fg/h');
-        assert.equal(route.build({ w: 'abc', x: 'de', y: 'h' }), '/ab/abc/de/h');
-        assert.equal(route.build({ w: 'cde', y: 'h', z: 'jk' }), '/ab/cde/de/h/jk');
-        assert.equal(route.build({ w: 'abc', y: 'h', z: 'jk' }), '/ab/abc/de/h/jk');
-        assert.equal(route.build({ w: 'cde', y: 'h' }), '/ab/cde/de/h');
-        assert.equal(route.build({ w: 'abc', y: 'h' }), '/ab/abc/de/h');
-        assert.equal(route.build({ w: 'cc', x: 'def' }), '/ab/cc/def');
-        assert.equal(route.build({ w: 'cc', x: 'de' }), '/ab/cc');
-        assert.equal(route.build({ w: 'abc', x: 'de' }), '/ab');
-        assert.equal(route.build({ w: 'abc', x: 'def' }), '/ab/abc/def');
-        assert.equal(route.build({ w: 'ccdd' }), '/ab/ccdd');
-        assert.equal(route.build({ w: 'abc' }), '/ab');
-        assert.equal(route.build(), '/ab');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cd', x: 'ef', y: 'hi', z: 'jk' }), '/ab/cd/ef/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cd', x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/cd/ef/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cd', x: 'de', y: 'hi', z: 'jk' }), '/ab/cd/de/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cd', x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/cd/de/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/ef/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/ef/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'hi' }), '/ab/abc/de/hi');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'hi', a: 'lm' }), '/ab/abc/de/hi?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'ef' }), '/ab/abc/ef');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'ef', a: 'lm' }), '/ab/abc/ef?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de' }), '/ab');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', a: 'lm' }), '/ab?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'hi' }), '/ab/abc/de/hi');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'hi', a: 'lm' }), '/ab/abc/de/hi?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cde', x: 'fg', y: 'h' }), '/ab/cde/fg/h');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cde', x: 'fg', y: 'h', a: 'i' }), '/ab/cde/fg/h?a=i');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'h' }), '/ab/abc/de/h');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'h', a: 'i' }), '/ab/abc/de/h?a=i');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cde', y: 'h', z: 'jk' }), '/ab/cde/de/h/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cde', y: 'h', z: 'jk', a: 'lm' }), '/ab/cde/de/h/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', y: 'h', z: 'jk' }), '/ab/abc/de/h/jk');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', y: 'h', z: 'jk', a: 'lm' }), '/ab/abc/de/h/jk?a=lm');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cde', y: 'h' }), '/ab/cde/de/h');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cde', y: 'h', a: 'i' }), '/ab/cde/de/h?a=i');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', y: 'h' }), '/ab/abc/de/h');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', y: 'h', a: 'i' }), '/ab/abc/de/h?a=i');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cc', x: 'def' }), '/ab/cc/def');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cc', x: 'def', a: 'gg' }), '/ab/cc/def?a=gg');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cc', x: 'de' }), '/ab/cc');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'cc', x: 'de', a: 'gg' }), '/ab/cc?a=gg');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de' }), '/ab');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de', a: 'fg' }), '/ab?a=fg');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'def' }), '/ab/abc/def');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'def', a: 'gg' }), '/ab/abc/def?a=gg');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'ccdd' }), '/ab/ccdd');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'ccdd', a: 'gg' }), '/ab/ccdd?a=gg');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc' }), '/ab');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { w: 'abc', a: 'fg' }), '/ab?a=fg');
+        assert.equal(Navigation.StateController.getNavigationLink('d'), '/ab');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { a: 'fg' }), '/ab?a=fg');
     });
 
-    it('FourParamTwoOptionalFiveSegmentDefaultBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('ab/{w}/{x}/{y?}/{z?}', { w: 'abc', x: 'de' });
-        assert.equal(route.build({ z: 'jk' }), null);
-        assert.equal(route.build({ w: 'cde', z: 'jk' }), null);
-        assert.equal(route.build({ w: 'abc', z: 'jk' }), null);
-        assert.equal(route.build({ x: 'fg', z: 'jk' }), null);
-        assert.equal(route.build({ x: 'de', z: 'jk' }), null);
-        assert.equal(route.build({ w: 'abc', x: 'fg', z: 'jk' }), null);
-        assert.equal(route.build({ w: 'cde', x: 'de', z: 'jk' }), null);
-        assert.equal(route.build({ w: 'cde', x: 'fg', z: 'jk' }), null);
-        assert.equal(route.build({ w: 'abc', x: 'de', z: 'jk' }), null);
+    it('FourParamTwoOptionalFiveSegmentDefaultNonBuildTest', function () {
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { w: 'cde', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { w: 'abc', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'fg', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'de', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'fg', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { w: 'cde', x: 'de', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { w: 'cde', x: 'fg', z: 'jk' }), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { w: 'abc', x: 'de', z: 'jk' }), null);
     });
 
     it('SpacesBuildTest', function () {
