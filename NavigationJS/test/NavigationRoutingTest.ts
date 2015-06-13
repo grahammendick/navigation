@@ -850,18 +850,24 @@ describe('MatchTest', function () {
     });
 
     it('ReservedUrlCharacterMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('a/{*="()\'-_+~@:?><.;[],!£$%^#&}', { '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' });
-        var routeMatch = router.match('a/*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 1);
-        assert.equal(routeMatch.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
-        var routeMatch = router.match('a');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 1);
-        assert.equal(routeMatch.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-        assert.equal(route.params.length, 1);
-        assert.equal(route.params[0].name, '*="()\'-_+~@:?><.;[],!£$%^#&');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'a/{*="()\'-_+~@:?><.;[]!£$%^#&}', defaults: { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data['*="()\'-_+~@:?><.;[]!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+        Navigation.StateController.navigateLink('/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data['*="()\'-_+~@:?><.;[]!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+        assert.equal(Navigation.StateContext.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+        Navigation.StateController.navigateLink('/a');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data['*="()\'-_+~@:?><.;[]!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+        Navigation.StateController.navigateLink('/a?*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data['*="()\'-_+~@:?><.;[]!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+        assert.equal(Navigation.StateContext.data['*="()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
     });
 
     it('ReservedRegexCharacterMatchTest', function () {
@@ -1514,11 +1520,16 @@ describe('BuildTest', function () {
     });
 
     it('ReservedUrlCharacterBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('a/{*="()\'-_+~@:?><.;[],!£$%^#&}', { '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' });
-        assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-        assert.equal(route.build({ '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
-        assert.equal(route.build(), '/a');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: 'a/{*="()\'-_+~@:?><.;[]!£$%^#&}', defaults: { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&', '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&', '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+        assert.equal(Navigation.StateController.getNavigationLink('d'), '/a');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { '*="()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a?*%3D%22()\'-_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
     });
 
     it('ReservedRegexCharacterBuildTest', function () {
