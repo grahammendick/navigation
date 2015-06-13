@@ -21,23 +21,6 @@ describe('MatchTest', function () {
         assert.equal(router.match('//'), null);
     });
 
-    it('RootMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('');
-        var routeMatch = router.match('');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 0);
-        assert.equal(route.params.length, 0);
-    });
-
-    it('RootNonMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('');
-        assert.equal(router.match(' '), null);
-        assert.equal(router.match('a'), null);
-        assert.equal(router.match('//'), null);
-    });
-
     it('NoParamOneSegmentMatchTest', function () {
         var router = new Router();
         var route = router.addRoute('abc');
