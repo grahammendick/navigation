@@ -816,10 +816,10 @@ describe('MatchTest', function () {
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
-        Navigation.StateController.navigateLink('   a  ');
+        Navigation.StateController.navigateLink('/   a  ');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
         assert.equal(Navigation.StateContext.data.x, '   a  ');
-        Navigation.StateController.navigateLink('   a  ?y=   b  ');
+        Navigation.StateController.navigateLink('/   a  ?y=   b  ');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
         assert.equal(Navigation.StateContext.data.x, '   a  ');
         assert.equal(Navigation.StateContext.data.y, '   b  ');
@@ -830,42 +830,23 @@ describe('MatchTest', function () {
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
             ]);
-        Navigation.StateController.navigateLink('a/someVal');
+        Navigation.StateController.navigateLink('/a/someVal');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
         assert.equal(Navigation.StateContext.data.someVar, 'someVal');
-        Navigation.StateController.navigateLink('a/someVal?anotherVar=anotherVal');
+        Navigation.StateController.navigateLink('/a/someVal?anotherVar=anotherVal');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
         assert.equal(Navigation.StateContext.data.someVar, 'someVal');
         assert.equal(Navigation.StateContext.data.anotherVar, 'anotherVal');
     });
 
-    it('MultiCharParamMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('a/{someVar}');
-        var routeMatch = router.match('a/someVal');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 1);
-        assert.equal(routeMatch.data.someVar, 'someVal');
-        assert.equal(route.params.length, 1);
-        assert.equal(route.params[0].name, 'someVar');
-    });
-
-    it('SlashMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('/abc/');
-        var routeMatch = router.match('abc');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 0);
-        assert.equal(route.params.length, 0);
-    });
-
     it('MatchSlashTest', function () {
-        var router = new Router();
-        var route = router.addRoute('abc');
-        var routeMatch = router.match('/abc/');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 0);
-        assert.equal(route.params.length, 0);
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('abc/');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'abc');
     });
 
     it('ReservedUrlCharacterMatchTest', function () {
@@ -1530,12 +1511,6 @@ describe('BuildTest', function () {
             ]);
         assert.equal(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal' }), '/a/someVal');
         assert.equal(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal', anotherVar: 'anotherVal' }), '/a/someVal?anotherVar=anotherVal');
-    });
-
-    it('SlashBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('/abc/');
-        assert.equal(route.build(), '/abc');
     });
 
     it('ReservedUrlCharacterBuildTest', function () {
