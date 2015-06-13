@@ -871,14 +871,17 @@ describe('MatchTest', function () {
     });
 
     it('ReservedRegexCharacterMatchTest', function () {
-        var router = new Router();
-        var route = router.addRoute('.+*\^$\[\]()\'/{x}');
-        var routeMatch = router.match('.+*\^$\[\]()\'/abc');
-        assert.equal(routeMatch.route, route);
-        assert.equal(Object.keys(routeMatch.data).length, 1);
-        assert.equal(routeMatch.data.x, 'abc');
-        assert.equal(route.params.length, 1);
-        assert.equal(route.params[0].name, 'x');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('.+*\^$\[\]()\'/abc');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'abc');
+        Navigation.StateController.navigateLink('.+*\^$\[\]()\'/abc?y=de');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'abc');
+        assert.equal(Navigation.StateContext.data.y, 'de');
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentMatchTest', function () {
@@ -1533,9 +1536,12 @@ describe('BuildTest', function () {
     });
 
     it('ReservedRegexCharacterBuildTest', function () {
-        var router = new Router();
-        var route = router.addRoute('.+*\^$\[\]()\'/{x}');
-        assert.equal(route.build({ x: 'abc' }), '/.+*\^$\[\]()\'/abc');
+        Navigation.StateInfoConfig.build(<any> [
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'abc' }), '/.+*\^$\[\]()\'/abc');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'abc', y: 'de' }), '/.+*\^$\[\]()\'/abc?y=de');
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentBuildTest', function () {
