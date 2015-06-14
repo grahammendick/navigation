@@ -64,14 +64,10 @@ class StateRouter implements IRouter {
 
     addRoutes(dialogs: Dialog[]) {
         this.router = new Router();
-        var states: State[] = [];
         for (var i = 0; i < dialogs.length; i++) {
             for (var j = 0; j < dialogs[i]._states.length; j++) {
-                states.push(dialogs[i]._states[j]);
+                this.addStateRoutes(dialogs[i]._states[j]);
             }
-        }
-        for (var i = 0; i < states.length; i++) {
-            this.addStateRoutes(states[i]);
         }
         this.router.sort((routeA: Route, routeB: Route) => {
             var routeANumber = routeA.path.charAt(0) === '{' ? -1 : 0;
