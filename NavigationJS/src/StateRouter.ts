@@ -68,20 +68,20 @@ class StateRouter implements IRouter {
                 states.push(dialogs[i]._states[j]);
             }
         }
-        states.sort((stateA, stateB) => {
-            var stateANumber = stateA.route.charAt(0) === '{' ? -1 : 0;
-            var stateBNumber = stateB.route.charAt(0) === '{' ? -1 : 0;
-            return stateBNumber - stateANumber;
-        });
         for (var i = 0; i < states.length; i++) {
             this.addStateRoutes(states[i]);
         }
+        this.router.sort((routeA: Route, routeB: Route) => {
+            var routeANumber = routeA.path.charAt(0) === '{' ? -1 : 0;
+            var routeBNumber = routeB.path.charAt(0) === '{' ? -1 : 0;
+            return routeBNumber - routeANumber;
+        });
     }
     
     private addStateRoutes(state: State) {
         var routeInfo = { routes: new Array<Route>(), params: {}, matches: {} }; 
         var count = 0;
-        var routes = state.route.split(',');
+        var routes = this.getRoutes(state);
         for(var i = 0; i < routes.length; i++) {
             var route = this.router.addRoute(routes[i], state.formattedDefaults);
             for(var j = 0; j < route.params.length; j++) {
@@ -95,6 +95,19 @@ class StateRouter implements IRouter {
             route['_state'] = state;
         }
         state['_routeInfo'] = routeInfo;
+    }
+    
+    private getRoutes(state: State): string[] {
+        var routes: string[] = [];
+        var route = state.route;
+        if (typeof route === 'string') {
+            routes.push(route);
+        } else {
+            for(var i = 0; i < route.length; i++) {
+                routes.push(route[i]);
+            }
+        }
+        return routes;
     }
 }
 export = StateRouter;

@@ -27,5 +27,9 @@ class Router {
         }
         return null;
     }
+    
+    sort(compare: (routeA: Route, routeB: Route) => number) {
+        this.routes.sort(compare);
+    }
 }
 export = Router;

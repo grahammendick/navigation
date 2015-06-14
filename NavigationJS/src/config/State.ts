@@ -15,7 +15,7 @@ class State implements IState<{ [index: string]: Transition }> {
     defaultTypes: any = {};
     formattedDefaults: any = {};
     title: string;
-    route: string;
+    route: string | string[];
     trackCrumbTrail: boolean = true;
     stateHandler: IStateHandler = new StateHandler();
     unloading: (state: State, data: any, url: string, unload: () => void, history?: boolean) => void = function (state, data, url, unload) { unload(); };
