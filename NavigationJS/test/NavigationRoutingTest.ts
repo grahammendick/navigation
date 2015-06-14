@@ -5,7 +5,7 @@ import Navigation = require('../src/Navigation');
 
 describe('MatchTest', function () {
     it('RootMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '', trackCrumbTrail: false }]}
             ]);
@@ -17,7 +17,7 @@ describe('MatchTest', function () {
     });
 
     it('RootNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '', trackCrumbTrail: false }]}
             ]);
@@ -27,7 +27,7 @@ describe('MatchTest', function () {
     });
 
     it('NoParamOneSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'abc', trackCrumbTrail: false }]}
             ]);
@@ -39,7 +39,7 @@ describe('MatchTest', function () {
     });
 
     it('NoParamOneSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'abc', trackCrumbTrail: false }]}
             ]);
@@ -55,7 +55,7 @@ describe('MatchTest', function () {
     });
 
     it('NoParamTwoSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
             ]);
@@ -67,7 +67,7 @@ describe('MatchTest', function () {
     });
 
     it('NoParamTwoSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
             ]);
@@ -83,7 +83,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOneSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -97,7 +97,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOneSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -107,7 +107,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamTwoSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
             ]);
@@ -121,7 +121,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamTwoSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
             ]);
@@ -136,7 +136,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -152,7 +152,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -163,7 +163,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamThreeSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -179,7 +179,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamThreeSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -194,7 +194,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamFourSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }]}
             ]);
@@ -210,7 +210,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamFourSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }]}
             ]);
@@ -224,7 +224,7 @@ describe('MatchTest', function () {
     });
 
     it('OneOptionalParamOneSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}', trackCrumbTrail: false }]}
             ]);
@@ -243,7 +243,7 @@ describe('MatchTest', function () {
     });
 
     it('OneOptionalParamOneSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}', trackCrumbTrail: false }]}
             ]);
@@ -252,7 +252,7 @@ describe('MatchTest', function () {
     });
 
     it('OneOptionalParamTwoSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}', trackCrumbTrail: false }]}
             ]);
@@ -271,7 +271,7 @@ describe('MatchTest', function () {
     });
 
     it('OneOptionalParamTwoSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}', trackCrumbTrail: false }]}
             ]);
@@ -285,7 +285,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoOptionalParamTwoSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -313,7 +313,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoOptionalParamTwoSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -322,7 +322,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoOptionalParamThreeSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -350,7 +350,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoOptionalParamThreeSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -362,7 +362,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -385,7 +385,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -395,7 +395,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalThreeSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -418,7 +418,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalThreeSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -431,7 +431,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalFourSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -454,7 +454,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalFourSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -467,7 +467,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOneMixedSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
             ]);
@@ -481,7 +481,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOneMixedSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
             ]);
@@ -492,7 +492,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneMixedSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }]}
             ]);
@@ -508,7 +508,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneMixedSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }]}
             ]);
@@ -522,7 +522,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentOneMixedMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -545,7 +545,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentOneMixedNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -557,7 +557,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOneSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
             ]);
@@ -578,7 +578,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOneSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
             ]);
@@ -587,7 +587,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamTwoSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }]}
             ]);
@@ -608,7 +608,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamTwoSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }]}
             ]);
@@ -622,7 +622,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamTwoSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' }, trackCrumbTrail: false }]}
             ]);
@@ -656,7 +656,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentTwoDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' }, trackCrumbTrail: false }]}
             ]);
@@ -665,7 +665,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -690,7 +690,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -700,7 +700,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' }, trackCrumbTrail: false }]}
             ]);
@@ -730,7 +730,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' }, trackCrumbTrail: false }]}
             ]);
@@ -739,7 +739,7 @@ describe('MatchTest', function () {
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
             ]);
@@ -797,7 +797,7 @@ describe('MatchTest', function () {
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
             ]);
@@ -811,7 +811,7 @@ describe('MatchTest', function () {
     });
 
     it('SpacesMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -825,7 +825,7 @@ describe('MatchTest', function () {
     });
 
     it('MultiCharParamMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
             ]);
@@ -839,7 +839,7 @@ describe('MatchTest', function () {
     });
 
     it('MatchSlashTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -849,7 +849,7 @@ describe('MatchTest', function () {
     });
 
     it('ReservedUrlCharacterMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'a/{*="()\'-_+~@:?><.;[]!£$%^#&}', defaults: { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }]}
             ]);
@@ -870,7 +870,7 @@ describe('MatchTest', function () {
     });
 
     it('ReservedRegexCharacterMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
             ]);
@@ -884,7 +884,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x?}', trackCrumbTrail: false }]}
             ]);
@@ -898,7 +898,7 @@ describe('MatchTest', function () {
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x?}', trackCrumbTrail: false }]}
             ]);
@@ -909,7 +909,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryThreeSegmentMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -925,7 +925,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryThreeSegmentNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -939,7 +939,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultMandatoryMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -955,7 +955,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultMandatoryNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -966,7 +966,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }]}
             ]);
@@ -982,7 +982,7 @@ describe('MatchTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }]}
             ]);
@@ -999,7 +999,7 @@ describe('MatchTest', function () {
     });
 
     it('ExtraDefaultsMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }]}
             ]);
@@ -1015,7 +1015,7 @@ describe('MatchTest', function () {
     });
 
     it('CaseInsensitiveMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'abc/{x}', trackCrumbTrail: false }]}
             ]);
@@ -1029,7 +1029,7 @@ describe('MatchTest', function () {
     });
 
     it('MultipleRoutesMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', trackCrumbTrail: false },
                 { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }]}
@@ -1051,7 +1051,7 @@ describe('MatchTest', function () {
     });
 
     it('MultipleRoutesNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', trackCrumbTrail: false },
                 { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }]}
@@ -1064,7 +1064,7 @@ describe('MatchTest', function () {
 
 describe('BuildTest', function () {
     it('RootBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '', trackCrumbTrail: false }]}
             ]);
@@ -1073,7 +1073,7 @@ describe('BuildTest', function () {
     });
 
     it('NoParamOneSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'abc', trackCrumbTrail: false }]}
             ]);
@@ -1082,7 +1082,7 @@ describe('BuildTest', function () {
     });
 
     it('NoParamTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
             ]);
@@ -1091,7 +1091,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOneSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -1100,7 +1100,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOneSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -1108,7 +1108,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
             ]);
@@ -1117,7 +1117,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamTwoSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
             ]);
@@ -1126,7 +1126,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1135,7 +1135,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamTwoSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1146,7 +1146,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamThreeSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1155,7 +1155,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamThreeSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1166,7 +1166,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamFourSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1175,7 +1175,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamFourSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1186,7 +1186,7 @@ describe('BuildTest', function () {
     });
 
     it('OneOptionalParamOneSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}', trackCrumbTrail: false }]}
             ]);
@@ -1197,7 +1197,7 @@ describe('BuildTest', function () {
     });
 
     it('OneOptionalParamTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}', trackCrumbTrail: false }]}
             ]);
@@ -1208,7 +1208,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoOptionalParamTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1221,7 +1221,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoOptionalParamTwoSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1229,7 +1229,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoOptionalParamThreeSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1242,7 +1242,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoOptionalParamThreeSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1250,7 +1250,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1261,7 +1261,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1269,7 +1269,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalThreeSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1280,7 +1280,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalThreeSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1289,7 +1289,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalFourSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1300,7 +1300,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalFourSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1309,7 +1309,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOneMixedSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
             ]);
@@ -1318,7 +1318,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOneMixedSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
             ]);
@@ -1326,7 +1326,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOneMixedSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }]}
             ]);
@@ -1335,7 +1335,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneMixedSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }]}
             ]);
@@ -1345,7 +1345,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentOneMixedBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1356,7 +1356,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentOneMixedNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }]}
             ]);
@@ -1365,7 +1365,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOneSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
             ]);
@@ -1378,7 +1378,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamTwoSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }]}
             ]);
@@ -1391,7 +1391,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamTwoSegmentTwoDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' }, trackCrumbTrail: false }]}
             ]);
@@ -1414,7 +1414,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamTwoSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -1427,7 +1427,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -1436,7 +1436,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalTwoSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' }, trackCrumbTrail: false }]}
             ]);
@@ -1455,7 +1455,7 @@ describe('BuildTest', function () {
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
             ]);
@@ -1510,7 +1510,7 @@ describe('BuildTest', function () {
     });
 
     it('FourParamTwoOptionalFiveSegmentDefaultNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
             ]);
@@ -1526,7 +1526,7 @@ describe('BuildTest', function () {
     });
 
     it('SpacesBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
@@ -1535,7 +1535,7 @@ describe('BuildTest', function () {
     });
 
     it('MultiCharParamBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
             ]);
@@ -1544,7 +1544,7 @@ describe('BuildTest', function () {
     });
 
     it('ReservedUrlCharacterBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'a/{*="()\'-_+~@:?><.;[]!£$%^#&}', defaults: { '*="()\'-_+~@:?><.;[]!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }]}
             ]);
@@ -1557,7 +1557,7 @@ describe('BuildTest', function () {
     });
 
     it('ReservedRegexCharacterBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
             ]);
@@ -1566,7 +1566,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x?}', trackCrumbTrail: false }]}
             ]);
@@ -1575,7 +1575,7 @@ describe('BuildTest', function () {
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab{x?}', trackCrumbTrail: false }]}
             ]);
@@ -1583,7 +1583,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryThreeSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1592,7 +1592,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryThreeSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }]}
             ]);
@@ -1602,7 +1602,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultMandatoryBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -1613,7 +1613,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamTwoSegmentDefaultMandatoryNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }]}
             ]);
@@ -1622,7 +1622,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }]}
             ]);
@@ -1633,7 +1633,7 @@ describe('BuildTest', function () {
     });
 
     it('TwoParamOneOptionalMandatoryFourSegmentDefaultMandatoryNonBuildTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }]}
             ]);
@@ -1642,7 +1642,7 @@ describe('BuildTest', function () {
     });
 
     it('EmptyStringNonMatchTest', function () {
-        Navigation.StateInfoConfig.build(<any> [
+        Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
