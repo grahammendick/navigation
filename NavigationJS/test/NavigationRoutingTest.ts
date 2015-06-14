@@ -1061,38 +1061,16 @@ describe('MatchTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink('/cd'), /Url is invalid/, '');
     });
 
-    it('TwoRouteMatchTest', function () {
+    it('TwoRouteOneWithParamMatchTest', function () {
         Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
-                { key: 's', route: ['', 'abc'], trackCrumbTrail: false }]}
+                { key: 's', route: ['', 'abc/{x}'], trackCrumbTrail: false }]}
             ]);
         Navigation.StateController.navigateLink('/');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
-        Navigation.StateController.navigateLink('/?x=d');
+        Navigation.StateController.navigateLink('/?y=d');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.equal(Navigation.StateContext.data.x, 'd');
-        Navigation.StateController.navigateLink('/abc');
-        assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
-        Navigation.StateController.navigateLink('/abc?x=d');
-        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.equal(Navigation.StateContext.data.x, 'd');
-    });
-
-    it('TwoRouteNoMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: ['', 'abc'], trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/ab'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ abc'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('//abc'), /Url is invalid/, '');
-    });
-
-    it('TwoRouteParamMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: ['abc/{x}', 'def/{x}'], trackCrumbTrail: false }]}
-            ]);
+        assert.equal(Navigation.StateContext.data.y, 'd');
         Navigation.StateController.navigateLink('/abc/de');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
         assert.equal(Navigation.StateContext.data.x, 'de');
@@ -1100,19 +1078,44 @@ describe('MatchTest', function () {
         assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
         assert.equal(Navigation.StateContext.data.x, 'de');
         assert.equal(Navigation.StateContext.data.y, 'f');
-        Navigation.StateController.navigateLink('/def/gh');
-        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.equal(Navigation.StateContext.data.x, 'gh');
-        Navigation.StateController.navigateLink('/def/gh?y=i');
-        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.equal(Navigation.StateContext.data.x, 'gh');
-        assert.equal(Navigation.StateContext.data.y, 'i');
     });
 
-    it('TwoRouteParamNoMatchTest', function () {
+    it('TwoRouteOneWithParamNonMatchTest', function () {
         Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
-                { key: 's', route: ['abc/{x}', 'def/{x}'], trackCrumbTrail: false }]}
+                { key: 's', route: ['', 'abc/{x}'], trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/abc'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ab/de'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ abc/de'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('//abc/de'), /Url is invalid/, '');
+    });
+
+    it('TwoRouteParamMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/abc/de');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        Navigation.StateController.navigateLink('/abc/de?z=f');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.z, 'f');
+        Navigation.StateController.navigateLink('/def/gh');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.y, 'gh');
+        Navigation.StateController.navigateLink('/def/gh?z=i');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.y, 'gh');
+        assert.equal(Navigation.StateContext.data.z, 'i');
+    });
+
+    it('TwoRouteParamNonMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
             ]);
         assert.throws(() => Navigation.StateController.navigateLink('/abc'), /Url is invalid/, '');
         assert.throws(() => Navigation.StateController.navigateLink('/def'), /Url is invalid/, '');
@@ -1147,7 +1150,7 @@ describe('MatchTest', function () {
         assert.equal(Navigation.StateContext.data.z, 'i');
     });
 
-    it('TwoRouteParentChildNoMatchTest', function () {
+    it('TwoRouteParentChildNonMatchTest', function () {
         Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
                 { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }]}
@@ -1748,5 +1751,56 @@ describe('BuildTest', function () {
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '' }), null);
+    });
+
+    it('TwoRouteOneWithParamBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['', 'abc/{x}'], trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d'), '/');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'd' }), '/?y=d');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'f' }), '/abc/de?y=f');
+    });
+
+    it('TwoRouteParamBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'gh' }), '/def/gh');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
+    });
+
+    it('TwoRouteParamNonBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'g' }), null);
+    });
+
+    it('TwoRouteParentChildBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }]}
+            ]);
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+    });
+
+    it('TwoRouteParentChildNonBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'g' }), null);
     });
 })
