@@ -1060,6 +1060,27 @@ describe('MatchTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink('/ab'), /Url is invalid/, '');
         assert.throws(() => Navigation.StateController.navigateLink('/cd'), /Url is invalid/, '');
     });
+
+    it('TwoRouteMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['', 'abc'], trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
+        Navigation.StateController.navigateLink('abc');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
+    });
+
+    it('TwoRouteNoMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['', 'abc'], trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/ab'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ abc'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('//abc'), /Url is invalid/, '');
+    });
 });
 
 describe('BuildTest', function () {
