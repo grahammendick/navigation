@@ -1272,7 +1272,7 @@ describe('MatchTest', function () {
     it('TwoRouteDefaultNumberMatchTest', function () {
         Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
-                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 2 }, trackCrumbTrail: false }]}
+                { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 }, trackCrumbTrail: false }]}
             ]);
         Navigation.StateController.navigateLink('/abc');
         assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
@@ -1297,11 +1297,11 @@ describe('MatchTest', function () {
         assert.strictEqual(Navigation.StateContext.data.x, 2);
         assert.equal(Navigation.StateContext.data.y, 'gh');
         assert.equal(Navigation.StateContext.data.z, 'i');
-        Navigation.StateController.navigateLink('/abc/3?y=gh');
+        Navigation.StateController.navigateLink('/def/gh?x=3');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
         assert.strictEqual(Navigation.StateContext.data.x, 3);
         assert.equal(Navigation.StateContext.data.y, 'gh');
-        Navigation.StateController.navigateLink('/abc/3?y=gh&z=i');
+        Navigation.StateController.navigateLink('/def/gh?x=3&z=i');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
         assert.strictEqual(Navigation.StateContext.data.x, 3);
         assert.equal(Navigation.StateContext.data.y, 'gh');
@@ -1996,7 +1996,7 @@ describe('BuildTest', function () {
     it('TwoRouteDefaultNumberBuildTest', function () {
         Navigation.StateInfoConfig.build([
             { key: 'd', initial: 's', states: [
-                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 2 }, trackCrumbTrail: false }]}
+                { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 }, trackCrumbTrail: false }]}
             ]);
         assert.equal(Navigation.StateController.getNavigationLink('d'), '/abc');
         assert.equal(Navigation.StateController.getNavigationLink('d', { z: 'e' }), '/abc?z=e');
@@ -2004,8 +2004,8 @@ describe('BuildTest', function () {
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 3, z: 'f' }), '/abc/3?z=f');
         assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'gh' }), '/def/gh');
         assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
-        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 3, y: 'gh' }), '/abc/3?y=gh');
-        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 3, y: 'gh', z: 'i' }), '/abc/3?y=gh&z=i');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 3, y: 'gh' }), '/def/gh?x=3');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 3, y: 'gh', z: 'i' }), '/def/gh?x=3&z=i');
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 2, y: 'gh' }), '/def/gh');
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 2, y: 'gh', z: 'i' }), '/def/gh?z=i');
     });
