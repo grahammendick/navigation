@@ -1110,6 +1110,15 @@ describe('MatchTest', function () {
         assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
         assert.equal(Navigation.StateContext.data.y, 'gh');
         assert.equal(Navigation.StateContext.data.z, 'i');
+        Navigation.StateController.navigateLink('/abc/de?y=fg');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.y, 'fg');
+        Navigation.StateController.navigateLink('/abc/de?y=fg&z=h');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.y, 'fg');
+        assert.equal(Navigation.StateContext.data.z, 'h');
     });
 
     it('TwoRouteParamNonMatchTest', function () {
@@ -1191,6 +1200,15 @@ describe('MatchTest', function () {
         Navigation.StateController.navigateLink('/def/gh?z=i');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
         assert.equal(Navigation.StateContext.data.x, 'd');
+        assert.equal(Navigation.StateContext.data.y, 'gh');
+        assert.equal(Navigation.StateContext.data.z, 'i');
+        Navigation.StateController.navigateLink('/abc/de?y=gh');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.y, 'gh');
+        Navigation.StateController.navigateLink('/abc/de?y=gh&z=i');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 3);
+        assert.equal(Navigation.StateContext.data.x, 'de');
         assert.equal(Navigation.StateContext.data.y, 'gh');
         assert.equal(Navigation.StateContext.data.z, 'i');
     });
