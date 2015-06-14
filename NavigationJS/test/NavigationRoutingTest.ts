@@ -1863,6 +1863,8 @@ describe('BuildTest', function () {
         assert.equal(Navigation.StateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de?y=gh');
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'i' }), '/abc/de?y=gh&z=i');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'd', y: 'gh' }), '/def/gh');
+        assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'd', y: 'gh', z: 'i' }), '/def/gh?z=i');
     });
 
     it('TwoRouteDefaultNonBuildTest', function () {
