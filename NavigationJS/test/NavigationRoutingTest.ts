@@ -1066,10 +1066,16 @@ describe('MatchTest', function () {
             { key: 'd', initial: 's', states: [
                 { key: 's', route: ['', 'abc'], trackCrumbTrail: false }]}
             ]);
-        Navigation.StateController.navigateLink('');
+        Navigation.StateController.navigateLink('/');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
-        Navigation.StateController.navigateLink('abc');
+        Navigation.StateController.navigateLink('/?x=d');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'd');
+        Navigation.StateController.navigateLink('/abc');
         assert.equal(Object.keys(Navigation.StateContext.data).length, 0);
+        Navigation.StateController.navigateLink('/abc?x=d');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'd');
     });
 
     it('TwoRouteNoMatchTest', function () {
