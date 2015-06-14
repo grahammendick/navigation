@@ -1864,4 +1864,18 @@ describe('BuildTest', function () {
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de?y=gh');
         assert.equal(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'i' }), '/abc/de?y=gh&z=i');
     });
+
+    it('TwoRouteDefaultNonBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 'd' }, trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/def'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ abc/de'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ def/gh'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/abd/ef'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/abc/de/f'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/def/gh/i'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+    });
 })
