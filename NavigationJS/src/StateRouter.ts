@@ -3,6 +3,8 @@ import IRouter = require('./IRouter');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
+type RouteInfo = { routes: Route[]; params: any; matches: any };
+type MatchInfo = { route: Route; data: any; routePath: string };
 
 class StateRouter implements IRouter {
     router: Router;
@@ -14,7 +16,7 @@ class StateRouter implements IRouter {
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
-        var routeInfo: { routes: Route[]; params: {}; matches: {} } = state['_routeInfo'];
+        var routeInfo: RouteInfo = state['_routeInfo'];
         var paramsKey = '';
         for(var key in routeInfo.params) {
             if (data[key])
@@ -36,8 +38,8 @@ class StateRouter implements IRouter {
         return { route: routePath, data: routeMatch ? routeMatch.data : {} };
     }
     
-    private static findBestMatch(routes: Route[], data: any): { route: Route; data: any; routePath: string } {
-        var bestMatch: { route: Route; data: any; routePath: string };
+    private static findBestMatch(routes: Route[], data: any): MatchInfo {
+        var bestMatch: MatchInfo;
         var bestMatchCount = -1;
         for(var i = 0; i < routes.length; i++) {
             var route = routes[i];
@@ -79,7 +81,7 @@ class StateRouter implements IRouter {
     }
     
     private addStateRoutes(state: State) {
-        var routeInfo = { routes: new Array<Route>(), params: {}, matches: {} }; 
+        var routeInfo: RouteInfo = { routes: [], params: {}, matches: {} }; 
         var count = 0;
         var routes = this.getRoutes(state);
         for(var i = 0; i < routes.length; i++) {
