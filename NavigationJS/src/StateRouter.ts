@@ -83,7 +83,7 @@ class StateRouter implements IRouter {
     private addStateRoutes(state: State) {
         var routeInfo: RouteInfo = { routes: [], params: {}, matches: {} }; 
         var count = 0;
-        var routes = this.getRoutes(state);
+        var routes = StateRouter.getRoutes(state);
         for(var i = 0; i < routes.length; i++) {
             var route = this.router.addRoute(routes[i], state.formattedDefaults);
             for(var j = 0; j < route.params.length; j++) {
@@ -99,7 +99,7 @@ class StateRouter implements IRouter {
         state['_routeInfo'] = routeInfo;
     }
     
-    private getRoutes(state: State): string[] {
+    private static getRoutes(state: State): string[] {
         var routes: string[] = [];
         var route = state.route;
         if (typeof route === 'string') {
