@@ -1087,6 +1087,42 @@ describe('MatchTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink('/ abc'), /Url is invalid/, '');
         assert.throws(() => Navigation.StateController.navigateLink('//abc'), /Url is invalid/, '');
     });
+
+    it('TwoRouteParamMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{x}'], trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/abc/de');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        Navigation.StateController.navigateLink('/abc/de?y=f');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'de');
+        assert.equal(Navigation.StateContext.data.y, 'f');
+        Navigation.StateController.navigateLink('/def/gh');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 1);
+        assert.equal(Navigation.StateContext.data.x, 'gh');
+        Navigation.StateController.navigateLink('/def/gh?y=i');
+        assert.equal(Object.keys(Navigation.StateContext.data).length, 2);
+        assert.equal(Navigation.StateContext.data.x, 'gh');
+        assert.equal(Navigation.StateContext.data.y, 'i');
+    });
+
+    it('TwoRouteParamMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['abc/{x}', 'def/{x}'], trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/abc'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/def'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ abc/de'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/ def/gh'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/abd/ef'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/abc/de/f'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/def/gh/i'), /Url is invalid/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+    });
 });
 
 describe('BuildTest', function () {
