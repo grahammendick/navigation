@@ -64,7 +64,7 @@ function buildTask(name, from, to) {
 }
 function packageTask(name, from) {
 	return gulp.src(from)
-		.pipe(typescript())
+		.pipe(typescript({ tscSearch: ['bundle'] }))
 		.pipe(gulp.dest('./build/lib/' + name));
 }
 

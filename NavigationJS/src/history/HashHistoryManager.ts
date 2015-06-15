@@ -12,7 +12,7 @@ class HashHistoryManager implements IHistoryManager {
             if (window.addEventListener)
                 window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
             else
-                window.attachEvent('onhashchange', HistoryNavigator.navigateHistory);
+                window['attachEvent']('onhashchange', HistoryNavigator.navigateHistory);
         }
     }
 
