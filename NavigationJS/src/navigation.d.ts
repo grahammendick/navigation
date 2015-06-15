@@ -61,9 +61,9 @@ declare module Navigation {
          */
         title?: string;
         /**
-         * Gets the route Url pattern
+         * Gets the route Url patterns
          */
-        route: string;
+        route: string | string[];
         /**
          * Gets a value that indicates whether to maintain crumb trail 
          * information e.g PreviousState. This can be used together with Route
@@ -175,9 +175,9 @@ declare module Navigation {
          */
         title: string;
         /**
-         * Gets the route Url pattern
+         * Gets the route Url patterns
          */
-        route: string;
+        route: string | string[];
         /**
          * Gets a value that indicates whether to maintain crumb trail 
          * information e.g PreviousState. This can be used together with Route
@@ -949,6 +949,11 @@ declare module Navigation {
          * @returns The matched route and data
          */
         match(path: string): { route: Route; data: any; };
+        /**
+         * Sorts the routes by the comparer
+         * @param compare The route comparer function
+         */
+        sort(compare: (routeA: Route, routeB: Route) => number): void;
     }
 
     /**

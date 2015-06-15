@@ -42,7 +42,7 @@ module NavigationTests {
 			{ key: 'page', route: '' }
 		]},
 		{ key: 'person', initial: 'list', states: [
-			{ key: 'list', route: 'people/{page}', transitions: [
+			{ key: 'list', route: ['people/{page}', 'people/{page}/sort/{sort}'], transitions: [
 				{ key: 'select', to: 'details' }
 			], defaults: { page: 1 }, trackCrumbTrail: false },
 			{ key: 'details', route: 'person/{id}', defaultTypes: { id: 'number' } }
