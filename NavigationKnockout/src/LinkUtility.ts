@@ -43,7 +43,7 @@ class LinkUtility {
         if (window.addEventListener)
             element.addEventListener('click', navigate);
         else
-            element.attachEvent('onclick', navigate);
+            element['attachEvent']('onclick', navigate);
     }
 
     static addNavigateHandler(element, handler) {
