@@ -1337,6 +1337,21 @@ describe('MatchTest', function () {
         assert.strictEqual(Navigation.StateContext.data.y, 'gh');
         assert.strictEqual(Navigation.StateContext.data.z, 'i');
     });
+
+    it('WithoutTypesMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/abc');
+        assert.strictEqual(Navigation.StateContext.data.x, 'abc');
+        Navigation.StateController.navigateLink('/3');
+        assert.strictEqual(Navigation.StateContext.data.x, '3');
+        Navigation.StateController.navigateLink('/true');
+        assert.strictEqual(Navigation.StateContext.data.x, 'true');
+        Navigation.StateController.navigateLink('/0_1_2_');
+        assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
+    });
 });
 
 describe('BuildTest', function () {
@@ -2051,5 +2066,16 @@ describe('BuildTest', function () {
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3, y: 'gh' }), '/def/gh?x=3');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3, y: 'gh', z: 'i' }), '/def/gh?x=3&z=i');
+    });
+
+    it('WithoutTypesBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc' }), '/abc');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '0_1_2_' }), '/0_1_2_');
     });
 })
