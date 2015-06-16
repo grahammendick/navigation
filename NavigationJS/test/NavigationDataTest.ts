@@ -2785,7 +2785,27 @@ describe('NavigationDataTest', function () {
         Navigation.StateController.navigate('t0');
         var link = Navigation.StateController.getNavigationBackLink(2);
         Navigation.StateController.navigateBack(2);
-        assert('/x=0_1_2_', link);
-        assert(Navigation.StateContext.data.x, '0_1_2_');
+        assert.strictEqual ('/s0?x=0_1_2_', link);
+        assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
+    });
+
+    it('WithoutTypesDefaultNavigateBackTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's0', states: [
+                { key: 's0', route: 's0', trackTypes: false, defaults: { x: 2 }, defaultTypes: { y: 'boolean' }, trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's1' }
+                ]},
+                { key: 's1', route: 's1', transitions: [
+                    { key: 't0', to: 's2' }
+                ]},
+                { key: 's2', route: 's2' }]}
+            ]);
+        Navigation.StateController.navigate('d', { x: '3', y: 'true' });
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var link = Navigation.StateController.getNavigationBackLink(2);
+        Navigation.StateController.navigateLink(link);
+        assert.strictEqual(Navigation.StateContext.data.x, 3);
+        assert.strictEqual(Navigation.StateContext.data.y, true);
     });
 });
