@@ -2808,4 +2808,18 @@ describe('NavigationDataTest', function () {
         assert.strictEqual(Navigation.StateContext.data.x, 3);
         assert.strictEqual(Navigation.StateContext.data.y, true);
     });
+
+    it('WithoutTypesArrayTypeTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'numberarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigate('d', { x: [ 1, 2, '3' ], y: [ '_0_1', '-2-3', 4 ] });
+        assert.strictEqual(Navigation.StateContext.data.x[0], 1);
+        assert.strictEqual(Navigation.StateContext.data.x[1], 2);
+        assert.strictEqual(Navigation.StateContext.data.x[2], 3);
+        assert.strictEqual(Navigation.StateContext.data.y[0], '_0_1');
+        assert.strictEqual(Navigation.StateContext.data.y[1], '-2-3');
+        assert.strictEqual(Navigation.StateContext.data.y[2], '4');
+    });
 });
