@@ -1392,6 +1392,26 @@ describe('MatchTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid boolean/, '');
         assert.throws(() => Navigation.StateController.navigateLink('/2'), /not a valid boolean/, '');
     });
+
+    it('WithoutTypesDefaultAndDefaultTypeMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/');
+        assert.strictEqual(Navigation.StateContext.data.x, 2);
+        Navigation.StateController.navigateLink('/3');
+        assert.strictEqual(Navigation.StateContext.data.x, 3);
+    });
+
+    it('WithoutTypesDefaultAndDefaultTypeNonMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid number/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/true'), /not a valid number/, '');
+    });
 });
 
 describe('BuildTest', function () {
@@ -2111,6 +2131,8 @@ describe('BuildTest', function () {
                 { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2 }), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
     });
@@ -2122,5 +2144,17 @@ describe('BuildTest', function () {
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'false' }), '/false');
+    });
+
+    it('WithoutTypesDefaultAndDefaultTypeBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2 }), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
     });
 })
