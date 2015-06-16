@@ -1372,6 +1372,26 @@ describe('MatchTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid number/, '');
         assert.throws(() => Navigation.StateController.navigateLink('/true'), /not a valid number/, '');
     });
+
+    it('WithoutTypesDefaultTypeMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+            ]);
+        Navigation.StateController.navigateLink('/true');
+        assert.strictEqual(Navigation.StateContext.data.x, true);
+        Navigation.StateController.navigateLink('/false');
+        assert.strictEqual(Navigation.StateContext.data.x, false);
+    });
+
+    it('WithoutTypesDefaultTypeNonMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid boolean/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/2'), /not a valid boolean/, '');
+    });
 });
 
 describe('BuildTest', function () {
@@ -2093,5 +2113,14 @@ describe('BuildTest', function () {
         assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
+    });
+
+    it('WithoutTypesDefaultBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'false' }), '/false');
     });
 })
