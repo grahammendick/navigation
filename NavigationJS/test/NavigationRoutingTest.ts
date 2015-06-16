@@ -2166,4 +2166,13 @@ describe('BuildTest', function () {
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
     });
+
+    it('WithoutTypesTwoRouteDefaultBuildTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
+            ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2, y: 1 }), '/a/1');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2', y: 1 }), '/?y=1');
+    });
 })
