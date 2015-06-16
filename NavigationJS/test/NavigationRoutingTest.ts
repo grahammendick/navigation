@@ -1412,6 +1412,15 @@ describe('MatchTest', function () {
         assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid number/, '');
         assert.throws(() => Navigation.StateController.navigateLink('/true'), /not a valid number/, '');
     });
+
+    it('WithoutTypesConflicingDefaultAndDefaultTypeNonMatchTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's', states: [
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+            ]);
+        assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
+        assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
+    });
 });
 
 describe('BuildTest', function () {
