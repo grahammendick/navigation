@@ -2300,7 +2300,14 @@ describe('BuildTest', function () {
             { key: 'd', initial: 's', states: [
                 { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
             ]);
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2, y: 1 }), '/a/1');
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2', y: 1 }), '/a/1');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 1 }), '/1');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '1' }), '/1');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2 }), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 1 }), '/a/1');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 1, y: 2 }), '/1?y=2');
     });
 })
