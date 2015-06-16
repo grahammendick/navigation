@@ -2768,4 +2768,24 @@ describe('NavigationDataTest', function () {
         link = link.replace('_bool=false', '_bool=invalid');
         assert.throws(() => Navigation.StateController.navigateLink(link));
     });
+
+    it('WithoutTypesNavigateBackTest', function () {
+        Navigation.StateInfoConfig.build([
+            { key: 'd', initial: 's0', states: [
+                { key: 's0', route: 's0', trackTypes: false, trackCrumbTrail: false, transitions: [
+                    { key: 't0', to: 's1' }
+                ]},
+                { key: 's1', route: 's1', transitions: [
+                    { key: 't0', to: 's2' }
+                ]},
+                { key: 's2', route: 's2' }]}
+            ]);
+        Navigation.StateController.navigate('d', { x: '0_1_2_' });
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+        var link = Navigation.StateController.getNavigationBackLink(2);
+        Navigation.StateController.navigateBack(2);
+        assert('/x=0_1_2_', link);
+        assert(Navigation.StateContext.data.x, '0_1_2_');
+    });
 });
