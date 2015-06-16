@@ -13,7 +13,7 @@ class ReturnDataManager {
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()
                 && (!settings.router.supportsDefaults || returnData[key] !== state.defaults[key]))
-                returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state));
+                returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state, true));
         }
         return returnDataArray.join(this.RET_3_SEP);
     }
@@ -58,7 +58,7 @@ class ReturnDataManager {
         var returnDataArray = returnData.split(this.RET_3_SEP);
         for (var i = 0; i < returnDataArray.length; i++) {
             var nameValuePair = returnDataArray[i].split(this.RET_1_SEP);
-            navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state);
+            navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state, true);
         }
         return navigationData;
     }
