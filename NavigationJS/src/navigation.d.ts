@@ -70,6 +70,11 @@ declare module Navigation {
          * to produce user friendly Urls 
          */
         trackCrumbTrail?: boolean;
+        /**
+         * Gets a value that indicates whether NavigationData Types are
+         * preserved when navigating
+         */
+        trackTypes?: boolean;
     }
 
     /**
@@ -184,6 +189,11 @@ declare module Navigation {
          * to produce user friendly Urls 
          */
         trackCrumbTrail: boolean;
+        /**
+         * Gets a value that indicates whether NavigationData Types are
+         * preserved when navigating
+         */
+        trackTypes: boolean;
         /**
          * Gets or sets the IStateHandler responsible for building and parsing
          * navigation links to this State
