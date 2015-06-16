@@ -6,5 +6,6 @@ interface IState<TTransitions> {
 	title?: string;
 	route: string | string[];
 	trackCrumbTrail?: boolean;
+    trackTypes?: boolean;
 }
 export = IState;
