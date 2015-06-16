@@ -11,9 +11,11 @@ class ReturnDataManager {
     static formatReturnData(state: State, returnData: any): string {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
-            if (returnData[key] != null && returnData[key].toString()
-                && (!settings.router.supportsDefaults || returnData[key] !== state.defaults[key]))
-                returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + this.formatURLObject(key, returnData[key], state, true));
+            if (returnData[key] != null && returnData[key].toString()) {
+                var val = this.formatURLObject(key, returnData[key], state, true);
+                if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
+                    returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + val);
+            }
         }
         return returnDataArray.join(this.RET_3_SEP);
     }

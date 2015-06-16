@@ -2173,6 +2173,6 @@ describe('BuildTest', function () {
                 { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2, y: 1 }), '/a/1');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2', y: 1 }), '/?y=1');
+        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2', y: 1 }), '/a/1');
     });
 })

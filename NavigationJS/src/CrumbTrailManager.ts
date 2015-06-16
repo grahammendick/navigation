@@ -70,9 +70,11 @@ class CrumbTrailManager {
         navigationData = NavigationData.clone(navigationData);
         NavigationData.setDefaults(navigationData, state.defaults);
         for (var key in navigationData) {
-            if (navigationData[key] != null && navigationData[key].toString()
-                && (!settings.router.supportsDefaults || navigationData[key] !== state.defaults[key]))
-                data[key] = ReturnDataManager.formatURLObject(key, navigationData[key], state);
+            if (navigationData[key] != null && navigationData[key].toString()) { 
+                var val = ReturnDataManager.formatURLObject(key, navigationData[key], state);
+                if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
+                    data[key] = val;
+            }
         }
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
             var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
