@@ -8,7 +8,6 @@ var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
         LinkUtility.addNavigateHandler(element, () => setNavigationBackLink(element, valueAccessor));
     },
     update: (element, valueAccessor) => {
-        element.removeAttribute('data-state-context-url');
         setNavigationBackLink(element, valueAccessor);
     }
 };

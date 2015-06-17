@@ -3,13 +3,10 @@ import ko = require('knockout');
 
 class LinkUtility {
     static setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
-        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            try {
-                element.href = Navigation.settings.historyManager.getHref(linkAccessor());
-            } catch (e) {
-                element.removeAttribute('href');
-            }
-            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
+        try {
+            element.href = Navigation.settings.historyManager.getHref(linkAccessor());
+        } catch (e) {
+            element.removeAttribute('href');
         }
     }
 

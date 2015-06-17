@@ -8,7 +8,6 @@ var NavigationLink = ko.bindingHandlers['navigationLink'] = {
         LinkUtility.addNavigateHandler(element, () => setNavigationLink(element, valueAccessor, allBindings));
     },
     update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-        element.removeAttribute('data-state-context-url');
         setNavigationLink(element, valueAccessor, allBindings);
     }
 };

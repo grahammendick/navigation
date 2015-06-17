@@ -8,7 +8,6 @@ var RefreshLink = ko.bindingHandlers['refreshLink'] = {
         LinkUtility.addNavigateHandler(element, () => setRefreshLink(element, valueAccessor, allBindings));
     },
     update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-        element.removeAttribute('data-state-context-url');
         setRefreshLink(element, valueAccessor, allBindings);
     }
 };
