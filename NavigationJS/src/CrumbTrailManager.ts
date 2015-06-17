@@ -72,8 +72,9 @@ class CrumbTrailManager {
             NavigationData.setDefaults(navigationData, state.defaults);
         }
         for (var key in navigationData) {
-            if (navigationData[key] != null && navigationData[key].toString()) { 
-                var val = ReturnDataManager.formatURLObject(key, navigationData[key], state);
+            var val = navigationData[key]; 
+            if (val != null && val.toString()) {
+                val = ReturnDataManager.formatURLObject(key, val, state);
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
                     data[key] = val;
             }
