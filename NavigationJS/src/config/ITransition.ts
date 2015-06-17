@@ -1,5 +1,5 @@
 interface ITransition<TState> {
-	to: TState;
-	key: string;
+    to: TState;
+    key: string;
 }
 export = ITransition;
