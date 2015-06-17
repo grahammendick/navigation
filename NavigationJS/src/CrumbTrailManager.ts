@@ -67,8 +67,10 @@ class CrumbTrailManager {
         data[settings.stateIdKey] = state.id;
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state)
             data[settings.previousStateIdKey] = StateContext.state.id;
-        navigationData = NavigationData.clone(navigationData);
-        NavigationData.setDefaults(navigationData, state.defaults);
+        if (!settings.router.supportsDefaults) {
+            navigationData = NavigationData.clone(navigationData);
+            NavigationData.setDefaults(navigationData, state.defaults);
+        }
         for (var key in navigationData) {
             if (navigationData[key] != null && navigationData[key].toString()) { 
                 var val = ReturnDataManager.formatURLObject(key, navigationData[key], state);
