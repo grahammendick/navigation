@@ -4,11 +4,7 @@ import ko = require('knockout');
 
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
     init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) => {
-        LinkUtility.addClickListener(element, () => setRefreshLink(element, valueAccessor, allBindings));
-        LinkUtility.addNavigateHandler(element, () => {
-            if (!allBindings.get('lazy'))
-                setRefreshLink(element, valueAccessor, allBindings);
-        });
+        LinkUtility.addListeners(element, () => setRefreshLink(element, valueAccessor, allBindings), !!allBindings.get('lazy'));
     },
     update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
         setRefreshLink(element, valueAccessor, allBindings);

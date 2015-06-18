@@ -25,9 +25,28 @@ class LinkUtility {
         return data;
     }
 
-    static addClickListener(element: HTMLAnchorElement, setLink: () => void) {
-        var navigate = (e: MouseEvent) => {
-            setLink();
+    static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
+        var navigate = this.getClickListener(element, setLink, lazy);
+        var update = (e: MouseEvent) => setLink();
+        if (window.addEventListener) {
+            element.addEventListener('click', navigate);
+            if (lazy)
+                element.addEventListener('mousedown', update);
+        } else {
+            element['attachEvent']('onclick', navigate);
+            if (lazy)
+                element['attachEvent']('onmousedown', update);
+        }
+        if (!lazy) {
+            Navigation.StateController.onNavigate(setLink);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
+        }
+    }
+
+    private static getClickListener(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
+        return (e: MouseEvent) => {
+            if (lazy)
+                setLink();
             if (!e.ctrlKey && !e.shiftKey) {
                 if (element.href) {
                     if (e.preventDefault)
@@ -38,19 +57,6 @@ class LinkUtility {
                 }
             }
         };
-        var update = (e: MouseEvent) => setLink();
-        if (window.addEventListener) {
-            element.addEventListener('click', navigate);
-            element.addEventListener('mousedown', update);
-        } else {
-            element['attachEvent']('onclick', navigate);
-            element['attachEvent']('onmousedown', update);
-        }
-    }
-
-    static addNavigateHandler(element: HTMLAnchorElement, handler: () => void) {
-        Navigation.StateController.onNavigate(handler);
-        ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(handler));
     }
 }
 export = LinkUtility;
