@@ -3,7 +3,7 @@ import Navigation = require('navigation');
 import ko = require('knockout');
 
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
-    init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+    init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) => {
         LinkUtility.addClickListener(element, () => setRefreshLink(element, valueAccessor, allBindings));
         LinkUtility.addNavigateHandler(element, () => {
             if (!allBindings.get('lazy'))
@@ -15,7 +15,7 @@ var RefreshLink = ko.bindingHandlers['refreshLink'] = {
     }
 };
 
-function setRefreshLink(element: HTMLAnchorElement, valueAccessor, allBindings: KnockoutAllBindingsAccessor) {
+function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
     LinkUtility.setLink(element, () => Navigation.StateController.getRefreshLink(
         LinkUtility.getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
     );
