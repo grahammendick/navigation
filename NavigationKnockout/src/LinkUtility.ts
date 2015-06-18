@@ -37,11 +37,18 @@ class LinkUtility {
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }
             }
-        }
-        if (window.addEventListener)
+        };
+        var update = (e: MouseEvent) => {
+            if (e.button === 2)
+                setLink();
+        };
+        if (window.addEventListener) {
             element.addEventListener('click', navigate);
-        else
+            element.addEventListener('mousedown', update);
+        } else {
             element['attachEvent']('onclick', navigate);
+            element['attachEvent']('onmousedown', update);
+        }
     }
 
     static addNavigateHandler(element: HTMLAnchorElement, handler: () => void) {
