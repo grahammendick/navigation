@@ -3,9 +3,12 @@ import Navigation = require('navigation');
 import ko = require('knockout');
 
 var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
-    init: (element, valueAccessor) => {
-        LinkUtility.addClickListener(element);
-        LinkUtility.addNavigateHandler(element, () => setNavigationBackLink(element, valueAccessor));
+    init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
+        LinkUtility.addClickListener(element, () => setNavigationBackLink(element, valueAccessor));
+        LinkUtility.addNavigateHandler(element, () => {
+            if (!allBindings.get('lazy'))
+                setNavigationBackLink(element, valueAccessor);
+        });
     },
     update: (element, valueAccessor) => {
         setNavigationBackLink(element, valueAccessor);
