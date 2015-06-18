@@ -4,8 +4,11 @@ import ko = require('knockout');
 
 var NavigationLink = ko.bindingHandlers['navigationLink'] = {
     init: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
-        LinkUtility.addClickListener(element);
-        LinkUtility.addNavigateHandler(element, () => setNavigationLink(element, valueAccessor, allBindings));
+        LinkUtility.addClickListener(element, () => setNavigationLink(element, valueAccessor, allBindings));
+        LinkUtility.addNavigateHandler(element, () => {
+            if (!allBindings.get('lazy'))
+                setNavigationLink(element, valueAccessor, allBindings);
+        });
     },
     update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
         setNavigationLink(element, valueAccessor, allBindings);
