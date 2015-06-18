@@ -26,17 +26,7 @@ class LinkUtility {
     }
 
     static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
-        this.addClickListener(element, setLink, lazy);
-        if (!lazy) {
-            Navigation.StateController.onNavigate(setLink);
-            ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
-        } else {
-            this.addListener(element, 'mousedown', (e: MouseEvent) => setLink());
-        }
-    }
-
-    private static addClickListener(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
-        this.addListener(element, 'click', (e: MouseEvent) => {
+        ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
             if (!e.ctrlKey && !e.shiftKey) {
@@ -49,13 +39,12 @@ class LinkUtility {
                 }
             }
         });
-    }
-    
-    private static addListener(element: HTMLAnchorElement, type: string, listener: (e: MouseEvent) => void) {
-        if (window.addEventListener)
-            element.addEventListener(type, listener);
-        else
-            element['attachEvent']('on' + type, listener);        
+        if (!lazy) {
+            Navigation.StateController.onNavigate(setLink);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
+        } else {
+            ko.utils.registerEventHandler(element, 'mousedown', (e: MouseEvent) => setLink());
+        }
     }
 }
 export = LinkUtility;
