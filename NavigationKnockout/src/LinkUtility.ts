@@ -27,11 +27,11 @@ class LinkUtility {
 
     static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
         this.addClickListener(element, setLink, lazy);
-        if (lazy)
-            this.addListener(element, 'mousedown', (e: MouseEvent) => setLink());
         if (!lazy) {
             Navigation.StateController.onNavigate(setLink);
             ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
+        } else {
+            this.addListener(element, 'mousedown', (e: MouseEvent) => setLink());
         }
     }
 
