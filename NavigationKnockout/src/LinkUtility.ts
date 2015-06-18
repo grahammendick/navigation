@@ -25,8 +25,9 @@ class LinkUtility {
         return data;
     }
 
-    static addClickListener(element: HTMLAnchorElement) {
+    static addClickListener(element: HTMLAnchorElement, handler?: () => void) {
         var navigate = (e: MouseEvent) => {
+            handler();
             if (!e.ctrlKey && !e.shiftKey) {
                 if (element.href) {
                     if (e.preventDefault)
@@ -43,7 +44,7 @@ class LinkUtility {
             element['attachEvent']('onclick', navigate);
     }
 
-    static addNavigateHandler(element, handler) {
+    static addNavigateHandler(element: HTMLAnchorElement, handler: () => void) {
         Navigation.StateController.onNavigate(handler);
         ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(handler));
     }
