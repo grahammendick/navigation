@@ -25,9 +25,9 @@ class LinkUtility {
         return data;
     }
 
-    static addClickListener(element: HTMLAnchorElement, handler?: () => void) {
+    static addClickListener(element: HTMLAnchorElement, setLink?: () => void) {
         var navigate = (e: MouseEvent) => {
-            handler();
+            setLink();
             if (!e.ctrlKey && !e.shiftKey) {
                 if (element.href) {
                     if (e.preventDefault)
