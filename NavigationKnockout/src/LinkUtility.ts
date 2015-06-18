@@ -38,10 +38,7 @@ class LinkUtility {
                 }
             }
         };
-        var update = (e: MouseEvent) => {
-            if (e.button === 2)
-                setLink();
-        };
+        var update = (e: MouseEvent) => setLink();
         if (window.addEventListener) {
             element.addEventListener('click', navigate);
             element.addEventListener('mousedown', update);
