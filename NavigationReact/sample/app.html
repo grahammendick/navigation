@@ -8,8 +8,7 @@
     </style>
 </head>
 <body>
-    <div id="list"></div>
-    <div id="details"></div>
+    <div id="content"></div>
     <script src="../../NavigationJS/sample/personSearch.js"></script>
     <script src="react-0.12.2.js"></script>
     <script src="JSXTransformer-0.12.2.js"></script>
@@ -17,30 +16,12 @@
     <script src="../../build/dist/navigation.react.js"></script>
     <script type="text/jsx">
         var List = React.createClass({
-	        getInitialState: function () {
-		        return {};
-	        },
-  	        componentDidMount: function (){
-		        var self = this;
-		        var personStates = Navigation.StateInfoConfig.dialogs.person.states;
-		        personStates.list.navigated = function (data) {
-			        var people = personSearch.search(data.name, data.sortExpression);
-			        self.props.name = data.name;
-			        self.props.totalRowCount = people.length;
-			        self.props.startRowIndex = data.startRowIndex;
-			        self.props.maximumRows = data.maximumRows;
-			        people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
-			        self.props.sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
-			        self.setState({ people: people });
-		        };
-		        personStates.list.dispose = function () { 
-			        self.setState({ people: null });
-		        }
-	        },
 	        render: function () {
-		        if (this.state.people == null)
-			        return null;
-                var people = this.state.people.map(function (person) {
+		        var people = personSearch.search(this.props.name, this.props.sortExpression);
+		        this.props.totalRowCount = people.length;
+		        people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
+		        this.props.sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+                people = people.map(function (person) {
                     return (
                         <tr>
                             <td><NavigationReact.NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
@@ -118,29 +99,14 @@
         });
 
         var Details = React.createClass({
-	        getInitialState: function () {
-		        return {};
-	        },
-  	        componentDidMount: function (){
-		        var self = this;
-		        var personStates = Navigation.StateInfoConfig.dialogs.person.states;
-		        personStates.details.navigated = function (data) {
-		            var person = personSearch.getDetails(data.id);
-			        self.setState({ person: person });
-		        };
-		        personStates.details.dispose = function () { 
-			        self.setState({ person: null });
-		        }
-	        },
 	        render: function () {
-		        if (this.state.person == null)
-			        return null;
+	            var person = personSearch.getDetails(this.props.id);
 		        return (
 			        <div>
 				        <NavigationReact.NavigationBackLink distance={1}>Person Search</NavigationReact.NavigationBackLink>
 				        <div>
-					        Name: {this.state.person.name}<br />
-					        Date of Birth: {this.state.person.dateOfBirth}
+					        Name: {person.name}<br />
+					        Date of Birth: {person.dateOfBirth}
 				        </div>
 			        </div>
 		        );
@@ -154,14 +120,19 @@
 		        { key: 'details', route: 'person', title: 'Person Details', }]}
         ]);
 
-        React.render(
-	        <List show={false} />,
-	        document.getElementById('list')
-        );
-        React.render(
-	        <Details show={false} />,
-	        document.getElementById('details')
-        );
+        var personStates = Navigation.StateInfoConfig.dialogs.person.states;
+        personStates.list.navigated = function (data) {
+            React.render(
+    	        <List name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
+    	        document.getElementById('content')
+            );
+        };
+        personStates.details.navigated = function (data) {
+            React.render(
+    	        <Details id={data.id} />,
+    	        document.getElementById('content')
+            );
+        }
         Navigation.start();
     </script>
 </body>
