@@ -35,7 +35,7 @@ class LinkUtility {
             Navigation.StateController.onNavigate(setLink);
             element.on('$destroy', () => Navigation.StateController.offNavigate(setLink));
         } else {
-            element.on('mouseDown', (e) => setLink());
+            element.on('mousedown', (e) => setLink());
         }
     }
 }
