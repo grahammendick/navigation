@@ -18,8 +18,8 @@ var NavigationBackLink = React.createClass({
             Navigation.StateController.offNavigate(this.onNavigate);
     },
     render: function () {
-        LinkUtility.addListeners(this, this.props, () => this.setNavigationBackLink(), !!this.props.lazy);
         this.setNavigationBackLink();
+        LinkUtility.addListeners(this, this.props, () => this.setNavigationBackLink(), !!this.props.lazy);
         return LinkUtility.createElement(this.props);
     }
 });

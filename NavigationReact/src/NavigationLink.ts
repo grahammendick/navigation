@@ -19,8 +19,8 @@ var NavigationLink = React.createClass({
             Navigation.StateController.offNavigate(this.onNavigate);
     },
     render: function () {
-        LinkUtility.addListeners(this, this.props, () => this.setNavigationLink(), !!this.props.lazy);
         this.setNavigationLink();
+        LinkUtility.addListeners(this, this.props, () => this.setNavigationLink(), !!this.props.lazy);
         return LinkUtility.createElement(this.props);
     }
 });

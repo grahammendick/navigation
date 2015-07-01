@@ -23,10 +23,12 @@ class LinkUtility {
             var element = component.getDOMNode();
             if (lazy) {
                 setLink();
-                element.href = props.href;
+                component.forceUpdate();
+                if (props.href)
+                    element.href = props.href;
             }
             if (!e.ctrlKey && !e.shiftKey) {
-                if (element.href) {
+                if (props.href) {
                     e.preventDefault();
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }

@@ -19,8 +19,8 @@ var RefreshLink = React.createClass({
             Navigation.StateController.offNavigate(this.onNavigate);
     },
     render: function () {
-        LinkUtility.addListeners(this, this.props, () => this.setRefreshLink(), !!this.props.lazy);
         this.setRefreshLink();
+        LinkUtility.addListeners(this, this.props, () => this.setRefreshLink(), !!this.props.lazy);
         return LinkUtility.createElement(this.props);
     }
 });
