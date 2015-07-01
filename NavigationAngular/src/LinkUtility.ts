@@ -18,10 +18,12 @@ class LinkUtility {
             toData = Navigation.StateContext.includeCurrentData(toData);
         return toData;
     }
-
-    static addClickListener(element: ng.IAugmentedJQuery) {
-        element.on('click', (e) => {
+    
+    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, lazy: boolean) {
+        element.on('click', (e: JQueryInputEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
+            if (lazy)
+                setLink();
             if (!e.ctrlKey && !e.shiftKey) {
                 if (anchor.href) {
                     e.preventDefault();
@@ -29,11 +31,12 @@ class LinkUtility {
                 }
             }
         });
-    }
-
-    static addNavigateHandler(element: ng.IAugmentedJQuery, handler) {
-        Navigation.StateController.onNavigate(handler);
-        element.on('$destroy', () => Navigation.StateController.offNavigate(handler));
+        if (!lazy) {
+            Navigation.StateController.onNavigate(setLink);
+            element.on('$destroy', () => Navigation.StateController.offNavigate(setLink));
+        } else {
+            element.on('mouseDown', (e) => setLink());
+        }
     }
 }
 export = LinkUtility; 

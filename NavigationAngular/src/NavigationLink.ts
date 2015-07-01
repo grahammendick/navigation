@@ -7,8 +7,7 @@ var NavigationLink = () => {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var action, toData, includeCurrentData, currentDataKeys;
-            LinkUtility.addClickListener(element);
-            LinkUtility.addNavigateHandler(element, () => setNavigationLink(element, attrs, action, toData, includeCurrentData, currentDataKeys));
+            LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, action, toData, includeCurrentData, currentDataKeys), !!scope.$eval(attrs['lazy']))
             var watchAttrs = [attrs['navigationLink'], attrs['toData'], attrs['includeCurrentData'], attrs['currentDataKeys']];
             scope.$watchGroup(watchAttrs, function (values) {
                 action = values[0];
