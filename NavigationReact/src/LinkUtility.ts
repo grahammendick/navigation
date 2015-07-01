@@ -23,9 +23,10 @@ class LinkUtility {
             var element = component.getDOMNode();
             if (lazy) {
                 setLink();
-                component.forceUpdate();
                 if (props.href)
                     element.href = props.href;
+                else
+                    component.forceUpdate();
             }
             if (!e.ctrlKey && !e.shiftKey) {
                 if (props.href) {
