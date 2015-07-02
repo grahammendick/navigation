@@ -3,13 +3,10 @@ import ko = require('knockout');
 
 class LinkUtility {
     static setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
-        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            try {
-                element.href = Navigation.settings.historyManager.getHref(linkAccessor());
-            } catch (e) {
-                element.removeAttribute('href');
-            }
-            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
+        try {
+            element.href = Navigation.settings.historyManager.getHref(linkAccessor());
+        } catch (e) {
+            element.removeAttribute('href');
         }
     }
 
@@ -28,8 +25,10 @@ class LinkUtility {
         return data;
     }
 
-    static addClickListener(element: HTMLAnchorElement) {
-        var navigate = (e: MouseEvent) => {
+    static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
+        ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
+            if (lazy)
+                setLink();
             if (!e.ctrlKey && !e.shiftKey) {
                 if (element.href) {
                     if (e.preventDefault)
@@ -39,16 +38,13 @@ class LinkUtility {
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }
             }
+        });
+        if (!lazy) {
+            Navigation.StateController.onNavigate(setLink);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
+        } else {
+            ko.utils.registerEventHandler(element, 'mousedown', (e: MouseEvent) => setLink());
         }
-        if (window.addEventListener)
-            element.addEventListener('click', navigate);
-        else
-            element['attachEvent']('onclick', navigate);
-    }
-
-    static addNavigateHandler(element, handler) {
-        Navigation.StateController.onNavigate(handler);
-        ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(handler));
     }
 }
 export = LinkUtility;

@@ -2,18 +2,9 @@
 import React = require('react');
 
 class LinkUtility {
-    static cloneProps(elem: React.ReactElement<any, any>): any {
-        var props = {};
-        for (var key in elem.props) {
-            props[key] = elem.props[key];
-        }
-        return props;
-    }
-
     static setLink(component: any, props: any, linkAccessor: () => string) {
         try {
             props.href = Navigation.settings.historyManager.getHref(linkAccessor());
-            props.onClick = (e) => this.onClick(e, component.getDOMNode());
         } catch (e) {
             props.href = null;
         }
@@ -26,23 +17,36 @@ class LinkUtility {
             toData = Navigation.StateContext.includeCurrentData(toData);
         return toData;
     }
-
-    static onClick(e: MouseEvent, element: HTMLAnchorElement) {
-        if (!e.ctrlKey && !e.shiftKey) {
-            if (element.href) {
-                e.preventDefault();
-                Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+    
+    static addListeners(component: any, props: any, setLink: () => void, lazy: boolean) {
+        props.onClick = (e: MouseEvent) => {
+            var element = component.getDOMNode();
+            if (lazy) {
+                setLink();
+                if (props.href)
+                    element.href = props.href;
+                else
+                    component.forceUpdate();
             }
-        }
+            if (!e.ctrlKey && !e.shiftKey) {
+                if (props.href) {
+                    e.preventDefault();
+                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                }
+            }
+        };
+        if (lazy)
+            props.onMouseDown = (e: MouseEvent) => component.forceUpdate();
     }
 
     static createElement(props: any) {
-        delete props.action;
-        delete props.toData;
-        delete props.includeCurrentData;
-        delete props.currentDataKeys;
-        delete props.distance;
-        return React.createElement(props.href ? 'a' : 'span', props);
+        var clonedProps: any = {};
+        for (var key in props) {
+            if (key !== 'action' && key !== 'toData' && key !== 'includeCurrentData'
+                    && key !== 'currentDataKeys' && key !== 'distance')
+            clonedProps[key] = props[key];
+        }
+        return React.createElement(clonedProps.href ? 'a' : 'span', clonedProps);
     }
 }
 export = LinkUtility;

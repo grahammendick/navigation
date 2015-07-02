@@ -6,17 +6,21 @@ var NavigationBackLink = React.createClass({
     onNavigate: function () {
         this.forceUpdate();
     },
+    setNavigationBackLink: function() {
+        LinkUtility.setLink(this, this.props, () => Navigation.StateController.getNavigationBackLink(this.props.distance));
+    },
     componentDidMount: function () {
-        Navigation.StateController.onNavigate(this.onNavigate);
+        if (!this.props.lazy)
+            Navigation.StateController.onNavigate(this.onNavigate);
     },
     componentWillUnmount: function () {
-        Navigation.StateController.offNavigate(this.onNavigate);
+        if (!this.props.lazy)
+            Navigation.StateController.offNavigate(this.onNavigate);
     },
     render: function () {
-        var props = LinkUtility.cloneProps(this);
-        var distance = props.distance;
-        LinkUtility.setLink(this, props, () => Navigation.StateController.getNavigationBackLink(distance));
-        return LinkUtility.createElement(props);
+        this.setNavigationBackLink();
+        LinkUtility.addListeners(this, this.props, () => this.setNavigationBackLink(), !!this.props.lazy);
+        return LinkUtility.createElement(this.props);
     }
 });
 export = NavigationBackLink;

@@ -3,17 +3,15 @@ import Navigation = require('navigation');
 import ko = require('knockout');
 
 var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
-    init: (element, valueAccessor) => {
-        LinkUtility.addClickListener(element);
-        LinkUtility.addNavigateHandler(element, () => setNavigationBackLink(element, valueAccessor));
+    init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) => {
+        LinkUtility.addListeners(element, () => setNavigationBackLink(element, valueAccessor), !!allBindings.get('lazy'));
     },
     update: (element, valueAccessor) => {
-        element.removeAttribute('data-state-context-url');
         setNavigationBackLink(element, valueAccessor);
     }
 };
 
-function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor) {
+function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor: () => any) {
     LinkUtility.setLink(element, () => Navigation.StateController.getNavigationBackLink(ko.unwrap(valueAccessor())));
 }
 export = NavigationBackLink;
