@@ -7,7 +7,7 @@ var NavigationBackLink = React.createClass({
         this.forceUpdate();
     },
     setNavigationBackLink: function() {
-        LinkUtility.setLink(this, this.props, () => Navigation.StateController.getNavigationBackLink(this.props.distance));
+        LinkUtility.setLink(this.props, () => Navigation.StateController.getNavigationBackLink(this.props.distance));
     },
     componentDidMount: function () {
         if (!this.props.lazy)
