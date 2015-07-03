@@ -1,13 +1,20 @@
 <a id="lnk" href="https://www.google.co.uk/">test</a>
+<button id="btn">test</button>
 <script type="text/javascript">
 if (document.addEventListener){
 	document.getElementById('lnk').addEventListener('click', function(e){
 		e.preventDefault();
 		alert(e.button);
 	});
+	document.getElementById('btn').addEventListener('click', function(e){
+		alert(e.button);
+	});
 } else {
 	document.getElementById('lnk').attachEvent('onclick', function(e){
 		e.returnValue = false;
+		alert(e.button);
+	});	
+	document.getElementById('btn').attachEvent('onclick', function(e){
 		alert(e.button);
 	});	
 }
