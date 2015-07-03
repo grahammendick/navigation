@@ -1,0 +1,14 @@
+<a id="lnk" href="https://www.google.co.uk/">test</a>
+<script type="text/javascript">
+if (document.addEventListener){
+	document.getElementById('lnk').addEventListener('click', function(e){
+		e.preventDefault();
+		alert(e.button);
+	});
+} else {
+	document.getElementById('lnk').attachEvent('onclick', function(e){
+		e.returnValue = false;
+		alert(e.button);
+	});	
+}
+</script>
