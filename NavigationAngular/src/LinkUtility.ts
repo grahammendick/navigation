@@ -20,11 +20,11 @@ class LinkUtility {
     }
     
     static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, lazy: boolean) {
-        element.on('click', (e: JQueryInputEventObject) => {
+        element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
             if (lazy)
                 setLink();
-            if (!e.ctrlKey && !e.shiftKey) {
+            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (anchor.href) {
                     e.preventDefault();
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(anchor));

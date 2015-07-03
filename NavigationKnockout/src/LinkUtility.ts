@@ -29,7 +29,7 @@ class LinkUtility {
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
-            if (!e.ctrlKey && !e.shiftKey) {
+            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
                     if (e.preventDefault)
                         e.preventDefault();

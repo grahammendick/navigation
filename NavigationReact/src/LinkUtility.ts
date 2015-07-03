@@ -28,7 +28,7 @@ class LinkUtility {
                 else
                     component.forceUpdate();
             }
-            if (!e.ctrlKey && !e.shiftKey) {
+            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (props.href) {
                     e.preventDefault();
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
