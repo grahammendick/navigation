@@ -8,7 +8,7 @@ var NavigationLink = React.createClass({
     },
     setNavigationLink: function() {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
-        LinkUtility.setLink(this, this.props, () => Navigation.StateController.getNavigationLink(this.props.action, toData));
+        LinkUtility.setLink(this.props, () => Navigation.StateController.getNavigationLink(this.props.action, toData));
     },
     componentDidMount: function () {
         if (!this.props.lazy)

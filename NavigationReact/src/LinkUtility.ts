@@ -2,7 +2,7 @@
 import React = require('react');
 
 class LinkUtility {
-    static setLink(component: any, props: any, linkAccessor: () => string) {
+    static setLink(props: any, linkAccessor: () => string) {
         try {
             props.href = Navigation.settings.historyManager.getHref(linkAccessor());
         } catch (e) {
@@ -18,9 +18,9 @@ class LinkUtility {
         return toData;
     }
     
-    static addListeners(component: any, props: any, setLink: () => void, lazy: boolean) {
+    static addListeners(component: React.Component<any, any>, props: any, setLink: () => void, lazy: boolean) {
         props.onClick = (e: MouseEvent) => {
-            var element = component.getDOMNode();
+            var element = <HTMLAnchorElement> React.findDOMNode(component);
             if (lazy) {
                 setLink();
                 if (props.href)

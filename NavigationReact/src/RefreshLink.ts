@@ -8,7 +8,7 @@ var RefreshLink = React.createClass({
     },
     setRefreshLink: function() {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
-        LinkUtility.setLink(this, this.props, () => Navigation.StateController.getRefreshLink(toData));
+        LinkUtility.setLink(this.props, () => Navigation.StateController.getRefreshLink(toData));
     },
     componentDidMount: function () {
         if (!this.props.lazy)
