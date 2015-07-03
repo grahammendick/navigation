@@ -34,8 +34,7 @@
                 <code>&lt;RefreshLink toData={{ pageNumber: 2 }}&gt;2&lt;/RefreshLink&gt;</code>
             </p>
             <div id="navigation">
-                <div id="listing"></div>
-                <div id="details"></div>
+                <div id="view"></div>
             </div>
         </div>
     </div>
@@ -57,28 +56,11 @@
             }
         });
         var Listing = React.createClass({
-            getInitialState: function () {
-                return {};
-            },
-            componentDidMount: function (){
-                var self = this;
-                // Exercise 2: Accessing States
-                // Exercise 4: Creating a State Controller
-                var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-                personStates.listing.navigated = function (data) {
-                    var people = personSearch.getList();
-                    var start = (data.pageNumber - 1) * 10;
-                    people = people.slice(start, start + 10);
-                    self.setState({ people: people });
-                };
-                personStates.listing.dispose = function () { 
-                    self.setState({ people: null });
-                }
-            },
             render: function () {
-                if (this.state.people == null)
-                    return null;
-                var people = this.state.people.map(function (person) {
+                var people = personSearch.getList();
+                var start = (this.props.pageNumber - 1) * 10;
+                people = people.slice(start, start + 10);
+                people = people.map(function (person) {
                     return (
                         <tr>
                             {/* Exercise 6: Navigating along a Transition */}
@@ -110,38 +92,21 @@
         }
         });
         var Details = React.createClass({
-            getInitialState: function () {
-                return {};
-            },
-            componentDidMount: function (){
-                var self = this;
-                // Exercise 2: Accessing States
-                // Exercise 4: Creating a State Controller
-                var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-                personStates.details.navigated = function (data) {
-                    var person = personSearch.getDetails(data.id);
-                    self.setState({ person: person });
-                };
-                personStates.details.dispose = function () { 
-                    self.setState({ person: null });
-                }
-            },
             render: function () {
-                if (this.state.person == null)
-                    return null;
+                var person = personSearch.getDetails(this.props.id);
                 return (
                     <div id="details">
                         {/* Exercise 7: Navigating Back */}
                         {/* Exercise 10: Remembering Data */}
                         <NavigationBackLink distance={1}>People</NavigationBackLink>
                         <div id="info">
-                            <h2>{this.state.person.name}</h2>
+                            <h2>{person.name}</h2>
                             <div className="label">Date of Birth</div>
-                            <div>{this.state.person.dateOfBirth}</div>
+                            <div>{person.dateOfBirth}</div>
                             <div className="label">Email</div>
-                            <div>{this.state.person.email}</div>
+                            <div>{person.email}</div>
                             <div className="label">Phone</div>
-                            <div>{this.state.person.phone}</div>
+                            <div>{person.phone}</div>
                         </div>
                     </div>
                 );
@@ -166,14 +131,21 @@
             <MenuItem />,
             document.getElementById('menuItem')
         );
-        React.render(
-            <Listing />,
-            document.getElementById('listing')
-        );
-        React.render(
-            <Details />,
-            document.getElementById('details')
-        );
+        // Exercise 2: Accessing States
+        // Exercise 4: Creating a State Controller
+        var personStates = Navigation.StateInfoConfig.dialogs.masterDetails.states;
+        personStates.listing.navigated = function (data) {
+            React.render(
+                <Listing pageNumber={data.pageNumber} />,
+                document.getElementById('view')
+            );
+        };
+        personStates.details.navigated = function (data) {
+            React.render(
+                <Details id={data.id} />,
+                document.getElementById('view')
+            );
+        };
         Navigation.start();
     </script>
 </body>
