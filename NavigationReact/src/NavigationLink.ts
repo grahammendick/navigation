@@ -21,7 +21,7 @@ var NavigationLink = React.createClass({
     render: function () {
         this.setNavigationLink();
         LinkUtility.addListeners(this, this.props, () => this.setNavigationLink(), !!this.props.lazy);
-        return LinkUtility.createElement(this.props);
+        return React.createElement(this.props.href ? 'a' : 'span', this.props);
     }
 });
 export = NavigationLink;

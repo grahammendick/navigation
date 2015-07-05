@@ -38,15 +38,5 @@ class LinkUtility {
         if (lazy)
             props.onMouseDown = (e: MouseEvent) => component.forceUpdate();
     }
-
-    static createElement(props: any) {
-        var clonedProps: any = {};
-        for (var key in props) {
-            if (key !== 'action' && key !== 'toData' && key !== 'includeCurrentData'
-                    && key !== 'currentDataKeys' && key !== 'distance')
-            clonedProps[key] = props[key];
-        }
-        return React.createElement(clonedProps.href ? 'a' : 'span', clonedProps);
-    }
 }
 export = LinkUtility;

@@ -21,7 +21,7 @@ var RefreshLink = React.createClass({
     render: function () {
         this.setRefreshLink();
         LinkUtility.addListeners(this, this.props, () => this.setRefreshLink(), !!this.props.lazy);
-        return LinkUtility.createElement(this.props);
+        return React.createElement(this.props.href ? 'a' : 'span', this.props);
     }
 });
 export = RefreshLink;
