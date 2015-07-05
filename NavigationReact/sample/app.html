@@ -20,7 +20,7 @@
 		        var people = personSearch.search(this.props.name, this.props.sortExpression);
 		        this.props.totalRowCount = people.length;
 		        people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
-		        this.props.sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+		        var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
                 people = people.map(function (person) {
                     return (
                         <tr>
@@ -35,7 +35,7 @@
 				        <table>
 					        <thead>
 						        <tr>
-							        <th><NavigationReact.RefreshLink toData={{ sortExpression: this.props.sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
+							        <th><NavigationReact.RefreshLink toData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
 							        <th>Date of Birth</th>
 						        </tr>
 					        </thead>
