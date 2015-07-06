@@ -68,9 +68,13 @@ module NavigationTests {
 	// StateNavigator
 	personList.dispose = () => {};
 	personList.navigating = (data, url, navigate) => {
+		navigate([]);
+	};
+	personList.navigated = (data, asyncData) => {};
+	personDetails.navigating = (data, url, navigate) => {
 		navigate();
 	};
-	personList.navigated = (data) => {};
+	personDetails.navigated = (data) => {};
 	
 	// State Handler
 	class LogStateHandler extends Navigation.StateHandler {
