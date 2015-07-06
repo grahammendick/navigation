@@ -1932,6 +1932,63 @@ describe('NavigationTest', function () {
         assert.strictEqual(navigatingHistory, false);
     });
 
+    it('NavigatingAsyncDataTest', function (done: MochaDone) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
+            assert.equal(asyncData, 'hello');
+            done();
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            setTimeout(() => navigate('hello'), 0);
+        }
+        Navigation.StateController.navigate('t0');
+    });
+
+    it('NavigatingNavigatingAsyncDataTest', function (done: MochaDone) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
+            assert.equal(asyncData, 0);
+            done();
+        }
+        var i = 0;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            ((count) => setTimeout(() => navigate(count), 0))(i);
+            i++;
+        }
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+    });
+
+    it('NavigatingNavigatingReversedAsyncDataTest', function (done: MochaDone) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
+            assert.equal(asyncData, 1);
+            done();
+        }
+        var i = 0;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            ((count) => setTimeout(() => navigate(count), 5 - 5 * count))(i);
+            i++;
+        }
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+    });
+
+    it('NavigatingNoAsyncDataTest', function (done: MochaDone) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
+            Navigation.StateController.navigate('t0');
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].navigated = (data, asyncData) => {
+            assert.equal(asyncData, undefined);
+            done();
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            setTimeout(() => navigate('hello'), 0);
+        }
+        Navigation.StateController.navigate('t0');
+    });
+
     it('NavigateTransitionStorageTest', function () {
         Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
         Navigation.StateController.navigate('d0');

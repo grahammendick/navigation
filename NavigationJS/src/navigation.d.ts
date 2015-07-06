@@ -217,8 +217,9 @@ declare module Navigation {
         /**
          * Called on the current State after navigating to it
          * @param data The current NavigationData
+         * @param asyncData The data passed asynchronously while navigating
          */
-        navigated: (data: any) => void;
+        navigated: (data: any, asyncData?: any) => void;
         /**
          * Called on the new State before navigating to it
          * @param data The new NavigationData
@@ -226,7 +227,7 @@ declare module Navigation {
          * @param navigate The function to call to continue to navigate
          * @param history A value indicating whether browser history was used
          */
-        navigating: (data: any, url: string, navigate: () => void, history?: boolean) => void;
+        navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history?: boolean) => void;
     }
 
     /**

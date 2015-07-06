@@ -134,13 +134,13 @@ class StateController {
     }
     
     private static getNavigateContinuation(oldState: State, oldUrl: string, state: State, url: string): () => void {
-        return () => {
+        return (asyncData?: any) => {
             if (oldUrl === StateContext.url) {
                 state.stateHandler.navigateLink(oldState, state, url);
                 StateController.setStateContext(state, url);
                 if (oldState && oldState !== state)
                     oldState.dispose();
-                state.navigated(StateContext.data);
+                state.navigated(StateContext.data, asyncData);
                 for (var id in this.navigateHandlers) {
                     if (url === StateContext.url)
                         this.navigateHandlers[id](oldState, state, StateContext.data);
