@@ -1974,6 +1974,21 @@ describe('NavigationTest', function () {
         Navigation.StateController.navigate('t0');
     });
 
+    it('NavigatingNoAsyncDataTest', function (done: MochaDone) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
+            Navigation.StateController.navigate('t0');
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].navigated = (data, asyncData) => {
+            assert.equal(asyncData, undefined);
+            done();
+        }
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            setTimeout(() => navigate('hello'), 0);
+        }
+        Navigation.StateController.navigate('t0');
+    });
+
     it('NavigateTransitionStorageTest', function () {
         Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
         Navigation.StateController.navigate('d0');
