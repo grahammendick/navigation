@@ -1944,6 +1944,21 @@ describe('NavigationTest', function () {
         Navigation.StateController.navigate('t0');
     });
 
+    it('NavigatingNavigatingAsyncDataTest', function (done: MochaDone) {
+        Navigation.StateController.navigate('d0');
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
+            assert.equal(0, asyncData);
+            done();
+        }
+        var i = 0;
+        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
+            ((count) => setTimeout(() => navigate(count), 0))(i);
+            i++;
+        }
+        Navigation.StateController.navigate('t0');
+        Navigation.StateController.navigate('t0');
+    });
+
     it('NavigateTransitionStorageTest', function () {
         Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
         Navigation.StateController.navigate('d0');
