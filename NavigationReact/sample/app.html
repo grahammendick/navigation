@@ -35,7 +35,7 @@
                 });
                 return (
 			        <div>
-				        <Filter name={this.props.name} />
+				        <Filter initialName={this.props.name} />
 				        <table>
 					        <thead>
 						        <tr>
@@ -52,10 +52,19 @@
         });
 
         var Filter = React.createClass({
-            shouldComponentUpdate: function(nextProps) {
-                return nextProps.name !== this.props.name;
+            getInitialState: function() {
+                return {name: this.props.initialName};
             },
-	        nameChange: function (event) {
+            componentWillReceiveProps: function(nextProps) {
+                this.setState({ name: nextProps.initialName });
+            },
+            shouldComponentUpdate: function(nextProps, nextState) {
+                return nextState.name !== this.state.name;
+            }, 
+            nameChange: function(event) {
+                this.setState({name: event.target.value});
+            },
+	        nameBlur: function (event) {
                 Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
 	        },
 	        render: function () {
@@ -63,7 +72,7 @@
 			        <div>
 				        <div>
 					        <label htmlFor="name">Name</label>
-					        <input id="name" defaultValue={this.props.name} onBlur={this.nameChange} />
+					        <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
 				        </div>
 				        Page size&nbsp;
 				        <NavigationReact.RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</NavigationReact.RefreshLink>&nbsp;
