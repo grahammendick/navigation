@@ -56,6 +56,9 @@
             }
         });
         var Listing = React.createClass({
+            shouldComponentUpdate: function(nextProps) {
+                return nextProps.pageNumber !== this.props.pageNumber;
+            },
             render: function () {
                 var people = personSearch.getList();
                 var start = (this.props.pageNumber - 1) * 10;
@@ -92,6 +95,9 @@
         }
         });
         var Details = React.createClass({
+            shouldComponentUpdate: function(nextProps) {
+                return nextProps.id !== this.props.id;
+            },
             render: function () {
                 var person = personSearch.getDetails(this.props.id);
                 return (
