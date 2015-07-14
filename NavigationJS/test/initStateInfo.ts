@@ -5,15 +5,12 @@ import StateHandler = require('../src/StateHandler');
 
 class CustomStateHandler extends StateHandler {
     truncateCrumbTrail(state: State, crumbs: Array<Crumb>): Array<Crumb> {
-        var newCrumbs: Array<Crumb> = [];
-        var d6Crumbs: Array<Crumb> = [];
+        var newCrumbs = [];
         for (var i = 0; i < crumbs.length; i++) {
-            if (crumbs[i].state.parent.key === 'd0' || crumbs[i].state.parent.key === 'd3')
-                newCrumbs.push(crumbs[i]);
-            if (crumbs[i].state.parent.key === 'd6')
-                d6Crumbs.push(crumbs[i]);
+            if (crumbs[i].state === state)
+                break;
+            newCrumbs.push(crumbs[i]);
         }
-        newCrumbs = newCrumbs.concat(super.truncateCrumbTrail(state, d6Crumbs));
         return newCrumbs;
     }
 }
@@ -142,7 +139,6 @@ function initStateInfo() {
     ]);
     var dialogs: any = Navigation.StateInfoConfig.dialogs;
     dialogs.d6.states.s0.stateHandler = new CustomStateHandler();
-    dialogs.d6.states.s1.stateHandler = new CustomStateHandler();
     Navigation.settings.combineCrumbTrail = false;
     Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
 }
