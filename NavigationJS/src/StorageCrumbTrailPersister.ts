@@ -7,11 +7,11 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private historySize: number;
 	private storage: Storage;
 	
-	constructor(maxLength?: number, historySize?: number, storage?: Storage) {
+	constructor(maxLength: number = 500, historySize: number = 100, storage?: Storage) {
 		super();
 		settings.combineCrumbTrail = true;
-		this.maxLength = maxLength == null ? 500 : maxLength;
-		this.historySize = historySize == null ? 100 : historySize;
+		this.maxLength = maxLength;
+		this.historySize = historySize;
 		this.storage = storage;
 		if (!this.storage) {
 			try {
