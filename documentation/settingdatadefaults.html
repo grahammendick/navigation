@@ -93,6 +93,11 @@
                 A parameter's default type is assumed to be a 'string' so you need only define default types for 'number' and 'boolean' parameters. You needn't
                 define a default type for a parameter with a default value because the type is derived from the value.
             </p>
+            <p>
+                Even with default types configured, Navigation will still produce unpretty Urls if you pass a value that doesn't match the default type, e.g., a
+                string of '10' for the mail id. It will also escape any string that contains an underscore regardless of the default type. You can turn this 
+                behaviour off by setting a State's trackTypes attribute to false.
+            </p>
         </div>
     </div>
     <script src="../highlight.pack.js"></script>
