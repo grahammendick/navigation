@@ -51,7 +51,8 @@
                 of a State that gets called whenever that State is navigated away from. When a user selects a mail, the 'listing' State's dispose function is
                 called, followed by the 'details' State's navigated function. Paging through the inbox won't trigger the dispose function because a refresh
                 navigation doesn't change States.
-                <pre><code class="javascript">var listing = inbox.states.listing;
+                <pre><code class="javascript">var inbox = Navigation.StateInfoConfig.dialogs.inbox;
+var listing = inbox.states.listing;
 listing.dispose = function() {
     // Hide the inbox
 }
