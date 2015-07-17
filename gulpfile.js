@@ -17,9 +17,9 @@ var tests = [
 	{ name: 'NavigationData', to: 'navigationData.test.js' }
 ];
 var plugins = [
-	{ name: 'NavigationReact', to: 'navigation.react.js' },
-	{ name: 'NavigationKnockout', to: 'navigation.knockout.js' },
-	{ name: 'NavigationAngular', to: 'navigation.angular.js' }
+	require('./build/npm/navigation-react/package.json'),
+	require('./build/npm/navigation-knockout/package.json'),
+	require('./build/npm/navigation-angular/package.json')
 ];
 var testTasks = [];
 function testTask(from, to) {
@@ -69,17 +69,19 @@ function packageTask(name, from) {
 }
 
 for (var i = 0; i < plugins.length; i++) {
-	(function (plugin) {
-		var from = './' + plugin.name + '/src/' + plugin.name + '.ts';
-		gulp.task('Build' + plugin.name, function () {
-			return buildTask(plugin.name, from, plugin.to);
+	var name = plugins[i].name.replace('/b./g', function(val){ return val.toUpperCase(); }).replace('-', '');
+	var tsFrom = './' + name + '/src/' + name + '.ts';
+	var jsTo = plugins[i].name.replace('-', '.') + '.js';
+	(function (name, tsFrom, jsTo) {
+		gulp.task('Build' + name, function () {
+			return buildTask(name, tsFrom, jsTo);
 		});
-		gulp.task('Package' + plugin.name, function () {
-			return packageTask(plugin.name, from);
+		gulp.task('Package' + name, function () {
+			return packageTask(name, tsFrom);
 		});
-	})(plugins[i]);
-	buildTasks.push('Build' + plugins[i].name);
-	packageTasks.push('Package' + plugins[i].name);
+	})(name, tsFrom, jsTo);
+	buildTasks.push('Build' + name);
+	packageTasks.push('Package' + name);
 }
 gulp.task('build', buildTasks);
 gulp.task('package', packageTasks);
