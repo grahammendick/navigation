@@ -3,6 +3,7 @@ var shim = require('browserify-shim');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var derequire = require('gulp-derequire');
+var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
@@ -44,12 +45,20 @@ gulp.task('test', testTasks);
 var buildTasks = ['BuildNavigation'];
 var packageTasks = ['PackageNavigation'];
 gulp.task('BuildNavigation', function () {
-	return buildTask('Navigation', './NavigationJS/src/Navigation.ts', 'navigation.js');
+	return buildTask('Navigation', './NavigationJS/src/Navigation.ts', 
+		'navigation.js', require('./build/npm/navigation/package.json'));
 });
 gulp.task('PackageNavigation', function () {
 	return packageTask('Navigation', './NavigationJS/src/Navigation.ts');
 })
-function buildTask(name, file, to) {
+
+var info = ['/**',
+  ' * Navigation v<%= details.version %>',
+  ' * (c) Graham Mendick - <%= details.homepage %>',
+  ' * License: <%= details.license %>',
+  ' */',
+  ''].join('\r\n');
+function buildTask(name, file, to, details) {
 	return browserify(file, { standalone: name })
 		.plugin('tsify')
 		.transform(shim)
@@ -57,9 +66,11 @@ function buildTask(name, file, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(derequire())
+		.pipe(header(info, { details : details } ))
 		.pipe(gulp.dest('./build/dist'))
 		.pipe(rename(to.replace(/js$/, 'min.js')))
 		.pipe(streamify(uglify()))
+		.pipe(header(info, { details : details } ))
 		.pipe(gulp.dest('./build/dist'));
 }
 function packageTask(name, file) {
@@ -69,17 +80,19 @@ function packageTask(name, file) {
 }
 
 for (var i = 0; i < plugins.length; i++) {
-	var name = plugins[i].name.replace('/b./g', function(val){ return val.toUpperCase(); }).replace('-', '');
+	var name = plugins[i].name
+				.replace('/b./g', function(val){ return val.toUpperCase(); })
+				.replace('-', '');
 	var tsFrom = './' + name + '/src/' + name + '.ts';
 	var jsTo = plugins[i].name.replace('-', '.') + '.js';
-	(function (name, tsFrom, jsTo) {
+	(function (name, tsFrom, jsTo, plugin) {
 		gulp.task('Build' + name, function () {
-			return buildTask(name, tsFrom, jsTo);
+			return buildTask(name, tsFrom, jsTo, plugin);
 		});
 		gulp.task('Package' + name, function () {
 			return packageTask(name, tsFrom);
 		});
-	})(name, tsFrom, jsTo);
+	})(name, tsFrom, jsTo, plugins[i]);
 	buildTasks.push('Build' + name);
 	packageTasks.push('Package' + name);
 }
