@@ -22,8 +22,8 @@ var plugins = [
 	require('./build/npm/navigation-angular/package.json')
 ];
 var testTasks = [];
-function testTask(from, to) {
-	return browserify(from)
+function testTask(file, to) {
+	return browserify(file)
 		.plugin('tsify')
 		.bundle()
 		.pipe(source(to))
@@ -49,8 +49,8 @@ gulp.task('BuildNavigation', function () {
 gulp.task('PackageNavigation', function () {
 	return packageTask('Navigation', './NavigationJS/src/Navigation.ts');
 })
-function buildTask(name, from, to) {
-	return browserify(from, { standalone: name })
+function buildTask(name, file, to) {
+	return browserify(file, { standalone: name })
 		.plugin('tsify')
 		.transform(shim)
 		.bundle()
@@ -62,8 +62,8 @@ function buildTask(name, from, to) {
 		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./build/dist'));
 }
-function packageTask(name, from) {
-	return gulp.src(from)
+function packageTask(name, file) {
+	return gulp.src(file)
 		.pipe(typescript())
 		.pipe(gulp.dest('./build/lib/' + name));
 }
