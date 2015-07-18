@@ -17,11 +17,6 @@ var tests = [
 	{ name: 'Navigation', to: 'navigation.test.js' },
 	{ name: 'NavigationData', to: 'navigationData.test.js' }
 ];
-var plugins = [
-	require('./build/npm/navigation-react/package.json'),
-	require('./build/npm/navigation-knockout/package.json'),
-	require('./build/npm/navigation-angular/package.json')
-];
 var testTasks = [];
 function testTask(file, to) {
 	return browserify(file)
@@ -42,16 +37,14 @@ for (var i = 0; i < tests.length; i++) {
 }
 gulp.task('test', testTasks);
 
-var buildTasks = ['BuildNavigation'];
-var packageTasks = ['PackageNavigation'];
-gulp.task('BuildNavigation', function () {
-	return buildTask('Navigation', './NavigationJS/src/Navigation.ts', 
-		'navigation.js', require('./build/npm/navigation/package.json'));
-});
-gulp.task('PackageNavigation', function () {
-	return packageTask('Navigation', './NavigationJS/src/Navigation.ts');
-})
-
+var items = [
+	require('./build/npm/navigation/package.json'),
+	require('./build/npm/navigation-react/package.json'),
+	require('./build/npm/navigation-knockout/package.json'),
+	require('./build/npm/navigation-angular/package.json')
+];
+var buildTasks = [];
+var packageTasks = [];
 var info = ['/**',
   ' * Navigation v<%= details.version %>',
   ' * (c) Graham Mendick - <%= details.homepage %>',
@@ -78,21 +71,20 @@ function packageTask(name, file) {
 		.pipe(typescript())
 		.pipe(gulp.dest('./build/lib/' + name));
 }
-
-for (var i = 0; i < plugins.length; i++) {
-	var name = plugins[i].name
+for (var i = 0; i < items.length; i++) {
+	var name = items[i].name
 				.replace(/\b./g, function(val){ return val.toUpperCase(); })
 				.replace('-', '');
-	var tsFrom = './' + name + '/src/' + name + '.ts';
-	var jsTo = plugins[i].name.replace('-', '.') + '.js';
-	(function (name, tsFrom, jsTo, plugin) {
+	var tsFrom = './' + name + (name.length == 10 ? 'JS' : '') + '/src/' + name + '.ts';
+	var jsTo = items[i].name.replace('-', '.') + '.js';
+	(function (name, tsFrom, jsTo, item) {
 		gulp.task('Build' + name, function () {
-			return buildTask(name, tsFrom, jsTo, plugin);
+			return buildTask(name, tsFrom, jsTo, item);
 		});
 		gulp.task('Package' + name, function () {
 			return packageTask(name, tsFrom);
 		});
-	})(name, tsFrom, jsTo, plugins[i]);
+	})(name, tsFrom, jsTo, items[i]);
 	buildTasks.push('Build' + name);
 	packageTasks.push('Package' + name);
 }
