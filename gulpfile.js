@@ -81,7 +81,7 @@ function packageTask(name, file) {
 
 for (var i = 0; i < plugins.length; i++) {
 	var name = plugins[i].name
-				.replace('/b./g', function(val){ return val.toUpperCase(); })
+				.replace(/\b./g, function(val){ return val.toUpperCase(); })
 				.replace('-', '');
 	var tsFrom = './' + name + '/src/' + name + '.ts';
 	var jsTo = plugins[i].name.replace('-', '.') + '.js';
