@@ -75,7 +75,8 @@ for (var i = 0; i < items.length; i++) {
 	var name = items[i].name
 				.replace(/\b./g, function(val){ return val.toUpperCase(); })
 				.replace('-', '');
-	var tsFrom = './' + name + (name.length == 10 ? 'JS' : '') + '/src/' + name + '.ts';
+	var tsFromFolder = name + (name.length == 10 ? 'JS' : '');
+	var tsFrom = './' + tsFromFolder + '/src/' + name + '.ts';
 	var jsTo = items[i].name.replace('-', '.') + '.js';
 	(function (name, tsFrom, jsTo, item) {
 		gulp.task('Build' + name, function () {
