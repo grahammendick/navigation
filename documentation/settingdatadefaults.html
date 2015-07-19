@@ -34,7 +34,9 @@
                         <li><a href="workingwith/react.html">React</a></li>
                     </ul>
                 </li>
+                <li><a href="unloadingviews.html">Unloading Views</a></li>
                 <li><a href="managinghistory.html">Managing History</a></li>
+                <li><a href="layingcrumbtrail.html">Laying a Crumb Trail</a></li>
             </ul>
         </div>
         <div id="doc">
@@ -92,6 +94,11 @@
             <p>
                 A parameter's default type is assumed to be a 'string' so you need only define default types for 'number' and 'boolean' parameters. You needn't
                 define a default type for a parameter with a default value because the type is derived from the value.
+            </p>
+            <p>
+                Even with default types configured, Navigation will still produce unpretty Urls if you pass a value that doesn't match the default type, e.g., a
+                string of '10' for the mail id. It will also escape any string that contains an underscore regardless of the default type. You can turn this 
+                behaviour off by setting a State's trackTypes attribute to false.
             </p>
         </div>
     </div>

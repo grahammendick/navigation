@@ -34,7 +34,9 @@
                         <li><a href="workingwith/react.html">React</a></li>
                     </ul>
                 </li>
+                <li><a href="unloadingviews.html">Unloading Views</a></li>
                 <li><a href="managinghistory.html">Managing History</a></li>
+                <li><a href="layingcrumbtrail.html">Laying a Crumb Trail</a></li>
             </ul>
         </div>
         <div id="doc">
@@ -44,15 +46,16 @@
                 you need to fetch and display the mail's details.
             </p>
             <p>
-                To be notified after a navigation takes place, you need a State Navigator. This is a function assigned to a State that's called when that
-                State becomes current. Things would get messy if you had to create the State Navigator as part of the <a href="configuring.html">configuration</a>.
-                So, Navigation provides access to Dialogs and States post configuration, via the StateInfoConfig object. The keys from the configuration become the
-                property names, for example, here's how to access the 'inbox' Dialog and it's 'listing' State:
+                To be notified after a navigation takes place, you need a State Navigator. A State Navigator is built by attaching functions to States,
+                allowing you to hook into various points in the navigation lifecycle. Things would get messy if you had to create the State Navigator as
+                part of the <a href="configuring.html">configuration</a>. So, Navigation provides access to Dialogs and States post configuration, via the
+                StateInfoConfig object. The keys from the configuration become the property names, for example, here's how to access the 'inbox' Dialog and
+                its 'details' State:
                 <pre><code class="javascript">var inbox = Navigation.StateInfoConfig.dialogs.inbox;
-var listing = inbox.states.listing;</code></pre>
+var details = inbox.states.details;</code></pre>
             </p>
             <p>
-                To create a State Navigator, you assign a function to that State's navigated property. Whenever that State is navigated to, the function is
+                To create a State Navigator, you can assign a function to that State's navigated property. Whenever that State is navigated to, the function is
                 called along with any data passed during the navigation. Here's a State Navigator for the 'details' State that has the mail id passed in:
                 <pre><code class="javascript">var details = inbox.states.details;
 details.navigated = function(data) {
@@ -61,32 +64,33 @@ details.navigated = function(data) {
 }</code></pre>
             </p>
             <p>
-                The State Navigator isn't aware of the type of navigation that triggered it. It could've been a navigation to a Dialog or along a Transition,
-                a back navigation or a refresh. For example, the following 'listing' State Navigator will be called after paging through the inbox (refresh)
-                and after returning from the mail details (back).
-                <pre><code class="javascript">var listing = inbox.states.listing;
-listing.navigated = function(data) {
-    var pageNumber = data.pageNumber;
-    // Fetch and display a page of the inbox
+                The navigated function fires after the navigation's happened and so, for the time it takes to fetch the email details, the user will be shown
+                a blank screen. You can fix this by pausing the navigation and only continuing with it once you've loaded the email details. To pause a
+                navigation you assign a function to a State's navigating property. Once your asynchronous calls complete you can continue with the navigation
+                by calling the navigate function passed in, supplying the retrieved data.
+                <pre><code class="javascript">var details = inbox.states.details;
+details.navigating = function(data, url, navigate, history) {
+    // Fetch the mail details
+    var details = getDetails(data.id, function(resp){
+        // Continue the navigation
+        navigate({ details: resp.details });
+    });
 }</code></pre>
             </p>
             <p>
-                Once your State Navigators are created, you should call <code>Navigation.start()</code>. This executes an initial navigation to match the current
-                State to the browser Url. If you're using Navigation server side, the Url should be passed in, <code>Navigation.start(url)</code>.
-            </p>
-            <p>
-                As well as showing the new view after a navigation, you also need to hide the old one. When a user selects a mail, you need to hide the inbox.
-                The State Navigator assigned to the 'details' State isn't the right place for this logic, because it shouldn't know anything about the inbox view.
-            </p>
-            <p>
-                You can assign a function to the dispose property of a State that gets called whenever that State is navigated away from. When a user selects a
-                mail, the 'listing' State's dispose function is called first, followed by the 'details' State's navigated function. Paging through the inbox won't
-                trigger the dispose function because a refresh navigation doesn't change States.
-                <pre><code class="javascript">var listing = inbox.states.listing;
-listing.dispose = function() {
-    // Hide the inbox
+                To access the mail details returned asynchronously, add an asyncData parameter to the navigated function:
+                <pre><code class="javascript">details.navigated = function(data, asyncData) {
+    // Display the mail details
+    var details = asyncData.details;
 }</code></pre>
-                <em>It is a State's navigated and dispose functions taken together that make up a State Navigator.</em>
+            </p>
+            <p>
+                A State Navigator isn't aware of the type of navigation that triggered it. It could've been a navigation to a Dialog or along a Transition,
+                a back navigation or a refresh. In <a href="unloadingviews.html">Unloading Views</a>, you can read about a couple more functions that 
+                make up a State Navigator.
+            <p>
+                Once your State Navigators are created, you should call <code>Navigation.start()</code>. This executes an initial navigation to match the 
+                current State to the browser Url. If you're using Navigation server side, the Url should be passed in, <code>Navigation.start(url)</code>. 
             </p>
         </div>
     </div>
