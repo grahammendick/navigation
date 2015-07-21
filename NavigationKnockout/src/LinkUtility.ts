@@ -24,6 +24,17 @@ class LinkUtility {
             data = Navigation.StateContext.includeCurrentData(data);
         return data;
     }
+    
+    static isActive(key: string, val: any): boolean {
+        if (!Navigation.StateContext.state)
+            return false;
+        if (val != null && val.toString()) {
+            var trackTypes = Navigation.StateContext.state.trackTypes;
+            var currentVal = Navigation.StateContext.data[key];
+            return currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
+        }
+        return true;
+    }
 
     static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {

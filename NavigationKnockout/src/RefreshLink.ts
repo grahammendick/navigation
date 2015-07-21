@@ -15,15 +15,11 @@ function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, al
     var data = {};
     var toData = valueAccessor();
     toData = ko.unwrap(toData);
-    var active = !!Navigation.StateContext.state;
+    var active = true;
     for (var key in toData) {
         var val = ko.unwrap(toData[key]);
         data[key] = val;
-        if (active && val != null && val.toString()) {
-            var trackTypes = Navigation.StateContext.state.trackTypes;
-            var currentVal = Navigation.StateContext.data[key];
-            active = active && currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
-        }
+        active = active && LinkUtility.isActive(key, val);
     }
     LinkUtility.setLink(element, () => Navigation.StateController.getRefreshLink(
         LinkUtility.getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
