@@ -17,7 +17,7 @@ class LinkUtility {
             toData = Navigation.StateContext.includeCurrentData(toData);
         return toData;
     }
-    
+
     static isActive(key: string, val: any): boolean {
         if (!Navigation.StateContext.state)
             return false;
@@ -28,7 +28,7 @@ class LinkUtility {
         }
         return true;
     }
-    
+
     static setActive(element: HTMLAnchorElement, active: boolean, activeCssClass: string, disableActive: boolean) {
         ko.utils.toggleDomNodeCssClass(element, activeCssClass, active)
         if (active && disableActive)
