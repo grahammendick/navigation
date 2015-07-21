@@ -23,8 +23,14 @@ var RefreshLink = () => {
 
 function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes,
     toData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
+    var active = true;
+    for (var key in toData) {
+        active = active && LinkUtility.isActive(key, toData[key]);
+    }
     LinkUtility.setLink(element, attrs, () => Navigation.StateController.getRefreshLink(
         LinkUtility.getData(toData, includeCurrentData, currentDataKeys))
     );
+    active = active && !!attrs['href'];
+    LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
 }
 export = RefreshLink;
