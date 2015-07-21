@@ -19,6 +19,17 @@ class LinkUtility {
         return toData;
     }
 
+    static isActive(key: string, val: any): boolean {
+        if (!Navigation.StateContext.state)
+            return false;
+        if (val != null && val.toString()) {
+            var trackTypes = Navigation.StateContext.state.trackTypes;
+            var currentVal = Navigation.StateContext.data[key];
+            return currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
+        }
+        return true;
+    }
+
     static setActive(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, active: boolean, activeCssClass: string, disableActive: boolean) {
         if (activeCssClass){
             if (active && !element.hasClass(activeCssClass))
