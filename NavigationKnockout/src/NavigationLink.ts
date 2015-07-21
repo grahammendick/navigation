@@ -15,7 +15,6 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
     var action = ko.unwrap(valueAccessor());
     var data = {};
     var toData = ko.unwrap(allBindings.get('toData'));
-    toData = ko.unwrap(toData);
     var nextState = Navigation.StateController.getNextState(action);
     var active = nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
     for (var key in toData) {
