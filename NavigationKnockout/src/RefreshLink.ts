@@ -20,8 +20,8 @@ function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, al
     for (var key in toData) {
         var val = ko.unwrap(toData[key]);
         data[key] = val;
-        var currentVal = Navigation.StateContext.data[key];
         if (val != null && val.toString()) {
+            var currentVal = Navigation.StateContext.data[key];
             active = active && currentVal != null && (trackTypes ? val !== currentVal : val.toString() != currentVal.toString());
         }
     }
