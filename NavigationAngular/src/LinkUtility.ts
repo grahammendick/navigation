@@ -18,7 +18,18 @@ class LinkUtility {
             toData = Navigation.StateContext.includeCurrentData(toData);
         return toData;
     }
-    
+
+    static setActive(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, active: boolean, activeCssClass: string, disableActive: boolean) {
+        if (activeCssClass){
+            if (active && !element.hasClass(activeCssClass))
+                attrs.$addClass(activeCssClass)
+            if (!active && element.hasClass(activeCssClass))
+                attrs.$removeClass(activeCssClass)
+        }
+        if (active && disableActive)
+            attrs.$set('href', null);
+    }
+
     static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, lazy: boolean) {
         element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
