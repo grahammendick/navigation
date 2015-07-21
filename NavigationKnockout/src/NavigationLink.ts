@@ -12,13 +12,18 @@ var NavigationLink = ko.bindingHandlers['navigationLink'] = {
 };
 
 function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
+    var action = ko.unwrap(valueAccessor());
     var data = {};
     var toData = ko.unwrap(allBindings.get('toData'));
     toData = ko.unwrap(toData);
+    var nextState = Navigation.StateController.getNextState(action);
+    var active = nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
     for (var key in toData) {
-        data[key] = ko.unwrap(toData[key]);
+        var val = ko.unwrap(toData[key]);
+        data[key] = val;
+        active = active && LinkUtility.isActive(key, val);
     }
-    LinkUtility.setLink(element, () => Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()),
+    LinkUtility.setLink(element, () => Navigation.StateController.getNavigationLink(action,
         LinkUtility.getData(data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
 }
