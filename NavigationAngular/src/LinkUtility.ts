@@ -31,12 +31,7 @@ class LinkUtility {
     }
 
     static setActive(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, active: boolean, activeCssClass: string, disableActive: boolean) {
-        if (activeCssClass){
-            if (active && !element.hasClass(activeCssClass))
-                attrs.$addClass(activeCssClass)
-            if (!active && element.hasClass(activeCssClass))
-                attrs.$removeClass(activeCssClass)
-        }
+        element.toggleClass(activeCssClass, active);
         if (active && disableActive)
             attrs.$set('href', null);
     }
