@@ -22,7 +22,7 @@ function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, al
         active = active && LinkUtility.isActive(key, val);
     }
     LinkUtility.setLink(element, () => Navigation.StateController.getRefreshLink(
-        LinkUtility.getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys')))
+        LinkUtility.getData(data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
 }
 export = RefreshLink;

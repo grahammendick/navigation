@@ -11,18 +11,11 @@ class LinkUtility {
     }
 
     static getData(toData, includeCurrentData, currentDataKeys) {
-        var data = {};
-        toData = ko.unwrap(toData);
-        for (var key in toData) {
-            data[key] = ko.unwrap(toData[key]);
-        }
-        includeCurrentData = ko.unwrap(includeCurrentData);
-        currentDataKeys = ko.unwrap(currentDataKeys);
         if (currentDataKeys)
-            data = Navigation.StateContext.includeCurrentData(data, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            data = Navigation.StateContext.includeCurrentData(data);
-        return data;
+            toData = Navigation.StateContext.includeCurrentData(toData);
+        return toData;
     }
     
     static isActive(key: string, val: any): boolean {
