@@ -28,6 +28,13 @@ class LinkUtility {
         }
         return true;
     }
+    
+    static setActive(element: HTMLAnchorElement, active: boolean, activeCssClass: string, disableActive: boolean) {
+        active = active && !!element.href;
+        ko.utils.toggleDomNodeCssClass(element, activeCssClass, active)
+        if (active && disableActive)
+            element.removeAttribute('href');        
+    }
 
     static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
