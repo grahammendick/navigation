@@ -17,6 +17,24 @@ class LinkUtility {
             toData = Navigation.StateContext.includeCurrentData(toData);
         return toData;
     }
+
+    static isActive(key: string, val: any): boolean {
+        if (!Navigation.StateContext.state)
+            return false;
+        if (val != null && val.toString()) {
+            var trackTypes = Navigation.StateContext.state.trackTypes;
+            var currentVal = Navigation.StateContext.data[key];
+            return currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
+        }
+        return true;
+    }
+
+    static setActive(props: any, active: boolean, activeCssClass: string, disableActive: boolean) {
+        if (activeCssClass)
+            props.className += (props.className ? ' ' : '') + activeCssClass;
+        if (active && disableActive)
+            props.href = null;        
+    }
     
     static addListeners(component: React.Component<any, any>, props: any, getLink: () => string, lazy: boolean) {
         props.onClick = (e: MouseEvent) => {
