@@ -30,8 +30,8 @@ class LinkUtility {
     }
 
     static setActive(props: any, active: boolean, activeCssClass: string, disableActive: boolean) {
-        if (activeCssClass)
-            props.className += (props.className ? ' ' : '') + activeCssClass;
+        if (active && activeCssClass)
+            props.className = !props.className ? activeCssClass : props.className + ' ' + activeCssClass;
         if (active && disableActive)
             props.href = null;        
     }
