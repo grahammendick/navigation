@@ -31,7 +31,7 @@ var NavigationLink = React.createClass({
             active = active && LinkUtility.isActive(key, this.props.toData[key]);
         }
         props.href = this.getNavigationLink();
-        LinkUtility.addListeners(this, props, () => this.setNavigationLink(), !!this.props.lazy);
+        LinkUtility.addListeners(this, props, () => this.getNavigationLink(), !!this.props.lazy);
         active = active && !!props.href && this.isActive(this.props.action);
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
