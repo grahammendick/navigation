@@ -3,24 +3,27 @@ import Navigation = require('navigation');
 import React = require('react');
 
 var NavigationBackLink = React.createClass({
-    onNavigate: function () {
+    onNavigate() {
         this.forceUpdate();
     },
-    setNavigationBackLink: function() {
-        LinkUtility.setLink(this.props, () => Navigation.StateController.getNavigationBackLink(this.props.distance));
+    getNavigationBackLink(): string {
+        return LinkUtility.getLink(() => Navigation.StateController.getNavigationBackLink(this.props.distance));
     },
-    componentDidMount: function () {
+    componentDidMount() {
         if (!this.props.lazy)
             Navigation.StateController.onNavigate(this.onNavigate);
     },
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         if (!this.props.lazy)
             Navigation.StateController.offNavigate(this.onNavigate);
     },
-    render: function () {
-        this.setNavigationBackLink();
-        LinkUtility.addListeners(this, this.props, () => this.setNavigationBackLink(), !!this.props.lazy);
-        return React.createElement(this.props.href ? 'a' : 'span', this.props);
+    render() {
+        var props: any = {};
+        for(var key in this.props)
+            props[key] = this.props[key];
+        props.href = this.getNavigationBackLink();
+        LinkUtility.addListeners(this, props, () => this.setNavigationBackLink(), !!this.props.lazy);
+        return React.createElement(props.href ? 'a' : 'span', props);
     }
 });
 export = NavigationBackLink;

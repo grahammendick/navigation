@@ -2,11 +2,11 @@
 import React = require('react');
 
 class LinkUtility {
-    static setLink(props: any, linkAccessor: () => string) {
+    static getLink(linkAccessor: () => string): string {
         try {
-            props.href = Navigation.settings.historyManager.getHref(linkAccessor());
+            return Navigation.settings.historyManager.getHref(linkAccessor());
         } catch (e) {
-            props.href = null;
+            return null;
         }
     }
 
@@ -18,18 +18,13 @@ class LinkUtility {
         return toData;
     }
     
-    static addListeners(component: React.Component<any, any>, props: any, setLink: () => void, lazy: boolean) {
+    static addListeners(component: React.Component<any, any>, props: any, getLink: () => string, lazy: boolean) {
         props.onClick = (e: MouseEvent) => {
             var element = <HTMLAnchorElement> React.findDOMNode(component);
-            if (lazy) {
-                setLink();
-                if (props.href)
-                    element.href = props.href;
-                else
-                    component.forceUpdate();
-            }
+            if (lazy)
+                element.href = getLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                if (props.href) {
+                if (element.href) {
                     e.preventDefault();
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }
