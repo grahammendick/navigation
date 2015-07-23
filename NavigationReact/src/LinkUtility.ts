@@ -55,7 +55,7 @@ class LinkUtility {
             }
         };
         if (lazy)
-            props.onMouseDown = (e: MouseEvent) => component.forceUpdate();
+            props.onContextMenu = (e: MouseEvent) => component.forceUpdate();
     }
 }
 export = LinkUtility;
