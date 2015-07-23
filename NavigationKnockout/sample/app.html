@@ -5,6 +5,7 @@
     <style>
         table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
         ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+        .active{font-weight:bold;}
     </style>
 </head>
 <body>
@@ -14,8 +15,8 @@
             <input id="name" data-bind="value: name, event: { blur: nameChange }" />
         </div>
         Page size
-        <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true">5</a>
-        <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true">10</a>
+        <a data-bind="refreshLink: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active'">5</a>
+        <a data-bind="refreshLink: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active'">10</a>
         <table>
             <thead>
                 <tr>
@@ -31,14 +32,10 @@
             </tbody>
         </table>
         <ul>
-            <li data-bind="if: previousVisible"><a data-bind="refreshLink: { startRowIndex: 0 }, includeCurrentData: true">First</a></li>
-            <li data-bind="if: previousVisible"><a data-bind="refreshLink: { startRowIndex: previous }, includeCurrentData: true">Previous</a></li>
-            <li data-bind="ifnot: previousVisible">First</li>
-            <li data-bind="ifnot: previousVisible">Previous</li>
-            <li data-bind="if: nextVisible"><a data-bind="refreshLink: { startRowIndex: next }, includeCurrentData: true">Next</a></li>
-            <li data-bind="if: nextVisible"><a data-bind="refreshLink: { startRowIndex: last }, includeCurrentData: true">Last</a></li>
-            <li data-bind="ifnot: nextVisible">Next</li>
-            <li data-bind="ifnot: nextVisible">Last</li>
+            <li><a data-bind="refreshLink: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true">First</a></li>
+            <li><a data-bind="refreshLink: { startRowIndex: previous }, includeCurrentData: true, disableActive: true">Previous</a></li>
+            <li><a data-bind="refreshLink: { startRowIndex: next }, includeCurrentData: true, disableActive: true">Next</a></li>
+            <li><a data-bind="refreshLink: { startRowIndex: last }, includeCurrentData: true, disableActive: true">Last</a></li>
         </ul>
         Total Count <span data-bind="text: totalCount"></span>
     <!-- /ko -->
