@@ -39,10 +39,16 @@ class LinkUtility {
     static addListeners(component: React.Component<any, any>, props: any, getLink: () => string, lazy: boolean) {
         props.onClick = (e: MouseEvent) => {
             var element = <HTMLAnchorElement> React.findDOMNode(component);
-            if (lazy)
-                element.href = getLink();
+            var href = element.href;
+            if (lazy) {
+                href = getLink();
+                if (href)
+                    element.href = getLink();
+                else
+                    component.forceUpdate();
+            }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                if (element.href) {
+                if (href) {
                     e.preventDefault();
                     Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
                 }
