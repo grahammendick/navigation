@@ -5,6 +5,7 @@
     <style>
         table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
         ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+        .active{font-weight:bold;}
     </style>
 </head>
 <body>
@@ -75,8 +76,8 @@
                             <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
                         </div>
                         Page size&nbsp;
-                        <NavigationReact.RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true}>5</NavigationReact.RefreshLink>&nbsp;
-                        <NavigationReact.RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true}>10</NavigationReact.RefreshLink>
+                        <NavigationReact.RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
+                        <NavigationReact.RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
                     </div>
                 );
             }
@@ -89,28 +90,18 @@
             },
             render: function () {
                 var remainder = this.props.totalRowCount % this.props.maximumRows;
-                var previous = this.props.startRowIndex - this.props.maximumRows;
+                var previous = Math.max(0, this.props.startRowIndex - this.props.maximumRows);
                 var next = this.props.startRowIndex + this.props.maximumRows;
                 var last = remainder != 0 ? this.props.totalRowCount - remainder : this.props.totalRowCount - this.props.maximumRows;
-                var firstLink = 'First';
-                var previousLink = 'Previous';
-                var nextLink = 'Next';
-                var lastLink = 'Last';
-                if (previous >= 0){
-                    firstLink = <NavigationReact.RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true}>First</NavigationReact.RefreshLink>;
-                    previousLink = <NavigationReact.RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true}>Previous</NavigationReact.RefreshLink>;
-                }
-                if (next < this.props.totalRowCount){
-                    nextLink = <NavigationReact.RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true}>Next</NavigationReact.RefreshLink>;
-                    lastLink = <NavigationReact.RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true}>Last</NavigationReact.RefreshLink>;
-                }
+                if (next >= this.props.totalRowCount)
+                    next = last = this.props.startRowIndex;
                 return (
                     <div>
                         <ul>
-                            <li>{firstLink}</li>
-                            <li>{previousLink}</li>
-                            <li>{nextLink}</li>
-                            <li>{lastLink}</li>
+                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
                         </ul>
                         Total Count {this.props.totalRowCount}
                     </div>
