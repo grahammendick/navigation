@@ -53,6 +53,7 @@ class LinkUtility {
             Navigation.StateController.onNavigate(setLink);
             ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
         } else {
+            ko.utils.registerEventHandler(element, 'mousedown', (e: MouseEvent) => setLink());
             ko.utils.registerEventHandler(element, 'contextmenu', (e: MouseEvent) => setLink());
         }
     }
