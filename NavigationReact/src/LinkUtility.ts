@@ -41,11 +41,10 @@ class LinkUtility {
             var element = <HTMLAnchorElement> React.findDOMNode(component);
             var href = element.href;
             if (lazy) {
+                component.forceUpdate();
                 href = getLink();
                 if (href)
                     element.href = getLink();
-                else
-                    component.forceUpdate();
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
