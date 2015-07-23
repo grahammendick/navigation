@@ -7,9 +7,7 @@
 	self.people = ko.observableArray();
 	self.sortExpression = ko.observable();
 	self.previous = ko.observable();
-	self.previousVisible = ko.observable();
 	self.next = ko.observable();
-	self.nextVisible = ko.observable();
 	self.last = ko.observable();
 	self.totalCount = ko.observable();
 	self.nameChange = function () {
@@ -25,12 +23,14 @@
 		self.name(data.name);
 		self.people(people);
 		self.sortExpression(data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name');
-		self.previous(data.startRowIndex - data.maximumRows);
-		self.previousVisible(self.previous() >= 0);
+		self.previous(Math.max(0, data.startRowIndex - data.maximumRows));
 		self.next(data.startRowIndex + data.maximumRows);
-		self.nextVisible(self.next() < totalRowCount);
 		var remainder = totalRowCount % data.maximumRows;
 		self.last(remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows);
+		if (self.next() >= totalRowCount) {
+			self.next(data.startRowIndex);
+			self.last(data.startRowIndex);
+		}
 		self.totalCount(totalRowCount);
 	};
 	personStates.details.navigated = function (data) {
