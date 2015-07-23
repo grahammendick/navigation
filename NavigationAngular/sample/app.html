@@ -5,6 +5,7 @@
     <style>
         table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
         ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+        .active{font-weight:bold;}
     </style>
 </head>
 <body>
@@ -15,8 +16,8 @@
                 <input id="name" ng-model="$parent.name" ng-blur="nameChange()" />
             </div>
             Page size
-            <a refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true">5</a>
-            <a refresh-link="{ maximumRows: 10, startRowIndex: null }" include-current-data="true">10</a>
+            <a refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true" active-css-class="'active'">5</a>
+            <a refresh-link="{ maximumRows: 10, startRowIndex: null }" include-current-data="true" active-css-class="'active'">10</a>
             <table>
                 <thead>
                     <tr>
@@ -32,14 +33,10 @@
                 </tbody>
             </table>
             <ul>
-                <li ng-if="previousVisible"><a refresh-link="{ startRowIndex: 0 }" include-current-data="true">First</a></li>
-                <li ng-if="previousVisible"><a refresh-link="{ startRowIndex: previous }" include-current-data="true">Previous</a></li>
-                <li ng-if="!previousVisible">First</li>
-                <li ng-if="!previousVisible">Previous</li>
-                <li ng-if="nextVisible"><a refresh-link="{ startRowIndex: next }" include-current-data="true">Next</a></li>
-                <li ng-if="nextVisible"><a refresh-link="{ startRowIndex: last }" include-current-data="true">Last</a></li>
-                <li ng-if="!nextVisible">Next</li>
-                <li ng-if="!nextVisible">Last</li>
+                <li><a refresh-link="{ startRowIndex: 0 }" include-current-data="true" disable-active="true">First</a></li>
+                <li><a refresh-link="{ startRowIndex: previous }" include-current-data="true" disable-active="true">Previous</a></li>
+                <li><a refresh-link="{ startRowIndex: next }" include-current-data="true" disable-active="true">Next</a></li>
+                <li><a refresh-link="{ startRowIndex: last }" include-current-data="true" disable-active="true">Last</a></li>
             </ul>
             Total Count {{totalCount}}
         </div>
