@@ -17,11 +17,11 @@
     <script src="../../build/dist/navigation.react.js"></script>
     <script type="text/jsx">
         var List = React.createClass({
-            shouldComponentUpdate: function(nextProps) {
+            shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.sortExpression !== this.props.sortExpression || nextProps.name !== this.props.name;
             },
-            render: function () {
+            render() {
                 var people = personSearch.search(this.props.name, this.props.sortExpression);
                 this.props.totalRowCount = people.length;
                 people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
@@ -53,22 +53,22 @@
         });
 
         var Filter = React.createClass({
-            getInitialState: function() {
+            getInitialState() {
                 return {name: this.props.initialName};
             },
-            componentWillReceiveProps: function(nextProps) {
+            componentWillReceiveProps(nextProps) {
                 this.setState({ name: nextProps.initialName });
             },
-            shouldComponentUpdate: function(nextProps, nextState) {
+            shouldComponentUpdate(nextProps, nextState) {
                 return nextState.name !== this.state.name;
             }, 
-            nameChange: function(event) {
+            nameChange(event) {
                 this.setState({name: event.target.value});
             },
-            nameBlur: function (event) {
+            nameBlur(event) {
                 Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
             },
-            render: function () {
+            render() {
                 return (
                     <div>
                         <div>
@@ -84,11 +84,11 @@
         });
 
         var Pager = React.createClass({
-            shouldComponentUpdate: function(nextProps) {
+            shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.totalRowCount !== this.props.totalRowCount;
             },
-            render: function () {
+            render() {
                 var remainder = this.props.totalRowCount % this.props.maximumRows;
                 var previous = Math.max(0, this.props.startRowIndex - this.props.maximumRows);
                 var next = this.props.startRowIndex + this.props.maximumRows;
@@ -110,10 +110,10 @@
         });
 
         var Details = React.createClass({
-            shouldComponentUpdate: function(nextProps) {
+            shouldComponentUpdate(nextProps) {
                 return nextProps.id !== this.props.id;
             },
-            render: function () {
+            render() {
                 var person = personSearch.getDetails(this.props.id);
                 return (
                     <div>
