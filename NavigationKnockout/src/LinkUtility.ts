@@ -35,13 +35,14 @@ class LinkUtility {
             element.removeAttribute('href');        
     }
 
-    static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean, navigating?: (e: MouseEvent) => boolean) {
+    static addListeners(element: HTMLAnchorElement, setLink: () => void, allBindings: KnockoutAllBindingsAccessor, viewModel: any) {
+        var lazy = !!allBindings.get('lazy');
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
-                    var handled = navigating(e);
+                    var handled = this.getNavigating(allBindings, viewModel)(e);
                     if (!handled) {
                         if (e.preventDefault)
                             e.preventDefault();
@@ -58,6 +59,15 @@ class LinkUtility {
         } else {
             ko.utils.registerEventHandler(element, 'mousedown', (e: MouseEvent) => setLink());
             ko.utils.registerEventHandler(element, 'contextmenu', (e: MouseEvent) => setLink());
+        }
+    }
+    
+    static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any): (e: MouseEvent) => boolean {
+        return (e: MouseEvent) => {
+            var listener = ko.unwrap(allBindings.get('navigating'));
+            if (listener)
+                return listener.call(viewModel, viewModel, e);
+            return false;
         }
     }
 }
