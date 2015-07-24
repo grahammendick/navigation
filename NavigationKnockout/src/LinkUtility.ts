@@ -42,13 +42,14 @@ class LinkUtility {
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
-                    var handled = this.getNavigating(allBindings, viewModel)(e);
+                    var link = Navigation.settings.historyManager.getUrl(element);
+                    var handled = this.getNavigating(allBindings, viewModel, link)(e);
                     if (!handled) {
                         if (e.preventDefault)
                             e.preventDefault();
                         else
                             e['returnValue'] = false;
-                        Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                        Navigation.StateController.navigateLink(link);
                     }
                 }
             }
@@ -62,11 +63,11 @@ class LinkUtility {
         }
     }
     
-    static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any): (e: MouseEvent) => boolean {
+    static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any, link: string): (e: MouseEvent) => boolean {
         return (e: MouseEvent) => {
             var listener = ko.unwrap(allBindings.get('navigating'));
             if (listener)
-                return listener.call(viewModel, viewModel, e);
+                return listener.call(viewModel, viewModel, e, link);
             return false;
         }
     }
