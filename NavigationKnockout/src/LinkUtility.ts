@@ -43,8 +43,8 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
                     var link = Navigation.settings.historyManager.getUrl(element);
-                    var handled = this.getNavigating(allBindings, viewModel, link)(e);
-                    if (!handled) {
+                    var navigate = this.getNavigating(allBindings, viewModel, link)(e);
+                    if (navigate) {
                         if (e.preventDefault)
                             e.preventDefault();
                         else
@@ -68,7 +68,7 @@ class LinkUtility {
             var listener = ko.unwrap(allBindings.get('navigating'));
             if (listener)
                 return listener.call(viewModel, viewModel, e, link);
-            return false;
+            return true;
         }
     }
 }
