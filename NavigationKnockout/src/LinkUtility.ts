@@ -43,8 +43,8 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
                     var link = Navigation.settings.historyManager.getUrl(element);
-                    var navigate = this.getNavigating(allBindings, viewModel, link)(e);
-                    if (navigate) {
+                    var navigating = this.getNavigating(allBindings, viewModel, link);
+                    if (navigating(e)) {
                         if (e.preventDefault)
                             e.preventDefault();
                         else
