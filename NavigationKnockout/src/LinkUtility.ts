@@ -35,17 +35,20 @@ class LinkUtility {
             element.removeAttribute('href');        
     }
 
-    static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
+    static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean, navigating?: (e: MouseEvent) => boolean) {
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
-                    if (e.preventDefault)
-                        e.preventDefault();
-                    else
-                        e['returnValue'] = false;
-                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                    var handled = navigating(e);
+                    if (!handled) {
+                        if (e.preventDefault)
+                            e.preventDefault();
+                        else
+                            e['returnValue'] = false;
+                        Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                    }
                 }
             }
         });

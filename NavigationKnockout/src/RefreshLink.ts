@@ -3,8 +3,14 @@ import Navigation = require('navigation');
 import ko = require('knockout');
 
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
-    init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) => {
-        LinkUtility.addListeners(element, () => setRefreshLink(element, valueAccessor, allBindings), !!allBindings.get('lazy'));
+    init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor, viewModel: any) => {
+        var navigating = (e: MouseEvent) => {
+            var listener = ko.unwrap(allBindings.get('navigating'));
+            if (listener)
+                return listener.call(viewModel, viewModel, e);
+            return false;
+        }
+        LinkUtility.addListeners(element, () => setRefreshLink(element, valueAccessor, allBindings), !!allBindings.get('lazy'), navigating);
     },
     update: (element, valueAccessor, allBindings: KnockoutAllBindingsAccessor) => {
         setRefreshLink(element, valueAccessor, allBindings);
