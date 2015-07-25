@@ -62,7 +62,7 @@ class LinkUtility {
             ko.utils.registerEventHandler(element, 'contextmenu', (e: MouseEvent) => setLink());
         }
     }
-    
+
     static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any, link: string): (e: MouseEvent) => boolean {
         return (e: MouseEvent) => {
             var listener = ko.unwrap(allBindings.get('navigating'));
