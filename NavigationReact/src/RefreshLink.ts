@@ -27,7 +27,7 @@ var RefreshLink = React.createClass({
             active = active && LinkUtility.isActive(key, this.props.toData[key]);
         }
         props.href = this.getRefreshLink();
-        LinkUtility.addListeners(this, props, () => this.getRefreshLink(), !!this.props.lazy);
+        LinkUtility.addListeners(this, props, () => this.getRefreshLink());
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);

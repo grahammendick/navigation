@@ -36,8 +36,9 @@ class LinkUtility {
             props.href = null;        
     }
     
-    static addListeners(component: React.Component<any, any>, props: any, getLink: () => string, lazy: boolean) {
-        props.onClick = (e: MouseEvent) => {
+    static addListeners(component: React.Component<any, any>, props: any, getLink: () => string) {
+        var lazy = !!props.lazy;
+        props.onClick = (e: MouseEvent, domId: string) => {
             var element = <HTMLAnchorElement> React.findDOMNode(component);
             var href = element.href;
             if (lazy) {
@@ -48,13 +49,26 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    e.preventDefault();
-                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                    var link = Navigation.settings.historyManager.getUrl(element);
+                    var navigating = this.getNavigating(props, domId, link);
+                    if (navigating(e)) {
+                        e.preventDefault();
+                        Navigation.StateController.navigateLink(link);
+                    }
                 }
             }
         };
         if (lazy)
             props.onContextMenu = (e: MouseEvent) => component.forceUpdate();
+    }
+
+    static getNavigating(props: any, domId: string, link: string): (e: MouseEvent) => boolean {
+        return (e: MouseEvent) => {
+            var listener = props.navigating;
+            if (listener)
+                return listener(e, domId, link);
+            return true;
+        }
     }
 }
 export = LinkUtility;
