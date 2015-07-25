@@ -36,7 +36,7 @@ class LinkUtility {
             attrs.$set('href', null);
     }
 
-    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, lazy: boolean) {
+    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, lazy: boolean, scope: ng.IScope) {
         element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
             if (lazy)
@@ -44,7 +44,7 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (anchor.href) {
                     e.preventDefault();
-                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(anchor));
+                    scope.$apply(() => Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(anchor)));
                 }
             }
         });

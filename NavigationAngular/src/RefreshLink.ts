@@ -8,7 +8,7 @@ var RefreshLink = () => {
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
             LinkUtility.addListeners(element, () => setRefreshLink(element, attrs, toData, includeCurrentData, 
-                currentDataKeys, activeCssClass, disableActive), !!scope.$eval(attrs['lazy']));
+                currentDataKeys, activeCssClass, disableActive), !!scope.$eval(attrs['lazy']), scope);
             var watchAttrs = [attrs['refreshLink'], attrs['includeCurrentData'], 
                 attrs['currentDataKeys'], attrs['activeCssClass'], attrs['disableActive']];
             scope.$watchGroup(watchAttrs, function (values) {

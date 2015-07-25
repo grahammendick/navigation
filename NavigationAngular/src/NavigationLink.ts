@@ -8,7 +8,7 @@ var NavigationLink = () => {
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var action, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
             LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, action, toData, includeCurrentData, 
-                currentDataKeys, activeCssClass, disableActive), !!scope.$eval(attrs['lazy']))
+                currentDataKeys, activeCssClass, disableActive), !!scope.$eval(attrs['lazy']), scope)
             var watchAttrs = [attrs['navigationLink'], attrs['toData'], attrs['includeCurrentData'], 
                 attrs['currentDataKeys'], attrs['activeCssClass'], attrs['disableActive']];
             scope.$watchGroup(watchAttrs, function (values) {

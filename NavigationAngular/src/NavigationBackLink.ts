@@ -7,7 +7,7 @@ var NavigationBackLink = () => {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var distance;
-            LinkUtility.addListeners(element, () => setNavigationBackLink(element, attrs, distance), !!scope.$eval(attrs['lazy']));
+            LinkUtility.addListeners(element, () => setNavigationBackLink(element, attrs, distance), !!scope.$eval(attrs['lazy']), scope);
             scope.$watch(attrs['navigationBackLink'], function (value) {
                 distance = value;
                 setNavigationBackLink(element, attrs, distance);
