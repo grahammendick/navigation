@@ -43,8 +43,8 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
                     var link = Navigation.settings.historyManager.getUrl(element);
-                    var navigating = this.getNavigating(allBindings, viewModel, link);
-                    if (navigating(e)) {
+                    var navigating = this.getNavigating(allBindings, viewModel);
+                    if (navigating(e, link)) {
                         if (e.preventDefault)
                             e.preventDefault();
                         else
@@ -63,8 +63,8 @@ class LinkUtility {
         }
     }
 
-    static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any, link: string): (e: MouseEvent) => boolean {
-        return (e: MouseEvent) => {
+    static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any): (e: MouseEvent, link: string) => boolean {
+        return (e: MouseEvent, link: string) => {
             var listener = ko.unwrap(allBindings.get('navigating'));
             if (listener)
                 return listener.call(viewModel, viewModel, e, link);

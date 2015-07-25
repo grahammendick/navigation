@@ -50,8 +50,8 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
                     var link = Navigation.settings.historyManager.getUrl(element);
-                    var navigating = this.getNavigating(props, domId, link);
-                    if (navigating(e)) {
+                    var navigating = this.getNavigating(props);
+                    if (navigating(e, domId, link)) {
                         e.preventDefault();
                         Navigation.StateController.navigateLink(link);
                     }
@@ -62,8 +62,8 @@ class LinkUtility {
             props.onContextMenu = (e: MouseEvent) => component.forceUpdate();
     }
 
-    static getNavigating(props: any, domId: string, link: string): (e: MouseEvent) => boolean {
-        return (e: MouseEvent) => {
+    static getNavigating(props: any): (e: MouseEvent, domId: string, link: string) => boolean {
+        return (e: MouseEvent, domId: string, link: string) => {
             var listener = props.navigating;
             if (listener)
                 return listener(e, domId, link);

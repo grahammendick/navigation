@@ -45,8 +45,8 @@ class LinkUtility {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (anchor.href) {
                     var link = Navigation.settings.historyManager.getUrl(anchor);
-                    var navigating = this.getNavigating($parse, attrs, scope, link);
-                    if (navigating(e)) {
+                    var navigating = this.getNavigating($parse, attrs, scope);
+                    if (navigating(e, link)) {
                         e.preventDefault();
                         Navigation.StateController.navigateLink(link);
                     }
@@ -62,8 +62,8 @@ class LinkUtility {
         }
     }
 
-    static getNavigating($parse: ng.IParseService, attrs: ng.IAttributes, scope: ng.IScope, link: string): (e: JQueryEventObject) => boolean {
-        return (e: JQueryEventObject) => {
+    static getNavigating($parse: ng.IParseService, attrs: ng.IAttributes, scope: ng.IScope): (e: JQueryEventObject, link: string) => boolean {
+        return (e: JQueryEventObject, link: string) => {
             var listener = attrs['navigating'] ? $parse(attrs['navigating']) : null;
             if (listener)
                 return listener(scope, { $event: e, url: link });
