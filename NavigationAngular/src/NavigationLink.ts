@@ -2,13 +2,13 @@
 import Navigation = require('navigation');
 import angular = require('angular');
 
-var NavigationLink = () => {
+var NavigationLink = ($parse: ng.IParseService) => {
     return {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var action, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
             LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, action, toData, includeCurrentData, 
-                currentDataKeys, activeCssClass, disableActive), attrs, scope)
+                currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope)
             var watchAttrs = [attrs['navigationLink'], attrs['toData'], attrs['includeCurrentData'], 
                 attrs['currentDataKeys'], attrs['activeCssClass'], attrs['disableActive']];
             scope.$watchGroup(watchAttrs, function (values) {

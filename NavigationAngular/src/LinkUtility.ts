@@ -36,7 +36,7 @@ class LinkUtility {
             attrs.$set('href', null);
     }
 
-    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, attrs: ng.IAttributes, scope: ng.IScope) {
+    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, $parse: ng.IParseService, attrs: ng.IAttributes, scope: ng.IScope) {
         var lazy = !!scope.$eval(attrs['lazy']);
         element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
@@ -44,8 +44,12 @@ class LinkUtility {
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (anchor.href) {
-                    e.preventDefault();
-                    scope.$apply(() => Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(anchor)));
+                    var link = Navigation.settings.historyManager.getUrl(anchor);
+                    var navigating = this.getNavigating($parse, attrs, scope, link);
+                    if (navigating(e)) {
+                        e.preventDefault();
+                        Navigation.StateController.navigateLink(link);
+                    }
                 }
             }
         });
@@ -55,6 +59,15 @@ class LinkUtility {
         } else {
             element.on('mousedown', (e) => setLink());
             element.on('contextmenu', (e) => setLink());
+        }
+    }
+
+    static getNavigating($parse: ng.IParseService, attrs: ng.IAttributes, scope: ng.IScope, link: string): (e: JQueryEventObject) => boolean {
+        return (e: JQueryEventObject) => {
+            var listener = attrs['navigating'] ? $parse(attrs['navigating']) : null;
+            if (listener)
+                return listener(scope, { $event: e, url: link });
+            return true;
         }
     }
 }
