@@ -36,7 +36,8 @@ class LinkUtility {
             attrs.$set('href', null);
     }
 
-    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, lazy: boolean, scope: ng.IScope) {
+    static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, attrs: ng.IAttributes, scope: ng.IScope) {
+        var lazy = !!scope.$eval(attrs['lazy']);
         element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
             if (lazy)
