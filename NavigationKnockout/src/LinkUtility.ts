@@ -67,7 +67,7 @@ class LinkUtility {
         return (e: MouseEvent) => {
             var listener = ko.unwrap(allBindings.get('navigating'));
             if (listener)
-                return listener.call(viewModel, e, link);
+                return listener.call(viewModel, viewModel, e, link);
             return true;
         }
     }
