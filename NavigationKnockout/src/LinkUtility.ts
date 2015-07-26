@@ -35,17 +35,22 @@ class LinkUtility {
             element.removeAttribute('href');        
     }
 
-    static addListeners(element: HTMLAnchorElement, setLink: () => void, lazy: boolean) {
+    static addListeners(element: HTMLAnchorElement, setLink: () => void, allBindings: KnockoutAllBindingsAccessor, viewModel: any) {
+        var lazy = !!allBindings.get('lazy');
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
-                    if (e.preventDefault)
-                        e.preventDefault();
-                    else
-                        e['returnValue'] = false;
-                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                    var link = Navigation.settings.historyManager.getUrl(element);
+                    var navigating = this.getNavigating(allBindings, viewModel);
+                    if (navigating(e, link)) {
+                        if (e.preventDefault)
+                            e.preventDefault();
+                        else
+                            e['returnValue'] = false;
+                        Navigation.StateController.navigateLink(link);
+                    }
                 }
             }
         });
@@ -55,6 +60,15 @@ class LinkUtility {
         } else {
             ko.utils.registerEventHandler(element, 'mousedown', (e: MouseEvent) => setLink());
             ko.utils.registerEventHandler(element, 'contextmenu', (e: MouseEvent) => setLink());
+        }
+    }
+
+    static getNavigating(allBindings: KnockoutAllBindingsAccessor, viewModel: any): (e: MouseEvent, link: string) => boolean {
+        return (e: MouseEvent, link: string) => {
+            var listener = ko.unwrap(allBindings.get('navigating'));
+            if (listener)
+                return listener.call(viewModel, viewModel, e, link);
+            return true;
         }
     }
 }

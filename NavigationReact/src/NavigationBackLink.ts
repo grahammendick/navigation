@@ -22,7 +22,7 @@ var NavigationBackLink = React.createClass({
         for(var key in this.props)
             props[key] = this.props[key];
         props.href = this.getNavigationBackLink();
-        LinkUtility.addListeners(this, props, () => this.getNavigationBackLink(), !!this.props.lazy);
+        LinkUtility.addListeners(this, props, () => this.getNavigationBackLink());
         return React.createElement(props.href ? 'a' : 'span', props);
     }
 });
