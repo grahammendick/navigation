@@ -45,7 +45,7 @@ class LinkUtility {
                 component.forceUpdate();
                 href = getLink();
                 if (href)
-                    element.href = getLink();
+                    element.href = href;
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
