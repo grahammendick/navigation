@@ -1,3 +1,8 @@
+/**
+ * Navigation v1.1.0
+ * (c) Graham Mendick - http://grahammendick.github.io/navigation/example/knockout/navigation.html
+ * License: Apache License 2.0
+ */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.NavigationKnockout = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 var NavigationBackLink = _dereq_('./NavigationBackLink');
 var NavigationLink = _dereq_('./NavigationLink');
@@ -20,50 +25,71 @@ var LinkUtility = (function () {
     function LinkUtility() {
     }
     LinkUtility.setLink = function (element, linkAccessor) {
-        if (element.getAttribute('data-state-context-url') !== Navigation.StateContext.url) {
-            try {
-                element.href = Navigation.settings.historyManager.getHref(linkAccessor());
-            }
-            catch (e) {
-                element.removeAttribute('href');
-            }
-            element.setAttribute('data-state-context-url', Navigation.StateContext.url);
+        try {
+            element.href = Navigation.settings.historyManager.getHref(linkAccessor());
+        }
+        catch (e) {
+            element.removeAttribute('href');
         }
     };
     LinkUtility.getData = function (toData, includeCurrentData, currentDataKeys) {
-        var data = {};
-        toData = ko.unwrap(toData);
-        for (var key in toData) {
-            data[key] = ko.unwrap(toData[key]);
-        }
-        includeCurrentData = ko.unwrap(includeCurrentData);
-        currentDataKeys = ko.unwrap(currentDataKeys);
         if (currentDataKeys)
-            data = Navigation.StateContext.includeCurrentData(data, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            data = Navigation.StateContext.includeCurrentData(data);
-        return data;
+            toData = Navigation.StateContext.includeCurrentData(toData);
+        return toData;
     };
-    LinkUtility.addClickListener = function (element) {
-        var navigate = function (e) {
-            if (!e.ctrlKey && !e.shiftKey) {
+    LinkUtility.isActive = function (key, val) {
+        if (!Navigation.StateContext.state)
+            return false;
+        if (val != null && val.toString()) {
+            var trackTypes = Navigation.StateContext.state.trackTypes;
+            var currentVal = Navigation.StateContext.data[key];
+            return currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
+        }
+        return true;
+    };
+    LinkUtility.setActive = function (element, active, activeCssClass, disableActive) {
+        ko.utils.toggleDomNodeCssClass(element, activeCssClass, active);
+        if (active && disableActive)
+            element.removeAttribute('href');
+    };
+    LinkUtility.addListeners = function (element, setLink, allBindings, viewModel) {
+        var _this = this;
+        var lazy = !!allBindings.get('lazy');
+        ko.utils.registerEventHandler(element, 'click', function (e) {
+            if (lazy)
+                setLink();
+            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
-                    if (e.preventDefault)
-                        e.preventDefault();
-                    else
-                        e['returnValue'] = false;
-                    Navigation.StateController.navigateLink(Navigation.settings.historyManager.getUrl(element));
+                    var link = Navigation.settings.historyManager.getUrl(element);
+                    var navigating = _this.getNavigating(allBindings, viewModel);
+                    if (navigating(e, link)) {
+                        if (e.preventDefault)
+                            e.preventDefault();
+                        else
+                            e['returnValue'] = false;
+                        Navigation.StateController.navigateLink(link);
+                    }
                 }
             }
-        };
-        if (window.addEventListener)
-            element.addEventListener('click', navigate);
-        else
-            element.attachEvent('onclick', navigate);
+        });
+        if (!lazy) {
+            Navigation.StateController.onNavigate(setLink);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function () { return Navigation.StateController.offNavigate(setLink); });
+        }
+        else {
+            ko.utils.registerEventHandler(element, 'mousedown', function (e) { return setLink(); });
+            ko.utils.registerEventHandler(element, 'contextmenu', function (e) { return setLink(); });
+        }
     };
-    LinkUtility.addNavigateHandler = function (element, handler) {
-        Navigation.StateController.onNavigate(handler);
-        ko.utils.domNodeDisposal.addDisposeCallback(element, function () { return Navigation.StateController.offNavigate(handler); });
+    LinkUtility.getNavigating = function (allBindings, viewModel) {
+        return function (e, link) {
+            var listener = ko.unwrap(allBindings.get('navigating'));
+            if (listener)
+                return listener.call(viewModel, viewModel, e, link);
+            return true;
+        };
     };
     return LinkUtility;
 })();
@@ -76,12 +102,10 @@ var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
 var ko = (typeof window !== "undefined" ? window.ko : typeof global !== "undefined" ? global.ko : null);
 var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
-    init: function (element, valueAccessor) {
-        LinkUtility.addClickListener(element);
-        LinkUtility.addNavigateHandler(element, function () { return setNavigationBackLink(element, valueAccessor); });
+    init: function (element, valueAccessor, allBindings, viewModel) {
+        LinkUtility.addListeners(element, function () { return setNavigationBackLink(element, valueAccessor); }, allBindings, viewModel);
     },
     update: function (element, valueAccessor) {
-        element.removeAttribute('data-state-context-url');
         setNavigationBackLink(element, valueAccessor);
     }
 };
@@ -97,17 +121,30 @@ var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
 var ko = (typeof window !== "undefined" ? window.ko : typeof global !== "undefined" ? global.ko : null);
 var NavigationLink = ko.bindingHandlers['navigationLink'] = {
-    init: function (element, valueAccessor, allBindings) {
-        LinkUtility.addClickListener(element);
-        LinkUtility.addNavigateHandler(element, function () { return setNavigationLink(element, valueAccessor, allBindings); });
+    init: function (element, valueAccessor, allBindings, viewModel) {
+        LinkUtility.addListeners(element, function () { return setNavigationLink(element, valueAccessor, allBindings); }, allBindings, viewModel);
     },
     update: function (element, valueAccessor, allBindings) {
-        element.removeAttribute('data-state-context-url');
         setNavigationLink(element, valueAccessor, allBindings);
     }
 };
 function setNavigationLink(element, valueAccessor, allBindings) {
-    LinkUtility.setLink(element, function () { return Navigation.StateController.getNavigationLink(ko.unwrap(valueAccessor()), LinkUtility.getData(allBindings.get('toData'), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys'))); });
+    var action = ko.unwrap(valueAccessor());
+    var data = {};
+    var toData = ko.unwrap(allBindings.get('toData'));
+    var active = true;
+    for (var key in toData) {
+        var val = ko.unwrap(toData[key]);
+        data[key] = val;
+        active = active && LinkUtility.isActive(key, val);
+    }
+    LinkUtility.setLink(element, function () { return Navigation.StateController.getNavigationLink(action, LinkUtility.getData(data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys')))); });
+    active = active && !!element.href && isActive(action);
+    LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
+}
+function isActive(action) {
+    var nextState = Navigation.StateController.getNextState(action);
+    return nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
 }
 module.exports = NavigationLink;
 
@@ -118,17 +155,25 @@ var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
 var ko = (typeof window !== "undefined" ? window.ko : typeof global !== "undefined" ? global.ko : null);
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
-    init: function (element, valueAccessor, allBindings) {
-        LinkUtility.addClickListener(element);
-        LinkUtility.addNavigateHandler(element, function () { return setRefreshLink(element, valueAccessor, allBindings); });
+    init: function (element, valueAccessor, allBindings, viewModel) {
+        LinkUtility.addListeners(element, function () { return setRefreshLink(element, valueAccessor, allBindings); }, allBindings, viewModel);
     },
     update: function (element, valueAccessor, allBindings) {
-        element.removeAttribute('data-state-context-url');
         setRefreshLink(element, valueAccessor, allBindings);
     }
 };
 function setRefreshLink(element, valueAccessor, allBindings) {
-    LinkUtility.setLink(element, function () { return Navigation.StateController.getRefreshLink(LinkUtility.getData(valueAccessor(), allBindings.get('includeCurrentData'), allBindings.get('currentDataKeys'))); });
+    var data = {};
+    var toData = ko.unwrap(valueAccessor());
+    var active = true;
+    for (var key in toData) {
+        var val = ko.unwrap(toData[key]);
+        data[key] = val;
+        active = active && LinkUtility.isActive(key, val);
+    }
+    LinkUtility.setLink(element, function () { return Navigation.StateController.getRefreshLink(LinkUtility.getData(data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys')))); });
+    active = active && !!element.href;
+    LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
 module.exports = RefreshLink;
 
