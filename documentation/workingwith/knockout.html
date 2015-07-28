@@ -41,12 +41,12 @@
         <div id="doc">
             <h1>Navigation Knockout</h1>
             <p>
-                Navigation Knockout is a plugin that lets you build Hyperlinks using Knockout's binding syntax. What follows is a series of code snippets
-                taking you through the Knockout required for the different types of navigation. <strong>Each code snippet begins with a comment to remind
-                you of the JavaScript for the navigation, followed by the equivalent Hyperlink navigation written in Knockout.</strong>
+                Navigation Knockout is a plugin that lets you build Hyperlinks using Knockout's binding syntax. What follows is a series of code
+                snippets that take you through the Knockout required for the different kinds of Hyperlinks.
             </p>
             <h2>Navigation to a Dialog</h2>
             <p>
+                These snippets show how to Hyperlink to the inbox. Each begins with a comment recalling the equivalent navigation in JavaScript. 
                 <pre><code class="html">&lt;!-- Navigation.StateController.navigate('inbox'); --&gt;
 &lt;a data-bind="navigationLink: 'inbox'"&gt;&lt;/a&gt;</code></pre>
             </p>
@@ -56,6 +56,7 @@
             </p>
             <h2>Navigation along a Transition</h2>
             <p>
+                These snippets show how to Hyperlink from the inbox to the mail details. Each begins with a comment recalling the equivalent navigation in JavaScript. 
                 <pre><code class="html">&lt;!-- Navigation.StateController.navigate('select'); --&gt;
 &lt;a data-bind="navigationLink: 'select'"&gt;&lt;/a&gt;</code></pre>
             </p>
@@ -65,11 +66,13 @@
             </p>
             <h2>Back Navigation</h2>
             <p>
+                This snippet shows how to Hyperlink back to the inbox after viewing a mail. It begins with a comment recalling the equivalent navigation in JavaScript.
                 <pre><code class="html">&lt;!-- Navigation.StateController.navigateBack(1); --&gt;
 &lt;a data-bind="navigationBackLink: 1"&gt;&lt;/a&gt;</code></pre>
             </p>
             <h2>Refresh Navigation</h2>
             <p>
+                These snippets show how to Hyperlink to the second page of the inbox. Each begins with a comment recalling the equivalent navigation in JavaScript.
                 <pre><code class="html">&lt;!-- Navigation.StateController.refresh({ pageNumber: 2 }); --&gt;
 &lt;a data-bind="refreshLink: { pageNumber: 2 }"&gt;&lt;/a&gt;
 </code></pre>
@@ -89,6 +92,66 @@ Navigation.StateController.refresh(data);
 --&gt;
 &lt;a data-bind="refreshLink: { pageNumber: 2 }, includeCurrentData: true"&gt;&lt;/a&gt;
 </code></pre>
+            </p>
+            <h2 id="active">Active</h2>
+            <p>
+                A Refresh Hyperlink is considered active if it's data is a subset of the current data. A Hyperlink to the second page of the inbox
+                becomes active when the second page is viewed, regardless of any sort or filter criteria also in effect. A Dialog navigation Hyperlink
+                is active if it matches the current Dialog and if it's data is a subset of the current data. Hyperlinks that navigate back or along a
+                Transition can't be active. When a Hyperlink is active you can choose to disable it and/or add a css class name so it can be styled.
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- Disable the link when active --&gt;
+&lt;a data-bind="refreshLink: { pageNumber: 2 }, disableActive: true"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- Disable the link when active --&gt;
+&lt;a data-bind="refreshLink: { pageNumber: 2 }, activeCssClass: 'active'"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
+            <h2>Navigation Handler</h2>
+            <p>
+                You can assign a handler to the navigating attribute of a Hyperlink. This handler function on your View Model will be called before
+                the navigation takes place. 
+            </p>
+            <p>
+                <pre><code class="html">&lt;a data-bind="navigationLink: 'select', navigating: handler""&gt;&lt;/a&gt;</code></pre>
+            </p>
+            <p>
+                The action you take inside your handler determines how the navigation behaves.
+            </p>
+            <p>
+                <pre><code class="javascript">// Cancel the Navigation and execute the Hyperlink
+this.handler = function(event, url){
+}</code></pre>
+            <p>
+                <pre><code class="javascript">// Cancel the Navigation and the Hyperlink
+this.handler = function(event, url){
+    event.preventDefault();
+}</code></pre>
+            <p>
+                <pre><code class="javascript">// Execute the Navigation
+this.handler = function(event, url){
+    return true;
+}</code></pre>
+            <p>
+                <pre><code class="javascript">// Manually execute the Navigation
+this.handler = function(event, url){
+    event.preventDefault();
+    Navigation.StateController.navigateLink(url);
+}</code></pre>
+            </p>
+            <h2>Lazy</h2>
+            <p>
+                Hyperlinks are defined relative to the current State and data. A Hyperlink along a Transition will produce different hrefs whenever the
+                current State changes. A Refresh Hyperlink with includeCurrentData set to true will produce different hrefs whenever the current data
+                changes. So, when a navigation occurs, Hyperlinks auto update. If you have many 100s of Hyperlinks on a page this re-evaluation of the
+                Hyperlinks can slow things down. Making a Hyperlink 'lazy' will defer this re-evaluation until it's clicked. Lazy Hyperlinks don't reliably
+                report their <a href="#active">active status</a>.
+            </p>
+            <p>
+                <pre><code class="html">&lt;a data-bind="refreshLink: { pageNumber: 2 }, lazy: true"&gt;&lt;/a&gt;</code></pre>
             </p>
         </div>
     </div>
