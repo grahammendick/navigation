@@ -129,6 +129,7 @@ this.handler = function(event, url){
                 <pre><code class="javascript">// Cancel the Navigation and the Hyperlink
 this.handler = function(event, url){
     event.preventDefault();
+    event.returnValue = false; // Internet Explorer < 9
 }</code></pre>
             <p>
                 <pre><code class="javascript">// Execute the Navigation
@@ -139,6 +140,7 @@ this.handler = function(event, url){
                 <pre><code class="javascript">// Manually execute the Navigation
 this.handler = function(event, url){
     event.preventDefault();
+    event.returnValue = false; // Internet Explorer < 9
     Navigation.StateController.navigateLink(url);
 }</code></pre>
             </p>
