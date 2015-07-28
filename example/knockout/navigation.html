@@ -55,8 +55,8 @@
                     <div id="pager">
                         Go to page
                         <!-- Exercise 9: Refreshing -->
-                        <a data-bind="refreshLink: { pageNumber: 1 }">1</a>
-                        <a data-bind="refreshLink: { pageNumber: 2 }">2</a>
+                        <a data-bind="refreshLink: { pageNumber: 1 }, disableActive: true">1</a>
+                        <a data-bind="refreshLink: { pageNumber: 2 }, disableActive: true">2</a>
                     </div>
                 </div>
                 <div id="details" data-bind="if: id">

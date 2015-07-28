@@ -79,7 +79,7 @@ ul li a,ul li a:visited,#navigation a, #navigation a:visited{
 	margin-left:28%;
 	padding:0 1%;
 }
-#navigation a{
+#navigation a:link{
 	font-weight:bold;
 }
 #navigation{
@@ -115,7 +115,7 @@ td{
 #pager{
 	margin-left:40px;
 }
-#pager a{
+#pager a, #pager span{
 	padding-left:5px;
 }
 #info{
