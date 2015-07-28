@@ -27,8 +27,9 @@ body{
     color:#e9e581;
 }
 #content{
-    width:700px;
-    margin:10px auto;
+    max-width:1000px;
+    min-width:600px;
+    margin:auto;
 }
 a{
     color:#000;
@@ -40,8 +41,49 @@ h1,h2{
 h2{
     margin-top:10px;
 }
+h3{
+	margin:12px 0;
+	font-weight:normal;
+}
 p{
     margin:7px 0;
+}
+ul{
+	list-style:none;
+	padding:0;
+	margin:0;
+	border-radius:10px;
+}
+ul li{
+	padding:5px 0 5px 10px;
+}
+ul li{
+	background-color:#e9e581;
+}
+ul li:first-child{
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+}
+ul li:last-child{
+	border-bottom-left-radius:10px;
+	border-bottom-right-radius:10px;
+}
+ul li.active{
+	font-style:italic;
+	font-weight:bold;
+}
+ul li a,ul li a:visited,#navigation a, #navigation a:visited{
+	color:#000;
+}
+#download{
+	width:26%;
+	float:left;
+	padding:0 1%;
+}
+#guide{
+	width:70%;
+	margin-left:28%;
+	padding:0 1%;
 }
 a.download{
     margin:5px 0 0 0;
