@@ -3,7 +3,7 @@ var React = require('react');
 var Navigation = require('navigation');
 var NavigateClient = require('./NavigateClient');
 var NavigateServer = require('./NavigateServer');
-var fs = require('fs');
+var browserify = require('browserify');
 
 http.createServer(function(req, res) {
 	if (req.url === '/favicon.ico') {
@@ -11,10 +11,9 @@ http.createServer(function(req, res) {
 		return;
 	}
 	if (req.url === '/bundle.js') {
-		fs.readFile('./NavigationReact/sample/isomorphic/bundle.js', function(err, file) {
-			res.write(file);
-			res.end();
-	    });
+		browserify('./NavigationReact/sample/isomorphic/NavigateClient.js', { standalone: 'NavigateClient' })
+			.bundle()
+			.pipe(res)
 		return;
 	}
 	Navigation.StateController.navigateLink(req.url);
