@@ -1,8 +1,8 @@
+var React = require('react');
 var Navigation = require('navigation');
 var Listing = require('./Listing');
 var Details = require('./Details');
 var StateInfoConfig = require('./StateInfoConfig');
-var React = require('react');
 var PersonSearch = require('./PersonSearch');
 
 Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();
