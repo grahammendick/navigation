@@ -1,4 +1,4 @@
-var Navigation = require('../../../build/dist/Navigation');
+var Navigation = require('navigation');
 
 exports.register = function() {
     Navigation.StateInfoConfig.build([

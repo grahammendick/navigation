@@ -1,5 +1,5 @@
 var http = require('http');
-var Navigation = require('../../../build/dist/Navigation');
+var Navigation = require('navigation');
 var NavigateServer = require('./NavigateServer');
 
 http.createServer(function(req, res) {

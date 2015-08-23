@@ -1,7 +1,7 @@
-var Navigation = require('../../../build/dist/Navigation');
+var Navigation = require('navigation');
 var Listing = require('./Listing');
 var StateInfoConfig = require('./StateInfoConfig');
-var React = require('../react');
+var React = require('react');
 var PersonSearch = require('./PersonSearch');
 
 StateInfoConfig.register();
@@ -20,6 +20,7 @@ states.listing.render = function(props) {
 exports.getProps = function(callback) {
 	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
 }
+
 exports.render = function(props) {
 	return Navigation.StateContext.state.render(props);
 }
