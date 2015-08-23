@@ -15,7 +15,7 @@ states.listing.getProps = function(data, callback) {
 }
 
 states.listing.getContent = function() {
-	return { component: Listing, name: 'Listing' };
+	return Listing;
 }
 
 states.details.getProps = function(data, callback) {
@@ -25,7 +25,7 @@ states.details.getProps = function(data, callback) {
 }
 
 states.details.getContent = function() {
-	return { component: Details, name: 'Details' };
+	return Details;
 }
 
 exports.getProps = function(callback) {

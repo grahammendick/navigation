@@ -2,8 +2,12 @@
   "name": "isomorhpic",
   "main": "index.js",
   "devDependencies": {
+    "gulp": "^3.9.0",
     "navigation": "^1.1.0",
     "navigation-react": "^1.1.0",
     "react": "^0.13.3"
+  },
+  "scripts": {
+    "build": "gulp build"
   }
 }
