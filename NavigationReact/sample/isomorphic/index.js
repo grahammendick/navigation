@@ -5,10 +5,13 @@ var NavigateServer = require('./NavigateServer');
 var server = http.createServer(function(req, res) {
 	if (req.url !== '/favicon.ico') {
 		Navigation.StateController.navigateLink(req.url);
-		var props = NavigateServer.getProps();
-		res.write(NavigateServer.render(props));
+		NavigateServer.getProps(function(props){
+			res.write(NavigateServer.render(props));
+			res.end();
+		});
+	} else {
+		res.end();
 	}
-	res.end();
 });
 
 server.listen(8080);
