@@ -2,10 +2,11 @@ var Navigation = require('../../../build/dist/Navigation');
 
 exports.register = function(){
     Navigation.StateInfoConfig.build([
-        { key: 'person', initial: 'list', states: [
-            { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
+        { key: 'masterDetails', initial: 'listing', states: [
+            { key: 'listing', route: '{pageNumber}', defaults: { pageNumber: 1 }, trackCrumbTrail: false, transitions: [
                 { key: 'select', to: 'details' }]},
-            { key: 'details', route: 'person', title: 'Person Details', }]}
+            { key: 'details', route: 'person/{id}', defaults: { id: 0 } }]
+        }
     ]);
 }
 

@@ -1,14 +1,12 @@
 var http = require('http');
 var Navigation = require('../../../build/dist/Navigation');
-var StateInfoConfig = require('./StateInfoConfig');
-var Listing = require('./Listing');
-var React = require('../react');
-
-StateInfoConfig.register();
+var NavigateServer = require('./NavigateServer');
 
 var server = http.createServer(function(req, res) {
-	Navigation.StateController.navigateLink(req.url);
-	res.write(React.renderToString(React.createElement(Listing)));
+	if (req.url !== '/favicon.ico') {
+		Navigation.StateController.navigateLink(req.url);
+		res.write(NavigateServer.render());
+	}
 	res.end();
 });
 
