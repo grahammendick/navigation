@@ -7,19 +7,19 @@ var PersonSearch = require('./PersonSearch');
 StateInfoConfig.register();
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 
-states.listing.getProps = function(data, callback){
+states.listing.getProps = function(data, callback) {
 	PersonSearch.search(data.pageNumber, function(people){
 		callback({ people: people });
 	})
 }
 
-states.listing.render = function(props){
+states.listing.render = function(props) {
 	return React.renderToString(React.createElement(Listing, props));
 }
 
-exports.getProps = function(callback){
+exports.getProps = function(callback) {
 	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
 }
-exports.render = function(props){
+exports.render = function(props) {
 	return Navigation.StateContext.state.render(props);
 }
