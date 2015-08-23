@@ -4,6 +4,7 @@ var StateInfoConfig = require('./StateInfoConfig');
 var React = require('react');
 var PersonSearch = require('./PersonSearch');
 
+Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();
 StateInfoConfig.register();
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 
