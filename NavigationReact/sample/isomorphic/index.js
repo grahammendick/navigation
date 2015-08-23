@@ -11,7 +11,7 @@ http.createServer(function(req, res) {
 		return;
 	}
 	if (req.url === '/bundle.js') {
-		browserify('./NavigationReact/sample/isomorphic/NavigationClient.js', { standalone: 'NavigationClient' })
+		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
 			.bundle()
 			.pipe(res)
 		return;
