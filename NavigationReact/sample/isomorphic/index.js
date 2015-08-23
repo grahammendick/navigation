@@ -10,7 +10,7 @@ http.createServer(function(req, res) {
 		res.end();
 		return;
 	}
-	if (req.url === '/bundle.js') {
+	if (req.url === '/app.js') {
 		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
 			.bundle()
 			.pipe(res)
@@ -23,7 +23,7 @@ http.createServer(function(req, res) {
 		res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
 		res.write('</style></head><body><div id="content">')
 		res.write(React.renderToString(React.createElement(NavigationShared.getContent(), props)));
-		res.write('</div><script src="/bundle.js" ></script><script>')
+		res.write('</div><script src="/app.js" ></script><script>')
 		res.write('NavigationClient.start(' + safeStringify(props) + ');');
 		res.write('</script></body></html>')
 		res.end();
