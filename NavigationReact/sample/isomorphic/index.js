@@ -24,8 +24,12 @@ http.createServer(function(req, res) {
 		res.write('</style></head><body><div id="content">')
 		res.write(React.renderToString(React.createElement(NavigateServer.getContent(), props)));
 		res.write('</div><script src="/bundle.js" ></script><script>')
-		res.write('NavigateClient.start(' + JSON.stringify(props) + ');');
+		res.write('NavigateClient.start(' + safeStringify(props) + ');');
 		res.write('</script></body></html>')
 		res.end();
 	});
 }).listen(8080);
+
+function safeStringify(props) {
+  return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--')
+}
