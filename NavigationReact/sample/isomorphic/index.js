@@ -1,7 +1,7 @@
 var http = require('http');
 var React = require('react');
 var Navigation = require('navigation');
-var NavigationClient = require('./NavigationClient');
+var NavigationShared = require('./NavigationShared');
 var NavigationServer = require('./NavigationServer');
 var browserify = require('browserify');
 
@@ -22,7 +22,7 @@ http.createServer(function(req, res) {
 		res.write('<html><head><style>')
 		res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
 		res.write('</style></head><body><div id="content">')
-		res.write(React.renderToString(React.createElement(NavigationServer.getContent(), props)));
+		res.write(React.renderToString(React.createElement(NavigationShared.getContent(), props)));
 		res.write('</div><script src="/bundle.js" ></script><script>')
 		res.write('NavigationClient.start(' + safeStringify(props) + ');');
 		res.write('</script></body></html>')
