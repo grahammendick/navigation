@@ -10,5 +10,7 @@ http.createServer(function(req, res) {
 			res.write(NavigateServer.render(props));
 			res.end();
 		});
+	} else {
+		res.end();
 	}
 }).listen(8080);
