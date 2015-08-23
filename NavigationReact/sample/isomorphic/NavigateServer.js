@@ -1,4 +1,3 @@
-var React = require('react');
 var Navigation = require('navigation');
 var Listing = require('./Listing');
 var Details = require('./Details');
@@ -15,8 +14,8 @@ states.listing.getProps = function(data, callback) {
 	})
 }
 
-states.listing.render = function(props) {
-	return React.renderToString(React.createElement(Listing, props));
+states.listing.getContent = function() {
+	return { component: Listing, name: 'Listing' };
 }
 
 states.details.getProps = function(data, callback) {
@@ -25,14 +24,14 @@ states.details.getProps = function(data, callback) {
 	})
 }
 
-states.details.render = function(props) {
-	return React.renderToString(React.createElement(Details, props));
+states.details.getContent = function() {
+	return { component: Details, name: 'Details' };
 }
 
 exports.getProps = function(callback) {
 	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
 }
 
-exports.render = function(props) {
-	return Navigation.StateContext.state.render(props);
+exports.getContent = function() {
+	return Navigation.StateContext.state.getContent();
 }
