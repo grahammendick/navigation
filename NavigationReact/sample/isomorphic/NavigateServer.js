@@ -1,5 +1,6 @@
 var Navigation = require('navigation');
 var Listing = require('./Listing');
+var Details = require('./Details');
 var StateInfoConfig = require('./StateInfoConfig');
 var React = require('react');
 var PersonSearch = require('./PersonSearch');
@@ -16,6 +17,16 @@ states.listing.getProps = function(data, callback) {
 
 states.listing.render = function(props) {
 	return React.renderToString(React.createElement(Listing, props));
+}
+
+states.details.getProps = function(data, callback) {
+	PersonSearch.getDetails(data.id, function(person){
+		callback({ person: person });
+	})
+}
+
+states.details.render = function(props) {
+	return React.renderToString(React.createElement(Details, props));
 }
 
 exports.getProps = function(callback) {

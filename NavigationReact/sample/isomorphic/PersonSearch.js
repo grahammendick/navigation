@@ -20,3 +20,15 @@ exports.search = function(pageNumber, callback) {
 		callback(page);
 	}, 10);
 };
+
+exports.getDetails = function(id, callback) {
+	var details = null;
+	for (var i = 0; i < people.length; i++) {
+		var person = people[i];
+		if (person.id === id)
+			details = person;
+	}
+	setTimeout(function() {
+		callback(details);
+	}, 10);
+}
