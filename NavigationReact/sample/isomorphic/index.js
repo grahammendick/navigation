@@ -1,8 +1,8 @@
 var http = require('http');
 var React = require('react');
 var Navigation = require('navigation');
-var NavigateClient = require('./NavigateClient');
-var NavigateServer = require('./NavigateServer');
+var NavigationClient = require('./NavigationClient');
+var NavigationServer = require('./NavigationServer');
 var browserify = require('browserify');
 
 http.createServer(function(req, res) {
@@ -11,20 +11,20 @@ http.createServer(function(req, res) {
 		return;
 	}
 	if (req.url === '/bundle.js') {
-		browserify('./NavigationReact/sample/isomorphic/NavigateClient.js', { standalone: 'NavigateClient' })
+		browserify('./NavigationReact/sample/isomorphic/NavigationClient.js', { standalone: 'NavigationClient' })
 			.bundle()
 			.pipe(res)
 		return;
 	}
 	Navigation.StateController.navigateLink(req.url);
-	NavigateServer.getProps(function(props){
+	NavigationServer.getProps(function(props){
 		Navigation.StateController.navigateLink(req.url);
 		res.write('<html><head><style>')
 		res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
 		res.write('</style></head><body><div id="content">')
-		res.write(React.renderToString(React.createElement(NavigateServer.getContent(), props)));
+		res.write(React.renderToString(React.createElement(NavigationServer.getContent(), props)));
 		res.write('</div><script src="/bundle.js" ></script><script>')
-		res.write('NavigateClient.start(' + safeStringify(props) + ');');
+		res.write('NavigationClient.start(' + safeStringify(props) + ');');
 		res.write('</script></body></html>')
 		res.end();
 	});
