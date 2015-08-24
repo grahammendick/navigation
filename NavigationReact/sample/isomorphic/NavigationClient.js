@@ -46,7 +46,6 @@ function getData(url, callback) {
 		}
 	};
 	req.open('get', url);
-	req.setRequestHeader("Content-Type", "application/json");
 	req.send(null);
 }
 	
