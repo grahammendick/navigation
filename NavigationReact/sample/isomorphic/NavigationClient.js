@@ -6,22 +6,22 @@ function registerNavigators() {
 	var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 	states.listing.navigating = function(data, url, navigate) {
 		getData('/data/people/' + data.pageNumber, function(data){
-			navigate({ people: data });
+			navigate(data);
 		})
 	}
 	
 	states.listing.navigated = function(data, asyncData) {
-		render(asyncData);
+		render({ people: asyncData});
 	}
 
 	states.details.navigating = function(data, url, navigate) {
 		getData('/data/person/' + data.id, function(data){
-			navigate({ person: data });
+			navigate(data);
 		})
 	}
 	
 	states.details.navigated = function(data, asyncData) {
-		render(asyncData);
+		render({ person: asyncData });
 	}
 }
 
