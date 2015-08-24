@@ -1,6 +1,6 @@
 {
-  "name": "isomorhpic",
-  "main": "index.js",
+  "name": "navigation-isomorphic",
+  "description": "Navigation React isomorphic example",
   "devDependencies": {
     "browserify": "^11.0.1",
     "navigation": "^1.1.0",
