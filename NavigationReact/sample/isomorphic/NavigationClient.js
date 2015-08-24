@@ -33,7 +33,7 @@ exports.start = function(props) {
 
 function render(props) {
 	React.render(
-		React.createElement(NavigationShared.getContent(), props),
+		React.createElement(NavigationShared.getComponent(), props),
 		document.getElementById('content')
 	);		
 }

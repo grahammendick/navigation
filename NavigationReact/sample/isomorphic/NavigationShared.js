@@ -12,14 +12,14 @@ Navigation.StateInfoConfig.build([
 ]);
 
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-states.listing.getContent = function() {
+states.listing.getComponent = function() {
 	return Listing;
 }
 
-states.details.getContent = function() {
+states.details.getComponent = function() {
 	return Details;
 }
 
-exports.getContent = function() {
-	return Navigation.StateContext.state.getContent();
+exports.getComponent = function() {
+	return Navigation.StateContext.state.getComponent();
 }
