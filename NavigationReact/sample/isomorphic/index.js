@@ -12,7 +12,7 @@ http.createServer(function(req, res) {
 	if (handleAjax(req, res))
 		return;
 	Navigation.StateController.navigateLink(req.url);
-	NavigationServer.getProps(function(props){
+	NavigationServer.getProps(function(props) {
 		Navigation.StateController.navigateLink(req.url);
 		res.write('<html><head><style>')
 		res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
