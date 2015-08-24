@@ -23,18 +23,6 @@ function registerNavigators() {
 	states.details.navigated = function(data, asyncData) {
 		render(asyncData);
 	}
-	
-	function getData(url, callback) {
-		var req = new XMLHttpRequest();
-        req.onreadystatechange = function() {
-			if (req.readyState === 4){
-				callback(JSON.parse(req.responseText));
-			}
-		};
-        req.open('get', url);
-		req.setRequestHeader("Content-Type", "application/json");
-        req.send(null);
-	}
 }
 
 exports.start = function(props) {
@@ -48,6 +36,18 @@ function render(props) {
 		React.createElement(NavigationShared.getContent(), props),
 		document.getElementById('content')
 	);		
+}
+	
+function getData(url, callback) {
+	var req = new XMLHttpRequest();
+	req.onreadystatechange = function() {
+		if (req.readyState === 4){
+			callback(JSON.parse(req.responseText));
+		}
+	};
+	req.open('get', url);
+	req.setRequestHeader("Content-Type", "application/json");
+	req.send(null);
 }
 	
 
