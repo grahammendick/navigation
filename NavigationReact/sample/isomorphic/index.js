@@ -18,10 +18,18 @@ http.createServer(function(req, res) {
 			.pipe(res)
 		return;
 	}
-	var matches = req.url.match(/^\/data\/search\/(\d+)$/);
+	var matches = req.url.match(/^\/data\/people\/(\d+)$/);
 	if (matches) {
 		PersonSearch.search(+matches[1], function(people){
 			res.write(JSON.stringify(people));
+			res.end();
+		});
+		return;
+	}
+	matches = req.url.match(/^\/data\/person\/(\d+)$/);
+	if (matches) {
+		PersonSearch.getDetails(+matches[1], function(person){
+			res.write(JSON.stringify(person));
 			res.end();
 		});
 		return;

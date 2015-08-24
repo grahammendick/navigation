@@ -2,11 +2,12 @@ var React = require('react');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 var Listing = require('./Listing');
+var Details = require('./Details');
 
 function registerNavigators() {
 	var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 	states.listing.navigating = function(data, url, navigate) {
-		getData('/data/search/' + data.pageNumber, function(data){
+		getData('/data/people/' + data.pageNumber, function(data){
 			navigate(data);
 		})
 	}
@@ -14,6 +15,19 @@ function registerNavigators() {
 	states.listing.navigated = function(data, asyncData) {
 		React.render(
 			React.createElement(Listing, { people: asyncData }),
+			document.getElementById('content')
+		);
+	}
+
+	states.details.navigating = function(data, url, navigate) {
+		getData('/data/person/' + data.id, function(data){
+			navigate(data);
+		})
+	}
+	
+	states.details.navigated = function(data, asyncData) {
+		React.render(
+			React.createElement(Details, { person: asyncData }),
 			document.getElementById('content')
 		);
 	}
