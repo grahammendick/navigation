@@ -7,33 +7,10 @@ var NavigationServer = require('./NavigationServer');
 var PersonSearch = require('./PersonSearch');
 
 http.createServer(function(req, res) {
-	if (req.url === '/favicon.ico') {
-		res.statusCode = 404;
-		res.end();
+	if (handleStatic(req, res))
 		return;
-	}
-	if (req.url === '/app.js') {
-		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
-			.bundle()
-			.pipe(res)
+	if (handleAjax(req, res))
 		return;
-	}
-	var matches = req.url.match(/^\/data\/people\/(\d+)$/);
-	if (matches) {
-		PersonSearch.search(+matches[1], function(people){
-			res.write(JSON.stringify(people));
-			res.end();
-		});
-		return;
-	}
-	matches = req.url.match(/^\/data\/person\/(\d+)$/);
-	if (matches) {
-		PersonSearch.getDetails(+matches[1], function(person){
-			res.write(JSON.stringify(person));
-			res.end();
-		});
-		return;
-	}
 	Navigation.StateController.navigateLink(req.url);
 	NavigationServer.getProps(function(props){
 		Navigation.StateController.navigateLink(req.url);
@@ -48,6 +25,41 @@ http.createServer(function(req, res) {
 		res.end();
 	});
 }).listen(8080);
+
+function handleStatic(req, res) {
+	if (req.url === '/favicon.ico') {
+		res.statusCode = 404;
+		res.end();
+		return true;
+	}
+	if (req.url === '/app.js') {
+		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
+			.bundle()
+			.pipe(res)
+		return true;
+	}
+	return false;
+}
+
+function handleAjax(req, res) {
+	var matches = req.url.match(/^\/data\/people\/(\d+)$/);
+	if (matches) {
+		PersonSearch.search(+matches[1], function(people){
+			res.write(JSON.stringify(people));
+			res.end();
+		});
+		return true;
+	}
+	matches = req.url.match(/^\/data\/person\/(\d+)$/);
+	if (matches) {
+		PersonSearch.getDetails(+matches[1], function(person){
+			res.write(JSON.stringify(person));
+			res.end();
+		});
+		return true;
+	}
+	return false;
+}
 
 function safeStringify(props) {
   return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--')
