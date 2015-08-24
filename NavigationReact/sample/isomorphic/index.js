@@ -8,6 +8,7 @@ var PersonSearch = require('./PersonSearch');
 
 http.createServer(function(req, res) {
 	if (req.url === '/favicon.ico') {
+		res.statusCode = 404;
 		res.end();
 		return;
 	}
