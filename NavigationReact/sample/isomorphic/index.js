@@ -17,8 +17,9 @@ http.createServer(function(req, res) {
 			.pipe(res)
 		return;
 	}
-	if (req.url.match(/^\/data\/search/)) {
-		PersonSearch.search(1, function(people){
+	var matches = req.url.match(/^\/data\/search\/(\d+)$/);
+	if (matches) {
+		PersonSearch.search(+matches[1], function(people){
 			res.write(JSON.stringify(people));
 			res.end();
 		});
