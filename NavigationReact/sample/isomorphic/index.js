@@ -1,9 +1,10 @@
 var http = require('http');
+var browserify = require('browserify');
 var React = require('react');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 var NavigationServer = require('./NavigationServer');
-var browserify = require('browserify');
+var PersonSearch = require('./PersonSearch');
 
 http.createServer(function(req, res) {
 	if (req.url === '/favicon.ico') {
@@ -14,6 +15,13 @@ http.createServer(function(req, res) {
 		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
 			.bundle()
 			.pipe(res)
+		return;
+	}
+	if (req.url.match(/^\/data\/search/)) {
+		PersonSearch.search(1, function(people){
+			res.write(JSON.stringify(people));
+			res.end();
+		});
 		return;
 	}
 	Navigation.StateController.navigateLink(req.url);
