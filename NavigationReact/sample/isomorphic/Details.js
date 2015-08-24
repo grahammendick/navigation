@@ -5,7 +5,7 @@ var NavigationBackLink = NavigationReact.NavigationBackLink;
 module.exports = React.createClass({
     render: function() {
         var person = this.props.person;
-        	return (
+        return (
             React.createElement("div", {id: "details"}, 
                 React.createElement(NavigationBackLink, {distance: 1}, "People"), 
                 React.createElement("div", {id: "info"}, 
