@@ -2,6 +2,7 @@ var Navigation = require('navigation');
 var Component = require('./Component');
 
 Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();
+// Configure the Dialogs, States and Transitions
 Navigation.StateInfoConfig.build([
     { key: 'masterDetails', initial: 'listing', states: [
         { key: 'listing', route: '{pageNumber}', defaults: { pageNumber: 1 }, trackCrumbTrail: false, transitions: [
@@ -19,6 +20,7 @@ states.details.getComponent = function() {
 	return Component.Details;
 }
 
+// Return the Component for the active State 
 exports.getComponent = function() {
 	return Navigation.StateContext.state.getComponent();
 }

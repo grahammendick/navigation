@@ -10,15 +10,22 @@ http.createServer(function(req, res) {
 		return;
 	if (handleAjax(req, res))
 		return;
+	// Set the Navigation context
 	Navigation.StateController.navigateLink(req.url);
+	// Get the props data for the active State
 	getProps(function(props) {
+		// Reset the Navigation context
 		Navigation.StateController.navigateLink(req.url);
 		res.write('<html><head><style>')
 		res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
 		res.write('.label{margin-left:50px;width: 100px;float:left;}')
 		res.write('</style></head><body><div id="content">')
-		res.write(React.renderToString(React.createElement(NavigationShared.getComponent(), props)));
+		// Create the Component for the active State
+		var component = React.createElement(NavigationShared.getComponent(), props);
+		// Render the Component to the response
+		res.write(React.renderToString(component));
 		res.write('</div><script src="/app.js" ></script><script>')
+		// Write the props as JSON to the response
 		res.write('NavigationClient.start(' + safeStringify(props) + ');');
 		res.write('</script></body></html>')
 		res.end();
@@ -38,6 +45,7 @@ states.details.getProps = function(data, callback) {
 	});
 }
 
+// Return the props data for the active State 
 function getProps(callback) {
 	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
 }
