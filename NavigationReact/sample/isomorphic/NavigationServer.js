@@ -3,7 +3,7 @@ var browserify = require('browserify');
 var React = require('react');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
-var PersonSearch = require('./PersonSearch');
+var Data = require('./Data');
 
 http.createServer(function(req, res) {
 	if (handleStatic(req, res))
@@ -27,13 +27,13 @@ http.createServer(function(req, res) {
 
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 states.listing.getProps = function(data, callback) {
-	PersonSearch.search(data.pageNumber, function(people){
+	Data.searchPeople(data.pageNumber, function(people){
 		callback({ people: people });
 	});
 }
 
 states.details.getProps = function(data, callback) {
-	PersonSearch.getDetails(data.id, function(person){
+	Data.getPerson(data.id, function(person){
 		callback({ person: person });
 	});
 }
@@ -60,7 +60,7 @@ function handleStatic(req, res) {
 function handleAjax(req, res) {
 	var matches = req.url.match(/^\/data\/people\/(\d+)$/);
 	if (matches) {
-		PersonSearch.search(+matches[1], function(people){
+		Data.searchPeople(+matches[1], function(people){
 			res.write(JSON.stringify(people));
 			res.end();
 		});
@@ -68,7 +68,7 @@ function handleAjax(req, res) {
 	}
 	matches = req.url.match(/^\/data\/person\/(\d+)$/);
 	if (matches) {
-		PersonSearch.getDetails(+matches[1], function(person){
+		Data.getPerson(+matches[1], function(person){
 			res.write(JSON.stringify(person));
 			res.end();
 		});

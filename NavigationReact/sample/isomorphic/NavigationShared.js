@@ -1,6 +1,5 @@
 var Navigation = require('navigation');
-var Listing = require('./Listing');
-var Details = require('./Details');
+var Component = require('./Component');
 
 Navigation.settings.historyManager = new Navigation.HTML5HistoryManager();
 Navigation.StateInfoConfig.build([
@@ -13,11 +12,11 @@ Navigation.StateInfoConfig.build([
 
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 states.listing.getComponent = function() {
-	return Listing;
+	return Component.Listing;
 }
 
 states.details.getComponent = function() {
-	return Details;
+	return Component.Details;
 }
 
 exports.getComponent = function() {

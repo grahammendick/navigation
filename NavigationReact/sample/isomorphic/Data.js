@@ -13,7 +13,7 @@ var people = [
 	{ id: 12, name: 'Emelie Lueilwitz', dateOfBirth: '01/12/1980', email: 'emelie@navigation.com', phone: '555 0012' }
 ];
 
-exports.search = function(pageNumber, callback) {
+exports.searchPeople = function(pageNumber, callback) {
 	var start = (pageNumber - 1) * 10;
 	var page = people.slice(start, start + 10);
 	setTimeout(function() {
@@ -21,7 +21,7 @@ exports.search = function(pageNumber, callback) {
 	}, 10);
 };
 
-exports.getDetails = function(id, callback) {
+exports.getPerson = function(id, callback) {
 	var details = null;
 	for (var i = 0; i < people.length; i++) {
 		var person = people[i];
