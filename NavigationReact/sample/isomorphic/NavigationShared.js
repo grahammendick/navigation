@@ -11,6 +11,11 @@ Navigation.StateInfoConfig.build([
     }
 ]);
 
+// Return the Component for the active State 
+exports.getComponent = function() {
+	return Navigation.StateContext.state.getComponent();
+}
+
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 states.listing.getComponent = function() {
 	return Component.Listing;
@@ -18,9 +23,4 @@ states.listing.getComponent = function() {
 
 states.details.getComponent = function() {
 	return Component.Details;
-}
-
-// Return the Component for the active State 
-exports.getComponent = function() {
-	return Navigation.StateContext.state.getComponent();
 }

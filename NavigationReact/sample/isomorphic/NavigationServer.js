@@ -32,6 +32,11 @@ http.createServer(function(req, res) {
 	});
 }).listen(8080);
 
+// Return the props data for the active State 
+function getProps(callback) {
+	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
+}
+
 var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
 states.listing.getProps = function(data, callback) {
 	Data.searchPeople(data.pageNumber, function(people){
@@ -43,11 +48,6 @@ states.details.getProps = function(data, callback) {
 	Data.getPerson(data.id, function(person){
 		callback({ person: person });
 	});
-}
-
-// Return the props data for the active State 
-function getProps(callback) {
-	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
 }
 
 function handleStatic(req, res) {
