@@ -1,0 +1,10 @@
+{
+  "name": "navigation-isomorphic",
+  "description": "Navigation React isomorphic example",
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "navigation": "^1.1.0",
+    "navigation-react": "^1.1.0",
+    "react": "^0.13.3"
+  }
+}
