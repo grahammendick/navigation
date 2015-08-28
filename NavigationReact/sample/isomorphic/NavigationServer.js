@@ -8,26 +8,28 @@ var Data = require('./Data');
 http.createServer(function(req, res) {
 	if (handleStatic(req, res))
 		return;
-	if (handleAjax(req, res))
-		return;
 	// Set the Navigation context
 	Navigation.StateController.navigateLink(req.url);
 	// Get the props data for the active State
 	getProps(function(props) {
-		// Reset the Navigation context
-		Navigation.StateController.navigateLink(req.url);
-		res.write('<html><head><style>')
-		res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
-		res.write('.label{margin-left:50px;width: 100px;float:left;}')
-		res.write('</style></head><body><div id="content">')
-		// Create the Component for the active State
-		var component = React.createElement(NavigationShared.getComponent(), props);
-		// Render the Component to the response
-		res.write(React.renderToString(component));
-		res.write('</div><script src="/app.js" ></script><script>')
-		// Write the props as JSON to the response
-		res.write('NavigationClient.start(' + safeStringify(props) + ');');
-		res.write('</script></body></html>')
+		if (req.headers['accept'].indexOf('application/json') > -1) {
+			res.write(JSON.stringify(props));
+		} else {
+			// Reset the Navigation context
+			Navigation.StateController.navigateLink(req.url);
+			res.write('<html><head><style>')
+			res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
+			res.write('.label{margin-left:50px;width: 100px;float:left;}')
+			res.write('</style></head><body><div id="content">')
+			// Create the Component for the active State
+			var component = React.createElement(NavigationShared.getComponent(), props);
+			// Render the Component to the response
+			res.write(React.renderToString(component));
+			res.write('</div><script src="/app.js" ></script><script>')
+			// Write the props as JSON to the response
+			res.write('NavigationClient.start(' + safeStringify(props) + ');');
+			res.write('</script></body></html>')
+		}
 		res.end();
 	});
 }).listen(8080);
@@ -60,26 +62,6 @@ function handleStatic(req, res) {
 		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
 			.bundle()
 			.pipe(res)
-		return true;
-	}
-	return false;
-}
-
-function handleAjax(req, res) {
-	var matches = req.url.match(/^\/data\/people\/(\d+)$/);
-	if (matches) {
-		Data.searchPeople(+matches[1], function(people){
-			res.write(JSON.stringify(people));
-			res.end();
-		});
-		return true;
-	}
-	matches = req.url.match(/^\/data\/person\/(\d+)$/);
-	if (matches) {
-		Data.getPerson(+matches[1], function(person){
-			res.write(JSON.stringify(person));
-			res.end();
-		});
 		return true;
 	}
 	return false;

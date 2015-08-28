@@ -23,24 +23,16 @@ function render(props) {
 	
 function registerNavigators() {
 	var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-	states.listing.navigating = function(data, url, navigate) {
-		getData('/data/people/' + data.pageNumber, function(data){
-			navigate(data);
-		})
-	}
-	
-	states.listing.navigated = function(data, asyncData) {
-		render({ people: asyncData});
-	}
-
-	states.details.navigating = function(data, url, navigate) {
-		getData('/data/person/' + data.id, function(data){
-			navigate(data);
-		})
-	}
-	
-	states.details.navigated = function(data, asyncData) {
-		render({ person: asyncData });
+	for(var key in states) {
+		var state = states[key];
+		state.navigating = function(data, url, navigate) {
+			getData(url, function(data){
+				navigate(data);
+			})
+		}
+		state.navigated = function(data, asyncData) {
+			render(asyncData);
+		}
 	}
 }
 
@@ -52,6 +44,7 @@ function getData(url, callback) {
 		}
 	};
 	req.open('get', url);
+	req.setRequestHeader('Accept', 'application/json');
 	req.send(null);
 }
 	
