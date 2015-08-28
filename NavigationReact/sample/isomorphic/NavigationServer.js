@@ -12,7 +12,7 @@ http.createServer(function(req, res) {
 	Navigation.StateController.navigateLink(req.url);
 	// Get the props data for the active State
 	getProps(function(props) {
-		if (req.headers['accept'].indexOf('application/json') > -1) {
+		if (req.headers['content-type'] === 'application/json') {
 			res.write(JSON.stringify(props));
 		} else {
 			// Reset the Navigation context
