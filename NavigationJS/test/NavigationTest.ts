@@ -22,6 +22,7 @@ describe('Navigate', function () {
         it('should go to initial State', function() {
             Navigation.StateController.navigate('d');
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].initial);
+            assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
         });
         it('should have no crumb trail', function() {
             Navigation.StateController.navigate('d');
@@ -36,6 +37,7 @@ describe('Navigate', function () {
                 var link = Navigation.StateController.getNavigationLink('d');
                 Navigation.StateController.navigateLink(link);
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].initial);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
             });
             it('should have no crumb trail', function() {
                 var link = Navigation.StateController.getNavigationLink('d');
@@ -48,32 +50,59 @@ describe('Navigate', function () {
         });
     });
 
-
-    it('NavigateCrossDialogTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('d1');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d0']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
-    });
-
-    it('NavigateCrossDialogLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d1');
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d0']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
+    describe('Cross Dialog', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0' }]},
+                { key: 'd1', initial: 's1', states: [
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        
+        it('should go to initial State', function() {
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
+            assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
+        });
+        it('should populate previous State', function() {
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d0']);
+        });
+        it('should have no crumb trail', function() {
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateController.crumbs.length, 0);
+        });
+        
+        describe('Link', function() {
+            it('should go to initial State', function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
+            });
+            it('should populate previous State', function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+                assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d0']);
+            });
+            it('should have no crumb trail', function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateController.crumbs.length, 0);
+            });
+        });
     });
 
     it('NavigateCrossDialogWithoutTrailTest', function () {
