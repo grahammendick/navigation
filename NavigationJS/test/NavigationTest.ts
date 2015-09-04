@@ -296,6 +296,14 @@ describe('Navigate', function () {
             assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
             assert.ok(Navigation.StateController.crumbs[0].last);
         });
+        it('should throw error for invalid action', function() {
+            Navigation.StateController.navigate('d');
+            assert.throws(() => Navigation.StateController.navigate('t1'));            
+        });
+        it('should throw error for null action', function() {
+            Navigation.StateController.navigate('d');
+            assert.throws(() => Navigation.StateController.navigate(null));            
+        });
         
         describe('Link', function() {
             it('should go to to State', function() {
@@ -322,6 +330,16 @@ describe('Navigate', function () {
                 assert.equal(Navigation.StateController.crumbs.length, 1);
                 assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
                 assert.ok(Navigation.StateController.crumbs[0].last);
+            });
+            it('should throw error for invalid action', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                assert.throws(() => Navigation.StateController.getNavigationLink('t1'));
+            });
+            it('should throw error for null action', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                assert.throws(() => Navigation.StateController.getNavigationLink(null));
             });
         });
     });
@@ -516,28 +534,6 @@ describe('Navigate', function () {
                 assert.equal(Navigation.StateController.crumbs.length, 0);
             });
         });
-    });
-
-    it('NavigateInvalidActionTest', function () {
-        Navigation.StateController.navigate('d1');
-        assert.throws(() => Navigation.StateController.navigate('t1'));
-    });
-
-    it('NavigateInvalidActionLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d1');
-        Navigation.StateController.navigateLink(link);
-        assert.throws(() => Navigation.StateController.getNavigationLink('t1'));
-    });
-
-    it('NavigateNullActionTest', function () {
-        Navigation.StateController.navigate('d1');
-        assert.throws(() => Navigation.StateController.navigate(null));
-    });
-
-    it('NavigateNullActionLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d1');
-        Navigation.StateController.navigateLink(link);
-        assert.throws(() => Navigation.StateController.getNavigationLink(null));
     });
 
     it('RefreshTest', function () {
