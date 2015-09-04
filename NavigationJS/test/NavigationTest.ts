@@ -655,7 +655,7 @@ describe('Navigation', function () {
                 assert.equal(Navigation.StateContext.state, previousState);
                 assert.equal(Navigation.StateContext.dialog, previousDialog);
             });
-            it('should populate previous with current State', function() {
+            it('should populate previous State with current State', function() {
                 assert.equal(Navigation.StateContext.previousState, state);
                 assert.equal(Navigation.StateContext.previousDialog, dialog);
             });
@@ -688,7 +688,7 @@ describe('Navigation', function () {
                 assert.equal(Navigation.StateContext.state, previousState);
                 assert.equal(Navigation.StateContext.dialog, previousDialog);
             });
-            it('should populate previous with current State', function() {
+            it('should populate previous State with current State', function() {
                 assert.equal(Navigation.StateContext.previousState, state);
                 assert.equal(Navigation.StateContext.previousDialog, dialog);
             });
