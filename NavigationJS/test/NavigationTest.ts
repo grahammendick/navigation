@@ -5,23 +5,41 @@ import initStateInfo = require('./initStateInfo');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
-describe('NavigationTest', function () {
+describe('Navigate', function () {
     beforeEach(function () {
         initStateInfo();
         Navigation.StateContext.state = null;
     });
 
-    it('NavigateDialogTest', function () {
-        Navigation.StateController.navigate('d0');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].initial);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
-    });
-
-    it('NavigateDialogLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].initial);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
+    describe('Dialog', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
+        
+        it('should go to initial State', function() {
+            Navigation.StateController.navigate('d');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].initial);
+        });
+        it('should have no crumb trail', function() {
+            Navigation.StateController.navigate('d');
+            assert.equal(Navigation.StateController.crumbs.length, 0);
+        });
+        
+        describe('Link', function() {
+            it('should go to initial State', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].initial);
+            });
+            it('should have no crumb trail', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateController.crumbs.length, 0);
+            });
+        });
     });
 
     it('NavigateInvalidDialogTest', function () {
