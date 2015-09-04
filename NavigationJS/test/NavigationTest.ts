@@ -689,15 +689,19 @@ describe('Navigate', function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
+                        { key: 't0', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't1', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
                 ]);
         });
         
         it('should go to previous State', function() {
             Navigation.StateController.navigate('d');
-            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t0');
+            Navigation.StateController.navigate('t1');
             var state = Navigation.StateContext.previousState;
             var dialog = Navigation.StateContext.previousDialog;
             Navigation.StateController.navigateBack(1);
@@ -706,25 +710,32 @@ describe('Navigate', function () {
         });
         it('should populate previous with current State', function() {
             Navigation.StateController.navigate('d');
-            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t0');
+            Navigation.StateController.navigate('t1');
             var state = Navigation.StateContext.state;
             var dialog = Navigation.StateContext.dialog;
             Navigation.StateController.navigateBack(1);
             assert.equal(Navigation.StateContext.previousState, state);
             assert.equal(Navigation.StateContext.previousDialog, dialog);
         });
-        it('should have no crumb trail', function() {
+        it('should reduce crumb trail by one', function() {
             Navigation.StateController.navigate('d');
-            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t0');
+            Navigation.StateController.navigate('t1');
+            var crumbs = Navigation.StateController.crumbs;
             Navigation.StateController.navigateBack(1);
-            assert.equal(Navigation.StateController.crumbs.length, 0);
+            assert.equal(Navigation.StateController.crumbs.length, crumbs.length - 1);
+            assert.equal(Navigation.StateController.crumbs[0].state, crumbs[0].state);
+            assert.ok(Navigation.StateController.crumbs[0].last);
         });
         
         describe('Link', function() {
             it('should go to previous State', function() {
                 var link = Navigation.StateController.getNavigationLink('d');
                 Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationLink('t');
+                link = Navigation.StateController.getNavigationLink('t0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t1');
                 Navigation.StateController.navigateLink(link);
                 var state = Navigation.StateContext.previousState;
                 var dialog = Navigation.StateContext.previousDialog;
@@ -736,7 +747,9 @@ describe('Navigate', function () {
             it('should populate previous with current State', function() {
                 var link = Navigation.StateController.getNavigationLink('d');
                 Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationLink('t');
+                link = Navigation.StateController.getNavigationLink('t0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t1');
                 Navigation.StateController.navigateLink(link);
                 var state = Navigation.StateContext.state;
                 var dialog = Navigation.StateContext.dialog;
@@ -745,14 +758,19 @@ describe('Navigate', function () {
                 assert.equal(Navigation.StateContext.previousState, state);
                 assert.equal(Navigation.StateContext.previousDialog, dialog);
             });
-            it('should have no crumb trail', function() {
+            it('should reduce crumb trail by one', function() {
                 var link = Navigation.StateController.getNavigationLink('d');
                 Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationLink('t');
+                link = Navigation.StateController.getNavigationLink('t0');
                 Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t1');
+                Navigation.StateController.navigateLink(link);
+                var crumbs = Navigation.StateController.crumbs;
                 link = Navigation.StateController.getNavigationBackLink(1);
                 Navigation.StateController.navigateLink(link);
-                assert.equal(Navigation.StateController.crumbs.length, 0);
+                assert.equal(Navigation.StateController.crumbs.length, crumbs.length - 1);
+                assert.equal(Navigation.StateController.crumbs[0].state, crumbs[0].state);
+                assert.ok(Navigation.StateController.crumbs[0].last);
             });
         });
     });
