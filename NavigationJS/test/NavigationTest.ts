@@ -642,9 +642,9 @@ describe('Navigation', function () {
             beforeEach(function() {
                 Navigation.StateController.navigate('d');
                 Navigation.StateController.navigate('t0');
+                previousState = Navigation.StateContext.state;
+                previousDialog = Navigation.StateContext.dialog;
                 Navigation.StateController.navigate('t1');
-                previousState = Navigation.StateContext.previousState;
-                previousDialog = Navigation.StateContext.previousDialog;
                 state = Navigation.StateContext.state;
                 dialog = Navigation.StateContext.dialog;
                 crumbs = Navigation.StateController.crumbs;
@@ -673,10 +673,10 @@ describe('Navigation', function () {
                 Navigation.StateController.navigateLink(link);
                 link = Navigation.StateController.getNavigationLink('t0');
                 Navigation.StateController.navigateLink(link);
+                previousState = Navigation.StateContext.state;
+                previousDialog = Navigation.StateContext.dialog;
                 link = Navigation.StateController.getNavigationLink('t1');
                 Navigation.StateController.navigateLink(link);
-                previousState = Navigation.StateContext.previousState;
-                previousDialog = Navigation.StateContext.previousDialog;
                 state = Navigation.StateContext.state;
                 dialog = Navigation.StateContext.dialog;
                 crumbs = Navigation.StateController.crumbs;
