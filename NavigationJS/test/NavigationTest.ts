@@ -27,6 +27,9 @@ describe('Navigate', function () {
             Navigation.StateController.navigate('d');
             assert.equal(Navigation.StateController.crumbs.length, 0);
         });
+        it('should throw error for invalid key', function(){
+            assert.throws(() => Navigation.StateController.navigate('d0'));
+        })
         
         describe('Link', function() {
             it('should go to initial State', function() {
@@ -39,16 +42,12 @@ describe('Navigate', function () {
                 Navigation.StateController.navigateLink(link);
                 assert.equal(Navigation.StateController.crumbs.length, 0);
             });
+            it('should throw error for invalid key', function(){
+                assert.throws(() => Navigation.StateController.getNavigationLink('d0'));
+            })
         });
     });
 
-    it('NavigateInvalidDialogTest', function () {
-        assert.throws(() => Navigation.StateController.navigate('d9'));
-    });
-
-    it('NavigateInvalidDialogLinkTest', function () {
-        assert.throws(() => Navigation.StateController.getNavigationLink('d9'));
-    });
 
     it('NavigateCrossDialogTest', function () {
         Navigation.StateController.navigate('d0');
