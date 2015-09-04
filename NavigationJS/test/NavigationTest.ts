@@ -615,32 +615,73 @@ describe('Navigate', function () {
         });
     });
 
-    it('RefreshWithoutTrailTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.refresh();
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2]._states[2]);
-        assert.equal(Navigation.StateContext.previousState, null);
-        assert.equal(Navigation.StateContext.previousDialog, null);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
-        assert.notEqual(Navigation.StateController.getRefreshLink(), null);
-    });
+    describe('Refresh Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should go to current State', function() {
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            var state = Navigation.StateContext.state;
+            var dialog = Navigation.StateContext.dialog;
+            Navigation.StateController.refresh();
+            assert.equal(Navigation.StateContext.state, state);
+            assert.equal(Navigation.StateContext.dialog, dialog);
+        });
+        it('should not populate previous State', function() {
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.refresh();
+            assert.equal(Navigation.StateContext.previousState, null);
+            assert.equal(Navigation.StateContext.previousDialog, null);
+        });
+        it('should have no crumb trail', function() {
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.refresh();
+            assert.equal(Navigation.StateController.crumbs.length, 0);
+        });
 
-    it('RefreshWithoutTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d2');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getRefreshLink();
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[2]._states[2]);
-        assert.equal(Navigation.StateContext.previousState, null);
-        assert.equal(Navigation.StateContext.previousDialog, null);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
-        assert.notEqual(Navigation.StateController.getRefreshLink(), null);
+        describe('Link', function() {
+            it('should go to current State', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                var state = Navigation.StateContext.state;
+                var dialog = Navigation.StateContext.dialog;
+                link = Navigation.StateController.getRefreshLink();
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateContext.state, state);
+                assert.equal(Navigation.StateContext.dialog, dialog);
+            });
+            it('should not populate previous State', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink();
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateContext.previousState, null);
+                assert.equal(Navigation.StateContext.previousDialog, null);
+            });
+            it('should have no crumb trail', function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink();
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateController.crumbs.length, 0);
+            });
+        });
     });
 
     it('NavigateBackOneTest', function () {
