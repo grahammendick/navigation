@@ -980,7 +980,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Can Navigate Back Without Trail', function() {
+    describe('Without Trail Can Navigate Back', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
@@ -1023,25 +1023,6 @@ describe('Navigation', function () {
                 assert.ok(!Navigation.StateController.canNavigateBack(1));
             });
         }
-    });
-
-    it('NavigateWithoutTrailCanNavigateBackTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        assert.ok(!Navigation.StateController.canNavigateBack(0));
-        assert.ok(!Navigation.StateController.canNavigateBack(1));
-    });
-
-    it('NavigateWithoutTrailCanNavigateBackLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d2');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.ok(!Navigation.StateController.canNavigateBack(0));
-        assert.ok(!Navigation.StateController.canNavigateBack(1));
     });
 
     it('NavigateBackInvalidTest', function () {
