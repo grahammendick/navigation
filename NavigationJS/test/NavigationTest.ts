@@ -682,43 +682,73 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateBackTwoTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(2);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[2]);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[4]);
-        assert.equal(Navigation.StateController.crumbs.length, 2);
-        assert.ok(!Navigation.StateController.crumbs[0].last);
-        assert.ok(Navigation.StateController.crumbs[1].last);
-        for (var i = 0; i < Navigation.StateController.crumbs.length; i++) {
-            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig._dialogs[0]._states[i]);
-        }
-    });
-
-    it('NavigateBackTwoLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(2);
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[2]);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[4]);
-        assert.equal(Navigation.StateController.crumbs.length, 2);
-        assert.ok(!Navigation.StateController.crumbs[0].last);
-        assert.ok(Navigation.StateController.crumbs[1].last);
-        for (var i = 0; i < Navigation.StateController.crumbs.length; i++) {
-            assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig._dialogs[0]._states[i]);
+    describe('Back Two', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't0', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't1', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', transitions: [
+                        { key: 't2', to: 's3' }
+                    ]},
+                    { key: 's3', route: 'r3', transitions: [
+                        { key: 't3', to: 's4' }
+                    ]},
+                    { key: 's4', route: 'r4' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t0');
+                Navigation.StateController.navigate('t1');
+                Navigation.StateController.navigate('t2');
+                Navigation.StateController.navigate('t3');
+                Navigation.StateController.navigateBack(2);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t1');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t2');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t3');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(2);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should go to previous previous State', function() {
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[2]);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs[0]);
+            });
+            it('should populate previous State with current State', function() {
+                assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[4]);
+                assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig._dialogs[0]);
+            });
+            it('should reduce crumb trail by two', function() {
+                assert.equal(Navigation.StateController.crumbs.length, 2);
+                assert.ok(!Navigation.StateController.crumbs[0].last);
+                assert.ok(Navigation.StateController.crumbs[1].last);
+                for (var i = 0; i < Navigation.StateController.crumbs.length; i++) {
+                    assert.equal(Navigation.StateController.crumbs[i].state, Navigation.StateInfoConfig._dialogs[0]._states[i]);
+                }
+            });
         }
     });
 
