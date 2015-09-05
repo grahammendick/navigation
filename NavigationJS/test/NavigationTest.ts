@@ -1065,7 +1065,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Invalid Without Trail Back', function() {
+    describe('Without Trail Invalid Back', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
