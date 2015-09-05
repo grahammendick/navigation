@@ -980,6 +980,51 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Can Navigate Back Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should return false for 0', function() {
+                assert.ok(!Navigation.StateController.canNavigateBack(0));
+            });
+            it('should return false for 1', function() {
+                assert.ok(!Navigation.StateController.canNavigateBack(1));
+            });
+        }
+    });
+
     it('NavigateWithoutTrailCanNavigateBackTest', function () {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
