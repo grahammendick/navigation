@@ -1536,22 +1536,6 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateTransitionWithoutTrailTransitionTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        var state = Navigation.StateController.getNextState('t0');
-        assert.equal(state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
-    });
-
-    it('NavigateTransitionWithoutTrailTransitionLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d2');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var state = Navigation.StateController.getNextState('t0');
-        assert.equal(state, Navigation.StateInfoConfig.dialogs['d2'].states['s2']);
-    });
-
     it('NavigateTransitionTransitionGetCrumbTest', function () {
         Navigation.StateController.navigate('d1');
         Navigation.StateController.navigate('t0');
