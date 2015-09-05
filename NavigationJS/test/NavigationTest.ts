@@ -1536,25 +1536,6 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateTransitionTransitionGetCrumbTest', function () {
-        Navigation.StateController.navigate('d1');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var crumb = Navigation.StateController.crumbs[1];
-        assert.equal(crumb.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
-    });
-
-    it('NavigateTransitionTransitionGetCrumbLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d1');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var crumb = Navigation.StateController.crumbs[1];
-        assert.equal(crumb.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
-    });
-
     it('NavigateLinkRouteTest', function () {
         var link = Navigation.StateController.getNavigationLink('d3');
         assert.notEqual(link.indexOf('d3s0'), -1);
