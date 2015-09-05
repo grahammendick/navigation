@@ -929,27 +929,55 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateCanNavigateBackTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t1');
-        Navigation.StateController.navigate('t1');
-        assert.ok(!Navigation.StateController.canNavigateBack(0));
-        assert.ok(Navigation.StateController.canNavigateBack(1));
-        assert.ok(Navigation.StateController.canNavigateBack(2));
-        assert.ok(!Navigation.StateController.canNavigateBack(3));
-    });
+    describe('Can Navigate Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+            });
+            test();
+        });
 
-    it('NavigateCanNavigateBackLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t1');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t1');
-        Navigation.StateController.navigateLink(link);
-        assert.ok(!Navigation.StateController.canNavigateBack(0));
-        assert.ok(Navigation.StateController.canNavigateBack(1));
-        assert.ok(Navigation.StateController.canNavigateBack(2));
-        assert.ok(!Navigation.StateController.canNavigateBack(3));
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should return false for 0', function() {
+                assert.ok(!Navigation.StateController.canNavigateBack(0));
+            });
+            it('should return true for 1', function() {
+                assert.ok(Navigation.StateController.canNavigateBack(1));
+            });
+            it('should return true for 2', function() {
+                assert.ok(Navigation.StateController.canNavigateBack(2));
+            });
+            it('should return false for 3', function() {
+                assert.ok(!Navigation.StateController.canNavigateBack(3));
+            });
+        }
     });
 
     it('NavigateWithoutTrailCanNavigateBackTest', function () {
