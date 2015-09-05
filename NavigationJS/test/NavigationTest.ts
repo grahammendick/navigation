@@ -817,35 +817,60 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateBackOneByOneTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t1');
-        Navigation.StateController.navigate('t1');
-        Navigation.StateController.navigateBack(1);
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs[0]._states[0].parent);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state._transitions[1].to);
-        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateContext.state._transitions[1].to.parent);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
-    });
-
-    it('NavigateBackOneByOneLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t1');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t1');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
-        assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs[0]._states[0].parent);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state._transitions[1].to);
-        assert.equal(Navigation.StateContext.previousDialog, Navigation.StateContext.state._transitions[1].to.parent);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
+    describe('Back One By One', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should go to previous previous State', function() {
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig._dialogs[0]);
+            });
+            it('should populate previous State with previous State', function() {
+                assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+                assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig._dialogs[0]);
+            });
+            it('should have no crumb trail', function() {
+                assert.equal(Navigation.StateController.crumbs.length, 0);
+            });
+        }
     });
 
     it('NavigateBackOneByOneWithoutTrailTest', function () {
