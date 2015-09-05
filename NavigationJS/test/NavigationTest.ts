@@ -1148,34 +1148,47 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigateBackNavigateBackWithoutTrailInvalidTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        try {
-            Navigation.StateController.navigateBack(1);
-        } catch (e) { }
-        assert.throws(() => Navigation.StateController.navigateBack(1));
-    });
+    describe('Back Without Trail Invalid Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+            });
+            it('should throw error', function() {
+                assert.throws(() => Navigation.StateController.navigateBack(1));
+            });
+        });
 
-    it('NavigateBackNavigateBackWithoutTrailInvalidLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d2');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        try {
-            link = Navigation.StateController.getNavigationBackLink(1);
-            Navigation.StateController.navigateLink(link);
-        } catch (e) { }
-        assert.throws(() => Navigation.StateController.getNavigationBackLink(1));
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            it('should throw error', function() {
+                assert.throws(() => Navigation.StateController.getNavigationBackLink(1));
+            });
+        });
     });
 
     it('NavigateBackRefreshTest', function () {
