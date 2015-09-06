@@ -2041,7 +2041,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('UnloadingDialogDialogTest', function () {
+    describe('Dialog Dialog Unloading', function () {
         it('should only call unloading function', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
