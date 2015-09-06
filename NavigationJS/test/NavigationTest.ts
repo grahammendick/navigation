@@ -1536,17 +1536,6 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateLinkRouteTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3');
-        assert.notEqual(link.indexOf('d3s0'), -1);
-    });
-
-    it('NavigateLinkRootRouteTest', function () {
-        Navigation.StateController.navigate('d4');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        assert.notEqual(link.indexOf('b/?'), 0);
-    });
-
     it('NavigateDialogDialogCustomTrailTest', function () {
         Navigation.StateController.navigate('d0');
         Navigation.StateController.navigate('d6');
