@@ -2,13 +2,14 @@
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
 import initStateInfo = require('./initStateInfo');
+import Crumb = require('../src/Crumb');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('Navigation', function () {
     beforeEach(function () {
         initStateInfo();
-        Navigation.StateContext.state = null;
+        Navigation.StateController.clearStateContext();
     });
 
     describe('Dialog', function() {
@@ -1536,20 +1537,44 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateDialogDialogCustomTrailTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('d6');
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(Navigation.StateController.crumbs.length, 1);
-    });
-
-    it('NavigateDialogDialogCustomTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d6');
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(Navigation.StateController.crumbs.length, 1);
+    describe('Dialog Dialog Custom Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's', states: [
+                    { key: 's', route: 'r0' }]},
+                { key: 'd1', initial: 's', states: [
+                    { key: 's', route: 'r1' }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                return crumbs;
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0');
+                Navigation.StateController.navigate('d1');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should have crumb trail of length 1', function() {
+                assert.equal(Navigation.StateController.crumbs.length, 1);
+                assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateInfoConfig.dialogs['d0'].states['s']);
+            });
+        }
     });
 
     it('NavigateCrossDialogCustomTrailTest', function () {
