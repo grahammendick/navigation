@@ -1670,29 +1670,65 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateCrossDialogBackCustomTrailTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('d6');
-        Navigation.StateController.refresh();
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
-        assert.equal(Navigation.StateController.crumbs.length, 1);
-    });
-
-    it('NavigateCrossDialogBackCustomTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d6');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getRefreshLink();
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
-        assert.equal(Navigation.StateController.crumbs.length, 1);
+    describe('Cross Dialog Back Custom Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's', states: [
+                    { key: 's', route: 'r2' }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                var newCrumbs = [];
+                for (var i = 0; i < crumbs.length; i++) {
+                    if (crumbs[i].state === state)
+                        break;
+                    newCrumbs.push(crumbs[i]);
+                }
+                return newCrumbs;
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('d1');
+                Navigation.StateController.refresh();
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink();
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should go to previous Dialog', function() {
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[1]);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d0']);
+            });
+            it('should have crumb trail of length 1', function() {
+                assert.equal(Navigation.StateController.crumbs.length, 1);
+            });
+        }
     });
 
     it('NavigateCrossDialogBackTwoCustomTrailTest', function () {
