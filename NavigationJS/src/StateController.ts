@@ -33,6 +33,18 @@ class StateController {
             throw new Error('The Url is invalid\n' + e.message);
         }
     }
+
+    static clearStateContext() {
+        StateContext.previousState = null;
+        StateContext.previousDialog = null;
+        StateContext.state = null;
+        StateContext.dialog = null;
+        StateContext.data = null;
+        StateContext.url = null;
+        CrumbTrailManager.returnData = null;
+        CrumbTrailManager.crumbTrail = null;
+        CrumbTrailManager.crumbTrailKey = null;
+    }
     
     private static setPreviousStateContext(uncombined: boolean, data: any){
         if (uncombined){
