@@ -34,6 +34,18 @@ class StateController {
         }
     }
     
+    static clearStateContext() {
+        StateContext.previousState = null;
+        StateContext.previousDialog = null;
+        StateContext.state = null;
+        StateContext.dialog = null;
+        StateContext.data = null;
+        StateContext.url = null;
+        CrumbTrailManager.returnData = null;
+        CrumbTrailManager.crumbTrail = null;
+        CrumbTrailManager.crumbTrailKey = null;
+    }
+    
     private static setPreviousStateContext(uncombined: boolean, data: any){
         if (uncombined){
             StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
