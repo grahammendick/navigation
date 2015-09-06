@@ -1624,23 +1624,50 @@ describe('Navigation', function () {
         }
     });
 
-    it('NavigateDialogDialogBackCustomTrailTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('d6');
-        Navigation.StateController.navigateBack(1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[0]);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
-    });
-
-    it('NavigateDialogDialogBackCustomTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d6');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[0]);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
+    describe('Dialog Dialog Back Custom Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's', states: [
+                    { key: 's', route: 'r0' }]},
+                { key: 'd1', initial: 's', states: [
+                    { key: 's', route: 'r1' }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                return crumbs;
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0');
+                Navigation.StateController.navigate('d1');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should go to previous Dialog', function() {
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0']._states[0]);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d0']);
+            });
+            it('should have no crumb trail', function() {
+                assert.equal(Navigation.StateController.crumbs.length, 0);
+            });
+        }
     });
 
     it('NavigateCrossDialogBackCustomTrailTest', function () {
