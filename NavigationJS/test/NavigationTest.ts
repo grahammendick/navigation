@@ -2172,14 +2172,23 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigatingNavigateTransitionTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
-            Navigation.StateController.navigate('t0');
-        }
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+    describe('Transition Navigating Navigate', function () {
+        it('should go to to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            var link = Navigation.StateController.getNavigationLink('d');
+            Navigation.StateController.navigateLink(link);
+            Navigation.StateController.navigate('t');
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+                Navigation.StateController.navigate('t');
+            }
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+        });
     });
 
     it('NavigatedTransitionTransitionTest', function () {
