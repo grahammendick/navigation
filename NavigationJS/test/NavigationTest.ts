@@ -3216,7 +3216,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Navigate History', function () {
+    describe('History Navigate', function () {
         it('should pass history flag to lifecycle functions', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd0', initial: 's0', states: [
@@ -3244,7 +3244,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Navigate Non History', function () {
+    describe('Non History Navigate', function () {
         it('should not pass history flag to lifecycle functions', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd0', initial: 's0', states: [
@@ -3272,61 +3272,100 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigatingAsyncDataTest', function (done: MochaDone) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
-            assert.equal(asyncData, 'hello');
-            done();
-        }
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
-            setTimeout(() => navigate('hello'), 0);
-        }
-        Navigation.StateController.navigate('t0');
+    describe('Async Data Navigating', function () {
+        it('should pass async data to navigated function', function(done: MochaDone) {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                assert.equal(asyncData, 'hello');
+                done();
+            }
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+                setTimeout(() => navigate('hello'), 0);
+            }
+            Navigation.StateController.navigate('t');
+        });
     });
 
-    it('NavigatingNavigatingAsyncDataTest', function (done: MochaDone) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
-            assert.equal(asyncData, 0);
-            done();
-        }
-        var i = 0;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
-            ((count) => setTimeout(() => navigate(count), 0))(i);
-            i++;
-        }
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
+    describe('Async Data Navigating Navigating', function () {
+        it('should pass async data to navigated function once', function(done: MochaDone) {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                assert.equal(asyncData, 0);
+                done();
+            }
+            var i = 0;
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+                ((count) => setTimeout(() => navigate(count), 0))(i);
+                i++;
+            }
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+        });
     });
 
-    it('NavigatingNavigatingReversedAsyncDataTest', function (done: MochaDone) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
-            assert.equal(asyncData, 1);
-            done();
-        }
-        var i = 0;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
-            ((count) => setTimeout(() => navigate(count), 5 - 5 * count))(i);
-            i++;
-        }
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
+    describe('Reversed Async Data Navigating Navigating', function () {
+        it('should pass second async data to navigated function', function(done: MochaDone) {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                assert.equal(asyncData, 1);
+                done();
+            }
+            var i = 0;
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+                ((count) => setTimeout(() => navigate(count), 5 - 5 * count))(i);
+                i++;
+            }
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+        });
     });
 
-    it('NavigatingNoAsyncDataTest', function (done: MochaDone) {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = (data, asyncData) => {
-            Navigation.StateController.navigate('t0');
-        }
-        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].navigated = (data, asyncData) => {
-            assert.equal(asyncData, undefined);
-            done();
-        }
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate) => {
-            setTimeout(() => navigate('hello'), 0);
-        }
-        Navigation.StateController.navigate('t0');
+    describe('No Async Data Navigating', function () {
+        it('should not pass any async data', function(done: MochaDone) {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                Navigation.StateController.navigate('t');
+            }
+            Navigation.StateInfoConfig.dialogs['d'].states['s2'].navigated = (data, asyncData) => {
+                assert.equal(asyncData, undefined);
+                done();
+            }
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+                setTimeout(() => navigate('hello'), 0);
+            }
+            Navigation.StateController.navigate('t');
+        });
     });
 
     it('NavigateTransitionStorageTest', function () {
