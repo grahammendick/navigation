@@ -3368,27 +3368,50 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigateTransitionStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.notEqual(link.indexOf('aaa'), -1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
-        assert.equal(Navigation.StateController.crumbs.length, 1);
+    describe('Transition Storage Navigate', function () {
+        it('should set crumb trail to aaa', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigateLink(link);
+            assert.notEqual(link.indexOf('aaa'), -1);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+            assert.equal(Navigation.StateController.crumbs.length, 1);
+        });
     });
 
-    it('NavigateTransitionTransitionStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        Navigation.StateController.navigate('d1');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.notEqual(link.indexOf('bbb'), -1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[1]._states[2]);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[1]._states[1]);
-        assert.equal(Navigation.StateController.crumbs.length, 2);
+    describe('Transition Transition Storage Navigate', function () {
+        it('should set crumb trail to bbb', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            Navigation.StateController.navigate('d1');
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigateLink(link);
+            assert.notEqual(link.indexOf('bbb'), -1);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[1]._states[2]);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[1]._states[1]);
+            assert.equal(Navigation.StateController.crumbs.length, 2);
+        });
     });
 
     it('Navigate26TimesStorageTest', function () {
