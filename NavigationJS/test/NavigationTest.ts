@@ -3089,57 +3089,96 @@ describe('Navigation', function () {
         });
     });
 
-    it('UnloadingNavigateAndContinueTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].unloading = (state, data, url, unload) => {
-            if (data.x)
-                Navigation.StateController.navigate('t0');
-            unload();
-        }
-        var navigating;
-        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
-            navigating = true;
-            navigate();
-        }
-        Navigation.StateController.navigate('d1', { x: true });
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
-        assert.strictEqual(navigating, undefined);
-    });
-
-    it('UnloadingNavigateUrlAndContinueTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        var unloading;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].unloading = (state, data, url, unload) => {
-            if (!unloading) {
-                unloading = true;
-                Navigation.StateController.navigateLink(url);
+    describe('Unloading Navigate And Continue', function () {
+        it('should go to to State instead of initial State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('t');
+            Navigation.StateInfoConfig.dialogs['d0'].states['s1'].unloading = (state, data, url, unload) => {
+                if (data.x)
+                    Navigation.StateController.navigate('t');
+                unload();
             }
-            unload();
-        }
-        var navigating = 0;
-        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
-            navigating++;
-            navigate();
-        }
-        Navigation.StateController.navigate('d1');
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.strictEqual(navigating, 1);
+            var navigating;
+            Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+                navigating = true;
+                navigate();
+            }
+            Navigation.StateController.navigate('d1', { x: true });
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
+            assert.strictEqual(navigating, undefined);
+        });
     });
 
-    it('NavigatingNavigateAndContinueTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
-            Navigation.StateController.navigate('t0');
-            navigate();
-        }
-        Navigation.StateController.navigate('d1');
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
+    describe('Unloading Navigate Url And Continue', function () {
+        it('should go to State once', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('t');
+            var unloading;
+            Navigation.StateInfoConfig.dialogs['d0'].states['s1'].unloading = (state, data, url, unload) => {
+                if (!unloading) {
+                    unloading = true;
+                    Navigation.StateController.navigateLink(url);
+                }
+                unload();
+            }
+            var navigating = 0;
+            Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+                navigating++;
+                navigate();
+            }
+            Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+            assert.strictEqual(navigating, 1);
+        });
+    });
+
+    describe('Navigating Navigate And Continue', function () {
+        it('should go to to State instead of initial State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('t');
+            Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+                Navigation.StateController.navigate('t');
+                navigate();
+            }
+            Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
+        });
     });
 
     it('NavigatedNavigateOnNavigateTest', function () {
