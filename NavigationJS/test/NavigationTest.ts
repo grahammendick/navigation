@@ -3181,59 +3181,95 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigatedNavigateOnNavigateTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigated = () => {
-            Navigation.StateController.navigate('t0');
-        }
-        var navigatedState;
-        var hits = 0;
-        var navigatedHandler = (oldState, state, data) => {
-            navigatedState = state;
-            hits++;
-        };
-        Navigation.StateController.onNavigate(navigatedHandler);
-        Navigation.StateController.navigate('d1');
-        Navigation.StateController.offNavigate(navigatedHandler);
-        assert.equal(hits, 1);
-        assert.equal(navigatedState, Navigation.StateContext.state);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
+    describe('Navigated Navigate On Navigate', function () {
+        it('should call onNavigate listener once', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            Navigation.StateController.navigate('t');
+            Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigated = () => {
+                Navigation.StateController.navigate('t');
+            }
+            var navigatedState;
+            var hits = 0;
+            var navigatedHandler = (oldState, state, data) => {
+                navigatedState = state;
+                hits++;
+            };
+            Navigation.StateController.onNavigate(navigatedHandler);
+            Navigation.StateController.navigate('d1');
+            Navigation.StateController.offNavigate(navigatedHandler);
+            assert.equal(hits, 1);
+            assert.equal(navigatedState, Navigation.StateContext.state);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
+        });
     });
 
-    it('NavigateHistoryTest', function () {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        var unloadingHistory, navigatingHistory;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
-            unloadingHistory = history; 
-            unload();
-        }
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
-            navigatingHistory = history;
-            navigate();
-        }
-        Navigation.StateController.navigateLink(link, true);
-        assert.strictEqual(unloadingHistory, true);
-        assert.strictEqual(navigatingHistory, true);
+    describe('Navigate History', function () {
+        it('should pass history flag to lifecycle functions', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            var link = Navigation.StateController.getNavigationLink('t');
+            var unloadingHistory, navigatingHistory;
+            Navigation.StateInfoConfig.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
+                unloadingHistory = history; 
+                unload();
+            }
+            Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
+                navigatingHistory = history;
+                navigate();
+            }
+            Navigation.StateController.navigateLink(link, true);
+            assert.strictEqual(unloadingHistory, true);
+            assert.strictEqual(navigatingHistory, true);
+        });
     });
 
-    it('NavigateNonHistoryTest', function () {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        var unloadingHistory, navigatingHistory;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
-            unloadingHistory = history; 
-            unload();
-        }
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
-            navigatingHistory = history;
-            navigate();
-        }
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(unloadingHistory, false);
-        assert.strictEqual(navigatingHistory, false);
+    describe('Navigate Non History', function () {
+        it('should not pass history flag to lifecycle functions', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            var link = Navigation.StateController.getNavigationLink('t');
+            var unloadingHistory, navigatingHistory;
+            Navigation.StateInfoConfig.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
+                unloadingHistory = history; 
+                unload();
+            }
+            Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
+                navigatingHistory = history;
+                navigate();
+            }
+            Navigation.StateController.navigateLink(link);
+            assert.strictEqual(unloadingHistory, false);
+            assert.strictEqual(navigatingHistory, false);
+        });
     });
 
     it('NavigatingAsyncDataTest', function (done: MochaDone) {
