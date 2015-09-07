@@ -3414,94 +3414,154 @@ describe('Navigation', function () {
         });
     });
 
-    it('Navigate26TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 26; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaz'), -1);
+    describe('Storage Navigate 26 Times', function () {
+        it('should set crumb trail to aaz', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 26; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaz'), -1);
+        });
     });
 
-    it('Navigate27TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 27; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaA'), -1);
+    describe('Storage Navigate 27 Times', function () {
+        it('should set crumb trail to aaA', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 27; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaA'), -1);
+        });
     });
 
-    it('Navigate52TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 52; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaZ'), -1);
+    describe('Storage Navigate 52 Times', function () {
+        it('should set crumb trail to aaZ', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 52; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaZ'), -1);
+        });
     });
 
-    it('Navigate53TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 53; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaa1'), -1);
+    describe('Storage Navigate 53 Times', function () {
+        it('should set crumb trail to aaa1', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 53; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaa1'), -1);
+        });
     });
 
-    it('Navigate78TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 78; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaz1'), -1);
+    describe('Storage Navigate 78 Times', function () {
+        it('should set crumb trail to aaz1', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 78; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaz1'), -1);
+        });
     });
 
-    it('Navigate79TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 79; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaA1'), -1);
+    describe('Storage Navigate 79 Times', function () {
+        it('should set crumb trail to aaA1', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 79; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaA1'), -1);
+        });
     });
 
-    it('Navigate104TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 104; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaZ1'), -1);
+    describe('Storage Navigate 104 Times', function () {
+        it('should set crumb trail to aaZ1', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 104; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaZ1'), -1);
+        });
     });
 
-    it('Navigate207TimesStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        for(var i = 0; i < 207; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaY3'), -1);
+    describe('Storage Navigate 207 Times', function () {
+        it('should set crumb trail to aaY3', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            for(var i = 0; i < 207; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaY3'), -1);
+        });
     });
 
-    it('Navigate50TimesNoRecycleStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
-        for(var i = 0; i < 50; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaX'), -1);
+    describe('No Recycle Storage Navigate 50 Times', function () {
+        it('should set crumb trail to aaX', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
+            for(var i = 0; i < 50; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaX'), -1);
+        });
     });
 
-    it('Navigate51TimesRecycleStorageTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
-        for(var i = 0; i < 51; i++) {
-            Navigation.StateController.navigate('d0');
-        }
-        var link = Navigation.StateController.getRefreshLink();
-        assert.notEqual(link.indexOf('aaa'), -1);
+    describe('Recycle Storage Navigate 51 Times', function () {
+        it('should set crumb trail to aaa', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0, 5);
+            for(var i = 0; i < 51; i++) {
+                Navigation.StateController.navigate('d');
+            }
+            var link = Navigation.StateController.getRefreshLink();
+            assert.notEqual(link.indexOf('aaa'), -1);
+        });
     });
 
     it('Navigate4TimesNoEmptyStorageTest', function () {
