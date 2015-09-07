@@ -60,18 +60,6 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateIndividualDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0', individualNavigationData);
-        Navigation.StateController.navigateLink(link);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
-            i++;
-        }
-        assert.strictEqual(Navigation.StateContext.data['boolean'], true);
-        assert.equal(i, 3);
-    });
-
     it('NavigateIndividualDataWithoutTrailTest', function () {
         Navigation.StateController.navigate('d2');
         Navigation.StateController.navigate('t0');
