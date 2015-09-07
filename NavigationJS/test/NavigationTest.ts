@@ -3646,38 +3646,74 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigateStorageMismtachTest', function () {
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateController.crumbs.length, 0);
+    describe('Storage Mismtach Navigate', function () {
+        it('should forget crumb trail', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateController.crumbs.length, 0);
+        });
     });
 
-    it('NavigateUncombinedToCombinedCrumbTrailTest', function () {
-        Navigation.settings.combineCrumbTrail = false;
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.settings.combineCrumbTrail = true;
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
-        assert.equal(Navigation.StateController.crumbs.length, 2);
+    describe('Uncombined To Combined Crumb Trail Navigate', function () {
+        it('should remember crumb trail', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.settings.combineCrumbTrail = false;
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.settings.combineCrumbTrail = true;
+            Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateController.crumbs.length, 2);
+        });
     });
 
-    it('NavigateCombinedToUnombinedCrumbTrailTest', function () {
-        Navigation.settings.combineCrumbTrail = true;
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.settings.combineCrumbTrail = false;
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
-        assert.equal(Navigation.StateController.crumbs.length, 2);
+    describe('Combined To Unombined Crumb Trail Navigate', function () {
+        it('should remember crumb trail', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.settings.combineCrumbTrail = true;
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.settings.combineCrumbTrail = false;
+            Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateController.crumbs.length, 2);
+        });
     });
 
     it('NavigateTwoRouteTest', function () {
