@@ -2965,95 +2965,128 @@ describe('Navigation', function () {
         });
     });
 
-    it('OnNavigateMultipleTest', function () {
-        var oldStates1: Array<State> = [];
-        var states1: Array<State> = [];
-        var oldStates2: Array<State> = [];
-        var states2: Array<State> = [];
-        Navigation.StateController.navigate('d0');
-        var navigatedHandler1 = (oldState, state, data) => {
-            oldStates1.push(oldState);
-            states1.push(state);
-        };
-        var navigatedHandler2 = (oldState, state, data) => {
-            oldStates2.push(oldState);
-            states2.push(state);
-        };
-        Navigation.StateController.onNavigate(navigatedHandler1);
-        Navigation.StateController.onNavigate(navigatedHandler2);
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateController.navigate('d1');
-        Navigation.StateController.offNavigate(navigatedHandler1);
-        Navigation.StateController.offNavigate(navigatedHandler2);
-        assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates1[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(states1[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(oldStates1.length, 2);
-        assert.equal(states1.length, 2);
-        assert.equal(oldStates2.length, 2);
-        assert.equal(states2.length, 2);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    describe('Multiple On Navigate', function () {
+        it('should call multiple onNavigate listeners', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            var oldStates1: Array<State> = [];
+            var states1: Array<State> = [];
+            var oldStates2: Array<State> = [];
+            var states2: Array<State> = [];
+            Navigation.StateController.navigate('d0');
+            var navigatedHandler1 = (oldState, state, data) => {
+                oldStates1.push(oldState);
+                states1.push(state);
+            };
+            var navigatedHandler2 = (oldState, state, data) => {
+                oldStates2.push(oldState);
+                states2.push(state);
+            };
+            Navigation.StateController.onNavigate(navigatedHandler1);
+            Navigation.StateController.onNavigate(navigatedHandler2);
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigateLink(link);
+            Navigation.StateController.navigate('d1');
+            Navigation.StateController.offNavigate(navigatedHandler1);
+            Navigation.StateController.offNavigate(navigatedHandler2);
+            assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(oldStates1[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(states1[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+            assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+            assert.equal(oldStates1.length, 2);
+            assert.equal(states1.length, 2);
+            assert.equal(oldStates2.length, 2);
+            assert.equal(states2.length, 2);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        });
     });
 
-    it('OffNavigateTest', function () {
-        var oldStates: Array<State> = [];
-        var states: Array<State> = [];
-        Navigation.StateController.navigate('d0');
-        var navigatedHandler = (oldState, state, data) => {
-            oldStates.push(oldState);
-            states.push(state);
-        };
-        Navigation.StateController.onNavigate(navigatedHandler);
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateController.offNavigate(navigatedHandler);
-        Navigation.StateController.offNavigate(navigatedHandler);
-        Navigation.StateController.navigate('d1');
-        assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates.length, 1);
-        assert.equal(states.length, 1);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    describe('Off Navigate', function () {
+        it('should stop calling onNavigate listener', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            var oldStates: Array<State> = [];
+            var states: Array<State> = [];
+            Navigation.StateController.navigate('d0');
+            var navigatedHandler = (oldState, state, data) => {
+                oldStates.push(oldState);
+                states.push(state);
+            };
+            Navigation.StateController.onNavigate(navigatedHandler);
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigateLink(link);
+            Navigation.StateController.offNavigate(navigatedHandler);
+            Navigation.StateController.offNavigate(navigatedHandler);
+            Navigation.StateController.navigate('d1');
+            assert.equal(oldStates[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(states[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(oldStates.length, 1);
+            assert.equal(states.length, 1);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        });
     });
 
-    it('OffNavigateMultipleTest', function () {
-        var oldStates1: Array<State> = [];
-        var states1: Array<State> = [];
-        var oldStates2: Array<State> = [];
-        var states2: Array<State> = [];
-        Navigation.StateController.navigate('d0');
-        var navigatedHandler1 = (oldState, state, data) => {
-            oldStates1.push(oldState);
-            states1.push(state);
-        };
-        var navigatedHandler2 = (oldState, state, data) => {
-            oldStates2.push(oldState);
-            states2.push(state);
-        };
-        Navigation.StateController.onNavigate(navigatedHandler1);
-        Navigation.StateController.onNavigate(navigatedHandler2);
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateController.offNavigate(navigatedHandler1);
-        Navigation.StateController.navigate('d1');
-        Navigation.StateController.offNavigate(navigatedHandler2);
-        assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
-        assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
-        assert.equal(oldStates1.length, 1);
-        assert.equal(states1.length, 1);
-        assert.equal(oldStates2.length, 2);
-        assert.equal(states2.length, 2);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+    describe('Multiple Off Navigate', function () {
+        it('should individually stop calling onNavigate listeners', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r2' }]}
+                ]);
+            var oldStates1: Array<State> = [];
+            var states1: Array<State> = [];
+            var oldStates2: Array<State> = [];
+            var states2: Array<State> = [];
+            Navigation.StateController.navigate('d0');
+            var navigatedHandler1 = (oldState, state, data) => {
+                oldStates1.push(oldState);
+                states1.push(state);
+            };
+            var navigatedHandler2 = (oldState, state, data) => {
+                oldStates2.push(oldState);
+                states2.push(state);
+            };
+            Navigation.StateController.onNavigate(navigatedHandler1);
+            Navigation.StateController.onNavigate(navigatedHandler2);
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigateLink(link);
+            Navigation.StateController.offNavigate(navigatedHandler1);
+            Navigation.StateController.navigate('d1');
+            Navigation.StateController.offNavigate(navigatedHandler2);
+            assert.equal(oldStates1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(states1[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(oldStates2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(states2[0], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(oldStates2[1], Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+            assert.equal(states2[1], Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+            assert.equal(oldStates1.length, 1);
+            assert.equal(states1.length, 1);
+            assert.equal(oldStates2.length, 2);
+            assert.equal(states2.length, 2);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
+        });
     });
 
     it('UnloadingNavigateAndContinueTest', function () {
