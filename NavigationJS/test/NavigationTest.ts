@@ -3716,31 +3716,63 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigateTwoRouteTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's0', states: [
-                { key: 's0', route: 's', trackCrumbTrail: false },
-                { key: 's1', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/abc/de');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
-        Navigation.StateController.navigateLink('/def/gh');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
-        Navigation.StateController.navigateLink('/s');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+    describe('Route Navigate', function () {
+        it('should go to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 's', trackCrumbTrail: false },
+                    { key: 's1', route: 'abc/{x}', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/abc/de');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            Navigation.StateController.navigateLink('/s');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+        });
     });
 
-    it('NavigateTwoRouteRootTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's0', states: [
-                { key: 's0', route: ['abc/{x}', '{y}'], trackCrumbTrail: false },
-                { key: 's1', route: 's', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/abc/de');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
-        Navigation.StateController.navigateLink('/sa');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
-        Navigation.StateController.navigateLink('/s');
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+    describe('Route Root Navigate', function () {
+        it('should go to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: '{y}', trackCrumbTrail: false },
+                    { key: 's1', route: 's', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/sa');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+            Navigation.StateController.navigateLink('/s');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+        });
+    });
+
+    describe('Two Route Navigate', function () {
+        it('should go to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 's', trackCrumbTrail: false },
+                    { key: 's1', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/abc/de');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            Navigation.StateController.navigateLink('/def/gh');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            Navigation.StateController.navigateLink('/s');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+        });
+    });
+
+    describe('Two Route Root Navigate', function () {
+        it('should go to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: ['abc/{x}', '{y}'], trackCrumbTrail: false },
+                    { key: 's1', route: 's', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/abc/de');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+            Navigation.StateController.navigateLink('/sa');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+            Navigation.StateController.navigateLink('/s');
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+        });
     });
 });
