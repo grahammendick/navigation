@@ -14,21 +14,50 @@ arrayNavigationData['array_string'] = ['He-llo', 'World'];
 arrayNavigationData['array_boolean'] = [true, false];
 arrayNavigationData['array_number'] = [1, 2];
 
-describe('NavigationDataTest', function () {
+describe('Navigation Data', function () {
     beforeEach(function () {
         initStateInfo();
         Navigation.StateController.clearStateContext();
     });
 
-    it('NavigateIndividualDataTest', function () {
-        Navigation.StateController.navigate('d0', individualNavigationData);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
-            i++;
+    describe('Individual Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', individualNavigationData);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', individualNavigationData);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                var i = 0;
+                for (var key in Navigation.StateContext.data) {
+                    assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
+                    i++;
+                }
+                assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+                assert.equal(i, 3);
+            });
         }
-        assert.strictEqual(Navigation.StateContext.data['boolean'], true);
-        assert.equal(i, 3);
     });
 
     it('NavigateIndividualDataLinkTest', function () {
