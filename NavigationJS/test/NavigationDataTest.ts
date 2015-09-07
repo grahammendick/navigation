@@ -17,8 +17,7 @@ arrayNavigationData['array_number'] = [1, 2];
 describe('NavigationDataTest', function () {
     beforeEach(function () {
         initStateInfo();
-        if (Navigation.StateContext.state)
-            Navigation.StateContext.clear();
+        Navigation.StateController.clearStateContext();
     });
 
     it('NavigateIndividualDataTest', function () {
