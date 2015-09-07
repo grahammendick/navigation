@@ -1,14 +1,12 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import initStateInfo = require('./initStateInfo');
 import Crumb = require('../src/Crumb');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('Navigation', function () {
     beforeEach(function () {
-        initStateInfo();
         Navigation.StateController.clearStateContext();
     });
 
