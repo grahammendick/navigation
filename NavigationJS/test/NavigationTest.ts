@@ -2784,26 +2784,40 @@ describe('Navigation', function () {
         });
     });
 
-    it('NavigatingNavigateTest', function () {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var disposed = 0, navigating, navigated10, navigated01;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s2'].dispose = () => disposed++;
-        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
-            navigating = true;
-            Navigation.StateController.navigateLink(link);
-        }
-        Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigated = () => navigated10 = true;
-        Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = () => navigated01 = true;
-        Navigation.StateController.navigate('d1');
-        assert.strictEqual(disposed, 1);
-        assert.strictEqual(navigating, true);
-        assert.strictEqual(navigated10, undefined);
-        assert.strictEqual(navigated01, true);
-        assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
-        assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+    describe('Navigating Navigate', function () {
+        it('should go to to State instead of initial State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' },
+                    ]},
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r3' }]}
+                ]);
+            Navigation.StateController.navigate('d0');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            var disposed = 0, navigating, navigated10, navigated01;
+            Navigation.StateInfoConfig.dialogs['d0'].states['s2'].dispose = () => disposed++;
+            Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+                navigating = true;
+                Navigation.StateController.navigateLink(link);
+            }
+            Navigation.StateInfoConfig.dialogs['d1'].states['s0'].navigated = () => navigated10 = true;
+            Navigation.StateInfoConfig.dialogs['d0'].states['s1'].navigated = () => navigated01 = true;
+            Navigation.StateController.navigate('d1');
+            assert.strictEqual(disposed, 1);
+            assert.strictEqual(navigating, true);
+            assert.strictEqual(navigated10, undefined);
+            assert.strictEqual(navigated01, true);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
+        });
     });
 
     it('OnNavigateTest', function () {
