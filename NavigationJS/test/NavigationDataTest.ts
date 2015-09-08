@@ -316,26 +316,49 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateInvalidContextDataWithoutTrailTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
+    describe('Invalid Context Data Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: false }]}
+                ]);
+        });
         var data = {};
         data['s'] = 'Hello';
-        Navigation.StateContext.data['item'] = new Date();
-        Navigation.StateController.navigate('t0', data);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateContext.data['item'] = new Date();
+                Navigation.StateController.navigate('t', data);
+            });
+            test();
+        });
 
-    it('NavigateInvalidContextDataWithoutTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d2');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        data['s'] = 'Hello';
-        Navigation.StateContext.data['item'] = new Date();
-        Navigation.StateController.navigate('t0', data);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                Navigation.StateContext.data['item'] = new Date();
+                Navigation.StateController.navigate('t', data);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+            });
+        }
     });
 
     it('RefreshInvalidContextDataTest', function () {
