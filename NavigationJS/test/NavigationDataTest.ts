@@ -235,26 +235,49 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('InvalidDataRefreshTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateContext.data['item'] = new Date();
-        assert.throws(() => Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData(null)));
+    describe('Individual Data Refresh', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateContext.data['item'] = new Date();
+        });
+        
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData(null)));
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null)));
+            });
+        });
     });
 
-    it('InvalidRefreshDataTest', function () {
-        Navigation.StateController.navigate('d0');
-        assert.throws(() => Navigation.StateController.refresh({ item: new Date() }));
-    });
+    describe('Individual Refresh Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+        });
+        
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.refresh({ item: new Date() }));
+            });
+        });
 
-    it('InvalidDataGetRefreshLinkTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateContext.data['item'] = new Date();
-        assert.throws(() => Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null)));
-    });
-
-    it('InvalidGetRefreshLinkDataTest', function () {
-        Navigation.StateController.navigate('d0');
-        assert.throws(() => Navigation.StateController.getRefreshLink({ item: new Date() }));
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.getRefreshLink({ item: new Date() }));
+            });
+        });
     });
 
     it('InvalidTypesArrayDataTest', function () {
