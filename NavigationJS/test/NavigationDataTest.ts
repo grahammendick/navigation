@@ -398,16 +398,27 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateInvalidDataWithoutTrailTest', function () {
+    describe('Invalid Data Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', trackCrumbTrail: false }]}
+                ]);
+        });
         var data = {};
         data['item'] = new Date();
-        assert.throws(() => Navigation.StateController.navigate('d2', data));
-    });
+        
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.getNavigationLink('d', data));
+            });
+        });
 
-    it('NavigateInvalidDataWithoutTrailLinkTest', function () {
-        var data = {};
-        data['item'] = new Date();
-        assert.throws(() => Navigation.StateController.getNavigationLink('d2', data));
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.getNavigationLink('d', data));
+            });
+        });
     });
 
     it('ReservedUrlCharacterDataTest', function () {
