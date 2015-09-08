@@ -1179,49 +1179,65 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('ChangeDynamicDataRefreshRouteOverrideTest', function () {
-        Navigation.StateController.navigate('d0');
+    describe('Change Dynamic Data Refresh Override', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
         var data: any = {};
         data.s = 'Hello';
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateContext.data.s = 'World';
-        Navigation.StateContext.data.d = '2000-1-3';
-        Navigation.StateContext.data.i = 3;
-        data = Navigation.StateContext.includeCurrentData({
-            s: 'Hello World',
-            i: null,
-            n: 2
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateContext.data.s = 'World';
+                Navigation.StateContext.data.d = '2000-1-3';
+                Navigation.StateContext.data.i = 3;
+                data = Navigation.StateContext.includeCurrentData({
+                    s: 'Hello World',
+                    i: null,
+                    n: 2
+                });
+                Navigation.StateController.refresh(data);
+            });
+            test();
         });
-        Navigation.StateController.refresh(data);
-        assert.strictEqual(Navigation.StateContext.data.s, 'Hello World');
-        assert.strictEqual(Navigation.StateContext.data.d, '2000-1-3');
-        assert.strictEqual(Navigation.StateContext.data.i, undefined);
-        assert.strictEqual(Navigation.StateContext.data.n, 2);
-        assert.strictEqual(Navigation.StateContext.data['n'], 2);
-    });
 
-    it('ChangeDynamicDataRefreshRouteOverrideLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        var data: any = {};
-        data.s = 'Hello';
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateContext.data.s = 'World';
-        Navigation.StateContext.data.d = '2000-1-3';
-        Navigation.StateContext.data.i = 3;
-        data = Navigation.StateContext.includeCurrentData({
-            s: 'Hello World',
-            i: null,
-            n: 2
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                Navigation.StateContext.data.s = 'World';
+                Navigation.StateContext.data.d = '2000-1-3';
+                Navigation.StateContext.data.i = 3;
+                data = Navigation.StateContext.includeCurrentData({
+                    s: 'Hello World',
+                    i: null,
+                    n: 2
+                });
+                link = Navigation.StateController.getRefreshLink(data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
         });
-        link = Navigation.StateController.getRefreshLink(data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data.s, 'Hello World');
-        assert.strictEqual(Navigation.StateContext.data.d, '2000-1-3');
-        assert.strictEqual(Navigation.StateContext.data.i, undefined);
-        assert.strictEqual(Navigation.StateContext.data.n, 2);
-        assert.strictEqual(Navigation.StateContext.data['n'], 2);
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data.s, 'Hello World');
+                assert.strictEqual(Navigation.StateContext.data.d, '2000-1-3');
+                assert.strictEqual(Navigation.StateContext.data.i, undefined);
+                assert.strictEqual(Navigation.StateContext.data.n, 2);
+                assert.strictEqual(Navigation.StateContext.data['n'], 2);
+            });
+        }
     });
 
     it('NavigateWizardDataTest', function () {
