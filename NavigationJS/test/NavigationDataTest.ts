@@ -540,25 +540,41 @@ describe('Navigation Data', function () {
             });
         }
     });
-
-    it('EmptyStringDataNavigateTest', function () {
+    
+    describe('Empty String Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
         var data = {};
         data['s'] = '';
         data['t'] = '1';
-        Navigation.StateController.navigate('d0', data);
-        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
-        assert.strictEqual(Navigation.StateContext.data['t'], '1');
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'], '1');
+            });
+        }
     });
 
-    it('EmptyStringDataNavigateLinkTest', function () {
-        var data = {};
-        data['s'] = '';
-        data['t'] = '1';
-        var link = Navigation.StateController.getNavigationLink('d0', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
-        assert.strictEqual(Navigation.StateContext.data['t'], '1');
-    });
 
     it('EmptyStringDataTest', function () {
         Navigation.StateController.navigate('d0');
