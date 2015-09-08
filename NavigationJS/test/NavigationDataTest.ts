@@ -361,24 +361,41 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('RefreshInvalidContextDataTest', function () {
-        Navigation.StateController.navigate('d0');
+    describe('Invalid Context Data Refresh', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
         var data = {};
         data['s'] = 'Hello';
-        Navigation.StateContext.data['item'] = new Date();
-        Navigation.StateController.refresh(data);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateContext.data['item'] = new Date();
+                Navigation.StateController.refresh(data);
+            });
+            test();
+        });
 
-    it('RefreshInvalidContextDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        data['s'] = 'Hello';
-        Navigation.StateContext.data['item'] = new Date();
-        link = Navigation.StateController.getRefreshLink(data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                Navigation.StateContext.data['item'] = new Date();
+                link = Navigation.StateController.getRefreshLink(data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+            });
+        }
     });
 
     it('NavigateInvalidDataWithoutTrailTest', function () {
