@@ -1718,7 +1718,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '1', 'number': 4, char: 7 } }]}
+                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 } }]}
                 ]);
         });
         
