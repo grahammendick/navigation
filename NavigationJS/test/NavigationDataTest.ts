@@ -51,44 +51,96 @@ describe('Navigation Data', function () {
             it('should populate data', function () {
                 var i = 0;
                 for (var key in Navigation.StateContext.data) {
-                    assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
                     i++;
                 }
+                assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+                assert.strictEqual(Navigation.StateContext.data['number'], 0);
                 assert.equal(i, 3);
             });
         }
     });
 
-    it('NavigateIndividualDataWithoutTrailTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0', individualNavigationData);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
-            i++;
-        }
-        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['number'], 0);
-        assert.equal(i, 3);
-    });
+    describe('Individual Data Route', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r/{string}/{number}' }]}
+                ]);
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', individualNavigationData);
+            });
+            test();
+        });
 
-    it('NavigateIndividualDataWithoutTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d2');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0', individualNavigationData);
-        Navigation.StateController.navigateLink(link);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
-            i++;
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', individualNavigationData);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                var i = 0;
+                for (var key in Navigation.StateContext.data) {
+                    i++;
+                }
+                assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+                assert.strictEqual(Navigation.StateContext.data['number'], 0);
+                assert.equal(i, 3);
+            });
         }
-        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['number'], 0);
-        assert.equal(i, 3);
+    });
+    
+    describe('Individual Data Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', trackCrumbTrail: false }]}
+                ]);
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', individualNavigationData);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', individualNavigationData);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                var i = 0;
+                for (var key in Navigation.StateContext.data) {
+                    i++;
+                }
+                assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+                assert.strictEqual(Navigation.StateContext.data['number'], 0);
+                assert.equal(i, 3);
+            });
+        }
     });
 
     it('NavigateArrayDataTest', function () {
@@ -108,39 +160,6 @@ describe('Navigation Data', function () {
 
     it('NavigateArrayDataLinkTest', function () {
         var link = Navigation.StateController.getNavigationLink('d0', arrayNavigationData);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key][0], arrayNavigationData[key][0]);
-            assert.strictEqual(Navigation.StateContext.data[key][1], arrayNavigationData[key][1]);
-            i++;
-        }
-        assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
-        assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
-        assert.equal(i, 3);
-    });
-
-    it('NavigateArrayDataRouteTest', function () {
-        Navigation.StateController.navigate('d3', arrayNavigationData);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(1);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key][0], arrayNavigationData[key][0]);
-            assert.strictEqual(Navigation.StateContext.data[key][1], arrayNavigationData[key][1]);
-            i++;
-        }
-        assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
-        assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
-        assert.equal(i, 3);
-    });
-
-    it('NavigateArrayDataRouteLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3', arrayNavigationData);
         Navigation.StateController.navigateLink(link);
         link = Navigation.StateController.getNavigationLink('t0');
         Navigation.StateController.navigateLink(link);
