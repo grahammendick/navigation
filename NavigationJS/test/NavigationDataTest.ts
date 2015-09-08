@@ -1796,31 +1796,45 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateDataAndDefaultsRouteTest', function () {
-        Navigation.StateController.navigate('d3');
-        Navigation.StateController.navigate('t0');
+    describe('Data And Defaults Route', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 } }]}
+                ]);
+        });
         var data = { s: 1, t: '', 'number': '' };
-        Navigation.StateController.navigate('t0', data);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
-        assert.strictEqual(Navigation.StateContext.data['number'], 4);
-        assert.strictEqual(Navigation.StateContext.data['char'], 7);
-        assert.strictEqual(Navigation.StateContext.data['s'], 1);
-        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+            });
+            test();
+        });
 
-    it('NavigateDataAndDefaultsRouteLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var data = { s: 1, t: '', 'number': '' };
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
-        assert.strictEqual(Navigation.StateContext.data['number'], 4);
-        assert.strictEqual(Navigation.StateContext.data['char'], 7);
-        assert.strictEqual(Navigation.StateContext.data['s'], 1);
-        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+                assert.strictEqual(Navigation.StateContext.data['number'], 4);
+                assert.strictEqual(Navigation.StateContext.data['char'], 7);
+                assert.strictEqual(Navigation.StateContext.data['s'], 1);
+                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+            });
+        }
     });
 
     it('NavigateOverrideDefaultsTest', function () {
