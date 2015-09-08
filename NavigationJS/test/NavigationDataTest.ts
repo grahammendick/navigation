@@ -280,27 +280,40 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('InvalidTypesArrayDataTest', function () {
+    describe('Invalid Types Array Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
         var data = {};
         data['item0'] = ['0', 1];
         data['item1'] = [0, '1'];
-        Navigation.StateController.navigate('d0', data);
-        assert.strictEqual(Navigation.StateContext.data['item0'][0], '0');
-        assert.strictEqual(Navigation.StateContext.data['item0'][1], '1');
-        assert.strictEqual(Navigation.StateContext.data['item1'][0], 0);
-        assert.strictEqual(Navigation.StateContext.data['item1'][1], 1);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+            });
+            test();
+        });
 
-    it('InvalidTypesArrayDataLinkTest', function () {
-        var data = {};
-        data['item0'] = ['0', 1];
-        data['item1'] = [0, '1'];
-        var link = Navigation.StateController.getNavigationLink('d0', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['item0'][0], '0');
-        assert.strictEqual(Navigation.StateContext.data['item0'][1], '1');
-        assert.strictEqual(Navigation.StateContext.data['item1'][0], 0);
-        assert.strictEqual(Navigation.StateContext.data['item1'][1], 1);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['item0'][0], '0');
+                assert.strictEqual(Navigation.StateContext.data['item0'][1], '1');
+                assert.strictEqual(Navigation.StateContext.data['item1'][0], 0);
+                assert.strictEqual(Navigation.StateContext.data['item1'][1], 1);
+            });
+        }
     });
 
     it('NavigateInvalidContextDataWithoutTrailTest', function () {
