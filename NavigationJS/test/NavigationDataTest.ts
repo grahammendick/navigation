@@ -1240,35 +1240,53 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateWizardDataTest', function () {
-        Navigation.StateController.navigate('d0');
+    describe('Wizard Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+        });
         var data = {
             s: 'Hello',
             n: 5
         };
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t1', Navigation.StateContext.includeCurrentData(null));
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['n'], 5);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['n'], 5);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.navigate('t', Navigation.StateContext.includeCurrentData(null));
+            });
+            test();
+        });
 
-    it('NavigateWizardDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        var data = {
-            s: 'Hello',
-            n: 5
-        };
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t1', Navigation.StateContext.includeCurrentData(null));
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['n'], 5);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['n'], 5);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', Navigation.StateContext.includeCurrentData(null));
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['n'], 5);
+                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['n'], 5);
+            });
+        }
     });
 
     it('NavigateDataNavigateTransitionTransitionTest', function () {
