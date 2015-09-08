@@ -877,25 +877,45 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateDataRefreshTest', function () {
-        Navigation.StateController.navigate('d0');
+    describe('Data Refresh', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
         var data = {};
         data['s'] = 'Hello';
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData(null));
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData(null));
+            });
+            test();
+        });
 
-    it('NavigateDataRefreshLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        data['s'] = 'Hello';
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+            });
+        }
     });
 
     it('NavigateRefreshDataTest', function () {
