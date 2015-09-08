@@ -1289,55 +1289,61 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateDataNavigateTransitionTransitionTest', function () {
-        var data = {};
-        data['s'] = 1;
-        Navigation.StateController.navigate('d0', data);
-        assert.strictEqual(Navigation.StateContext.data['s'], 1);
-        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
-        data['s'] = 2;
-        data['t'] = '2';
-        Navigation.StateController.navigate('t1', data);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
-        assert.strictEqual(Navigation.StateContext.data['s'], 2);
-        assert.strictEqual(Navigation.StateContext.data['t'], '2');
-        data['s'] = 3;
-        data['t'] = '3';
-        Navigation.StateController.navigate('t1', data);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 2);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
-        assert.strictEqual(Navigation.StateContext.data['s'], 3);
-        assert.strictEqual(Navigation.StateContext.data['t'], '3');
-    });
+    describe('Transition Transition', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+        });
+        var data1 = {};
+        data1['s'] = 1;
+        var data2 = {};
+        data2['s'] = 2;
+        data2['t'] = '2';
+        var data3 = {};
+        data3['s'] = 3;
+        data3['t'] = '3';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data1);
+                Navigation.StateController.navigate('t', data2);
+                Navigation.StateController.navigate('t', data3);
+            });
+            test();
+        });
 
-    it('NavigateDataNavigateTransitionTransitionLinkTest', function () {
-        var data = {};
-        data['s'] = 1;
-        var link = Navigation.StateController.getNavigationLink('d0', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s'], 1);
-        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
-        data['s'] = 2;
-        data['t'] = '2';
-        link = Navigation.StateController.getNavigationLink('t1', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
-        assert.strictEqual(Navigation.StateContext.data['s'], 2);
-        assert.strictEqual(Navigation.StateContext.data['t'], '2');
-        data['s'] = 3;
-        data['t'] = '3';
-        link = Navigation.StateController.getNavigationLink('t1', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 2);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
-        assert.strictEqual(Navigation.StateContext.data['s'], 3);
-        assert.strictEqual(Navigation.StateContext.data['t'], '3');
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data1);
+                Navigation.StateController.navigateLink(link);
+                assert.strictEqual(Navigation.StateContext.data['s'], 1);
+                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+                link = Navigation.StateController.getNavigationLink('t', data2);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data3);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
+                assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 2);
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(Navigation.StateContext.data['s'], 3);
+                assert.strictEqual(Navigation.StateContext.data['t'], '3');
+            });
+        }
     });
 
     it('NavigateDynamicDataNavigateTransitionTransitionTest', function () {
