@@ -196,23 +196,43 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('InvalidIndividualDataTest', function () {
+    describe('Invalid Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
         var data = {};
         data['item'] = new Date();
-        assert.throws(() => Navigation.StateController.navigate('d0', data));
+        
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.navigate('d', data));
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => Navigation.StateController.getNavigationLink('d', data));
+            });
+        });
     });
 
-    it('InvalidArrayDataTest', function () {
-        Navigation.StateController.navigate('d0');
-        var data = {}
-        data['item'] = [new Date()];
-        assert.throws(() => Navigation.StateController.navigate('t0', data));
-    });
-
-    it('InvalidDataGetNavigationLinkTest', function () {
-        var data = {};
-        data['item'] = new Date();
-        assert.throws(() => Navigation.StateController.getNavigationLink('d0', data));
+    describe('Invalid Array Data', function () {
+        it('should throw error', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            var data = {}
+            data['item'] = [new Date()];
+            assert.throws(() => Navigation.StateController.navigate('t', data));
+        });
     });
 
     it('InvalidDataRefreshTest', function () {
