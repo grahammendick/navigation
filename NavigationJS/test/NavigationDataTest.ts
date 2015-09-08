@@ -1876,27 +1876,43 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateOverrideDefaultsRouteTest', function () {
-        Navigation.StateController.navigate('d3');
-        Navigation.StateController.navigate('t0');
+    describe('Override Defaults Route', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 } }]}
+                ]);
+        });
         var data = { emptyString: 2, 'number': 1, char: 5 };
-        Navigation.StateController.navigate('t0', data);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], 2);
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-        assert.strictEqual(Navigation.StateContext.data['char'], 5);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+            });
+            test();
+        });
 
-    it('NavigateOverrideDefaultsRouteLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var data = { emptyString: 2, 'number': 1, char: 5 };
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], 2);
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['emptyString'], 2);
+                assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(Navigation.StateContext.data['char'], 5);
+            });
+        }
     });
 
     it('OverrideDefaultsTest', function () {
