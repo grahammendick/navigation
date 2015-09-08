@@ -143,37 +143,57 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateArrayDataTest', function () {
-        Navigation.StateController.navigate('d0', arrayNavigationData);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(1);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key][0], arrayNavigationData[key][0]);
-            assert.strictEqual(Navigation.StateContext.data[key][1], arrayNavigationData[key][1]);
-            i++;
-        }
-        assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
-        assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
-        assert.equal(i, 3);
-    });
+    describe('Array Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var arrayNavigationData = {};
+        arrayNavigationData['array_string'] = ['He-llo', 'World'];
+        arrayNavigationData['array_boolean'] = [true, false];
+        arrayNavigationData['array_number'] = [1, 2];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', arrayNavigationData);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
 
-    it('NavigateArrayDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0', arrayNavigationData);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key][0], arrayNavigationData[key][0]);
-            assert.strictEqual(Navigation.StateContext.data[key][1], arrayNavigationData[key][1]);
-            i++;
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', arrayNavigationData);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                var i = 0;
+                for (var key in Navigation.StateContext.data) {
+                    i++;
+                }
+                assert.strictEqual(Navigation.StateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(Navigation.StateContext.data['array_string'][1], 'World');
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][1], false);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][0], 1);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
+                assert.equal(i, 3);
+            });
         }
-        assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
-        assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
-        assert.equal(i, 3);
     });
 
     it('InvalidIndividualDataTest', function () {
