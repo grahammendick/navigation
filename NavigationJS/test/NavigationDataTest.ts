@@ -575,51 +575,69 @@ describe('Navigation Data', function () {
         }
     });
 
-
-    it('EmptyStringDataTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['s'] = '';
-        Navigation.StateContext.data['t'] = '1';
-        assert.strictEqual(Navigation.StateContext.data['s'], '');
-        assert.strictEqual(Navigation.StateContext.data['t'], '1');
+    describe('Empty String Data', function () {
+        it('should populate data', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateContext.data['s'] = '';
+            Navigation.StateContext.data['t'] = '1';
+            assert.strictEqual(Navigation.StateContext.data['s'], '');
+            assert.strictEqual(Navigation.StateContext.data['t'], '1');
+        });
     });
 
-    it('EmptyStringDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateContext.data['s'] = '';
-        Navigation.StateContext.data['t'] = '1';
-        assert.strictEqual(Navigation.StateContext.data['s'], '');
-        assert.strictEqual(Navigation.StateContext.data['t'], '1');
-    });
+    describe('Empty String State Data Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateContext.data['s'] = '';
+                Navigation.StateContext.data['t'] = '1';
+                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
 
-    it('EmptyStringStateDataNavigateBackTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateContext.data['s'] = '';
-        Navigation.StateContext.data['t'] = '1';
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(1);
-        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
-        assert.strictEqual(Navigation.StateContext.data['t'], '1');
-    });
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                Navigation.StateContext.data['s'] = '';
+                Navigation.StateContext.data['t'] = '1';
+                link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
 
-    it('EmptyStringStateDataNavigateBackLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        Navigation.StateContext.data['s'] = '';
-        Navigation.StateContext.data['t'] = '1';
-        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s'], undefined);
-        assert.strictEqual(Navigation.StateContext.data['t'], '1');
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'], '1');
+            });
+        }
     });
 
     it('NavigateDataNavigateBackTest', function () {
