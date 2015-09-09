@@ -2434,38 +2434,59 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('CrumbDefaultsRouteTest', function () {
-        Navigation.StateController.navigate('d3');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
-        assert.strictEqual(Navigation.StateController.crumbs[2].data['emptyString'], '');
-        assert.strictEqual(Navigation.StateController.crumbs[2].data['number'], 4);
-        assert.strictEqual(Navigation.StateController.crumbs[2].data['char'], 7);
-    });
+    describe('Crumb Defaults Route', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                        { key: 't', to: 's3' }
+                    ]},
+                    { key: 's3', route: 'r3' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+            });
+            test();
+        });
 
-    it('CrumbDefaultsRouteLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
-        assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
-        assert.strictEqual(Navigation.StateController.crumbs[2].data['emptyString'], '');
-        assert.strictEqual(Navigation.StateController.crumbs[2].data['number'], 4);
-        assert.strictEqual(Navigation.StateController.crumbs[2].data['char'], 7);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
+                assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 1);
+                assert.strictEqual(Navigation.StateController.crumbs[2].data['emptyString'], '');
+                assert.strictEqual(Navigation.StateController.crumbs[2].data['number'], 4);
+                assert.strictEqual(Navigation.StateController.crumbs[2].data['char'], 7);
+            });
+        }
     });
 
     it('CrumbDataAndDefaultsTest', function () {
