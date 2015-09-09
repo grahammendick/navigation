@@ -2841,34 +2841,66 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateBackDefaultsCustomTrailRouteTest', function () {
-        Navigation.StateController.navigate('d3');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('d6');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(3);
-        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-    });
+    describe('Back Defaults Custom Trail Route', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r3', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r4' }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s0'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                return crumbs;
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('d1');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(3);
+            });
+            test();
+        });
 
-    it('NavigateBackDefaultsCustomTrailRouteLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d6');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(3);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['_bool'], true);
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(3);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['_bool'], true);
+                assert.strictEqual(Navigation.StateContext.data['number'], 1);
+            });
+        }
     });
 
     it('NavigateBackDataAndDefaultsCustomTrailTest', function () {
