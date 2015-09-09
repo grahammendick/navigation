@@ -3929,22 +3929,25 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateRefreshLinkDefaultTypesTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var data = {
-            s2: 'world',
-            n1: 0,
-            n2: 1
-        };
-        data['s1'] = 'hello';
-        Navigation.StateController.navigate('t0', data);
-        var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
-        assert.notEqual(url.indexOf('s1=hello&'), -1);
-        assert.notEqual(url.indexOf('s2=world2_'), -1);
-        assert.notEqual(url.indexOf('n1=0&'), -1);
-        assert.notEqual(url.indexOf('n2=12_'), -1);
+    describe('Link Default Types Refresh Navigate', function() {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { s1: 'string', s2: 'number', n1: 'number' } }]}
+                ]);
+            var data = {
+                s1: 'hello',
+                s2: 'world',
+                n1: 0,
+                n2: 1
+            };
+            Navigation.StateController.navigate('d', data);
+            var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
+            assert.notEqual(url.indexOf('s1=hello&'), -1);
+            assert.notEqual(url.indexOf('s2=world2_'), -1);
+            assert.notEqual(url.indexOf('n1=0&'), -1);
+            assert.notEqual(url.indexOf('n2=12_'), -1);
+        });
     });
 
     it('NavigateBack2LinkDefaultTypesTest', function () {
