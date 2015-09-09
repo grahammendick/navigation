@@ -3525,37 +3525,60 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateOverrideCrumbDefaultsCustomTrailTest', function () {
-        Navigation.StateController.navigate('d0');
+    describe('Override Crumb Defaults Custom Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r3' }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s0'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                return crumbs;
+            };
+        });
         var data = {};
         data['string'] = 'World';
         data['number'] = 0;
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('d6');
-        Navigation.StateController.navigate('t0');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('d1');
+            });
+            test();
+        });
 
-    it('NavigateOverrideCrumbDefaultsCustomTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        data['string'] = 'World';
-        data['number'] = 0;
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d6');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+            });
+        }
     });
 
     it('NavigateOverrideCrumbDefaultsCustomTrailRouteTest', function () {
