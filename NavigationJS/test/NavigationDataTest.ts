@@ -3681,33 +3681,54 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateLinkContextDefaultsTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['emptyString'] = 1;
-        Navigation.StateContext.data['number'] = 4;
-        Navigation.StateContext.data['char'] = null;
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
-        var link = Navigation.StateController.getNavigationLink('t0');
-        assert.equal(link.indexOf('number'), -1);
-        assert.equal(link.indexOf('char'), -1);
-        assert.notEqual(link.indexOf('emptyString'), -1);
+    describe('Link Context Defaults Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateContext.data['emptyString'] = 1;
+            Navigation.StateContext.data['number'] = 4;
+            Navigation.StateContext.data['char'] = null;
+            Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+            var link = Navigation.StateController.getNavigationLink('t');
+            assert.equal(link.indexOf('number'), -1);
+            assert.equal(link.indexOf('char'), -1);
+            assert.notEqual(link.indexOf('emptyString'), -1);
+        });
     });
 
-    it('NavigateLinkContextDefaultsRouteTest', function () {
-        Navigation.StateController.navigate('d3');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['emptyString'] = 1;
-        Navigation.StateContext.data['number'] = 4;
-        Navigation.StateContext.data['char'] = null;
-        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
-        Navigation.StateController.navigateLink(link);
-        var link = Navigation.StateController.getNavigationLink('t0');
-        assert.equal(link.indexOf('number'), -1);
-        assert.equal(link.indexOf('char'), -1);
-        assert.notEqual(link.indexOf('emptyString'), -1);
+    describe('Link Context Defaults Route Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateContext.data['emptyString'] = 1;
+            Navigation.StateContext.data['number'] = 4;
+            Navigation.StateContext.data['char'] = null;
+            Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+            var link = Navigation.StateController.getNavigationLink('t');
+            assert.equal(link.indexOf('number'), -1);
+            assert.equal(link.indexOf('char'), -1);
+            assert.notEqual(link.indexOf('emptyString'), -1);
+        });
     });
 
     it('RefreshLinkDefaultsTest', function () {
