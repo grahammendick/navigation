@@ -4060,42 +4060,66 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateBackOverrideDefaultTypesTest', function () {
-        Navigation.StateController.navigate('d1');
+    describe('Override Default Types Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', defaults: { s: 'b', b: true, n: 0 }, defaultTypes: { s: 'string', b: 'boolean', n: 'number' }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', transitions: [
+                        { key: 't', to: 's3' }
+                    ]},
+                    { key: 's3', route: 'r3' }]}
+                ]);
+        });
         var data = {};
-        data['s1'] = true;
-        data['b1'] = 0;
-        data['n1'] = 'hello';
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(2);
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}));
-        assert.strictEqual(Navigation.StateContext.data['s1'], true);
-        assert.strictEqual(Navigation.StateContext.data['b1'], 0);
-        assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
-    });
+        data['s'] = true;
+        data['b'] = 0;
+        data['n'] = 'hello';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(2);
+                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}));
+            });
+            test();
+        });
 
-    it('NavigateBackOverrideDefaultTypesLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d1');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        data['s1'] = true;
-        data['b1'] = 0;
-        data['n1'] = 'hello';
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(2);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s1'], true);
-        assert.strictEqual(Navigation.StateContext.data['b1'], 0);
-        assert.strictEqual(Navigation.StateContext.data['n1'], 'hello');
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(2);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], true);
+                assert.strictEqual(Navigation.StateContext.data['b'], 0);
+                assert.strictEqual(Navigation.StateContext.data['n'], 'hello');
+            });
+        }
     });
 
     it('ReservedUrlCharacterDefaultTypesTest', function () {
