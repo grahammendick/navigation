@@ -3823,7 +3823,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Link Navigate Without Trail', function() {
+    describe('Link Without Trail Navigate', function() {
         it('should include data but not crumb trail in link', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
@@ -3843,7 +3843,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Default Types Navigate', function() {
+    describe('Link Default Types Navigate', function() {
         it('should populate data', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
@@ -3865,7 +3865,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Default Types Navigate', function() {
+    describe('Link Default Types Navigate', function() {
         it('should not include default types in link', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
@@ -3878,7 +3878,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Default Types Bool Navigate', function() {
+    describe('Link Default Types Bool Navigate', function() {
         it('should not include default types in link', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
@@ -3891,7 +3891,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Default Types Number Navigate', function() {
+    describe('Link Default Types Number Navigate', function() {
         it('should not include default types in link', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
