@@ -3804,25 +3804,43 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateLinkTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateContext.data['_number'] = 1;
-        Navigation.StateContext.data['string'] = 'Hello';
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
-        var link = Navigation.StateController.getNavigationLink('t0');
-        assert.notEqual(link.indexOf('_number'), -1);
-        assert.notEqual(link.indexOf('string'), -1);
+    describe('Link Navigate', function() {
+        it('should include data in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateContext.data['_number'] = 1;
+            Navigation.StateContext.data['string'] = 'Hello';
+            Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+            var link = Navigation.StateController.getNavigationLink('t');
+            assert.notEqual(link.indexOf('_number'), -1);
+            assert.notEqual(link.indexOf('string'), -1);
+        });
     });
 
-    it('NavigateLinkWithoutTrailTest', function () {
-        Navigation.StateController.navigate('d2');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['_number'] = 1;
-        Navigation.StateContext.data['string'] = 'Hello';
-        var link = Navigation.StateController.getNavigationLink('t0');
-        assert.equal(link.indexOf('c1'), -1);
-        assert.equal(link.indexOf('_number'), -1);
-        assert.equal(link.indexOf('string'), -1);
+    describe('Link Navigate Without Trail', function() {
+        it('should include data but not crumb trail in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateContext.data['_number'] = 1;
+            Navigation.StateContext.data['string'] = 'Hello';
+            Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+            var link = Navigation.StateController.getNavigationLink('t');
+            assert.equal(link.indexOf('c1'), -1);
+            assert.equal(link.indexOf('_number'), -1);
+            assert.equal(link.indexOf('string'), -1);
+        });
     });
 
     it('NavigateDefaultTypesTest', function () {
