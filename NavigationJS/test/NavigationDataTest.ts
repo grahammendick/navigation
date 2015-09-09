@@ -3865,34 +3865,43 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateLinkDefaultTypesStringTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var data = { s1: 'hello', s2: 'world' };
-        var url = Navigation.StateController.getNavigationLink('t0', data);
-        assert.notEqual(url.indexOf('s1=hello&'), -1);
-        assert.notEqual(url.indexOf('s2=world2_'), -1);
+    describe('Default Types Navigate', function() {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { s1: 'string', s2: 'number' } }]}
+                ]);
+            var data = { s1: 'hello', s2: 'world' };
+            var url = Navigation.StateController.getNavigationLink('d', data);
+            assert.notEqual(url.indexOf('s1=hello&'), -1);
+            assert.notEqual(url.indexOf('s2=world2_'), -1);
+        });
     });
 
-    it('NavigateLinkDefaultTypesBoolTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var data = { b1: true, b2: false };
-        var url = Navigation.StateController.getNavigationLink('t0', data);
-        assert.notEqual(url.indexOf('b1=true&'), -1);
-        assert.notEqual(url.indexOf('b2=false2_'), -1);
+    describe('Default Types Bool Navigate', function() {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { b1: 'boolean' } }]}
+                ]);
+            var data = { b1: true, b2: false };
+            var url = Navigation.StateController.getNavigationLink('d', data);
+            assert.notEqual(url.indexOf('b1=true&'), -1);
+            assert.notEqual(url.indexOf('b2=false2_'), -1);
+        });
     });
 
-    it('NavigateLinkDefaultTypesNumberTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var data = { n1: 0, n2: 1 };
-        var url = Navigation.StateController.getNavigationLink('t0', data);
-        assert.notEqual(url.indexOf('n1=0&'), -1);
-        assert.notEqual(url.indexOf('n2=12_'), -1);
+    describe('Default Types Number Navigate', function() {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { n1: 'number' } }]}
+                ]);
+            var data = { n1: 0, n2: 1 };
+            var url = Navigation.StateController.getNavigationLink('d', data);
+            assert.notEqual(url.indexOf('n1=0&'), -1);
+            assert.notEqual(url.indexOf('n2=12_'), -1);
+        });
     });
 
     it('NavigateBackLinkDefaultTypesTest', function () {
