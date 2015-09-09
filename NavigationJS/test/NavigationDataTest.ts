@@ -2681,33 +2681,52 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('OverrideCrumbDefaultsTest', function () {
-        Navigation.StateController.navigate('d0');
+    describe('Override Crumb Defaults', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+        });
         var data = {};
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t0');
-        var crumb = Navigation.StateController.crumbs[1];
-        crumb.data['string'] = 'Hello';
-        crumb.data['number'] = 0;
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.navigate('t');
+            });
+            test();
+        });
 
-    it('OverrideCrumbDefaultsLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var crumb = Navigation.StateController.crumbs[1];
-        crumb.data['string'] = 'Hello';
-        crumb.data['number'] = 0;
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                var crumb = Navigation.StateController.crumbs[1];
+                crumb.data['string'] = 'Hello';
+                crumb.data['number'] = 0;
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
+                assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
+            });
+        }
     });
 
     it('OverrideCrumbDefaultsRouteTest', function () {
