@@ -3843,18 +3843,26 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateDefaultTypesTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0', individualNavigationData);
-        var i = 0;
-        for (var key in Navigation.StateContext.data) {
-            assert.strictEqual(Navigation.StateContext.data[key], individualNavigationData[key]);
-            i++;
-        }
-        assert.equal(i, 3);
+    describe('Default Types Navigate', function() {
+        it('should populate data', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' } }]}
+                ]);
+            var individualNavigationData = {};
+            individualNavigationData['string'] = 'Hello';
+            individualNavigationData['boolean'] = true;
+            individualNavigationData['number'] = 0;
+            Navigation.StateController.navigate('d', individualNavigationData);
+            var i = 0;
+            for (var key in Navigation.StateContext.data) {
+                i++;
+            }
+            assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+            assert.strictEqual(Navigation.StateContext.data['number'], 0);
+            assert.equal(i, 3);
+        });
     });
 
     it('NavigateLinkDefaultTypesStringTest', function () {
