@@ -3731,30 +3731,51 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('RefreshLinkDefaultsTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['_bool'] = null;
-        Navigation.StateContext.data['string'] = 'Hello';
-        Navigation.StateContext.data['number'] = 0;
-        var link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
-        assert.equal(link.indexOf('string'), -1);
-        assert.equal(link.indexOf('_bool'), -1);
-        assert.notEqual(link.indexOf('number'), -1);
+    describe('Refresh Link Defaults Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateContext.data['_bool'] = null;
+            Navigation.StateContext.data['string'] = 'Hello';
+            Navigation.StateContext.data['number'] = 0;
+            var link = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+            assert.equal(link.indexOf('string'), -1);
+            assert.equal(link.indexOf('_bool'), -1);
+            assert.notEqual(link.indexOf('number'), -1);
+        });
     });
 
-    it('BackLinkDefaultsTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['_bool'] = null;
-        Navigation.StateContext.data['string'] = 'Hello';
-        Navigation.StateContext.data['number'] = 0;
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationBackLink(1);
-        assert.equal(link.indexOf('string'), -1);
-        assert.equal(link.indexOf('_bool'), -1);
-        assert.notEqual(link.indexOf('number'), -1);
+    describe('Back Link Defaults Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateContext.data['_bool'] = null;
+            Navigation.StateContext.data['string'] = 'Hello';
+            Navigation.StateContext.data['number'] = 0;
+            Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationBackLink(1);
+            assert.equal(link.indexOf('string'), -1);
+            assert.equal(link.indexOf('_bool'), -1);
+            assert.notEqual(link.indexOf('number'), -1);
+        });
     });
 
     it('CrumbLinkDefaultsTest', function () {
