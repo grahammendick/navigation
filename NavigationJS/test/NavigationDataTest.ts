@@ -3039,45 +3039,79 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateBackOverrideDefaultsCustomTrailTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
+    describe('Back Override Defaults Custom Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r3', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r4' }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s0'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                var newCrumbs = [];
+                for (var i = 0; i < crumbs.length; i++) {
+                    if (crumbs[i].state === state)
+                        break;
+                    newCrumbs.push(crumbs[i]);
+                }
+                return newCrumbs;
+            };
+        });
         var data = { emptyString: 'World', 'number': 1, char: 5 };
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('d6');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigateBack(1);
-        Navigation.StateController.navigateBack(1);
-        Navigation.StateController.navigateBack(1);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], 'World');
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-        assert.strictEqual(Navigation.StateContext.data['char'], 5);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigate('d1');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+                Navigation.StateController.navigateBack(1);
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
 
-    it('NavigateBackOverrideDefaultsCustomTrailLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        var data = { emptyString: 'World', 'number': 1, char: 5 };
-        link = Navigation.StateController.getNavigationLink('t0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('d6');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], 'World');
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-        assert.strictEqual(Navigation.StateContext.data['char'], 5);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['emptyString'], 'World');
+                assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(Navigation.StateContext.data['char'], 5);
+            });
+        }
     });
 
     it('NavigateBackOverrideDefaultsCustomTrailRouteTest', function () {
