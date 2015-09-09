@@ -3954,7 +3954,7 @@ describe('Navigation Data', function () {
         it('should not include default types in link', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', defaultTypes: { _bool: 'nsumber' }, transitions: [
+                    { key: 's0', route: 'r0', defaultTypes: { _bool: 'number' }, transitions: [
                         { key: 't', to: 's1' }
                     ]},
                     { key: 's1', route: 'r1', transitions: [
