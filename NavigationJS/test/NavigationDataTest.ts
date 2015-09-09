@@ -3904,23 +3904,29 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateBackLinkDefaultTypesTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var data = {
-            s2: 'world',
-            n1: 0,
-            n2: 1
-        };
-        data['s1'] = 'hello';
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t0');
-        var url = Navigation.StateController.getNavigationBackLink(1);
-        assert.notEqual(url.indexOf('s1=hello&'), -1);
-        assert.notEqual(url.indexOf('s2=world2_'), -1);
-        assert.notEqual(url.indexOf('n1=0&'), -1);
-        assert.notEqual(url.indexOf('n2=12_'), -1);
+    describe('Link Default Types Back Navigate', function() {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', defaultTypes: { s1: 'string', s2: 'number', n1: 'number' }, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            var data = {
+                s2: 'world',
+                n1: 0,
+                n2: 1
+            };
+            data['s1'] = 'hello';
+            Navigation.StateController.navigate('d', data);
+            Navigation.StateController.navigate('t');
+            var url = Navigation.StateController.getNavigationBackLink(1);
+            assert.notEqual(url.indexOf('s1=hello&'), -1);
+            assert.notEqual(url.indexOf('s2=world2_'), -1);
+            assert.notEqual(url.indexOf('n1=0&'), -1);
+            assert.notEqual(url.indexOf('n2=12_'), -1);
+        });
     });
 
     it('NavigateRefreshLinkDefaultTypesTest', function () {
