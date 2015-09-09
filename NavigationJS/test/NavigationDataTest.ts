@@ -3778,18 +3778,30 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('CrumbLinkDefaultsTest', function () {
-        Navigation.StateController.navigate('d0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateContext.data['number'] = 1;
-        Navigation.StateContext.data['_bool'] = '';
-        Navigation.StateContext.data['string'] = 4;
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.crumbs[1].navigationLink;
-        assert.equal(link.indexOf('_bool'), -1);
-        assert.equal(link.indexOf('number'), -1);
-        assert.notEqual(link.indexOf('string'), -1);
+    describe('Crumb Link Defaults Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            Navigation.StateController.navigate('t');
+            Navigation.StateContext.data['number'] = 1;
+            Navigation.StateContext.data['_bool'] = '';
+            Navigation.StateContext.data['string'] = 4;
+            Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}))
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.crumbs[1].navigationLink;
+            assert.equal(link.indexOf('_bool'), -1);
+            assert.equal(link.indexOf('number'), -1);
+            assert.notEqual(link.indexOf('string'), -1);
+        });
     });
 
     it('NavigateLinkTest', function () {
