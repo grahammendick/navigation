@@ -3950,16 +3950,27 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateBack2LinkDefaultTypesTest', function () {
-        Navigation.StateController.navigate('d0');
-        var data = {
-            _bool: 1
-        };
-        Navigation.StateController.navigate('t0', data);
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var url = Navigation.StateController.getNavigationBackLink(2);
-        assert.notEqual(url.indexOf('_bool=1&'), -1);
+    describe('Link Default Types Back Two Navigate', function() {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', defaultTypes: { _bool: 'nsumber' }, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            var data = {
+                _bool: 1
+            };
+            Navigation.StateController.navigate('d', data);
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            var url = Navigation.StateController.getNavigationBackLink(2);
+            assert.notEqual(url.indexOf('_bool=1&'), -1);
+        });
     });
 
     it('NavigateOverrideDefaultTypesTest', function () {
