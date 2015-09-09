@@ -3363,36 +3363,50 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateDataNavigateBackCustomTrailRouteTest', function () {
-        Navigation.StateController.navigate('d3');
+    describe('Back Custom Trail Route', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r/{s}' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r1'}]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d1'].states['s0'];
+            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+                return crumbs;
+            };
+        });
         var data = {};
         data['s'] = 'Hello';
         data['t'] = '';
-        Navigation.StateController.navigate('d6', data);
-        Navigation.StateController.navigate('t0');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], undefined);
-        Navigation.StateController.navigateBack(1);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d0', data);
+                Navigation.StateController.navigate('d1');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
 
-    it('NavigateDataNavigateBackCustomTrailRouteLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d3');
-        Navigation.StateController.navigateLink(link);
-        var data = {};
-        data['s'] = 'Hello';
-        data['t'] = '';
-        link = Navigation.StateController.getNavigationLink('d6', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateController.crumbs[1].data['t'], undefined);
-        link = Navigation.StateController.getNavigationBackLink(1);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-        assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d0', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d1', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+            });
+        }
     });
 
     it('CrumbDataAndDefaultsCustomTrailTest', function () {
