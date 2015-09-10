@@ -4245,24 +4245,25 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateMissingRouteDataTest', function () {
-        Navigation.StateController.navigate('d4');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        assert.throws(() => Navigation.StateController.navigate('t0'));
-    });
+    describe('Missing Route Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r/{s1}/{s2}' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            it('should throw error', function() {
+                assert.throws(() => Navigation.StateController.navigate('d'));
+            });
+        });
 
-    it('NavigateMissingRouteDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d4');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateController.getNavigationLink('t0'), null);
+        describe('Navigate Link', function() {
+            it('should be null', function() {
+                assert.equal(Navigation.StateController.getNavigationLink('d'), null);
+            });
+        });
     });
 
     it('NavigateRefreshMissingRouteDataTest', function () {
