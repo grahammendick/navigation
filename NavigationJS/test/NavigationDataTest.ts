@@ -4140,20 +4140,22 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('SeparatorUrlCharacterDefaultTypesTest', function () {
-        var data = {};
-        data['_0_1_2_3_4_5_'] = 10;
-        data['__0_1_2_3_4_5_'] = 20;
-        Navigation.StateController.navigate('d1', data);
-        var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
-        assert.notEqual(url.indexOf('=10&'), -1);
-        assert.notEqual(url.indexOf('=202_'), -1);
-        assert.strictEqual(Navigation.StateContext.data['_0_1_2_3_4_5_'], 10);
-        assert.strictEqual(Navigation.StateContext.data['__0_1_2_3_4_5_'], 20);
-        Navigation.StateController.navigate('t0');
-        url = Navigation.StateController.getNavigationBackLink(1);
-        assert.notEqual(url.indexOf('=10&'), -1);
-        assert.notEqual(url.indexOf('=202_'), -1);
+    describe('Separator Url Character Default Types', function () {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { _0_1_2_3_4_5_: 'number' } }]}
+                ]);
+            var data = {};
+            data['_0_1_2_3_4_5_'] = 10;
+            data['__0_1_2_3_4_5_'] = 20;
+            Navigation.StateController.navigate('d', data);
+            var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData(null));
+            assert.notEqual(url.indexOf('=10&'), -1);
+            assert.notEqual(url.indexOf('=202_'), -1);
+            assert.strictEqual(Navigation.StateContext.data['_0_1_2_3_4_5_'], 10);
+            assert.strictEqual(Navigation.StateContext.data['__0_1_2_3_4_5_'], 20);
+        });
     });
 
     it('NavigateRefreshCurrentDataTest', function () {
