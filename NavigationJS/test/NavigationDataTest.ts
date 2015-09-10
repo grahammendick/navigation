@@ -4122,20 +4122,22 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('ReservedUrlCharacterDefaultTypesTest', function () {
-        var data = {};
-        data['*/()-_+~@:?><.;[]{}!£$%^#&'] = 0;
-        data['**=/()-_+~@:?><.;[]{}!£$%^#&&'] = 1;
-        Navigation.StateController.navigate('d1', data);
-        var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
-        assert.notEqual(url.indexOf('=0&'), -1);
-        assert.notEqual(url.indexOf('=12_'), -1);
-        assert.strictEqual(Navigation.StateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
-        assert.strictEqual(Navigation.StateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
-        Navigation.StateController.navigate('t0');
-        url = Navigation.StateController.getNavigationBackLink(1);
-        assert.notEqual(url.indexOf('=0&'), -1);
-        assert.notEqual(url.indexOf('=12_'), -1);
+    describe('Reserved Url Character Default Types', function () {
+        it('should not include default types in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' } }]}
+                ]);
+            var data = {};
+            data['*/()-_+~@:?><.;[]{}!£$%^#&'] = 0;
+            data['**=/()-_+~@:?><.;[]{}!£$%^#&&'] = 1;
+            Navigation.StateController.navigate('d', data);
+            var url = Navigation.StateController.getRefreshLink(Navigation.StateContext.includeCurrentData({}));
+            assert.notEqual(url.indexOf('=0&'), -1);
+            assert.notEqual(url.indexOf('=12_'), -1);
+            assert.strictEqual(Navigation.StateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
+            assert.strictEqual(Navigation.StateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
+        });
     });
 
     it('SeparatorUrlCharacterDefaultTypesTest', function () {
