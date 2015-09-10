@@ -4,26 +4,27 @@ import assert = require('assert');
 import Navigation = require('../src/Navigation');
 
 describe('MatchTest', function () {
-    it('RootMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 0);
-        Navigation.StateController.navigateLink('/?x=ab');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, 'ab');
-    });
-
-    it('RootNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/ '), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/a'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('//'), /Url is invalid/, '');
+    describe('Root', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 0);
+            Navigation.StateController.navigateLink('/?x=ab');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ '), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/a'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('//'), /Url is invalid/, '');
+        });
     });
 
     it('NoParamOneSegmentMatchTest', function () {
