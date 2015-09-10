@@ -4203,33 +4203,46 @@ describe('Navigation Data', function () {
         }
     });
 
-    it('NavigateCurrentDataDefaultsTest', function () {
+    describe('Current Data Defaults', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', defaults: { emptyString: '', 'number': 4, char: 7 } }]}
+                ]);
+        });
         var data = {};
         data['emptyString'] = 'Hello';
         data['number'] = 1;
         data['char'] = '6';
-        Navigation.StateController.navigate('d0', data);
-        Navigation.StateController.navigate('t0', Navigation.StateContext.includeCurrentData(null));
-        Navigation.StateController.navigate('t0', Navigation.StateContext.includeCurrentData({}, ['number', 'char']));
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-        assert.strictEqual(Navigation.StateContext.data['char'], '6');
-    });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+                Navigation.StateController.navigate('t', Navigation.StateContext.includeCurrentData({}, ['number', 'char']));
+            });
+            test();
+        });
 
-    it('NavigateCurrentDataDefaultsLinkTest', function () {
-        var data = {};
-        data['emptyString'] = 'Hello';
-        data['number'] = 1;
-        data['char'] = '6';
-        var link = Navigation.StateController.getNavigationLink('d0', data);
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0', Navigation.StateContext.includeCurrentData(null));
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0', Navigation.StateContext.includeCurrentData({}, ['number', 'char']));
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
-        assert.strictEqual(Navigation.StateContext.data['number'], 1);
-        assert.strictEqual(Navigation.StateContext.data['char'], '6');
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', Navigation.StateContext.includeCurrentData({}, ['number', 'char']));
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['emptyString'], '');
+                assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(Navigation.StateContext.data['char'], '6');
+            });
+        }
     });
 
     it('NavigateMissingRouteDataTest', function () {
