@@ -4266,27 +4266,28 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateRefreshMissingRouteDataTest', function () {
-        Navigation.StateController.navigate('d4');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0', { s1: 1, s2: 2 });
-        assert.throws(() => Navigation.StateController.refresh());
-    });
+    describe('Missing Route Data Refresh', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r/{s1}/{s2}' }]}
+                ]);
+        });
+        
+        describe('Navigate', function() {
+            it('should throw error', function() {
+                Navigation.StateController.navigate('d', { s1: 1, s2: 2 });
+                assert.throws(() => Navigation.StateController.refresh());
+            });
+        });
 
-    it('NavigateRefreshMissingRouteDataLinkTest', function () {
-        var link = Navigation.StateController.getNavigationLink('d4');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0');
-        Navigation.StateController.navigateLink(link);
-        link = Navigation.StateController.getNavigationLink('t0', { s1: 1, s2: 2 });
-        Navigation.StateController.navigateLink(link);
-        assert.equal(Navigation.StateController.getRefreshLink(), null);
+        describe('Navigate Link', function() {
+            it('should be null', function() {
+                var link = Navigation.StateController.getNavigationLink('d', { s1: 1, s2: 2 });
+                Navigation.StateController.navigateLink(link);
+                assert.equal(Navigation.StateController.getRefreshLink(), null);
+            });
+        });
     });
 
     it('NavigateInvalidNumberTest', function () {
