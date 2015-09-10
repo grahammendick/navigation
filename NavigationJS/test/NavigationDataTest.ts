@@ -4314,57 +4314,63 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('WithoutTypesNavigateBackTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's0', states: [
-                { key: 's0', route: 's0', trackTypes: false, trackCrumbTrail: false, transitions: [
-                    { key: 't0', to: 's1' }
-                ]},
-                { key: 's1', route: 's1', transitions: [
-                    { key: 't0', to: 's2' }
-                ]},
-                { key: 's2', route: 's2' }]}
-            ]);
-        Navigation.StateController.navigate('d', { x: '0_1_2_' });
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationBackLink(2);
-        Navigation.StateController.navigateBack(2);
-        assert.strictEqual ('/s0?x=0_1_2_', link);
-        assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
+    describe('Without Types Back Navigate', function () {
+        it('should not track types', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 's0', trackTypes: false, trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 's1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 's2' }]}
+                ]);
+            Navigation.StateController.navigate('d', { x: '0_1_2_' });
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationBackLink(2);
+            Navigation.StateController.navigateBack(2);
+            assert.strictEqual ('/s0?x=0_1_2_', link);
+            assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
+        })
     });
 
-    it('WithoutTypesDefaultNavigateBackTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's0', states: [
-                { key: 's0', route: 's0', trackTypes: false, defaults: { x: 2 }, defaultTypes: { y: 'boolean' }, trackCrumbTrail: false, transitions: [
-                    { key: 't0', to: 's1' }
-                ]},
-                { key: 's1', route: 's1', transitions: [
-                    { key: 't0', to: 's2' }
-                ]},
-                { key: 's2', route: 's2' }]}
-            ]);
-        Navigation.StateController.navigate('d', { x: '3', y: 'true' });
-        Navigation.StateController.navigate('t0');
-        Navigation.StateController.navigate('t0');
-        var link = Navigation.StateController.getNavigationBackLink(2);
-        Navigation.StateController.navigateLink(link);
-        assert.strictEqual(Navigation.StateContext.data.x, 3);
-        assert.strictEqual(Navigation.StateContext.data.y, true);
+    describe('Without Types Default Back Navigate', function () {
+        it('should not track types', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 's0', trackTypes: false, defaults: { x: 2 }, defaultTypes: { y: 'boolean' }, trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 's1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 's2' }]}
+                ]);
+            Navigation.StateController.navigate('d', { x: '3', y: 'true' });
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            var link = Navigation.StateController.getNavigationBackLink(2);
+            Navigation.StateController.navigateLink(link);
+            assert.strictEqual(Navigation.StateContext.data.x, 3);
+            assert.strictEqual(Navigation.StateContext.data.y, true);
+        });
     });
 
-    it('WithoutTypesArrayTypeTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'numberarray', y: 'stringarray' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigate('d', { x: [ 1, 2, '3' ], y: [ '_0_1', '-2-3', 4 ] });
-        assert.strictEqual(Navigation.StateContext.data.x[0], 1);
-        assert.strictEqual(Navigation.StateContext.data.x[1], 2);
-        assert.strictEqual(Navigation.StateContext.data.x[2], 3);
-        assert.strictEqual(Navigation.StateContext.data.y[0], '_0_1');
-        assert.strictEqual(Navigation.StateContext.data.y[1], '-2-3');
-        assert.strictEqual(Navigation.StateContext.data.y[2], '4');
+    describe('Without Types Array Type', function () {
+        it('should not track types', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'numberarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigate('d', { x: [ 1, 2, '3' ], y: [ '_0_1', '-2-3', 4 ] });
+            assert.strictEqual(Navigation.StateContext.data.x[0], 1);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 2);
+            assert.strictEqual(Navigation.StateContext.data.x[2], 3);
+            assert.strictEqual(Navigation.StateContext.data.y[0], '_0_1');
+            assert.strictEqual(Navigation.StateContext.data.y[1], '-2-3');
+            assert.strictEqual(Navigation.StateContext.data.y[2], '4');
+        });
     });
 });
