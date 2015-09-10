@@ -3,22 +3,10 @@
 import assert = require('assert');
 import Crumb = require('../src/Crumb');
 import State = require('../src/config/State');
-import initStateInfo = require('./initStateInfo');
 import Navigation = require('../src/Navigation');
-
-var individualNavigationData = {};
-individualNavigationData['string'] = 'Hello';
-individualNavigationData['boolean'] = true;
-individualNavigationData['number'] = 0;
-
-var arrayNavigationData = {};
-arrayNavigationData['array_string'] = ['He-llo', 'World'];
-arrayNavigationData['array_boolean'] = [true, false];
-arrayNavigationData['array_number'] = [1, 2];
 
 describe('Navigation Data', function () {
     beforeEach(function () {
-        initStateInfo();
         Navigation.StateController.clearStateContext();
     });
 
