@@ -4290,11 +4290,16 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateInvalidNumberTest', function () {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0', { 'number': 35 });
-        link = link.replace('number=35', 'number=invalid');
-        assert.throws(() => Navigation.StateController.navigateLink(link));
+    describe('Invalid Number Navigate', function () {
+        it('should throw error', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { 'number': 'number' } }]}
+                ]);
+            var link = Navigation.StateController.getNavigationLink('d', { 'number': 35 });
+            link = link.replace('number=35', 'number=invalid');
+            assert.throws(() => Navigation.StateController.navigateLink(link));
+        });
     });
 
     it('NavigateInvalidBooleanTest', function () {
