@@ -4302,11 +4302,16 @@ describe('Navigation Data', function () {
         });
     });
 
-    it('NavigateInvalidBooleanTest', function () {
-        Navigation.StateController.navigate('d0');
-        var link = Navigation.StateController.getNavigationLink('t0', { '_bool': false });
-        link = link.replace('_bool=false', '_bool=invalid');
-        assert.throws(() => Navigation.StateController.navigateLink(link));
+    describe('Invalid Boolean Navigate', function () {
+        it('should throw error', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var link = Navigation.StateController.getNavigationLink('d', { '_bool': false });
+            link = link.replace('_bool=false', '_bool=invalid');
+            assert.throws(() => Navigation.StateController.navigateLink(link));
+        });
     });
 
     it('WithoutTypesNavigateBackTest', function () {
