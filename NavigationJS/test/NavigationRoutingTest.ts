@@ -866,14 +866,16 @@ describe('MatchTest', function () {
         });
     });
 
-    it('MatchSlashTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('abc/');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, 'abc');
+    describe('Match Slash', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('abc/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'abc');
+        });
     });
 
     it('ReservedUrlCharacterMatchTest', function () {
