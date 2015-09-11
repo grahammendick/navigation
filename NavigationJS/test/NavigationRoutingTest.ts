@@ -901,18 +901,20 @@ describe('MatchTest', function () {
         });
     });
 
-    it('ReservedRegexCharacterMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/.+*\^$\[\]()\'/abc');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, 'abc');
-        Navigation.StateController.navigateLink('/.+*\^$\[\]()\'/abc?y=de');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.x, 'abc');
-        assert.strictEqual(Navigation.StateContext.data.y, 'de');
+    describe('Reserved Regex Character', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/.+*\^$\[\]()\'/abc');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'abc');
+            Navigation.StateController.navigateLink('/.+*\^$\[\]()\'/abc?y=de');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 'abc');
+            assert.strictEqual(Navigation.StateContext.data.y, 'de');
+        });
     });
 
     it('OneParamOptionalMandatoryOneMixedSegmentMatchTest', function () {
