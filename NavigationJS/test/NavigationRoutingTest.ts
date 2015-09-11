@@ -834,18 +834,20 @@ describe('MatchTest', function () {
         });
     });
 
-    it('SpacesMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/   a  ');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, '   a  ');
-        Navigation.StateController.navigateLink('/   a  ?y=   b  ');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.x, '   a  ');
-        assert.strictEqual(Navigation.StateContext.data.y, '   b  ');
+    describe('Spaces', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/   a  ');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, '   a  ');
+            Navigation.StateController.navigateLink('/   a  ?y=   b  ');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, '   a  ');
+            assert.strictEqual(Navigation.StateContext.data.y, '   b  ');
+        });
     });
 
     it('MultiCharParamMatchTest', function () {
