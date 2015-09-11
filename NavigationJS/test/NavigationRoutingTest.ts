@@ -574,34 +574,35 @@ describe('MatchTest', function () {
         });
     });
 
-    it('OneParamOneSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/ab');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, 'ab');
-        Navigation.StateController.navigateLink('/ab?z=cd');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.x, 'ab');
-        assert.strictEqual(Navigation.StateContext.data.z, 'cd');
-        Navigation.StateController.navigateLink('/');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, 'cde');
-        Navigation.StateController.navigateLink('/?z=fg');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.x, 'cde');
-        assert.strictEqual(Navigation.StateContext.data.z, 'fg');
-    });
+    describe('One Param One Segment Default', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
+                ]);
+        });
 
-    it('OneParamOneSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/ab');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+            Navigation.StateController.navigateLink('/ab?z=cd');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+            assert.strictEqual(Navigation.StateContext.data.z, 'cd');
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'cde');
+            Navigation.StateController.navigateLink('/?z=fg');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 'cde');
+            assert.strictEqual(Navigation.StateContext.data.z, 'fg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
+        });
     });
 
     it('OneParamTwoSegmentDefaultMatchTest', function () {
