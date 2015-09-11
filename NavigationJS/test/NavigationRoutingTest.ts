@@ -761,76 +761,77 @@ describe('MatchTest', function () {
         });
     });
 
-    it('FourParamTwoOptionalFiveSegmentDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/ab/cd/ef/hi/jk');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
-        assert.strictEqual(Navigation.StateContext.data.w, 'cd');
-        assert.strictEqual(Navigation.StateContext.data.x, 'ef');
-        assert.strictEqual(Navigation.StateContext.data.y, 'hi');
-        assert.strictEqual(Navigation.StateContext.data.z, 'jk');
-        Navigation.StateController.navigateLink('/ab/cd/ef/hi/jk?a=lm');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 5);
-        assert.strictEqual(Navigation.StateContext.data.w, 'cd');
-        assert.strictEqual(Navigation.StateContext.data.x, 'ef');
-        assert.strictEqual(Navigation.StateContext.data.y, 'hi');
-        assert.strictEqual(Navigation.StateContext.data.z, 'jk');
-        assert.strictEqual(Navigation.StateContext.data.a, 'lm');
-        Navigation.StateController.navigateLink('/ab/cde/fg/h');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
-        assert.strictEqual(Navigation.StateContext.data.w, 'cde');
-        assert.strictEqual(Navigation.StateContext.data.x, 'fg');
-        assert.strictEqual(Navigation.StateContext.data.y, 'h');
-        Navigation.StateController.navigateLink('/ab/cde/fg/h?a=i');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
-        assert.strictEqual(Navigation.StateContext.data.w, 'cde');
-        assert.strictEqual(Navigation.StateContext.data.x, 'fg');
-        assert.strictEqual(Navigation.StateContext.data.y, 'h');
-        assert.strictEqual(Navigation.StateContext.data.a, 'i');
-        Navigation.StateController.navigateLink('/ab/cc/def');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.w, 'cc');
-        assert.strictEqual(Navigation.StateContext.data.x, 'def');
-        Navigation.StateController.navigateLink('/ab/cc/def?a=gg');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
-        assert.strictEqual(Navigation.StateContext.data.w, 'cc');
-        assert.strictEqual(Navigation.StateContext.data.x, 'def');
-        assert.strictEqual(Navigation.StateContext.data.a, 'gg');
-        Navigation.StateController.navigateLink('/ab/ccdd');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.w, 'ccdd');
-        assert.strictEqual(Navigation.StateContext.data.x, 'de');
-        Navigation.StateController.navigateLink('/ab/ccdd?a=fg');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
-        assert.strictEqual(Navigation.StateContext.data.w, 'ccdd');
-        assert.strictEqual(Navigation.StateContext.data.x, 'de');
-        assert.strictEqual(Navigation.StateContext.data.a, 'fg');
-        Navigation.StateController.navigateLink('/ab');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.w, 'abc');
-        assert.strictEqual(Navigation.StateContext.data.x, 'de');
-        Navigation.StateController.navigateLink('/ab?a=fg');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
-        assert.strictEqual(Navigation.StateContext.data.w, 'abc');
-        assert.strictEqual(Navigation.StateContext.data.x, 'de');
-        assert.strictEqual(Navigation.StateContext.data.a, 'fg');
-    });
+    describe('Four Param Two Optional Five Segment Default', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
+                ]);
+        });
 
-    it('FourParamTwoOptionalFiveSegmentDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/ ab/cde/fg/h'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg/h/ij/k'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg/h//'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg//'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ab/cd//'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/ab/cd/ef/hi/jk');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
+            assert.strictEqual(Navigation.StateContext.data.w, 'cd');
+            assert.strictEqual(Navigation.StateContext.data.x, 'ef');
+            assert.strictEqual(Navigation.StateContext.data.y, 'hi');
+            assert.strictEqual(Navigation.StateContext.data.z, 'jk');
+            Navigation.StateController.navigateLink('/ab/cd/ef/hi/jk?a=lm');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 5);
+            assert.strictEqual(Navigation.StateContext.data.w, 'cd');
+            assert.strictEqual(Navigation.StateContext.data.x, 'ef');
+            assert.strictEqual(Navigation.StateContext.data.y, 'hi');
+            assert.strictEqual(Navigation.StateContext.data.z, 'jk');
+            assert.strictEqual(Navigation.StateContext.data.a, 'lm');
+            Navigation.StateController.navigateLink('/ab/cde/fg/h');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
+            assert.strictEqual(Navigation.StateContext.data.w, 'cde');
+            assert.strictEqual(Navigation.StateContext.data.x, 'fg');
+            assert.strictEqual(Navigation.StateContext.data.y, 'h');
+            Navigation.StateController.navigateLink('/ab/cde/fg/h?a=i');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
+            assert.strictEqual(Navigation.StateContext.data.w, 'cde');
+            assert.strictEqual(Navigation.StateContext.data.x, 'fg');
+            assert.strictEqual(Navigation.StateContext.data.y, 'h');
+            assert.strictEqual(Navigation.StateContext.data.a, 'i');
+            Navigation.StateController.navigateLink('/ab/cc/def');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.w, 'cc');
+            assert.strictEqual(Navigation.StateContext.data.x, 'def');
+            Navigation.StateController.navigateLink('/ab/cc/def?a=gg');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
+            assert.strictEqual(Navigation.StateContext.data.w, 'cc');
+            assert.strictEqual(Navigation.StateContext.data.x, 'def');
+            assert.strictEqual(Navigation.StateContext.data.a, 'gg');
+            Navigation.StateController.navigateLink('/ab/ccdd');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.w, 'ccdd');
+            assert.strictEqual(Navigation.StateContext.data.x, 'de');
+            Navigation.StateController.navigateLink('/ab/ccdd?a=fg');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
+            assert.strictEqual(Navigation.StateContext.data.w, 'ccdd');
+            assert.strictEqual(Navigation.StateContext.data.x, 'de');
+            assert.strictEqual(Navigation.StateContext.data.a, 'fg');
+            Navigation.StateController.navigateLink('/ab');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.w, 'abc');
+            assert.strictEqual(Navigation.StateContext.data.x, 'de');
+            Navigation.StateController.navigateLink('/ab?a=fg');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
+            assert.strictEqual(Navigation.StateContext.data.w, 'abc');
+            assert.strictEqual(Navigation.StateContext.data.x, 'de');
+            assert.strictEqual(Navigation.StateContext.data.a, 'fg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ ab/cde/fg/h'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg/h/ij/k'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg/h//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/cde/fg//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/cd//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+        });
     });
 
     it('SpacesMatchTest', function () {
