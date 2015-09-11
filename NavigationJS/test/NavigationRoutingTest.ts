@@ -850,18 +850,20 @@ describe('MatchTest', function () {
         });
     });
 
-    it('MultiCharParamMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/a/someVal');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.someVar, 'someVal');
-        Navigation.StateController.navigateLink('/a/someVal?anotherVar=anotherVal');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.someVar, 'someVal');
-        assert.strictEqual(Navigation.StateContext.data.anotherVar, 'anotherVal');
+    describe('Multi Char Param', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/a/someVal');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.someVar, 'someVal');
+            Navigation.StateController.navigateLink('/a/someVal?anotherVar=anotherVal');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.someVar, 'someVal');
+            assert.strictEqual(Navigation.StateContext.data.anotherVar, 'anotherVal');
+        });
     });
 
     it('MatchSlashTest', function () {
