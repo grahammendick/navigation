@@ -485,7 +485,7 @@ describe('MatchTest', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab', trackCrumbTrail: false }]}
+                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
                 ]);
         });
 
