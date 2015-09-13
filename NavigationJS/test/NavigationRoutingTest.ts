@@ -1036,20 +1036,22 @@ describe('MatchTest', function () {
         });
     });
 
-    it('ExtraDefaultsMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.x, 'a');
-        assert.strictEqual(Navigation.StateContext.data.y, 'b');
-        Navigation.StateController.navigateLink('/?z=c');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
-        assert.strictEqual(Navigation.StateContext.data.x, 'a');
-        assert.strictEqual(Navigation.StateContext.data.y, 'b');
-        assert.strictEqual(Navigation.StateContext.data.z, 'c');
+    describe('Extra Defaults', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+            assert.strictEqual(Navigation.StateContext.data.y, 'b');
+            Navigation.StateController.navigateLink('/?z=c');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 3);
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+            assert.strictEqual(Navigation.StateContext.data.y, 'b');
+            assert.strictEqual(Navigation.StateContext.data.z, 'c');
+        });
     });
 
     it('CaseInsensitiveMatchTest', function () {
