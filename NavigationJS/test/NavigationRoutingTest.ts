@@ -1427,24 +1427,25 @@ describe('MatchTest', function () {
         });
     });
 
-    it('WithoutTypesDefaultTypeMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/true');
-        assert.strictEqual(Navigation.StateContext.data.x, true);
-        Navigation.StateController.navigateLink('/false');
-        assert.strictEqual(Navigation.StateContext.data.x, false);
-    });
+    describe('Without Types Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                ]);
+        });
 
-    it('WithoutTypesDefaultTypeNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid boolean/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/2'), /not a valid boolean/, '');
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/true');
+            assert.strictEqual(Navigation.StateContext.data.x, true);
+            Navigation.StateController.navigateLink('/false');
+            assert.strictEqual(Navigation.StateContext.data.x, false);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid boolean/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/2'), /not a valid boolean/, '');
+        });
     });
 
     it('WithoutTypesDefaultAndDefaultTypeMatchTest', function () {
