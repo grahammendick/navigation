@@ -1480,19 +1480,21 @@ describe('MatchTest', function () {
         });
     });
 
-    it('WithoutTypesQueryStringMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/');
-        assert.strictEqual(Navigation.StateContext.data.x, undefined);
-        Navigation.StateController.navigateLink('/?x=3');
-        assert.strictEqual(Navigation.StateContext.data.x, '3');
-        Navigation.StateController.navigateLink('/?x=true');
-        assert.strictEqual(Navigation.StateContext.data.x, 'true');
-        Navigation.StateController.navigateLink('/?x=0_1_2_');
-        assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
+    describe('Without Types Query String', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, undefined);
+            Navigation.StateController.navigateLink('/?x=3');
+            assert.strictEqual(Navigation.StateContext.data.x, '3');
+            Navigation.StateController.navigateLink('/?x=true');
+            assert.strictEqual(Navigation.StateContext.data.x, 'true');
+            Navigation.StateController.navigateLink('/?x=0_1_2_');
+            assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
+        });
     });
 
     it('WithoutTypesQueryStringDefaultMatchTest', function () {
