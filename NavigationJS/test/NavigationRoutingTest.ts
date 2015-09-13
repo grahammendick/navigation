@@ -1469,13 +1469,15 @@ describe('MatchTest', function () {
         });
     });
 
-    it('WithoutTypesConflicingDefaultAndDefaultTypeNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
+    describe('Without Types Conflicing Default And Default Type', function () {
+        it('should not match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                ]);
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
+        });
     });
 
     it('WithoutTypesQueryStringMatchTest', function () {
