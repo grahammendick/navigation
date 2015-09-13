@@ -1406,24 +1406,25 @@ describe('MatchTest', function () {
         });
     });
 
-    it('WithoutTypesDefaultMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/');
-        assert.strictEqual(Navigation.StateContext.data.x, 2);
-        Navigation.StateController.navigateLink('/3');
-        assert.strictEqual(Navigation.StateContext.data.x, 3);
-    });
+    describe('Without Types Default', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
+                ]);
+        });
 
-    it('WithoutTypesDefaultNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid number/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/true'), /not a valid number/, '');
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, 2);
+            Navigation.StateController.navigateLink('/3');
+            assert.strictEqual(Navigation.StateContext.data.x, 3);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid number/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/true'), /not a valid number/, '');
+        });
     });
 
     it('WithoutTypesDefaultTypeMatchTest', function () {
