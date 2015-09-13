@@ -1518,24 +1518,25 @@ describe('MatchTest', function () {
         });
     });
 
-    it('WithoutTypesQueryStringDefaultTypeMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/?x=true');
-        assert.strictEqual(Navigation.StateContext.data.x, true);
-        Navigation.StateController.navigateLink('/?x=false');
-        assert.strictEqual(Navigation.StateContext.data.x, false);
-    });
+    describe('Without Types Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                ]);
+        });
 
-    it('WithoutTypesQueryStringDefaultTypeNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/?x=a'), /not a valid boolean/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/?x=2'), /not a valid boolean/, '');
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=true');
+            assert.strictEqual(Navigation.StateContext.data.x, true);
+            Navigation.StateController.navigateLink('/?x=false');
+            assert.strictEqual(Navigation.StateContext.data.x, false);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/?x=a'), /not a valid boolean/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/?x=2'), /not a valid boolean/, '');
+        });
     });
 
     it('WithoutTypesQueryStringDefaultAndDefaultTypeMatchTest', function () {
