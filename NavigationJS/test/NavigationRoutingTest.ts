@@ -1054,18 +1054,20 @@ describe('MatchTest', function () {
         });
     });
 
-    it('CaseInsensitiveMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'abc/{x}', trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/AbC/aBc');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
-        assert.strictEqual(Navigation.StateContext.data.x, 'aBc');
-        Navigation.StateController.navigateLink('/AbC/aBc?y=dE');
-        assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
-        assert.strictEqual(Navigation.StateContext.data.x, 'aBc');
-        assert.strictEqual(Navigation.StateContext.data.y, 'dE');
+    describe('Case Insensitive', function () {
+        it('should match', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'abc/{x}', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigateLink('/AbC/aBc');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'aBc');
+            Navigation.StateController.navigateLink('/AbC/aBc?y=dE');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 'aBc');
+            assert.strictEqual(Navigation.StateContext.data.y, 'dE');
+        });
     });
 
     it('MultipleRoutesMatchTest', function () {
