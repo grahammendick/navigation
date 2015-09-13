@@ -1539,24 +1539,25 @@ describe('MatchTest', function () {
         });
     });
 
-    it('WithoutTypesQueryStringDefaultAndDefaultTypeMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
-            ]);
-        Navigation.StateController.navigateLink('/');
-        assert.strictEqual(Navigation.StateContext.data.x, 2);
-        Navigation.StateController.navigateLink('/?x=3');
-        assert.strictEqual(Navigation.StateContext.data.x, 3);
-    });
+    describe('Without Types Query String Default And Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                ]);
+        });
 
-    it('WithoutTypesQueryStringDefaultAndDefaultTypeNonMatchTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
-            ]);
-        assert.throws(() => Navigation.StateController.navigateLink('/?x=a'), /not a valid number/, '');
-        assert.throws(() => Navigation.StateController.navigateLink('/?x=true'), /not a valid number/, '');
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, 2);
+            Navigation.StateController.navigateLink('/?x=3');
+            assert.strictEqual(Navigation.StateContext.data.x, 3);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/?x=a'), /not a valid number/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/?x=true'), /not a valid number/, '');
+        });
     });
 
     it('WithoutTypesQueryStringConflicingDefaultAndDefaultTypeNonMatchTest', function () {
