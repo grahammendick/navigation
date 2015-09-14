@@ -780,6 +780,15 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab', z: 'cd' }), '/ab?z=cd');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde' }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/?z=fg');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'fg' }), '/?z=fg');
+        });
     });
 
     describe('One Param Two Segment Default', function () {
@@ -1750,19 +1759,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('OneParamOneSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab', z: 'cd' }), '/ab?z=cd');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde' }), '/');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/?z=fg');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'fg' }), '/?z=fg');
-    });
 
     it('OneParamTwoSegmentDefaultBuildTest', function () {
         Navigation.StateInfoConfig.build([
