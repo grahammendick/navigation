@@ -825,6 +825,15 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/cab/d'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', y: 'fg' }), '/ab/cde?y=fg');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ccdd' }), '/ab');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ccdd', y: 'ee' }), '/ab?y=ee');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/ab');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 'ee' }), '/ab?y=ee');
+        });
     });
 
     describe('One Param Two Segment Default', function () {
@@ -1759,19 +1768,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('OneParamTwoSegmentDefaultBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', y: 'fg' }), '/ab/cde?y=fg');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ccdd' }), '/ab');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ccdd', y: 'ee' }), '/ab?y=ee');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/ab');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 'ee' }), '/ab?y=ee');
-    });
 
     it('TwoParamTwoSegmentTwoDefaultBuildTest', function () {
         Navigation.StateInfoConfig.build([
