@@ -93,6 +93,11 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/aab/c'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/ab/c');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab/c?x=ab');
+        });
     });
 
     describe('One Param One Segment', function () {
@@ -1583,15 +1588,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('NoParamTwoSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/ab/c');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab/c?x=ab');
-    });
 
     it('OneParamOneSegmentBuildTest', function () {
         Navigation.StateInfoConfig.build([
