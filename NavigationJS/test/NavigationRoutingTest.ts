@@ -563,6 +563,18 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/ab'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/ab/cde?z=fg');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 'efg' }), null);
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
+        });
     });
 
     describe('Two Param One Optional Four Segment', function () {
@@ -1694,26 +1706,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('TwoParamOneOptionalThreeSegmentBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/ab/cde?z=fg');
-    });
-
-    it('TwoParamOneOptionalThreeSegmentNonBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 'efg' }), null);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
-    });
 
     it('TwoParamOneOptionalFourSegmentNonBuildTest', function () {
         Navigation.StateInfoConfig.build([
