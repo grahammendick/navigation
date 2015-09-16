@@ -46,11 +46,9 @@ describe('StateInfoTest', function () {
             var state1 = (<any> dialog.states).s1; 
             assert.equal(dialog._states.length, 2);
             assert.equal(state0.key, 's0');
-            assert.equal(state0.route, 'r0');
             assert.equal(state0.title, 't0');
             assert.equal(state0.index, 0);
             assert.equal(state1.key, 's1');
-            assert.equal(state1.route, 'r1');
             assert.equal(state1.title, 't1');
             assert.equal(state1.index, 1);
         })
@@ -189,9 +187,17 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('RouteTest', function () {
-        assert.equal(Navigation.StateInfoConfig._dialogs[3]._states[0].route, 'd3s0');
-        assert.equal(Navigation.StateInfoConfig._dialogs[3]._states[1].route, 'd3s1/{string}/{number}');
+    describe('Route', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }]},
+                    { key: 's1', route: 'r1/{string}/{number}' }]}
+                ]);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]._states[0].route, 'r0');
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]._states[1].route, 'r1/{string}/{number}');
+        })
     });
 
     it('DefaultTypesStringTest', function () {
