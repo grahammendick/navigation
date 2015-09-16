@@ -227,11 +227,17 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DefaultTypesNumberTest', function () {
-        var defaults = Navigation.StateInfoConfig._dialogs[1]._states[1].defaults;
-        assert.strictEqual(defaults['n1'], 0);
-        assert.strictEqual(defaults['n2'], 1);
-        assert.strictEqual(defaults['n3'], 2);
+    describe('Default Types Number', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { n1: 0, n2: 1, n3: 2 }, defaultTypes: { n1: 'number', n2: 'string' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(defaults['n1'], 0);
+            assert.strictEqual(defaults['n2'], 1);
+            assert.strictEqual(defaults['n3'], 2);
+        })
     });
 
     it('InvalidTransitionToTest', function () {
