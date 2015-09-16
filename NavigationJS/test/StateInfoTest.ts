@@ -139,14 +139,20 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('TrackCrumbTrailTest', function () {
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[0].trackCrumbTrail, false);
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[1].trackCrumbTrail, true);
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[2].trackCrumbTrail, false);
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[3].trackCrumbTrail, true);
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[4].trackCrumbTrail, false);
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[5].trackCrumbTrail, true);
-        assert.equal(Navigation.StateInfoConfig._dialogs[2]._states[6].trackCrumbTrail, true);
+    describe('Track Crumb Trail', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't0', to: 's1' },
+                        { key: 't1', to: 's2' }]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false },
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
+                ]);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]._states[0].trackCrumbTrail, true);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]._states[1].trackCrumbTrail, false);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]._states[2].trackCrumbTrail, true);
+        })
     });
 
     it('DefaultsTest', function () {
