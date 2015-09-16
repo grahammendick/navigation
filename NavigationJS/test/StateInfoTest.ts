@@ -324,13 +324,15 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('MissingDialogInitialTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build(<any> [
-            { key: 'd0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0'}]}
-            ]);
-        }, /mandatory/, '');
+    describe('Missing Dialog Initial', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build(<any> [
+                { key: 'd0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0'}]}
+                ]);
+            }, /mandatory/, '');
+        })
     });
 
     it('EmptyDialogInitialTest', function () {
