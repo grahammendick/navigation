@@ -89,9 +89,15 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DialogAttributesTest', function () {
-        assert.equal(Navigation.StateInfoConfig._dialogs[6]['other'], true);
-        assert.equal(Navigation.StateInfoConfig._dialogs[6]['path'], ' d6');
+    describe('Dialog Attributes', function () {
+        it('should configure State Info', function(){
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', other: true, path: ' x', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]['other'], true);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]['path'], ' x');
+        })
     });
 
     it('StateParentTest', function () {
