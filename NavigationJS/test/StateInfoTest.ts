@@ -179,8 +179,14 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('AttributesTest', function () {
-        assert.equal(Navigation.StateInfoConfig._dialogs[6]._states[0]['handler'], '~/d6/s0.aspx');
+    describe('Attributes', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', handler: 'y' }]}
+                ]);
+            assert.equal(Navigation.StateInfoConfig._dialogs[0]._states[0]['handler'], 'y');
+        })
     });
 
     it('RouteTest', function () {
