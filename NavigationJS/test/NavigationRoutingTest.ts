@@ -1175,6 +1175,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateContext.data.someVar, 'someVal');
             assert.strictEqual(Navigation.StateContext.data.anotherVar, 'anotherVal');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal' }), '/a/someVal');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal', anotherVar: 'anotherVal' }), '/a/someVal?anotherVar=anotherVal');
+        });
     });
 
     describe('Match Slash', function () {
@@ -1884,15 +1889,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('MultiCharParamBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal' }), '/a/someVal');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { someVar: 'someVal', anotherVar: 'anotherVal' }), '/a/someVal?anotherVar=anotherVal');
-    });
 
     it('ReservedUrlCharacterBuildTest', function () {
         Navigation.StateInfoConfig.build([
