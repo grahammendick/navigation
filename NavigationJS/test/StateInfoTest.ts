@@ -370,47 +370,55 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('MissingTransitionKeyTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build(<any> [
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                    { to: 's1' }]},
-                { key: 's1', route: 'd0s1', title: 's1' }]}
-            ])
-        });
+    describe('Missing Transition Key', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build(<any> [
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                        { to: 's1' }]},
+                    { key: 's1', route: 'd0s1', title: 's1' }]}
+                ])
+            });
+        })
     });
 
-    it('EmptyTransitionKeyTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build([
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                    { key: '', to: 's1' }]},
-                { key: 's1', route: 'd0s1', title: 's1' }]}
-            ])
-        });
+    describe('Empty Transition Key', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                        { key: '', to: 's1' }]},
+                    { key: 's1', route: 'd0s1', title: 's1' }]}
+                ])
+            });
+        })
     });
 
-    it('MissingTransitionToTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build(<any> [
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                    { key: 't0' }]},
-                { key: 's1', route: 'd0s1', title: 's1' }]}
-            ])
-        }, /mandatory/, '');
+    describe('Missing Transition To', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build(<any> [
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                        { key: 't0' }]},
+                    { key: 's1', route: 'd0s1', title: 's1' }]}
+                ])
+            }, /mandatory/, '');
+        })
     });
 
-    it('EmptyTransitionToTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build([
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                    { key: 't0', to: '' }]},
-                { key: 's1', route: 'd0s1', title: 's1' }]}
-            ])
-        }, /mandatory/, '');
+    describe('Empty Transition To', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                        { key: 't0', to: '' }]},
+                    { key: 's1', route: 'd0s1', title: 's1' }]}
+                ])
+            }, /mandatory/, '');
+        })
     });
  });
