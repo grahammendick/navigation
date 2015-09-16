@@ -1912,6 +1912,11 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/a'), /not a valid boolean/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/2'), /not a valid boolean/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ffalse' }), '/false');
+        });
     });
 
     describe('Without Types Default And Default Type', function () {
@@ -2053,8 +2058,6 @@ describe('BuildTest', function () {
             { key: 'd', initial: 's', states: [
                 { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
             ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'false' }), '/false');
     });
 
     it('WithoutTypesDefaultAndDefaultTypeBuildTest', function () {
