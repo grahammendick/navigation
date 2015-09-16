@@ -12,7 +12,7 @@ describe('StateInfoTest', function () {
     });
 
     describe('Dialog', function () {
-        it('should configure State Info', function(){
+        it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd0', initial: 's0', title: 't0', states: [
                     { key: 's0', route: 'r0' }]},
@@ -34,7 +34,7 @@ describe('StateInfoTest', function () {
     });
 
     describe('State', function () {
-        it('should configure State Info', function(){
+        it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', title: 't0', transitions: [
@@ -57,7 +57,7 @@ describe('StateInfoTest', function () {
     });
 
     describe('Transition', function () {
-        it('should configure State Info', function(){
+        it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', title: 't0', transitions: [
@@ -79,7 +79,7 @@ describe('StateInfoTest', function () {
     });
 
     describe('Dialog Initial', function () {
-        it('should configure State Info', function(){
+        it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
@@ -90,7 +90,7 @@ describe('StateInfoTest', function () {
     });
 
     describe('Dialog Attributes', function () {
-        it('should configure State Info', function(){
+        it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', other: true, path: ' x', states: [
                     { key: 's', route: 'r' }]}
@@ -101,7 +101,7 @@ describe('StateInfoTest', function () {
     });
 
     describe('State Parent', function () {
-        it('should configure State Info', function(){
+        it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', other: true, path: ' x', states: [
                     { key: 's', route: 'r' }]}
