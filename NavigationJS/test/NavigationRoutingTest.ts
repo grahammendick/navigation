@@ -1615,14 +1615,14 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
-            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
         });
 
         it('should not build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
-            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'de', z: 'g' }), null);
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'g' }), null);
         });
     });
 
