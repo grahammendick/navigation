@@ -200,12 +200,18 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DefaultTypesStringTest', function () {
-        var defaults = Navigation.StateInfoConfig._dialogs[1]._states[1].defaults;
-        assert.strictEqual(defaults[' &s0'], 'a');
-        assert.strictEqual(defaults['s1'], 'b');
-        assert.strictEqual(defaults['s2'], 'c');
-        assert.strictEqual(defaults['s3'], 'd');
+    describe('Default Types String', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd' }, defaultTypes: { s1: 'string', s2: 'boolean' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(defaults[' &s0'], 'a');
+            assert.strictEqual(defaults['s1'], 'b');
+            assert.strictEqual(defaults['s2'], 'c');
+            assert.strictEqual(defaults['s3'], 'd');
+        })
     });
 
     it('DefaultTypesBoolTest', function () {
