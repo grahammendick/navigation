@@ -302,13 +302,15 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('MissingDialogKeyTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build(<any> [
-            { initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0'}]}
-            ]);
-        });
+    describe('Missing Dialog Key', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build(<any> [
+                { initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0'}]}
+                ]);
+            });
+        })
     });
 
     it('EmptyDialogKeyTest', function () {
