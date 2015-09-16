@@ -1156,7 +1156,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '  a  ' }), '/%20%20%20a%20%20');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '   a  ' }), '/%20%20%20a%20%20');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '   a  ', y: '   b  ' }), '/%20%20%20a%20%20?y=%20%20%20b%20%20');
         });
     });
