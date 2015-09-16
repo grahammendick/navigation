@@ -346,14 +346,16 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('MissingStateKeyTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build(<any> [
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0'},
-                { route: 'd0s1', title: 's1' }]}
-            ]);
-        });
+    describe('Missing State Key', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build(<any> [
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0'},
+                    { route: 'd0s1', title: 's1' }]}
+                ]);
+            });
+        })
     });
 
     it('EmptyStateKeyTest', function () {
