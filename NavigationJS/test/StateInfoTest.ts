@@ -287,17 +287,19 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DuplicateTransitionTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build([
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                    { key: 't0', to: 's1' },
-                    { key: 't0', to: 's2' }]},
-                { key: 's1', route: 'd0s1', title: 's1' },
-                { key: 's2', route: 'd0s2', title: 's2' }]}
-            ])
-        });
+    describe('Duplicate Transition', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                        { key: 't0', to: 's1' },
+                        { key: 't0', to: 's2' }]},
+                    { key: 's1', route: 'd0s1', title: 's1' },
+                    { key: 's2', route: 'd0s2', title: 's2' }]}
+                ])
+            });
+        })
     });
 
     it('MissingDialogKeyTest', function () {
