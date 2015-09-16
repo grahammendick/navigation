@@ -238,15 +238,17 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('InvalidTransitionToTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build([
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                    { key: 't0', to: 's1' }]}
-                ]}
-            ])
-        });
+    describe('Invalid Transition To', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
+                        { key: 't0', to: 's1' }]}
+                    ]}
+                ])
+            });
+        })
    });
 
     it('InvalidInitialTest', function () {
