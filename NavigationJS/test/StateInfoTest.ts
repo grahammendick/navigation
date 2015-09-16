@@ -100,14 +100,15 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('StateParentTest', function () {
-        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
-            var dialog = Navigation.StateInfoConfig._dialogs[i];
-            for (var j = 0; j < dialog._states.length; j++) {
-                var state = dialog._states[j];
-                assert.equal(state.parent, dialog);
-            }
-        }
+    describe('State Parent', function () {
+        it('should configure State Info', function(){
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', other: true, path: ' x', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var dialog = Navigation.StateInfoConfig._dialogs[0];
+            assert.equal(dialog._states[0].parent, dialog);
+        })
     });
 
     it('TransitionParentTest', function () {
