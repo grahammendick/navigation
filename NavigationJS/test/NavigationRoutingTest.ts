@@ -2057,6 +2057,14 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/?x=a'), /not a valid number/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/?x=true'), /not a valid number/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2 }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/?x=3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/?x=3');
+        });
     });
 
     describe('Without Types Query String Conflicing Default And Default Type', function () {
@@ -2079,18 +2087,6 @@ describe('BuildTest', function () {
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '' }), null);
-    });
-
-    it('WithoutTypesQueryStringDefaultAndDefaultTypeBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 2 }), '/');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/?x=3');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/?x=3');
     });
 
     it('WithoutTypesTwoRouteDefaultBuildTest', function () {
