@@ -214,11 +214,17 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DefaultTypesBoolTest', function () {
-        var defaults = Navigation.StateInfoConfig._dialogs[1]._states[1].defaults;
-        assert.strictEqual(defaults['b1'], true);
-        assert.strictEqual(defaults['b2'], false);
-        assert.strictEqual(defaults['b3'], true);
+    describe('Default Types Bool', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { b1: true, b2: false, b3: true }, defaultTypes: { b1: 'boolean', b2: 'number' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(defaults['b1'], true);
+            assert.strictEqual(defaults['b2'], false);
+            assert.strictEqual(defaults['b3'], true);
+        })
     });
 
     it('DefaultTypesNumberTest', function () {
