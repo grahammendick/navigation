@@ -19,17 +19,17 @@ describe('StateInfoTest', function () {
                 { key: 'd1', initial: 's1', title: 't1', states: [
                     { key: 's1', route: 'r1' }]}
                 ]);
+            var dialog0 = Navigation.StateInfoConfig._dialogs[0];
+            var dialog1 = (<any> Navigation.StateInfoConfig.dialogs).d1;
             assert.equal(Navigation.StateInfoConfig._dialogs.length, 2);
-            var dialog = Navigation.StateInfoConfig._dialogs[0];
-            assert.equal(dialog.key, 'd0');
-            assert.equal(dialog.title, 't0');
-            assert.equal(dialog.index, 0);
-            assert.equal(dialog.initial.key, 's0');
-            dialog = Navigation.StateInfoConfig._dialogs[1];
-            assert.equal(dialog.key, 'd1');
-            assert.equal(dialog.title, 't1');
-            assert.equal(dialog.index, 1);
-            assert.equal(dialog.initial.key, 's1');
+            assert.equal(dialog0.key, 'd0');
+            assert.equal(dialog0.title, 't0');
+            assert.equal(dialog0.index, 0);
+            assert.equal(dialog0.initial.key, 's0');
+            assert.equal(dialog1.key, 'd1');
+            assert.equal(dialog1.title, 't1');
+            assert.equal(dialog1.index, 1);
+            assert.equal(dialog1.initial.key, 's1');
         })
     });
 
@@ -39,20 +39,42 @@ describe('StateInfoTest', function () {
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', title: 't0', transitions: [
                         { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'r1', title: 't1' },]}
+                    { key: 's1', route: 'r1', title: 't1' }]}
                 ]);
-            var dialogs: any = Navigation.StateInfoConfig.dialogs;
-            var dialog = dialogs.d;
-            var state: State = dialog.states.s0;
-            assert.equal(state.key, 's0');
-            assert.equal(state.route, 'r0');
-            assert.equal(state.title, 't0');
-            assert.equal(state.index, 0);
-            state = dialog.states.s1;
-            assert.equal(state.key, 's1');
-            assert.equal(state.route, 'r1');
-            assert.equal(state.title, 't1');
-            assert.equal(state.index, 1);
+            var dialog = Navigation.StateInfoConfig._dialogs[0];
+            var state0: State = dialog._states[0];
+            var state1 = (<any> dialog.states).s1; 
+            assert.equal(dialog._states.length, 2);
+            assert.equal(state0.key, 's0');
+            assert.equal(state0.route, 'r0');
+            assert.equal(state0.title, 't0');
+            assert.equal(state0.index, 0);
+            assert.equal(state1.key, 's1');
+            assert.equal(state1.route, 'r1');
+            assert.equal(state1.title, 't1');
+            assert.equal(state1.index, 1);
+        })
+    });
+
+    describe('Transition', function () {
+        it('should configure State Info', function(){
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', title: 't0', transitions: [
+                        { key: 't0', to: 's1' },
+                        { key: 't1', to: 's2' }]},
+                    { key: 's1', route: 'r1', title: 't1' },
+                    { key: 's2', route: 'r2', title: 't2' }]}
+                ]);
+            var dialog = Navigation.StateInfoConfig._dialogs[0];
+            var state = dialog._states[0];
+            var transition0 = state._transitions[0];
+            var transition1 = (<any> state.transitions).t1;
+            assert.equal(state._transitions.length, 2);
+            assert.equal(transition0.key, 't0');
+            assert.equal(transition0.index, 0);
+            assert.equal(transition1.key, 't1');
+            assert.equal(transition1.index, 1);
         })
     });
 
