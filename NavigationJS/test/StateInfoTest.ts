@@ -1,13 +1,11 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import initStateInfo = require('./initStateInfo');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('StateInfoTest', function () {
     beforeEach(function () {
-        initStateInfo();
         Navigation.StateController.clearStateContext();
     });
 
