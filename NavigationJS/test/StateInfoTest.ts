@@ -7,17 +7,29 @@ import Navigation = require('../src/Navigation');
 describe('StateInfoTest', function () {
     beforeEach(function () {
         initStateInfo();
+        Navigation.StateController.clearStateContext();
     });
 
-    it('DialogTest', function () {
-        assert.equal(Navigation.StateInfoConfig._dialogs.length, 7);
-        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
-            var dialog = Navigation.StateInfoConfig._dialogs[i];
-            assert.equal(dialog.key, 'd' + i);
-            assert.equal(dialog.title, dialog.key);
-            assert.equal(dialog.index, i);
-            assert.equal(dialog.initial.title, 's0');
-        }
+    describe('Dialog', function () {
+        it('should configure State Info', function(){
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 't0', states: [
+                    { key: 's0', route: 'r0' }]},
+                { key: 'd1', initial: 's1', title: 't1', states: [
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            assert.equal(Navigation.StateInfoConfig._dialogs.length, 2);
+            var dialog = Navigation.StateInfoConfig._dialogs[0];
+            assert.equal(dialog.key, 'd0');
+            assert.equal(dialog.title, 't0');
+            assert.equal(dialog.index, 0);
+            assert.equal(dialog.initial.key, 's0');
+            dialog = Navigation.StateInfoConfig._dialogs[1];
+            assert.equal(dialog.key, 'd1');
+            assert.equal(dialog.title, 't1');
+            assert.equal(dialog.index, 1);
+            assert.equal(dialog.initial.key, 's1');
+        })
     });
 
     it('StateTest', function () {
