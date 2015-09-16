@@ -2,6 +2,7 @@
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
 import initStateInfo = require('./initStateInfo');
+import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('StateInfoTest', function () {
@@ -32,18 +33,27 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('StateTest', function () {
-        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
-            var dialog = Navigation.StateInfoConfig._dialogs[i];
-            if (dialog.index < 6)
-                assert.equal(dialog._states.length, 5 + dialog.index % 3);
-            for (var j = 0; j < dialog._states.length; j++) {
-                var state = dialog._states[j];
-                assert.equal(state.key, 's' + j);
-                assert.equal(state.title, state.key);
-                assert.equal(state.index, j);
-            }
-        }
+    describe('State', function () {
+        it('should configure State Info', function(){
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', title: 't0', transitions: [
+                        { key: 't', to: 's1' }]},
+                    { key: 's1', route: 'r1', title: 't1' },]}
+                ]);
+            var dialogs: any = Navigation.StateInfoConfig.dialogs;
+            var dialog = dialogs.d;
+            var state: State = dialog.states.s0;
+            assert.equal(state.key, 's0');
+            assert.equal(state.route, 'r0');
+            assert.equal(state.title, 't0');
+            assert.equal(state.index, 0);
+            state = dialog.states.s1;
+            assert.equal(state.key, 's1');
+            assert.equal(state.route, 'r1');
+            assert.equal(state.title, 't1');
+            assert.equal(state.index, 1);
+        })
     });
 
     it('TransitionTest', function () {
