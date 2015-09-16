@@ -1855,6 +1855,13 @@ describe('MatchTest', function () {
             Navigation.StateController.navigateLink('/0_1_2_');
             assert.strictEqual(Navigation.StateContext.data.x, '0_1_2_');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc' }), '/abc');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '0_1_2_' }), '/0_1_2_');
+        });
     });
 
     describe('Without Types Default', function () {
@@ -2031,17 +2038,6 @@ describe('BuildTest', function () {
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '' }), null);
-    });
-
-    it('WithoutTypesBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc' }), '/abc');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '0_1_2_' }), '/0_1_2_');
     });
 
     it('WithoutTypesDefaultBuildTest', function () {
