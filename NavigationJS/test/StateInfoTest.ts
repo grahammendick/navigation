@@ -262,15 +262,17 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DuplicateDialogTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build([
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0'}]},
-            { key: 'd0', initial: 's0', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0'}]}
-            ]);
-        });
+    describe('Duplicate Dialog', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0'}]},
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0'}]}
+                ]);
+            });
+        })
     });
 
     it('DuplicateStateTest', function () {
