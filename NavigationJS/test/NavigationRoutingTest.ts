@@ -1154,6 +1154,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateContext.data.x, '   a  ');
             assert.strictEqual(Navigation.StateContext.data.y, '   b  ');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '  a  ' }), '/%20%20%20a%20%20');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '   a  ', y: '   b  ' }), '/%20%20%20a%20%20?y=%20%20%20b%20%20');
+        });
     });
 
     describe('Multi Char Param', function () {
@@ -1879,15 +1884,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('SpacesBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '   a  ' }), '/%20%20%20a%20%20');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '   a  ', y: '   b  ' }), '/%20%20%20a%20%20?y=%20%20%20b%20%20');
-    });
 
     it('MultiCharParamBuildTest', function () {
         Navigation.StateInfoConfig.build([
