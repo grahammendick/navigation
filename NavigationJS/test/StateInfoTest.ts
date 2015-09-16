@@ -251,13 +251,15 @@ describe('StateInfoTest', function () {
         })
    });
 
-    it('InvalidInitialTest', function () {
-        assert.throws(() => {
-            Navigation.StateInfoConfig.build([
-            { key: 'd0', initial: 's1', title: 'd0', states: [
-                { key: 's0', route: 'd0s0', title: 's0'}]}
-            ]);
-        });
+    describe('Invalid Initial', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's1', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', title: 's0'}]}
+                ]);
+            });
+        })
     });
 
     it('DuplicateDialogTest', function () {
