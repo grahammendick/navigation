@@ -2031,6 +2031,11 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/?x=a'), /not a valid boolean/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/?x=2'), /not a valid boolean/, '');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/?x=true');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'false' }), '/?x=false');
+        });
     });
 
     describe('Without Types Query String Default And Default Type', function () {
@@ -2074,15 +2079,6 @@ describe('BuildTest', function () {
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '' }), null);
-    });
-
-    it('WithoutTypesQueryStringDefaultTypeBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/?x=true');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'false' }), '/?x=false');
     });
 
     it('WithoutTypesQueryStringDefaultAndDefaultTypeBuildTest', function () {
