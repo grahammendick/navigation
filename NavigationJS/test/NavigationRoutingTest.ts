@@ -1915,7 +1915,7 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true');
-            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ffalse' }), '/false');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'false' }), '/false');
         });
     });
 
@@ -2051,13 +2051,6 @@ describe('BuildTest', function () {
                 { key: 's', route: '{x}', trackCrumbTrail: false }]}
             ]);
         assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '' }), null);
-    });
-
-    it('WithoutTypesDefaultTypeBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
-            ]);
     });
 
     it('WithoutTypesDefaultAndDefaultTypeBuildTest', function () {
