@@ -1240,6 +1240,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateContext.data.x, 'abc');
             assert.strictEqual(Navigation.StateContext.data.y, 'de');
         });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc' }), '/.+*\^$\[\]()\'/abc');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc', y: 'de' }), '/.+*\^$\[\]()\'/abc?y=de');
+        });
     });
 
     describe('One Param Optional Mandatory One Mixed Segment', function () {
@@ -1898,15 +1903,6 @@ describe('MatchTest', function () {
 });
 
 describe('BuildTest', function () {
-
-    it('ReservedRegexCharacterBuildTest', function () {
-        Navigation.StateInfoConfig.build([
-            { key: 'd', initial: 's', states: [
-                { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
-            ]);
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc' }), '/.+*\^$\[\]()\'/abc');
-        assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abc', y: 'de' }), '/.+*\^$\[\]()\'/abc?y=de');
-    });
 
     it('OneParamOptionalMandatoryOneMixedSegmentBuildTest', function () {
         Navigation.StateInfoConfig.build([
