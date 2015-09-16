@@ -78,28 +78,6 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('TransitionTest', function () {
-        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
-            var dialog = Navigation.StateInfoConfig._dialogs[i];
-            for (var j = 0; j < dialog._states.length; j++) {
-                var state = dialog._states[j];
-                if (dialog.index === 0)
-                    assert.equal(state._transitions.length, 4 - state.index);
-                if (dialog.index === 1) {
-                    if (state.index !== 5)
-                        assert.equal(state._transitions.length, 1);
-                    else
-                        assert.equal(state._transitions.length, 5);
-                }
-                for (var k = 0; k < state._transitions.length; k++) {
-                    var transition = state._transitions[k];
-                    assert.equal(transition.key, 't' + k);
-                    assert.equal(transition.index, k);
-                }
-            }
-        }
-    });
-
     it('DialogInitialTest', function () {
         for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
             var dialog = Navigation.StateInfoConfig._dialogs[i];
