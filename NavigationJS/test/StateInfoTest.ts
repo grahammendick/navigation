@@ -155,10 +155,16 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DefaultsTest', function () {
-        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[1].defaults['string'], 'Hello');
-        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[1].defaults['_bool'], true);
-        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[1].defaults['number'], 1);
+    describe('Defaults', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                ]);
+            assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[0].defaults['string'], 'Hello');
+            assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[0].defaults['_bool'], true);
+            assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[0].defaults['number'], 1);
+        })
     });
 
     it('DefaultTypesTest', function () {
