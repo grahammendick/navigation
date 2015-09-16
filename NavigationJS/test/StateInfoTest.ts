@@ -78,11 +78,15 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DialogInitialTest', function () {
-        for (var i = 0; i < Navigation.StateInfoConfig._dialogs.length; i++) {
-            var dialog = Navigation.StateInfoConfig._dialogs[i];
+    describe('Dialog Initial', function () {
+        it('should configure State Info', function(){
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var dialog = Navigation.StateInfoConfig._dialogs[0];
             assert.equal(dialog.initial, dialog._states[0]);
-        }
+        })
     });
 
     it('DialogAttributesTest', function () {
