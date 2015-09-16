@@ -167,10 +167,16 @@ describe('StateInfoTest', function () {
         })
     });
 
-    it('DefaultTypesTest', function () {
-        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['string'], 'string');
-        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['boolean'], 'boolean');
-        assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[4].defaultTypes['number'], 'number');
+    describe('Default Types', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' } }]}
+                ]);
+            assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[0].defaultTypes['string'], 'string');
+            assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[0].defaultTypes['boolean'], 'boolean');
+            assert.strictEqual(Navigation.StateInfoConfig._dialogs[0]._states[0].defaultTypes['number'], 'number');
+        })
     });
 
     it('AttributesTest', function () {
