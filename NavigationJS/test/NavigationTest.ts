@@ -5,9 +5,12 @@ import Crumb = require('../src/Crumb');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
+var settings = [false, true];
+settings.forEach(function(setting) {
 describe('Navigation', function () {
     beforeEach(function () {
         Navigation.StateController.clearStateContext();
+        Navigation.settings.combineCrumbTrail = setting;
     });
 
     describe('Dialog', function() {
@@ -2419,7 +2422,7 @@ describe('Navigation', function () {
         });
     });
 
-   describe('Back One Unloading', function () {
+    describe('Back One Unloading', function () {
         it('should only call unloading function', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
@@ -3773,4 +3776,5 @@ describe('Navigation', function () {
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
         });
     });
+});
 });
