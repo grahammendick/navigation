@@ -10,6 +10,7 @@ settings.forEach(function(setting) {
 describe('Navigation Data', function () {
     beforeEach(function () {
         Navigation.StateController.clearStateContext();
+        Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
         Navigation.settings.combineCrumbTrail = setting;
     });
 
