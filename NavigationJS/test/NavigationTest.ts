@@ -1922,6 +1922,54 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Dialog Next', function() {
+        it ('should return initial State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            assert.equal(Navigation.StateController.getNextState('d'), Navigation.StateInfoConfig.dialogs['d'].initial);
+        })
+    });
+
+    describe('Transition Next', function() {
+        it ('should return to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            assert.equal(Navigation.StateController.getNextState('t'), Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+        })
+    });
+
+    describe('Invalid Next', function() {
+        it ('should throw error', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            assert.throws(() => Navigation.StateController.getNextState('d0'));
+        })
+    });
+
+    describe('Dialog and Transition Match Next', function() {
+        it ('should return to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 'd', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            assert.equal(Navigation.StateController.getNextState('d'), Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+        })
+    });
+
     describe('Cross Dialog Navigated', function () {
         it('should call all lifecycle functions', function() {
             Navigation.StateInfoConfig.build([
