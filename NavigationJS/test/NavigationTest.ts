@@ -3863,7 +3863,7 @@ describe('Navigation', function () {
     });
     
     describe('Transition Custom Persister Navigate', function() {
-        it('should set crumb trail to start with a', function() {
+        it('should set crumb trail to start with x', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
@@ -3873,12 +3873,12 @@ describe('Navigation', function () {
                 ]);
             Navigation.settings.crumbTrailPersister = {
                 load: crumbTrail => crumbTrail ? crumbTrail.substring(1) : crumbTrail,
-                save: crumbTrail => 'a' + crumbTrail
+                save: crumbTrail => 'x' + crumbTrail
             };
             Navigation.StateController.navigate('d');
             var link = Navigation.StateController.getNavigationLink('t');
             Navigation.StateController.navigateLink(link);
-            assert.notEqual(link.indexOf('c3=a'), -1);
+            assert.notEqual(link.indexOf('c3=x'), -1);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateController.crumbs.length, 1);
