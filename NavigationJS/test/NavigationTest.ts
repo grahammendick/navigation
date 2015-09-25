@@ -577,6 +577,52 @@ describe('Navigation', function () {
         }
     });
     
+    describe('Dialog and Transition Match', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 'd', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('d');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {            
+            it('should go to to State', function() {
+                assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+                assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
+            });
+            it('should populate previous State', function() {
+                assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
+                assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d']);
+            });
+            it('should have crumb trail of length 1', function() {
+                assert.equal(Navigation.StateController.crumbs.length, 1);
+                assert.equal(Navigation.StateController.crumbs[0].state, Navigation.StateContext.dialog.initial);
+                assert.ok(Navigation.StateController.crumbs[0].last);
+            });
+        }
+    });
+    
     describe('Refresh', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
