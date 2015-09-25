@@ -3861,6 +3861,29 @@ describe('Navigation', function () {
             assert.equal(Navigation.StateController.crumbs.length, 0);
         });
     });
+    
+    describe('Transition Custom Persister Navigate', function() {
+        it('should set crumb trail to start with a', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            Navigation.settings.crumbTrailPersister = {
+                load: crumbTrail => crumbTrail ? crumbTrail.substring(1) : crumbTrail,
+                save: crumbTrail => 'a' + crumbTrail
+            };
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigateLink(link);
+            assert.notEqual(link.indexOf('c3=a'), -1);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
+            assert.equal(Navigation.StateController.crumbs.length, 1);
+        });
+    });
 
     describe('Uncombined To Combined Crumb Trail Navigate', function () {
         it('should remember crumb trail', function() {
