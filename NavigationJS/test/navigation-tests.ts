@@ -102,6 +102,7 @@ module NavigationTests {
 	Navigation.StateController.navigate('select', { id: 10 });
 	var canGoBack: boolean = Navigation.StateController.canNavigateBack(1);
 	Navigation.StateController.navigateBack(1);
+	Navigation.StateController.clearStateContext();
 	
 	// Navigation Link
 	var link = Navigation.StateController.getNavigationLink('person');
