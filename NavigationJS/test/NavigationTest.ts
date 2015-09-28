@@ -3990,5 +3990,45 @@ describe('Navigation', function () {
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
         });
     });
+
+    describe('Clear State Context', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.refresh();
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink();
+                Navigation.StateController.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should clear State context', function() {
+                Navigation.StateController.clearStateContext();
+                assert.strictEqual(Navigation.StateContext.previousState, null);
+                assert.strictEqual(Navigation.StateContext.previousDialog, null);
+                assert.strictEqual(Navigation.StateContext.state, null);
+                assert.strictEqual(Navigation.StateContext.dialog, null);
+                assert.strictEqual(Navigation.StateContext.data, null);
+                assert.strictEqual(Navigation.StateContext.url, null);
+                assert.equal(Navigation.StateController.crumbs.length, 0);
+            });
+        }
+    });
 });
 });
