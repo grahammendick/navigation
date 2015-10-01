@@ -661,6 +661,10 @@ declare module Navigation {
          */
         static setStateContext(state: State, url: string): void;
         /**
+         * Clears the Context Data
+         */
+        static clearStateContext(): void;
+        /**
          * Registers a navigate event listener
          * @param handler The navigate event listener
          */

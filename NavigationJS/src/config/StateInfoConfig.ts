@@ -1,6 +1,5 @@
 ﻿import Dialog = require('./Dialog');
 import IDialog = require('./IDialog');
-import CrumbTrailManager = require('../CrumbTrailManager');
 import ReturnDataManager = require('../ReturnDataManager');
 import settings = require('../settings');
 import State = require('./State');

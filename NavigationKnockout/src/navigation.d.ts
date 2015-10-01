@@ -1,4 +1,4 @@
-﻿// Type definitions for Navigation 1.0
+﻿// Type definitions for Navigation 1.1.0
 // Project: http://grahammendick.github.io/navigation/
 // Definitions by: Graham Mendick <https://github.com/grahammendick>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
@@ -660,6 +660,10 @@ declare module Navigation {
          * @param url The current Url
          */
         static setStateContext(state: State, url: string): void;
+        /**
+         * Clears the Context Data
+         */
+        static clearStateContext(): void;
         /**
          * Registers a navigate event listener
          * @param handler The navigate event listener
