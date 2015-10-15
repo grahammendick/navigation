@@ -93,6 +93,9 @@ code.hljs{
 	padding:1.5% 3%;
     border:2px solid #de1b1b;
 }
+code.hljs span{
+    white-space: pre-wrap;	
+}
 dt{
 	float: left;
 	width:100px;
