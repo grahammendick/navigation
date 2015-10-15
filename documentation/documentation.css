@@ -93,10 +93,6 @@ code.hljs{
 	padding:1.5% 3%;
     border:2px solid #de1b1b;
 }
-code.hljs span.hljs-comment{
-    white-space: pre-wrap;
-	display: inline-block;
-}
 dt{
 	float: left;
 	width:100px;
