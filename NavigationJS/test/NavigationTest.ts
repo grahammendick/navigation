@@ -2158,6 +2158,52 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Old Link Navigate', function() {
+        it ('should return to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d'].states['s2']);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+        })
+    });
+
+    describe('Old Link Without Trail Navigate', function() {
+        it ('should return to State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: false }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d'].states['s2']);
+            assert.equal(Navigation.StateContext.previousState, null);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+        })
+    });
+
     describe('Dialog Next', function() {
         it ('should return initial State', function() {
             Navigation.StateInfoConfig.build([
