@@ -16,9 +16,7 @@ class StateController {
 
     static setStateContext(state: State, url: string) {
         try {
-            StateContext.oldState = StateContext.state;
-            StateContext.oldDialog = StateContext.dialog;
-            StateContext.oldData = StateContext.data;
+            this.setOldStateContext();
             StateContext.state = state;
             StateContext.url = url;
             StateContext.dialog = state.parent;
@@ -52,7 +50,16 @@ class StateController {
         CrumbTrailManager.crumbTrailKey = null;
     }
     
-    private static setPreviousStateContext(uncombined: boolean, data: any){
+    private static setOldStateContext() {
+        if (StateContext.state) {
+            StateContext.oldState = StateContext.state;
+            StateContext.oldDialog = StateContext.dialog;
+            StateContext.oldData = StateContext.data;
+            NavigationData.setDefaults(StateContext.oldData, StateContext.oldState.defaults);
+        }
+    }
+    
+    private static setPreviousStateContext(uncombined: boolean, data: any) {
         if (uncombined){
             StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
             if (StateContext.previousState)
