@@ -2,6 +2,9 @@
 import State = require('./config/State');
 
 class StateContext {
+    static oldState: State;
+    static oldDialog: Dialog;
+    static oldData: any;
     static previousState: State;
     static previousDialog: Dialog;
     static previousData: any;

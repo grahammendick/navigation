@@ -16,6 +16,9 @@ class StateController {
 
     static setStateContext(state: State, url: string) {
         try {
+            StateContext.oldState = StateContext.state;
+            StateContext.oldDialog = StateContext.dialog;
+            StateContext.oldData = StateContext.data;
             StateContext.state = state;
             StateContext.url = url;
             StateContext.dialog = state.parent;
@@ -35,6 +38,9 @@ class StateController {
     }
 
     static clearStateContext() {
+        StateContext.oldState = null;
+        StateContext.oldDialog = null;
+        StateContext.oldData = null;
         StateContext.previousState = null;
         StateContext.previousDialog = null;
         StateContext.previousData = null;
