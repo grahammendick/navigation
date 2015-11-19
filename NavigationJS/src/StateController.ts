@@ -23,7 +23,7 @@ class StateController {
             StateContext.data = this.parseData(data, state);
             StateContext.previousState = null;
             StateContext.previousDialog = null;
-            CrumbTrailManager.returnData = {};
+            StateContext.previousData = {};
             CrumbTrailManager.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
             var uncombined = !!data[settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
@@ -37,11 +37,11 @@ class StateController {
     static clearStateContext() {
         StateContext.previousState = null;
         StateContext.previousDialog = null;
+        StateContext.previousData = null;
         StateContext.state = null;
         StateContext.dialog = null;
         StateContext.data = null;
         StateContext.url = null;
-        CrumbTrailManager.returnData = null;
         CrumbTrailManager.crumbTrail = null;
         CrumbTrailManager.crumbTrailKey = null;
     }
@@ -52,13 +52,13 @@ class StateController {
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;
             if (data[settings.returnDataKey])
-                CrumbTrailManager.returnData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
+                StateContext.previousData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
         } else {
             var previousStateCrumb = CrumbTrailManager.getCrumbs(false).pop();
             if (previousStateCrumb){
                 StateContext.previousState = previousStateCrumb.state;
                 StateContext.previousDialog = StateContext.previousState.parent;
-                CrumbTrailManager.returnData = previousStateCrumb.data;
+                StateContext.previousData = previousStateCrumb.data;
             }
         }
     }
