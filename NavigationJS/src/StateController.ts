@@ -54,7 +54,7 @@ class StateController {
         if (StateContext.state) {
             StateContext.oldState = StateContext.state;
             StateContext.oldDialog = StateContext.dialog;
-            StateContext.oldData = StateContext.data;
+            StateContext.oldData = NavigationData.clone(StateContext.data);
             NavigationData.setDefaults(StateContext.oldData, StateContext.oldState.defaults);
         }
     }
