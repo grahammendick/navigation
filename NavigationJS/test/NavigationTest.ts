@@ -102,6 +102,10 @@ describe('Navigation', function () {
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
                 assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
             });
+            it('should populate old State', function() {
+                assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
+                assert.equal(Navigation.StateContext.oldDialog, Navigation.StateInfoConfig.dialogs['d0']);
+            });
             it('should populate previous State', function() {
                 assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
                 assert.equal(Navigation.StateContext.previousDialog, Navigation.StateInfoConfig.dialogs['d0']);
@@ -145,6 +149,10 @@ describe('Navigation', function () {
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].initial);
                 assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d1']);
             });
+            it('should populate old State', function() {
+                assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].initial);
+                assert.equal(Navigation.StateContext.oldDialog, Navigation.StateInfoConfig.dialogs['d0']);
+            });
             it('should not populate previous State', function() {
                 assert.equal(Navigation.StateContext.previousState, null);
                 assert.equal(Navigation.StateContext.previousDialog, null);
@@ -186,6 +194,10 @@ describe('Navigation', function () {
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].initial);
                 assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
             });
+            it('should populate old State', function() {
+                assert.equal(Navigation.StateContext.oldState, Navigation.StateContext.state);
+                assert.equal(Navigation.StateContext.oldDialog, Navigation.StateContext.dialog);
+            });
             it('should populate previous State', function() {
                 assert.equal(Navigation.StateContext.previousState, Navigation.StateContext.state);
                 assert.equal(Navigation.StateContext.previousDialog, Navigation.StateContext.dialog);
@@ -226,6 +238,10 @@ describe('Navigation', function () {
             it('should go to initial State', function() {
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].initial);
                 assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
+            });
+            it('should populate old State', function() {
+                assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d'].initial);
+                assert.equal(Navigation.StateContext.oldDialog, Navigation.StateInfoConfig.dialogs['d']);
             });
             it('should not populate previous State', function() {
                 assert.equal(Navigation.StateContext.previousState, null);
@@ -270,6 +286,10 @@ describe('Navigation', function () {
             it('should go to to State', function() {
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
                 assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
+            });
+            it('should populate old State', function() {
+                assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
+                assert.equal(Navigation.StateContext.oldDialog, Navigation.StateInfoConfig.dialogs['d']);
             });
             it('should populate previous State', function() {
                 assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
@@ -318,6 +338,10 @@ describe('Navigation', function () {
             it('should go to to State', function() {
                 assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
                 assert.equal(Navigation.StateContext.dialog, Navigation.StateInfoConfig.dialogs['d']);
+            });
+            it('should populate old State', function() {
+                assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
+                assert.equal(Navigation.StateContext.oldDialog, Navigation.StateInfoConfig.dialogs['d']);
             });
             it('should populate previous State', function() {
                 assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
