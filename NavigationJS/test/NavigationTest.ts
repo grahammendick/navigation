@@ -3065,6 +3065,7 @@ describe('Navigation', function () {
             assert.strictEqual(unloading, true);
             assert.strictEqual(navigated10, undefined);
             assert.strictEqual(navigated01, true);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
         });
@@ -3101,6 +3102,7 @@ describe('Navigation', function () {
             assert.strictEqual(navigating, true);
             assert.strictEqual(navigated10, undefined);
             assert.strictEqual(navigated01, true);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s0']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
         });
@@ -3402,6 +3404,7 @@ describe('Navigation', function () {
                 navigate();
             }
             Navigation.StateController.navigate('d1', { x: true });
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
             assert.strictEqual(navigating, undefined);
@@ -3435,6 +3438,7 @@ describe('Navigation', function () {
                 navigate();
             }
             Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
             assert.strictEqual(navigating, 1);
@@ -3462,6 +3466,7 @@ describe('Navigation', function () {
                 navigate();
             }
             Navigation.StateController.navigate('d1');
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d0'].states['s1']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d0'].states['s2']);
         });
@@ -3497,6 +3502,7 @@ describe('Navigation', function () {
             Navigation.StateController.offNavigate(navigatedHandler);
             assert.equal(hits, 1);
             assert.equal(navigatedState, Navigation.StateContext.state);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d1'].states['s0']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d1'].states['s1']);
         });
@@ -3672,6 +3678,7 @@ describe('Navigation', function () {
             Navigation.StateController.navigateLink(link);
             assert.notEqual(link.indexOf('aaa'), -1);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateController.crumbs.length, 1);
         });
@@ -3698,6 +3705,7 @@ describe('Navigation', function () {
             Navigation.StateController.navigateLink(link);
             assert.notEqual(link.indexOf('bbb'), -1);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[1]._states[2]);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[1]._states[1]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[1]._states[1]);
             assert.equal(Navigation.StateController.crumbs.length, 2);
         });
@@ -3869,6 +3877,7 @@ describe('Navigation', function () {
                 Navigation.StateController.navigate('d');
             }
             Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateController.crumbs.length, 1);
         });
@@ -3910,6 +3919,7 @@ describe('Navigation', function () {
             Navigation.StateController.navigateLink(link);
             assert.equal(link.indexOf('aaa'), -1);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateController.crumbs.length, 1);
         });
@@ -3930,6 +3940,7 @@ describe('Navigation', function () {
             Navigation.StateController.navigateLink(link);
             assert.notEqual(link.indexOf('aaa'), -1);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateController.crumbs.length, 1);
         });
@@ -3977,6 +3988,7 @@ describe('Navigation', function () {
             Navigation.StateController.navigateLink(link);
             assert.notEqual(link.indexOf('c3=x'), -1);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig._dialogs[0]._states[1]);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[0]);
             assert.equal(Navigation.StateController.crumbs.length, 1);
         });
@@ -4000,6 +4012,7 @@ describe('Navigation', function () {
             var link = Navigation.StateController.getNavigationLink('t');
             Navigation.settings.combineCrumbTrail = true;
             Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
             assert.equal(Navigation.StateController.crumbs.length, 2);
         });
@@ -4023,6 +4036,7 @@ describe('Navigation', function () {
             var link = Navigation.StateController.getNavigationLink('t');
             Navigation.settings.combineCrumbTrail = false;
             Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
             assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig._dialogs[0]._states[1]);
             assert.equal(Navigation.StateController.crumbs.length, 2);
         });
