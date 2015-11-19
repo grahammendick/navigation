@@ -4023,8 +4023,12 @@ describe('Navigation', function () {
         function test(){
             it('should clear State context', function() {
                 Navigation.StateController.clearStateContext();
+                assert.strictEqual(Navigation.StateContext.oldState, null);
+                assert.strictEqual(Navigation.StateContext.oldDialog, null);
+                assert.deepEqual(Navigation.StateContext.oldData, {});
                 assert.strictEqual(Navigation.StateContext.previousState, null);
                 assert.strictEqual(Navigation.StateContext.previousDialog, null);
+                assert.deepEqual(Navigation.StateContext.previousData, {});
                 assert.strictEqual(Navigation.StateContext.state, null);
                 assert.strictEqual(Navigation.StateContext.dialog, null);
                 assert.deepEqual(Navigation.StateContext.data, {});
