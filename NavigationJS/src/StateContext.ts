@@ -4,13 +4,13 @@ import State = require('./config/State');
 class StateContext {
     static oldState: State;
     static oldDialog: Dialog;
-    static oldData: any;
+    static oldData: any = {};
     static previousState: State;
     static previousDialog: Dialog;
-    static previousData: any;
+    static previousData: any = {};
     static state: State;
     static dialog: Dialog;
-    static data: any;
+    static data: any = {};
     static url: string;
 
     static includeCurrentData(data: any, keys?: string[]): any {

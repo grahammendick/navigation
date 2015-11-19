@@ -38,13 +38,13 @@ class StateController {
     static clearStateContext() {
         StateContext.oldState = null;
         StateContext.oldDialog = null;
-        StateContext.oldData = null;
+        StateContext.oldData = {};
         StateContext.previousState = null;
         StateContext.previousDialog = null;
-        StateContext.previousData = null;
+        StateContext.previousData = {};
         StateContext.state = null;
         StateContext.dialog = null;
-        StateContext.data = null;
+        StateContext.data = {};
         StateContext.url = null;
         CrumbTrailManager.crumbTrail = null;
         CrumbTrailManager.crumbTrailKey = null;
