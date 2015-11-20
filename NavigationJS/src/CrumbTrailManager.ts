@@ -79,7 +79,7 @@ class CrumbTrailManager {
             }
         }
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
-            if (!returnData && settings.trackPreviousData)
+            if (!returnData && settings.trackAllPreviousData)
                 returnData = StateContext.data;
             var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
             if (returnDataString)
