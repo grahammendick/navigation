@@ -3643,11 +3643,14 @@ describe('Navigation', function () {
             Navigation.StateController.navigate('d');
             Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
                 assert.equal(asyncData, 0);
-                done();
             }
             var i = 0;
             Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
-                ((count) => setTimeout(() => navigate(count), 0))(i);
+                ((count) => setTimeout(() => {
+                    navigate(count);
+                    if (count === 1)
+                        done();
+                }, 0))(i);
                 i++;
             }
             Navigation.StateController.navigate('t');
@@ -3672,7 +3675,7 @@ describe('Navigation', function () {
             Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
                 ((count) => setTimeout(() => { 
                     navigate(count);
-                    if (count == 0)
+                    if (count === 0)
                         done();
                 }, 5 - 5 * count))(i);
                 i++;
