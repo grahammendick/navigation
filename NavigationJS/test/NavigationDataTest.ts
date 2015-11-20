@@ -4405,5 +4405,43 @@ describe('Navigation Data', function () {
             assert.strictEqual(Navigation.StateContext.data.y[2], '4');
         });
     });
+
+    describe('Clear State Context', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
+        var data = {};
+        data['s'] = 'Hello';
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+                Navigation.StateController.refresh(data);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink(data);
+                Navigation.StateController.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should clear State context', function() {
+                Navigation.StateController.clearStateContext();
+                assert.deepEqual(Navigation.StateContext.oldData, {});
+                assert.deepEqual(Navigation.StateContext.previousData, {});
+                assert.deepEqual(Navigation.StateContext.data, {});
+            });
+        }
+    });
 });
 });
