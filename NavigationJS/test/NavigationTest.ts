@@ -2158,7 +2158,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Old Link Navigate', function() {
+    describe('Bookmarked Link Navigate', function() {
         it ('should return to State', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
@@ -2181,7 +2181,7 @@ describe('Navigation', function () {
         })
     });
 
-    describe('Old Link Without Trail Navigate', function() {
+    describe('Bookmarked Link Without Trail Navigate', function() {
         it ('should return to State', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
