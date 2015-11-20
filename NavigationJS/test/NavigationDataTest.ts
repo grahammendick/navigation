@@ -1275,6 +1275,10 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.oldData['n'], 5);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.previousData['n'], 5);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 'Hello');
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['n'], 5);
                 assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
@@ -1330,6 +1334,10 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 2);
+                assert.strictEqual(Navigation.StateContext.oldData['t'], '2');
+                assert.strictEqual(Navigation.StateContext.previousData['s'], 2);
+                assert.strictEqual(Navigation.StateContext.previousData['t'], '2');
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], 2);
@@ -1383,6 +1391,8 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData.s, '2');
+                assert.strictEqual(Navigation.StateContext.previousData.s, '2');
                 assert.strictEqual(Navigation.StateController.crumbs[0].data.s, 1);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 1);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data.s, '2');
@@ -1446,6 +1456,10 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], '22');
+                assert.strictEqual(Navigation.StateContext.oldData['t'], '2');
+                assert.strictEqual(Navigation.StateContext.previousData['s'], '22');
+                assert.strictEqual(Navigation.StateContext.previousData['t'], '2');
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], 11);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['t'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['s'], '22');
@@ -2416,6 +2430,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.previousData['emptyString'], '');
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 4);
+                assert.strictEqual(Navigation.StateContext.previousData['char'], 7);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
@@ -2471,6 +2488,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.previousData['emptyString'], '');
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 4);
+                assert.strictEqual(Navigation.StateContext.previousData['char'], 7);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['_bool'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
@@ -2521,6 +2541,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['t'], '2');
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
@@ -2570,6 +2593,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.previousData['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.previousData['_bool'], true);
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['t'], '2');
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['string'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[0].data['s'], undefined);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
@@ -2621,6 +2649,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.previousData['string'], 'World');
+                assert.strictEqual(Navigation.StateContext.previousData['_bool'], true);
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 0);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
@@ -2668,6 +2699,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.previousData['string'], 'World');
+                assert.strictEqual(Navigation.StateContext.previousData['_bool'], true);
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 0);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'World');
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
@@ -2716,6 +2750,9 @@ describe('Navigation Data', function () {
                 var crumb = Navigation.StateController.crumbs[1];
                 crumb.data['string'] = 'Hello';
                 crumb.data['number'] = 0;
+                assert.strictEqual(Navigation.StateContext.previousData['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.previousData['_bool'], true);
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 1);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
@@ -2764,6 +2801,9 @@ describe('Navigation Data', function () {
                 var crumb = Navigation.StateController.crumbs[1];
                 crumb.data['string'] = 'Hello';
                 crumb.data['number'] = 0;
+                assert.strictEqual(Navigation.StateContext.previousData['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.previousData['_bool'], true);
+                assert.strictEqual(Navigation.StateContext.previousData['number'], 1);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['_bool'], true);
                 assert.strictEqual(Navigation.StateController.crumbs[1].data['number'], 0);
