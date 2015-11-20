@@ -97,7 +97,7 @@ class StateController {
     }
 
     static getNavigationLink(action: string, toData?: any): string {
-        return CrumbTrailManager.getHref(this.getNextState(action), toData);
+        return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
     }
 
     static canNavigateBack(distance: number) {
