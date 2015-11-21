@@ -4103,28 +4103,6 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Link Defaults Navigate', function() {
-        it('should not include defaults in link', function() {
-            Navigation.StateInfoConfig.build([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
-                ]);
-            var data = {};
-            data['_bool'] = null;
-            data['string'] = 'Hello';
-            data['number'] = 1;
-            Navigation.StateController.navigate('d');
-            var link = Navigation.StateController.getNavigationLink('t', data);
-            assert.equal(link.indexOf('string'), -1);
-            assert.equal(link.indexOf('_bool'), -1);
-            assert.equal(link.indexOf('number'), -1);
-            assert.notEqual(link.indexOf('r?'), -1);
-        });
-    });
-
     describe('Navigate Previous Data Refresh Without Trail', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
@@ -4170,6 +4148,28 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['t'], undefined);
             });
         }
+    });
+
+    describe('Link Defaults Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                ]);
+            var data = {};
+            data['_bool'] = null;
+            data['string'] = 'Hello';
+            data['number'] = 1;
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t', data);
+            assert.equal(link.indexOf('string'), -1);
+            assert.equal(link.indexOf('_bool'), -1);
+            assert.equal(link.indexOf('number'), -1);
+            assert.notEqual(link.indexOf('r?'), -1);
+        });
     });
 
     describe('Link Defaults Navigate', function() {
