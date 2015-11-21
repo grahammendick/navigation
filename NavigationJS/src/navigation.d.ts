@@ -609,7 +609,7 @@ declare module Navigation {
          */
         static oldDialog: Dialog;
         /**
-         * Gets the NavigationData for the OldState
+         * Gets the NavigationData for the previously displayed State
          */
         static oldData: any;
         /**
@@ -621,7 +621,7 @@ declare module Navigation {
          */
         static previousDialog: Dialog;
         /**
-         * Gets the NavigationData for the PreviousState
+         * Gets the NavigationData for the navigated away from State
          */
         static previousData: any;
         /**
