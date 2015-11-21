@@ -587,6 +587,11 @@ declare module Navigation {
          * ReturnData should be part of the CrumbTrail
          */
         combineCrumbTrail: boolean;
+        /**
+         * Gets or sets a value indicating whether to track PreviousData when
+         * navigating back or refreshing and combineCrumbTrail is false 
+         */
+        trackAllPreviousData: boolean;
     }
 
     /**
@@ -596,6 +601,18 @@ declare module Navigation {
      */
     class StateContext {
         /**
+         * Gets the previously displayed State
+         */
+        static oldState: State;
+        /**
+         * Gets the parent of the OldState property
+         */
+        static oldDialog: Dialog;
+        /**
+         * Gets the NavigationData for the OldState
+         */
+        static oldData: any;
+        /**
          * Gets the State navigated away from to reach the current State
          */
         static previousState: State;
@@ -603,6 +620,10 @@ declare module Navigation {
          * Gets the parent of the PreviousState property
          */
         static previousDialog: Dialog;
+        /**
+         * Gets the NavigationData for the PreviousState
+         */
+        static previousData: any;
         /**
          * Gets the current State
          */
@@ -612,8 +633,7 @@ declare module Navigation {
          */
         static dialog: Dialog;
         /**
-         * Gets the NavigationData for the current State. It can be accessed.
-         * Will become the data stored in a Crumb when part of a crumb trail
+         * Gets the NavigationData for the current State
          */
         static data: any;
         /**

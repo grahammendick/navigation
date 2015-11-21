@@ -126,9 +126,13 @@ module NavigationTests {
 	personList === Navigation.StateContext.state;
 	var url: string = Navigation.StateContext.url;
 	var page: number = Navigation.StateContext.data.page;
+	Navigation.StateController.refresh({ page: 2 });
+	person = Navigation.StateContext.oldDialog;
+	personList = Navigation.StateContext.oldState;
+	page = Navigation.StateContext.oldData.page;
+	page = Navigation.StateContext.previousData.page;
 	
 	// Navigation Data
-	Navigation.StateController.refresh({ page: 2 });
 	var data = Navigation.StateContext.includeCurrentData({ sort: 'name' }, ['page']);
 	Navigation.StateController.refresh(data);
 	Navigation.StateContext.clear('sort');
