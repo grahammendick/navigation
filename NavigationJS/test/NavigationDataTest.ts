@@ -4323,6 +4323,96 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Previous Data Bookmarked Link', function() {
+        it('should populate old but not previous data', function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            var data = {};
+            data['s'] = 'Hello';
+            data['t'] = 1;
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t'); 
+            Navigation.StateController.navigate('t', data);
+            Navigation.StateController.navigateLink(link);
+            assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+            assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
+            assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
+            assert.strictEqual(Navigation.StateContext.previousData['t'], undefined);
+            assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+            assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+        });
+    });
+
+    describe('Navigate Bookmarked Previous Data Link', function() {
+        it('should populate previous but not old data', function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            var data = {};
+            data['s'] = 'Hello';
+            data['t'] = 1;
+            Navigation.StateController.navigate('d', data);
+            var link = Navigation.StateController.getNavigationLink('t'); 
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigateLink(link);
+            assert.strictEqual(Navigation.StateContext.oldData['s'], undefined);
+            assert.strictEqual(Navigation.StateContext.oldData['t'], undefined);
+            assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
+            assert.strictEqual(Navigation.StateContext.previousData['t'], 1);
+            assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+            assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+        });
+    });
+
+    describe('Navigate Previous Data Bookmarked Previous Data Link', function() {
+        it('should populate old and previous data', function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            var data1 = {};
+            data1['s'] = 'Hello';
+            data1['t1'] = 1;
+            var data2 = {};
+            data2['s'] = 'World';
+            data2['t2'] = 2;
+            Navigation.StateController.navigate('d', data1);
+            var link = Navigation.StateController.getNavigationLink('t'); 
+            Navigation.StateController.navigate('t', data2);
+            Navigation.StateController.navigateLink(link);
+            assert.strictEqual(Navigation.StateContext.oldData['s'], 'World');
+            assert.strictEqual(Navigation.StateContext.oldData['t1'], undefined);
+            assert.strictEqual(Navigation.StateContext.oldData['t2'], 2);
+            assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
+            assert.strictEqual(Navigation.StateContext.previousData['t1'], 1);
+            assert.strictEqual(Navigation.StateContext.previousData['t2'], undefined);
+            assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+            assert.strictEqual(Navigation.StateContext.data['t1'], undefined);
+            assert.strictEqual(Navigation.StateContext.data['t2'], undefined);
+        });
+    });
+
     describe('Link Defaults Navigate', function() {
         it('should not include defaults in link', function() {
             Navigation.StateInfoConfig.build([
