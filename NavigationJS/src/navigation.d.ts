@@ -601,7 +601,7 @@ declare module Navigation {
      */
     class StateContext {
         /**
-         * Gets the previously displayed State
+         * Gets the State displayed before the current State
          */
         static oldState: State;
         /**
@@ -609,7 +609,7 @@ declare module Navigation {
          */
         static oldDialog: Dialog;
         /**
-         * Gets the NavigationData for the previously displayed State
+         * Gets the NavigationData for the last displayed State
          */
         static oldData: any;
         /**
