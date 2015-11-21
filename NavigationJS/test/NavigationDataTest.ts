@@ -3679,6 +3679,127 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Previous Data Back Two', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+         });
+        var data1 = {};
+        data1['s'] = 'Hello';
+        data1['t1'] = 1;
+        var data2 = {};
+        data2['s'] = 'World';
+        data2['t2'] = 2;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data1);
+                Navigation.StateController.navigate('t', data2);
+                Navigation.StateController.navigateBack(2);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data2);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(2);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'World');
+                assert.strictEqual(Navigation.StateContext.oldData['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.oldData['t2'], 2);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], 'World');
+                assert.strictEqual(Navigation.StateContext.previousData['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t2'], 2);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t2'], undefined);
+            });
+        }
+    });
+
+    describe('Navigate Previous Data One By One', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+         });
+        var data1 = {};
+        data1['s'] = 'Hello';
+        data1['t1'] = 1;
+        var data2 = {};
+        data2['s'] = 'World';
+        data2['t2'] = 2;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data1);
+                Navigation.StateController.navigate('t', data2);
+                Navigation.StateController.navigateBack(1);
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data2);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.oldData['t1'], 1);
+                assert.strictEqual(Navigation.StateContext.oldData['t2'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.previousData['t1'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['t2'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t2'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t1'], undefined);
+            });
+        }
+    });
+
     describe('Navigate Previous Data Refresh', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
