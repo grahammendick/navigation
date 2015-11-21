@@ -3676,6 +3676,50 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Previous Data Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false }]}
+                ]);
+         });
+        var data = {};
+        data['s'] = 'Hello';
+        data['t'] = 1;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+                Navigation.StateController.navigate('t');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+            });
+        }
+    });
+
     describe('Navigate Previous Data Back', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
@@ -3717,6 +3761,53 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.previousData['t'], 1);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+            });
+        }
+    });
+
+    describe('Navigate Previous Data Back Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+         });
+        var data = {};
+        data['s'] = 'Hello';
+        data['t'] = 1;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['s'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['t'], undefined);
             });
@@ -3775,6 +3866,65 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.previousData['s'], 'World');
                 assert.strictEqual(Navigation.StateContext.previousData['t1'], undefined);
                 assert.strictEqual(Navigation.StateContext.previousData['t2'], 2);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t2'], undefined);
+            });
+        }
+    });
+
+    describe('Navigate Previous Data Back Two Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+         });
+        var data1 = {};
+        data1['s'] = 'Hello';
+        data1['t1'] = 1;
+        var data2 = {};
+        data2['s'] = 'World';
+        data2['t2'] = 2;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data1);
+                Navigation.StateController.navigate('t', data2);
+                Navigation.StateController.navigateBack(2);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data2);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(2);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'World');
+                assert.strictEqual(Navigation.StateContext.oldData['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.oldData['t2'], 2);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t2'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['s'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['t1'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['t2'], undefined);
@@ -3844,6 +3994,68 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Previous Data One By One Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+         });
+        var data1 = {};
+        data1['s'] = 'Hello';
+        data1['t1'] = 1;
+        var data2 = {};
+        data2['s'] = 'World';
+        data2['t2'] = 2;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data1);
+                Navigation.StateController.navigate('t', data2);
+                Navigation.StateController.navigateBack(1);
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data2);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.oldData['t1'], 1);
+                assert.strictEqual(Navigation.StateContext.oldData['t2'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t1'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t2'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t2'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t1'], undefined);
+            });
+        }
+    });
+
     describe('Navigate Previous Data Refresh', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
@@ -3885,6 +4097,75 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.previousData['t'], 1);
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+            });
+        }
+    });
+
+    describe('Link Defaults Navigate', function() {
+        it('should not include defaults in link', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                ]);
+            var data = {};
+            data['_bool'] = null;
+            data['string'] = 'Hello';
+            data['number'] = 1;
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t', data);
+            assert.equal(link.indexOf('string'), -1);
+            assert.equal(link.indexOf('_bool'), -1);
+            assert.equal(link.indexOf('number'), -1);
+            assert.notEqual(link.indexOf('r?'), -1);
+        });
+    });
+
+    describe('Navigate Previous Data Refresh Without Trail', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: false }]}
+                ]);
+         });
+        var data = {};
+        data['s'] = 'Hello';
+        data['t'] = 1;
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t', data);
+                Navigation.StateController.refresh();
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink();
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate old and previous data', function () {
+                assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
+                assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.previousData['t'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['s'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['t'], undefined);
             });
