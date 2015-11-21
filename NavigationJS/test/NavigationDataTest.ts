@@ -3632,7 +3632,7 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Old and Previous Data Back', function() {
+    describe('Navigate Previous Data Back', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
@@ -3668,7 +3668,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate data', function () {
+            it('should populate old and previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
@@ -3679,7 +3679,7 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Old and Previous Data Refresh', function() {
+    describe('Navigate Previous Data Refresh', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
@@ -3715,7 +3715,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate data', function () {
+            it('should populate old and previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], 'Hello');
