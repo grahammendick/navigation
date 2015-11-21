@@ -2159,7 +2159,7 @@ describe('Navigation', function () {
     });
 
     describe('Bookmarked Link Navigate', function() {
-        it ('should return to State', function() {
+        it ('should populate old and previous States', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
@@ -2182,7 +2182,7 @@ describe('Navigation', function () {
     });
 
     describe('Bookmarked Link Without Trail Navigate', function() {
-        it ('should return to State', function() {
+        it ('should populate old but not previous States', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
@@ -2200,6 +2200,32 @@ describe('Navigation', function () {
             Navigation.StateController.navigateLink(link);
             assert.equal(Navigation.StateContext.oldState, Navigation.StateInfoConfig.dialogs['d'].states['s2']);
             assert.equal(Navigation.StateContext.previousState, null);
+            assert.equal(Navigation.StateContext.previousDialog, null);
+            assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+        })
+    });
+
+    describe('Bookmarked Link Clear Navigate', function() {
+        it ('should populate previous but not old States', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            var link = Navigation.StateController.getNavigationLink('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.navigate('t');
+            Navigation.StateController.clearStateContext();
+            Navigation.StateController.navigateLink(link);
+            assert.equal(Navigation.StateContext.oldState, undefined);
+            assert.equal(Navigation.StateContext.oldDialog, undefined);
+            assert.equal(Navigation.StateContext.previousState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
             assert.equal(Navigation.StateContext.state, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
         })
     });
