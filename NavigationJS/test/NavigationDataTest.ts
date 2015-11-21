@@ -3709,7 +3709,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate old and previous data', function () {
+            it('should populate old but not previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
@@ -3803,7 +3803,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate old and previous data', function () {
+            it('should populate old but not previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
@@ -3918,7 +3918,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate old and previous data', function () {
+            it('should populate old but not previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'World');
                 assert.strictEqual(Navigation.StateContext.oldData['t1'], undefined);
                 assert.strictEqual(Navigation.StateContext.oldData['t2'], 2);
@@ -4042,7 +4042,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate old and previous data', function () {
+            it('should populate old but not previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.oldData['t1'], 1);
                 assert.strictEqual(Navigation.StateContext.oldData['t2'], undefined);
@@ -4204,7 +4204,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate old and previous data', function () {
+            it('should populate old but not previous data', function () {
                 assert.strictEqual(Navigation.StateContext.oldData['s'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.oldData['t'], 1);
                 assert.strictEqual(Navigation.StateContext.previousData['s'], undefined);
