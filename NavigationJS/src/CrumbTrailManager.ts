@@ -7,7 +7,6 @@ import StateContext = require('./StateContext');
 import StateInfoConfig = require('./config/StateInfoConfig');
 
 class CrumbTrailManager {
-    static returnData: any;
     static crumbTrail: string;
     static crumbTrailKey: string;
     private static CRUMB_1_SEP = '4_';
@@ -16,7 +15,7 @@ class CrumbTrailManager {
     static buildCrumbTrail(uncombined: boolean) {
         var crumbs = this.getCrumbs(false);
         if (uncombined)
-            crumbs.push(new Crumb(this.returnData, StateContext.previousState, this.getHref(StateContext.previousState, this.returnData, null), false));        
+            crumbs.push(new Crumb(StateContext.previousData, StateContext.previousState, this.getHref(StateContext.previousState, StateContext.previousData, null), false));        
         crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
         if (settings.combineCrumbTrail)
             crumbs.push(new Crumb(StateContext.data, StateContext.state, this.getHref(StateContext.state, StateContext.data, null), false));
@@ -80,6 +79,8 @@ class CrumbTrailManager {
             }
         }
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
+            if (settings.trackAllPreviousData)
+                returnData = StateContext.data;
             var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;

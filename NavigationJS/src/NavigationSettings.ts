@@ -14,5 +14,6 @@ class NavigationSettings {
     crumbTrailKey: string = 'c3';
     applicationPath: string = '';
     combineCrumbTrail: boolean = false;
+    trackAllPreviousData: boolean = true;
 }
 export = NavigationSettings;
