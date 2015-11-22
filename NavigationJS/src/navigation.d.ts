@@ -601,7 +601,7 @@ declare module Navigation {
      */
     class StateContext {
         /**
-         * Gets the State displayed before the current State
+         * Gets the State last displayed before the current State
          */
         static oldState: State;
         /**
