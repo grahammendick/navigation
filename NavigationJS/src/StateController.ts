@@ -108,35 +108,35 @@ class StateController {
             return canNavigate
         }
 
-    static navigateBack(distance: number) {
+    static navigateBack(distance: number, historyAction?: HistoryAction) {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getCrumb(distance).state);
+        this._navigateLink(url, this.getCrumb(distance).state, false, historyAction);
     }
 
     static getNavigationBackLink(distance: number): string {
         return this.getCrumb(distance).navigationLink;
     }
 
-    static refresh(toData?: any) {
+    static refresh(toData?: any, historyAction?: HistoryAction) {
         var url = this.getRefreshLink(toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, StateContext.state);
+        this._navigateLink(url, StateContext.state, false, historyAction);
     }
 
     static getRefreshLink(toData?: any): string {
         return CrumbTrailManager.getRefreshHref(toData);
     }
 
-    static navigateLink(url: string, history?: boolean) {
+    static navigateLink(url: string, history?: boolean, historyAction?: HistoryAction) {
         try {
             var state = settings.router.getData(url.split('?')[0]).state;
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        this._navigateLink(url, state, history);
+        this._navigateLink(url, state, history, historyAction);
     }
 
     private static _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
