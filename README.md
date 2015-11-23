@@ -12,6 +12,8 @@ Once you've cloned the repository, you can install the dependencies and run the 
 
 Running `npm test` will execute the unit tests.
 
+Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cross browser testing
+
 ### Code
 You'll find the source code in the NavigationJS folder. It's written in TypeScript and is built on top of node.js. The NavigationAngular, NavigationKnockout and NavigationReact folders contain the source code for the plugins. 
 
