@@ -172,7 +172,7 @@ class StateController {
                         this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
                 if (url === StateContext.url && historyAction !== HistoryAction.None)
-                    settings.historyManager.addHistory(state, url);
+                    settings.historyManager.addHistory(state, url, historyAction === HistoryAction.Replace);
             }
         };
     }

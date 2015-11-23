@@ -12,7 +12,7 @@ class HTML5HistoryManager implements IHistoryManager {
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
     }
 
-    addHistory(state: State, url: string) {
+    addHistory(state: State, url: string, replace: boolean) {
         url = url != null ? url : StateContext.url;
         if (state && state.title && (typeof document !== 'undefined'))
             document.title = state.title;
