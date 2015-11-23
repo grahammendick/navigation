@@ -12,6 +12,7 @@ http.createServer(function(req, res) {
 	Navigation.StateController.navigateLink(req.url);
 	// Get the props data for the active State
 	getProps(function(props) {
+		res.setHeader('vary', 'content-type');
 		if (req.headers['content-type'] === 'application/json') {
 			res.write(JSON.stringify(props));
 		} else {
