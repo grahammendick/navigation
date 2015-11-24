@@ -12,6 +12,7 @@ describe('Navigation', function () {
         Navigation.StateController.clearStateContext();
         Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
         Navigation.settings.combineCrumbTrail = setting;
+        Navigation.settings.historyManager = new Navigation.HashHistoryManager();
     });
 
     describe('Dialog', function() {
@@ -4216,6 +4217,51 @@ describe('Navigation', function () {
                 assert.equal(Navigation.StateController.crumbs.length, 0);
             });
         }
+    });
+
+    describe('History Null Navigate', function () {
+        it('should pass replace false to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            Navigation.StateController.navigate('d');
+            assert.strictEqual(replaceHistory, false);
+        });
+    });
+
+    describe('History Add Navigate', function () {
+        it('should pass replace false to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            Navigation.StateController.navigate('d', null, Navigation.HistoryAction.Add);
+            assert.strictEqual(replaceHistory, false);
+        });
+    });
+
+    describe('History Replace Navigate', function () {
+        it('should pass replace true to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            Navigation.StateController.navigate('d', null, Navigation.HistoryAction.Replace);
+            assert.strictEqual(replaceHistory, true);
+        });
     });
 });
 });
