@@ -4263,5 +4263,84 @@ describe('Navigation', function () {
             assert.strictEqual(replaceHistory, true);
         });
     });
+
+    describe('History None Navigate', function () {
+        it('should pass replace true to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = true;
+            }
+            Navigation.StateController.navigate('d', null, Navigation.HistoryAction.None);
+            assert.strictEqual(replaceHistory, undefined);
+        });
+    });
+
+    describe('History Null Refresh Navigate', function () {
+        it('should pass replace false to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.StateController.navigate('d');
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            Navigation.StateController.refresh();
+            assert.strictEqual(replaceHistory, false);
+        });
+    });
+
+    describe('History Add Refresh Navigate', function () {
+        it('should pass replace false to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.StateController.navigate('d', null, Navigation.HistoryAction.Add);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            Navigation.StateController.refresh(null, Navigation.HistoryAction.Add);
+            assert.strictEqual(replaceHistory, false);
+        });
+    });
+
+    describe('History Replace Refresh Navigate', function () {
+        it('should pass replace true to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.StateController.navigate('d', null, Navigation.HistoryAction.Replace);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            Navigation.StateController.refresh(null, Navigation.HistoryAction.Replace);
+            assert.strictEqual(replaceHistory, true);
+        });
+    });
+
+    describe('History None Refresh Navigate', function () {
+        it('should pass replace true to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            Navigation.StateController.navigate('d', null, Navigation.HistoryAction.Replace);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = true;
+            }
+            Navigation.StateController.refresh(null, Navigation.HistoryAction.None);
+            assert.strictEqual(replaceHistory, undefined);
+        });
+    });
 });
 });
