@@ -278,6 +278,12 @@ declare module Navigation {
          */
         static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
     }
+    
+    enum HistoryAction {
+        Add = 0,
+        Replace = 1,
+        None = 2,
+    }    
 
     /**
      * Defines a contract a class must implement in order to manage the browser
@@ -297,7 +303,7 @@ declare module Navigation {
          * @param state The State navigated to
          * @param url The current url 
          */
-        addHistory(state: State, url: string): void;
+        addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
          */
@@ -338,7 +344,7 @@ declare module Navigation {
          * @param state The State navigated to
          * @param url The current url 
          */
-        addHistory(state: State, url: string): void;
+        addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
          */
@@ -374,7 +380,7 @@ declare module Navigation {
          * @param state The State navigated to
          * @param url The current url 
          */
-        addHistory(state: State, url: string): void;
+        addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
          */
@@ -718,6 +724,7 @@ declare module Navigation {
          * @throws A mandatory route parameter has not been supplied a value
          */
         static navigate(action: string, toData: any): void;
+        static navigate(action: string, toData: any, historyAction: HistoryAction): void;
         /**
          * Gets a Url to navigate to a State. Depending on the action will
          * either navigate to the 'to' State of a Transition or the 'initial'
@@ -757,6 +764,7 @@ declare module Navigation {
          * @throws A mandatory route parameter has not been supplied a value
          */
         static navigateBack(distance: number): void;
+        static navigateBack(distance: number, historyAction: HistoryAction): void;
         /**
          * Gets a Url to navigate to a Crumb contained in the crumb trail, 
          * represented by the Crumbs collection, as specified by the distance.
@@ -779,6 +787,7 @@ declare module Navigation {
          * @throws A mandatory route parameter has not been supplied a value
          */
         static refresh(toData: any): void;
+        static refresh(toData: any, historyAction: HistoryAction): void;
         /**
          * Gets a Url to navigate to the current State passing no 
          * NavigationData
@@ -803,6 +812,7 @@ declare module Navigation {
          * @param history A value indicating whether browser history was used
          */
         static navigateLink(url: string, history: boolean): void;
+        static navigateLink(url: string, history: boolean, historyAction: HistoryAction): void;
         /**
          * Gets the next State. Depending on the action will either return the
          * 'to' State of a Transition or the 'initial' State of a Dialog
