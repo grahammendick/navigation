@@ -2,16 +2,7 @@
 import Navigation = require('navigation');
 import React = require('react');
 
-interface Props {
-    toData?: any;
-    includeCurrentData?: boolean;
-    currentDataKeys?: string;
-    lazy?: boolean;
-    activeCssClass?: string;
-    disableActive?: boolean;    
-}
-
-class RefreshLink extends React.Component<Props, {}> {
+class RefreshLink extends React.Component<any, any> {
     getRefreshLink(): string {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(() => Navigation.StateController.getRefreshLink(toData));

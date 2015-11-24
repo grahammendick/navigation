@@ -2,12 +2,7 @@
 import Navigation = require('navigation');
 import React = require('react');
 
-interface Props {
-    distance: number;
-    lazy?: boolean;
-}
-
-class NavigationBackLink extends React.Component<Props, {}> {
+class NavigationBackLink extends React.Component<any, any> {
     private getNavigationBackLink(): string {
         return LinkUtility.getLink(() => Navigation.StateController.getNavigationBackLink(this.props.distance));
     }

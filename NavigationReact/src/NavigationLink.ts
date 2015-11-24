@@ -2,17 +2,7 @@
 import Navigation = require('navigation');
 import React = require('react');
 
-interface Props {
-    action: string;
-    toData?: any;
-    includeCurrentData?: boolean;
-    currentDataKeys?: string;
-    lazy?: boolean;
-    activeCssClass?: string;
-    disableActive?: boolean;
-}
-
-class NavigationLink extends React.Component<Props, {}> {
+class NavigationLink extends React.Component<any, any> {
     private getNavigationLink(): string {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(() => Navigation.StateController.getNavigationLink(this.props.action, toData));
