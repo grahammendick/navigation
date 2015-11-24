@@ -4422,5 +4422,69 @@ describe('Navigation', function () {
             assert.strictEqual(replaceHistory, undefined);
         });
     });
+
+    describe('History Null Navigate Link', function () {
+        it('should pass replace false to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            var link = Navigation.StateController.getNavigationLink('d');
+            Navigation.StateController.navigateLink(link);
+            assert.strictEqual(replaceHistory, false);
+        });
+    });
+
+    describe('History Add Navigate Link', function () {
+        it('should pass replace false to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            var link = Navigation.StateController.getNavigationLink('d');
+            Navigation.StateController.navigateLink(link, false, Navigation.HistoryAction.Add);
+            assert.strictEqual(replaceHistory, false);
+        });
+    });
+
+    describe('History Replace Navigate Link', function () {
+        it('should pass replace true to history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = replace;
+            }
+            var link = Navigation.StateController.getNavigationLink('d');
+            Navigation.StateController.navigateLink(link, false, Navigation.HistoryAction.Replace);
+            assert.strictEqual(replaceHistory, true);
+        });
+    });
+
+    describe('History None Navigate Link', function () {
+        it('should not call history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var replaceHistory;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                replaceHistory = true;
+            }
+            var link = Navigation.StateController.getNavigationLink('d');
+            Navigation.StateController.navigateLink(link, false, Navigation.HistoryAction.None);
+            assert.strictEqual(replaceHistory, undefined);
+        });
+    });
 });
 });
