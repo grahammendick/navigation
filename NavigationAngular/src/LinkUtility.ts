@@ -48,7 +48,10 @@ class LinkUtility {
                     var navigating = this.getNavigating($parse, attrs, scope);
                     if (navigating(e, link)) {
                         e.preventDefault();
-                        Navigation.StateController.navigateLink(link);
+                        var historyAction = scope.$eval(attrs['historyAction']);
+                        if (typeof historyAction === 'string')
+                            historyAction = Navigation.HistoryAction[historyAction];
+                        Navigation.StateController.navigateLink(link, false, historyAction);
                     }
                 }
             }
