@@ -49,7 +49,10 @@ class LinkUtility {
                             e.preventDefault();
                         else
                             e['returnValue'] = false;
-                        Navigation.StateController.navigateLink(link, false, ko.unwrap(allBindings.get('historyAction')));
+                        var historyAction = ko.unwrap(allBindings.get('historyAction'));
+                        if (typeof historyAction === 'string')
+                            historyAction = Navigation.HistoryAction[historyAction];
+                        Navigation.StateController.navigateLink(link, false, historyAction);
                     }
                 }
             }
