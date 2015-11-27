@@ -317,7 +317,7 @@ declare module Navigation {
          * @param replace A value indicating whether to replace the current
          * browser history entry
          */
-        addHistory(state: State, url: string, replace: boolean): void;
+        addHistory(state: State, url: string, replace?: boolean): void;
         /**
          * Gets the current location
          */
@@ -360,7 +360,7 @@ declare module Navigation {
          * @param replace A value indicating whether to replace the current
          * browser history entry
          */
-        addHistory(state: State, url: string, replace: boolean): void;
+        addHistory(state: State, url: string, replace?: boolean): void;
         /**
          * Gets the current location
          */
@@ -398,7 +398,7 @@ declare module Navigation {
          * @param replace A value indicating whether to replace the current
          * browser history entry
          */
-        addHistory(state: State, url: string, replace: boolean): void;
+        addHistory(state: State, url: string, replace?: boolean): void;
         /**
          * Gets the current location
          */
