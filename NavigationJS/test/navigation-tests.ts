@@ -128,6 +128,7 @@ module NavigationTests {
 	person === Navigation.StateContext.dialog;
 	personList === Navigation.StateContext.state;
 	var url: string = Navigation.StateContext.url;
+	var title: string = Navigation.StateContext.title;
 	var page: number = Navigation.StateContext.data.page;
 	Navigation.StateController.refresh({ page: 2 });
 	person = Navigation.StateContext.oldDialog;

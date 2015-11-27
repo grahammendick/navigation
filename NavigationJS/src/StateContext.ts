@@ -12,6 +12,7 @@ class StateContext {
     static dialog: Dialog;
     static data: any = {};
     static url: string;
+    static title: string;
 
     static includeCurrentData(data: any, keys?: string[]): any {
         if (!keys) {

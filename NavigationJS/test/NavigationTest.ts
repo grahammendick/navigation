@@ -4214,6 +4214,7 @@ describe('Navigation', function () {
                 assert.strictEqual(Navigation.StateContext.state, null);
                 assert.strictEqual(Navigation.StateContext.dialog, null);
                 assert.strictEqual(Navigation.StateContext.url, null);
+                assert.strictEqual(Navigation.StateContext.title, null);
                 assert.equal(Navigation.StateController.crumbs.length, 0);
             });
         }
@@ -4500,6 +4501,26 @@ describe('Navigation', function () {
             }
             Navigation.StateController.navigateBack(1, Navigation.HistoryAction.None);
             assert.strictEqual(replaceHistory, undefined);
+        });
+    });
+
+    describe('History Navigated Navigate', function () {
+        it('should not call history manager', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's', states: [
+                    { key: 's', route: 'r0' }]},
+                { key: 'd1', initial: 's', states: [
+                    { key: 's', route: 'r1' }]}
+                ]);
+            var called = false;
+            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+                called = true;
+            }
+            Navigation.StateInfoConfig.dialogs['d0'].states['s'].navigated = () => {
+                Navigation.StateController.navigate('d1', null, Navigation.HistoryAction.None);
+            }
+            Navigation.StateController.navigate('d0');
+            assert.ok(!called);
         });
     });
 });
