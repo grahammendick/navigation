@@ -21,6 +21,7 @@ class StateController {
             StateContext.state = state;
             StateContext.url = url;
             StateContext.dialog = state.parent;
+            StateContext.title = state.title;
             var data = state.stateHandler.getNavigationData(state, url);
             StateContext.data = this.parseData(data, state);
             StateContext.previousState = null;
@@ -47,6 +48,7 @@ class StateController {
         StateContext.dialog = null;
         StateContext.data = {};
         StateContext.url = null;
+        StateContext.title = null;
         CrumbTrailManager.crumbTrail = null;
         CrumbTrailManager.crumbTrailKey = null;
     }
