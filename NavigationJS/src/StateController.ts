@@ -177,7 +177,7 @@ class StateController {
                     if (historyAction !== HistoryAction.None)
                         settings.historyManager.addHistory(state, url, historyAction === HistoryAction.Replace);
                     if (StateContext.title && (typeof document !== 'undefined'))
-                        document.title = state.title;
+                        document.title = StateContext.title;
             }
         };
     }
