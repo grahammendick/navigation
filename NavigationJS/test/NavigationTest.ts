@@ -4214,6 +4214,7 @@ describe('Navigation', function () {
                 assert.strictEqual(Navigation.StateContext.state, null);
                 assert.strictEqual(Navigation.StateContext.dialog, null);
                 assert.strictEqual(Navigation.StateContext.url, null);
+                assert.strictEqual(Navigation.StateContext.title, null);
                 assert.equal(Navigation.StateController.crumbs.length, 0);
             });
         }
