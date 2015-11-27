@@ -314,10 +314,16 @@ declare module Navigation {
          * Adds browser history
          * @param state The State navigated to
          * @param url The current url
+         */
+        addHistory(state: State, url: string): void;
+        /**
+         * Adds browser history
+         * @param state The State navigated to
+         * @param url The current url
          * @param replace A value indicating whether to replace the current
          * browser history entry
          */
-        addHistory(state: State, url: string, replace?: boolean): void;
+        addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
          */
@@ -357,10 +363,16 @@ declare module Navigation {
          * Sets the browser Url's hash to the url
          * @param state The State navigated to
          * @param url The current url 
+         */
+        addHistory(state: State, url: string): void;
+        /**
+         * Sets the browser Url's hash to the url
+         * @param state The State navigated to
+         * @param url The current url 
          * @param replace A value indicating whether to replace the current
          * browser history entry
          */
-        addHistory(state: State, url: string, replace?: boolean): void;
+        addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
          */
@@ -395,10 +407,16 @@ declare module Navigation {
          * Sets the browser Url to the url using pushState
          * @param state The State navigated to
          * @param url The current url 
+         */
+        addHistory(state: State, url: string): void;
+        /**
+         * Sets the browser Url to the url using pushState
+         * @param state The State navigated to
+         * @param url The current url 
          * @param replace A value indicating whether to replace the current
          * browser history entry
          */
-        addHistory(state: State, url: string, replace?: boolean): void;
+        addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
          */
