@@ -682,6 +682,10 @@ declare module Navigation {
          * Gets the current Url
          */
         static url: string;
+        /**
+         * Gets or sets the current title
+         */
+        static title: string;
         /** 
          * Combines the data with all the current NavigationData
          * @param The data to add to the current NavigationData
