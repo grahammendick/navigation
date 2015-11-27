@@ -14,8 +14,6 @@ class HTML5HistoryManager implements IHistoryManager {
 
     addHistory(state: State, url: string, replace?: boolean) {
         url = url != null ? url : StateContext.url;
-        if (state && state.title && (typeof document !== 'undefined'))
-            document.title = state.title;
         url = settings.applicationPath + url;
         if (!this.disabled && location.pathname + location.search !== url) {
             if (!replace)            

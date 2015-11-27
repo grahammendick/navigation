@@ -173,8 +173,11 @@ class StateController {
                     if (url === StateContext.url)
                         this.navigateHandlers[id](oldState, state, StateContext.data);
                 }
-                if (url === StateContext.url && historyAction !== HistoryAction.None)
-                    settings.historyManager.addHistory(state, url, historyAction === HistoryAction.Replace);
+                if (url === StateContext.url)
+                    if (historyAction !== HistoryAction.None)
+                        settings.historyManager.addHistory(state, url, historyAction === HistoryAction.Replace);
+                    if (StateContext.title && (typeof document !== 'undefined'))
+                        document.title = state.title;
             }
         };
     }
