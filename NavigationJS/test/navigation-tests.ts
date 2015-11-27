@@ -97,8 +97,10 @@ module NavigationTests {
 	// Navigation
 	Navigation.start('home');
 	Navigation.StateController.navigate('person');
+	Navigation.StateController.navigate('person', null, Navigation.HistoryAction.Add);
 	Navigation.StateController.refresh();
-	Navigation.StateController.refresh({ page: 2 });
+	Navigation.StateController.refresh({ page: 3 });
+	Navigation.StateController.refresh({ page: 2 }, Navigation.HistoryAction.Replace);
 	Navigation.StateController.navigate('select', { id: 10 });
 	var canGoBack: boolean = Navigation.StateController.canNavigateBack(1);
 	Navigation.StateController.navigateBack(1);
@@ -108,14 +110,15 @@ module NavigationTests {
 	var link = Navigation.StateController.getNavigationLink('person');
 	link = Navigation.StateController.getRefreshLink();
 	link = Navigation.StateController.getRefreshLink({ page: 2 });
+	Navigation.StateController.navigateLink(link);
 	link = Navigation.StateController.getNavigationLink('select', { id: 10 });
 	var nextDialog = Navigation.StateController.getNextState('select').parent;
 	person = nextDialog;
-	Navigation.StateController.navigateLink(link);
+	Navigation.StateController.navigateLink(link, false);
 	link = Navigation.StateController.getNavigationBackLink(1);
 	var crumb = Navigation.StateController.crumbs[0];
 	link = crumb.navigationLink;
-	Navigation.StateController.navigateLink(link, true);
+	Navigation.StateController.navigateLink(link, true, Navigation.HistoryAction.None);
 	
 	// StateContext
 	Navigation.StateController.navigate('home');
