@@ -2,22 +2,22 @@
 import Navigation = require('navigation');
 import React = require('react');
 
-var RefreshLink = React.createClass({
-    onNavigate() {
-        this.forceUpdate();
-    },
+class RefreshLink extends React.Component<any, any> {
     getRefreshLink(): string {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(() => Navigation.StateController.getRefreshLink(toData));
-    },
+    }
+    
     componentDidMount() {
         if (!this.props.lazy)
-            Navigation.StateController.onNavigate(this.onNavigate);
-    },
+            Navigation.StateController.onNavigate(() => this.forceUpdate);
+    }
+    
     componentWillUnmount() {
         if (!this.props.lazy)
-            Navigation.StateController.offNavigate(this.onNavigate);
-    },
+            Navigation.StateController.offNavigate(() => this.forceUpdate);
+    }
+    
     render() {
         var props: any = {};
         for(var key in this.props)
@@ -32,5 +32,5 @@ var RefreshLink = React.createClass({
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
     }
-});
+};
 export = RefreshLink;

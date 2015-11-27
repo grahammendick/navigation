@@ -53,7 +53,10 @@ class LinkUtility {
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {
                         e.preventDefault();
-                        Navigation.StateController.navigateLink(link);
+                        var historyAction = props.historyAction;
+                        if (typeof historyAction === 'string')
+                            historyAction = Navigation.HistoryAction[historyAction];
+                        Navigation.StateController.navigateLink(link, false, historyAction);
                     }
                 }
             }

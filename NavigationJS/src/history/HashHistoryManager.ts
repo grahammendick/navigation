@@ -16,13 +16,17 @@ class HashHistoryManager implements IHistoryManager {
         }
     }
 
-    addHistory(state: State, url: string) {
+    addHistory(state: State, url: string, replace?: boolean) {
         url = url != null ? url : StateContext.url;
         if (state && state.title && (typeof document !== 'undefined'))
             document.title = state.title;
-        url = this.encode(url);
-        if (!this.disabled && location.hash.substring(1) !== url)
-            location.hash = url;
+        url = '#' + this.encode(url);
+        if (!this.disabled && location.hash !== url) {
+            if (!replace)            
+                location.hash = url;
+            else
+                location.replace(url);
+        }
     }
 
     getCurrentUrl(): string {

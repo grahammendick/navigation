@@ -12,6 +12,7 @@ describe('Navigation Data', function () {
         Navigation.StateController.clearStateContext();
         Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
         Navigation.settings.combineCrumbTrail = setting;
+        Navigation.settings.historyManager = new Navigation.HashHistoryManager();
     });
 
     describe('Individual Data', function() {
