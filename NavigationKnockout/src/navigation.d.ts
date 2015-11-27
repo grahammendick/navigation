@@ -279,9 +279,21 @@ declare module Navigation {
         static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]): void;
     }
     
+    /**
+     * Determines the effect on browser history after a successful navigation
+     */
     enum HistoryAction {
+        /**
+         * Creates a new browser history entry
+         */
         Add = 0,
+        /**
+         * Changes the current browser history entry
+         */
         Replace = 1,
+        /**
+         * Leaves browser history unchanged
+         */
         None = 2,
     }    
 
@@ -301,7 +313,15 @@ declare module Navigation {
         /**
          * Adds browser history
          * @param state The State navigated to
-         * @param url The current url 
+         * @param url The current url
+         */
+        addHistory(state: State, url: string): void;
+        /**
+         * Adds browser history
+         * @param state The State navigated to
+         * @param url The current url
+         * @param replace A value indicating whether to replace the current
+         * browser history entry
          */
         addHistory(state: State, url: string, replace: boolean): void;
         /**
@@ -344,6 +364,14 @@ declare module Navigation {
          * @param state The State navigated to
          * @param url The current url 
          */
+        addHistory(state: State, url: string): void;
+        /**
+         * Sets the browser Url's hash to the url
+         * @param state The State navigated to
+         * @param url The current url 
+         * @param replace A value indicating whether to replace the current
+         * browser history entry
+         */
         addHistory(state: State, url: string, replace: boolean): void;
         /**
          * Gets the current location
@@ -379,6 +407,14 @@ declare module Navigation {
          * Sets the browser Url to the url using pushState
          * @param state The State navigated to
          * @param url The current url 
+         */
+        addHistory(state: State, url: string): void;
+        /**
+         * Sets the browser Url to the url using pushState
+         * @param state The State navigated to
+         * @param url The current url 
+         * @param replace A value indicating whether to replace the current
+         * browser history entry
          */
         addHistory(state: State, url: string, replace: boolean): void;
         /**
@@ -724,6 +760,19 @@ declare module Navigation {
          * @throws A mandatory route parameter has not been supplied a value
          */
         static navigate(action: string, toData: any): void;
+        /**
+         * Navigates to a State. Depending on the action will either navigate
+         * to the 'to' State of a Transition or the 'initial' State of a
+         * Dialog
+         * @param action The key of a child Transition or the key of a Dialog
+         * @param toData The NavigationData to be passed to the next State and
+         * stored in the StateContext
+         * @param A value determining the effect on browser history
+         * @throws action does not match the key of a child Transition or the
+         * key of a Dialog; or there is NavigationData that cannot be converted
+         * to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
         static navigate(action: string, toData: any, historyAction: HistoryAction): void;
         /**
          * Gets a Url to navigate to a State. Depending on the action will
@@ -764,6 +813,16 @@ declare module Navigation {
          * @throws A mandatory route parameter has not been supplied a value
          */
         static navigateBack(distance: number): void;
+        /**
+         * Navigates back to the Crumb contained in the crumb trail,
+         * represented by the Crumbs collection, as specified by the distance.
+         * In the crumb trail no two crumbs can have the same State but all
+         * must have the same Dialog
+         * @param distance Starting at 1, the number of Crumb steps to go back
+         * @param A value determining the effect on browser history
+         * @throws canNavigateBack returns false for this distance
+         * @throws A mandatory route parameter has not been supplied a value
+         */
         static navigateBack(distance: number, historyAction: HistoryAction): void;
         /**
          * Gets a Url to navigate to a Crumb contained in the crumb trail, 
@@ -787,6 +846,14 @@ declare module Navigation {
          * @throws A mandatory route parameter has not been supplied a value
          */
         static refresh(toData: any): void;
+        /**
+         * Navigates to the current State
+         * @param toData The NavigationData to be passed to the current State
+         * and stored in the StateContext
+         * @param A value determining the effect on browser history
+         * @throws There is NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
         static refresh(toData: any, historyAction: HistoryAction): void;
         /**
          * Gets a Url to navigate to the current State passing no 
@@ -812,6 +879,12 @@ declare module Navigation {
          * @param history A value indicating whether browser history was used
          */
         static navigateLink(url: string, history: boolean): void;
+        /**
+         * Navigates to the url
+         * @param url The target location
+         * @param history A value indicating whether browser history was used
+         * @param A value determining the effect on browser history
+         */
         static navigateLink(url: string, history: boolean, historyAction: HistoryAction): void;
         /**
          * Gets the next State. Depending on the action will either return the
