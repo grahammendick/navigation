@@ -144,34 +144,33 @@ class StateController {
     private static _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
         try {
             var oldUrl = StateContext.url;
-            var oldState = StateContext.state;
             var data = state.stateHandler.getNavigationData(state, url);
             data = this.parseData(data, state);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        var navigateContinuation =  this.getNavigateContinuation(oldState, oldUrl, state, url, historyAction);
+        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === StateContext.url)
                 state.navigating(data, url, navigateContinuation, history);
         };
-        if (oldState)
-            oldState.unloading(state, data, url, unloadContinuation, history);
+        if (StateContext.state)
+            StateContext.state.unloading(state, data, url, unloadContinuation, history);
         else
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private static getNavigateContinuation(oldState: State, oldUrl: string, state: State, url: string, historyAction: HistoryAction): () => void {
+    private static getNavigateContinuation(oldUrl: string, state: State, url: string, historyAction: HistoryAction): () => void {
         return (asyncData?: any) => {
             if (oldUrl === StateContext.url) {
-                state.stateHandler.navigateLink(oldState, state, url);
+                state.stateHandler.navigateLink(StateContext.oldState, state, url);
                 StateController.setStateContext(state, url);
-                if (oldState && oldState !== state)
-                    oldState.dispose();
+                if (StateContext.oldState && StateContext.oldState !== state)
+                    StateContext.oldState.dispose();
                 state.navigated(StateContext.data, asyncData);
                 for (var id in this.navigateHandlers) {
                     if (url === StateContext.url)
-                        this.navigateHandlers[id](oldState, state, StateContext.data);
+                        this.navigateHandlers[id](StateContext.oldState, state, StateContext.data);
                 }
                 if (url === StateContext.url) {
                     if (historyAction !== HistoryAction.None)
