@@ -22,10 +22,13 @@ class LinkUtility {
     static isActive(key: string, val: any): boolean {
         if (!Navigation.StateContext.state)
             return false;
-        if (val != null && val.toString()) {
+        if (val != null) {
             var trackTypes = Navigation.StateContext.state.trackTypes;
             var currentVal = Navigation.StateContext.data[key];
-            return currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
+            if (currentVal != null)
+                return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
+            else
+                return val === '';
         }
         return true;
     }
