@@ -9,12 +9,12 @@ class NavigationBackLink extends React.Component<any, any> {
     
     componentDidMount() {
         if (!this.props.lazy)
-            Navigation.StateController.onNavigate(() => this.forceUpdate);
+            Navigation.StateController.onNavigate(() => this.forceUpdate());
     }
     
     componentWillUnmount() {
         if (!this.props.lazy)
-            Navigation.StateController.offNavigate(() => this.forceUpdate);
+            Navigation.StateController.offNavigate(() => this.forceUpdate());
     }
     
     render() {
