@@ -38,8 +38,8 @@ module NavigationTests {
 	
 	// Configuration
 	Navigation.StateInfoConfig.build([
-		{ key: 'home', initial: 'page', states: [
-			{ key: 'page', route: '' }
+		{ key: 'home', initial: 'page', help: 'home.htm', states: [
+			{ key: 'page', route: '', help: 'page.htm' }
 		]},
 		{ key: 'person', initial: 'list', states: [
 			{ key: 'list', route: ['people/{page}', 'people/{page}/sort/{sort}'], transitions: [
