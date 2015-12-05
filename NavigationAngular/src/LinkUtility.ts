@@ -1,4 +1,7 @@
-﻿import Navigation = require('navigation');
+﻿/// <reference path="navigation.d.ts" />
+/// <reference path="angular.d.ts" />
+/// <reference path="jquery.d.ts" />
+import Navigation = require('navigation');
 import angular = require('angular');
 import jquery = require('jquery');
 
