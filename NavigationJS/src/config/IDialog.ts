@@ -3,5 +3,6 @@ interface IDialog<TState, TStates> {
     initial: TState;
     key: string;
     title?: string;
+    [extras: string]: any;
 }
 export = IDialog;
