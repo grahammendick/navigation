@@ -1,4 +1,5 @@
 ﻿var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
 var shim = require('browserify-shim');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
@@ -7,7 +8,6 @@ var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
-var streamify = require('gulp-streamify');
 var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
@@ -59,10 +59,12 @@ function buildTask(name, file, to, details) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(derequire())
+		.pipe(buffer())
 		.pipe(header(info, { details : details } ))
 		.pipe(gulp.dest('./build/dist'))
 		.pipe(rename(to.replace(/js$/, 'min.js')))
-		.pipe(streamify(uglify()))
+		.pipe(uglify())
+		.pipe(buffer())
 		.pipe(header(info, { details : details } ))
 		.pipe(gulp.dest('./build/dist'));
 }
