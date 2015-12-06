@@ -31,6 +31,10 @@ declare module Navigation {
          * Gets the textual description of the dialog
          */
         title?: string;
+        /**
+         * Gets the additional dialog attributes
+         */
+        [extras: string]: any;
     }
 
     /**
@@ -75,6 +79,10 @@ declare module Navigation {
          * preserved when navigating
          */
         trackTypes?: boolean;
+        /**
+         * Gets the additional state attributes
+         */
+        [extras: string]: any;
     }
 
     /**

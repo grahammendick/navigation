@@ -1,4 +1,6 @@
-﻿import Navigation = require('navigation');
+﻿/// <reference path="navigation.d.ts" />
+/// <reference path="react.d.ts" />
+import Navigation = require('navigation');
 import React = require('react');
 
 class LinkUtility {

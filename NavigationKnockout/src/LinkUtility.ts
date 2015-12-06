@@ -1,4 +1,6 @@
-﻿import Navigation = require('navigation');
+﻿/// <reference path="navigation.d.ts" />
+/// <reference path="knockout.d.ts" />
+import Navigation = require('navigation');
 import ko = require('knockout');
 
 class LinkUtility {
