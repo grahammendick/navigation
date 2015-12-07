@@ -137,13 +137,13 @@
 
         var personStates = Navigation.StateInfoConfig.dialogs.person.states;
         personStates.list.navigated = function (data) {
-            React.render(
+            ReactDOM.render(
                 <List name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
                 document.getElementById('content')
             );
         };
         personStates.details.navigated = function (data) {
-            React.render(
+            ReactDOM.render(
                 <Details id={data.id} />,
                 document.getElementById('content')
             );
