@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 
@@ -15,7 +16,7 @@ function render(props) {
 	// Create the Component for the active State
 	var component = React.createElement(NavigationShared.getComponent(), props);
 	// Render the Component
-	React.render(
+	ReactDOM.render(
 		component,
 		document.getElementById('content')
 	);		

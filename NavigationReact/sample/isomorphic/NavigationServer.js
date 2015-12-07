@@ -1,6 +1,7 @@
 var http = require('http');
 var browserify = require('browserify');
 var React = require('react');
+var ReactDOMServer = require('react-dom/server');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 var Data = require('./Data');
@@ -25,7 +26,7 @@ http.createServer(function(req, res) {
 			// Create the Component for the active State
 			var component = React.createElement(NavigationShared.getComponent(), props);
 			// Render the Component to the response
-			res.write(React.renderToString(component));
+			res.write(ReactDOMServer.renderToString(component));
 			res.write('</div><script src="/app.js" ></script><script>')
 			// Write the props as JSON to the response
 			res.write('NavigationClient.start(' + safeStringify(props) + ');');

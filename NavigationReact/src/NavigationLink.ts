@@ -3,6 +3,8 @@ import Navigation = require('navigation');
 import React = require('react');
 
 class NavigationLink extends React.Component<any, any> {
+    private onNavigate = () => this.forceUpdate();
+    
     private getNavigationLink(): string {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(() => Navigation.StateController.getNavigationLink(this.props.action, toData));
@@ -15,12 +17,12 @@ class NavigationLink extends React.Component<any, any> {
     
     componentDidMount() {
         if (!this.props.lazy)
-            Navigation.StateController.onNavigate(() => this.forceUpdate());
+            Navigation.StateController.onNavigate(this.onNavigate);
     }
     
     componentWillUnmount() {
         if (!this.props.lazy)
-            Navigation.StateController.offNavigate(() => this.forceUpdate());
+            Navigation.StateController.offNavigate(this.onNavigate);
     }
     
     render() {

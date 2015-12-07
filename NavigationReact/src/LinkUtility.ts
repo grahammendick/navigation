@@ -1,7 +1,9 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="react.d.ts" />
+/// <reference path="react-dom.d.ts" />
 import Navigation = require('navigation');
 import React = require('react');
+import ReactDOM = require('react-dom');
 
 class LinkUtility {
     static getLink(linkAccessor: () => string): string {
@@ -44,7 +46,7 @@ class LinkUtility {
     static addListeners(component: React.Component<any, any>, props: any, getLink: () => string) {
         var lazy = !!props.lazy;
         props.onClick = (e: MouseEvent, domId: string) => {
-            var element = <HTMLAnchorElement> React.findDOMNode(component);
+            var element = <HTMLAnchorElement> ReactDOM.findDOMNode(component);
             var href = element.href;
             if (lazy) {
                 component.forceUpdate();
