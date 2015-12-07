@@ -24,7 +24,7 @@
             },
             render() {
                 var people = personSearch.search(this.props.name, this.props.sortExpression);
-                this.props.totalRowCount = people.length;
+                var totalRowCount = people.length;
                 people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
                 people = people.map(function (person) {
@@ -47,7 +47,7 @@
                             </thead>
                             <tbody>{people}</tbody>
                         </table>
-                        <Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={this.props.totalRowCount} />
+                        <Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
                     </div>
                 );
             }
