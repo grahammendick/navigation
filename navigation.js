@@ -1,5 +1,5 @@
 /**
- * Navigation v1.1.0
+ * Navigation v1.2.0
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/
  * License: Apache License 2.0
  */
@@ -10,6 +10,7 @@ var Dialog = _dereq_('./config/Dialog');
 var State = _dereq_('./config/State');
 var Transition = _dereq_('./config/Transition');
 var StateInfoConfig = _dereq_('./config/StateInfoConfig');
+var HistoryAction = _dereq_('./history/HistoryAction');
 var HistoryNavigator = _dereq_('./history/HistoryNavigator');
 var HashHistoryManager = _dereq_('./history/HashHistoryManager');
 var HTML5HistoryManager = _dereq_('./history/HTML5HistoryManager');
@@ -29,6 +30,7 @@ var Navigation = (function () {
     Navigation.State = State;
     Navigation.Transition = Transition;
     Navigation.StateInfoConfig = StateInfoConfig;
+    Navigation.HistoryAction = HistoryAction;
     Navigation.HashHistoryManager = HashHistoryManager;
     Navigation.HTML5HistoryManager = HTML5HistoryManager;
     Navigation.CrumbTrailPersister = CrumbTrailPersister;
@@ -54,13 +56,11 @@ HistoryNavigator.navigateHistory = function () {
     StateController.navigateLink(settings.historyManager.getCurrentUrl(), true);
 };
 module.exports = Navigation;
-
-},{"./Crumb":5,"./CrumbTrailPersister":7,"./NavigationSettings":9,"./StateContext":12,"./StateController":13,"./StateHandler":14,"./StateRouter":15,"./StorageCrumbTrailPersister":16,"./config/Dialog":19,"./config/State":20,"./config/StateInfoConfig":21,"./config/Transition":22,"./history/HTML5HistoryManager":23,"./history/HashHistoryManager":24,"./history/HistoryNavigator":25,"./routing/Route":26,"./routing/Router":27,"./settings":29}],2:[function(_dereq_,module,exports){
-var __extends = this.__extends || function (d, b) {
+},{"./Crumb":5,"./CrumbTrailPersister":7,"./NavigationSettings":9,"./StateContext":12,"./StateController":13,"./StateHandler":14,"./StateRouter":15,"./StorageCrumbTrailPersister":16,"./config/Dialog":19,"./config/State":20,"./config/StateInfoConfig":21,"./config/Transition":22,"./history/HTML5HistoryManager":23,"./history/HashHistoryManager":24,"./history/HistoryAction":25,"./history/HistoryNavigator":26,"./routing/Route":27,"./routing/Router":28,"./settings":30}],2:[function(_dereq_,module,exports){
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var TypeConverter = _dereq_('./TypeConverter');
 var ArrayConverter = (function (_super) {
@@ -100,13 +100,11 @@ var ArrayConverter = (function (_super) {
     return ArrayConverter;
 })(TypeConverter);
 module.exports = ArrayConverter;
-
 },{"./TypeConverter":18}],3:[function(_dereq_,module,exports){
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var TypeConverter = _dereq_('./TypeConverter');
 var BooleanConverter = (function (_super) {
@@ -128,7 +126,6 @@ var BooleanConverter = (function (_super) {
     return BooleanConverter;
 })(TypeConverter);
 module.exports = BooleanConverter;
-
 },{"./TypeConverter":18}],4:[function(_dereq_,module,exports){
 var ArrayConverter = _dereq_('./ArrayConverter');
 var BooleanConverter = _dereq_('./BooleanConverter');
@@ -179,7 +176,6 @@ var ConverterFactory = (function () {
 })();
 ConverterFactory.init();
 module.exports = ConverterFactory;
-
 },{"./ArrayConverter":2,"./BooleanConverter":3,"./NumberConverter":10,"./StringConverter":17}],5:[function(_dereq_,module,exports){
 var NavigationData = _dereq_('./NavigationData');
 var Crumb = (function () {
@@ -194,7 +190,6 @@ var Crumb = (function () {
     return Crumb;
 })();
 module.exports = Crumb;
-
 },{"./NavigationData":8}],6:[function(_dereq_,module,exports){
 var Crumb = _dereq_('./Crumb');
 var NavigationData = _dereq_('./NavigationData');
@@ -208,7 +203,7 @@ var CrumbTrailManager = (function () {
     CrumbTrailManager.buildCrumbTrail = function (uncombined) {
         var crumbs = this.getCrumbs(false);
         if (uncombined)
-            crumbs.push(new Crumb(this.returnData, StateContext.previousState, this.getHref(StateContext.previousState, this.returnData, null), false));
+            crumbs.push(new Crumb(StateContext.previousData, StateContext.previousState, this.getHref(StateContext.previousState, StateContext.previousData, null), false));
         crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
         if (settings.combineCrumbTrail)
             crumbs.push(new Crumb(StateContext.data, StateContext.state, this.getHref(StateContext.state, StateContext.data, null), false));
@@ -270,6 +265,8 @@ var CrumbTrailManager = (function () {
             }
         }
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
+            if (settings.trackAllPreviousData)
+                returnData = StateContext.data;
             var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
@@ -286,8 +283,7 @@ var CrumbTrailManager = (function () {
     return CrumbTrailManager;
 })();
 module.exports = CrumbTrailManager;
-
-},{"./Crumb":5,"./NavigationData":8,"./ReturnDataManager":11,"./StateContext":12,"./config/StateInfoConfig":21,"./settings":29}],7:[function(_dereq_,module,exports){
+},{"./Crumb":5,"./NavigationData":8,"./ReturnDataManager":11,"./StateContext":12,"./config/StateInfoConfig":21,"./settings":30}],7:[function(_dereq_,module,exports){
 var CrumbTrailPersister = (function () {
     function CrumbTrailPersister() {
     }
@@ -300,7 +296,6 @@ var CrumbTrailPersister = (function () {
     return CrumbTrailPersister;
 })();
 module.exports = CrumbTrailPersister;
-
 },{}],8:[function(_dereq_,module,exports){
 var NavigationData = (function () {
     function NavigationData() {
@@ -320,7 +315,6 @@ var NavigationData = (function () {
     return NavigationData;
 })();
 module.exports = NavigationData;
-
 },{}],9:[function(_dereq_,module,exports){
 var StateRouter = _dereq_('./StateRouter');
 var HashHistoryManager = _dereq_('./history/HashHistoryManager');
@@ -336,17 +330,16 @@ var NavigationSettings = (function () {
         this.crumbTrailKey = 'c3';
         this.applicationPath = '';
         this.combineCrumbTrail = false;
+        this.trackAllPreviousData = true;
     }
     return NavigationSettings;
 })();
 module.exports = NavigationSettings;
-
 },{"./CrumbTrailPersister":7,"./StateRouter":15,"./history/HashHistoryManager":24}],10:[function(_dereq_,module,exports){
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var TypeConverter = _dereq_('./TypeConverter');
 var NumberConverter = (function (_super) {
@@ -368,7 +361,6 @@ var NumberConverter = (function (_super) {
     return NumberConverter;
 })(TypeConverter);
 module.exports = NumberConverter;
-
 },{"./TypeConverter":18}],11:[function(_dereq_,module,exports){
 var ConverterFactory = _dereq_('./ConverterFactory');
 var settings = _dereq_('./settings');
@@ -433,8 +425,7 @@ var ReturnDataManager = (function () {
     return ReturnDataManager;
 })();
 module.exports = ReturnDataManager;
-
-},{"./ConverterFactory":4,"./settings":29}],12:[function(_dereq_,module,exports){
+},{"./ConverterFactory":4,"./settings":30}],12:[function(_dereq_,module,exports){
 var StateContext = (function () {
     function StateContext() {
     }
@@ -460,12 +451,15 @@ var StateContext = (function () {
             }
         }
     };
+    StateContext.oldData = {};
+    StateContext.previousData = {};
+    StateContext.data = {};
     return StateContext;
 })();
 module.exports = StateContext;
-
 },{}],13:[function(_dereq_,module,exports){
 var CrumbTrailManager = _dereq_('./CrumbTrailManager');
+var HistoryAction = _dereq_('./history/HistoryAction');
 var NavigationData = _dereq_('./NavigationData');
 var ReturnDataManager = _dereq_('./ReturnDataManager');
 var settings = _dereq_('./settings');
@@ -476,14 +470,16 @@ var StateController = (function () {
     }
     StateController.setStateContext = function (state, url) {
         try {
+            this.setOldStateContext();
             StateContext.state = state;
             StateContext.url = url;
             StateContext.dialog = state.parent;
+            StateContext.title = state.title;
             var data = state.stateHandler.getNavigationData(state, url);
             StateContext.data = this.parseData(data, state);
             StateContext.previousState = null;
             StateContext.previousDialog = null;
-            CrumbTrailManager.returnData = {};
+            StateContext.previousData = {};
             CrumbTrailManager.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
             var uncombined = !!data[settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
@@ -494,20 +490,43 @@ var StateController = (function () {
             throw new Error('The Url is invalid\n' + e.message);
         }
     };
+    StateController.clearStateContext = function () {
+        StateContext.oldState = null;
+        StateContext.oldDialog = null;
+        StateContext.oldData = {};
+        StateContext.previousState = null;
+        StateContext.previousDialog = null;
+        StateContext.previousData = {};
+        StateContext.state = null;
+        StateContext.dialog = null;
+        StateContext.data = {};
+        StateContext.url = null;
+        StateContext.title = null;
+        CrumbTrailManager.crumbTrail = null;
+        CrumbTrailManager.crumbTrailKey = null;
+    };
+    StateController.setOldStateContext = function () {
+        if (StateContext.state) {
+            StateContext.oldState = StateContext.state;
+            StateContext.oldDialog = StateContext.dialog;
+            StateContext.oldData = NavigationData.clone(StateContext.data);
+            NavigationData.setDefaults(StateContext.oldData, StateContext.oldState.defaults);
+        }
+    };
     StateController.setPreviousStateContext = function (uncombined, data) {
         if (uncombined) {
             StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
             if (StateContext.previousState)
                 StateContext.previousDialog = StateContext.previousState.parent;
             if (data[settings.returnDataKey])
-                CrumbTrailManager.returnData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
+                StateContext.previousData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
         }
         else {
             var previousStateCrumb = CrumbTrailManager.getCrumbs(false).pop();
             if (previousStateCrumb) {
                 StateContext.previousState = previousStateCrumb.state;
                 StateContext.previousDialog = StateContext.previousState.parent;
-                CrumbTrailManager.returnData = previousStateCrumb.data;
+                StateContext.previousData = previousStateCrumb.data;
             }
         }
     };
@@ -522,11 +541,11 @@ var StateController = (function () {
         delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
         delete handler[this.NAVIGATE_HANDLER_ID];
     };
-    StateController.navigate = function (action, toData) {
+    StateController.navigate = function (action, toData, historyAction) {
         var url = this.getNavigationLink(action, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getNextState(action));
+        this._navigateLink(url, this.getNextState(action), false, historyAction);
     };
     StateController.getNavigationLink = function (action, toData) {
         return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
@@ -537,68 +556,73 @@ var StateController = (function () {
             canNavigate = true;
         return canNavigate;
     };
-    StateController.navigateBack = function (distance) {
+    StateController.navigateBack = function (distance, historyAction) {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getCrumb(distance).state);
+        this._navigateLink(url, this.getCrumb(distance).state, false, historyAction);
     };
     StateController.getNavigationBackLink = function (distance) {
         return this.getCrumb(distance).navigationLink;
     };
-    StateController.refresh = function (toData) {
+    StateController.refresh = function (toData, historyAction) {
         var url = this.getRefreshLink(toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, StateContext.state);
+        this._navigateLink(url, StateContext.state, false, historyAction);
     };
     StateController.getRefreshLink = function (toData) {
         return CrumbTrailManager.getRefreshHref(toData);
     };
-    StateController.navigateLink = function (url, history) {
+    StateController.navigateLink = function (url, history, historyAction) {
         try {
             var state = settings.router.getData(url.split('?')[0]).state;
         }
         catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        this._navigateLink(url, state, history);
+        this._navigateLink(url, state, history, historyAction);
     };
-    StateController._navigateLink = function (url, state, history) {
+    StateController._navigateLink = function (url, state, history, historyAction) {
+        if (history === void 0) { history = false; }
+        if (historyAction === void 0) { historyAction = HistoryAction.Add; }
         try {
             var oldUrl = StateContext.url;
-            var oldState = StateContext.state;
             var data = state.stateHandler.getNavigationData(state, url);
             data = this.parseData(data, state);
         }
         catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        var navigateContinuation = this.getNavigateContinuation(oldState, oldUrl, state, url);
+        var navigateContinuation = this.getNavigateContinuation(oldUrl, state, url, historyAction);
         var unloadContinuation = function () {
             if (oldUrl === StateContext.url)
-                state.navigating(data, url, navigateContinuation, !!history);
+                state.navigating(data, url, navigateContinuation, history);
         };
-        if (oldState)
-            oldState.unloading(state, data, url, unloadContinuation, !!history);
+        if (StateContext.state)
+            StateContext.state.unloading(state, data, url, unloadContinuation, history);
         else
-            state.navigating(data, url, navigateContinuation, !!history);
+            state.navigating(data, url, navigateContinuation, history);
     };
-    StateController.getNavigateContinuation = function (oldState, oldUrl, state, url) {
+    StateController.getNavigateContinuation = function (oldUrl, state, url, historyAction) {
         var _this = this;
         return function (asyncData) {
             if (oldUrl === StateContext.url) {
-                state.stateHandler.navigateLink(oldState, state, url);
+                state.stateHandler.navigateLink(StateContext.oldState, state, url);
                 StateController.setStateContext(state, url);
-                if (oldState && oldState !== state)
-                    oldState.dispose();
+                if (StateContext.oldState && StateContext.oldState !== state)
+                    StateContext.oldState.dispose();
                 state.navigated(StateContext.data, asyncData);
                 for (var id in _this.navigateHandlers) {
                     if (url === StateContext.url)
-                        _this.navigateHandlers[id](oldState, state, StateContext.data);
+                        _this.navigateHandlers[id](StateContext.oldState, state, StateContext.data);
                 }
-                if (url === StateContext.url)
-                    settings.historyManager.addHistory(state, url);
+                if (url === StateContext.url) {
+                    if (historyAction !== HistoryAction.None)
+                        settings.historyManager.addHistory(state, url, historyAction === HistoryAction.Replace);
+                    if (StateContext.title && (typeof document !== 'undefined'))
+                        document.title = StateContext.title;
+                }
             }
         };
     };
@@ -632,8 +656,7 @@ var StateController = (function () {
     return StateController;
 })();
 module.exports = StateController;
-
-},{"./CrumbTrailManager":6,"./NavigationData":8,"./ReturnDataManager":11,"./StateContext":12,"./config/StateInfoConfig":21,"./settings":29}],14:[function(_dereq_,module,exports){
+},{"./CrumbTrailManager":6,"./NavigationData":8,"./ReturnDataManager":11,"./StateContext":12,"./config/StateInfoConfig":21,"./history/HistoryAction":25,"./settings":30}],14:[function(_dereq_,module,exports){
 var settings = _dereq_('./settings');
 var StateHandler = (function () {
     function StateHandler() {
@@ -681,8 +704,7 @@ var StateHandler = (function () {
     return StateHandler;
 })();
 module.exports = StateHandler;
-
-},{"./settings":29}],15:[function(_dereq_,module,exports){
+},{"./settings":30}],15:[function(_dereq_,module,exports){
 var Router = _dereq_('./routing/Router');
 var StateRouter = (function () {
     function StateRouter() {
@@ -785,13 +807,11 @@ var StateRouter = (function () {
     return StateRouter;
 })();
 module.exports = StateRouter;
-
-},{"./routing/Router":27}],16:[function(_dereq_,module,exports){
-var __extends = this.__extends || function (d, b) {
+},{"./routing/Router":28}],16:[function(_dereq_,module,exports){
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CrumbTrailPersister = _dereq_('./CrumbTrailPersister');
 var StateContext = _dereq_('./StateContext');
@@ -860,12 +880,8 @@ var InProcStorage = (function () {
     function InProcStorage() {
         this.store = {};
     }
-    InProcStorage.prototype.clear = function () {
-        throw new Error('Not implemented');
-    };
-    InProcStorage.prototype.key = function (index) {
-        throw new Error('Not implemented');
-    };
+    InProcStorage.prototype.clear = function () { throw new Error('Not implemented'); };
+    InProcStorage.prototype.key = function (index) { throw new Error('Not implemented'); };
     InProcStorage.prototype.getItem = function (key) {
         return this.store[key];
     };
@@ -878,13 +894,11 @@ var InProcStorage = (function () {
     return InProcStorage;
 })();
 module.exports = StorageCrumbTrailPersister;
-
-},{"./CrumbTrailPersister":7,"./StateContext":12,"./settings":29}],17:[function(_dereq_,module,exports){
-var __extends = this.__extends || function (d, b) {
+},{"./CrumbTrailPersister":7,"./StateContext":12,"./settings":30}],17:[function(_dereq_,module,exports){
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var TypeConverter = _dereq_('./TypeConverter');
 var StringConverter = (function (_super) {
@@ -904,7 +918,6 @@ var StringConverter = (function (_super) {
     return StringConverter;
 })(TypeConverter);
 module.exports = StringConverter;
-
 },{"./TypeConverter":18}],18:[function(_dereq_,module,exports){
 var TypeConverter = (function () {
     function TypeConverter() {
@@ -921,7 +934,6 @@ var TypeConverter = (function () {
     return TypeConverter;
 })();
 module.exports = TypeConverter;
-
 },{}],19:[function(_dereq_,module,exports){
 var Dialog = (function () {
     function Dialog() {
@@ -931,7 +943,6 @@ var Dialog = (function () {
     return Dialog;
 })();
 module.exports = Dialog;
-
 },{}],20:[function(_dereq_,module,exports){
 var StateHandler = _dereq_('../StateHandler');
 var State = (function () {
@@ -944,21 +955,14 @@ var State = (function () {
         this.trackCrumbTrail = true;
         this.trackTypes = true;
         this.stateHandler = new StateHandler();
-        this.unloading = function (state, data, url, unload) {
-            unload();
-        };
-        this.navigating = function (data, url, navigate) {
-            navigate();
-        };
-        this.dispose = function () {
-        };
-        this.navigated = function (data) {
-        };
+        this.unloading = function (state, data, url, unload) { unload(); };
+        this.navigating = function (data, url, navigate) { navigate(); };
+        this.dispose = function () { };
+        this.navigated = function (data) { };
     }
     return State;
 })();
 module.exports = State;
-
 },{"../StateHandler":14}],21:[function(_dereq_,module,exports){
 var Dialog = _dereq_('./Dialog');
 var ReturnDataManager = _dereq_('../ReturnDataManager');
@@ -1048,15 +1052,13 @@ var StateInfoConfig = (function () {
     return StateInfoConfig;
 })();
 module.exports = StateInfoConfig;
-
-},{"../ReturnDataManager":11,"../settings":29,"./Dialog":19,"./State":20,"./Transition":22}],22:[function(_dereq_,module,exports){
+},{"../ReturnDataManager":11,"../settings":30,"./Dialog":19,"./State":20,"./Transition":22}],22:[function(_dereq_,module,exports){
 var Transition = (function () {
     function Transition() {
     }
     return Transition;
 })();
 module.exports = Transition;
-
 },{}],23:[function(_dereq_,module,exports){
 var HistoryNavigator = _dereq_('./HistoryNavigator');
 var settings = _dereq_('../settings');
@@ -1069,13 +1071,15 @@ var HTML5HistoryManager = (function () {
         if (!this.disabled)
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
     };
-    HTML5HistoryManager.prototype.addHistory = function (state, url) {
+    HTML5HistoryManager.prototype.addHistory = function (state, url, replace) {
         url = url != null ? url : StateContext.url;
-        if (state && state.title && (typeof document !== 'undefined'))
-            document.title = state.title;
         url = settings.applicationPath + url;
-        if (!this.disabled && location.pathname + location.search !== url)
-            window.history.pushState(null, null, url);
+        if (!this.disabled && location.pathname + location.search !== url) {
+            if (!replace)
+                window.history.pushState(null, null, url);
+            else
+                window.history.replaceState(null, null, url);
+        }
     };
     HTML5HistoryManager.prototype.getCurrentUrl = function () {
         return location.pathname.substring(settings.applicationPath.length) + location.search;
@@ -1091,8 +1095,7 @@ var HTML5HistoryManager = (function () {
     return HTML5HistoryManager;
 })();
 module.exports = HTML5HistoryManager;
-
-},{"../StateContext":12,"../settings":29,"./HistoryNavigator":25}],24:[function(_dereq_,module,exports){
+},{"../StateContext":12,"../settings":30,"./HistoryNavigator":26}],24:[function(_dereq_,module,exports){
 var HistoryNavigator = _dereq_('./HistoryNavigator');
 var StateContext = _dereq_('../StateContext');
 var HashHistoryManager = (function () {
@@ -1108,13 +1111,15 @@ var HashHistoryManager = (function () {
                 window['attachEvent']('onhashchange', HistoryNavigator.navigateHistory);
         }
     };
-    HashHistoryManager.prototype.addHistory = function (state, url) {
+    HashHistoryManager.prototype.addHistory = function (state, url, replace) {
         url = url != null ? url : StateContext.url;
-        if (state && state.title && (typeof document !== 'undefined'))
-            document.title = state.title;
-        url = this.encode(url);
-        if (!this.disabled && location.hash.substring(1) !== url)
-            location.hash = url;
+        url = '#' + this.encode(url);
+        if (!this.disabled && location.hash !== url) {
+            if (!replace)
+                location.hash = url;
+            else
+                location.replace(url);
+        }
     };
     HashHistoryManager.prototype.getCurrentUrl = function () {
         return this.decode(location.hash.substring(1));
@@ -1140,16 +1145,22 @@ var HashHistoryManager = (function () {
     return HashHistoryManager;
 })();
 module.exports = HashHistoryManager;
-
-},{"../StateContext":12,"./HistoryNavigator":25}],25:[function(_dereq_,module,exports){
+},{"../StateContext":12,"./HistoryNavigator":26}],25:[function(_dereq_,module,exports){
+var HistoryAction;
+(function (HistoryAction) {
+    HistoryAction[HistoryAction["Add"] = 0] = "Add";
+    HistoryAction[HistoryAction["Replace"] = 1] = "Replace";
+    HistoryAction[HistoryAction["None"] = 2] = "None";
+})(HistoryAction || (HistoryAction = {}));
+module.exports = HistoryAction;
+},{}],26:[function(_dereq_,module,exports){
 var HistoryNavigator = (function () {
     function HistoryNavigator() {
     }
     return HistoryNavigator;
 })();
 module.exports = HistoryNavigator;
-
-},{}],26:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 var Segment = _dereq_('./Segment');
 var Route = (function () {
     function Route(path, defaults) {
@@ -1206,8 +1217,7 @@ var Route = (function () {
     return Route;
 })();
 module.exports = Route;
-
-},{"./Segment":28}],27:[function(_dereq_,module,exports){
+},{"./Segment":29}],28:[function(_dereq_,module,exports){
 var Route = _dereq_('./Route');
 var Router = (function () {
     function Router() {
@@ -1242,8 +1252,7 @@ var Router = (function () {
     return Router;
 })();
 module.exports = Router;
-
-},{"./Route":26}],28:[function(_dereq_,module,exports){
+},{"./Route":27}],29:[function(_dereq_,module,exports){
 var Segment = (function () {
     function Segment(path, optional, defaults) {
         this.pattern = '';
@@ -1303,11 +1312,9 @@ var Segment = (function () {
     return Segment;
 })();
 module.exports = Segment;
-
-},{}],29:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 var NavigationSettings = _dereq_('./NavigationSettings');
 var settings = new NavigationSettings();
 module.exports = settings;
-
 },{"./NavigationSettings":9}]},{},[1])(1)
 });

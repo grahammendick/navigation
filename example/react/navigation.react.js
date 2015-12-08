@@ -1,5 +1,5 @@
 /**
- * Navigation v1.1.0
+ * Navigation v1.2.0
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/example/react/navigation.html
  * License: Apache License 2.0
  */
@@ -16,11 +16,13 @@ var NavigationReact = (function () {
     return NavigationReact;
 })();
 module.exports = NavigationReact;
-
 },{"./NavigationBackLink":3,"./NavigationLink":4,"./RefreshLink":5}],2:[function(_dereq_,module,exports){
 (function (global){
-var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
-var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
+/// <reference path="navigation.d.ts" />
+/// <reference path="react.d.ts" />
+/// <reference path="react-dom.d.ts" />
+var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
+var ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
 var LinkUtility = (function () {
     function LinkUtility() {
     }
@@ -42,10 +44,13 @@ var LinkUtility = (function () {
     LinkUtility.isActive = function (key, val) {
         if (!Navigation.StateContext.state)
             return false;
-        if (val != null && val.toString()) {
+        if (val != null) {
             var trackTypes = Navigation.StateContext.state.trackTypes;
             var currentVal = Navigation.StateContext.data[key];
-            return currentVal != null && (trackTypes ? val === currentVal : val.toString() == currentVal.toString());
+            if (currentVal != null)
+                return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
+            else
+                return val === '';
         }
         return true;
     };
@@ -59,7 +64,7 @@ var LinkUtility = (function () {
         var _this = this;
         var lazy = !!props.lazy;
         props.onClick = function (e, domId) {
-            var element = React.findDOMNode(component);
+            var element = ReactDOM.findDOMNode(component);
             var href = element.href;
             if (lazy) {
                 component.forceUpdate();
@@ -73,7 +78,10 @@ var LinkUtility = (function () {
                     var navigating = _this.getNavigating(props);
                     if (navigating(e, domId, link)) {
                         e.preventDefault();
-                        Navigation.StateController.navigateLink(link);
+                        var historyAction = props.historyAction;
+                        if (typeof historyAction === 'string')
+                            historyAction = Navigation.HistoryAction[historyAction];
+                        Navigation.StateController.navigateLink(link, false, historyAction);
                     }
                 }
             }
@@ -92,30 +100,37 @@ var LinkUtility = (function () {
     return LinkUtility;
 })();
 module.exports = LinkUtility;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(_dereq_,module,exports){
 (function (global){
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
-var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
-var NavigationBackLink = React.createClass({
-    onNavigate: function () {
-        this.forceUpdate();
-    },
-    getNavigationBackLink: function () {
+var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
+var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var NavigationBackLink = (function (_super) {
+    __extends(NavigationBackLink, _super);
+    function NavigationBackLink() {
+        var _this = this;
+        _super.apply(this, arguments);
+        this.onNavigate = function () { return _this.forceUpdate(); };
+    }
+    NavigationBackLink.prototype.getNavigationBackLink = function () {
         var _this = this;
         return LinkUtility.getLink(function () { return Navigation.StateController.getNavigationBackLink(_this.props.distance); });
-    },
-    componentDidMount: function () {
+    };
+    NavigationBackLink.prototype.componentDidMount = function () {
         if (!this.props.lazy)
             Navigation.StateController.onNavigate(this.onNavigate);
-    },
-    componentWillUnmount: function () {
+    };
+    NavigationBackLink.prototype.componentWillUnmount = function () {
         if (!this.props.lazy)
             Navigation.StateController.offNavigate(this.onNavigate);
-    },
-    render: function () {
+    };
+    NavigationBackLink.prototype.render = function () {
         var _this = this;
         var props = {};
         for (var key in this.props)
@@ -123,38 +138,47 @@ var NavigationBackLink = React.createClass({
         props.href = this.getNavigationBackLink();
         LinkUtility.addListeners(this, props, function () { return _this.getNavigationBackLink(); });
         return React.createElement(props.href ? 'a' : 'span', props);
-    }
-});
+    };
+    return NavigationBackLink;
+})(React.Component);
+;
 module.exports = NavigationBackLink;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./LinkUtility":2}],4:[function(_dereq_,module,exports){
 (function (global){
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
-var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
-var NavigationLink = React.createClass({
-    onNavigate: function () {
-        this.forceUpdate();
-    },
-    getNavigationLink: function () {
+var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
+var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var NavigationLink = (function (_super) {
+    __extends(NavigationLink, _super);
+    function NavigationLink() {
+        var _this = this;
+        _super.apply(this, arguments);
+        this.onNavigate = function () { return _this.forceUpdate(); };
+    }
+    NavigationLink.prototype.getNavigationLink = function () {
         var _this = this;
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(function () { return Navigation.StateController.getNavigationLink(_this.props.action, toData); });
-    },
-    isActive: function (action) {
+    };
+    NavigationLink.prototype.isActive = function (action) {
         var nextState = Navigation.StateController.getNextState(action);
         return nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
-    },
-    componentDidMount: function () {
+    };
+    NavigationLink.prototype.componentDidMount = function () {
         if (!this.props.lazy)
             Navigation.StateController.onNavigate(this.onNavigate);
-    },
-    componentWillUnmount: function () {
+    };
+    NavigationLink.prototype.componentWillUnmount = function () {
         if (!this.props.lazy)
             Navigation.StateController.offNavigate(this.onNavigate);
-    },
-    render: function () {
+    };
+    NavigationLink.prototype.render = function () {
         var _this = this;
         var props = {};
         for (var key in this.props)
@@ -168,33 +192,42 @@ var NavigationLink = React.createClass({
         active = active && !!props.href && this.isActive(this.props.action);
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
-    }
-});
+    };
+    return NavigationLink;
+})(React.Component);
+;
 module.exports = NavigationLink;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./LinkUtility":2}],5:[function(_dereq_,module,exports){
 (function (global){
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window.Navigation : typeof global !== "undefined" ? global.Navigation : null);
-var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
-var RefreshLink = React.createClass({
-    onNavigate: function () {
-        this.forceUpdate();
-    },
-    getRefreshLink: function () {
+var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
+var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var RefreshLink = (function (_super) {
+    __extends(RefreshLink, _super);
+    function RefreshLink() {
+        var _this = this;
+        _super.apply(this, arguments);
+        this.onNavigate = function () { return _this.forceUpdate(); };
+    }
+    RefreshLink.prototype.getRefreshLink = function () {
         var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(function () { return Navigation.StateController.getRefreshLink(toData); });
-    },
-    componentDidMount: function () {
+    };
+    RefreshLink.prototype.componentDidMount = function () {
         if (!this.props.lazy)
             Navigation.StateController.onNavigate(this.onNavigate);
-    },
-    componentWillUnmount: function () {
+    };
+    RefreshLink.prototype.componentWillUnmount = function () {
         if (!this.props.lazy)
             Navigation.StateController.offNavigate(this.onNavigate);
-    },
-    render: function () {
+    };
+    RefreshLink.prototype.render = function () {
         var _this = this;
         var props = {};
         for (var key in this.props)
@@ -208,10 +241,11 @@ var RefreshLink = React.createClass({
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
-    }
-});
+    };
+    return RefreshLink;
+})(React.Component);
+;
 module.exports = RefreshLink;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./LinkUtility":2}]},{},[1])(1)
 });
