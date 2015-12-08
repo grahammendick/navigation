@@ -4,19 +4,6 @@
  * License: Apache License 2.0
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.NavigationReact = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-var NavigationBackLink = _dereq_('./NavigationBackLink');
-var NavigationLink = _dereq_('./NavigationLink');
-var RefreshLink = _dereq_('./RefreshLink');
-var NavigationReact = (function () {
-    function NavigationReact() {
-    }
-    NavigationReact.NavigationBackLink = NavigationBackLink;
-    NavigationReact.NavigationLink = NavigationLink;
-    NavigationReact.RefreshLink = RefreshLink;
-    return NavigationReact;
-})();
-module.exports = NavigationReact;
-},{"./NavigationBackLink":3,"./NavigationLink":4,"./RefreshLink":5}],2:[function(_dereq_,module,exports){
 (function (global){
 /// <reference path="navigation.d.ts" />
 /// <reference path="react.d.ts" />
@@ -101,7 +88,7 @@ var LinkUtility = (function () {
 })();
 module.exports = LinkUtility;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(_dereq_,module,exports){
+},{}],2:[function(_dereq_,module,exports){
 (function (global){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -144,7 +131,7 @@ var NavigationBackLink = (function (_super) {
 ;
 module.exports = NavigationBackLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":2}],4:[function(_dereq_,module,exports){
+},{"./LinkUtility":1}],3:[function(_dereq_,module,exports){
 (function (global){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -198,7 +185,20 @@ var NavigationLink = (function (_super) {
 ;
 module.exports = NavigationLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":2}],5:[function(_dereq_,module,exports){
+},{"./LinkUtility":1}],4:[function(_dereq_,module,exports){
+var NavigationBackLink = _dereq_('./NavigationBackLink');
+var NavigationLink = _dereq_('./NavigationLink');
+var RefreshLink = _dereq_('./RefreshLink');
+var NavigationReact = (function () {
+    function NavigationReact() {
+    }
+    NavigationReact.NavigationBackLink = NavigationBackLink;
+    NavigationReact.NavigationLink = NavigationLink;
+    NavigationReact.RefreshLink = RefreshLink;
+    return NavigationReact;
+})();
+module.exports = NavigationReact;
+},{"./NavigationBackLink":2,"./NavigationLink":3,"./RefreshLink":5}],5:[function(_dereq_,module,exports){
 (function (global){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -247,5 +247,5 @@ var RefreshLink = (function (_super) {
 ;
 module.exports = RefreshLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":2}]},{},[1])(1)
+},{"./LinkUtility":1}]},{},[4])(4)
 });

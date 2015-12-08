@@ -4,19 +4,6 @@
  * License: Apache License 2.0
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.NavigationKnockout = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-var NavigationBackLink = _dereq_('./NavigationBackLink');
-var NavigationLink = _dereq_('./NavigationLink');
-var RefreshLink = _dereq_('./RefreshLink');
-var NavigationKnockout = (function () {
-    function NavigationKnockout() {
-    }
-    NavigationKnockout.NavigationBackLink = NavigationBackLink;
-    NavigationKnockout.NavigationLink = NavigationLink;
-    NavigationKnockout.RefreshLink = RefreshLink;
-    return NavigationKnockout;
-})();
-module.exports = NavigationKnockout;
-},{"./NavigationBackLink":3,"./NavigationLink":4,"./RefreshLink":5}],2:[function(_dereq_,module,exports){
 (function (global){
 /// <reference path="navigation.d.ts" />
 /// <reference path="knockout.d.ts" />
@@ -102,7 +89,7 @@ var LinkUtility = (function () {
 })();
 module.exports = LinkUtility;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(_dereq_,module,exports){
+},{}],2:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
@@ -120,7 +107,20 @@ function setNavigationBackLink(element, valueAccessor) {
 }
 module.exports = NavigationBackLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":2}],4:[function(_dereq_,module,exports){
+},{"./LinkUtility":1}],3:[function(_dereq_,module,exports){
+var NavigationBackLink = _dereq_('./NavigationBackLink');
+var NavigationLink = _dereq_('./NavigationLink');
+var RefreshLink = _dereq_('./RefreshLink');
+var NavigationKnockout = (function () {
+    function NavigationKnockout() {
+    }
+    NavigationKnockout.NavigationBackLink = NavigationBackLink;
+    NavigationKnockout.NavigationLink = NavigationLink;
+    NavigationKnockout.RefreshLink = RefreshLink;
+    return NavigationKnockout;
+})();
+module.exports = NavigationKnockout;
+},{"./NavigationBackLink":2,"./NavigationLink":4,"./RefreshLink":5}],4:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
@@ -153,7 +153,7 @@ function isActive(action) {
 }
 module.exports = NavigationLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":2}],5:[function(_dereq_,module,exports){
+},{"./LinkUtility":1}],5:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
@@ -181,5 +181,5 @@ function setRefreshLink(element, valueAccessor, allBindings) {
 }
 module.exports = RefreshLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":2}]},{},[1])(1)
+},{"./LinkUtility":1}]},{},[3])(3)
 });
