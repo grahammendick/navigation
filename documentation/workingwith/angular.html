@@ -111,6 +111,22 @@ Navigation.StateController.refresh(data);
 &lt;a refresh-link="{ pageNumber: 2 }" active-css-class="'active'"&gt;&lt;/a&gt;
 </code></pre>
             </p>
+            <h2>History Action</h2>
+            <p>
+                Clicking a Hyperlink updates the browser Url and creates a history entry. You can change this default behaviour by setting a history
+                action. An action of 'Replace' changes the browser Url without creating a history entry, while an action of 'None' navigates without
+                changing the browser Url.
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- Replace the browser Url --&gt;
+&lt;a navigation-link="'select'" history-action="'Replace'"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
+            <p>
+                <pre><code class="html">&lt;!-- Don't change the browser Url --&gt;
+&lt;a refresh-link="{ pageNumber: 2 }" history-action="'None'"&gt;&lt;/a&gt;
+</code></pre>
+            </p>
             <h2>Navigation Handler</h2>
             <p>
                 You can assign a handler to the navigating attribute of a Hyperlink. This handler function on your Controller will be called before
