@@ -3592,8 +3592,8 @@ describe('Navigation', function () {
                 ]);
             var link = Navigation.StateController.getNavigationLink('d');
             Navigation.StateController.navigateLink(link);
-            var unloadingState, unloadingUrl, navigateLinkOldState, navigateLinkState, 
-                navigateLinkUrl, navigatedOldState, navigatedState, navigatingData, navigatingUrl;
+            var unloadingState, unloadingUrl, navigateLinkOldState, navigateLinkState, navigateLinkUrl, 
+                navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
             Navigation.StateInfoConfig.dialogs['d'].states['s0'].unloading = (state, data, url, unload) => {
                 unloadingState = state;
                 unloadingUrl = url;
@@ -3612,6 +3612,7 @@ describe('Navigation', function () {
             var navigatedHandler = (oldState, state, data) => {
                 navigatedOldState = oldState;
                 navigatedState = state;
+                navigatedData = data;
             };
             Navigation.StateController.onNavigate(navigatedHandler);
             var url = Navigation.StateController.getNavigationLink('t', { s: 'Hello' });
@@ -3626,6 +3627,7 @@ describe('Navigation', function () {
             assert.strictEqual(navigateLinkUrl, url);
             assert.strictEqual(navigatedOldState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
             assert.strictEqual(navigatedState, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
+            assert.strictEqual(navigatedData.s, 'Hello');
         });
     });
 
