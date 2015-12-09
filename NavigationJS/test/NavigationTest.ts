@@ -3581,6 +3581,44 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Dialog Params Navigated', function () {
+        it('should pass State and Data but no old State', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var navigateLinkOldState, navigateLinkState, navigateLinkUrl, 
+                navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
+            Navigation.StateInfoConfig.dialogs['d'].states['s'].navigating = (data, url, navigating) => {
+                navigatingData = data;
+                navigatingUrl = url;
+                navigating();
+            }
+            Navigation.StateInfoConfig.dialogs['d'].states['s'].stateHandler.navigateLink = (oldState, state, url) => {
+                navigateLinkOldState = oldState;
+                navigateLinkState = state;
+                navigateLinkUrl = url;
+            }
+            var navigatedHandler = (oldState, state, data) => {
+                navigatedOldState = oldState;
+                navigatedState = state;
+                navigatedData = data;
+            };
+            Navigation.StateController.onNavigate(navigatedHandler);
+            var url = Navigation.StateController.getNavigationLink('d', { s: 'Hello' });
+            Navigation.StateController.navigate('d', { s: 'Hello' });
+            Navigation.StateController.offNavigate(navigatedHandler);
+            assert.strictEqual(navigatingData.s, 'Hello');
+            assert.strictEqual(navigatingUrl, url);
+            assert.strictEqual(navigateLinkOldState, null);
+            assert.strictEqual(navigateLinkState, Navigation.StateInfoConfig.dialogs['d'].states['s']);
+            assert.strictEqual  (navigateLinkUrl, url);
+            assert.strictEqual(navigatedOldState, null);
+            assert.strictEqual(navigatedState, Navigation.StateInfoConfig.dialogs['d'].states['s']);
+            assert.strictEqual(navigatedData.s, 'Hello');
+        });
+    });
+
     describe('Transition Params Navigated', function () {
         it('should pass old State, State and Data', function() {
             Navigation.StateInfoConfig.build([
