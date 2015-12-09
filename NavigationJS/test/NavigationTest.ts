@@ -3582,7 +3582,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition Params Navigated', function () {
-        it('should pass old State and State', function() {
+        it('should pass old State, State and Data', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
@@ -3592,11 +3592,17 @@ describe('Navigation', function () {
                 ]);
             var link = Navigation.StateController.getNavigationLink('d');
             Navigation.StateController.navigateLink(link);
-            var unloadingState, unloadingUrl, navigateLinkOldState, navigateLinkState, navigateLinkUrl, navigatedOldState, navigatedState;
+            var unloadingState, unloadingUrl, navigateLinkOldState, navigateLinkState, 
+                navigateLinkUrl, navigatedOldState, navigatedState, navigatingData, navigatingUrl;
             Navigation.StateInfoConfig.dialogs['d'].states['s0'].unloading = (state, data, url, unload) => {
                 unloadingState = state;
                 unloadingUrl = url;
                 unload();
+            }
+            Navigation.StateInfoConfig.dialogs['d'].states['s1'].navigating = (data, url, navigating) => {
+                navigatingData = data;
+                navigatingUrl = url;
+                navigating();
             }
             Navigation.StateInfoConfig.dialogs['d'].states['s1'].stateHandler.navigateLink = (oldState, state, url) => {
                 navigateLinkOldState = oldState;
@@ -3608,11 +3614,13 @@ describe('Navigation', function () {
                 navigatedState = state;
             };
             Navigation.StateController.onNavigate(navigatedHandler);
-            var url = Navigation.StateController.getNavigationLink('t');
-            Navigation.StateController.navigate('t');
+            var url = Navigation.StateController.getNavigationLink('t', { s: 'Hello' });
+            Navigation.StateController.navigate('t', { s: 'Hello' });
             Navigation.StateController.offNavigate(navigatedHandler);
             assert.strictEqual(unloadingState, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
             assert.strictEqual(unloadingUrl, url);
+            assert.strictEqual(navigatingData.s, 'Hello');
+            assert.strictEqual(navigatingUrl, url);
             assert.strictEqual(navigateLinkOldState, Navigation.StateInfoConfig.dialogs['d'].states['s0']);
             assert.strictEqual(navigateLinkState, Navigation.StateInfoConfig.dialogs['d'].states['s1']);
             assert.strictEqual(navigateLinkUrl, url);
