@@ -3587,7 +3587,7 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ]);
-            var navigateLinkOldState, navigateLinkState, navigateLinkUrl, 
+            var navigateLinkOldState, navigateLinkState, navigateLinkUrl, navigateLinkData,
                 navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
             Navigation.StateInfoConfig.dialogs['d'].states['s'].navigating = (data, url, navigating) => {
                 navigatingData = data;
@@ -3598,6 +3598,7 @@ describe('Navigation', function () {
                 navigateLinkOldState = oldState;
                 navigateLinkState = state;
                 navigateLinkUrl = url;
+                navigateLinkData = Navigation.StateContext.data;
             }
             var navigatedHandler = (oldState, state, data) => {
                 navigatedOldState = oldState;
@@ -3613,9 +3614,11 @@ describe('Navigation', function () {
             assert.strictEqual(navigateLinkOldState, null);
             assert.strictEqual(navigateLinkState, Navigation.StateInfoConfig.dialogs['d'].states['s']);
             assert.strictEqual(navigateLinkUrl, url);
+            assert.strictEqual(navigateLinkData.s, undefined);
             assert.strictEqual(navigatedOldState, null);
             assert.strictEqual(navigatedState, Navigation.StateInfoConfig.dialogs['d'].states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.s, 'Hello');
         });
     });
 
