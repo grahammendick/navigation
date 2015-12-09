@@ -3612,7 +3612,7 @@ describe('Navigation', function () {
             assert.strictEqual(navigatingUrl, url);
             assert.strictEqual(navigateLinkOldState, null);
             assert.strictEqual(navigateLinkState, Navigation.StateInfoConfig.dialogs['d'].states['s']);
-            assert.strictEqual  (navigateLinkUrl, url);
+            assert.strictEqual(navigateLinkUrl, url);
             assert.strictEqual(navigatedOldState, null);
             assert.strictEqual(navigatedState, Navigation.StateInfoConfig.dialogs['d'].states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
