@@ -163,7 +163,7 @@ class StateController {
     private static getNavigateContinuation(oldUrl: string, state: State, url: string, historyAction: HistoryAction): () => void {
         return (asyncData?: any) => {
             if (oldUrl === StateContext.url) {
-                state.stateHandler.navigateLink(StateContext.oldState, state, url);
+                state.stateHandler.navigateLink(StateContext.state, state, url);
                 StateController.setStateContext(state, url);
                 if (StateContext.oldState && StateContext.oldState !== state)
                     StateContext.oldState.dispose();
