@@ -2,17 +2,17 @@
 import State = require('./config/State');
 
 class StateContext {
-    static oldState: State;
-    static oldDialog: Dialog;
+    static oldState: State = null;
+    static oldDialog: Dialog = null;
     static oldData: any = {};
-    static previousState: State;
-    static previousDialog: Dialog;
+    static previousState: State = null;
+    static previousDialog: Dialog = null;
     static previousData: any = {};
-    static state: State;
-    static dialog: Dialog;
+    static state: State = null;
+    static dialog: Dialog = null;
     static data: any = {};
-    static url: string;
-    static title: string;
+    static url: string = null;
+    static title: string = null;
 
     static includeCurrentData(data: any, keys?: string[]): any {
         if (!keys) {

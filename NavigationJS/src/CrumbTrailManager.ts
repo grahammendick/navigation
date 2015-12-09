@@ -7,8 +7,8 @@ import StateContext = require('./StateContext');
 import StateInfoConfig = require('./config/StateInfoConfig');
 
 class CrumbTrailManager {
-    static crumbTrail: string;
-    static crumbTrailKey: string;
+    static crumbTrail: string = null;
+    static crumbTrailKey: string = null;
     private static CRUMB_1_SEP = '4_';
     private static CRUMB_2_SEP = '5_';
 
