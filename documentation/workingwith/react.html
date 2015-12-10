@@ -94,7 +94,6 @@ Navigation.StateController.refresh(data);
 &lt;RefreshLink toData={{ pageNumber: 2 }} includeCurrentData={true}&gt;&lt;/RefreshLink&gt;
 </code></pre>
             </p>
-            </p>
             <h2 id="active">Active</h2>
             <p>
                 A Refresh Hyperlink is considered active if it's data is a subset of the current data. A Hyperlink to the second page of the inbox
@@ -110,6 +109,22 @@ Navigation.StateController.refresh(data);
             <p>
                 <pre><code class="javascript">// Add a class name when active
 &lt;RefreshLink toData={{ pageNumber: 2 }} activeCssClass="active"&gt;&lt;/RefreshLink&gt;
+</code></pre>
+            </p>
+            <h2>History Action</h2>
+            <p>
+                Clicking a Hyperlink updates the browser Url and creates a history entry. You can change this default behaviour by setting a history
+                action. An action of 'Replace' changes the browser Url without creating a history entry, while an action of 'None' navigates without
+                changing the browser Url.
+            </p>
+            <p>
+                <pre><code class="javascript">// Replace the browser Url
+&lt;NavigationLink action="select" historyAction="Replace"&gt;&lt;/RefreshLink&gt;
+</code></pre>
+            </p>
+            <p>
+                <pre><code class="javascript">// Don't change the browser Url
+&lt;RefreshLink toData={{ pageNumber: 2 }} historyAction="None"&gt;&lt;/RefreshLink&gt;
 </code></pre>
             </p>
             <h2>Navigation Handler</h2>
