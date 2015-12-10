@@ -225,6 +225,8 @@ var CrumbTrailManager = (function () {
     CrumbTrailManager.getRefreshHref = function (refreshData) {
         return this.getHref(StateContext.state, refreshData, null);
     };
+    CrumbTrailManager.crumbTrail = null;
+    CrumbTrailManager.crumbTrailKey = null;
     CrumbTrailManager.CRUMB_1_SEP = '4_';
     CrumbTrailManager.CRUMB_2_SEP = '5_';
     return CrumbTrailManager;
@@ -451,9 +453,17 @@ var StateContext = (function () {
             }
         }
     };
+    StateContext.oldState = null;
+    StateContext.oldDialog = null;
     StateContext.oldData = {};
+    StateContext.previousState = null;
+    StateContext.previousDialog = null;
     StateContext.previousData = {};
+    StateContext.state = null;
+    StateContext.dialog = null;
     StateContext.data = {};
+    StateContext.url = null;
+    StateContext.title = null;
     return StateContext;
 })();
 module.exports = StateContext;
@@ -608,7 +618,7 @@ var StateController = (function () {
         var _this = this;
         return function (asyncData) {
             if (oldUrl === StateContext.url) {
-                state.stateHandler.navigateLink(StateContext.oldState, state, url);
+                state.stateHandler.navigateLink(StateContext.state, state, url);
                 StateController.setStateContext(state, url);
                 if (StateContext.oldState && StateContext.oldState !== state)
                     StateContext.oldState.dispose();
