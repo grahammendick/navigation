@@ -12,7 +12,7 @@ class ReturnDataManager {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()) {
-                var val = this.formatURLObject(key, returnData[key], state, true);
+                var val = this.formatURLObject(key, returnData[key], state, true).val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
                     returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + val);
             }
@@ -28,16 +28,21 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode?: boolean) {
+    static formatURLObject(key: string, urlObject: any, state: State, encode?: boolean): { val: string, vals?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converterKey = ConverterFactory.getKeyFromObject(urlObject);
-        var formattedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject).val;
+        var convertedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
+        var formattedValue = convertedValue.val;
+        var formattedValues = convertedValue.vals;
         if (encode)
             formattedValue = this.encodeUrlValue(formattedValue);
-        if (state.trackTypes && typeof urlObject !== defaultType)
+        if (state.trackTypes && typeof urlObject !== defaultType) {
             formattedValue += this.RET_2_SEP + converterKey;
-        return formattedValue;
+            if (formattedValues)
+                formattedValues[0] = formattedValues[0] + this.RET_2_SEP + converterKey;
+        }
+        return { val: formattedValue, vals: formattedValues };
     }
 
     static parseURLString(key: string, val: string, state: State, decode?: boolean): any {

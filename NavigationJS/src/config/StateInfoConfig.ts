@@ -52,7 +52,7 @@ class StateInfoConfig {
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
                     state.defaultTypes[key] = typeof state.defaults[key];
-                state.formattedDefaults[key] = ReturnDataManager.formatURLObject(key, state.defaults[key], state);
+                state.formattedDefaults[key] = ReturnDataManager.formatURLObject(key, state.defaults[key], state).val;
             }
             if (!state.key)
                 throw new Error('key is mandatory for a State');
