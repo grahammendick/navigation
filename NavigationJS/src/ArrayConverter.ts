@@ -15,7 +15,7 @@ class ArrayConverter extends TypeConverter {
         return this.converter.getType() + 'array';
     }
 
-    convertFrom(val: string): any {
+    convertFrom(val: string | string[]): any {
         var arr = [];
         if (typeof val === 'string') {
             if (val.length !== 0) {

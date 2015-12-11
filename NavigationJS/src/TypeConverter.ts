@@ -3,7 +3,7 @@
         return null;
     }
 
-    convertFrom(val: string): any {
+    convertFrom(val: string | string[]): any {
         return null;
     }
 
