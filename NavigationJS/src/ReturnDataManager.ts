@@ -48,7 +48,7 @@ class ReturnDataManager {
         return { val: formattedValue, vals: formattedValues };
     }
 
-    static parseURLString(key: string, val: any, state: State, decode?: boolean): any {
+    static parseURLString(key: string, val: string | string[], state: State, decode?: boolean): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
@@ -58,14 +58,13 @@ class ReturnDataManager {
             urlValue = arr[0];
             converterKey = arr[1];
         }
-        if (decode) {
+        if (decode)
             urlValue = this.decodeUrlValue(urlValue);
-        }
-        if (typeof val !== 'string') {
+        if (typeof val === 'string')
+            val =  urlValue;
+        else
             val[0] = urlValue;
-            urlValue = val;
-        }
-        return ConverterFactory.getConverter(converterKey).convertFrom(urlValue);
+        return ConverterFactory.getConverter(converterKey).convertFrom(val);
     }
 
     static parseReturnData(returnData: string, state: State): any {
