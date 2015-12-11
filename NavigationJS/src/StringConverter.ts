@@ -9,8 +9,8 @@ class StringConverter extends TypeConverter {
         return val;
     }
 
-    convertTo(val: any): string {
-        return val.toString();
+    convertTo(val: any): { val: string, vals?: string[] } {
+        return { val: val.toString() };
     }
 }
 export = StringConverter;

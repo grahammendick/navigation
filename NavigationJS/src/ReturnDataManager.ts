@@ -32,7 +32,7 @@ class ReturnDataManager {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converterKey = ConverterFactory.getKeyFromObject(urlObject);
-        var formattedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
+        var formattedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject).val;
         if (encode)
             formattedValue = this.encodeUrlValue(formattedValue);
         if (state.trackTypes && typeof urlObject !== defaultType)

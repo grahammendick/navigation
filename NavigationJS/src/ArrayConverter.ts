@@ -29,14 +29,18 @@ class ArrayConverter extends TypeConverter {
         return arr;
     }
 
-    convertTo(val: any): string {
+    convertTo(val: any): { val: string, vals?: string[] } {
         var formatArray = [];
+        var formatValsArray = [];
         var arr: any[] = val;
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i] != null)
-                formatArray.push(this.converter.convertTo(arr[i]).replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+            if (arr[i] != null) {
+                var convertedValue = this.converter.convertTo(arr[i]).val;
+                formatValsArray.push(convertedValue);
+                formatArray.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+            }
         }
-        return formatArray.join(ArrayConverter.SEPARATOR1);
+        return { val: formatArray.join(ArrayConverter.SEPARATOR1), vals: formatValsArray };
     }
 }
 export = ArrayConverter;

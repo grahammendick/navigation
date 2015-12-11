@@ -7,7 +7,7 @@
         return null;
     }
 
-    convertTo(val: any): string {
+    convertTo(val: any): { val: string, vals?: string[] } {
         return null;
     }
 }
