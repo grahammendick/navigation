@@ -35,8 +35,11 @@ class ReturnDataManager {
         var convertedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
         var formattedValue = convertedValue.val;
         var formattedValues = convertedValue.vals;
-        if (encode)
+        if (encode) {
             formattedValue = this.encodeUrlValue(formattedValue);
+            if (formattedValues)
+                formattedValues[0] = this.encodeUrlValue(formattedValues[0]);
+        }
         if (state.trackTypes && typeof urlObject !== defaultType) {
             formattedValue += this.RET_2_SEP + converterKey;
             if (formattedValues)
@@ -45,18 +48,23 @@ class ReturnDataManager {
         return { val: formattedValue, vals: formattedValues };
     }
 
-    static parseURLString(key: string, val: string, state: State, decode?: boolean): any {
+    static parseURLString(key: string, val: any, state: State, decode?: boolean): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
-        var urlValue = val;
+        var urlValue = typeof val === 'string' ? val : val[0];
         var converterKey = ConverterFactory.getKey(defaultType);
-        if (state.trackTypes && val.indexOf(this.RET_2_SEP) > -1) {
-            var arr = val.split(this.RET_2_SEP);
+        if (state.trackTypes && urlValue.indexOf(this.RET_2_SEP) > -1) {
+            var arr = urlValue.split(this.RET_2_SEP);
             urlValue = arr[0];
             converterKey = arr[1];
         }
-        if (decode)
+        if (decode) {
             urlValue = this.decodeUrlValue(urlValue);
+        }
+        if (typeof val !== 'string') {
+            val[0] = urlValue;
+            urlValue = val;
+        }
         return ConverterFactory.getConverter(converterKey).convertFrom(urlValue);
     }
 
