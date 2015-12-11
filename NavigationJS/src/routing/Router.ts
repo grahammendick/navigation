@@ -17,13 +17,8 @@ class Router {
         for (var i = 0; i < this.routes.length; i++) {
             var route = this.routes[i];
             var data = route.match(path);
-            if (data) {
-                for (var key in route.defaults) {
-                    if (!data[key])
-                        data[key] = route.defaults[key];
-                }
+            if (data)
                 return { route: route, data: data };
-            }
         }
         return null;
     }

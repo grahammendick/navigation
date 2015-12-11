@@ -39,8 +39,21 @@ class StateHandler implements IStateHandler {
             var params = query.split('&');
             for (var i = 0; i < params.length; i++) {
                 var param = params[i].split('=');
-                data[decodeURIComponent(param[0])] = decodeURIComponent(param[1]);
+                var key = decodeURIComponent(param[0]);
+                var val = decodeURIComponent(param[1]);
+                var arr = data[key];
+                if (!arr)
+                    data[key] = val;
+                else {
+                    if (typeof arr === 'string')
+                        data[key] = arr = [arr];
+                    arr.push(val);
+                }
             }
+        }
+        for (var defKey in state.formattedDefaults) {
+            if (!data[defKey])
+                data[defKey] = state.formattedDefaults[defKey];
         }
         return data;
     }
