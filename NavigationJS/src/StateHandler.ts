@@ -12,8 +12,15 @@ class StateHandler implements IStateHandler {
             return null;
         var query: string[] = [];
         for (var key in data) {
-            if (key !== settings.stateIdKey && !routeInfo.data[key])
-                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+            if (key !== settings.stateIdKey && !routeInfo.data[key]) {
+                var arrVals: string[] = arrayData[key];
+                if (!arrVals)
+                    query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+                else {
+                    for(var i = 0; i < arrVals.length; i++)
+                        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(arrVals[i]));
+                }
+            }
         }
         if (query.length > 0)
             routeInfo.route += '?' + query.join('&');
