@@ -70,12 +70,16 @@ class CrumbTrailManager {
             navigationData = NavigationData.clone(navigationData);
             NavigationData.setDefaults(navigationData, state.defaults);
         }
+        var arrayData = {};
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString()) {
-                val = ReturnDataManager.formatURLObject(key, val, state).val;
+                var formattedVals = ReturnDataManager.formatURLObject(key, val, state);
+                val = formattedVals.val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
                     data[key] = val;
+                if (formattedVals.vals)
+                    arrayData[key] = formattedVals.vals;
             }
         }
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
@@ -87,7 +91,7 @@ class CrumbTrailManager {
         }
         if (this.crumbTrailKey && state.trackCrumbTrail)
             data[settings.crumbTrailKey] = this.crumbTrailKey;
-        return state.stateHandler.getNavigationLink(state, data);
+        return state.stateHandler.getNavigationLink(state, data, arrayData);
     }
 
     static getRefreshHref(refreshData: any): string {

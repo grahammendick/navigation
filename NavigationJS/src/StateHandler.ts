@@ -6,7 +6,7 @@ import StateContext = require('./StateContext');
 import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
-    getNavigationLink(state: State, data: any): string {
+    getNavigationLink(state: State, data: any, arrayData: any): string {
         var routeInfo = settings.router.getRoute(state, data);
         if (routeInfo.route == null)
             return null;

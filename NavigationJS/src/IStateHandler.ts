@@ -2,7 +2,7 @@
 import State = require('./config/State');
 
 interface IStateHandler {
-    getNavigationLink(state: State, data: any): string;
+    getNavigationLink(state: State, data: any, arrayData?: any): string;
     navigateLink(oldState: State, state: State, url: string): void;
     getNavigationData(state: State, url: string): any;
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
