@@ -51,10 +51,6 @@ class StateHandler implements IStateHandler {
                 }
             }
         }
-        for (var defKey in state.formattedDefaults) {
-            if (!data[defKey])
-                data[defKey] = state.formattedDefaults[defKey];
-        }
         return data;
     }
 

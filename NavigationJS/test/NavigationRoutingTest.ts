@@ -1929,7 +1929,7 @@ describe('MatchTest', function () {
 
         it('should match', function() {
             Navigation.StateController.navigateLink('/');
-            assert.strictEqual(Navigation.StateContext.data.x, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, '2');
             Navigation.StateController.navigateLink('/3');
             assert.strictEqual(Navigation.StateContext.data.x, 3);
         });
@@ -1949,12 +1949,19 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Conflicing Default And Default Type', function () {
-        it('should not match', function() {
+        beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
                 ]);
-            assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
+        });
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+            Navigation.StateController.navigateLink('/a');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+        });
+        it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
         });
     });
@@ -2048,7 +2055,7 @@ describe('MatchTest', function () {
 
         it('should match', function() {
             Navigation.StateController.navigateLink('/');
-            assert.strictEqual(Navigation.StateContext.data.x, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, '2');
             Navigation.StateController.navigateLink('/?x=3');
             assert.strictEqual(Navigation.StateContext.data.x, 3);
         });
@@ -2068,12 +2075,19 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Conflicing Default And Default Type', function () {
-        it('should match', function() {
+        beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
                 ]);
-            assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
+        });
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+            Navigation.StateController.navigateLink('/?x=a');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+        });
+        it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/?x=b'), /not a valid number/, '');
         });
     });

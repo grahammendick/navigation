@@ -185,7 +185,8 @@ class StateController {
     private static parseData(data: any, state: State): any {
         var newData = {};
         for (var key in data) {
-            if (key !== settings.previousStateIdKey && key !== settings.returnDataKey && key !== settings.crumbTrailKey)
+            if (key !== settings.previousStateIdKey && key !== settings.returnDataKey
+                && key !== settings.crumbTrailKey && data[key] !== state.formattedDefaults[key])
                 newData[key] = ReturnDataManager.parseURLString(key, data[key], state);
         }
         NavigationData.setDefaults(newData, state.defaults);
