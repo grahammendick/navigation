@@ -150,8 +150,9 @@ describe('Navigation Data', function () {
         });
         var arrayNavigationData = {};
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
-        arrayNavigationData['array_boolean'] = [true, false];
-        arrayNavigationData['array_number'] = [1, 2];
+        arrayNavigationData['array_boolean'] = ['', true, false];
+        arrayNavigationData['array_number'] = [1, null, undefined, 2];
+        arrayNavigationData['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -182,11 +183,21 @@ describe('Navigation Data', function () {
                 }
                 assert.strictEqual(Navigation.StateContext.data['array_string'][0], 'He-llo');
                 assert.strictEqual(Navigation.StateContext.data['array_string'][1], 'World');
-                assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], true);
-                assert.strictEqual(Navigation.StateContext.data['array_boolean'][1], false);
+                assert.strictEqual(Navigation.StateContext.data['array_string'].length, 2);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], null);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][1], true);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][2], false);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'].length, 3);
                 assert.strictEqual(Navigation.StateContext.data['array_number'][0], 1);
-                assert.strictEqual(Navigation.StateContext.data['array_number'][1], 2);
-                assert.equal(i, 3);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][1], null);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][2], null);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][3], 2);
+                assert.strictEqual(Navigation.StateContext.data['array_number'].length, 4);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][0], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
+                assert.equal(i, 4);
             });
         }
     });

@@ -35,7 +35,7 @@ class ConverterFactory {
             var arr: any[] = obj;
             type2 = 'string';
             for (var i = 0; i < arr.length; i++) {
-                if (arr[i] != null) {
+                if (arr[i] != null && arr[i].toString()) {
                     type2 = typeof arr[i];
                     break;
                 }

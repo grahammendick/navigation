@@ -29,7 +29,10 @@ class ArrayConverter extends TypeConverter {
             }
         } else {
             for(var i = 0; i < val.length; i++) {
-                arr.push(this.converter.convertFrom(val[i]));
+                if (val[i].length !== 0)
+                    arr.push(this.converter.convertFrom(val[i]));
+                else
+                    arr.push(null);
             }            
         }
         return arr;
@@ -40,10 +43,13 @@ class ArrayConverter extends TypeConverter {
         var formatValsArray = [];
         var arr: any[] = val;
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i] != null) {
+            if (arr[i] != null && arr[i].toString()) {
                 var convertedValue = this.converter.convertTo(arr[i]).val;
                 formatValsArray.push(convertedValue);
                 formatArray.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+            } else {
+                formatValsArray.push('');
+                formatArray.push('');
             }
         }
         return { val: formatArray.join(ArrayConverter.SEPARATOR1), vals: formatValsArray };
