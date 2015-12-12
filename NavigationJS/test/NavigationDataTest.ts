@@ -153,6 +153,7 @@ describe('Navigation Data', function () {
         arrayNavigationData['array_boolean'] = ['', true, false];
         arrayNavigationData['array_number'] = [1, null, undefined, 2];
         arrayNavigationData['array_blank'] = ['', null, undefined];
+        arrayNavigationData['array_empty'] = [];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -197,6 +198,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Navigation.StateContext.data['array_empty'], undefined);
                 assert.equal(i, 4);
             });
         }
@@ -206,7 +208,7 @@ describe('Navigation Data', function () {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_blank}', transitions: [
+                    { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_blank}/{array_empty?}', transitions: [
                         { key: 't', to: 's1' }
                     ]},
                     { key: 's1', route: 'r1' }]}
@@ -217,6 +219,7 @@ describe('Navigation Data', function () {
         arrayNavigationData['array_boolean'] = ['', true, false];
         arrayNavigationData['array_number'] = [1, null, undefined, 2];
         arrayNavigationData['array_blank'] = ['', null, undefined];
+        arrayNavigationData['array_empty'] = [];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -231,7 +234,6 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 var link = Navigation.StateController.getNavigationLink('d', arrayNavigationData);
                 Navigation.StateController.navigateLink(link);
-                console.log(link);
                 link = Navigation.StateController.getNavigationLink('t');
                 Navigation.StateController.navigateLink(link);
                 link = Navigation.StateController.getNavigationBackLink(1);
@@ -262,6 +264,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Navigation.StateContext.data['array_empty'], undefined);
                 assert.equal(i, 4);
             });
         }
