@@ -1961,8 +1961,16 @@ describe('MatchTest', function () {
             Navigation.StateController.navigateLink('/a');
             assert.strictEqual(Navigation.StateContext.data.x, 'a');
         });
+        
         it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a' }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
         });
     });
 
@@ -2087,8 +2095,16 @@ describe('MatchTest', function () {
             Navigation.StateController.navigateLink('/?x=a');
             assert.strictEqual(Navigation.StateContext.data.x, 'a');
         });
+        
         it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/?x=b'), /not a valid number/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a' }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/?x=3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/?x=3');
         });
     });
 
