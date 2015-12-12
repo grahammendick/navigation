@@ -74,11 +74,11 @@ class CrumbTrailManager {
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString()) {
-                var formattedVals = ReturnDataManager.formatURLObject(key, val, state);
-                val = formattedVals.val;
+                var formattedData = ReturnDataManager.formatURLObject(key, val, state);
+                val = formattedData.val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key]) {
                     data[key] = val;
-                    arrayData[key] = formattedVals.vals;
+                    arrayData[key] = formattedData.vals;
                 }
             }
         }
