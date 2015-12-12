@@ -76,10 +76,10 @@ class CrumbTrailManager {
             if (val != null && val.toString()) {
                 var formattedVals = ReturnDataManager.formatURLObject(key, val, state);
                 val = formattedVals.val;
-                if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
+                if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key]) {
                     data[key] = val;
-                if (formattedVals.vals)
                     arrayData[key] = formattedVals.vals;
+                }
             }
         }
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
