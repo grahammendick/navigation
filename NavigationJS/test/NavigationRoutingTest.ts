@@ -2141,7 +2141,7 @@ describe('MatchTest', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackCrumbTrail: false, defaultTypes: { x: 'stringarray' } }]}
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
                 ]);
         });
         
@@ -2161,7 +2161,7 @@ describe('MatchTest', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackCrumbTrail: false, defaultTypes: { x: 'numberarray' } }]}
+                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
                 ]);
         });
         
@@ -2174,6 +2174,32 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
+        });
+    });
+
+    describe('Without Types Array Query String', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=Hello&x=World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=1&x=2&x=4');
+            assert.strictEqual(Navigation.StateContext.data.x[0], '1');
+            assert.strictEqual(Navigation.StateContext.data.x[1], '2');
+            assert.strictEqual(Navigation.StateContext.data.x[2], '4');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
         });
     });
