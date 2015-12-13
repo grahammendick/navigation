@@ -48,7 +48,7 @@ class ReturnDataManager {
         return { val: formattedValue, queryStringVal: formattedArray };
     }
 
-    static parseURLString(key: string, val: string | string[], state: State, decode?: boolean, queryString = false): any {
+    static parseURLString(key: string, val: string | string[], state: State, decode = false, queryString = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
