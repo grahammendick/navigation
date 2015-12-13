@@ -24,6 +24,7 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/ '), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/a'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/?x=a&x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -122,6 +123,7 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/a?x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
