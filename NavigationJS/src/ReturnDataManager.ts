@@ -28,27 +28,27 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode?: boolean): { val: string, vals?: string[] } {
+    static formatURLObject(key: string, urlObject: any, state: State, encode?: boolean): { val: string, queryStringVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converterKey = ConverterFactory.getKeyFromObject(urlObject);
         var convertedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
         var formattedValue = convertedValue.val;
-        var formattedValues = convertedValue.vals;
+        var formattedArray = convertedValue.queryStringVal;
         if (encode) {
             formattedValue = this.encodeUrlValue(formattedValue);
-            if (formattedValues)
-                formattedValues[0] = this.encodeUrlValue(formattedValues[0]);
+            if (formattedArray)
+                formattedArray[0] = this.encodeUrlValue(formattedArray[0]);
         }
         if (state.trackTypes && ConverterFactory.getType(urlObject) !== defaultType) {
             formattedValue += this.RET_2_SEP + converterKey;
-            if (formattedValues)
-                formattedValues[0] = formattedValues[0] + this.RET_2_SEP + converterKey;
+            if (formattedArray)
+                formattedArray[0] = formattedArray[0] + this.RET_2_SEP + converterKey;
         }
-        return { val: formattedValue, vals: formattedValues };
+        return { val: formattedValue, queryStringVal: formattedArray };
     }
 
-    static parseURLString(key: string, val: string | string[], state: State, decode?: boolean): any {
+    static parseURLString(key: string, val: string | string[], state: State, decode?: boolean, queryString = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
@@ -64,7 +64,7 @@ class ReturnDataManager {
             val =  urlValue;
         else
             val[0] = urlValue;
-        return ConverterFactory.getConverter(converterKey).convertFrom(val);
+        return ConverterFactory.getConverter(converterKey).convertFrom(val, queryString);
     }
 
     static parseReturnData(returnData: string, state: State): any {

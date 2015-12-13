@@ -6,19 +6,19 @@ import StateContext = require('./StateContext');
 import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
-    getNavigationLink(state: State, data: any, arrayData: any): string {
+    getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[] } = {}): string {
         var routeInfo = settings.router.getRoute(state, data);
         if (routeInfo.route == null)
             return null;
         var query: string[] = [];
         for (var key in data) {
             if (key !== settings.stateIdKey && !routeInfo.data[key]) {
-                var arrVals: string[] = arrayData[key];
-                if (!arrVals)
+                var arr = queryStringData[key];
+                if (!arr)
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
                 else {
-                    for(var i = 0; i < arrVals.length; i++)
-                        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(arrVals[i]));
+                    for(var i = 0; i < arr.length; i++)
+                        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(arr[i]));
                 }
             }
         }
@@ -30,7 +30,7 @@ class StateHandler implements IStateHandler {
     navigateLink(oldState: State, state: State, url: string) {
     }
 
-    getNavigationData(state: State, url: string): any {
+    getNavigationData(state: State, url: string, queryStringData: any = {}): any {
         var queryIndex = url.indexOf('?');
         var data = settings.router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
         data = data ? data : {};
@@ -41,6 +41,7 @@ class StateHandler implements IStateHandler {
                 var param = params[i].split('=');
                 var key = decodeURIComponent(param[0]);
                 var val = decodeURIComponent(param[1]);
+                queryStringData[key] = true;
                 var arr = data[key];
                 if (!arr)
                     data[key] = val;
@@ -52,7 +53,7 @@ class StateHandler implements IStateHandler {
             }
         }
         return data;
-    }
+    }    
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
         var newCrumbs: Crumb[] = [];

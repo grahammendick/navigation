@@ -15,7 +15,7 @@ class ArrayConverter extends TypeConverter {
         return this.converter.getType() + 'array';
     }
 
-    convertFrom(val: string | string[]): any {
+    convertFrom(val: string | string[], queryString: boolean): any {
         var arr = [];
         if (typeof val === 'string') {
             var vals = val.split(ArrayConverter.SEPARATOR1);
@@ -36,21 +36,20 @@ class ArrayConverter extends TypeConverter {
         return arr;
     }
 
-    convertTo(val: any): { val: string, vals?: string[] } {
-        var valArray = [];
+    convertTo(val: any[]): { val: string, queryStringVal?: string[] } {
         var vals = [];
-        var arr: any[] = val;
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] != null && arr[i].toString()) {
-                var convertedValue = this.converter.convertTo(arr[i]).val;
-                vals.push(convertedValue);
-                valArray.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+        var arr = [];
+        for (var i = 0; i < val.length; i++) {
+            if (val[i] != null && val[i].toString()) {
+                var convertedValue = this.converter.convertTo(val[i]).val;
+                arr.push(convertedValue);
+                vals.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
             } else {
+                arr.push('');
                 vals.push('');
-                valArray.push('');
             }
         }
-        return { val: valArray.join(ArrayConverter.SEPARATOR1), vals: vals };
+        return { val: vals.join(ArrayConverter.SEPARATOR1), queryStringVal: arr };
     }
 }
 export = ArrayConverter;
