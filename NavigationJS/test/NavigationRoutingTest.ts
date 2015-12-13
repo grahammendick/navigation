@@ -2223,4 +2223,26 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
         });
     });
+
+    describe('Array Query String Default', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaults: { x: ['Hello', 'World'] }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=World&x=Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello'] }), '/?x=Hello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['World', 'Hello'] }), '/?x=World&x=Hello');
+        });
+    });
 });
