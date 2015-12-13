@@ -2207,9 +2207,9 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            Navigation.StateController.navigateLink('/?x=Hello&x=World');
-            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
-            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            Navigation.StateController.navigateLink('/?x=He_llo&x=Wor-ld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'He_llo');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'Wor-ld');
             assert.strictEqual(Navigation.StateContext.data.x.length, 2);
             Navigation.StateController.navigateLink('/?x=1&x=2&x=4');
             assert.strictEqual(Navigation.StateContext.data.x[0], '1');
@@ -2219,7 +2219,7 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['He_llo', 'Wor-ld'] }), '/?x=He_llo&x=Wor-ld');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
         });
     });
