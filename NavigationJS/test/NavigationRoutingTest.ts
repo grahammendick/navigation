@@ -2089,6 +2089,7 @@ describe('MatchTest', function () {
                     { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
                 ]);
         });
+        
         it('should match', function() {
             Navigation.StateController.navigateLink('/');
             assert.strictEqual(Navigation.StateContext.data.x, 'a');
@@ -2133,6 +2134,47 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 1 }), '/a/1');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 1, y: 2 }), '/1?y=2');
+        });
+    });
+
+    describe('Array Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackCrumbTrail: false, defaultTypes: { x: 'stringarray' } }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=Hello&x=World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
+        });
+    });
+
+    describe('Array Query String Default Type Number', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackCrumbTrail: false, defaultTypes: { x: 'numberarray' } }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=1&x=2&x=4');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 1);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 2);
+            assert.strictEqual(Navigation.StateContext.data.x[2], 4);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
         });
     });
 });

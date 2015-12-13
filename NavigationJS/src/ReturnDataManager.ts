@@ -40,7 +40,7 @@ class ReturnDataManager {
             if (formattedValues)
                 formattedValues[0] = this.encodeUrlValue(formattedValues[0]);
         }
-        if (state.trackTypes && typeof urlObject !== defaultType) {
+        if (state.trackTypes && ConverterFactory.getType(urlObject) !== defaultType) {
             formattedValue += this.RET_2_SEP + converterKey;
             if (formattedValues)
                 formattedValues[0] = formattedValues[0] + this.RET_2_SEP + converterKey;

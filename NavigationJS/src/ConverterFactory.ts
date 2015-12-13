@@ -27,8 +27,8 @@ class ConverterFactory {
     static getKey(type: string) {
         return this.typeToKeyList[type];
     }
-
-    static getKeyFromObject(obj: any) {
+    
+    static getType(obj: any) {
         var fullType = typeof obj;
         var type2: string;
         if (Object.prototype.toString.call(obj) === '[object Array]') {
@@ -42,8 +42,13 @@ class ConverterFactory {
             }
             fullType = type2 + 'array';
         }
+        return fullType;
+    }
+
+    static getKeyFromObject(obj: any) {
+        var fullType = this .getType(obj);
         if (!this.typeToKeyList[fullType])
-            throw new Error('No TypeConverter found for ' + !type2 ? fullType : type2);
+            throw new Error('No TypeConverter found for ' + fullType);
         return this.typeToKeyList[fullType];
     }
 
