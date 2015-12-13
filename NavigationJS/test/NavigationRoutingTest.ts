@@ -2198,11 +2198,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Without Types Array Query String', function () {
+    describe('Without Types Array Query String Default Type', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }]}
+                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
                 ]);
         });
         

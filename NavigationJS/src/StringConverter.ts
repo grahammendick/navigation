@@ -5,7 +5,9 @@ class StringConverter extends TypeConverter {
         return 'string';
     }
 
-    convertFrom(val: string): any {
+    convertFrom(val: string | string[]): any {
+        if (typeof val !== 'string')
+            throw Error(val + ' is not a valid string');
         return val;
     }
 
