@@ -2178,6 +2178,26 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Array Query String Default Type Boolean', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=true&x=false');
+            assert.strictEqual(Navigation.StateContext.data.x[0], true);
+            assert.strictEqual(Navigation.StateContext.data.x[1], false);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [true, false] }), '/?x=true&x=false');
+        });
+    });
+
     describe('Without Types Array Query String', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
