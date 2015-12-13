@@ -18,14 +18,12 @@ class ArrayConverter extends TypeConverter {
     convertFrom(val: string | string[]): any {
         var arr = [];
         if (typeof val === 'string') {
-            if (val.length !== 0) {
-                var vals = val.split(ArrayConverter.SEPARATOR1);
-                for (var i = 0; i < vals.length; i++) {
-                    if (vals[i].length !== 0)
-                        arr.push(this.converter.convertFrom(vals[i].replace(new RegExp(ArrayConverter.SEPARATOR2, 'g'), ArrayConverter.SEPARATOR)));
-                    else
-                        arr.push(null);
-                }
+            var vals = val.split(ArrayConverter.SEPARATOR1);
+            for (var i = 0; i < vals.length; i++) {
+                if (vals[i].length !== 0)
+                    arr.push(this.converter.convertFrom(vals[i].replace(new RegExp(ArrayConverter.SEPARATOR2, 'g'), ArrayConverter.SEPARATOR)));
+                else
+                    arr.push(null);
             }
         } else {
             for(var i = 0; i < val.length; i++) {
