@@ -2172,6 +2172,39 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Array Param Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/Hello1-World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'W2-orld');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/H12-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            Navigation.StateController.navigateLink('/H22-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H2-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/Hello1-World');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello'] }), '/H12-ello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H2-ello'] }), '/H22-ello');
+        });
+    });
+
     describe('Array Query String Default Type Number', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
