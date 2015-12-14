@@ -28,7 +28,7 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode?: boolean): { val: string, queryStringVal?: string[] } {
+    static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, queryStringVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converterKey = ConverterFactory.getKeyFromObject(urlObject);
