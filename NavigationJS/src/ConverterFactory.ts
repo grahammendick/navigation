@@ -30,17 +30,17 @@ class ConverterFactory {
     
     static getType(obj: any) {
         var fullType = typeof obj;
-        var type2: string;
+        var subType: string;
         if (Object.prototype.toString.call(obj) === '[object Array]') {
             var arr: any[] = obj;
-            type2 = 'string';
+            subType = 'string';
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] != null && arr[i].toString()) {
-                    type2 = typeof arr[i];
+                    subType = typeof arr[i];
                     break;
                 }
             }
-            fullType = type2 + 'array';
+            fullType = subType + 'array';
         }
         return fullType;
     }
