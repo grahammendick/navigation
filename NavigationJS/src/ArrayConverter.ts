@@ -35,7 +35,7 @@ class ArrayConverter extends TypeConverter {
                     arr.push(this.converter.convertFrom(val[i]));
                 else
                     arr.push(null);
-            }            
+            }
         }
         return arr;
     }
