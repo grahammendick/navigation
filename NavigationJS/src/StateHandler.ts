@@ -54,7 +54,7 @@ class StateHandler implements IStateHandler {
             }
         }
         return data;
-    }    
+    }
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
         var newCrumbs: Crumb[] = [];
