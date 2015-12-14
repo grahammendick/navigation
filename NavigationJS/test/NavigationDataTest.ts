@@ -5282,17 +5282,10 @@ describe('Navigation Data', function () {
         
         function test(){
             it('should clear State context', function() {
-                function isEmpty(data) {
-                    var i = 0;
-                    for (var key in data) {
-                        i++;
-                    }
-                    return i === 0;
-                }
                 Navigation.StateController.clearStateContext();
-                assert.ok(isEmpty(Navigation.StateContext.oldData));
-                assert.ok(isEmpty(Navigation.StateContext.previousData));
-                assert.ok(isEmpty(Navigation.StateContext.data));
+                assert.strictEqual(Object.keys(Navigation.StateContext.oldData).length, 0);
+                assert.strictEqual(Object.keys(Navigation.StateContext.previousData).length, 0);
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 0);
             });
         }
     });
