@@ -32,7 +32,8 @@ class StateHandler implements IStateHandler {
 
     getNavigationData(state: State, url: string, queryStringData: any = {}): any {
         var queryIndex = url.indexOf('?');
-        var data = settings.router.getData(queryIndex < 0 ? url : url.substring(0, queryIndex)).data;
+        var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
+        var data = settings.router.getData(route).data;
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
