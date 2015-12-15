@@ -1,4 +1,5 @@
-﻿import TypeConverter = require('./TypeConverter');
+﻿import settings = require('./settings');
+import TypeConverter = require('./TypeConverter');
 
 class ArrayConverter extends TypeConverter {
     private converter: TypeConverter;
@@ -18,7 +19,7 @@ class ArrayConverter extends TypeConverter {
     convertFrom(val: string | string[], queryString: boolean): any {
         var arr = [];
         if (typeof val === 'string') {
-            if (!queryString) {
+            if (!queryString || settings.combineArray) {
                 var vals = val.split(ArrayConverter.SEPARATOR1);
                 for (var i = 0; i < vals.length; i++) {
                     if (vals[i].length !== 0)
@@ -53,7 +54,7 @@ class ArrayConverter extends TypeConverter {
                 vals.push('');
             }
         }
-        return { val: vals.join(ArrayConverter.SEPARATOR1), queryStringVal: arr };
+        return { val: vals.join(ArrayConverter.SEPARATOR1), queryStringVal: !settings.combineArray ? arr : null };
     }
 }
 export = ArrayConverter;

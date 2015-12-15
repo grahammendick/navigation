@@ -2468,4 +2468,41 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 4, 2] }), '/?x=1&x=4&x=2');
         });
     });
+
+    describe('Combine Array Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.settings.combineArray = true;
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        afterEach(function() {
+            Navigation.settings.combineArray = false;
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=Hello1-World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'W2-orld');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=H12-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            Navigation.StateController.navigateLink('/?x=H22-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H2-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello1-World');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/?x=H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello'] }), '/?x=H12-ello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H2-ello'] }), '/?x=H22-ello');
+        });
+    });
 });
