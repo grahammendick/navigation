@@ -141,11 +141,8 @@ describe('Navigation Data', function () {
     describe('Array Data', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
                 ]);
         });
         var arrayNavigationData = {};
@@ -158,8 +155,6 @@ describe('Navigation Data', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 Navigation.StateController.navigate('d', arrayNavigationData);
-                Navigation.StateController.navigate('t');
-                Navigation.StateController.navigateBack(1);
             });
             test();
         });
@@ -167,10 +162,6 @@ describe('Navigation Data', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = Navigation.StateController.getNavigationLink('d', arrayNavigationData);
-                Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationLink('t');
-                Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationBackLink(1);
                 Navigation.StateController.navigateLink(link);
             });
             test();
@@ -207,11 +198,8 @@ describe('Navigation Data', function () {
     describe('Array Data Route', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_blank}/{array_empty?}', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_blank}/{array_empty?}' }]}
                 ]);
         });
         var arrayNavigationData = {};
@@ -224,8 +212,6 @@ describe('Navigation Data', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 Navigation.StateController.navigate('d', arrayNavigationData);
-                Navigation.StateController.navigate('t');
-                Navigation.StateController.navigateBack(1);
             });
             test();
         });
@@ -233,10 +219,6 @@ describe('Navigation Data', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = Navigation.StateController.getNavigationLink('d', arrayNavigationData);
-                Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationLink('t');
-                Navigation.StateController.navigateLink(link);
-                link = Navigation.StateController.getNavigationBackLink(1);
                 Navigation.StateController.navigateLink(link);
             });
             test();
@@ -720,6 +702,52 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Array Data Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['s'] = ['Hello', 'World'];
+        data['t'] = [1, 2, 4];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'][0], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['s'][1], 'World');
+                assert.strictEqual(Navigation.StateContext.data['t'][0], 1);
+                assert.strictEqual(Navigation.StateContext.data['t'][1], 2);
+                assert.strictEqual(Navigation.StateContext.data['t'][2], 4);
+            });
+        }
+    });
+
     describe('Change Data Back', function() {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
@@ -992,6 +1020,48 @@ describe('Navigation Data', function () {
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+            });
+        }
+    });
+
+    describe('Refresh Array Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['s'] = ['Hello', 'World'];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d');
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.refresh(data);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getRefreshLink(data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'][0], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['s'][1], 'World');
             });
         }
     });
