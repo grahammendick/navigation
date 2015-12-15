@@ -150,7 +150,6 @@ describe('Navigation Data', function () {
         arrayNavigationData['array_boolean'] = ['', true, false];
         arrayNavigationData['array_number'] = [1, null, undefined, 2];
         arrayNavigationData['array_blank'] = ['', null, undefined];
-        arrayNavigationData['array_empty'] = [];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -189,7 +188,6 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
-                assert.strictEqual(Navigation.StateContext.data['array_empty'], undefined);
                 assert.equal(i, 4);
             });
         }
@@ -207,7 +205,6 @@ describe('Navigation Data', function () {
         arrayNavigationData['array_boolean'] = ['', true, false];
         arrayNavigationData['array_number'] = [1, null, undefined, 2];
         arrayNavigationData['array_blank'] = ['', null, undefined];
-        arrayNavigationData['array_empty'] = [];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -246,7 +243,6 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
-                assert.strictEqual(Navigation.StateContext.data['array_empty'], undefined);
                 assert.equal(i, 4);
             });
         }
@@ -590,6 +586,40 @@ describe('Navigation Data', function () {
             it('should populate data', function () {
                 assert.strictEqual(Navigation.StateContext.data['s'], undefined);
                 assert.strictEqual(Navigation.StateContext.data['t'], '1');
+            });
+        }
+    });
+
+    describe('Empty Array Data', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
+        var data = {};
+        data['s'] = [];
+        data['t'] = ['1'];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'][0], '1');
             });
         }
     });
