@@ -1,4 +1,4 @@
-﻿// Type definitions for Navigation 1.1.0
+﻿// Type definitions for Navigation 1.2.0
 // Project: http://grahammendick.github.io/navigation/
 // Definitions by: Graham Mendick <https://github.com/grahammendick>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
@@ -31,6 +31,10 @@ declare module Navigation {
          * Gets the textual description of the dialog
          */
         title?: string;
+        /**
+         * Gets the additional dialog attributes
+         */
+        [extras: string]: any;
     }
 
     /**
@@ -75,6 +79,10 @@ declare module Navigation {
          * preserved when navigating
          */
         trackTypes?: boolean;
+        /**
+         * Gets the additional state attributes
+         */
+        [extras: string]: any;
     }
 
     /**
@@ -522,6 +530,14 @@ declare module Navigation {
          */
         getNavigationLink(state: State, data: any): string;
         /**
+         * Gets a link that navigates to the state passing the data
+         * @param state The State to navigate to
+         * @param data The data to pass when navigating
+         * @param queryStringData The query string array data
+         * @returns The navigation link
+         */
+        getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[]; }): string;
+        /**
          * Navigates to the url
          * @param oldState The current State
          * @param state The State to navigate to
@@ -535,6 +551,14 @@ declare module Navigation {
          * @returns The navigation data
          */
         getNavigationData(state: State, url: string): any;
+        /**
+         * Gets the data parsed from the url
+         * @param state The State navigated to
+         * @param url The current url
+         * @param queryStringData Stores query string keys
+         * @returns The navigation data
+         */
+        getNavigationData(state: State, url: string, queryStringData: any): any;
         /**
          * Truncates the crumb trail
          * @param The State navigated to
@@ -634,6 +658,11 @@ declare module Navigation {
          * navigating back or refreshing and combineCrumbTrail is false 
          */
         trackAllPreviousData: boolean;
+        /**
+         * Gets or sets a value indicating whether arrays should be stored in
+         * a single query string parameter
+         */
+        combineArray: boolean;
     }
 
     /**
@@ -682,6 +711,10 @@ declare module Navigation {
          * Gets the current Url
          */
         static url: string;
+        /**
+         * Gets or sets the current title
+         */
+        static title: string;
         /** 
          * Combines the data with all the current NavigationData
          * @param The data to add to the current NavigationData
@@ -908,6 +941,14 @@ declare module Navigation {
          */
         getNavigationLink(state: State, data: any): string;
         /**
+         * Gets a link that navigates to the state passing the data
+         * @param state The State to navigate to
+         * @param data The data to pass when navigating
+         * @param queryStringData The query string array data
+         * @returns The navigation link
+         */
+        getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[]; }): string;
+        /**
          * Navigates to the url
          * @param oldState The current State
          * @param state The State to navigate to
@@ -921,6 +962,14 @@ declare module Navigation {
          * @returns The navigation data
          */
         getNavigationData(state: State, url: string): any;
+        /**
+         * Gets the data parsed from the url
+         * @param state The State navigated to
+         * @param url The current url
+         * @param queryStringData Stores query string keys
+         * @returns The navigation data
+         */
+        getNavigationData(state: State, url: string, queryStringData: any): any;
         /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered
