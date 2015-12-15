@@ -1,6 +1,6 @@
 ﻿import Dialog = require('./Dialog');
 import IDialog = require('./IDialog');
-import ConverterFactory = require('../ConverterFactory');
+import ConverterFactory = require('../converter/ConverterFactory');
 import ReturnDataManager = require('../ReturnDataManager');
 import settings = require('../settings');
 import State = require('./State');

@@ -1,4 +1,4 @@
-﻿import settings = require('./settings');
+﻿import settings = require('../settings');
 import TypeConverter = require('./TypeConverter');
 
 class ArrayConverter extends TypeConverter {

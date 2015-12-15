@@ -1,4 +1,4 @@
-﻿import ConverterFactory = require('./ConverterFactory');
+﻿import ConverterFactory = require('./converter/ConverterFactory');
 import State = require('./config/State');
 import settings = require('./settings');
 
