@@ -27,23 +27,28 @@ class ConverterFactory {
     static getKey(type: string) {
         return this.typeToKeyList[type];
     }
-
-    static getKeyFromObject(obj: any) {
+    
+    static getType(obj: any) {
         var fullType = typeof obj;
-        var type2: string;
+        var subType: string;
         if (Object.prototype.toString.call(obj) === '[object Array]') {
             var arr: any[] = obj;
-            type2 = 'string';
+            subType = 'string';
             for (var i = 0; i < arr.length; i++) {
-                if (arr[i] != null) {
-                    type2 = typeof arr[i];
+                if (arr[i] != null && arr[i].toString()) {
+                    subType = typeof arr[i];
                     break;
                 }
             }
-            fullType = type2 + 'array';
+            fullType = subType + 'array';
         }
+        return fullType;
+    }
+
+    static getKeyFromObject(obj: any) {
+        var fullType = this .getType(obj);
         if (!this.typeToKeyList[fullType])
-            throw new Error('No TypeConverter found for ' + !type2 ? fullType : type2);
+            throw new Error('No TypeConverter found for ' + fullType);
         return this.typeToKeyList[fullType];
     }
 

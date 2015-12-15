@@ -78,9 +78,13 @@ module NavigationTests {
 	
 	// State Handler
 	class LogStateHandler extends Navigation.StateHandler {
+		getNavigationLink(state: Navigation.State, data: any): string {
+			console.log('get navigation link');
+			return super.getNavigationLink(state, data, { ids: [] });
+		}
 	    getNavigationData(state: Navigation.State, url: string): any {
 			console.log('get navigation data');
-			super.getNavigationData(state, url);
+			super.getNavigationData(state, url, {});
 	    }
 	}
 	homePage.stateHandler = new LogStateHandler();

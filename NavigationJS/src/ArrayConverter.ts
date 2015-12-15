@@ -1,4 +1,5 @@
-﻿import TypeConverter = require('./TypeConverter');
+﻿import settings = require('./settings');
+import TypeConverter = require('./TypeConverter');
 
 class ArrayConverter extends TypeConverter {
     private converter: TypeConverter;
@@ -15,13 +16,24 @@ class ArrayConverter extends TypeConverter {
         return this.converter.getType() + 'array';
     }
 
-    convertFrom(val: string): any {
+    convertFrom(val: string | string[], queryString: boolean): any {
         var arr = [];
-        if (val.length !== 0) {
-            var vals = val.split(ArrayConverter.SEPARATOR1);
-            for (var i = 0; i < vals.length; i++) {
-                if (vals[i].length !== 0)
-                    arr.push(this.converter.convertFrom(vals[i].replace(new RegExp(ArrayConverter.SEPARATOR2, 'g'), ArrayConverter.SEPARATOR)));
+        if (typeof val === 'string') {
+            if (!queryString || settings.combineArray) {
+                var vals = val.split(ArrayConverter.SEPARATOR1);
+                for (var i = 0; i < vals.length; i++) {
+                    if (vals[i].length !== 0)
+                        arr.push(this.converter.convertFrom(vals[i].replace(new RegExp(ArrayConverter.SEPARATOR2, 'g'), ArrayConverter.SEPARATOR)));
+                    else
+                        arr.push(null);
+                }
+            } else {
+                arr.push(this.converter.convertFrom(val));
+            }
+        } else {
+            for(var i = 0; i < val.length; i++) {
+                if (val[i].length !== 0)
+                    arr.push(this.converter.convertFrom(val[i]));
                 else
                     arr.push(null);
             }
@@ -29,14 +41,20 @@ class ArrayConverter extends TypeConverter {
         return arr;
     }
 
-    convertTo(val: any): string {
-        var formatArray = [];
-        var arr: any[] = val;
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] != null)
-                formatArray.push(this.converter.convertTo(arr[i]).replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+    convertTo(val: any[]): { val: string, queryStringVal?: string[] } {
+        var vals = [];
+        var arr = [];
+        for (var i = 0; i < val.length; i++) {
+            if (val[i] != null && val[i].toString()) {
+                var convertedValue = this.converter.convertTo(val[i]).val;
+                arr.push(convertedValue);
+                vals.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+            } else {
+                arr.push('');
+                vals.push('');
+            }
         }
-        return formatArray.join(ArrayConverter.SEPARATOR1);
+        return { val: vals.join(ArrayConverter.SEPARATOR1), queryStringVal: !settings.combineArray ? arr : null };
     }
 }
 export = ArrayConverter;

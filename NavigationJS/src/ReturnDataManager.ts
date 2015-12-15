@@ -12,7 +12,7 @@ class ReturnDataManager {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()) {
-                var val = this.formatURLObject(key, returnData[key], state, true);
+                var val = this.formatURLObject(key, returnData[key], state, true).val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
                     returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + val);
             }
@@ -28,31 +28,43 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode?: boolean) {
+    static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, queryStringVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converterKey = ConverterFactory.getKeyFromObject(urlObject);
-        var formattedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
-        if (encode)
+        var convertedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
+        var formattedValue = convertedValue.val;
+        var formattedArray = convertedValue.queryStringVal;
+        if (encode) {
             formattedValue = this.encodeUrlValue(formattedValue);
-        if (state.trackTypes && typeof urlObject !== defaultType)
+            if (formattedArray)
+                formattedArray[0] = this.encodeUrlValue(formattedArray[0]);
+        }
+        if (state.trackTypes && ConverterFactory.getType(urlObject) !== defaultType) {
             formattedValue += this.RET_2_SEP + converterKey;
-        return formattedValue;
+            if (formattedArray)
+                formattedArray[0] = formattedArray[0] + this.RET_2_SEP + converterKey;
+        }
+        return { val: formattedValue, queryStringVal: formattedArray };
     }
 
-    static parseURLString(key: string, val: string, state: State, decode?: boolean): any {
+    static parseURLString(key: string, val: string | string[], state: State, decode = false, queryString = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
-        var urlValue = val;
+        var urlValue = typeof val === 'string' ? val : val[0];
         var converterKey = ConverterFactory.getKey(defaultType);
-        if (state.trackTypes && val.indexOf(this.RET_2_SEP) > -1) {
-            var arr = val.split(this.RET_2_SEP);
+        if (state.trackTypes && urlValue.indexOf(this.RET_2_SEP) > -1) {
+            var arr = urlValue.split(this.RET_2_SEP);
             urlValue = arr[0];
             converterKey = arr[1];
         }
         if (decode)
             urlValue = this.decodeUrlValue(urlValue);
-        return ConverterFactory.getConverter(converterKey).convertFrom(urlValue);
+        if (typeof val === 'string')
+            val =  urlValue;
+        else
+            val[0] = urlValue;
+        return ConverterFactory.getConverter(converterKey).convertFrom(val, queryString);
     }
 
     static parseReturnData(returnData: string, state: State): any {

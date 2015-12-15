@@ -3,11 +3,11 @@
         return null;
     }
 
-    convertFrom(val: string): any {
+    convertFrom(val: string | string[], queryString = false): any {
         return null;
     }
 
-    convertTo(val: any): string {
+    convertTo(val: any): { val: string, queryStringVal?: string[] } {
         return null;
     }
 }

@@ -530,6 +530,14 @@ declare module Navigation {
          */
         getNavigationLink(state: State, data: any): string;
         /**
+         * Gets a link that navigates to the state passing the data
+         * @param state The State to navigate to
+         * @param data The data to pass when navigating
+         * @param queryStringData The query string array data
+         * @returns The navigation link
+         */
+        getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[]; }): string;
+        /**
          * Navigates to the url
          * @param oldState The current State
          * @param state The State to navigate to
@@ -543,6 +551,14 @@ declare module Navigation {
          * @returns The navigation data
          */
         getNavigationData(state: State, url: string): any;
+        /**
+         * Gets the data parsed from the url
+         * @param state The State navigated to
+         * @param url The current url
+         * @param queryStringData Stores query string keys
+         * @returns The navigation data
+         */
+        getNavigationData(state: State, url: string, queryStringData: any): any;
         /**
          * Truncates the crumb trail
          * @param The State navigated to
@@ -642,6 +658,11 @@ declare module Navigation {
          * navigating back or refreshing and combineCrumbTrail is false 
          */
         trackAllPreviousData: boolean;
+        /**
+         * Gets or sets a value indicating whether arrays should be stored in
+         * a single query string parameter
+         */
+        combineArray: boolean;
     }
 
     /**
@@ -920,6 +941,14 @@ declare module Navigation {
          */
         getNavigationLink(state: State, data: any): string;
         /**
+         * Gets a link that navigates to the state passing the data
+         * @param state The State to navigate to
+         * @param data The data to pass when navigating
+         * @param queryStringData The query string array data
+         * @returns The navigation link
+         */
+        getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[]; }): string;
+        /**
          * Navigates to the url
          * @param oldState The current State
          * @param state The State to navigate to
@@ -933,6 +962,14 @@ declare module Navigation {
          * @returns The navigation data
          */
         getNavigationData(state: State, url: string): any;
+        /**
+         * Gets the data parsed from the url
+         * @param state The State navigated to
+         * @param url The current url
+         * @param queryStringData Stores query string keys
+         * @returns The navigation data
+         */
+        getNavigationData(state: State, url: string, queryStringData: any): any;
         /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered

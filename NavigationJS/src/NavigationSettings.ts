@@ -15,5 +15,6 @@ class NavigationSettings {
     applicationPath: string = '';
     combineCrumbTrail: boolean = false;
     trackAllPreviousData: boolean = true;
+    combineArray: boolean = false;
 }
 export = NavigationSettings;

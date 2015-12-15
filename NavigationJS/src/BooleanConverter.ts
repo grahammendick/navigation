@@ -11,8 +11,8 @@ class BooleanConverter extends TypeConverter {
         return val === 'true';
     }
 
-    convertTo(val: any): string {
-        return val.toString();
+    convertTo(val: any): { val: string, queryStringVal?: string[] } {
+        return { val: val.toString() };
     }
 }
 export = BooleanConverter;

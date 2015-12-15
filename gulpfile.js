@@ -25,7 +25,7 @@ function testTask(file, to) {
 		.pipe(source(to))
 		.pipe(rename(to))
 		.pipe(gulp.dest('./build/dist'))
-        .pipe(mocha());
+		.pipe(mocha({ reporter: 'progress' }));
 }
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {

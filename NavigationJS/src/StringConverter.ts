@@ -5,12 +5,14 @@ class StringConverter extends TypeConverter {
         return 'string';
     }
 
-    convertFrom(val: string): any {
+    convertFrom(val: string | string[]): any {
+        if (typeof val !== 'string')
+            throw Error(val + ' is not a valid string');
         return val;
     }
 
-    convertTo(val: any): string {
-        return val.toString();
+    convertTo(val: any): { val: string, queryStringVal?: string[] } {
+        return { val: val.toString() };
     }
 }
 export = StringConverter;

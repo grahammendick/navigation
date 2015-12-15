@@ -24,6 +24,7 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/ '), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/a'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/?x=a&x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -122,6 +123,7 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/ab//'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/a?x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -788,6 +790,158 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/?z=fg');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'fg' }), '/?z=fg');
+        });
+    });
+
+    describe('One Param One Segment Default Number', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaults: { x: 345 }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/12');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 12);
+            Navigation.StateController.navigateLink('/12?z=34');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 12);
+            assert.strictEqual(Navigation.StateContext.data.z, '34');
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 345);
+            Navigation.StateController.navigateLink('/?z=67');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 345);
+            assert.strictEqual(Navigation.StateContext.data.z, '67');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/12/34'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/12//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/12?x=34'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 12 }), '/12');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 12, z: '34' }), '/12?z=34');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 345 }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 345, z: '67' }), '/?z=67');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: '67' }), '/?z=67');
+        });
+    });
+
+    describe('One Param One Segment Default Boolean', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaults: { x: true }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/false');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, false);
+            Navigation.StateController.navigateLink('/false?z=true');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, false);
+            assert.strictEqual(Navigation.StateContext.data.z, 'true');
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, true);
+            Navigation.StateController.navigateLink('/?z=false');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, true);
+            assert.strictEqual(Navigation.StateContext.data.z, 'false');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/false/true'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/false//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/false?x=true'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: false }), '/false');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: false, z: 'true' }), '/false?z=true');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true, z: 'false' }), '/?z=false');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { z: 'false' }), '/?z=false');
+        });
+    });
+
+    describe('No Param One Segment Default Type Number', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'abc', defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/abc');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 0);
+            Navigation.StateController.navigateLink('/abc?x=12');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 12);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=12&x=345'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/abc');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 12 }), '/abc?x=12');
+        });
+    });
+
+    describe('No Param One Segment Default Type Boolean', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'abc', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/abc');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 0);
+            Navigation.StateController.navigateLink('/abc?x=true');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, true);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=true&x=false'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/abc');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/abc?x=true');
         });
     });
 
@@ -1929,7 +2083,7 @@ describe('MatchTest', function () {
 
         it('should match', function() {
             Navigation.StateController.navigateLink('/');
-            assert.strictEqual(Navigation.StateContext.data.x, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, '2');
             Navigation.StateController.navigateLink('/3');
             assert.strictEqual(Navigation.StateContext.data.x, 3);
         });
@@ -1949,13 +2103,28 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Conflicing Default And Default Type', function () {
-        it('should not match', function() {
+        beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
                 ]);
-            assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
+        });
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+            Navigation.StateController.navigateLink('/a');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+        });
+        
+        it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a' }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
         });
     });
 
@@ -2048,7 +2217,7 @@ describe('MatchTest', function () {
 
         it('should match', function() {
             Navigation.StateController.navigateLink('/');
-            assert.strictEqual(Navigation.StateContext.data.x, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, '2');
             Navigation.StateController.navigateLink('/?x=3');
             assert.strictEqual(Navigation.StateContext.data.x, 3);
         });
@@ -2068,13 +2237,29 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Conflicing Default And Default Type', function () {
-        it('should match', function() {
+        beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
                 ]);
-            assert.throws(() => Navigation.StateController.navigateLink('/'), /not a valid number/, '');
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+            Navigation.StateController.navigateLink('/?x=a');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a');
+        });
+        
+        it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/?x=b'), /not a valid number/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a' }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/?x=3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/?x=3');
         });
     });
 
@@ -2103,6 +2288,221 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '2' }), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: 1 }), '/a/1');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 1, y: 2 }), '/1?y=2');
+        });
+    });
+
+    describe('Array Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=Hello&x=World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=H1-ello&x=W2-orld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'W2-orld');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            Navigation.StateController.navigateLink('/?x=H2-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H2-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/?x=H1-ello&x=W2-orld');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello'] }), '/?x=H1-ello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H2-ello'] }), '/?x=H2-ello');
+        });
+    });
+
+    describe('Array Param Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/Hello1-World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'W2-orld');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/H12-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            Navigation.StateController.navigateLink('/H22-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H2-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/Hello1-World');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello'] }), '/H12-ello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H2-ello'] }), '/H22-ello');
+        });
+    });
+
+    describe('Array Query String Default Type Number', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=1&x=2&x=4');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 1);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 2);
+            assert.strictEqual(Navigation.StateContext.data.x[2], 4);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
+        });
+    });
+
+    describe('Array Query String Default Type Boolean', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=true&x=false');
+            assert.strictEqual(Navigation.StateContext.data.x[0], true);
+            assert.strictEqual(Navigation.StateContext.data.x[1], false);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [true, false] }), '/?x=true&x=false');
+        });
+    });
+
+    describe('Without Types Array Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=He_llo&x=Wor-ld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'He_llo');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'Wor-ld');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=1&x=2&x=4');
+            assert.strictEqual(Navigation.StateContext.data.x[0], '1');
+            assert.strictEqual(Navigation.StateContext.data.x[1], '2');
+            assert.strictEqual(Navigation.StateContext.data.x[2], '4');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['He_llo', 'Wor-ld'] }), '/?x=He_llo&x=Wor-ld');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
+        });
+    });
+
+    describe('Array Query String Default', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaults: { x: ['Hello', 'World'] }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=World&x=Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello'] }), '/?x=Hello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['World', 'Hello'] }), '/?x=World&x=Hello');
+        });
+    });
+
+    describe('Array Query String Default Number', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaults: { x: [1, 2, 4] }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=1&x=4&x=2');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 1);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 4);
+            assert.strictEqual(Navigation.StateContext.data.x[2], 2);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2] }), '/?x=1&x=2');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 2, 4] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [1, 4, 2] }), '/?x=1&x=4&x=2');
+        });
+    });
+
+    describe('Combine Array Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.settings.combineArray = true;
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        afterEach(function() {
+            Navigation.settings.combineArray = false;
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=Hello1-World');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'World');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'W2-orld');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/?x=H12-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H1-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            Navigation.StateController.navigateLink('/?x=H22-ello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'H2-ello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello1-World');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/?x=H12-ello1-W22-orld');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H1-ello'] }), '/?x=H12-ello');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['H2-ello'] }), '/?x=H22-ello');
         });
     });
 });
