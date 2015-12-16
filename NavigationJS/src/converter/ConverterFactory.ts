@@ -17,11 +17,11 @@ class ConverterFactory {
         this.keyToConverterList = {};
         this.nameToKeyList = {};
         for (var i = 0; i < this.converterArray.length; i++) {
-            var typeConverter = this.converterArray[i];
-            this.keyToConverterList[typeConverter.key] = typeConverter;
-            var arrayConverter = new ArrayConverter(typeConverter, 'a' + typeConverter.key)
+            var converter = this.converterArray[i];
+            this.keyToConverterList[converter.key] = converter;
+            var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)
             this.keyToConverterList[arrayConverter.key] = arrayConverter;
-            this.nameToKeyList[typeConverter.name] = typeConverter.key;
+            this.nameToKeyList[converter.name] = converter.key;
             this.nameToKeyList[arrayConverter.name] = arrayConverter.key;
         }
     }
