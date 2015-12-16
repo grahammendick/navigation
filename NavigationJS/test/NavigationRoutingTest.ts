@@ -2613,4 +2613,44 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true2_1');
         });
     });
+
+    describe('String Array Query String Default Type Number Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=ab2_a0&x=cde');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'cde');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/?x=ab2_a0&x=cde');
+        });
+    });
+
+    describe('String Array Param Default Type Number Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/ab1-cde2_a0');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'cde');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/ab1-cde2_a0');
+        });
+    });
 });
