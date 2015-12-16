@@ -1,4 +1,4 @@
-﻿import settings = require('./settings');
+﻿import settings = require('../settings');
 import TypeConverter = require('./TypeConverter');
 
 class ArrayConverter extends TypeConverter {
@@ -7,13 +7,9 @@ class ArrayConverter extends TypeConverter {
     private static SEPARATOR1 = '1-';
     private static SEPARATOR2 = '2-';
 
-    constructor(converter: TypeConverter) {
-        super();
+    constructor(converter: TypeConverter, key: string) {
+        super(key, converter.name + 'array');
         this.converter = converter;
-    }
-
-    getType(): string {
-        return this.converter.getType() + 'array';
     }
 
     convertFrom(val: string | string[], queryString: boolean): any {

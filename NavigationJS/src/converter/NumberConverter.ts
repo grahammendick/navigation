@@ -1,8 +1,8 @@
 ﻿import TypeConverter = require('./TypeConverter');
 
 class NumberConverter extends TypeConverter {
-    getType(): string {
-        return 'number';
+    constructor(key: string) {
+        super(key, 'number');
     }
 
     convertFrom(val: string): any {

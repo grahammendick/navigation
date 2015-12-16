@@ -1,8 +1,8 @@
 ﻿import TypeConverter = require('./TypeConverter');
 
 class BooleanConverter extends TypeConverter {
-    getType(): string {
-        return 'boolean';
+    constructor(key: string) {
+        super(key, 'boolean');
     }
 
     convertFrom(val: string): any {
