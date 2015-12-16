@@ -5,8 +5,8 @@ import StringConverter = require('./StringConverter');
 import TypeConverter = require('./TypeConverter');
 
 var converterArray: TypeConverter[] = [];
-var keyToConverterList: any = {};
-var nameToKeyList: any = {};
+var keyToConverterList: { [index: string]: TypeConverter } = {};
+var nameToKeyList: { [index: string]: string } = {};
 converterArray.push(new StringConverter('0'));
 converterArray.push(new BooleanConverter('1'));
 converterArray.push(new NumberConverter('2'));
