@@ -28,10 +28,7 @@ class ConverterFactory {
 
     static getConverter(obj: any) {
         var name = TypeConverter.getName(obj);
-        if (!this.nameToKeyList[name])
-            throw new Error('No TypeConverter found for ' + name);
-        var key = this.nameToKeyList[name];
-        return this.getConverterFromKey(key);
+        return this.getConverterFromName(name);
     }
 
     static getConverterFromKey(key: string): TypeConverter {
@@ -40,6 +37,8 @@ class ConverterFactory {
     
     static getConverterFromName(name: string): TypeConverter {
         var key = this.nameToKeyList[name];
+        if (!key)
+            throw new Error('No TypeConverter found for ' + name);
         return this.getConverterFromKey(key);
     }
 }
