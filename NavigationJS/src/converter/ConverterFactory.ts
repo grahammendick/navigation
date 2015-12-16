@@ -26,19 +26,12 @@ class ConverterFactory {
         }
     }
 
-    private static getKey(type: string) {
-        return this.nameToKeyList[type];
-    }
-
-    private static getKeyFromObject(obj: any) {
+    static getConverter(obj: any) {
         var name = TypeConverter.getName(obj);
         if (!this.nameToKeyList[name])
             throw new Error('No TypeConverter found for ' + name);
-        return this.nameToKeyList[name];
-    }
-    
-    static getConverter(obj: any) {
-        return this.getConverterFromKey(this.getKeyFromObject(obj));
+        var key = this.nameToKeyList[name];
+        return this.getConverterFromKey(key);
     }
 
     static getConverterFromKey(key: string): TypeConverter {
@@ -46,7 +39,8 @@ class ConverterFactory {
     }
     
     static getConverterFromName(name: string): TypeConverter {
-        return this.getConverterFromKey(this.getKey(name));
+        var key = this.nameToKeyList[name];
+        return this.getConverterFromKey(key);
     }
 }
 
