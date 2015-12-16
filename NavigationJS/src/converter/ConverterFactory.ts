@@ -5,54 +5,54 @@ import StringConverter = require('./StringConverter');
 import TypeConverter = require('./TypeConverter');
 
 class ConverterFactory {
-    private static typeArray: TypeConverter[];
+    private static converterArray: TypeConverter[];
     private static keyToConverterList: any;
-    private static typeToKeyList: any;
+    private static nameToKeyList: any;
 
     static init() {
-        this.typeArray = [];
-        this.typeArray.push(new StringConverter('0'));
-        this.typeArray.push(new BooleanConverter('1'));
-        this.typeArray.push(new NumberConverter('2'));
+        this.converterArray = [];
+        this.converterArray.push(new StringConverter('0'));
+        this.converterArray.push(new BooleanConverter('1'));
+        this.converterArray.push(new NumberConverter('2'));
         this.keyToConverterList = {};
-        this.typeToKeyList = {};
-        for (var i = 0; i < this.typeArray.length; i++) {
-            var typeConverter = this.typeArray[i];
+        this.nameToKeyList = {};
+        for (var i = 0; i < this.converterArray.length; i++) {
+            var typeConverter = this.converterArray[i];
             this.keyToConverterList[typeConverter.key] = typeConverter;
             var arrayConverterKey = 'a' + typeConverter.key;
             var arrayConverter = new ArrayConverter(typeConverter, arrayConverterKey)
             this.keyToConverterList[arrayConverterKey] = arrayConverter;
-            this.typeToKeyList[typeConverter.name] = i.toString();
-            this.typeToKeyList[arrayConverter.name] = arrayConverterKey;
+            this.nameToKeyList[typeConverter.name] = i.toString();
+            this.nameToKeyList[arrayConverter.name] = arrayConverterKey;
         }
     }
 
     private static getKey(type: string) {
-        return this.typeToKeyList[type];
+        return this.nameToKeyList[type];
     }
     
-    private static getType(obj: any) {
-        var fullType = typeof obj;
-        var subType: string;
+    private static getName(obj: any) {
+        var fullName = typeof obj;
+        var subName: string;
         if (Object.prototype.toString.call(obj) === '[object Array]') {
             var arr: any[] = obj;
-            subType = 'string';
+            subName = 'string';
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] != null && arr[i].toString()) {
-                    subType = typeof arr[i];
+                    subName = typeof arr[i];
                     break;
                 }
             }
-            fullType = subType + 'array';
+            fullName = subName + 'array';
         }
-        return fullType;
+        return fullName;
     }
 
     private static getKeyFromObject(obj: any) {
-        var fullType = this .getType(obj);
-        if (!this.typeToKeyList[fullType])
-            throw new Error('No TypeConverter found for ' + fullType);
-        return this.typeToKeyList[fullType];
+        var name = this.getName(obj);
+        if (!this.nameToKeyList[name])
+            throw new Error('No TypeConverter found for ' + name);
+        return this.nameToKeyList[name];
     }
     
     static getConverter(obj: any) {
