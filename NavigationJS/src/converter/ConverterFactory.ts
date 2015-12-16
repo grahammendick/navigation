@@ -27,8 +27,7 @@ class ConverterFactory {
     }
 
     static getConverter(obj: any) {
-        var name = TypeConverter.getName(obj);
-        return this.getConverterFromName(name);
+        return this.getConverterFromName(TypeConverter.getName(obj));
     }
 
     static getConverterFromKey(key: string): TypeConverter {
