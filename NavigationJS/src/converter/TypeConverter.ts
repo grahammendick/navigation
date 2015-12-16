@@ -1,8 +1,12 @@
 ﻿class TypeConverter {
-    getType(): string {
-        return null;
+    key: string;
+    name: string;
+    
+    constructor(key: string, name: string) {
+        this.key = key;
+        this.name = name;
     }
-
+    
     convertFrom(val: string | string[], queryString = false): any {
         return null;
     }

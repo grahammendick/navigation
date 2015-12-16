@@ -31,8 +31,8 @@ class ReturnDataManager {
     static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, queryStringVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
-        var converterKey = ConverterFactory.getKeyFromObject(urlObject);
-        var convertedValue = ConverterFactory.getConverter(converterKey).convertTo(urlObject);
+        var converter = ConverterFactory.getConverter(urlObject);
+        var convertedValue = converter.convertTo(urlObject);
         var formattedValue = convertedValue.val;
         var formattedArray = convertedValue.queryStringVal;
         if (encode) {
@@ -40,10 +40,10 @@ class ReturnDataManager {
             if (formattedArray)
                 formattedArray[0] = this.encodeUrlValue(formattedArray[0]);
         }
-        if (state.trackTypes && ConverterFactory.getType(urlObject) !== defaultType) {
-            formattedValue += this.RET_2_SEP + converterKey;
+        if (state.trackTypes && converter.name !== defaultType) {
+            formattedValue += this.RET_2_SEP + converter.key;
             if (formattedArray)
-                formattedArray[0] = formattedArray[0] + this.RET_2_SEP + converterKey;
+                formattedArray[0] = formattedArray[0] + this.RET_2_SEP + converter.key;
         }
         return { val: formattedValue, queryStringVal: formattedArray };
     }
@@ -52,7 +52,7 @@ class ReturnDataManager {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
-        var converterKey = ConverterFactory.getKey(defaultType);
+        var converterKey = ConverterFactory.getConverterFromName(defaultType).key;
         if (state.trackTypes && urlValue.indexOf(this.RET_2_SEP) > -1) {
             var arr = urlValue.split(this.RET_2_SEP);
             urlValue = arr[0];
@@ -64,7 +64,7 @@ class ReturnDataManager {
             val =  urlValue;
         else
             val[0] = urlValue;
-        return ConverterFactory.getConverter(converterKey).convertFrom(val, queryString);
+        return ConverterFactory.getConverterFromKey(converterKey).convertFrom(val, queryString);
     }
 
     static parseReturnData(returnData: string, state: State): any {

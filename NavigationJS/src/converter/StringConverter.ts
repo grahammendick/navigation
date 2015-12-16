@@ -1,8 +1,8 @@
 ﻿import TypeConverter = require('./TypeConverter');
 
 class StringConverter extends TypeConverter {
-    getType(): string {
-        return 'string';
+    constructor(key: string) {
+        super(key, 'string');
     }
 
     convertFrom(val: string | string[]): any {
