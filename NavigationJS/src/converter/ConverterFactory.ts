@@ -4,12 +4,9 @@ import NumberConverter = require('./NumberConverter');
 import StringConverter = require('./StringConverter');
 import TypeConverter = require('./TypeConverter');
 
-var converterArray: TypeConverter[] = [];
 var keyToConverterList: { [index: string]: TypeConverter } = {};
 var nameToKeyList: { [index: string]: string } = {};
-converterArray.push(new StringConverter('0'));
-converterArray.push(new BooleanConverter('1'));
-converterArray.push(new NumberConverter('2'));
+var converterArray: TypeConverter[] = [new StringConverter('0'), new BooleanConverter('1'), new NumberConverter('2')];
 for (var i = 0; i < converterArray.length; i++) {
     var converter = converterArray[i];
     keyToConverterList[converter.key] = converter;
