@@ -35,5 +35,4 @@ class ConverterFactory {
         return this.getConverterFromKey(key);
     }
 }
-
 export = ConverterFactory;
