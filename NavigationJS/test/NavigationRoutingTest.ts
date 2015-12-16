@@ -2653,4 +2653,44 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/ab1-cde2_a0');
         });
     });
+
+    describe('Number Array Query String Default Type Boolean Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=1242_a2&x=35');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 124);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 35);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [124, 35] }), '/?x=1242_a2&x=35');
+        });
+    });
+
+    describe('Number Array Param Default Type Boolean Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/1241-352_a2');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 124);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 35);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [124, 35] }), '/1241-352_a2');
+        });
+    });
 });
