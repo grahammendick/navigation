@@ -256,7 +256,7 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['item'] = new Date();
+        data['item'] = {};
         
         describe('Navigate', function() {
             it('should throw error', function () {
@@ -294,7 +294,7 @@ describe('Navigation Data', function () {
                     { key: 's', route: 'r' }]}
                 ]);
             Navigation.StateController.navigate('d');
-            Navigation.StateContext.data['item'] = new Date();
+            Navigation.StateContext.data['item'] = {};
         });
         
         describe('Navigate', function() {
@@ -321,13 +321,13 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             it('should throw error', function () {
-                assert.throws(() => Navigation.StateController.refresh({ item: new Date() }));
+                assert.throws(() => Navigation.StateController.refresh({ item: {} }));
             });
         });
 
         describe('Navigate Link', function() {
             it('should throw error', function () {
-                assert.throws(() => Navigation.StateController.getRefreshLink({ item: new Date() }));
+                assert.throws(() => Navigation.StateController.getRefreshLink({ item: {} }));
             });
         });
     });
@@ -421,7 +421,7 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['item'] = new Date();
+        data['item'] = {};
         
         describe('Navigate', function() {
             it('should throw error', function () {
