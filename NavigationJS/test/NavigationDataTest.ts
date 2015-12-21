@@ -26,6 +26,7 @@ describe('Navigation Data', function () {
         individualNavigationData['string'] = 'Hello';
         individualNavigationData['boolean'] = true;
         individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -44,14 +45,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 0);
-                assert.equal(i, 3);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -60,13 +58,14 @@ describe('Navigation Data', function () {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r/{string}/{number}' }]}
+                    { key: 's', route: 'r/{string}/{boolean}/{number}/{date}' }]}
                 ]);
         });
         var individualNavigationData = {};
         individualNavigationData['string'] = 'Hello';
         individualNavigationData['boolean'] = true;
         individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -85,14 +84,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 0);
-                assert.equal(i, 3);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -108,6 +104,7 @@ describe('Navigation Data', function () {
         individualNavigationData['string'] = 'Hello';
         individualNavigationData['boolean'] = true;
         individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -126,14 +123,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 0);
-                assert.equal(i, 3);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });

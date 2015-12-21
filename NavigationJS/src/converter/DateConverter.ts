@@ -14,7 +14,7 @@ class DateConverter extends TypeConverter {
 
     convertTo(val: Date): { val: string, vals?: string[] } {
         var year = val.getFullYear();
-        var month = ('0' + (val.getMonth() + 1)).slice(-2) + 1;
+        var month = ('0' + (val.getMonth() + 1)).slice(-2);
         var day = ('0' + val.getDate()).slice(-2); 
         return { val: year + '-' + month + '-' + day };
     }
