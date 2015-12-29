@@ -821,6 +821,8 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/12/34'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/12//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/true'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/1a2'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/12?x=34'), /Url is invalid/, '');
         });
 
@@ -862,6 +864,8 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/false/true'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/false//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/1'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/fals'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/false?x=true'), /Url is invalid/, '');
         });
 
@@ -903,6 +907,9 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => Navigation.StateController.navigateLink('/2011-08-03/2012-09-04'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/2011-08-03//'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/true'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/2011/08/03'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/2011-08'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/2011-08-03?x=2012-09-04'), /Url is invalid/, '');
         });
 
