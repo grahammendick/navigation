@@ -891,6 +891,9 @@ describe('MatchTest', function () {
             Navigation.StateController.navigateLink('/2011-08-03');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
             assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
+            Navigation.StateController.navigateLink('/2011-8-3');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
             Navigation.StateController.navigateLink('/2011-08-03?z=2012-09-04');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
             assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
@@ -910,6 +913,8 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/true'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/2011/08/03'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/2011-08'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/2011-08-a'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/2011-08-03-01'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/2011-08-03?x=2012-09-04'), /Url is invalid/, '');
         });
 
@@ -1011,6 +1016,9 @@ describe('MatchTest', function () {
             Navigation.StateController.navigateLink('/abc?x=2011-08-03');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
             assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
+            Navigation.StateController.navigateLink('/abc?x=2011-8-3');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
         });
 
         it('should not match', function() {
@@ -1026,6 +1034,8 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=true'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011/08/03'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08-a'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08-03-01'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08-03&x=2012-09-04'), /Url is invalid/, '');
         });
 

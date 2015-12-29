@@ -9,7 +9,10 @@ class DateConverter extends TypeConverter {
         var dateParts = val.split('-');
         if (dateParts.length !== 3)
             throw Error(val + ' is not a valid date');
-        return new Date(+dateParts[0], +dateParts[1] - 1, +dateParts[2]);
+        var date = new Date(+dateParts[0], +dateParts[1] - 1, +dateParts[2]);
+        if (isNaN(+date))
+            throw Error(val + ' is not a valid date');
+        return date;
     }
 
     convertTo(val: Date): { val: string, vals?: string[] } {
