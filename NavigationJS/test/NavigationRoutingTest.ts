@@ -942,6 +942,8 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/adc'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/aabc'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=true'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=1a2'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=12&x=345'), /Url is invalid/, '');
         });
 
@@ -977,6 +979,8 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/adc'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/aabc'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=1'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=tru'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=true&x=false'), /Url is invalid/, '');
         });
 
@@ -1012,6 +1016,9 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/adc'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/aabc'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=true'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011/08/03'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08'), /Url is invalid/, '');
             assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08-03&x=2012-09-04'), /Url is invalid/, '');
         });
 
