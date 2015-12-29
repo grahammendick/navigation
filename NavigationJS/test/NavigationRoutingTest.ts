@@ -986,6 +986,41 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('No Param One Segment Default Type Date', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'abc', defaultTypes: { x: 'date' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/abc');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 0);
+            Navigation.StateController.navigateLink('/abc?x=2011-08-03');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/abc?x=2011-08-03&x=2012-09-04'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/abc');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: new Date(2011, 7, 3) }), '/abc?x=2011-08-03');
+        });
+    });
+
     describe('One Param Two Segment Default', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
