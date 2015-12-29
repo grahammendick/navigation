@@ -1797,7 +1797,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1, 'date': new Date(2010, 3, 7) } }]}
                 ]);
         });
         
@@ -1824,6 +1824,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['_bool'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
             });
         }
     });
@@ -1835,7 +1836,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1, 'date': new Date(2010, 3, 7) } }]}
                 ]);
         });
         
@@ -1862,6 +1863,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['_bool'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
             });
         }
     });
