@@ -238,6 +238,19 @@ describe('StateInfoTest', function () {
         })
     });
 
+    describe('Default Types Date', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { d1: new Date(2010, 3, 7), d2: new Date(2011, 7, 3), d3: new Date(2012, 8, 4) }, defaultTypes: { d1: 'date', d2: 'string' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(+defaults['d1'], +new Date(2010, 3, 7));
+            assert.strictEqual(+defaults['d2'], +new Date(2011, 7, 3));
+            assert.strictEqual(+defaults['d3'], +new Date(2012, 8, 4));
+        })
+    });
+
     describe('Invalid Transition To', function () {
         it('should throw error', function() {
             assert.throws(() => {
