@@ -2533,6 +2533,9 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=Hello');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'Hello');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             Navigation.StateController.navigateLink('/?x=World&x=Hello');
             assert.strictEqual(Navigation.StateContext.data.x[0], 'World');
             assert.strictEqual(Navigation.StateContext.data.x[1], 'Hello');
@@ -2555,6 +2558,9 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=1');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             Navigation.StateController.navigateLink('/?x=1&x=4&x=2');
             assert.strictEqual(Navigation.StateContext.data.x[0], 1);
             assert.strictEqual(Navigation.StateContext.data.x[1], 4);
@@ -2578,6 +2584,9 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=false');
+            assert.strictEqual(Navigation.StateContext.data.x[0], false);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             Navigation.StateController.navigateLink('/?x=false&x=true');
             assert.strictEqual(Navigation.StateContext.data.x[0], false);
             assert.strictEqual(Navigation.StateContext.data.x[1], true);
@@ -2600,6 +2609,9 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=2011-08-03');
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2011, 7, 3));
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             Navigation.StateController.navigateLink('/?x=2011-08-03&x=2010-04-07');
             assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2011, 7, 3));
             assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2010, 3, 7));
