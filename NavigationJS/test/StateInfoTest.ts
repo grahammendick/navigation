@@ -251,6 +251,28 @@ describe('StateInfoTest', function () {
         })
     });
 
+    describe('Invalid Default', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', defaults: { s: {} },  title: 's0'}]}
+                ]);
+            });
+        })
+   });
+
+    describe('Invalid Default Type', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', defaultTypes: { s: 'x' },  title: 's0'}]}
+                ]);
+            });
+        })
+   });
+
     describe('Invalid Transition To', function () {
         it('should throw error', function() {
             assert.throws(() => {

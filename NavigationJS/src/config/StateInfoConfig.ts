@@ -55,6 +55,9 @@ class StateInfoConfig {
                     state.defaultTypes[key] = ConverterFactory.getConverter(state.defaults[key]).name;
                 state.formattedDefaults[key] = ReturnDataManager.formatURLObject(key, state.defaults[key], state).val;
             }
+            for (var key in state.defaultTypes) {
+                ConverterFactory.getConverterFromName(state.defaultTypes[key]);
+            }
             if (!state.key)
                 throw new Error('key is mandatory for a State');
             if (dialog.states[state.key])
