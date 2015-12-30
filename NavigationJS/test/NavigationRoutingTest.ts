@@ -2569,6 +2569,50 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Array Query String Default Boolean', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaults: { x: [true, false] }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=false&x=true');
+            assert.strictEqual(Navigation.StateContext.data.x[0], false);
+            assert.strictEqual(Navigation.StateContext.data.x[1], true);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [false] }), '/?x=false');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [true, false] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [false, true] }), '/?x=false&x=true');
+        });
+    });
+
+    describe('Array Query String Default Date', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=2011-08-03&x=2010-04-07');
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2011, 7, 3));
+            assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2010, 3, 7));
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/?x=2010-04-07');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/?x=2011-08-03&x=2010-04-07');
+        });
+    });
+
     describe('Combine Array Query String Default Type', function () {
         beforeEach(function () {
             Navigation.settings.combineArray = true;
