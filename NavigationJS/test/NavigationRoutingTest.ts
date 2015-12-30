@@ -2830,11 +2830,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Boolean Array Query String Default Type String Array', function () {
+    describe('Boolean Array Query String Default Type Date Array', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                    { key: 's', route: '', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }]}
                 ]);
         });
 
@@ -2850,11 +2850,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Boolean Array Param Default Type String Array', function () {
+    describe('Boolean Array Param Default Type Date Array', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                    { key: 's', route: '{x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }]}
                 ]);
         });
 
@@ -2867,6 +2867,46 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [true, false] }), '/true1-false2_a1');
+        });
+    });
+
+    describe('Date Array Query String Default Type String Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=2010-04-072_a3&x=2011-08-03');
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2011, 7, 3));
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/?x=2010-04-072_a3&x=2011-08-03');
+        });
+    });
+
+    describe('Date Array Param Default Type String Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/20102-042-071-20112-082-032_a3');
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2011, 7, 3));
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/20102-042-071-20112-082-032_a3');
         });
     });
 });
