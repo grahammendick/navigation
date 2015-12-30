@@ -15,19 +15,23 @@
         return null;
     }
     
+    private static getTypeName(obj: any): string {
+        var typeName: string = Object.prototype.toString.call(obj);
+        return typeName.substring(8, typeName.length - 1).toLowerCase();
+    }
+    
     static getName(obj: any) {
-        var fullName = typeof obj;
-        var subName: string;
-        if (Object.prototype.toString.call(obj) === '[object Array]') {
+        var fullName = this.getTypeName(obj);
+        if (fullName === 'array') {
             var arr: any[] = obj;
-            subName = 'string';
+            var subName = 'string';
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] != null && arr[i].toString()) {
-                    subName = typeof arr[i];
+                    subName = this.getTypeName(arr[i]);
                     break;
                 }
             }
-            fullName = subName + 'array';
+            fullName = subName + fullName;
         }
         return fullName;
     }

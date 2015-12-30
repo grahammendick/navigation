@@ -1,12 +1,15 @@
 ﻿import ArrayConverter = require('./ArrayConverter');
 import BooleanConverter = require('./BooleanConverter');
+import DateConverter = require('./DateConverter');
 import NumberConverter = require('./NumberConverter');
 import StringConverter = require('./StringConverter');
 import TypeConverter = require('./TypeConverter');
 
 var keyToConverterList: { [index: string]: TypeConverter } = {};
 var nameToKeyList: { [index: string]: string } = {};
-var converterArray: TypeConverter[] = [new StringConverter('0'), new BooleanConverter('1'), new NumberConverter('2')];
+var converterArray: TypeConverter[] = [
+    new StringConverter('0'), new BooleanConverter('1'), 
+    new NumberConverter('2'), new DateConverter('3')];
 for (var i = 0; i < converterArray.length; i++) {
     var converter = converterArray[i];
     var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)

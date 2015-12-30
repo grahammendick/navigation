@@ -26,6 +26,7 @@ describe('Navigation Data', function () {
         individualNavigationData['string'] = 'Hello';
         individualNavigationData['boolean'] = true;
         individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -44,14 +45,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 0);
-                assert.equal(i, 3);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -60,13 +58,14 @@ describe('Navigation Data', function () {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r/{string}/{number}' }]}
+                    { key: 's', route: 'r/{string}/{boolean}/{number}/{date}' }]}
                 ]);
         });
         var individualNavigationData = {};
         individualNavigationData['string'] = 'Hello';
         individualNavigationData['boolean'] = true;
         individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -85,14 +84,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 0);
-                assert.equal(i, 3);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -108,6 +104,7 @@ describe('Navigation Data', function () {
         individualNavigationData['string'] = 'Hello';
         individualNavigationData['boolean'] = true;
         individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -126,14 +123,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['boolean'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 0);
-                assert.equal(i, 3);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -149,6 +143,7 @@ describe('Navigation Data', function () {
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
         arrayNavigationData['array_boolean'] = ['', true, false];
         arrayNavigationData['array_number'] = [1, null, undefined, 2];
+        arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
         arrayNavigationData['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
@@ -168,10 +163,6 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['array_string'][0], 'He-llo');
                 assert.strictEqual(Navigation.StateContext.data['array_string'][1], 'World');
                 assert.strictEqual(Navigation.StateContext.data['array_string'].length, 2);
@@ -184,11 +175,14 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['array_number'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_number'][3], 2);
                 assert.strictEqual(Navigation.StateContext.data['array_number'].length, 4);
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(Navigation.StateContext.data['array_date'].length, 2);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][0], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
-                assert.equal(i, 4);
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 5);
             });
         }
     });
@@ -197,13 +191,14 @@ describe('Navigation Data', function () {
         beforeEach(function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_blank}/{array_empty?}' }]}
+                    { key: 's', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}' }]}
                 ]);
         });
         var arrayNavigationData = {};
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
         arrayNavigationData['array_boolean'] = ['', true, false];
         arrayNavigationData['array_number'] = [1, null, undefined, 2];
+        arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
         arrayNavigationData['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
@@ -223,10 +218,6 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var i = 0;
-                for (var key in Navigation.StateContext.data) {
-                    i++;
-                }
                 assert.strictEqual(Navigation.StateContext.data['array_string'][0], 'He-llo');
                 assert.strictEqual(Navigation.StateContext.data['array_string'][1], 'World');
                 assert.strictEqual(Navigation.StateContext.data['array_string'].length, 2);
@@ -239,11 +230,14 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['array_number'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_number'][3], 2);
                 assert.strictEqual(Navigation.StateContext.data['array_number'].length, 4);
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(Navigation.StateContext.data['array_date'].length, 2);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][0], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
                 assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
-                assert.equal(i, 4);
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 5);
             });
         }
     });
@@ -256,7 +250,7 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['item'] = new Date();
+        data['item'] = {};
         
         describe('Navigate', function() {
             it('should throw error', function () {
@@ -282,7 +276,7 @@ describe('Navigation Data', function () {
                 ]);
             Navigation.StateController.navigate('d');
             var data = {}
-            data['item'] = [new Date()];
+            data['item'] = [{}];
             assert.throws(() => Navigation.StateController.navigate('t', data));
         });
     });
@@ -294,7 +288,7 @@ describe('Navigation Data', function () {
                     { key: 's', route: 'r' }]}
                 ]);
             Navigation.StateController.navigate('d');
-            Navigation.StateContext.data['item'] = new Date();
+            Navigation.StateContext.data['item'] = {};
         });
         
         describe('Navigate', function() {
@@ -321,13 +315,13 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             it('should throw error', function () {
-                assert.throws(() => Navigation.StateController.refresh({ item: new Date() }));
+                assert.throws(() => Navigation.StateController.refresh({ item: {} }));
             });
         });
 
         describe('Navigate Link', function() {
             it('should throw error', function () {
-                assert.throws(() => Navigation.StateController.getRefreshLink({ item: new Date() }));
+                assert.throws(() => Navigation.StateController.getRefreshLink({ item: {} }));
             });
         });
     });
@@ -421,7 +415,7 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['item'] = new Date();
+        data['item'] = {};
         
         describe('Navigate', function() {
             it('should throw error', function () {
@@ -700,8 +694,10 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['s'] = 'Hello';
-        data['t'] = '';
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -726,8 +722,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
-                assert.strictEqual(Navigation.StateContext.data['t'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+                assert.strictEqual(Navigation.StateContext.data['number'], 0);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -743,8 +742,11 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['s'] = ['Hello', 'World'];
-        data['t'] = [1, 2, 4];
+        data['array_string'] = ['He-llo', 'World'];
+        data['array_boolean'] = ['', true, false];
+        data['array_number'] = [1, null, undefined, 2];
+        data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        data['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -769,11 +771,112 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(Navigation.StateContext.data['s'][0], 'Hello');
-                assert.strictEqual(Navigation.StateContext.data['s'][1], 'World');
-                assert.strictEqual(Navigation.StateContext.data['t'][0], 1);
-                assert.strictEqual(Navigation.StateContext.data['t'][1], 2);
-                assert.strictEqual(Navigation.StateContext.data['t'][2], 4);
+                assert.strictEqual(Navigation.StateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(Navigation.StateContext.data['array_string'][1], 'World');
+                assert.strictEqual(Navigation.StateContext.data['array_string'].length, 2);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], null);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][1], true);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][2], false);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][0], 1);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][1], null);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][2], null);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][3], 2);
+                assert.strictEqual(Navigation.StateContext.data['array_number'].length, 4);
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(Navigation.StateContext.data['array_date'].length, 2);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][0], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 5);
+            });
+        }
+    });
+
+    describe('Navigate Empty String Data Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['s'] = '';
+        data['t'] = '1';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'], '1');
+            });
+        }
+    });
+
+    describe('Navigate Empty Array Data Back', function() {
+        beforeEach(function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['s'] = [];
+        data['t'] = ['1'];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                Navigation.StateController.navigate('d', data);
+                Navigation.StateController.navigate('t');
+                Navigation.StateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = Navigation.StateController.getNavigationLink('d', data);
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationLink('t');
+                Navigation.StateController.navigateLink(link);
+                link = Navigation.StateController.getNavigationBackLink(1);
+                Navigation.StateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(Navigation.StateContext.data['s'], undefined);
+                assert.strictEqual(Navigation.StateContext.data['t'][0], '1');
             });
         }
     });
@@ -1024,7 +1127,10 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['s'] = 'Hello';
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -1049,7 +1155,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(Navigation.StateContext.data['s'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
+                assert.strictEqual(Navigation.StateContext.data['boolean'], true);
+                assert.strictEqual(Navigation.StateContext.data['number'], 0);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 4);
             });
         }
     });
@@ -1065,7 +1175,11 @@ describe('Navigation Data', function () {
                 ]);
         });
         var data = {};
-        data['s'] = ['Hello', 'World'];
+        data['array_string'] = ['He-llo', 'World'];
+        data['array_boolean'] = ['', true, false];
+        data['array_number'] = [1, null, undefined, 2];
+        data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        data['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -1090,8 +1204,26 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(Navigation.StateContext.data['s'][0], 'Hello');
-                assert.strictEqual(Navigation.StateContext.data['s'][1], 'World');
+                assert.strictEqual(Navigation.StateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(Navigation.StateContext.data['array_string'][1], 'World');
+                assert.strictEqual(Navigation.StateContext.data['array_string'].length, 2);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][0], null);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][1], true);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'][2], false);
+                assert.strictEqual(Navigation.StateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][0], 1);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][1], null);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][2], null);
+                assert.strictEqual(Navigation.StateContext.data['array_number'][3], 2);
+                assert.strictEqual(Navigation.StateContext.data['array_number'].length, 4);
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+Navigation.StateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(Navigation.StateContext.data['array_date'].length, 2);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][0], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][1], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'][2], null);
+                assert.strictEqual(Navigation.StateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 5);
             });
         }
     });
@@ -1665,7 +1797,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1, 'date': new Date(2010, 3, 7) } }]}
                 ]);
         });
         
@@ -1692,6 +1824,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['_bool'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
             });
         }
     });
@@ -1703,7 +1836,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1, 'date': new Date(2010, 3, 7) } }]}
                 ]);
         });
         
@@ -1730,6 +1863,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Navigation.StateContext.data['string'], 'Hello');
                 assert.strictEqual(Navigation.StateContext.data['_bool'], true);
                 assert.strictEqual(Navigation.StateContext.data['number'], 1);
+                assert.strictEqual(+Navigation.StateContext.data['date'], +new Date(2010, 3, 7));
             });
         }
     });

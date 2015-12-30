@@ -229,7 +229,7 @@ describe('StateInfoTest', function () {
         it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { n1: 0, n2: 1, n3: 2 }, defaultTypes: { n1: 'number', n2: 'string' } }]}
+                    { key: 's', route: 'r', defaults: { n1: 0, n2: 1, n3: 2 }, defaultTypes: { n1: 'number', n2: 'date' } }]}
                 ]);
             var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
             assert.strictEqual(defaults['n1'], 0);
@@ -237,6 +237,101 @@ describe('StateInfoTest', function () {
             assert.strictEqual(defaults['n3'], 2);
         })
     });
+
+    describe('Default Types Date', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { d1: new Date(2010, 3, 7), d2: new Date(2011, 7, 3), d3: new Date(2012, 8, 4) }, defaultTypes: { d1: 'date', d2: 'string' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(+defaults['d1'], +new Date(2010, 3, 7));
+            assert.strictEqual(+defaults['d2'], +new Date(2011, 7, 3));
+            assert.strictEqual(+defaults['d3'], +new Date(2012, 8, 4));
+        })
+    });
+
+    describe('Default Types String Array', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { s0: ['a', 'b'], s1: ['c', 'd'], s2: ['e'] }, defaultTypes: { s1: 'stringarray', s2: 'boolean' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(defaults['s0'][0], 'a');
+            assert.strictEqual(defaults['s0'][1], 'b');
+            assert.strictEqual(defaults['s1'][0], 'c');
+            assert.strictEqual(defaults['s1'][1], 'd');
+            assert.strictEqual(defaults['s2'][0], 'e');
+        })
+    });
+
+    describe('Default Types Bool Array', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { b0: [true, false], b1: [false, true], b2: [true] }, defaultTypes: { b1: 'booleanarray', b2: 'number' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(defaults['b0'][0], true);
+            assert.strictEqual(defaults['b0'][1], false);
+            assert.strictEqual(defaults['b1'][0], false);
+            assert.strictEqual(defaults['b1'][1], true);
+            assert.strictEqual(defaults['b2'][0], true);
+        })
+    });
+
+    describe('Default Types Number Array', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { n0: [0, 1], n1: [2, 3], n2: [4] }, defaultTypes: { n1: 'numberarray', n2: 'date' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(defaults['n0'][0], 0);
+            assert.strictEqual(defaults['n0'][1], 1);
+            assert.strictEqual(defaults['n1'][0], 2);
+            assert.strictEqual(defaults['n1'][1], 3);
+            assert.strictEqual(defaults['n2'][0], 4);
+        })
+    });
+
+    describe('Default Types Date Array', function () {
+        it('should configure State Info', function() {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r', defaults: { d0: [new Date(2010, 3, 7), new Date(2011, 7, 3)], d1: [new Date(2011, 7, 3), new Date(2010, 3, 7)], d2: [new Date(2012, 8, 4)] }, defaultTypes: { d1: 'datearray', d2: 'string' } }]}
+                ]);
+            var defaults = Navigation.StateInfoConfig._dialogs[0]._states[0].defaults;
+            assert.strictEqual(+defaults['d0'][0], +new Date(2010, 3, 7));
+            assert.strictEqual(+defaults['d0'][1], +new Date(2011, 7, 3));
+            assert.strictEqual(+defaults['d1'][0], +new Date(2011, 7, 3));
+            assert.strictEqual(+defaults['d1'][1], +new Date(2010, 3, 7));
+            assert.strictEqual(+defaults['d2'][0], +new Date(2012, 8, 4));
+        })
+    });
+
+    describe('Invalid Default', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', defaults: { s: {} },  title: 's0'}]}
+                ]);
+            });
+        })
+   });
+
+    describe('Invalid Default Type', function () {
+        it('should throw error', function() {
+            assert.throws(() => {
+                Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's0', title: 'd0', states: [
+                    { key: 's0', route: 'd0s0', defaultTypes: { s: 'x' },  title: 's0'}]}
+                ]);
+            });
+        })
+   });
 
     describe('Invalid Transition To', function () {
         it('should throw error', function() {
