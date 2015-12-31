@@ -15,10 +15,10 @@ class StateHandler implements IStateHandler {
             if (key !== settings.stateIdKey && !routeInfo.data[key]) {
                 var arr = queryStringData[key];
                 if (!arr) {
-                    query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+                    query.push(this.urlEncode(key, data[key], true));
                 } else {
                     for(var i = 0; i < arr.length; i++)
-                        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(arr[i]));
+                        query.push(this.urlEncode(key, arr[i], true));
                 }
             }
         }
@@ -39,9 +39,7 @@ class StateHandler implements IStateHandler {
             var query = url.substring(queryIndex + 1);
             var params = query.split('&');
             for (var i = 0; i < params.length; i++) {
-                var param = params[i].split('=');
-                var key = decodeURIComponent(param[0]);
-                var val = decodeURIComponent(param[1]);
+                var { key, val } = this.urlDecode(params[i], true);
                 queryStringData[key] = true;
                 var arr = data[key];
                 if (!arr) {
@@ -54,6 +52,22 @@ class StateHandler implements IStateHandler {
             }
         }
         return data;
+    }
+    
+    urlEncode(key: string, val: string, queryString: boolean): string {
+        if (queryString)
+            return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+        else
+            return encodeURIComponent(val);
+    }
+    
+    urlDecode(param: string, queryString: boolean): { key?: string, val: string } {
+        if (queryString) {
+            var vals = param.split('=');
+            return { key: decodeURIComponent(vals[0]), val: decodeURIComponent(vals[1]) };
+        } else {
+            return { val: decodeURIComponent(param) };
+        }
     }
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
