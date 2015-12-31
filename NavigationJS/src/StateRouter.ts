@@ -11,8 +11,14 @@ class StateRouter implements IRouter {
     supportsDefaults: boolean = true;
 
     getData(route: string): { state: State; data: any } {
-        var match = this.router.match(route);
-        return { state: match.route['_state'], data: this.router.match(route).data };
+        var match = this.router.match(route, (route, name, val) => {
+            var state: State = route['_state'];
+            if (state.stateHandler.urlDecode)
+                return state.stateHandler.urlDecode(state, name, val, false);
+            else
+                return decodeURIComponent(val);
+        });
+        return { state: match.route['_state'], data: match.data };
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {

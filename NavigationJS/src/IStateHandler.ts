@@ -6,5 +6,7 @@ interface IStateHandler {
     navigateLink(oldState: State, state: State, url: string): void;
     getNavigationData(state: State, url: string, queryStringData?: any): any;
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
+    urlEncode?(state: State, key: string, val: string, queryString: boolean): string;
+    urlDecode?(state: State, key: string, val: string, queryString: boolean): string;
 }
 export = IStateHandler;
