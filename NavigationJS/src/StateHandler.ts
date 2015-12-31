@@ -14,11 +14,12 @@ class StateHandler implements IStateHandler {
         for (var key in data) {
             if (key !== settings.stateIdKey && !routeInfo.data[key]) {
                 var arr = queryStringData[key];
+                var encodedKey = this.urlEncode(state, null, key, true);
                 if (!arr) {
-                    query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+                    query.push(encodedKey + '=' + this.urlEncode(state, key, data[key], true));
                 } else {
                     for(var i = 0; i < arr.length; i++)
-                        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(arr[i]));
+                        query.push(encodedKey + '=' + this.urlEncode(state, key, arr[i], true));
                 }
             }
         }
@@ -40,8 +41,8 @@ class StateHandler implements IStateHandler {
             var params = query.split('&');
             for (var i = 0; i < params.length; i++) {
                 var param = params[i].split('=');
-                var key = decodeURIComponent(param[0]);
-                var val = decodeURIComponent(param[1]);
+                var key = this.urlDecode(state, null, param[0], true);
+                var val = this.urlDecode(state, key, param[1], true);
                 queryStringData[key] = true;
                 var arr = data[key];
                 if (!arr) {
@@ -54,6 +55,14 @@ class StateHandler implements IStateHandler {
             }
         }
         return data;
+    }
+    
+    urlEncode(state: State, key: string, val: string, queryString: boolean): string {
+        return encodeURIComponent(val);
+    }
+    
+    urlDecode(state: State, key: string, val: string, queryString: boolean): string {
+        return decodeURIComponent(val);
     }
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
