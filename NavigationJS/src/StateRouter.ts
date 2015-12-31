@@ -11,13 +11,7 @@ class StateRouter implements IRouter {
     supportsDefaults: boolean = true;
 
     getData(route: string): { state: State; data: any } {
-        var match = this.router.match(route, (route, name, val) => {
-            var state: State = route['_state'];
-            if (state.stateHandler.urlDecode)
-                return state.stateHandler.urlDecode(state, name, val, false);
-            else
-                return decodeURIComponent(val);
-        });
+        var match = this.router.match(route, StateRouter.urlDecode);
         return { state: match.route['_state'], data: match.data };
     }
 
@@ -66,6 +60,14 @@ class StateRouter implements IRouter {
             }
         }
         return bestMatch;
+    }
+    
+    private static urlDecode(route: Route, name: string, val: string): string {
+        var state: State = route['_state'];
+        if (state.stateHandler.urlDecode)
+            return state.stateHandler.urlDecode(state, name, val, false);
+        else
+            return decodeURIComponent(val);
     }
 
     addRoutes(dialogs: Dialog[]) {
