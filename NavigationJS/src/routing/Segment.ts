@@ -39,7 +39,7 @@
             this.pattern = '\/' + this.pattern;
     }
 
-    build(data: any = {}, urlEncode: (name: string, val: string) => string): { path: string; optional: boolean } {
+    build(data: any, urlEncode: (name: string, val: string) => string): { path: string; optional: boolean } {
         var routePath = '';
         var optional = this.optional;
         var blank = false;
