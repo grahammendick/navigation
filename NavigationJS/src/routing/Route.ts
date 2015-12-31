@@ -32,7 +32,7 @@ class Route {
 
     match(path: string, urlDecode?: (route: Route, name: string, val: string) => string): any {
         if (!urlDecode)
-            urlDecode = (name, val) => decodeURIComponent(val); 
+            urlDecode = (route, name, val) => decodeURIComponent(val); 
         var matches = this.pattern.exec(path);
         if (!matches)
             return null;
@@ -45,13 +45,15 @@ class Route {
         return data;
     }
 
-    build(data?: any): string {
+    build(data?: any, urlEncode?: (route: Route, name: string, val: string) => string): string {
+        if (!urlEncode)
+            urlEncode = (route, name, val) => encodeURIComponent(val);
         data = data != null ? data : {};
         var route = '';
         var optional = true;
         for (var i = this.segments.length - 1; i >= 0; i--) {
             var segment = this.segments[i];
-            var pathInfo = segment.build(data);
+            var pathInfo = segment.build(data, (name, val) => urlEncode(this, name, val));
             optional = optional && pathInfo.optional;
             if (!optional) {
                 if (pathInfo.path == null)
