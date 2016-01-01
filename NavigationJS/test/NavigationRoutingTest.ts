@@ -3302,4 +3302,27 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a%20b?y=c%20d');
         });
     });
+
+    describe('No Param String Array Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=a+b&x=c+de');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a b');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'c de');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a b', 'c de'] }), '/?x=a+b&x=c+de');
+        });
+    });
 });
