@@ -3229,4 +3229,29 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/?x=a%20b&y=c+d');
         });
     });
+
+    describe('No Param Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) =>  {
+                return !key ? val.replace(' ', '+') : encodeURIComponent(val);
+            }  
+            state.stateHandler.urlDecode = (state, key, val) => {
+                return !key ? val.replace('+', ' ') : decodeURIComponent(val);
+            }  
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?a+b=c%20d');
+            assert.strictEqual(Navigation.StateContext.data['a b'], 'c d');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { 'a b': 'c d' }), '/?a+b=c%20d');
+        });
+    });
 });
