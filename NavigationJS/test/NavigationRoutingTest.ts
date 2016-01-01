@@ -3254,4 +3254,30 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { 'a b': 'c d' }), '/?a+b=c%20d');
         });
     });
+
+    describe('No Param Two Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) =>  {
+                return (!key && val == 'a b') ? val.replace(' ', '+') : encodeURIComponent(val);
+            }  
+            state.stateHandler.urlDecode = (state, key, val) => {
+                return (!key && val == 'a+b') ? val.replace('+', ' ') : decodeURIComponent(val);
+            }  
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?a+b=c%20d&e%20f=g%20h');
+            assert.strictEqual(Navigation.StateContext.data['a b'], 'c d');
+            assert.strictEqual(Navigation.StateContext.data['e f'], 'g h');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { 'a b': 'c d', 'e f': 'g h' }), '/?a+b=c%20d&e%20f=g%20h');
+        });
+    });
 });
