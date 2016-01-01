@@ -3418,4 +3418,20 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d1', { x: ['a b', 'c de'] }), '/b?x=a%20b&x=c%20de');
         });
     });
+
+    describe('Router Empty Decode', function () {
+        it('should match', function() {
+            var router = new Navigation.Router();
+            var route = router.addRoute('{x}');
+            assert.strictEqual(router.match('/a%20b').data.x, 'a b');
+        })
+    });
+
+    describe('Router Empty Encode', function () {
+        it('should build', function() {
+            var router = new Navigation.Router();
+            var route = router.addRoute('{x}');
+            assert.strictEqual(route.build({ x: 'a b' }), '/a%20b');
+        })
+    });
 });
