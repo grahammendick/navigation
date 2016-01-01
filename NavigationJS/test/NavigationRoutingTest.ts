@@ -3354,4 +3354,41 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a b', 'c de'], y: ['f g'] }), '/?x=a+b&x=c+de&y=f%20g');
         });
     });
+
+    describe('No Param One Segment Array State Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd0', initial: 's', states: [
+                    { key: 's', route: 'a', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]},
+                { key: 'd1', initial: 's', states: [
+                    { key: 's', route: 'b', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+            var dialogs = Navigation.StateInfoConfig.dialogs;
+            for(var key in dialogs) {
+                var state = dialogs[key].states['s'];
+                state.stateHandler.urlEncode = (state, key, val) => {
+                    return state.parent == dialogs['d0'] ? val.replace(' ', '+') : encodeURIComponent(val);
+                }
+                state.stateHandler.urlDecode = (state, key, val) => {
+                    return state.parent == dialogs['d0'] ? val.replace('+', ' ') : decodeURIComponent(val);
+                }
+            }
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a?x=a+b&x=c+de');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a b');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'c de');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            Navigation.StateController.navigateLink('/b?x=a%20b&x=c%20de');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a b');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'c de');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d0', { x: ['a b', 'c de'] }), '/a?x=a+b&x=c+de');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d1', { x: ['a b', 'c de'] }), '/b?x=a%20b&x=c%20de');
+        });
+    });
 });
