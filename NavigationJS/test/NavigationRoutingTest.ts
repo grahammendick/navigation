@@ -3125,4 +3125,56 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d1', { x: 'c d' }), '/b/c%20d');
         });
     });
+
+    describe('One Param Query String Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val, queryString) =>  {
+                return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
+            }  
+            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+                return key === 'y' ? val.replace('+', ' ') : decodeURIComponent(val);
+            }  
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a%20b?y=c+d');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a b');
+            assert.strictEqual(Navigation.StateContext.data.y, 'c d');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a%20b?y=c+d');
+        });
+    });
+
+    describe('One Param Route Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val, queryString) => {
+                return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
+            }
+            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+                return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
+            }
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a+b?y=c%20d');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a b');
+            assert.strictEqual(Navigation.StateContext.data.y, 'c d');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
+        });
+    });
 });
