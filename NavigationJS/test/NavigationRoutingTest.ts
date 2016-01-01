@@ -3126,6 +3126,40 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('One Param One Dialog State Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'a/{x}', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's1' }]},
+                    { key: 's1', route: 'b/{x}', trackCrumbTrail: false }]},
+                ]);
+            var dialog = Navigation.StateInfoConfig.dialogs['d'];
+            for(var key in dialog.states) {
+                var state = dialog.states[key];
+                state.stateHandler.urlEncode = (state, key, val) => {
+                    return state == dialog.states['s1'] ? val.replace(' ', '+') : encodeURIComponent(val);
+                }
+                state.stateHandler.urlDecode = (state, key, val) => {
+                    return state == dialog.states['s1'] ? val.replace('+', ' ') : decodeURIComponent(val);
+                }
+            }
+            Navigation.StateController.navigate('d', { x: 'e'});
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a/c%20d');
+            assert.strictEqual(Navigation.StateContext.data.x, 'c d');
+            Navigation.StateController.navigateLink('/b/c+d');
+            assert.strictEqual(Navigation.StateContext.data.x, 'c d');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'c d' }), '/a/c%20d');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('t', { x: 'c d' }), '/b/c+d');
+        });
+    });
+
     describe('One Param Query String Key Encode', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
