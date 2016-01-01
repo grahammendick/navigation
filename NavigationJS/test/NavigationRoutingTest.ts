@@ -3177,4 +3177,56 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
         });
     });
+
+    describe('Two Param Route Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => {
+                return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
+            }
+            state.stateHandler.urlDecode = (state, key, val) => {
+                return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
+            }
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a+b/c%20d');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a b');
+            assert.strictEqual(Navigation.StateContext.data.y, 'c d');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b/c%20d');
+        });
+    });
+
+    describe('No Param Two Query String Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) =>  {
+                return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
+            }  
+            state.stateHandler.urlDecode = (state, key, val) => {
+                return key === 'y' ? val.replace('+', ' ') : decodeURIComponent(val);
+            }  
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=a%20b&y=c+d');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a b');
+            assert.strictEqual(Navigation.StateContext.data.y, 'c d');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/?x=a%20b&y=c+d');
+        });
+    });
 });
