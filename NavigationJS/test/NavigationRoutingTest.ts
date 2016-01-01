@@ -3303,7 +3303,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('No Param String Array Encode', function () {
+    describe('No Param Array Encode', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
@@ -3323,6 +3323,35 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a b', 'c de'] }), '/?x=a+b&x=c+de');
+        });
+    });
+
+    describe('No Param Array Key Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => {
+                return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
+            }
+            state.stateHandler.urlDecode = (state, key, val) => {
+                return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
+            }
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/?x=a+b&x=c+de&y=f%20g');
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a b');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'c de');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.y[0], 'f g');
+            assert.strictEqual(Navigation.StateContext.data.y.length, 1);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a b', 'c de'], y: ['f g'] }), '/?x=a+b&x=c+de&y=f%20g');
         });
     });
 });
