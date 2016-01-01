@@ -3133,10 +3133,10 @@ describe('MatchTest', function () {
                     { key: 's', route: '{x}', trackCrumbTrail: false }]}
                 ]);
             var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
-            state.stateHandler.urlEncode = (state, key, val, queryString) =>  {
+            state.stateHandler.urlEncode = (state, key, val) =>  {
                 return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
-            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+            state.stateHandler.urlDecode = (state, key, val) => {
                 return key === 'y' ? val.replace('+', ' ') : decodeURIComponent(val);
             }  
         });
@@ -3159,10 +3159,10 @@ describe('MatchTest', function () {
                     { key: 's', route: '{x}', trackCrumbTrail: false }]}
                 ]);
             var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
-            state.stateHandler.urlEncode = (state, key, val, queryString) => {
+            state.stateHandler.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+            state.stateHandler.urlDecode = (state, key, val) => {
                 return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
