@@ -2965,4 +2965,46 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/20102-042-071-20112-082-032_a3');
         });
     });
+
+    describe('No Param One Segment Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'abc', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')  
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/abc?x=a+b');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a b');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b' }), '/abc?x=a+b');
+        });
+    });
+
+    describe('One Param Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')  
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a+b');
+            assert.strictEqual(Navigation.StateContext.data.x, 'a b');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'a b' }), '/a+b');
+        });
+    });
 });
