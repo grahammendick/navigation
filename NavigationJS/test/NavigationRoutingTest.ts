@@ -3041,12 +3041,12 @@ describe('MatchTest', function () {
                     { key: 's', route: '{x}', trackCrumbTrail: false }]}
                 ]);
             var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
-            state.stateHandler.urlEncode = (state, key, val, queryString) =>  {
+            state.stateHandler.urlEncode = (state, key, val, queryString) => {
                 return !queryString ? val.replace(' ', '+') : encodeURIComponent(val);
-            }  
+            }
             state.stateHandler.urlDecode = (state, key, val, queryString) => {
                 return !queryString ? val.replace('+', ' ') : decodeURIComponent(val);
-            }  
+            }
         });
 
         it('should match', function() {
@@ -3071,12 +3071,12 @@ describe('MatchTest', function () {
             var dialogs = Navigation.StateInfoConfig.dialogs;
             for(var key in dialogs) {
                 var state = dialogs[key].states['s'];
-                state.stateHandler.urlEncode = (state, key, val) =>  {
+                state.stateHandler.urlEncode = (state, key, val) => {
                     return state.parent == dialogs['d0'] ? val.replace(' ', '+') : encodeURIComponent(val);
-                }  
+                }
                 state.stateHandler.urlDecode = (state, key, val) => {
                     return state.parent == dialogs['d0'] ? val.replace('+', ' ') : decodeURIComponent(val);
-                }  
+                }
             }
         });
 
