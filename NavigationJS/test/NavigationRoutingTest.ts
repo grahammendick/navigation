@@ -3528,12 +3528,8 @@ describe('MatchTest', function () {
                     { key: 's', route: '{x?}', trackCrumbTrail: false }]}
                 ]);
             var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => {
-                return val.replace(' ', '+');
-            }
-            state.stateHandler.urlDecode = (state, key, val) => {
-                return val.replace('+', ' ');
-            }
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
         
         it('should match', function() {
@@ -3543,6 +3539,26 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+        });
+    });
+
+    describe('One Empty Param Route Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
         });
     });
 });
