@@ -53,7 +53,8 @@
                 optional = optional && (!val || val === defaultVal);
                 val = val ? val : defaultVal;
                 blank = blank || !val;
-                routePath += urlEncode(subSegment.name, val);
+                if (val)
+                    routePath += urlEncode(subSegment.name, val);
             }
         }
         return { path: !blank ? routePath : null, optional: optional };

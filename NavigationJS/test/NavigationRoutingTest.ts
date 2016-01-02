@@ -3520,4 +3520,29 @@ describe('MatchTest', function () {
             assert.strictEqual(route.build({ x: 'a b' }), '/a%20b');
         })
     });
+
+    describe('One Optional Empty Param Route Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{x?}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => {
+                return val.replace(' ', '+');
+            }
+            state.stateHandler.urlDecode = (state, key, val) => {
+                return val.replace('+', ' ');
+            }
+        });
+        
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x, undefined);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+        });
+    });
 });
