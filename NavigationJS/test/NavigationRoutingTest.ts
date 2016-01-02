@@ -3561,4 +3561,24 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
         });
     });
+
+    describe('One Empty Mixed Param Route Encode', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = Navigation.StateInfoConfig.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/ab'), /Url is invalid/, '');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
+        });
+    });
 });
