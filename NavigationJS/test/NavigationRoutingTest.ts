@@ -891,6 +891,9 @@ describe('MatchTest', function () {
             Navigation.StateController.navigateLink('/2011-08-03');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
             assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
+            Navigation.StateController.navigateLink('/2011-12-31');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 11, 31));
             Navigation.StateController.navigateLink('/2011-8-3');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
             assert.strictEqual(+Navigation.StateContext.data.x, +new Date(2011, 7, 3));
@@ -920,6 +923,7 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: new Date(2011, 7, 3) }), '/2011-08-03');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: new Date(2011, 11, 31) }), '/2011-12-31');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: new Date(2011, 7, 3), z: '2012-09-04' }), '/2011-08-03?z=2012-09-04');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: new Date(2010, 3, 7), z: '2012-09-04' }), '/?z=2012-09-04');
