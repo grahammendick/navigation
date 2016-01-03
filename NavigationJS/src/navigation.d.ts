@@ -559,6 +559,8 @@ declare module Navigation {
          * @returns The navigation data
          */
         getNavigationData(state: State, url: string, queryStringData: any): any;
+        urlEncode?(state: State, key: string, val: string, queryString: boolean): string;
+        urlDecode?(state: State, key: string, val: string, queryString: boolean): string;
         /**
          * Truncates the crumb trail
          * @param The State navigated to
@@ -970,6 +972,8 @@ declare module Navigation {
          * @returns The navigation data
          */
         getNavigationData(state: State, url: string, queryStringData: any): any;
+        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
+        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
         /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered
@@ -1080,6 +1084,7 @@ declare module Navigation {
          * @returns The matched data or null if there's no match
          */
         match(path: string): any;
+        match(path: string, urlDecode: (route: Route, name: string, val: string) => string): any;
         /**
          * Gets the route populated with default values
          * @returns The built route
@@ -1091,6 +1096,7 @@ declare module Navigation {
          * @returns The built route
          */
         build(data: any): string;
+        build(data: any, urlEncode: (route: Route, name: string, val: string) => string): string;
     }
 
     /**
@@ -1116,6 +1122,7 @@ declare module Navigation {
          * @returns The matched route and data
          */
         match(path: string): { route: Route; data: any; };
+        match(path: string, urlDecode: (route: Route, name: string, val: string) => string): { route: Route; data: any; };
         /**
          * Sorts the routes by the comparer
          * @param compare The route comparer function
