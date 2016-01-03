@@ -86,6 +86,12 @@ module NavigationTests {
 			console.log('get navigation data');
 			super.getNavigationData(state, url, {});
 	    }
+        urlEncode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
+            return queryString ? val.replace(/\s/g, '+') : super.urlEncode(state, key, val, queryString);
+        }
+        urlDecode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
+            return queryString ? val.replace(/\+/g, ' ') : super.urlDecode(state, key, val, queryString);
+        }
 	}
 	homePage.stateHandler = new LogStateHandler();
 	personList.stateHandler = new LogStateHandler();

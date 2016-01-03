@@ -39,7 +39,7 @@
             this.pattern = '\/' + this.pattern;
     }
 
-    build(data?: any): { path: string; optional: boolean } {
+    build(data: any, urlEncode: (name: string, val: string) => string): { path: string; optional: boolean } {
         var routePath = '';
         var optional = this.optional;
         var blank = false;
@@ -53,7 +53,8 @@
                 optional = optional && (!val || val === defaultVal);
                 val = val ? val : defaultVal;
                 blank = blank || !val;
-                routePath += encodeURIComponent(val);
+                if (val)
+                    routePath += urlEncode(subSegment.name, val);
             }
         }
         return { path: !blank ? routePath : null, optional: optional };

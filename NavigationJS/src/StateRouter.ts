@@ -11,8 +11,8 @@ class StateRouter implements IRouter {
     supportsDefaults: boolean = true;
 
     getData(route: string): { state: State; data: any } {
-        var match = this.router.match(route);
-        return { state: match.route['_state'], data: this.router.match(route).data };
+        var match = this.router.match(route, StateRouter.urlDecode);
+        return { state: match.route['_state'], data: match.data };
     }
 
     getRoute(state: State, data: any): { route: string; data: any } {
@@ -26,7 +26,7 @@ class StateRouter implements IRouter {
         var routeMatch: { route: Route; data: any; } = routeInfo.matches[paramsKey];
         var routePath: string = null;
         if (routeMatch) {
-            routePath = routeMatch.route.build(data);
+            routePath = routeMatch.route.build(data, StateRouter.urlEncode);
         } else {
             var bestMatch = StateRouter.findBestMatch(routeInfo.routes, data);
             if (bestMatch) {
@@ -43,7 +43,7 @@ class StateRouter implements IRouter {
         var bestMatchCount = -1;
         for(var i = 0; i < routes.length; i++) {
             var route = routes[i];
-            var routePath = route.build(data);
+            var routePath = route.build(data, StateRouter.urlEncode);
             if (routePath) {
                 var count = 0;
                 var routeData = {};
@@ -60,6 +60,22 @@ class StateRouter implements IRouter {
             }
         }
         return bestMatch;
+    }
+
+    private static urlEncode(route: Route, name: string, val: string): string {
+        var state: State = route['_state'];
+        if (state.stateHandler.urlEncode)
+            return state.stateHandler.urlEncode(state, name, val, false);
+        else
+            return encodeURIComponent(val);
+    }
+
+    private static urlDecode(route: Route, name: string, val: string): string {
+        var state: State = route['_state'];
+        if (state.stateHandler.urlDecode)
+            return state.stateHandler.urlDecode(state, name, val, false);
+        else
+            return decodeURIComponent(val);
     }
 
     addRoutes(dialogs: Dialog[]) {
