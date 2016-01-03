@@ -1115,7 +1115,7 @@ declare module Navigation {
         /**
          * Gets the matching data for the path
          * @param path The path to match
-         * @param urlDecode The function to decode the Url value
+         * @param urlDecode The function that decodes the Url value
          * @returns The matched data or null if there's no match
          */
         match(path: string, urlDecode: (route: Route, name: string, val: string) => string): any;
@@ -1133,7 +1133,7 @@ declare module Navigation {
         /**
          * Gets the route populated with data and default values
          * @param data The data for the route parameters
-         * @param urlEncode The function to encode the Url value
+         * @param urlEncode The function that encodes the Url value
          * @returns The built route
          */
         build(data: any, urlEncode: (route: Route, name: string, val: string) => string): string;
@@ -1165,7 +1165,7 @@ declare module Navigation {
         /**
          * Gets the matching route and data for the path
          * @param path The path to match
-         * @param urlDecode The function to decode the Url value
+         * @param urlDecode The function that decodes the Url value
          * @returns The matched route and data
          */
         match(path: string, urlDecode: (route: Route, name: string, val: string) => string): { route: Route; data: any; };
