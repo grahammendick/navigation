@@ -560,6 +560,22 @@ declare module Navigation {
          */
         getNavigationData(state: State, url: string, queryStringData: any): any;
         /**
+         * Encodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlEncode?(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Decodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlDecode?(state: State, key: string, val: string, queryString: boolean): string;
+        /**
          * Truncates the crumb trail
          * @param The State navigated to
          * @param The Crumb collection representing the crumb trail
@@ -971,6 +987,22 @@ declare module Navigation {
          */
         getNavigationData(state: State, url: string, queryStringData: any): any;
         /**
+         * Encodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Decodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered
          * @param The State navigated to
@@ -1081,16 +1113,30 @@ declare module Navigation {
          */
         match(path: string): any;
         /**
+         * Gets the matching data for the path
+         * @param path The path to match
+         * @param urlDecode The function that decodes the Url value
+         * @returns The matched data or null if there's no match
+         */
+        match(path: string, urlDecode: (route: Route, name: string, val: string) => string): any;
+        /**
          * Gets the route populated with default values
          * @returns The built route
          */
         build(): string;
         /**
          * Gets the route populated with data and default values
-         * @param The data for the route parameters
+         * @param data The data for the route parameters
          * @returns The built route
          */
         build(data: any): string;
+        /**
+         * Gets the route populated with data and default values
+         * @param data The data for the route parameters
+         * @param urlEncode The function that encodes the Url value
+         * @returns The built route
+         */
+        build(data: any, urlEncode: (route: Route, name: string, val: string) => string): string;
     }
 
     /**
@@ -1112,10 +1158,17 @@ declare module Navigation {
         addRoute(path: string, defaults: any): Route;
         /**
          * Gets the matching route and data for the path
-         * @param route The path to match
+         * @param path The path to match
          * @returns The matched route and data
          */
         match(path: string): { route: Route; data: any; };
+        /**
+         * Gets the matching route and data for the path
+         * @param path The path to match
+         * @param urlDecode The function that decodes the Url value
+         * @returns The matched route and data
+         */
+        match(path: string, urlDecode: (route: Route, name: string, val: string) => string): { route: Route; data: any; };
         /**
          * Sorts the routes by the comparer
          * @param compare The route comparer function
