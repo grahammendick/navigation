@@ -48,5 +48,6 @@ Navigation.StateInfoConfig.build([
 			{ key: 'select', to: 'details' }]},
 		{ key: 'details', route: 'person', title: 'Person Details' }]}
 ]);
+//Navigation.settings.historyManager.replaceQueryIdentifier = true;
 ko.applyBindings(new PersonViewModel());
 Navigation.start();
