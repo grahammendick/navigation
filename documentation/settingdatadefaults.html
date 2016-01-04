@@ -94,8 +94,9 @@
 };</code></pre>
             </p>
             <p>
-                A parameter's default type is assumed to be a 'string' so you need only define default types for 'number' and 'boolean' parameters. You needn't
-                define a default type for a parameter with a default value because the type is derived from the value.
+                A parameter's default type is assumed to be a 'string' so you need only define default types for 'number', 'boolean' and 'date' parameters 
+                (for array parameters, the default types are 'stringarray', 'numberarray', 'booleanarray' and 'datearray'). You needn't define a default type
+                for a parameter with a default value because the type is derived from the value.
             </p>
             <p>
                 Even with default types configured, Navigation will still produce unpretty Urls if you pass a value that doesn't match the default type, e.g., a
