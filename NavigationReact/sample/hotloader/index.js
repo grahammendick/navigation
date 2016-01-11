@@ -10,13 +10,17 @@ if (module.hot) {
     module.hot.accept(['./StateInfo', './StateNavigator'], function() {
         require('./StateInfo').configureStateInfo();
         require('./StateNavigator').configureStateNavigator();
-        var prefixes = ['', 'old', 'previous'];
-        for(var i = 0; i < prefixes.length; i++) {
-            var state = Navigation.StateContext[prefixes[i] + 'state'];
+        var contextProps = [
+            { state: 'state', dialog: 'dialog '}, 
+            { state: 'oldState', dialog: 'oldDialog '}, 
+            { state: 'previousState', dialog: 'previousDialog '} 
+        ];
+        for(var i = 0; i < contextProps.length; i++) {
+            var state = Navigation.StateContext[contextProps[i].state];
             if (state) {
                 var dialog = Navigation.StateInfoConfig.dialogs[state.parent.key];
-                Navigation.StateContext[prefixes[i] + 'dialog'] = dialog;
-                Navigation.StateContext[prefixes[i] + 'state'] = dialog.states[state.key];
+                Navigation.StateContext[contextProps[i].dialog] = dialog;
+                Navigation.StateContext[contextProps[i].state] = dialog.states[state.key];
             }
         }
         var currentData = Navigation.StateContext.includeCurrentData({});
