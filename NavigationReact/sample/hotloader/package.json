@@ -6,9 +6,10 @@
     "navigation-react": "^1.2.0",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
-    "webpack": "^1.12.10"
+    "webpack": "^1.12.10",
+    "webpack-dev-server": "^1.14.0"
   },
   "scripts": {
-      "build": "webpack"
+    "build": "webpack-dev-server --hot --inline"
   }
 }
