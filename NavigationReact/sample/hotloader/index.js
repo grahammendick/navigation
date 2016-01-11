@@ -19,7 +19,7 @@ if (module.hot) {
             if (state) {
                 dialog = Navigation.StateInfoConfig.dialogs[dialog.key];
                 Navigation.StateContext[dialogProp] = dialog;
-                Navigation.StateContext[stateProp] = dialog.states[state.key];       
+                Navigation.StateContext[stateProp] = dialog.states[state.key];
             }
         }
         var currentData = Navigation.StateContext.includeCurrentData({});
