@@ -23,5 +23,5 @@ if (module.hot) {
         reloadContext('previousState', 'previousDialog');
         var currentData = Navigation.StateContext.includeCurrentData({});
         Navigation.StateController.refresh(currentData);
-    })
+    });
 }
