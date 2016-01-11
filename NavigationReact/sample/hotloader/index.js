@@ -12,12 +12,17 @@ if (module.hot) {
         require('./StateNavigator').configureStateNavigator();
         var prefixes = ['', 'old', 'previous'];
         for(var i = 0; i < prefixes.length; i++) {
-            var dialog = prefixes[i] + 'dialog', state = prefixes[i] + 'state';
-            if (Navigation.StateContext[state]) {
-                Navigation.StateContext[dialog] = Navigation.StateInfoConfig.dialogs[Navigation.StateContext[dialog].key];
-                Navigation.StateContext[state] = Navigation.StateContext[dialog].states[Navigation.StateContext[state].key];       
+            var dialogProp = prefixes[i] + 'dialog';
+            var stateProp = prefixes[i] + 'state';
+            var dialog = Navigation.StateContext[dialogProp];
+            var state = Navigation.StateContext[stateProp];
+            if (state) {
+                dialog = Navigation.StateInfoConfig.dialogs[dialog.key];
+                Navigation.StateContext[dialogProp] = dialog;
+                Navigation.StateContext[stateProp] = dialog.states[state.key];       
             }
         }
-        Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({}));
+        var currentData = Navigation.StateContext.includeCurrentData({});
+        Navigation.StateController.refresh(currentData);
     })
 }
