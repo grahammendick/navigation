@@ -11,9 +11,9 @@ if (module.hot) {
         require('./StateInfo').configureStateInfo();
         require('./StateNavigator').configureStateNavigator();
         var contextProps = [
-            { state: 'state', dialog: 'dialog '}, 
-            { state: 'oldState', dialog: 'oldDialog '}, 
-            { state: 'previousState', dialog: 'previousDialog '} 
+            { state: 'state', dialog: 'dialog'}, 
+            { state: 'oldState', dialog: 'oldDialog'}, 
+            { state: 'previousState', dialog: 'previousDialog'} 
         ];
         for(var i = 0; i < contextProps.length; i++) {
             var state = Navigation.StateContext[contextProps[i].state];
