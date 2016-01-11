@@ -14,8 +14,8 @@ if (module.hot) {
             var state = Navigation.StateContext[stateProp];
             if (state) {
                 var dialog = Navigation.StateInfoConfig.dialogs[state.parent.key];
-                Navigation.StateContext[dialogProp] = dialog;
                 Navigation.StateContext[stateProp] = dialog.states[state.key];
+                Navigation.StateContext[dialogProp] = dialog;
             }
         }
         reloadContext('state', 'dialog');
