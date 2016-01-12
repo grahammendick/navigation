@@ -12,8 +12,8 @@ class StateInfoConfig {
     static _dialogs: Dialog[] = [];
     static dialogs: { [index: string]: Dialog } = {};
     static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
-        this._dialogs = [];
-        this.dialogs = {};
+        var _builtDialogs = [];
+        var builtDialogs: { [index: string]: Dialog } = {};
         for (var i = 0; i < dialogs.length; i++) {
             var dialogObject = dialogs[i];
             var dialog = new Dialog();
@@ -24,10 +24,10 @@ class StateInfoConfig {
             }
             if (!dialog.key)
                 throw new Error('key is mandatory for a Dialog');
-            if (this.dialogs[dialog.key])
+            if (builtDialogs[dialog.key])
                 throw new Error('A Dialog with key ' + dialog.key + ' already exists');
-            this._dialogs.push(dialog);
-            this.dialogs[dialog.key] = dialog;
+            _builtDialogs.push(dialog);
+            builtDialogs[dialog.key] = dialog;
             this.processStates(dialog, dialogObject);
             this.processTransitions(dialog, dialogObject);
             dialog.initial = dialog.states[dialogObject.initial];
@@ -36,6 +36,8 @@ class StateInfoConfig {
             if (!dialog.initial)
                 throw new Error(dialog.key + ' Dialog\'s initial key of ' + dialogObject.initial + ' does not match a child State key');
         }
+        this._dialogs = _builtDialogs;
+        this.dialogs = builtDialogs;
         settings.router.addRoutes(this._dialogs);
     }
 
