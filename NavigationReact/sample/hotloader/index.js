@@ -8,7 +8,12 @@ Navigation.start();
 
 if (module.hot) {
     module.hot.accept(['./StateInfo', './StateNavigator'], function() {
-        require('./StateInfo').configureStateInfo();
+        try {
+            require('./StateInfo').configureStateInfo();
+        } catch(e) {
+            console.error(e.message);
+            return;
+        }
         require('./StateNavigator').configureStateNavigator();
         function reloadContext(stateProp, dialogProp) {
             var state = Navigation.StateContext[stateProp];
