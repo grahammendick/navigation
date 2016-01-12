@@ -517,7 +517,7 @@ describe('StateInfoTest', function () {
         })
     });
 
-    describe('Reload Error State Info', function () {
+    describe('Reload Error', function () {
         it('should keep State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd0', initial: 's0', states: [
@@ -570,7 +570,7 @@ describe('StateInfoTest', function () {
         })
     });
 
-    describe('Reload State Info', function () {
+    describe('Reload', function () {
         it('should configure State Info', function() {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
