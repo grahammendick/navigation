@@ -3,7 +3,7 @@
     optional: boolean;
     defaults: any;
     pattern: string = '';
-    params: string[] = [];
+    params: { name: string; splat: boolean }[] = [];
     private subSegments: { name: string; param: boolean }[] = [];
     private subSegmentPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
@@ -24,7 +24,7 @@
             if (subSegment.charAt(0) == '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var name = param.slice(-1) === '?' ? param.slice(0, -1) : param;
-                this.params.push(name);
+                this.params.push({ name: name, splat: false });
                 this.subSegments.push({ name: name, param: true });
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
