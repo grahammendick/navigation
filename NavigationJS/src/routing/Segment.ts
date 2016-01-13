@@ -4,7 +4,7 @@
     defaults: any;
     pattern: string = '';
     params: { name: string; splat: boolean }[] = [];
-    private subSegments: { name: string; param: boolean }[] = [];
+    private subSegments: { name: string; param: boolean; splat: boolean }[] = [];
     private subSegmentPattern: RegExp = /[{]{0,1}[^{}]+[}]{0,1}/g;
     private escapePattern: RegExp = /[\.+*\^$\[\](){}']/g;
 
@@ -27,14 +27,14 @@
                 name = param.slice(0, 1) === '*' ? name.slice(1) : name;
                 var splat = param.slice(0, 1) === '*';
                 this.params.push({ name: name, splat: splat });
-                this.subSegments.push({ name: name, param: true });
+                this.subSegments.push({ name: name, param: true, splat: splat });
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
                 var subSegmentPattern = !splat ? '[^/]+' : '.+';
                 this.pattern += !this.optional ? '(' + subSegmentPattern + ')' : '(\/' + subSegmentPattern + ')?';
             } else {
                 this.optional = false;
-                this.subSegments.push({ name: subSegment, param: false });
+                this.subSegments.push({ name: subSegment, param: false, splat: false });
                 this.pattern += subSegment.replace(this.escapePattern, '\\$&');
             }
         }
@@ -56,8 +56,16 @@
                 optional = optional && (!val || val === defaultVal);
                 val = val ? val : defaultVal;
                 blank = blank || !val;
-                if (val)
-                    routePath += urlEncode(subSegment.name, val);
+                if (val) {
+                    if (!subSegment.splat || typeof val === 'string' ) {
+                        routePath += urlEncode(subSegment.name, val);
+                    } else {
+                        var encodedArray = [];
+                        for(var i = 0; i < val.length; i++)
+                            encodedArray[i] = urlEncode(subSegment.name, val[i]); 
+                        routePath += encodedArray.join('/');
+                    }
+                }
             }
         }
         return { path: !blank ? routePath : null, optional: optional };
