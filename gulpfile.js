@@ -12,7 +12,10 @@ var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
 var tests = [
-	{ name: 'NavigationRouting', to: 'navigationRouting.test.js' }
+	{ name: 'NavigationRouting', to: 'navigationRouting.test.js' },
+	{ name: 'StateInfo', to: 'stateInfo.test.js' },
+	{ name: 'Navigation', to: 'navigation.test.js' },
+	{ name: 'NavigationData', to: 'navigationData.test.js' }
 ];
 var testTasks = [];
 function testTask(file, to) {
