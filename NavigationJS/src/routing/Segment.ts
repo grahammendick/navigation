@@ -25,11 +25,13 @@
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var name = param.slice(-1) === '?' ? param.slice(0, -1) : param;
                 name = param.slice(0, 1) === '*' ? name.slice(1) : name;
-                this.params.push({ name: name, splat: param.slice(0, 1) === '*' });
+                var splat = param.slice(0, 1) === '*';
+                this.params.push({ name: name, splat: splat });
                 this.subSegments.push({ name: name, param: true });
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
-                this.pattern += !this.optional ? '([^/]+)' : '(\/[^/]+)?';
+                var subSegmentPattern = !splat ? '[^/]+' : '.+';
+                this.pattern += !this.optional ? '(' + subSegmentPattern + ')' : '(\/' + subSegmentPattern + ')?';
             } else {
                 this.optional = false;
                 this.subSegments.push({ name: subSegment, param: false });
