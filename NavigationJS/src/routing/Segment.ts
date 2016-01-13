@@ -24,7 +24,8 @@
             if (subSegment.charAt(0) == '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var name = param.slice(-1) === '?' ? param.slice(0, -1) : param;
-                this.params.push({ name: name, splat: false });
+                name = param.slice(0, 1) === '*' ? name.slice(0, 1) : name;
+                this.params.push({ name: name, splat: param.slice(0, 1) === '*' });
                 this.subSegments.push({ name: name, param: true });
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
