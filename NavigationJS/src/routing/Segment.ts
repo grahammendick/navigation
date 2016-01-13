@@ -64,6 +64,8 @@
                         for(var i = 0; i < val.length; i++)
                             encodedVals[i] = urlEncode(subSegment.name, val[i]); 
                         routePath += encodedVals.join('/');
+                        if (routePath.slice(-1) === '/')
+                            routePath += '/';
                     }
                 }
             }
