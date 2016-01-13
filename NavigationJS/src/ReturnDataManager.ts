@@ -48,7 +48,7 @@ class ReturnDataManager {
         return { val: formattedValue, arrayVal: formattedArray };
     }
 
-    static parseURLString(key: string, val: string | string[], state: State, decode = false, queryString = false): any {
+    static parseURLString(key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
@@ -64,7 +64,7 @@ class ReturnDataManager {
             val =  urlValue;
         else
             val[0] = urlValue;
-        return ConverterFactory.getConverterFromKey(converterKey).convertFrom(val, queryString);
+        return ConverterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
     }
 
     static parseReturnData(returnData: string, state: State): any {
