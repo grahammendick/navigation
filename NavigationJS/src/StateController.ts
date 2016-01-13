@@ -22,9 +22,9 @@ class StateController {
             StateContext.url = url;
             StateContext.dialog = state.parent;
             StateContext.title = state.title;
-            var queryStringData = {};
-            var data = state.stateHandler.getNavigationData(state, url, queryStringData);
-            StateContext.data = this.parseData(data, state, queryStringData);
+            var separableData = {};
+            var data = state.stateHandler.getNavigationData(state, url, separableData);
+            StateContext.data = this.parseData(data, state, separableData);
             StateContext.previousState = null;
             StateContext.previousDialog = null;
             StateContext.previousData = {};
@@ -145,9 +145,9 @@ class StateController {
     private static _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
         try {
             var oldUrl = StateContext.url;
-            var queryStringData = {};
-            var data = state.stateHandler.getNavigationData(state, url, queryStringData);
-            data = this.parseData(data, state, queryStringData);
+            var separableData = {};
+            var data = state.stateHandler.getNavigationData(state, url, separableData);
+            data = this.parseData(data, state, separableData);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -184,12 +184,12 @@ class StateController {
         };
     }
 
-    private static parseData(data: any, state: State, queryStringData: any): any {
+    private static parseData(data: any, state: State, separableData: any): any {
         var newData = {};
         for (var key in data) {
             if (key !== settings.previousStateIdKey && key !== settings.returnDataKey
                 && key !== settings.crumbTrailKey && data[key] !== state.formattedDefaults[key])
-                newData[key] = ReturnDataManager.parseURLString(key, data[key], state, false, !!queryStringData[key]);
+                newData[key] = ReturnDataManager.parseURLString(key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);
         return newData;

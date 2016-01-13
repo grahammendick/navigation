@@ -7,11 +7,11 @@
         this.name = name;
     }
     
-    convertFrom(val: string | string[], queryString = false): any {
+    convertFrom(val: string | string[], separable = false): any {
         return null;
     }
 
-    convertTo(val: any): { val: string, queryStringVal?: string[] } {
+    convertTo(val: any): { val: string, arrayVal?: string[] } {
         return null;
     }
     

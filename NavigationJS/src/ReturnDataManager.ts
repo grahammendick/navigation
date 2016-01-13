@@ -28,13 +28,13 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, queryStringVal?: string[] } {
+    static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converter = ConverterFactory.getConverter(urlObject);
         var convertedValue = converter.convertTo(urlObject);
         var formattedValue = convertedValue.val;
-        var formattedArray = convertedValue.queryStringVal;
+        var formattedArray = convertedValue.arrayVal;
         if (encode) {
             formattedValue = this.encodeUrlValue(formattedValue);
             if (formattedArray)
@@ -45,7 +45,7 @@ class ReturnDataManager {
             if (formattedArray)
                 formattedArray[0] = formattedArray[0] + this.RET_2_SEP + converter.key;
         }
-        return { val: formattedValue, queryStringVal: formattedArray };
+        return { val: formattedValue, arrayVal: formattedArray };
     }
 
     static parseURLString(key: string, val: string | string[], state: State, decode = false, queryString = false): any {

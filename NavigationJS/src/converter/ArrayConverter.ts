@@ -12,10 +12,10 @@ class ArrayConverter extends TypeConverter {
         this.converter = converter;
     }
 
-    convertFrom(val: string | string[], queryString: boolean): any {
+    convertFrom(val: string | string[], separable: boolean): any {
         var arr = [];
         if (typeof val === 'string') {
-            if (!queryString || settings.combineArray) {
+            if (!separable || settings.combineArray) {
                 var vals = val.split(ArrayConverter.SEPARATOR1);
                 for (var i = 0; i < vals.length; i++) {
                     if (vals[i].length !== 0)
@@ -37,7 +37,7 @@ class ArrayConverter extends TypeConverter {
         return arr;
     }
 
-    convertTo(val: any[]): { val: string, queryStringVal?: string[] } {
+    convertTo(val: any[]): { val: string, arrayVal?: string[] } {
         var vals = [];
         var arr = [];
         for (var i = 0; i < val.length; i++) {
@@ -50,7 +50,7 @@ class ArrayConverter extends TypeConverter {
                 vals.push('');
             }
         }
-        return { val: vals.join(ArrayConverter.SEPARATOR1), queryStringVal: !settings.combineArray ? arr : null };
+        return { val: vals.join(ArrayConverter.SEPARATOR1), arrayVal: !settings.combineArray ? arr : null };
     }
 }
 export = ArrayConverter;
