@@ -7,7 +7,7 @@ import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
     getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[] } = {}): string {
-        var routeInfo = settings.router.getRoute(state, data);
+        var routeInfo = settings.router.getRoute(state, data, queryStringData);
         if (routeInfo.route == null)
             return null;
         var query: string[] = [];
@@ -34,7 +34,7 @@ class StateHandler implements IStateHandler {
     getNavigationData(state: State, url: string, queryStringData: any = {}): any {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var data = settings.router.getData(route).data;
+        var data = settings.router.getData(route, queryStringData).data;
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);

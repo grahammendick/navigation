@@ -3,32 +3,44 @@ import IRouter = require('./IRouter');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
-type RouteInfo = { routes: Route[]; params: any; matches: any };
+type RouteInfo = { routes: Route[]; params: { [index: string]: { count: number; splat: boolean} }; matches: any };
 type MatchInfo = { route: Route; data: any; routePath: string };
 
 class StateRouter implements IRouter {
     router: Router;
     supportsDefaults: boolean = true;
 
-    getData(route: string): { state: State; data: any } {
+    getData(route: string, arrayData: any = {}): { state: State; data: any } {
         var match = this.router.match(route, StateRouter.urlDecode);
+        for(var i = 0; i < match.route.params.length; i++) {
+            var param = match.route.params[i];
+            if (param.splat)
+                arrayData[param.name] = true;
+        }
         return { state: match.route['_state'], data: match.data };
     }
 
-    getRoute(state: State, data: any): { route: string; data: any } {
+    getRoute(state: State, data: any, arrayData: { [index: string]: string[] } = {}): { route: string; data: any } {
+        var combinedData = {};
+        for(var key in data)
+            combinedData[key] = data[key];
         var routeInfo: RouteInfo = state['_routeInfo'];
         var paramsKey = '';
         for(var key in routeInfo.params) {
-            if (data[key])
-                paramsKey += routeInfo.params[key] + ',';
+            var param = routeInfo.params[key]; 
+            if (combinedData[key])
+                paramsKey += param.count + ',';
+            var arr = arrayData[key];
+            if (param.splat && arr)
+                combinedData[key] = arr;
         }
         paramsKey = paramsKey.slice(0, -1);
         var routeMatch: { route: Route; data: any; } = routeInfo.matches[paramsKey];
         var routePath: string = null;
         if (routeMatch) {
-            routePath = routeMatch.route.build(data, StateRouter.urlEncode);
+            routePath = routeMatch.route.build(combinedData, StateRouter.urlEncode);
         } else {
-            var bestMatch = StateRouter.findBestMatch(routeInfo.routes, data);
+            var bestMatch = StateRouter.findBestMatch(routeInfo.routes, combinedData);
             if (bestMatch) {
                 routePath = bestMatch.routePath;
                 routeMatch = { route: bestMatch.route, data: bestMatch.data };
@@ -101,7 +113,7 @@ class StateRouter implements IRouter {
             for(var j = 0; j < route.params.length; j++) {
                 var param = route.params[j];
                 if (!routeInfo.params[param.name]) {
-                    routeInfo.params[param.name] = count;
+                    routeInfo.params[param.name] = { count: count, splat: param.splat };
                     count++;
                 }
             }
