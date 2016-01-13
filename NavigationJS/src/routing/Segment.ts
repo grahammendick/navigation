@@ -60,10 +60,10 @@
                     if (!subSegment.splat || typeof val === 'string' ) {
                         routePath += urlEncode(subSegment.name, val);
                     } else {
-                        var encodedArray = [];
+                        var encodedVals = [];
                         for(var i = 0; i < val.length; i++)
-                            encodedArray[i] = urlEncode(subSegment.name, val[i]); 
-                        routePath += encodedArray.join('/');
+                            encodedVals[i] = urlEncode(subSegment.name, val[i]); 
+                        routePath += encodedVals.join('/');
                     }
                 }
             }

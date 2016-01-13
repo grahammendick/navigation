@@ -40,8 +40,18 @@ class Route {
         var data = {};
         for (var i = 1; i < matches.length; i++) {
             var param = this.params[i - 1];
-            if (matches[i])
-                data[param.name] = urlDecode(this, param.name, !param.optional ? matches[i] : matches[i].substring(1));
+            if (matches[i]) {
+                var val = !param.optional ? matches[i] : matches[i].substring(1);
+                if (val.indexOf('/') === -1) {
+                    data[param.name] = urlDecode(this, param.name, val);
+                } else {
+                    var vals = val.split('/');
+                    var decodedVals = [];
+                    for(var j = 0; j < vals.length; j++)
+                        decodedVals[j] = urlDecode(this, param.name, vals[j]);
+                    data[param.name] = decodedVals;
+                }
+            }
         }
         return data;
     }
