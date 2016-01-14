@@ -24,8 +24,8 @@
             if (subSegment.charAt(0) == '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var optional = param.slice(-1) === '?'; 
-                var name = optional ? param.slice(0, -1) : param;
                 var splat = param.slice(0, 1) === '*';
+                var name = optional ? param.slice(0, -1) : param;
                 name = splat ? name.slice(1) : name;
                 this.params.push({ name: name, splat: splat });
                 this.subSegments.push({ name: name, param: true, splat: splat });
