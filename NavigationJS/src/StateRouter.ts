@@ -133,7 +133,8 @@ class StateRouter implements IRouter {
             }
             routeInfo.routes.push(route);
             route['_state'] = state;
-            route['_splat'] = splat;
+            route['_splat'] = splat
+            route.defaults = StateRouter.getCombinedData(route, state.formattedDefaults, state.formattedArrayDefaults);
         }
         state['_routeInfo'] = routeInfo;
     }
