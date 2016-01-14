@@ -43,7 +43,7 @@ class StateRouter implements IRouter {
         }
         return { route: routePath, data: routeMatch ? routeMatch.data : {} };
     }
-    
+
     private static findBestMatch(routes: Route[], data: any, arrayData: { [index: string]: string[] }): MatchInfo {
         var bestMatch: MatchInfo;
         var bestMatchCount = -1;
@@ -55,7 +55,7 @@ class StateRouter implements IRouter {
                 var count = 0;
                 var routeData = {};
                 for (var j = 0; j < route.params.length; j++) {
-                    if (data[route.params[j].name]) {
+                    if (combinedData[route.params[j].name]) {
                         routeData[route.params[j].name] = {};
                         count++;
                     }
@@ -70,6 +70,8 @@ class StateRouter implements IRouter {
     }
     
     private static getCombinedData(route: Route, data: any, arrayData: { [index: string]: string[] }): any {
+        if (!route['_splat'])
+            return data;
         var combinedData = {};
         for(var key in data)
             combinedData[key] = data[key];
@@ -118,15 +120,18 @@ class StateRouter implements IRouter {
         var routes = StateRouter.getRoutes(state);
         for(var i = 0; i < routes.length; i++) {
             var route = this.router.addRoute(routes[i], state.formattedDefaults);
+            var splat = false;
             for(var j = 0; j < route.params.length; j++) {
                 var param = route.params[j];
                 if (!routeInfo.params[param.name]) {
                     routeInfo.params[param.name] = count;
                     count++;
                 }
+                splat = splat || param.splat;
             }
             routeInfo.routes.push(route);
             route['_state'] = state;
+            route['_splat'] = splat;
         }
         state['_routeInfo'] = routeInfo;
     }
