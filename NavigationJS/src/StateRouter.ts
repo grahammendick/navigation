@@ -3,7 +3,7 @@ import IRouter = require('./IRouter');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
-type RouteInfo = { routes: Route[]; params: { [index: string]: { count: number; splat: boolean} }; matches: any };
+type RouteInfo = { routes: Route[]; params: { [index: string]: number }; matches: any };
 type MatchInfo = { route: Route; data: any; routePath: string };
 
 class StateRouter implements IRouter {
@@ -12,37 +12,29 @@ class StateRouter implements IRouter {
 
     getData(route: string, separableData: any = {}): { state: State; data: any } {
         var match = this.router.match(route, StateRouter.urlDecode);
-        var state = match.route['_state'];
-        var routeInfo: RouteInfo = state['_routeInfo'];
-        for(var key in routeInfo.params) {
-            var param = routeInfo.params[key];
+        for (var i = 0; i < match.route.params.length; i++) {
+            var param = match.route.params[i];
             if (param.splat)
-                separableData[key] = true;
+                separableData[param.name] = true;
         }
-        return { state: state, data: match.data };
+        return { state: match.route['_state'], data: match.data };
     }
 
     getRoute(state: State, data: any, arrayData: { [index: string]: string[] } = {}): { route: string; data: any } {
-        var combinedData = {};
-        for(var key in data)
-            combinedData[key] = data[key];
         var routeInfo: RouteInfo = state['_routeInfo'];
         var paramsKey = '';
         for(var key in routeInfo.params) {
-            var param = routeInfo.params[key]; 
-            if (combinedData[key])
-                paramsKey += param.count + ',';
-            var arr = arrayData[key];
-            if (param.splat && arr)
-                combinedData[key] = arr;
+            if (data[key])
+                paramsKey += routeInfo.params[key] + ',';
         }
         paramsKey = paramsKey.slice(0, -1);
         var routeMatch: { route: Route; data: any; } = routeInfo.matches[paramsKey];
         var routePath: string = null;
         if (routeMatch) {
+            var combinedData = StateRouter.getCombinedData(routeMatch.route, data, arrayData);
             routePath = routeMatch.route.build(combinedData, StateRouter.urlEncode);
         } else {
-            var bestMatch = StateRouter.findBestMatch(routeInfo.routes, combinedData);
+            var bestMatch = StateRouter.findBestMatch(routeInfo.routes, data, arrayData);
             if (bestMatch) {
                 routePath = bestMatch.routePath;
                 routeMatch = { route: bestMatch.route, data: bestMatch.data };
@@ -52,12 +44,13 @@ class StateRouter implements IRouter {
         return { route: routePath, data: routeMatch ? routeMatch.data : {} };
     }
     
-    private static findBestMatch(routes: Route[], data: any): MatchInfo {
+    private static findBestMatch(routes: Route[], data: any, arrayData: { [index: string]: string[] }): MatchInfo {
         var bestMatch: MatchInfo;
         var bestMatchCount = -1;
         for(var i = 0; i < routes.length; i++) {
             var route = routes[i];
-            var routePath = route.build(data, StateRouter.urlEncode);
+            var combinedData = StateRouter.getCombinedData(route, data, arrayData);
+            var routePath = route.build(combinedData, StateRouter.urlEncode);
             if (routePath) {
                 var count = 0;
                 var routeData = {};
@@ -74,6 +67,19 @@ class StateRouter implements IRouter {
             }
         }
         return bestMatch;
+    }
+    
+    private static getCombinedData(route: Route, data: any, arrayData: { [index: string]: string[] }): any {
+        var combinedData = {};
+        for(var key in data)
+            combinedData[key] = data[key];
+        for(var i = 0; i < route.params.length; i++) {
+            var param = route.params[i];
+            var arr = arrayData[param.name];
+            if (param.splat && arr)
+                combinedData[param.name] = arr;
+        }
+        return combinedData;
     }
 
     private static urlEncode(route: Route, name: string, val: string): string {
@@ -115,7 +121,7 @@ class StateRouter implements IRouter {
             for(var j = 0; j < route.params.length; j++) {
                 var param = route.params[j];
                 if (!routeInfo.params[param.name]) {
-                    routeInfo.params[param.name] = { count: count, splat: param.splat };
+                    routeInfo.params[param.name] = count;
                     count++;
                 }
             }

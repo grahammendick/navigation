@@ -3714,7 +3714,7 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            Navigation.StateController.navigateLink('ab/cd');
+            Navigation.StateController.navigateLink('/ab/cd');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
             assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             assert.strictEqual(Navigation.StateContext.data.x[0], 'cd');
@@ -3923,7 +3923,7 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            Navigation.StateController.navigateLink('cd/ab/efg');
+            Navigation.StateController.navigateLink('/cd/ab/efg');
             assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
             assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             assert.strictEqual(Navigation.StateContext.data.x[0], 'cd');
@@ -3983,4 +3983,20 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { y: ['cd'] }), null);
         });
     });
+    
+    describe('Two Route Param Splat and Not Splat', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/a/cd/efg');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd' }), '/a/cd2_0');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/b/cd2_0/efg');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cd', 'efg'], y: 'hi' }), '/b/cd1-efg/hi');
+        });
+    })
 });
