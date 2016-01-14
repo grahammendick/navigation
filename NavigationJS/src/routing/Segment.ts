@@ -23,12 +23,13 @@
             var subSegment = matches[i];
             if (subSegment.charAt(0) == '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
-                var name = param.slice(-1) === '?' ? param.slice(0, -1) : param;
-                name = param.slice(0, 1) === '*' ? name.slice(1) : name;
+                var optional = param.slice(-1) === '?'; 
+                var name = optional ? param.slice(0, -1) : param;
                 var splat = param.slice(0, 1) === '*';
+                name = splat ? name.slice(1) : name;
                 this.params.push({ name: name, splat: splat });
                 this.subSegments.push({ name: name, param: true, splat: splat });
-                var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
+                var optionalOrDefault = optional || this.defaults[name];
                 this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
                 var subPattern = !splat ? '[^/]+' : '.+';
                 this.pattern += !this.optional ? `(${subPattern})` : `(\/${subPattern})?`;
