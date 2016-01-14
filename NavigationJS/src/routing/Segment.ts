@@ -31,7 +31,7 @@
                 var optionalOrDefault = param.slice(-1) === '?' || this.defaults[name];
                 this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
                 var subSegmentPattern = !splat ? '[^/]+' : '.+';
-                this.pattern += !this.optional ? '(' + subSegmentPattern + ')' : '(\/' + subSegmentPattern + ')?';
+                this.pattern += !this.optional ? `(${subSegmentPattern})` : `(\/${subSegmentPattern})?`;
             } else {
                 this.optional = false;
                 this.subSegments.push({ name: subSegment, param: false, splat: false });
