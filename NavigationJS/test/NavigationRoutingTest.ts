@@ -3992,6 +3992,27 @@ describe('MatchTest', function () {
                 ]);
         });
         
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/a/cd/efg');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'cd');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'efg');
+            Navigation.StateController.navigateLink('/a/cd2_0');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'cd');
+            Navigation.StateController.navigateLink('/b/cd2_0/efg');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x, 'cd');
+            assert.strictEqual(Navigation.StateContext.data.y, 'efg');
+            Navigation.StateController.navigateLink('/b/cd1-efg/hi');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'cd');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'efg');
+            assert.strictEqual(Navigation.StateContext.data.y, 'hi');
+        });
+
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/a/cd/efg');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'cd' }), '/a/cd2_0');
