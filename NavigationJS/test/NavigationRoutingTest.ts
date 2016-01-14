@@ -2206,7 +2206,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Without Types Conflicing Default And Default Type', function () {
+    describe('Without Types Conflicting Default And Default Type', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
@@ -2340,7 +2340,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Without Types Query String Conflicing Default And Default Type', function () {
+    describe('Without Types Query String Conflicting Default And Default Type', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
@@ -4068,8 +4068,8 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true2_1/ab');
         });
     });
-    
-    describe('Without Types Splat Conflicing Default And Default Type', function () {
+
+    describe('Without Types Splat Conflicting Default And Default Type', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
