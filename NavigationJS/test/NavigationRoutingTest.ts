@@ -3648,7 +3648,6 @@ describe('MatchTest', function () {
         });
     });
 
-
     describe('One Splat Param One Segment Default', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
