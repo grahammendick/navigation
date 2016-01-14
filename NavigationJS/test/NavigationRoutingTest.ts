@@ -3648,6 +3648,40 @@ describe('MatchTest', function () {
         });
     });
 
+
+    describe('One Splat Param One Segment Default', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ef');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'ghi');
+            Navigation.StateController.navigateLink('/abcd');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'abcd');
+            Navigation.StateController.navigateLink('/ab/cd');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'cd');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cd'] }), '/ab/cd');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ef', 'ghi'] }), '/');
+        });
+    });
+    
     describe('One Optional Splat Param One Segment Default Type', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
