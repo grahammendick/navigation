@@ -12,10 +12,12 @@ class StateRouter implements IRouter {
 
     getData(route: string, separableData: any = {}): { state: State; data: any } {
         var match = this.router.match(route, StateRouter.urlDecode);
-        for (var i = 0; i < match.route.params.length; i++) {
-            var param = match.route.params[i];
-            if (param.splat)
-                separableData[param.name] = true;
+        if (match.route['_splat']) {
+            for (var i = 0; i < match.route.params.length; i++) {
+                var param = match.route.params[i];
+                if (param.splat)
+                    separableData[param.name] = true;
+            }
         }
         return { state: match.route['_state'], data: match.data };
     }
