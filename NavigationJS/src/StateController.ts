@@ -188,11 +188,17 @@ class StateController {
         var newData = {};
         for (var key in data) {
             if (key !== settings.previousStateIdKey && key !== settings.returnDataKey
-                && key !== settings.crumbTrailKey && data[key] !== state.formattedDefaults[key])
+                && key !== settings.crumbTrailKey && !this.isDefault(key, data, state, !!separableData[key]))
                 newData[key] = ReturnDataManager.parseURLString(key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);
         return newData;
+    }
+    
+    private static isDefault(key: string, data: any, state: State, separable: boolean) {
+        if (!separable || !state.formattedArrayDefaults[key])
+            return data[key] === state.formattedDefaults[key];
+        return false;
     }
 
     static getNextState(action: string): State {

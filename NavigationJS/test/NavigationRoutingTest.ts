@@ -4044,6 +4044,10 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateContext.data.x.length, 2);
             assert.strictEqual(Navigation.StateContext.data.x[0], 'cde');
             assert.strictEqual(Navigation.StateContext.data.x[1], 'fg');
+            Navigation.StateController.navigateLink('/cde1-fg/ab');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'cde1-fg');
         });
 
         it('should not match', function() {
@@ -4057,6 +4061,7 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cd'] }), '/cd/ab');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/cd/efg/ab');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cde', 'fg'] }), '/cde/fg/ab');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['cde1-fg'] }), '/cde1-fg/ab');
         });
     });
 });
