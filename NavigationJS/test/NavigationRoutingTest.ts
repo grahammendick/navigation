@@ -4068,4 +4068,34 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: true }), '/true2_1/ab');
         });
     });
+    
+    describe('Without Types Splat Conflicing Default And Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'bc');
+            Navigation.StateController.navigateLink('/a/bc');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'bc');
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/b/cd'), /not a valid number/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a', 'bc'] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
+        });
+    });
 });

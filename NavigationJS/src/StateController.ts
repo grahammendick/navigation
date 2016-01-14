@@ -196,9 +196,19 @@ class StateController {
     }
     
     private static isDefault(key: string, data: any, state: State, separable: boolean) {
-        if (!separable || !state.formattedArrayDefaults[key])
-            return data[key] === state.formattedDefaults[key];
-        return false;
+        var val = data[key]
+        var arrayDefaultVal = state.formattedArrayDefaults[key];
+        if (!separable || !arrayDefaultVal) {
+            return val === state.formattedDefaults[key];
+        } else {
+            if (val.length !== arrayDefaultVal.length) 
+                return false;
+            for(var i = 0; i < val.length; i++) {
+                if (val[i] !== arrayDefaultVal[i])
+                    return false;
+            }
+            return true;
+        }
     }
 
     static getNextState(action: string): State {
