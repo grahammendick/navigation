@@ -3678,6 +3678,7 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['abcd'] }), '/abcd');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cd'] }), '/ab/cd');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ef', 'ghi'] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ghi', 'ef'] }), '/ghi/ef');
         });
     });
     
