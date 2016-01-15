@@ -266,7 +266,6 @@ describe('Navigation Data', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = Navigation.StateController.getNavigationLink('d', arrayNavigationData);
-                console.log(link)
                 Navigation.StateController.navigateLink(link);
             });
             test();
