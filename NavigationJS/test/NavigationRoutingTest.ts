@@ -4157,15 +4157,48 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateContext.data.x.length, 2);
             assert.strictEqual(Navigation.StateContext.data.x[0], 'a');
             assert.strictEqual(Navigation.StateContext.data.x[1], 'bc');
+            Navigation.StateController.navigateLink('/3');
+            assert.strictEqual(Navigation.StateContext.data.x, 3);
         });
         
         it('should not match', function() {
-            assert.throws(() => Navigation.StateController.navigateLink('/b/cd'), /not a valid number/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/1/2'), /not a valid number/, '');
         });
 
         it('should build', function() {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a', 'bc'] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
+        });
+    });
+
+    describe('Without Types Splat Conflicting Single Array Default And Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a');
+            Navigation.StateController.navigateLink('/a');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a');
+            Navigation.StateController.navigateLink('/3');
+            assert.strictEqual(Navigation.StateContext.data.x, 3);
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/b'), /not a valid number/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/1/2'), /not a valid number/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a'] }), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 3 }), '/3');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: '3' }), '/3');
         });
