@@ -4262,4 +4262,45 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab'] }), '/ab');
         });
     });
+    
+    describe('Combine Array One Splat Param One Segment Default Type', function () {
+        beforeEach(function () {
+            Navigation.settings.combineArray = true;
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+        afterEach(function() {
+            Navigation.settings.combineArray = false;
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/abcd');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'abcd');
+            Navigation.StateController.navigateLink('/ab1-cd');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'cd');
+            Navigation.StateController.navigateLink('/a12-b1-c22-d');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a1-b');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'c2-d');
+            Navigation.StateController.navigateLink('/a12-b');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'a1-b');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cd'] }), '/ab1-cd');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a1-b', 'c2-d'] }), '/a12-b1-c22-d');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a1-b'] }), '/a12-b');
+        });
+    });
 });
