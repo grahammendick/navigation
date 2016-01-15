@@ -201,7 +201,7 @@ class StateController {
         if (!separable || !arrayDefaultVal) {
             return val === state.formattedDefaults[key];
         } else {
-            if (val.length !== arrayDefaultVal.length) 
+            if (typeof val === 'string' || val.length !== arrayDefaultVal.length) 
                 return false;
             for(var i = 0; i < val.length; i++) {
                 if (val[i] !== arrayDefaultVal[i])
