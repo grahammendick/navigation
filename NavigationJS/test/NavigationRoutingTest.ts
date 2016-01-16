@@ -4414,15 +4414,19 @@ describe('MatchTest', function () {
         beforeEach(function () {
             Navigation.StateInfoConfig.build([
                 { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }, trackCrumbTrail: false }]}
+                    { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }, trackCrumbTrail: false }]}
                 ]);
         });
 
         it('should match', function() {
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2011, 7, 3));
+            assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2010, 3, 7));
             Navigation.StateController.navigateLink('/2010-04-07');
             assert.strictEqual(Navigation.StateContext.data.x.length, 1);
             assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
-            Navigation.StateController.navigateLink('/');
+            Navigation.StateController.navigateLink('/2010-04-07/2011-08-03');
             assert.strictEqual(Navigation.StateContext.data.x.length, 2);
             assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
             assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2011, 7, 3));
@@ -4431,8 +4435,9 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
-            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
         });
     });
