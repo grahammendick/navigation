@@ -4503,4 +4503,47 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
         });
     });
+
+    describe('One Splat Param One Query String Default Type', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/ab/cde?y=fgh&y=ij');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'cde');
+            assert.strictEqual(Navigation.StateContext.data.y.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.y[0], 'fgh');
+            assert.strictEqual(Navigation.StateContext.data.y[1], 'ij');
+            Navigation.StateController.navigateLink('/ab?y=fgh&y=ij');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.y.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.y[0], 'fgh');
+            assert.strictEqual(Navigation.StateContext.data.y[1], 'ij');
+            Navigation.StateController.navigateLink('/ab/cde?y=fgh');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'cde');
+            assert.strictEqual(Navigation.StateContext.data.y.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.y[0], 'fgh');
+            Navigation.StateController.navigateLink('/ab?y=fgh');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ab');
+            assert.strictEqual(Navigation.StateContext.data.y.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.y[0], 'fgh');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cde'], y: ['fgh', 'ij'] }), '/ab/cde?y=fgh&y=ij');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab'], y: ['fgh', 'ij'] }), '/ab?y=fgh&y=ij');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab', 'cde'], y: ['fgh'] }), '/ab/cde?y=fgh');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['ab'], y: ['fgh'] }), '/ab?y=fgh');
+        });
+    });
 });
