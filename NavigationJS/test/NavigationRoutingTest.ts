@@ -4382,4 +4382,58 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
         });
     });
+
+    describe('One Splat Param One Segment Default Type Date Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/2010-04-07');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
+            Navigation.StateController.navigateLink('/2010-04-07/2011-08-03');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2011, 7, 3));
+            Navigation.StateController.navigateLink('/ab2_0');
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+        });
+    });
+
+    describe('One Splat Param One Segment Default Date Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/2010-04-07');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
+            Navigation.StateController.navigateLink('/');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(+Navigation.StateContext.data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+Navigation.StateContext.data.x[1], +new Date(2011, 7, 3));
+            Navigation.StateController.navigateLink('/ab2_0');
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+        });
+    });
 });
