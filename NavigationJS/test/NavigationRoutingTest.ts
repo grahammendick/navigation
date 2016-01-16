@@ -4326,4 +4326,60 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: ['a b', 'c de'] }), '/a+b/c+de');
         });
     });
+
+    describe('One Splat Param One Segment Default Type Number Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/123');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 123);
+            Navigation.StateController.navigateLink('/12/345/67');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 12);
+            assert.strictEqual(Navigation.StateContext.data.x[1], 345);
+            assert.strictEqual(Navigation.StateContext.data.x[2], 67);
+            Navigation.StateController.navigateLink('/ab2_0');
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [123] }), '/123');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [12, 345, 67] }), '/12/345/67');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+        });
+    });
+
+    describe('One Splat Param One Segment Default Type Booelan Array', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/true');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], true);
+            Navigation.StateController.navigateLink('/true/false/true');
+            assert.strictEqual(Navigation.StateContext.data.x.length, 3);
+            assert.strictEqual(Navigation.StateContext.data.x[0], true);
+            assert.strictEqual(Navigation.StateContext.data.x[1], false);
+            assert.strictEqual(Navigation.StateContext.data.x[2], true);
+            Navigation.StateController.navigateLink('/ab2_0');
+            assert.strictEqual(Navigation.StateContext.data.x, 'ab');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [true] }), '/true');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: [true, false, true] }), '/true/false/true');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+        });
+    });
 });
