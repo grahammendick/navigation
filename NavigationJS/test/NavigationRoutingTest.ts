@@ -4441,4 +4441,36 @@ describe('MatchTest', function () {
             assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
         });
     });
+
+    describe('Multiple Routes Splat and Not Splat', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false },
+                    { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/ab/ef');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ef');
+            Navigation.StateController.navigateLink('/ab/ef/gh');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x.length, 2);
+            assert.strictEqual(Navigation.StateContext.data.x[0], 'ef');
+            assert.strictEqual(Navigation.StateContext.data.x[1], 'gh');
+            Navigation.StateController.navigateLink('/cd/ef');
+            assert.strictEqual(Object.keys(Navigation.StateContext.data).length, 1);
+            assert.strictEqual(Navigation.StateContext.data.x, 'ef');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/aa/bbb'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/cd'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/cd/ef/gh'), /Url is invalid/, '');
+        });
+    });
 });
