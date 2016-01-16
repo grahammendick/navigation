@@ -4473,4 +4473,34 @@ describe('MatchTest', function () {
             assert.throws(() => Navigation.StateController.navigateLink('/cd/ef/gh'), /Url is invalid/, '');
         });
     });
+
+    describe('One Splat Param One Segment', function () {
+        beforeEach(function () {
+            Navigation.StateInfoConfig.build([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '{*x}', trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            Navigation.StateController.navigateLink('/abcd');
+            assert.strictEqual(Navigation.StateContext.data.x, 'abcd');
+            Navigation.StateController.navigateLink('/1232_2');
+            assert.strictEqual(Navigation.StateContext.data.x, 123);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => Navigation.StateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => Navigation.StateController.navigateLink('/ab/cd'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 'abcd' }), '/abcd');
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d', { x: 123 }), '/1232_2');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(Navigation.StateController.getNavigationLink('d'), null);
+        });
+    });
 });
