@@ -960,10 +960,10 @@ declare module Navigation {
          * Gets a link that navigates to the state passing the data
          * @param state The State to navigate to
          * @param data The data to pass when navigating
-         * @param queryStringData The query string array data
+         * @param arrayData The query string and splat array data
          * @returns The navigation link
          */
-        getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[]; }): string;
+        getNavigationLink(state: State, data: any, arrayData: { [index: string]: string[]; }): string;
         /**
          * Navigates to the url
          * @param oldState The current State
@@ -982,10 +982,10 @@ declare module Navigation {
          * Gets the data parsed from the url
          * @param state The State navigated to
          * @param url The current url
-         * @param queryStringData Stores query string keys
+         * @param separableData Stores query string and splat keys
          * @returns The navigation data
          */
-        getNavigationData(state: State, url: string, queryStringData: any): any;
+        getNavigationData(state: State, url: string, separableData: any): any;
         /**
          * Encodes the Url value
          * @param state The State navigated to
@@ -1064,12 +1064,27 @@ declare module Navigation {
          */
         getData(route: string): { state: State; data: any; };
         /**
+         * Gets the matching State and data for the route
+         * @param route The route to match
+         * @param separableData Stores splat keys
+         * @returns The matched State and data
+         */
+        getData(route: string, separableData: any): { state: State; data: any; };
+        /**
          * Gets the matching route and data for the state and data
          * @param The state to match
          * @param The data to match
          * @returns The matched route and data
          */
         getRoute(state: State, data: any): { route: string; data: any; };
+        /**
+         * Gets the matching route and data for the state and data
+         * @param The state to match
+         * @param The data to match
+         * @param arrayData The splat array data
+         * @returns The matched route and data
+         */
+        getRoute(state: State, data: any, arrayData: { [index: string]: string[]; }): { route: string; data: any; };
         /**
          * Registers all route configuration information with the underlying
          * Navigation Router
@@ -1094,7 +1109,7 @@ declare module Navigation {
         /**
          * Gets the list of parameters
          */
-        params: { name: string; optional: boolean; }[];
+        params: { name: string; optional: boolean; splat: boolean; }[];
         /**
          * Initializes a new instance of the Route class
          * @param path The route pattern 
