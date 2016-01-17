@@ -6,14 +6,14 @@ import StateContext = require('./StateContext');
 import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
-    getNavigationLink(state: State, data: any, queryStringData: { [index: string]: string[] } = {}): string {
-        var routeInfo = settings.router.getRoute(state, data);
+    getNavigationLink(state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
+        var routeInfo = settings.router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
             return null;
         var query: string[] = [];
         for (var key in data) {
             if (key !== settings.stateIdKey && !routeInfo.data[key]) {
-                var arr = queryStringData[key];
+                var arr = arrayData[key];
                 var encodedKey = this.urlEncode(state, null, key, true);
                 if (!arr) {
                     query.push(encodedKey + '=' + this.urlEncode(state, key, data[key], true));
@@ -31,10 +31,10 @@ class StateHandler implements IStateHandler {
     navigateLink(oldState: State, state: State, url: string) {
     }
 
-    getNavigationData(state: State, url: string, queryStringData: any = {}): any {
+    getNavigationData(state: State, url: string, separableData: any = {}): any {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var data = settings.router.getData(route).data;
+        var data = settings.router.getData(route, separableData).data;
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
@@ -43,7 +43,7 @@ class StateHandler implements IStateHandler {
                 var param = params[i].split('=');
                 var key = this.urlDecode(state, null, param[0], true);
                 var val = this.urlDecode(state, key, param[1], true);
-                queryStringData[key] = true;
+                separableData[key] = true;
                 var arr = data[key];
                 if (!arr) {
                     data[key] = val;

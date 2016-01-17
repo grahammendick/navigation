@@ -14,6 +14,7 @@ class State implements IState<{ [index: string]: Transition }> {
     defaults: any = {};
     defaultTypes: any = {};
     formattedDefaults: any = {};
+    formattedArrayDefaults: { [index: string]: string[] } = {};
     title: string;
     route: string | string[];
     trackCrumbTrail: boolean = true;

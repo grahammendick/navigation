@@ -11,7 +11,7 @@ class StringConverter extends TypeConverter {
         return val;
     }
 
-    convertTo(val: any): { val: string, queryStringVal?: string[] } {
+    convertTo(val: any): { val: string, arrayVal?: string[] } {
         return { val: val.toString() };
     }
 }

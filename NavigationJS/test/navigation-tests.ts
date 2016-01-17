@@ -26,7 +26,7 @@ module NavigationTests {
 	class LogStateRouter extends Navigation.StateRouter {
 	    getData(route: string): { state: Navigation.State; data: any } {
 			console.log('get data');
-			return super.getData(route);
+			return super.getData(route, {});
 	    }
 	}
 	

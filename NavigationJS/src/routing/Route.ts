@@ -5,7 +5,7 @@ class Route {
     defaults: any;
     private segments: Segment[] = [];
     private pattern: RegExp;
-    params: { name: string; optional: boolean }[] = [];
+    params: { name: string; optional: boolean; splat: boolean }[] = [];
 
     constructor(path: string, defaults?: any) {
         this.path = path;
@@ -21,9 +21,10 @@ class Route {
             segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
             this.segments.unshift(segment);
             pattern = segment.pattern + pattern;
-            var params: { name: string; optional: boolean }[] = [];
+            var params: { name: string; optional: boolean; splat: boolean }[] = [];
             for (var j = 0; j < segment.params.length; j++) {
-                params.push({ name: segment.params[j], optional: segment.optional });
+                var param = segment.params[j];
+                params.push({ name: param.name, optional: segment.optional, splat: param.splat });
             }
             this.params = params.concat(this.params);
         }
@@ -39,8 +40,18 @@ class Route {
         var data = {};
         for (var i = 1; i < matches.length; i++) {
             var param = this.params[i - 1];
-            if (matches[i])
-                data[param.name] = urlDecode(this, param.name, !param.optional ? matches[i] : matches[i].substring(1));
+            if (matches[i]) {
+                var val = !param.optional ? matches[i] : matches[i].substring(1);
+                if (val.indexOf('/') === -1) {
+                    data[param.name] = urlDecode(this, param.name, val);
+                } else {
+                    var vals = val.split('/');
+                    var decodedVals = [];
+                    for(var j = 0; j < vals.length; j++)
+                        decodedVals[j] = urlDecode(this, param.name, vals[j]);
+                    data[param.name] = decodedVals;
+                }
+            }
         }
         return data;
     }
@@ -53,7 +64,7 @@ class Route {
         var optional = true;
         for (var i = this.segments.length - 1; i >= 0; i--) {
             var segment = this.segments[i];
-            var pathInfo = segment.build(data, (name, val) => urlEncode(this, name, val));
+            var pathInfo = segment.build(data, this.defaults, (name, val) => urlEncode(this, name, val));
             optional = optional && pathInfo.optional;
             if (!optional) {
                 if (pathInfo.path == null)

@@ -55,7 +55,10 @@ class StateInfoConfig {
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
                     state.defaultTypes[key] = ConverterFactory.getConverter(state.defaults[key]).name;
-                state.formattedDefaults[key] = ReturnDataManager.formatURLObject(key, state.defaults[key], state).val;
+                var formattedData = ReturnDataManager.formatURLObject(key, state.defaults[key], state); 
+                state.formattedDefaults[key] = formattedData.val;
+                if (formattedData.arrayVal)
+                    state.formattedArrayDefaults[key] = formattedData.arrayVal;
             }
             for (var key in state.defaultTypes) {
                 ConverterFactory.getConverterFromName(state.defaultTypes[key]);
