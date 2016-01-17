@@ -184,6 +184,10 @@ declare module Navigation {
          */
         formattedDefaults: any;
         /**
+         * Gets the formatted default array NavigationData for this State
+         */
+        formattedArrayDefaults: { [index: string]: string[]; };
+        /**
          * Gets the textual description of the state
          */
         title: string;
