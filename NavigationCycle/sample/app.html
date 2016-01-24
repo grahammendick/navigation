@@ -59,10 +59,10 @@
         }
         
         function main(sources) {
-            var click$ = sources.Navigation
+            var navigate$ = sources.Navigation
                 .map(() => Navigation.StateContext.state.key + 'Main');
             return {
-                DOM: click$.map(main => h('div', [
+                DOM: navigate$.map(main => h('div', [
                     h('h1', 'Navigation Cycle'),
                     window[main](sources).DOM
                 ])),
