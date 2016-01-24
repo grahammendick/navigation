@@ -59,10 +59,10 @@
         }
         
         function main(sources) {
-            var navigate$ = sources.Navigation
+            var navigated$ = sources.Navigation
                 .map((navigated) => navigated.state.key + 'Main');
             return {
-                DOM: navigate$.map(main => h('div', [
+                DOM: navigated$.map(main => h('div', [
                     h('h1', 'Navigation Cycle'),
                     window[main](sources).DOM
                 ])),
