@@ -24,7 +24,6 @@
             var sink$ = listIntent(sources);
             return {
                 DOM: sink$.map(people => h('div', [
-                    h('h1', 'Navigation Cycle'),
                     h('table', people.map(person =>
                         h('tr', [
                             h('td', person.name)
@@ -44,7 +43,6 @@
             var sink$ = detailsIntent(sources);
             return {
                 DOM: sink$.map(person => h('div', [
-                    h('h1', 'Navigation Cycle'),
                     h('span', person.name),
                     h('button', 'List')
                 ]))
@@ -52,10 +50,14 @@
         }
         
         function main(sources) {
+            var h = CycleDOM.h;
             var click$ = sources.DOM.select('button').events('click')
                 .map(ev => ev.target.textContent.toLowerCase() + 'Main').startWith('listMain');
             return {
-                DOM: click$.map(main => window[main](sources).DOM)
+                DOM: click$.map(main => h('div', [
+                    h('h1', 'Navigation Cycle'),
+                    window[main](sources).DOM
+                ]))
             };
         }
         
