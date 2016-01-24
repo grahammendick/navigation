@@ -18,12 +18,22 @@
     <script>
         var h = CycleDOM.h;
         
-        function listIntent(sources) {
+        Navigation.StateInfoConfig.build([
+            { key: 'person', initial: 'list', states: [
+                { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
+                    { key: 'select', to: 'details' }]},
+                { key: 'details', route: 'person', title: 'Person Details', }]}
+        ]);
+        
+        var personDialog = Navigation.StateInfoConfig.dialogs.person;
+
+        var listState = personDialog.states.list;        
+        listState.intent = (sources) => {
             return Rx.Observable.of(personSearch.search());
         }
         
-        function listMain(sources) {
-            var people$ = listIntent(sources);
+        listState.main = (sources) => {
+            var people$ = listState.intent(sources);
             return {
                 DOM: people$.map(people => h('div', [
                     h('table', [
@@ -42,12 +52,13 @@
             };
         }
         
-        function detailsIntent(sources) {
+        var detailsState = personDialog.states.details;
+        detailsState.intent = (sources) => {
             return Rx.Observable.of(personSearch.getDetails(1));
         }
         
-        function detailsMain(sources) {
-            var person$ = detailsIntent(sources);
+        detailsState.main = (sources) => {
+            var person$ = detailsState.intent(sources);
             return {
                 DOM: person$.map(person => h('div', [
                     h('span', 'Name:' + person.name),
@@ -60,22 +71,15 @@
         
         function main(sources) {
             var navigated$ = sources.Navigation
-                .map((navigated) => navigated.state.key + 'Main');
+                .map((navigated) => navigated.state.main);
             return {
                 DOM: navigated$.map(main => h('div', [
                     h('h1', 'Navigation Cycle'),
-                    window[main](sources).DOM
+                    main().DOM
                 ])),
                 Navigation: sources.DOM.select('a').events('click')
             };
         }
-        
-        Navigation.StateInfoConfig.build([
-            { key: 'person', initial: 'list', states: [
-                { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
-                    { key: 'select', to: 'details' }]},
-                { key: 'details', route: 'person', title: 'Person Details', }]}
-        ]);
         
         function NavigationDriver(navigate$) {
             navigate$.subscribe(e => {
