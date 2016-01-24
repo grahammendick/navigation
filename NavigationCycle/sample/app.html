@@ -21,9 +21,9 @@
         
         function listMain(sources) {
             var h = CycleDOM.h;
-            var sink$ = listIntent(sources);
+            var people$ = listIntent(sources);
             return {
-                DOM: sink$.map(people => h('div', [
+                DOM: people$.map(people => h('div', [
                     h('table', people.map(person =>
                         h('tr', [
                             h('td', person.name)
@@ -40,9 +40,9 @@
         
         function detailsMain(sources) {
             var h = CycleDOM.h;
-            var sink$ = detailsIntent(sources);
+            var person$ = detailsIntent(sources);
             return {
-                DOM: sink$.map(person => h('div', [
+                DOM: person$.map(person => h('div', [
                     h('span', person.name),
                     h('button', 'List')
                 ]))
