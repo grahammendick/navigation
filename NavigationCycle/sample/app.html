@@ -16,20 +16,21 @@
     <script src="https://rawgit.com/cyclejs/cycle-dom/master/dist/cycle-dom.js"></script>
     <script>
         function intent(sources) {
-            return Rx.Observable.of(
-                {
-                    name: 'bob'
-                }
-            );
+            return Rx.Observable.of(personSearch.search());
         }
         
         function main(sources) {
             var h = CycleDOM.h;
             var sink$ = intent(sources);
             return {
-                DOM: sink$.map(data =>
-                    h('h1', data.name)
-                )
+                DOM: sink$.map(people => h('div', [
+                    h('h1', 'Navigation Cycle'),
+                    h('table', people.map( person =>
+                        h('tr', [
+                            h('td', person.name)
+                        ]) 
+                    ))
+                ]))
             };
         }
         
