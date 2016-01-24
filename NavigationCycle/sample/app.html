@@ -60,7 +60,7 @@
         
         function main(sources) {
             var navigate$ = sources.Navigation
-                .map(() => Navigation.StateContext.state.key + 'Main');
+                .map((navigated) => navigated.state.key + 'Main');
             return {
                 DOM: navigate$.map(main => h('div', [
                     h('h1', 'Navigation Cycle'),
@@ -87,9 +87,13 @@
             return Rx.Observable.create(observer => {
                 for(var dialogKey in Navigation.StateInfoConfig.dialogs) {
                     for(var stateKey in Navigation.StateInfoConfig.dialogs[dialogKey].states) {
-                        Navigation.StateInfoConfig.dialogs[dialogKey].states[stateKey].navigated = () => {
-                            observer.onNext();           
-                        }
+                        var state = Navigation.StateInfoConfig.dialogs[dialogKey].states[stateKey];
+                        ((state) => state.navigated = (data) => {
+                            observer.onNext({ 
+                                state: state,
+                                data: data
+                            });
+                        })(state);
                     }
                 }
                 Navigation.start();
