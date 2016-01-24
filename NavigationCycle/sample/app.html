@@ -15,13 +15,13 @@
     <script src="https://rawgit.com/cyclejs/cycle-core/master/dist/cycle.js"></script>
     <script src="https://rawgit.com/cyclejs/cycle-dom/master/dist/cycle-dom.js"></script>
     <script>
-        function intent(sources) {
+        function listIntent(sources) {
             return Rx.Observable.of(personSearch.search());
         }
         
         function listMain(sources) {
             var h = CycleDOM.h;
-            var sink$ = intent(sources);
+            var sink$ = listIntent(sources);
             return {
                 DOM: sink$.map(people => h('div', [
                     h('h1', 'Navigation Cycle'),
