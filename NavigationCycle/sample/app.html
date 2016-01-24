@@ -35,9 +35,25 @@
             };
         }
         
+        function detailsIntent(sources) {
+            return Rx.Observable.of(personSearch.getDetails(1));
+        }
+        
+        function detailsMain(sources) {
+            var h = CycleDOM.h;
+            var sink$ = detailsIntent(sources);
+            return {
+                DOM: sink$.map(person => h('div', [
+                    h('h1', 'Navigation Cycle'),
+                    h('span', person.name),
+                    h('button', 'List')
+                ]))
+            };
+        }
+        
         function main(sources) {
             var click$ = sources.DOM.select('button').events('click')
-                .map(() => 'listMain').startWith('listMain');
+                .map(() => 'detailsMain').startWith('listMain');
             return {
                 DOM: click$.map(main => window[main](sources).DOM)
             };
