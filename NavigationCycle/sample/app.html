@@ -86,14 +86,14 @@
             });
             return Rx.Observable.create(observer => {
                 for(var dialogKey in Navigation.StateInfoConfig.dialogs) {
-                    for(var stateKey in Navigation.StateInfoConfig.dialogs[dialogKey].states) {
-                        var state = Navigation.StateInfoConfig.dialogs[dialogKey].states[stateKey];
+                    var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
+                    for(var stateKey in dialog.states) {
                         ((state) => state.navigated = (data) => {
                             observer.onNext({ 
                                 state: state,
                                 data: data
                             });
-                        })(state);
+                        })(dialog.states[stateKey]);
                     }
                 }
                 Navigation.start();
