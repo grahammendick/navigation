@@ -24,11 +24,17 @@
             var people$ = listIntent(sources);
             return {
                 DOM: people$.map(people => h('div', [
-                    h('table', people.map(person =>
+                    h('table', [
                         h('tr', [
-                            h('td', person.name)
-                        ]) 
-                    )),
+                            h('th', 'Name'),
+                            h('th', 'Date of Birth')                            
+                        ])]
+                        .concat(people.map(person =>
+                        h('tr', [
+                            h('td', person.name),
+                            h('td', person.dateOfBirth)
+                        ])))
+                    ),
                     h('button', 'Details')
                 ]))
             };
@@ -43,7 +49,9 @@
             var person$ = detailsIntent(sources);
             return {
                 DOM: person$.map(person => h('div', [
-                    h('span', person.name),
+                    h('span', 'Name:' + person.name),
+                    h('br'),
+                    h('span', 'Date of birth:' + person.dateOfBirth),
                     h('button', 'List')
                 ]))
             };
