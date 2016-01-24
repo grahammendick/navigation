@@ -85,11 +85,12 @@
                 }
             });
             return Rx.Observable.create(observer => {
-                Navigation.StateInfoConfig._dialogs[0]._states[0].navigated = () => {
-                    observer.onNext();           
-                }
-                Navigation.StateInfoConfig._dialogs[0]._states[1].navigated = () => {
-                    observer.onNext();           
+                for(var dialogKey in Navigation.StateInfoConfig.dialogs) {
+                    for(var stateKey in Navigation.StateInfoConfig.dialogs[dialogKey].states) {
+                        Navigation.StateInfoConfig.dialogs[dialogKey].states[stateKey].navigated = () => {
+                            observer.onNext();           
+                        }
+                    }
                 }
                 Navigation.start();
             });
