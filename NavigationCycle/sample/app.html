@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigation Cycle</title>
+    <style>
+        table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
+        ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
+        .active{font-weight:bold;}
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <script src="../../NavigationJS/sample/personSearch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.0.6/rx.all.js"></script>
+    <script src="https://rawgit.com/cyclejs/cycle-core/master/dist/cycle.js"></script>
+    <script src="https://rawgit.com/cyclejs/cycle-dom/master/dist/cycle-dom.js"></script>
+    <script>
+        function main(sources) {
+            var h = CycleDOM.h;
+            return {
+                DOM: Rx.Observable.of(
+                    h('h1', 'Test')
+                )
+            };
+        }
+        
+        Cycle.run(main, {
+            DOM: CycleDOM.makeDOMDriver('#content')
+        });        
+    </script>
+</body>
+</html>
