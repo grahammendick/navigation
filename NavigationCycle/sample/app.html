@@ -53,7 +53,7 @@
         
         function main(sources) {
             var click$ = sources.DOM.select('button').events('click')
-                .map(() => 'detailsMain').startWith('listMain');
+                .map(ev => ev.target.textContent.toLowerCase() + 'Main').startWith('listMain');
             return {
                 DOM: click$.map(main => window[main](sources).DOM)
             };
