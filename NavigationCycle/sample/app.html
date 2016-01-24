@@ -14,6 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.0.6/rx.all.js"></script>
     <script src="https://rawgit.com/cyclejs/cycle-core/master/dist/cycle.js"></script>
     <script src="https://rawgit.com/cyclejs/cycle-dom/master/dist/cycle-dom.js"></script>
+    <script src="../../build/dist/navigation.js"></script>
     <script>
         var h = CycleDOM.h;
         
@@ -36,7 +37,7 @@
                             h('td', person.dateOfBirth)
                         ])))
                     ),
-                    h('button', 'Details')
+                    h('a', { href: '#/person' }, 'details')
                 ]))
             };
         }
@@ -52,24 +53,51 @@
                     h('span', 'Name:' + person.name),
                     h('br'),
                     h('span', 'Date of birth:' + person.dateOfBirth),
-                    h('button', 'List')
+                    h('a', { href: '#/' }, 'list')
                 ]))
             };
         }
         
         function main(sources) {
-            var click$ = sources.DOM.select('button').events('click')
-                .map(ev => ev.target.textContent.toLowerCase() + 'Main').startWith('listMain');
+            var click$ = sources.Navigation
+                .map(() => Navigation.StateContext.state.key + 'Main');
             return {
                 DOM: click$.map(main => h('div', [
                     h('h1', 'Navigation Cycle'),
                     window[main](sources).DOM
-                ]))
+                ])),
+                Navigation: sources.DOM.select('a').events('click')
             };
         }
         
+        Navigation.StateInfoConfig.build([
+            { key: 'person', initial: 'list', states: [
+                { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
+                    { key: 'select', to: 'details' }]},
+                { key: 'details', route: 'person', title: 'Person Details', }]}
+        ]);
+        
+        function NavigationDriver(navigate$) {
+            navigate$.subscribe(e => {
+                if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
+                    var link = Navigation.settings.historyManager.getUrl(e.target);
+                    Navigation.StateController.navigateLink(link);
+                }
+            });
+            return Rx.Observable.create(observer => {
+                Navigation.StateInfoConfig._dialogs[0]._states[0].navigated = () => {
+                    observer.onNext();           
+                }
+                Navigation.StateInfoConfig._dialogs[0]._states[1].navigated = () => {
+                    observer.onNext();           
+                }
+                Navigation.start();
+            });
+        }
+
         Cycle.run(main, {
-            DOM: CycleDOM.makeDOMDriver('#content')
+            DOM: CycleDOM.makeDOMDriver('#content'),
+            Navigation: NavigationDriver
         });        
     </script>
 </body>
