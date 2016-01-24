@@ -15,11 +15,20 @@
     <script src="https://rawgit.com/cyclejs/cycle-core/master/dist/cycle.js"></script>
     <script src="https://rawgit.com/cyclejs/cycle-dom/master/dist/cycle-dom.js"></script>
     <script>
+        function intent(sources) {
+            return Rx.Observable.of(
+                {
+                    name: 'bob'
+                }
+            );
+        }
+        
         function main(sources) {
             var h = CycleDOM.h;
+            var sink$ = intent(sources);
             return {
-                DOM: Rx.Observable.of(
-                    h('h1', 'Test')
+                DOM: sink$.map(data =>
+                    h('h1', data.name)
                 )
             };
         }
