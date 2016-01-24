@@ -19,7 +19,7 @@
             return Rx.Observable.of(personSearch.search());
         }
         
-        function main(sources) {
+        function listMain(sources) {
             var h = CycleDOM.h;
             var sink$ = intent(sources);
             return {
@@ -29,8 +29,17 @@
                         h('tr', [
                             h('td', person.name)
                         ]) 
-                    ))
+                    )),
+                    h('button', 'Details')
                 ]))
+            };
+        }
+        
+        function main(sources) {
+            var click$ = sources.DOM.select('button').events('click')
+                .map(() => 'listMain').startWith('listMain');
+            return {
+                DOM: click$.map(main => window[main](sources).DOM)
             };
         }
         
