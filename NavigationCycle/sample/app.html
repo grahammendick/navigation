@@ -15,12 +15,13 @@
     <script src="https://rawgit.com/cyclejs/cycle-core/master/dist/cycle.js"></script>
     <script src="https://rawgit.com/cyclejs/cycle-dom/master/dist/cycle-dom.js"></script>
     <script>
+        var h = CycleDOM.h;
+        
         function listIntent(sources) {
             return Rx.Observable.of(personSearch.search());
         }
         
         function listMain(sources) {
-            var h = CycleDOM.h;
             var people$ = listIntent(sources);
             return {
                 DOM: people$.map(people => h('div', [
@@ -45,7 +46,6 @@
         }
         
         function detailsMain(sources) {
-            var h = CycleDOM.h;
             var person$ = detailsIntent(sources);
             return {
                 DOM: person$.map(person => h('div', [
@@ -58,7 +58,6 @@
         }
         
         function main(sources) {
-            var h = CycleDOM.h;
             var click$ = sources.DOM.select('button').events('click')
                 .map(ev => ev.target.textContent.toLowerCase() + 'Main').startWith('listMain');
             return {
