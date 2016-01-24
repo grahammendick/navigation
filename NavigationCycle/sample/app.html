@@ -28,12 +28,9 @@
         var personDialog = Navigation.StateInfoConfig.dialogs.person;
 
         var listState = personDialog.states.list;        
-        listState.intent = (sources) => {
-            return Rx.Observable.of(personSearch.search());
-        }
-        
-        listState.main = (sources) => {
-            var people$ = listState.intent(sources);
+        listState.intent = (sources) => Rx.Observable.of(personSearch.search());
+        listState.model = (people$) => people$
+        listState.view = (people$) => {
             return {
                 DOM: people$.map(people => h('div', [
                     h('table', [
@@ -53,12 +50,9 @@
         }
         
         var detailsState = personDialog.states.details;
-        detailsState.intent = (sources) => {
-            return Rx.Observable.of(personSearch.getDetails(1));
-        }
-        
-        detailsState.main = (sources) => {
-            var person$ = detailsState.intent(sources);
+        detailsState.intent = (sources) => Rx.Observable.of(personSearch.getDetails(1));
+        detailsState.model = (person$) => person$;        
+        detailsState.view = (person$) => {
             return {
                 DOM: person$.map(person => h('div', [
                     h('span', 'Name:' + person.name),
@@ -71,11 +65,11 @@
         
         function main(sources) {
             var navigated$ = sources.Navigation
-                .map((navigated) => navigated.state.main);
+                .map((navigated) => navigated.state);
             return {
-                DOM: navigated$.map(main => h('div', [
+                DOM: navigated$.map(state => h('div', [
                     h('h1', 'Navigation Cycle'),
-                    main().DOM
+                    state.view(state.model(state.intent(sources))).DOM
                 ])),
                 Navigation: sources.DOM.select('a').events('click')
             };
