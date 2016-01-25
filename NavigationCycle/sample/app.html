@@ -45,7 +45,12 @@
                         ])]
                         .concat(people.map(person =>
                         h('tr', [
-                            h('td', person.name),
+                            h('td', [
+                                navigationLink({
+                                    action: 'select',
+                                    data: { person: person.id }
+                                }, person.name)
+                            ]),
                             h('td', person.dateOfBirth)
                         ])))
                     ),
@@ -106,6 +111,13 @@
             }
             Navigation.start();
             return navigated$$;
+        }
+        
+        function navigationLink(attributes, children) {
+            var newAttributes = {};
+            var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.data);
+            newAttributes.href = Navigation.settings.historyManager.getHref(link);
+            return h('a', newAttributes, children);
         }
 
         Cycle.run(main, {
