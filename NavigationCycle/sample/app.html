@@ -81,7 +81,7 @@
                 .map((navigated) => navigated.state.main({ 
                     DOM: sources.DOM,
                     Navigation: sources.Navigation
-                            .filter(subNavigated => navigated.state === subNavigated.state)
+                        .filter(subNavigated => navigated.state === subNavigated.state)
                 }));
             return {
                 DOM: navigated$.map(main => h('div', [
