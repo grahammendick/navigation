@@ -30,11 +30,14 @@
         var listState = personDialog.states.list;        
         listState.intent = (sources) => {
             return sources.Navigation
-                .map(() => ({ 
-                    people: personSearch.search() 
+                .map((navigated) => ({ 
+                    people: personSearch.search(),
+                    maximumRows: navigated.data.maximumRows
                 }));
         }
-        listState.model = (people$) => people$
+        listState.model = (data$) => {
+            return data$.map(data => data.people.slice(0, data.maximumRows))
+        }
         listState.view = (sources) => {
             var people$ = listState.model(listState.intent(sources));
             return {
@@ -44,7 +47,7 @@
                             h('th', 'Name'),
                             h('th', 'Date of Birth')                            
                         ])]
-                        .concat(people.people.map(person =>
+                        .concat(people.map(person =>
                         h('tr', [
                             h('td', person.name),
                             h('td', person.dateOfBirth)
