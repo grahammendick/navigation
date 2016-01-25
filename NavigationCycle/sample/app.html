@@ -35,21 +35,31 @@
                 maximumRows: navigated.data.maximumRows
             }));
         listState.model = (data$) => data$.map(data => data.people.slice(0, data.maximumRows));
+        listState.model = (data$) => {
+            return data$.map(data => ({
+                people: data.people.slice(0, data.maximumRows),
+                sortExpression: data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name'
+            }))
+        };
         listState.main = (sources) => {
-            var people$ = listState.model(listState.intent(sources));
+            var data$ = listState.model(listState.intent(sources));
             return {
-                DOM: people$.map(people => h('div', [
+                DOM: data$.map(data => h('div', [
                     h('table', [
                         h('tr', [
-                            h('th', 'Name'),
+                            h('th', [
+                                refreshLink({
+                                    toData: { sortExpression: data.sortExpression }
+                                }, 'Name')
+                            ]),
                             h('th', 'Date of Birth')                            
                         ])]
-                        .concat(people.map(person =>
+                        .concat(data.people.map(person =>
                         h('tr', [
                             h('td', [
                                 navigationLink({
                                     action: 'select',
-                                    data: { id: person.id }
+                                    toData: { id: person.id }
                                 }, person.name)
                             ]),
                             h('td', person.dateOfBirth)
@@ -96,6 +106,7 @@
         function NavigationDriver(navigate$) {
             navigate$.subscribe(e => {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
+                    e.preventDefault();
                     var link = Navigation.settings.historyManager.getUrl(e.target);
                     Navigation.StateController.navigateLink(link);
                 }
@@ -118,7 +129,14 @@
         
         function navigationLink(attributes, children) {
             var newAttributes = {};
-            var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.data);
+            var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.toData);
+            newAttributes.href = Navigation.settings.historyManager.getHref(link);
+            return h('a', newAttributes, children);
+        }
+        
+        function refreshLink(attributes, children) {
+            var newAttributes = {};
+            var link = Navigation.StateController.getRefreshLink(attributes.toData);
             newAttributes.href = Navigation.settings.historyManager.getHref(link);
             return h('a', newAttributes, children);
         }
