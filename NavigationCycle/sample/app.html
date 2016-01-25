@@ -36,12 +36,12 @@
                 sortExpression: navigated.data.sortExpression
             }));
         listState.model = (data$) => data$.map(data => data.people.slice(0, data.maximumRows));
-        listState.model = (data$) => {
-            return data$.map(data => ({
+        listState.model = (data$) => (
+            data$.map(data => ({
                 people: data.people.slice(0, data.maximumRows),
                 sortExpression: data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name'
             }))
-        };
+        );
         listState.main = (sources) => {
             var data$ = listState.model(listState.intent(sources));
             return {
