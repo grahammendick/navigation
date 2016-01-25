@@ -30,9 +30,9 @@
         var listState = personDialog.states.list;        
         listState.intent = (sources) => {
             return sources.Navigation
-                .map(() => {
-                    return { people: personSearch.search() }
-                });
+                .map(() => ({ 
+                    people: personSearch.search() 
+                }));
         }
         listState.model = (people$) => people$
         listState.view = (sources) => {
