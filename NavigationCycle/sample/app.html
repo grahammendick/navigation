@@ -28,7 +28,12 @@
         var personDialog = Navigation.StateInfoConfig.dialogs.person;
 
         var listState = personDialog.states.list;        
-        listState.intent = (sources) => Rx.Observable.of(personSearch.search());
+        listState.intent = (sources) => {
+            return sources.Navigation
+                .map(() => {
+                    return { people: personSearch.search() }
+                });
+        }
         listState.model = (people$) => people$
         listState.view = (sources) => {
             var people$ = listState.model(listState.intent(sources));
@@ -39,7 +44,7 @@
                             h('th', 'Name'),
                             h('th', 'Date of Birth')                            
                         ])]
-                        .concat(people.map(person =>
+                        .concat(people.people.map(person =>
                         h('tr', [
                             h('td', person.name),
                             h('td', person.dateOfBirth)
@@ -84,20 +89,20 @@
                     Navigation.StateController.navigateLink(link);
                 }
             });
-            return Rx.Observable.create(observer => {
-                for(var dialogKey in Navigation.StateInfoConfig.dialogs) {
-                    var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
-                    for(var stateKey in dialog.states) {
-                        ((state) => state.navigated = (data) => {
-                            observer.onNext({ 
-                                state: state,
-                                data: data
-                            });
-                        })(dialog.states[stateKey]);
-                    }
+            var navigated$$ = new Rx.ReplaySubject(1);
+            for(var dialogKey in Navigation.StateInfoConfig.dialogs) {
+                var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
+                for(var stateKey in dialog.states) {
+                    ((state) => state.navigated = (data) => {
+                        navigated$$.onNext({ 
+                            state: state,
+                            data: data
+                        });
+                    })(dialog.states[stateKey]);
                 }
-                Navigation.start();
-            });
+            }
+            Navigation.start();
+            return navigated$$;
         }
 
         Cycle.run(main, {
