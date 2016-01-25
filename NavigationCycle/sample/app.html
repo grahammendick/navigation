@@ -48,7 +48,7 @@
                             h('td', [
                                 navigationLink({
                                     action: 'select',
-                                    data: { person: person.id }
+                                    data: { id: person.id }
                                 }, person.name)
                             ]),
                             h('td', person.dateOfBirth)
@@ -60,7 +60,8 @@
         };
         
         var detailsState = personDialog.states.details;
-        detailsState.intent = (sources) => Rx.Observable.of(personSearch.getDetails(1));
+        detailsState.intent = (sources) => sources.Navigation
+            .map((navigated) => personSearch.getDetails(navigated.data.id));
         detailsState.model = (person$) => person$;        
         detailsState.view = (sources) => {
             var person$ = detailsState.model(detailsState.intent(sources));
