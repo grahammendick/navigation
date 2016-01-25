@@ -28,16 +28,12 @@
         var personDialog = Navigation.StateInfoConfig.dialogs.person;
 
         var listState = personDialog.states.list;        
-        listState.intent = (sources) => {
-            return sources.Navigation
-                .map((navigated) => ({ 
-                    people: personSearch.search(),
-                    maximumRows: navigated.data.maximumRows
-                }));
-        }
-        listState.model = (data$) => {
-            return data$.map(data => data.people.slice(0, data.maximumRows))
-        }
+        listState.intent = (sources) => sources.Navigation
+            .map((navigated) => ({ 
+                people: personSearch.search(),
+                maximumRows: navigated.data.maximumRows
+            }));
+        listState.model = (data$) => data$.map(data => data.people.slice(0, data.maximumRows));
         listState.view = (sources) => {
             var people$ = listState.model(listState.intent(sources));
             return {
@@ -56,7 +52,7 @@
                     h('a', { href: '#/person' }, 'details')
                 ]))
             };
-        }
+        };
         
         var detailsState = personDialog.states.details;
         detailsState.intent = (sources) => Rx.Observable.of(personSearch.getDetails(1));
@@ -71,7 +67,7 @@
                     h('a', { href: '#/' }, 'list')
                 ]))
             };
-        }
+        };
         
         function main(sources) {
             var navigated$ = sources.Navigation
