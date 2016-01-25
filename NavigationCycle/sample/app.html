@@ -32,13 +32,13 @@
         listState.intent = (sources) => sources.Navigation
             .map((navigated) => ({ 
                 people: personSearch.search(null, navigated.data.sortExpression),
+                startRowIndex: navigated.data.startRowIndex,
                 maximumRows: navigated.data.maximumRows,
                 sortExpression: navigated.data.sortExpression
             }));
-        listState.model = (data$) => data$.map(data => data.people.slice(0, data.maximumRows));
         listState.model = (data$) => (
             data$.map(data => ({
-                people: data.people.slice(0, data.maximumRows),
+                people: data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows),
                 sortExpression: data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name'
             }))
         );
