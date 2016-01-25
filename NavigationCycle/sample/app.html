@@ -31,8 +31,9 @@
         var listState = personDialog.states.list;        
         listState.intent = (sources) => sources.Navigation
             .map((navigated) => ({ 
-                people: personSearch.search(),
-                maximumRows: navigated.data.maximumRows
+                people: personSearch.search(null, navigated.data.sortExpression),
+                maximumRows: navigated.data.maximumRows,
+                sortExpression: navigated.data.sortExpression
             }));
         listState.model = (data$) => data$.map(data => data.people.slice(0, data.maximumRows));
         listState.model = (data$) => {
