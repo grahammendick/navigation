@@ -34,7 +34,7 @@
                 maximumRows: navigated.data.maximumRows
             }));
         listState.model = (data$) => data$.map(data => data.people.slice(0, data.maximumRows));
-        listState.view = (sources) => {
+        listState.main = (sources) => {
             var people$ = listState.model(listState.intent(sources));
             return {
                 DOM: people$.map(people => h('div', [
@@ -62,7 +62,7 @@
         detailsState.intent = (sources) => sources.Navigation
             .map((navigated) => personSearch.getDetails(navigated.data.id));
         detailsState.model = (person$) => person$;        
-        detailsState.view = (sources) => {
+        detailsState.main = (sources) => {
             var person$ = detailsState.model(detailsState.intent(sources));
             return {
                 DOM: person$.map(person => h('div', [
@@ -78,15 +78,15 @@
         
         function main(sources) {
             var navigated$ = sources.Navigation
-                .map((navigated) => navigated.state.view({ 
+                .map((navigated) => navigated.state.main({ 
                     DOM: sources.DOM,
                     Navigation: sources.Navigation
                             .filter(subNavigated => navigated.state === subNavigated.state)
                 }));
             return {
-                DOM: navigated$.map(view => h('div', [
+                DOM: navigated$.map(main => h('div', [
                     h('h1', 'Navigation Cycle'),
-                    view.DOM
+                    main.DOM
                 ])),
                 Navigation: sources.DOM.select('a').events('click')
             };
