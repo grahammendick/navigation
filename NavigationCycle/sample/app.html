@@ -37,10 +37,22 @@
                 sortExpression: navigated.data.sortExpression
             }));
         listState.model = (data$) => (
-            data$.map(data => ({
-                people: data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows),
-                sortExpression: data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name'
-            }))
+            data$.map(data => {
+                var totalRowCount = data.people.length;
+                var remainder = totalRowCount % data.maximumRows;
+                var previous = Math.max(0, data.startRowIndex - data.maximumRows);
+                var next = data.startRowIndex + data.maximumRows;
+                var last = remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows;
+                if (next >= totalRowCount)
+                    next = last = data.startRowIndex;
+                return {
+                    people: data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows),
+                    sortExpression: data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name',
+                    previous: previous,
+                    next: next,
+                    last: last
+                }
+            })
         );
         listState.main = (sources) => {
             var data$ = listState.model(listState.intent(sources));
@@ -49,23 +61,32 @@
                     h('table', [
                         h('tr', [
                             h('th', [
-                                refreshLink({
-                                    toData: { sortExpression: data.sortExpression }
-                                }, 'Name')
+                                refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name')
                             ]),
                             h('th', 'Date of Birth')                            
                         ])]
                         .concat(data.people.map(person =>
                         h('tr', [
                             h('td', [
-                                navigationLink({
-                                    action: 'select',
-                                    toData: { id: person.id }
-                                }, person.name)
+                                navigationLink({ action: 'select', toData: { id: person.id }}, person.name)
                             ]),
                             h('td', person.dateOfBirth)
                         ])))
-                    )
+                    ),
+                    h('ul', [
+                        h('li', [
+                            refreshLink({ toData: { startRowIndex: 0 }}, 'First')
+                        ]),
+                        h('li', [
+                            refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous')
+                        ]),
+                        h('li', [
+                            refreshLink({ toData: { startRowIndex: data.next }}, 'Next')
+                        ]),
+                        h('li', [
+                            refreshLink({ toData: { startRowIndex: data.last }}, 'Last')
+                        ])
+                    ])
                 ]))
             };
         };
