@@ -67,10 +67,12 @@
             var person$ = detailsState.model(detailsState.intent(sources));
             return {
                 DOM: person$.map(person => h('div', [
-                    h('span', 'Name:' + person.name),
-                    h('br'),
-                    h('span', 'Date of birth:' + person.dateOfBirth),
-                    h('a', { href: '#/' }, 'list')
+                    navigationBackLink({ distance: 1}, 'Person Search'),
+                    h('div', [
+                        h('span', 'Name:' + person.name),
+                        h('br'),
+                        h('span', 'Date of birth:' + person.dateOfBirth)
+                    ])
                 ]))
             };
         };
@@ -117,6 +119,13 @@
         function navigationLink(attributes, children) {
             var newAttributes = {};
             var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.data);
+            newAttributes.href = Navigation.settings.historyManager.getHref(link);
+            return h('a', newAttributes, children);
+        }
+        
+        function navigationBackLink(attributes, children) {
+            var newAttributes = {};
+            var link = Navigation.StateController.getNavigationBackLink(attributes.distance);
             newAttributes.href = Navigation.settings.historyManager.getHref(link);
             return h('a', newAttributes, children);
         }
