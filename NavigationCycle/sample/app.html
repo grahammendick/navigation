@@ -29,6 +29,7 @@
 
         var listState = personDialog.states.list;        
         listState.intent = (sources) => sources.Navigation
+            .do(x => console.log('aaaa'))
             .map((navigated) => ({ 
                 people: personSearch.search(),
                 maximumRows: navigated.data.maximumRows
@@ -71,7 +72,11 @@
         
         function main(sources) {
             var navigated$ = sources.Navigation
-                .map((navigated) => navigated.state.view(sources));
+                .map((navigated) => navigated.state.view({ 
+                    DOM: sources.DOM,
+                    Navigation: sources.Navigation
+                            .filter(subNavigated => navigated.state === subNavigated.state)
+                }));
             return {
                 DOM: navigated$.map(view => h('div', [
                     h('h1', 'Navigation Cycle'),
