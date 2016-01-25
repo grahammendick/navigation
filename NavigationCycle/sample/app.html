@@ -29,7 +29,6 @@
 
         var listState = personDialog.states.list;        
         listState.intent = (sources) => sources.Navigation
-            .do(x => console.log('aaaa'))
             .map((navigated) => ({ 
                 people: personSearch.search(),
                 maximumRows: navigated.data.maximumRows
