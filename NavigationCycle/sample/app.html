@@ -87,12 +87,6 @@
                 ])
             ]))
         );
-        listState.main = (sources) => {
-            var vtree$ = listState.view(listState.model(listState.intent(sources)));
-            return {
-                DOM: vtree$
-            };
-        };
         
         var detailsState = personDialog.states.details;
         detailsState.intent = (sources) => sources.Navigation
@@ -108,24 +102,21 @@
                 ])
             ]))
         );
-        detailsState.main = (sources) => {
-            var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
-            return {
-                DOM: vtree$
-            };
-        };
         
         function main(sources) {
-            var navigated$ = sources.Navigation
-                .map((navigated) => navigated.state.main({ 
-                    DOM: sources.DOM,
-                    Navigation: sources.Navigation
-                        .filter(subNavigated => navigated.state === subNavigated.state)
-                }));
+            var vtree$ = sources.Navigation
+                .map((navigated) => {
+                    var state = navigated.state;
+                    return state.view(state.model(state.intent({
+                        DOM: sources.DOM,
+                        Navigation: sources.Navigation
+                            .filter(subNavigated => navigated.state === subNavigated.state)
+                    })));
+                });
             return {
-                DOM: navigated$.map(main => h('div', [
+                DOM: vtree$.map(vtree => h('div', [
                     h('h1', 'Navigation Cycle'),
-                    main.DOM
+                    vtree
                 ])),
                 Navigation: sources.DOM.select('a').events('click')
             };
