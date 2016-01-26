@@ -16,6 +16,7 @@
     <script src="cycle-dom.js"></script>
     <script src="cycle-isolate.js"></script>
     <script src="../../build/dist/navigation.js"></script>
+    <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
         var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, a = CycleDOM.a,
             ul = CycleDOM.ul, li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br;
@@ -62,25 +63,25 @@
             data$.map(data => div([
                 div([
                     span('Page size '),
-                    refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true }, '5'), span(' '),
-                    refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true }, '10')
+                    NavigationCycle.refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true }, '5'), span(' '),
+                    NavigationCycle.refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true }, '10')
                 ]),
                 table([
                     tr([
-                        th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
+                        th([ NavigationCycle.refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                         th('Date of Birth')                            
                     ])]
                     .concat(data.people.map(person =>
                     tr([
-                        td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                        td([ NavigationCycle.navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
                         td(person.dateOfBirth)
                     ])))
                 ),
                 ul([
-                    li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true }, 'First') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true }, 'Previous') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true }, 'Next') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true }, 'Last') ])
+                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true }, 'First') ]),
+                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true }, 'Previous') ]),
+                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true }, 'Next') ]),
+                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true }, 'Last') ])
                 ])
             ]))
         );
@@ -98,7 +99,7 @@
         detailsState.model = (person$) => person$;   
         detailsState.view = (person$) => (
             person$.map(person => div([
-                navigationBackLink({ distance: 1 }, 'Person Search'),
+                NavigationCycle.navigationBackLink({ distance: 1 }, 'Person Search'),
                 div([
                     span('Name:' + person.name), br(),
                     span('Date of birth:' + person.dateOfBirth)
@@ -124,69 +125,10 @@
                 Navigation: component$$.map((component) => component.Navigation).switch()
             };
         }
-        
-        function makeNavigationDriver(url) {
-            return (navigate$) => {
-                navigate$.subscribe(e => {
-                    if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                        e.preventDefault();
-                        var link = Navigation.settings.historyManager.getUrl(e.target);
-                        Navigation.StateController.navigateLink(link);
-                    }
-                });
-                var navigated$ = new Rx.BehaviorSubject();
-                for(var dialogKey in Navigation.StateInfoConfig.dialogs) {
-                    var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
-                    for(var stateKey in dialog.states) {
-                        ((state) => state.navigated = (data) => {
-                            navigated$.onNext({ 
-                                state: state,
-                                data: data
-                            });
-                        })(dialog.states[stateKey]);
-                    }
-                }
-                Navigation.start(url);
-                navigated$.isolateSource = (NavigationSource, key) => (
-                    NavigationSource.filter((navigated) => navigated.state.parent.index + '-' + navigated.state.index === key)
-                )
-                return navigated$;
-            };
-        }
-
-        function getData(toData, includeCurrentData, currentDataKeys) {
-            if (currentDataKeys)
-                toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
-            if (includeCurrentData)
-                toData = Navigation.StateContext.includeCurrentData(toData);
-            return toData;
-        }
-            
-        function navigationLink(attributes, children) {
-            var newAttributes = {};
-            var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.toData);
-            newAttributes.href = Navigation.settings.historyManager.getHref(link);
-            return a(newAttributes, children);
-        }
-        
-        function refreshLink(attributes, children) {
-            var newAttributes = {};
-            var toData = getData(attributes.toData, attributes.includeCurrentData, attributes.currentDataKeys);
-            var link = Navigation.StateController.getRefreshLink(toData);
-            newAttributes.href = Navigation.settings.historyManager.getHref(link);
-            return a(newAttributes, children);
-        }
-        
-        function navigationBackLink(attributes, children) {
-            var newAttributes = {};
-            var link = Navigation.StateController.getNavigationBackLink(attributes.distance);
-            newAttributes.href = Navigation.settings.historyManager.getHref(link);
-            return a(newAttributes, children);
-        }
 
         Cycle.run(main, {
             DOM: CycleDOM.makeDOMDriver('#content'),
-            Navigation: makeNavigationDriver()
+            Navigation: NavigationCycle.makeNavigationDriver()
         });
     </script>
 </body>
