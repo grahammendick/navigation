@@ -60,6 +60,11 @@
         );
         listState.view = (data$) => (
             data$.map(data => div([
+                div([
+                    span('Page size '),
+                    refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true }, '5'), span(' '),
+                    refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true }, '10')
+                ]),
                 table([
                     tr([
                         th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
