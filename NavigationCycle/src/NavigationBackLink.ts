@@ -8,4 +8,3 @@ var NavigationBackLink = (attributes: any, children: any) => {
     return CycleDOM.a(newAttributes, children);
 }
 export = NavigationBackLink;
-
