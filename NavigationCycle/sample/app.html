@@ -107,16 +107,16 @@
             var vtree$ = sources.Navigation
                 .map((navigated) => {
                     var state = navigated.state;
-                    return state.view(state.model(state.intent({
-                        DOM: sources.DOM,
-                        Navigation: sources.Navigation
-                            .filter(subNavigated => state === subNavigated.state)
-                    })));
+                    var stateMain = (sources) => ({
+                        DOM: state.view(state.model(state.intent(sources)))
+                    })
+                    var isolatedStateMain = CycleIsolate(stateMain, state.key);
+                    return isolatedStateMain(sources);
                 });
             return {
                 DOM: vtree$.map(vtree => h('div', [
                     h('h1', 'Navigation Cycle'),
-                    vtree
+                    vtree.DOM
                 ])),
                 Navigation: sources.DOM.select('a').events('click')
             };
@@ -143,6 +143,10 @@
                 }
             }
             Navigation.start();
+            navigated$.isolateSource = (NavigationSource, key) => {
+                return NavigationSource
+                    .filter(navigated => navigated.state.key === key)
+            }
             return navigated$;
         }
         
