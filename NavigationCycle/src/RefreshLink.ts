@@ -2,11 +2,11 @@ import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import CycleDOM = require('@cycle/dom');
 
-var RefreshLink = (attributes: any, children: any) => {
-    var newAttributes: any = {};
-    var toData = LinkUtility.getData(attributes.toData, attributes.includeCurrentData, attributes.currentDataKeys);
+var RefreshLink = (properties: any, children: any) => {
+    var newProperties: any = {};
+    var toData = LinkUtility.getData(properties.toData, properties.includeCurrentData, properties.currentDataKeys);
     var link = Navigation.StateController.getRefreshLink(toData);
-    newAttributes.href = Navigation.settings.historyManager.getHref(link);
-    return CycleDOM.a(newAttributes, children);
+    newProperties.href = Navigation.settings.historyManager.getHref(link);
+    return CycleDOM.a(newProperties, children);
 }
 export = RefreshLink;

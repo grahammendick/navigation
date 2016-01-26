@@ -1,10 +1,10 @@
 import Navigation = require('navigation');
 import CycleDOM = require('@cycle/dom');
 
-var NavigationBackLink = (attributes: any, children: any) => {
-    var newAttributes: any = {};
-    var link = Navigation.StateController.getNavigationBackLink(attributes.distance);
-    newAttributes.href = Navigation.settings.historyManager.getHref(link);
-    return CycleDOM.a(newAttributes, children);
+var NavigationBackLink = (properties: any, children: any) => {
+    var newProperties: any = {};
+    var link = Navigation.StateController.getNavigationBackLink(properties.distance);
+    newProperties.href = Navigation.settings.historyManager.getHref(link);
+    return CycleDOM.a(newProperties, children);
 }
 export = NavigationBackLink;
