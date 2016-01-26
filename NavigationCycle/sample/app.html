@@ -54,58 +54,64 @@
                 }
             })
         );
-        listState.main = (sources) => {
-            var data$ = listState.model(listState.intent(sources));
-            return {
-                DOM: data$.map(data => h('div', [
-                    h('table', [
-                        h('tr', [
-                            h('th', [
-                                refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name')
-                            ]),
-                            h('th', 'Date of Birth')                            
-                        ])]
-                        .concat(data.people.map(person =>
-                        h('tr', [
-                            h('td', [
-                                navigationLink({ action: 'select', toData: { id: person.id }}, person.name)
-                            ]),
-                            h('td', person.dateOfBirth)
-                        ])))
-                    ),
-                    h('ul', [
-                        h('li', [
-                            refreshLink({ toData: { startRowIndex: 0 }}, 'First')
+        listState.view = (data$) => (
+            data$.map(data => h('div', [
+                h('table', [
+                    h('tr', [
+                        h('th', [
+                            refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name')
                         ]),
-                        h('li', [
-                            refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous')
+                        h('th', 'Date of Birth')                            
+                    ])]
+                    .concat(data.people.map(person =>
+                    h('tr', [
+                        h('td', [
+                            navigationLink({ action: 'select', toData: { id: person.id }}, person.name)
                         ]),
-                        h('li', [
-                            refreshLink({ toData: { startRowIndex: data.next }}, 'Next')
-                        ]),
-                        h('li', [
-                            refreshLink({ toData: { startRowIndex: data.last }}, 'Last')
-                        ])
+                        h('td', person.dateOfBirth)
+                    ])))
+                ),
+                h('ul', [
+                    h('li', [
+                        refreshLink({ toData: { startRowIndex: 0 }}, 'First')
+                    ]),
+                    h('li', [
+                        refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous')
+                    ]),
+                    h('li', [
+                        refreshLink({ toData: { startRowIndex: data.next }}, 'Next')
+                    ]),
+                    h('li', [
+                        refreshLink({ toData: { startRowIndex: data.last }}, 'Last')
                     ])
-                ]))
+                ])
+            ]))
+        );
+        listState.main = (sources) => {
+            var vtree$ = listState.view(listState.model(listState.intent(sources)));
+            return {
+                DOM: vtree$
             };
         };
         
         var detailsState = personDialog.states.details;
         detailsState.intent = (sources) => sources.Navigation
             .map((navigated) => personSearch.getDetails(navigated.data.id));
-        detailsState.model = (person$) => person$;        
+        detailsState.model = (person$) => person$;   
+        detailsState.view = (person$) => (
+            person$.map(person => h('div', [
+                navigationBackLink({ distance: 1}, 'Person Search'),
+                h('div', [
+                    h('span', 'Name:' + person.name),
+                    h('br'),
+                    h('span', 'Date of birth:' + person.dateOfBirth)
+                ])
+            ]))
+        );
         detailsState.main = (sources) => {
-            var person$ = detailsState.model(detailsState.intent(sources));
+            var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
             return {
-                DOM: person$.map(person => h('div', [
-                    navigationBackLink({ distance: 1}, 'Person Search'),
-                    h('div', [
-                        h('span', 'Name:' + person.name),
-                        h('br'),
-                        h('span', 'Date of birth:' + person.dateOfBirth)
-                    ])
-                ]))
+                DOM: vtree$
             };
         };
         
