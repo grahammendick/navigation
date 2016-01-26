@@ -1,5 +1,5 @@
 import Navigation = require('navigation');
-declare var CycleDOM: any;
+import CycleDOM = require('@cycle/dom');
 
 function getData(toData, includeCurrentData, currentDataKeys) {
     if (currentDataKeys)

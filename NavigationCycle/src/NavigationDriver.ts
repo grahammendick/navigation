@@ -1,7 +1,7 @@
 // Should take in anchors and wrap navigate, refresh and back StateController functions
 // queryable navigated stream, different events, disposing, navigated etc.
 import Navigation = require('navigation');
-declare var Rx: any;
+import Rx = require('rx');
 
 var NavigationDriver = (url) => {
     return (navigate$) => {
@@ -25,7 +25,7 @@ var NavigationDriver = (url) => {
             }
         }
         Navigation.start(url);
-        navigated$.isolateSource = (NavigationSource, key) => (
+        navigated$['isolateSource'] = (NavigationSource, key) => (
             NavigationSource.filter((navigated) => navigated.state.parent.index + '-' + navigated.state.index === key)
         )
         return navigated$;

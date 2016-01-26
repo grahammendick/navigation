@@ -1,5 +1,5 @@
 import Navigation = require('navigation');
-declare var CycleDOM: any;
+import CycleDOM = require('@cycle/dom');
 
 var NavigationBackLink = (attributes: any, children: any) => {
     var newAttributes: any = {};
