@@ -106,15 +106,15 @@
         };
         
         function main(sources) {
-            var component$ = sources.Navigation
+            var component$$ = sources.Navigation
                 .map((navigated) => {
                     var key = navigated.state.parent.index + '-' + navigated.state.index;
                     var isolatedComponent = CycleIsolate(navigated.state.component, key);
                     return isolatedComponent(sources);
                 });
             return {
-                DOM: component$.map((component) => component.DOM).switch(),
-                Navigation: component$.map((component) => component.Navigation).switch()
+                DOM: component$$.map((component) => component.DOM).switch(),
+                Navigation: component$$.map((component) => component.Navigation).switch()
             };
         }
         
