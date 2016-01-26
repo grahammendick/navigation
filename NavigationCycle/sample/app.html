@@ -18,6 +18,8 @@
     <script src="../../build/dist/navigation.js"></script>
     <script>
         var h = CycleDOM.h;
+        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td,
+            ul = CycleDOM.ul, li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br;
         
         Navigation.StateInfoConfig.build([
             { key: 'person', initial: 'list', states: [
@@ -55,23 +57,23 @@
             })
         );
         listState.view = (data$) => (
-            data$.map(data => h('div', [
-                h('table', [
-                    h('tr', [
-                        h('th', [ refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name') ]),
-                        h('th', 'Date of Birth')                            
+            data$.map(data => div([
+                table([
+                    tr([
+                        th([ refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name') ]),
+                        th('Date of Birth')                            
                     ])]
                     .concat(data.people.map(person =>
-                    h('tr', [
-                        h('td', [ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
-                        h('td', person.dateOfBirth)
+                    tr([
+                        td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                        td(person.dateOfBirth)
                     ])))
                 ),
-                h('ul', [
-                    h('li', [ refreshLink({ toData: { startRowIndex: 0 }}, 'First') ]),
-                    h('li', [ refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous') ]),
-                    h('li', [ refreshLink({ toData: { startRowIndex: data.next }}, 'Next') ]),
-                    h('li', [ refreshLink({ toData: { startRowIndex: data.last }}, 'Last') ])
+                ul([
+                    li([ refreshLink({ toData: { startRowIndex: 0 }}, 'First') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.next }}, 'Next') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.last }}, 'Last') ])
                 ])
             ]))
         );
@@ -88,12 +90,12 @@
             .map((navigated) => personSearch.getDetails(navigated.data.id));
         detailsState.model = (person$) => person$;   
         detailsState.view = (person$) => (
-            person$.map(person => h('div', [
+            person$.map(person => div([
                 navigationBackLink({ distance: 1}, 'Person Search'),
-                h('div', [
-                    h('span', 'Name:' + person.name),
-                    h('br'),
-                    h('span', 'Date of birth:' + person.dateOfBirth)
+                div([
+                    span('Name:' + person.name),
+                    br(),
+                    span('Date of birth:' + person.dateOfBirth)
                 ])
             ]))
         );
