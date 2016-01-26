@@ -1,5 +1,6 @@
 // Should take in anchors and wrap navigate, refresh and back StateController functions
 // queryable navigated stream, different events, disposing, navigated etc.
+// history action, pass in the navigate$ sink, not propertiers, because needed after click not to set href 
 import Navigation = require('navigation');
 import Rx = require('rx');
 
