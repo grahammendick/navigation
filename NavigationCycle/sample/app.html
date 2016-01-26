@@ -18,7 +18,7 @@
     <script src="../../build/dist/navigation.js"></script>
     <script>
         var h = CycleDOM.h;
-        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td,
+        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, a = CycleDOM.a,
             ul = CycleDOM.ul, li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br;
         
         Navigation.StateInfoConfig.build([
@@ -150,21 +150,21 @@
             var newAttributes = {};
             var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.toData);
             newAttributes.href = Navigation.settings.historyManager.getHref(link);
-            return h('a', newAttributes, children);
+            return a(newAttributes, children);
         }
         
         function refreshLink(attributes, children) {
             var newAttributes = {};
             var link = Navigation.StateController.getRefreshLink(attributes.toData);
             newAttributes.href = Navigation.settings.historyManager.getHref(link);
-            return h('a', newAttributes, children);
+            return a(newAttributes, children);
         }
         
         function navigationBackLink(attributes, children) {
             var newAttributes = {};
             var link = Navigation.StateController.getNavigationBackLink(attributes.distance);
             newAttributes.href = Navigation.settings.historyManager.getHref(link);
-            return h('a', newAttributes, children);
+            return a(newAttributes, children);
         }
 
         Cycle.run(main, {
