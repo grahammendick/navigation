@@ -120,7 +120,7 @@
         function main(sources) {
             var component$ = sources.Navigation
                 .map((navigated) => {
-                    var key = navigated.state.parent.key + '-' + navigated.state.key;
+                    var key = navigated.state.parent.index + '-' + navigated.state.index;
                     var isolatedComponent = CycleIsolate(navigated.state.component, key);
                     return isolatedComponent(sources);
                 });
@@ -154,7 +154,7 @@
             }
             Navigation.start();
             navigated$.isolateSource = (NavigationSource, key) => (
-                NavigationSource.filter((navigated) => navigated.state.parent.key + '-' + navigated.state.key === key)
+                NavigationSource.filter((navigated) => navigated.state.parent.index + '-' + navigated.state.index === key)
             )
             return navigated$;
         }
