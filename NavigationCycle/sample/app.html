@@ -113,7 +113,8 @@
                     return isolatedComponent(sources);
                 });
             return {
-                DOM: component$.map((component) => component.DOM)
+                DOM: component$.map((component) => component.DOM).switch(),
+                Navigation: component$.map((component) => component.Navigation).switch()
             };
         }
         
