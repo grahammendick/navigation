@@ -36,7 +36,8 @@
                 startRowIndex: navigated.data.startRowIndex,
                 maximumRows: navigated.data.maximumRows,
                 sortExpression: navigated.data.sortExpression
-            }));
+            })
+        );
         listState.model = (data$) => (
             data$.map(data => {
                 var totalRowCount = data.people.length;
