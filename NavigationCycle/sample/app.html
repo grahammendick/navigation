@@ -19,7 +19,9 @@
     <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
         var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, a = CycleDOM.a,
-            ul = CycleDOM.ul, li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br;
+            ul = CycleDOM.ul, li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br,
+            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
+            navigationBackLink = NavigationCycle.navigationBackLink; 
         
         Navigation.StateInfoConfig.build([
             { key: 'person', initial: 'list', states: [
@@ -63,25 +65,25 @@
             data$.map(data => div([
                 div([
                     span('Page size '),
-                    NavigationCycle.refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true }, '5'), span(' '),
-                    NavigationCycle.refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true }, '10')
+                    refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true }, '5'), span(' '),
+                    refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true }, '10')
                 ]),
                 table([
                     tr([
-                        th([ NavigationCycle.refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
+                        th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                         th('Date of Birth')                            
                     ])]
                     .concat(data.people.map(person =>
                     tr([
-                        td([ NavigationCycle.navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                        td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
                         td(person.dateOfBirth)
                     ])))
                 ),
                 ul([
-                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true }, 'First') ]),
-                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true }, 'Previous') ]),
-                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true }, 'Next') ]),
-                    li([ NavigationCycle.refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true }, 'Last') ])
+                    li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true }, 'First') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true }, 'Previous') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true }, 'Next') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true }, 'Last') ])
                 ])
             ]))
         );
@@ -99,7 +101,7 @@
         detailsState.model = (person$) => person$;   
         detailsState.view = (person$) => (
             person$.map(person => div([
-                NavigationCycle.navigationBackLink({ distance: 1 }, 'Person Search'),
+                navigationBackLink({ distance: 1 }, 'Person Search'),
                 div([
                     span('Name:' + person.name), br(),
                     span('Date of birth:' + person.dateOfBirth)
