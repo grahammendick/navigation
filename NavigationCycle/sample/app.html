@@ -109,8 +109,8 @@
                     var state = navigated.state;
                     var stateMain = (sources) => ({
                         DOM: state.view(state.model(state.intent(sources)))
-                    })
-                    var isolatedStateMain = CycleIsolate(stateMain, state.key);
+                    });
+                    var isolatedStateMain = CycleIsolate(stateMain, state.parent.key + '-' + state.key);
                     return isolatedStateMain(sources);
                 });
             return {
@@ -144,7 +144,7 @@
             }
             Navigation.start();
             navigated$.isolateSource = (NavigationSource, key) => (
-                NavigationSource.filter((navigated) => navigated.state.key === key)
+                NavigationSource.filter((navigated) => navigated.state.parent.key + '-' + navigated.state.key === key)
             )
             return navigated$;
         }
