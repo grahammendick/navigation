@@ -65,8 +65,8 @@
             data$.map(data => div([
                 div([
                     span('Page size '),
-                    refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true }, '5'), span(' '),
-                    refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true }, '10')
+                    refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
+                    refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
                 ]),
                 table([
                     tr([
@@ -80,10 +80,10 @@
                     ])))
                 ),
                 ul([
-                    li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true }, 'First') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true }, 'Previous') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true }, 'Next') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true }, 'Last') ])
+                    li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
                 ])
             ]))
         );
