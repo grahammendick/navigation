@@ -5,6 +5,6 @@ var NavigationLink = (properties: any, children: any) => {
     var newProperties: any = {};
     var link = Navigation.StateController.getNavigationLink(properties.action, properties.toData);
     newProperties.href = Navigation.settings.historyManager.getHref(link);
-    return CycleDOM.a(newProperties, children);
+    return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 }
 export = NavigationLink;
