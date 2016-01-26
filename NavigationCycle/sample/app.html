@@ -76,11 +76,12 @@
                             th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                             th('Date of Birth')                            
                         ])]
-                        .concat(data.people.map(person =>
-                        tr([
-                            td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
-                            td(person.dateOfBirth)
-                        ])))
+                        .concat(data.people.map(function(person) {
+                            return tr([
+                                td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                                td(person.dateOfBirth)
+                            ])
+                        }))
                     ),
                     ul([
                         li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
