@@ -58,32 +58,20 @@
             data$.map(data => h('div', [
                 h('table', [
                     h('tr', [
-                        h('th', [
-                            refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name')
-                        ]),
+                        h('th', [ refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name') ]),
                         h('th', 'Date of Birth')                            
                     ])]
                     .concat(data.people.map(person =>
                     h('tr', [
-                        h('td', [
-                            navigationLink({ action: 'select', toData: { id: person.id }}, person.name)
-                        ]),
+                        h('td', [ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
                         h('td', person.dateOfBirth)
                     ])))
                 ),
                 h('ul', [
-                    h('li', [
-                        refreshLink({ toData: { startRowIndex: 0 }}, 'First')
-                    ]),
-                    h('li', [
-                        refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous')
-                    ]),
-                    h('li', [
-                        refreshLink({ toData: { startRowIndex: data.next }}, 'Next')
-                    ]),
-                    h('li', [
-                        refreshLink({ toData: { startRowIndex: data.last }}, 'Last')
-                    ])
+                    h('li', [ refreshLink({ toData: { startRowIndex: 0 }}, 'First') ]),
+                    h('li', [ refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous') ]),
+                    h('li', [ refreshLink({ toData: { startRowIndex: data.next }}, 'Next') ]),
+                    h('li', [ refreshLink({ toData: { startRowIndex: data.last }}, 'Last') ])
                 ])
             ]))
         );
