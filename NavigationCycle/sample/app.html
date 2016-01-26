@@ -47,9 +47,11 @@
                 var last = remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows;
                 if (next >= totalRowCount)
                     next = last = data.startRowIndex;
+                var people = data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
+                var sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
                 return {
-                    people: data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows),
-                    sortExpression: data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name',
+                    people: people,
+                    sortExpression: sortExpression,
                     previous: previous,
                     next: next,
                     last: last
