@@ -120,16 +120,15 @@
         function main(sources) {
             var component$ = sources.Navigation
                 .map((navigated) => {
-                    var state = navigated.state;
-                    var isolatedComponent = CycleIsolate(state.component, state.parent.key + '-' + state.key);
+                    var key = navigated.state.parent.key + '-' + navigated.state.key;
+                    var isolatedComponent = CycleIsolate(navigated.state.component, key);
                     return isolatedComponent(sources);
                 });
             return {
                 DOM: component$.map((component) => h('div', [
                     h('h1', 'Navigation Cycle'),
                     component.DOM
-                ])),
-                Navigation: component$.map((component) => component.Navigation)
+                ]))
             };
         }
         
