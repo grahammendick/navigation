@@ -87,6 +87,12 @@
                 ])
             ]))
         );
+        listState.component = (sources) => {
+            var vtree$ = listState.view(listState.model(listState.intent(sources)));
+            return {
+                DOM: vtree$
+            }
+        };
         
         var detailsState = personDialog.states.details;
         detailsState.intent = (sources) => sources.Navigation
@@ -102,21 +108,24 @@
                 ])
             ]))
         );
+        detailsState.component = (sources) => {
+            var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
+            return {
+                DOM: vtree$
+            }
+        };
         
         function main(sources) {
-            var vtree$ = sources.Navigation
+            var component$ = sources.Navigation
                 .map((navigated) => {
                     var state = navigated.state;
-                    var stateMain = (sources) => ({
-                        DOM: state.view(state.model(state.intent(sources)))
-                    });
-                    var isolatedStateMain = CycleIsolate(stateMain, state.parent.key + '-' + state.key);
-                    return isolatedStateMain(sources);
+                    var isolatedComponent = CycleIsolate(state.component, state.parent.key + '-' + state.key);
+                    return isolatedComponent(sources);
                 });
             return {
-                DOM: vtree$.map(vtree => h('div', [
+                DOM: component$.map(component => h('div', [
                     h('h1', 'Navigation Cycle'),
-                    vtree.DOM
+                    component.DOM
                 ])),
                 Navigation: sources.DOM.select('a').events('click')
             };
