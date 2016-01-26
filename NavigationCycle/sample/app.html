@@ -125,10 +125,7 @@
                     return isolatedComponent(sources);
                 });
             return {
-                DOM: component$.map((component) => h('div', [
-                    h('h1', 'Navigation Cycle'),
-                    component.DOM
-                ]))
+                DOM: component$.map((component) => component.DOM)
             };
         }
         
