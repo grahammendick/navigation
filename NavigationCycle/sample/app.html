@@ -90,7 +90,8 @@
         listState.component = (sources) => {
             var vtree$ = listState.view(listState.model(listState.intent(sources)));
             return {
-                DOM: vtree$
+                DOM: vtree$,
+                Navigation: sources.DOM.select('a').events('click')
             }
         };
         
@@ -111,7 +112,8 @@
         detailsState.component = (sources) => {
             var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
             return {
-                DOM: vtree$
+                DOM: vtree$,
+                Navigation: sources.DOM.select('a').events('click')
             }
         };
         
@@ -123,11 +125,11 @@
                     return isolatedComponent(sources);
                 });
             return {
-                DOM: component$.map(component => h('div', [
+                DOM: component$.map((component) => h('div', [
                     h('h1', 'Navigation Cycle'),
                     component.DOM
                 ])),
-                Navigation: sources.DOM.select('a').events('click')
+                Navigation: component$.map((component) => component.Navigation)
             };
         }
         
