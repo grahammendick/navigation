@@ -109,8 +109,7 @@
             var component$$ = sources.Navigation
                 .map((navigated) => {
                     var key = navigated.state.parent.index + '-' + navigated.state.index;
-                    var isolatedComponent = CycleIsolate(navigated.state.component, key);
-                    return isolatedComponent(sources);
+                    return CycleIsolate(navigated.state.component, key)(sources);
                 });
             return {
                 DOM: component$$.map((component) => component.DOM).switch(),
