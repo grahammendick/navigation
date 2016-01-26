@@ -143,10 +143,9 @@
                 }
             }
             Navigation.start();
-            navigated$.isolateSource = (NavigationSource, key) => {
-                return NavigationSource
-                    .filter(navigated => navigated.state.key === key)
-            }
+            navigated$.isolateSource = (NavigationSource, key) => (
+                NavigationSource.filter((navigated) => navigated.state.key === key)
+            )
             return navigated$;
         }
         
