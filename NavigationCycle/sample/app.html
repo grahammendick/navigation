@@ -110,7 +110,7 @@
                     return state.view(state.model(state.intent({
                         DOM: sources.DOM,
                         Navigation: sources.Navigation
-                            .filter(subNavigated => navigated.state === subNavigated.state)
+                            .filter(subNavigated => state === subNavigated.state)
                     })));
                 });
             return {
