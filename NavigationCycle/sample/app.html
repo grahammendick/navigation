@@ -60,7 +60,7 @@
             data$.map(data => div([
                 table([
                     tr([
-                        th([ refreshLink({ toData: { sortExpression: data.sortExpression }}, 'Name') ]),
+                        th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                         th('Date of Birth')                            
                     ])]
                     .concat(data.people.map(person =>
@@ -70,10 +70,10 @@
                     ])))
                 ),
                 ul([
-                    li([ refreshLink({ toData: { startRowIndex: 0 }}, 'First') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.previous }}, 'Previous') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.next }}, 'Next') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.last }}, 'Last') ])
+                    li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true }, 'First') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true }, 'Previous') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true }, 'Next') ]),
+                    li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true }, 'Last') ])
                 ])
             ]))
         );
@@ -91,7 +91,7 @@
         detailsState.model = (person$) => person$;   
         detailsState.view = (person$) => (
             person$.map(person => div([
-                navigationBackLink({ distance: 1}, 'Person Search'),
+                navigationBackLink({ distance: 1 }, 'Person Search'),
                 div([
                     span('Name:' + person.name),
                     br(),
@@ -145,7 +145,15 @@
             )
             return navigated$;
         }
-        
+
+        function getData(toData, includeCurrentData, currentDataKeys) {
+            if (currentDataKeys)
+                toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            if (includeCurrentData)
+                toData = Navigation.StateContext.includeCurrentData(toData);
+            return toData;
+        }
+            
         function navigationLink(attributes, children) {
             var newAttributes = {};
             var link = Navigation.StateController.getNavigationLink(attributes.action, attributes.toData);
@@ -155,7 +163,8 @@
         
         function refreshLink(attributes, children) {
             var newAttributes = {};
-            var link = Navigation.StateController.getRefreshLink(attributes.toData);
+            var toData = getData(attributes.toData, attributes.includeCurrentData, attributes.currentDataKeys);
+            var link = Navigation.StateController.getRefreshLink(toData);
             newAttributes.href = Navigation.settings.historyManager.getHref(link);
             return a(newAttributes, children);
         }
