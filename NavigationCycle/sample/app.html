@@ -100,8 +100,7 @@
             person$.map(person => div([
                 navigationBackLink({ distance: 1 }, 'Person Search'),
                 div([
-                    span('Name:' + person.name),
-                    br(),
+                    span('Name:' + person.name), br(),
                     span('Date of birth:' + person.dateOfBirth)
                 ])
             ]))
