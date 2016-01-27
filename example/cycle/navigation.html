@@ -41,8 +41,112 @@
     <script src="cycle-dom.js"></script>
     <script src="cycle-isolate.js"></script>
     <script src="../../navigation.js"></script>
-    <script src="navigation.cyle.js"></script>
+    <script src="navigation.cycle.js"></script>
     <script>
+        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, div = CycleDOM.div, h2 = CycleDOM.h2,
+            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink, navigationBackLink = NavigationCycle.navigationBackLink; 
+        
+        Navigation.StateInfoConfig.build([
+            { key: 'person', initial: 'list', states: [
+                { key: 'list', route: '{pageNumber}', defaults: { pageNumber: 1 }, trackCrumbTrail: false, transitions: [
+                    { key: 'select', to: 'details' }]},
+                { key: 'details', route: 'person/{id}', defaults: { id: 0 }}]}
+        ]);
+        
+        var personDialog = Navigation.StateInfoConfig.dialogs.person;
+
+        var listState = personDialog.states.list;        
+        listState.intent = function(sources) {
+            return sources.Navigation.map(function(navigated) {
+                return { 
+                    people: personSearch.getList(),
+                    pageNumber: navigated.data.pageNumber
+                }
+            })
+        };
+        listState.model = function(data$) {
+            return data$.map(function(data) {
+                var start = (data.pageNumber - 1) * 10;
+                return {
+                    people: data.people.slice(start, start + 10)
+                }
+            })
+        };
+        listState.view = function(data$) {
+            return data$.map(function(data) { 
+                return div({ id: 'listing' }, [
+                    table([
+                        tr([
+                            th('Name'),
+                            th('Date of Birth')                            
+                        ])]
+                        .concat(data.people.map(function(person) {
+                            return tr([
+                                td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                                td(person.dateOfBirth)
+                            ])
+                        }))
+                    ),
+                    div({ id: 'pager' }, [
+                        refreshLink({ toData: { pageNumber: 1 }, disableActive: true }, '1'),
+                        refreshLink({ toData: { pageNumber: 2 }, disableActive: true }, '2')
+                    ])
+                ])
+            })
+        };
+        listState.component = function(sources) {
+            var vtree$ = listState.view(listState.model(listState.intent(sources)));
+            return {
+                DOM: vtree$,
+                Navigation: sources.DOM.select('a').events('click')
+            }
+        };
+        
+        var detailsState = personDialog.states.details;
+        detailsState.intent = function(sources) {
+            return sources.Navigation.map(function(navigated) {
+                return personSearch.getDetails(navigated.data.id)
+            })
+        };
+        detailsState.model = function(person$) {
+            return person$;
+        }   
+        detailsState.view = function(person$) {
+            return person$.map(function(person) {
+                return div({ id: 'details' }, [
+                    navigationBackLink({ distance: 1 }, 'Person Search'),
+                    div({ id: 'info' }, [
+                        h2(person.name),
+                        div({ className: 'label' }, 'Date of Birth'),
+                        div(person.dateOfBirth)
+                    ])
+                ])
+            })
+        };
+        detailsState.component = function(sources) {
+            var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
+            return {
+                DOM: vtree$,
+                Navigation: sources.DOM.select('a').events('click')
+            }
+        };
+        
+        function main(sources) {
+            var component$$ = sources.Navigation
+                .map(function(navigated) {
+                    var key = navigated.state.parent.index + '-' + navigated.state.index;
+                    return CycleIsolate(navigated.state.component, key)(sources);
+                });
+            return {
+                DOM: component$$.map(function(component) { return component.DOM }).switch(),
+                Navigation: component$$.map(function(component) { return component.Navigation }).switch()
+            };
+        }
+
+        Cycle.run(main, {
+            DOM: CycleDOM.makeDOMDriver('#view'),
+            Navigation: NavigationCycle.makeNavigationDriver()
+        });
     </script>
 </body>
 </html>
