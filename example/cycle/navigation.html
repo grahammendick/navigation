@@ -118,7 +118,11 @@
                     div({ id: 'info' }, [
                         h2(person.name),
                         div({ className: 'label' }, 'Date of Birth'),
-                        div(person.dateOfBirth)
+                        div(person.dateOfBirth),
+                        div({ className: 'label' }, 'Email'),
+                        div(person.email),
+                        div({ className: 'label' }, 'Phone'),
+                        div(person.phone)
                     ])
                 ])
             })
