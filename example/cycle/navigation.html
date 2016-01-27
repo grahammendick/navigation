@@ -43,8 +43,9 @@
     <script src="../../navigation.js"></script>
     <script src="navigation.cycle.js"></script>
     <script>
-        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, div = CycleDOM.div, h2 = CycleDOM.h2,
-            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink, navigationBackLink = NavigationCycle.navigationBackLink; 
+        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, div = CycleDOM.div,
+            h2 = CycleDOM.h2, span = CycleDOM.span, navigationLink = NavigationCycle.navigationLink,
+            refreshLink = NavigationCycle.refreshLink, navigationBackLink = NavigationCycle.navigationBackLink; 
         
         Navigation.StateInfoConfig.build([
             { key: 'person', initial: 'list', states: [
@@ -88,6 +89,7 @@
                         }))
                     ),
                     div({ id: 'pager' }, [
+                        span('Go to page '),
                         refreshLink({ toData: { pageNumber: 1 }, disableActive: true }, '1'),
                         refreshLink({ toData: { pageNumber: 2 }, disableActive: true }, '2')
                     ])
