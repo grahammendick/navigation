@@ -43,14 +43,14 @@
 
         /**
          * Turns the list State into a Cycle component. Adds the component functions:
-         * intent, model and view and the constructor function that calls these other
+         * intent, model and view and the 'constructor' function that calls these other
          * three in sequence.
          */
         var listState = personDialog.states.list;
         /**
          * Creates the list State's intent. Subscribes to the Navigation event source.
          * Each time a paging or back hyperlink is clicked, it returns the number of
-         * the page requested
+         * the page requested.
          */
         listState.intent = function(sources) {
             return sources.Navigation.map(function(navigated) {
@@ -62,7 +62,7 @@
         };
         /**
          * Creates the list State's model. Uses the incoming page number to only show
-         * one page of people at a time
+         * one page of people at a time.
          */
         listState.model = function(data$) {
             return data$.map(function(data) {
@@ -114,14 +114,14 @@
         
         /**
          * Turns the details State into a Cycle component. Adds the component functions:
-         * intent, model and view and the constructor function that calls these other
+         * intent, model and view and the 'constructor' function that calls these other
          * three in sequence.
          */
         var detailsState = personDialog.states.details;
         /**
          * Creates the details State's intent. Subscribes to the Navigation event source.
          * Each time a person hyperlink is clicked, it uses the person id to stream the
-         * person's details
+         * person's details.
          */
         detailsState.intent = function(sources) {
             return sources.Navigation.map(function(navigated) {
@@ -129,15 +129,15 @@
             })
         };
         /**
-         * Creates the details State's model
+         * Creates the details State's model.
          */
         detailsState.model = function(person$) {
             return person$;
         }   
         /**
          * Creates the details State's view. Turns the incoming person into hyperscript.
-         * The hyperlinks are built using the navigationBackLink hyperscript helpers that
-         * wrap up the Navigation router's URL-building capabilities.
+         * The hyperlink is built using the navigationBackLink hyperscript helper that
+         * wraps up the Navigation router's URL-building capabilities.
          */
         detailsState.view = function(person$) {
             return person$.map(function(person) {
@@ -171,7 +171,7 @@
          * Creates the main function. Subscribes to the Navigation event source. Each time a
          * hyperlink is clicked it finds the State component to render. It sends the component
          * the sources, isolated so that the component only receives relevant Navigation and
-         * DOM events
+         * DOM events.
          */
         function main(sources) {
             var component$$ = sources.Navigation
@@ -186,7 +186,7 @@
         }
 
         /**
-         * Runs Cycle with a DOM and a Navigation driver
+         * Runs Cycle with a DOM and a Navigation driver.
          */
         Cycle.run(main, {
             DOM: CycleDOM.makeDOMDriver('#view'),
