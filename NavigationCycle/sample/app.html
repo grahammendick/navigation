@@ -22,121 +22,122 @@
             li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br,
             navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
             navigationBackLink = NavigationCycle.navigationBackLink; 
-        
-        Navigation.StateInfoConfig.build([
-            { key: 'person', initial: 'list', states: [
-                { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
-                    { key: 'select', to: 'details' }]},
-                { key: 'details', route: 'person', title: 'Person Details', }]}
-        ]);
-        
-        var personDialog = Navigation.StateInfoConfig.dialogs.person;
 
-        var listState = personDialog.states.list;        
-        listState.intent = function(sources) {
-            return sources.Navigation.map(function(navigated) {
-                return { 
-                    people: personSearch.search(null, navigated.data.sortExpression),
-                    startRowIndex: navigated.data.startRowIndex,
-                    maximumRows: navigated.data.maximumRows,
-                    sortExpression: navigated.data.sortExpression
-                }
-            })
-        };
-        listState.model = function(data$) {
-            return data$.map(function(data) {
-                var totalRowCount = data.people.length;
-                var remainder = totalRowCount % data.maximumRows;
-                var previous = Math.max(0, data.startRowIndex - data.maximumRows);
-                var next = data.startRowIndex + data.maximumRows;
-                var last = remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows;
-                if (next >= totalRowCount)
-                    next = last = data.startRowIndex;
-                var people = data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
-                var sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+        function createStateComponents(dialogs) {
+            var personDialog = dialogs.person;
+            var listState = personDialog.states.list;        
+            listState.intent = function(sources) {
+                return sources.Navigation.map(function(context) {
+                    return { 
+                        people: personSearch.search(null, context.data.sortExpression),
+                        startRowIndex: context.data.startRowIndex,
+                        maximumRows: context.data.maximumRows,
+                        sortExpression: context.data.sortExpression
+                    }
+                })
+            };
+            listState.model = function(data$) {
+                return data$.map(function(data) {
+                    var totalRowCount = data.people.length;
+                    var remainder = totalRowCount % data.maximumRows;
+                    var previous = Math.max(0, data.startRowIndex - data.maximumRows);
+                    var next = data.startRowIndex + data.maximumRows;
+                    var last = remainder != 0 ? totalRowCount - remainder : totalRowCount - data.maximumRows;
+                    if (next >= totalRowCount)
+                        next = last = data.startRowIndex;
+                    var people = data.people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
+                    var sortExpression = data.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+                    return {
+                        people: people,
+                        sortExpression: sortExpression,
+                        previous: previous,
+                        next: next,
+                        last: last
+                    }
+                })
+            };
+            listState.view = function(data$) {
+                return data$.map(function(data) { 
+                    return div([
+                        div([
+                            span('Page size '),
+                            refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
+                            refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
+                        ]),
+                        table([
+                            tr([
+                                th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
+                                th('Date of Birth')                            
+                            ])]
+                            .concat(data.people.map(function(person) {
+                                return tr([
+                                    td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                                    td(person.dateOfBirth)
+                                ])
+                            }))
+                        ),
+                        ul([
+                            li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
+                            li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
+                            li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
+                            li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
+                        ])
+                    ])
+                })
+            };
+            listState.component = function(sources) {
+                var vtree$ = listState.view(listState.model(listState.intent(sources)));
                 return {
-                    people: people,
-                    sortExpression: sortExpression,
-                    previous: previous,
-                    next: next,
-                    last: last
+                    DOM: vtree$,
+                    Navigation: sources.DOM.select('a').events('click')
                 }
-            })
-        };
-        listState.view = function(data$) {
-            return data$.map(function(data) { 
-                return div([
-                    div([
-                        span('Page size '),
-                        refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
-                        refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
-                    ]),
-                    table([
-                        tr([
-                            th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
-                            th('Date of Birth')                            
-                        ])]
-                        .concat(data.people.map(function(person) {
-                            return tr([
-                                td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
-                                td(person.dateOfBirth)
-                            ])
-                        }))
-                    ),
-                    ul([
-                        li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
-                        li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
-                        li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
-                        li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
+            };
+            
+            var detailsState = personDialog.states.details;
+            detailsState.intent = function(sources) {
+                return sources.Navigation.map(function(context) {
+                    return personSearch.getDetails(context.data.id)
+                })
+            };
+            detailsState.model = function(person$) {
+                return person$;
+            }   
+            detailsState.view = function(person$) {
+                return person$.map(function(person) {
+                    return div([
+                        navigationBackLink({ distance: 1 }, 'Person Search'),
+                        div([
+                            span('Name:' + person.name), br(),
+                            span('Date of birth:' + person.dateOfBirth)
+                        ])
                     ])
-                ])
-            })
-        };
-        listState.component = function(sources) {
-            var vtree$ = listState.view(listState.model(listState.intent(sources)));
-            return {
-                DOM: vtree$,
-                Navigation: sources.DOM.select('a').events('click')
-            }
-        };
-        
-        var detailsState = personDialog.states.details;
-        detailsState.intent = function(sources) {
-            return sources.Navigation.map(function(navigated) {
-                return personSearch.getDetails(navigated.data.id)
-            })
-        };
-        detailsState.model = function(person$) {
-            return person$;
-        }   
-        detailsState.view = function(person$) {
-            return person$.map(function(person) {
-                return div([
-                    navigationBackLink({ distance: 1 }, 'Person Search'),
-                    div([
-                        span('Name:' + person.name), br(),
-                        span('Date of birth:' + person.dateOfBirth)
-                    ])
-                ])
-            })
-        };
-        detailsState.component = function(sources) {
-            var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
-            return {
-                DOM: vtree$,
-                Navigation: sources.DOM.select('a').events('click')
-            }
-        };
+                })
+            };
+            detailsState.component = function(sources) {
+                var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
+                return {
+                    DOM: vtree$,
+                    Navigation: sources.DOM.select('a').events('click')
+                }
+            };
+        }
         
         function main(sources) {
+            Navigation.StateInfoConfig.build([
+                { key: 'person', initial: 'list', states: [
+                    { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
+                        { key: 'select', to: 'details' }]},
+                    { key: 'details', route: 'person', title: 'Person Details', }]}
+            ]);
+            createStateComponents(Navigation.StateInfoConfig.dialogs);
             var component$$ = sources.Navigation
-                .map(function(navigated) {
-                    var key = navigated.state.parent.index + '-' + navigated.state.index;
-                    return CycleIsolate(navigated.state.component, key)(sources);
+                .map(function(context) {
+                    var key = context.state.parent.index + '-' + context.state.index;
+                    return CycleIsolate(context.state.component, key)(sources);
                 });
             return {
                 DOM: component$$.map(function(component) { return component.DOM }).switch(),
-                Navigation: component$$.map(function(component) { return component.Navigation }).switch()
+                Navigation: component$$.map(function(component) { return component.Navigation }).switch().startWith({})
             };
         }
 

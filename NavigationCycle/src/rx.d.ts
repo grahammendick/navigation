@@ -3,7 +3,8 @@ declare module 'rx' {
 } 
 
 declare module Rx {
-    class BehaviorSubject {
+    class ReplaySubject {
+        constructor(bufferSize: number);
         onNext(item: any): void;
     }
 }
