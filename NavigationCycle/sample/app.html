@@ -32,7 +32,8 @@
                         people: personSearch.search(context.data.name, context.data.sortExpression),
                         startRowIndex: context.data.startRowIndex,
                         maximumRows: context.data.maximumRows,
-                        sortExpression: context.data.sortExpression
+                        sortExpression: context.data.sortExpression,
+                        name: context.data.name
                     }
                 })
             };
@@ -50,6 +51,7 @@
                     return {
                         people: people,
                         sortExpression: sortExpression,
+                        name: data.name,
                         previous: previous,
                         next: next,
                         last: last
@@ -62,7 +64,7 @@
                         div([
                             div([
                                label({ htmlFor: 'name' }, 'Name'),
-                               input('#name') 
+                               input('#name', { value: data.name }) 
                             ]),
                             span('Page size '),
                             refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
