@@ -19,8 +19,8 @@
     <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
         var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul,
-            li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br,
-            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
+            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label,
+            li = CycleDOM.li, navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
             navigationBackLink = NavigationCycle.navigationBackLink; 
 
         function createStateComponents(dialogs) {
@@ -60,6 +60,10 @@
                 return data$.map(function(data) { 
                     return div([
                         div([
+                            div([
+                               label({ htmlFor: 'name' }, 'Name'),
+                               input('#name') 
+                            ]),
                             span('Page size '),
                             refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
                             refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
@@ -90,6 +94,15 @@
                 return {
                     DOM: vtree$,
                     Navigation: sources.DOM.select('a').events('click')
+                        .merge(
+                            sources.DOM.select('input').events('blur')
+                                .map(function(e){
+                                    return {
+                                        toData: { name: e.target.value }
+                                    }                            
+                                }
+                            )
+                        )
                 }
             };
             
