@@ -94,10 +94,13 @@
             listState.component = function(sources) {
                 var vtree$ = listState.view(listState.model(listState.intent(sources)));
                 var navigateLink$ = sources.DOM.select('a').events('click');
-                var refreshSearch$ = sources.DOM.select('input').events('blur').map(function(e) {
+                var refreshSearch$ = sources.DOM.select('input').events('blur')
+                    .map(function(e) {
                         var data = { name: event.target.value, startRowIndex: null };
                         data = Navigation.StateContext.includeCurrentData(data);
-                        return { toData: data };
+                        return { 
+                            toData: data
+                        };
                     }
                 ) 
                 return {
