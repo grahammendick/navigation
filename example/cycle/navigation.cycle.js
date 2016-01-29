@@ -77,26 +77,23 @@ var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof 
 var Rx = (typeof window !== "undefined" ? window['Rx'] : typeof global !== "undefined" ? global['Rx'] : null);
 var NavigationDriver = function (url) {
     return function (navigate$) {
+        var started = false;
         navigate$.subscribe(function (e) {
+            if (!started) {
+                Navigation.start(url);
+                started = true;
+                return;
+            }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 e.preventDefault();
                 var link = Navigation.settings.historyManager.getUrl(e.target);
                 Navigation.StateController.navigateLink(link);
             }
         });
-        var navigated$ = new Rx.BehaviorSubject();
-        for (var dialogKey in Navigation.StateInfoConfig.dialogs) {
-            var dialog = Navigation.StateInfoConfig.dialogs[dialogKey];
-            for (var stateKey in dialog.states) {
-                (function (state) { return state.navigated = function (data) {
-                    navigated$.onNext({
-                        state: state,
-                        data: data
-                    });
-                }; })(dialog.states[stateKey]);
-            }
-        }
-        Navigation.start(url);
+        var navigated$ = new Rx.ReplaySubject(1);
+        Navigation.StateController.onNavigate(function () {
+            navigated$.onNext(Navigation.StateContext);
+        });
         navigated$['isolateSource'] = function (NavigationSource, key) { return (NavigationSource.filter(function (navigated) { return navigated.state.parent.index + '-' + navigated.state.index === key; })); };
         return navigated$;
     };

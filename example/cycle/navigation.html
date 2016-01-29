@@ -29,151 +29,150 @@
             refreshLink = NavigationCycle.refreshLink, navigationBackLink = NavigationCycle.navigationBackLink; 
         
         /**
-         * Configures the Navigation router with States. There are two States,
-         * one for the 'list' view and another for the 'details' view.
+         * Turns the list and details States into Cycle components. Adds the component
+         * functions: intent, model and view and the 'constructor' function that calls
+         * these other three in sequence.
          */
-        Navigation.StateInfoConfig.build([
-            { key: 'person', initial: 'list', states: [
-                { key: 'list', route: '{pageNumber}', defaults: { pageNumber: 1 }, trackCrumbTrail: false, transitions: [
-                    { key: 'select', to: 'details' }]},
-                { key: 'details', route: 'person/{id}', defaults: { id: 0 }}]}
-        ]);
-        
-        var personDialog = Navigation.StateInfoConfig.dialogs.person;
-
-        /**
-         * Turns the list State into a Cycle component. Adds the component functions:
-         * intent, model and view and the 'constructor' function that calls these other
-         * three in sequence.
-         */
-        var listState = personDialog.states.list;
-        /**
-         * Creates the list State's intent. Subscribes to the Navigation event source.
-         * Each time a paging or back hyperlink is clicked, it returns the number of
-         * the page requested.
-         */
-        listState.intent = function(sources) {
-            return sources.Navigation.map(function(navigated) {
-                return { 
-                    people: personSearch.getList(),
-                    pageNumber: navigated.data.pageNumber
-                }
-            })
-        };
-        /**
-         * Creates the list State's model. Uses the incoming page number to only show
-         * one page of people at a time.
-         */
-        listState.model = function(data$) {
-            return data$.map(function(data) {
-                var start = (data.pageNumber - 1) * 10;
+        function createStateComponents(dialogs) {
+            var listState = dialogs.person.states.list;
+            /**
+             * Creates the list State's intent. Subscribes to the Navigation event source.
+             * Each time a paging or back hyperlink is clicked, it returns the number of
+             * the page requested.
+             */
+            listState.intent = function(sources) {
+                return sources.Navigation.map(function(navigated) {
+                    return { 
+                        people: personSearch.getList(),
+                        pageNumber: navigated.data.pageNumber
+                    }
+                })
+            };
+            /**
+             * Creates the list State's model. Uses the incoming page number to only show
+             * one page of people at a time.
+             */
+            listState.model = function(data$) {
+                return data$.map(function(data) {
+                    var start = (data.pageNumber - 1) * 10;
+                    return {
+                        people: data.people.slice(start, start + 10)
+                    }
+                })
+            };
+            /**
+             * Creates the list State's view. Turns the incoming people into hyperscript.
+             * The hyperlinks are built using the navigationLink and refreshLink hyperscript
+             * helpers that wrap up the Navigation router's URL-building capabilities.
+             */
+            listState.view = function(data$) {
+                return data$.map(function(data) { 
+                    return div({ id: 'listing' }, [
+                        table([
+                            tr([
+                                th('Name'),
+                                th('Date of Birth')                            
+                            ])]
+                            .concat(data.people.map(function(person) {
+                                return tr([
+                                    td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                                    td(person.dateOfBirth)
+                                ])
+                            }))
+                        ),
+                        div({ id: 'pager' }, [
+                            span('Go to page '),
+                            refreshLink({ toData: { pageNumber: 1 }, disableActive: true }, '1'),
+                            refreshLink({ toData: { pageNumber: 2 }, disableActive: true }, '2')
+                        ])
+                    ])
+                })
+            };
+            /**
+             * Creates the list State's component. Along with the vtree$, it returns a Navigation
+             * sink so that hyperlink clicks are sent to the Navigation driver.
+             */
+            listState.component = function(sources) {
+                var vtree$ = listState.view(listState.model(listState.intent(sources)));
                 return {
-                    people: data.people.slice(start, start + 10)
+                    DOM: vtree$,
+                    Navigation: sources.DOM.select('a').events('click')
                 }
-            })
-        };
-        /**
-         * Creates the list State's view. Turns the incoming people into hyperscript.
-         * The hyperlinks are built using the navigationLink and refreshLink hyperscript
-         * helpers that wrap up the Navigation router's URL-building capabilities.
-         */
-        listState.view = function(data$) {
-            return data$.map(function(data) { 
-                return div({ id: 'listing' }, [
-                    table([
-                        tr([
-                            th('Name'),
-                            th('Date of Birth')                            
-                        ])]
-                        .concat(data.people.map(function(person) {
-                            return tr([
-                                td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
-                                td(person.dateOfBirth)
-                            ])
-                        }))
-                    ),
-                    div({ id: 'pager' }, [
-                        span('Go to page '),
-                        refreshLink({ toData: { pageNumber: 1 }, disableActive: true }, '1'),
-                        refreshLink({ toData: { pageNumber: 2 }, disableActive: true }, '2')
+            };
+            
+            /**
+             * Turns the details State into a Cycle component. Adds the component functions:
+             * intent, model and view and the 'constructor' function that calls these other
+             * three in sequence.
+             */
+            var detailsState = dialogs.person.states.details;
+            /**
+             * Creates the details State's intent. Subscribes to the Navigation event source.
+             * Each time a person hyperlink is clicked, it uses the person id to stream the
+             * person's details.
+             */
+            detailsState.intent = function(sources) {
+                return sources.Navigation.map(function(navigated) {
+                    return personSearch.getDetails(navigated.data.id)
+                })
+            };
+            /**
+             * Creates the details State's model.
+             */
+            detailsState.model = function(person$) {
+                return person$;
+            }   
+            /**
+             * Creates the details State's view. Turns the incoming person into hyperscript.
+             * The hyperlink is built using the navigationBackLink hyperscript helper that
+             * wraps up the Navigation router's URL-building capabilities.
+             */
+            detailsState.view = function(person$) {
+                return person$.map(function(person) {
+                    return div({ id: 'details' }, [
+                        navigationBackLink({ distance: 1 }, 'Person Search'),
+                        div({ id: 'info' }, [
+                            h2(person.name),
+                            div({ className: 'label' }, 'Date of Birth'),
+                            div(person.dateOfBirth),
+                            div({ className: 'label' }, 'Email'),
+                            div(person.email),
+                            div({ className: 'label' }, 'Phone'),
+                            div(person.phone)
+                        ])
                     ])
-                ])
-            })
-        };
-        /**
-         * Creates the list State's component. Along with the vtree$, it returns a Navigation
-         * sink so that hyperlink clicks are sent to the Navigation driver.
-         */
-        listState.component = function(sources) {
-            var vtree$ = listState.view(listState.model(listState.intent(sources)));
-            return {
-                DOM: vtree$,
-                Navigation: sources.DOM.select('a').events('click')
-            }
-        };
+                })
+            };
+            /**
+             * Creates the details State's component. Along with the vtree$, it returns a Navigation
+             * sink so that hyperlink clicks are sent to the Navigation driver.
+             */
+            detailsState.component = function(sources) {
+                var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
+                return {
+                    DOM: vtree$,
+                    Navigation: sources.DOM.select('a').events('click')
+                }
+            };
+        }
         
-        /**
-         * Turns the details State into a Cycle component. Adds the component functions:
-         * intent, model and view and the 'constructor' function that calls these other
-         * three in sequence.
-         */
-        var detailsState = personDialog.states.details;
-        /**
-         * Creates the details State's intent. Subscribes to the Navigation event source.
-         * Each time a person hyperlink is clicked, it uses the person id to stream the
-         * person's details.
-         */
-        detailsState.intent = function(sources) {
-            return sources.Navigation.map(function(navigated) {
-                return personSearch.getDetails(navigated.data.id)
-            })
-        };
-        /**
-         * Creates the details State's model.
-         */
-        detailsState.model = function(person$) {
-            return person$;
-        }   
-        /**
-         * Creates the details State's view. Turns the incoming person into hyperscript.
-         * The hyperlink is built using the navigationBackLink hyperscript helper that
-         * wraps up the Navigation router's URL-building capabilities.
-         */
-        detailsState.view = function(person$) {
-            return person$.map(function(person) {
-                return div({ id: 'details' }, [
-                    navigationBackLink({ distance: 1 }, 'Person Search'),
-                    div({ id: 'info' }, [
-                        h2(person.name),
-                        div({ className: 'label' }, 'Date of Birth'),
-                        div(person.dateOfBirth),
-                        div({ className: 'label' }, 'Email'),
-                        div(person.email),
-                        div({ className: 'label' }, 'Phone'),
-                        div(person.phone)
-                    ])
-                ])
-            })
-        };
-        /**
-         * Creates the details State's component. Along with the vtree$, it returns a Navigation
-         * sink so that hyperlink clicks are sent to the Navigation driver.
-         */
-        detailsState.component = function(sources) {
-            var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
-            return {
-                DOM: vtree$,
-                Navigation: sources.DOM.select('a').events('click')
-            }
-        };
-        
-        /**
-         * Creates the main function. Subscribes to the Navigation event source. Each time a
-         * hyperlink is clicked it finds the State component to render. It sends the component
-         * the sources, isolated so that the component only receives relevant Navigation and
-         * DOM events.
-         */
         function main(sources) {
+            /**
+             * Configures the Navigation router with States. There are two States, one for the
+             * 'list' view and another for the 'details' view.
+             */
+            Navigation.StateInfoConfig.build([
+                { key: 'person', initial: 'list', states: [
+                    { key: 'list', route: '{pageNumber}', defaults: { pageNumber: 1 }, trackCrumbTrail: false, transitions: [
+                        { key: 'select', to: 'details' }]},
+                    { key: 'details', route: 'person/{id}', defaults: { id: 0 }}]}
+            ]);
+            createStateComponents(Navigation.StateInfoConfig.dialogs);
+            /**
+             * Subscribes to the Navigation event source. Each time a hyperlink is clicked it
+             * finds the State component to render. It sends the component the sources, isolated
+             * so that the component only receives relevant Navigation and DOM events.
+             */
             var component$$ = sources.Navigation
                 .map(function(navigated) {
                     var key = navigated.state.parent.index + '-' + navigated.state.index;
@@ -181,7 +180,7 @@
                 });
             return {
                 DOM: component$$.map(function(component) { return component.DOM }).switch(),
-                Navigation: component$$.map(function(component) { return component.Navigation }).switch()
+                Navigation: component$$.map(function(component) { return component.Navigation }).switch().startWith({})
             };
         }
 
