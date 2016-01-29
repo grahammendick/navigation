@@ -16,7 +16,7 @@ var NavigationDriver = (url) => {
                 Navigation.StateController.navigateLink(link);
             }
         });
-        var navigated$ = new (<any>Rx).ReplaySubject(1);
+        var navigated$ = new Rx.ReplaySubject(1);
         Navigation.StateController.onNavigate(() => {
             navigated$.onNext(Navigation.StateContext);
         })
