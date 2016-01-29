@@ -27,12 +27,12 @@
             var personDialog = dialogs.person;
             var listState = personDialog.states.list;        
             listState.intent = function(sources) {
-                return sources.Navigation.map(function(navigated) {
+                return sources.Navigation.map(function(context) {
                     return { 
-                        people: personSearch.search(null, navigated.data.sortExpression),
-                        startRowIndex: navigated.data.startRowIndex,
-                        maximumRows: navigated.data.maximumRows,
-                        sortExpression: navigated.data.sortExpression
+                        people: personSearch.search(null, context.data.sortExpression),
+                        startRowIndex: context.data.startRowIndex,
+                        maximumRows: context.data.maximumRows,
+                        sortExpression: context.data.sortExpression
                     }
                 })
             };
@@ -95,8 +95,8 @@
             
             var detailsState = personDialog.states.details;
             detailsState.intent = function(sources) {
-                return sources.Navigation.map(function(navigated) {
-                    return personSearch.getDetails(navigated.data.id)
+                return sources.Navigation.map(function(context) {
+                    return personSearch.getDetails(context.data.id)
                 })
             };
             detailsState.model = function(person$) {
@@ -131,9 +131,9 @@
             ]);
             createStateComponents(Navigation.StateInfoConfig.dialogs);
             var component$$ = sources.Navigation
-                .map(function(navigated) {
-                    var key = navigated.state.parent.index + '-' + navigated.state.index;
-                    return CycleIsolate(navigated.state.component, key)(sources);
+                .map(function(context) {
+                    var key = context.state.parent.index + '-' + context.state.index;
+                    return CycleIsolate(context.state.component, key)(sources);
                 });
             return {
                 DOM: component$$.map(function(component) { return component.DOM }).switch(),
