@@ -2,15 +2,12 @@ import Navigation = require('navigation');
 import Rx = require('rx');
 
 function navigate(properties) {
-    if (properties.action) {
+    if (properties.action)
         Navigation.StateController.navigate(properties.action, properties.toData, properties.historyAction);
-    } else {
-        if (properties.toData) {
-            Navigation.StateController.refresh(properties.toData, properties.historyAction);
-        } else {
-            Navigation.StateController.navigateBack(properties.distance, properties.historyAction);
-        }
-    }             
+    if (!properties.action && properties.toData)
+        Navigation.StateController.refresh(properties.toData, properties.historyAction);
+    if (properties.distance)
+        Navigation.StateController.navigateBack(properties.distance, properties.historyAction);
 }
 
 var NavigationDriver = (url) => {
