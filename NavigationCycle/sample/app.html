@@ -64,7 +64,7 @@
                         div([
                             div([
                                label({ htmlFor: 'name' }, 'Name'),
-                               input('#name', { value: data.name }) 
+                               input('#name', { value: data.name ? data.name : '' }) 
                             ]),
                             span('Page size '),
                             refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
