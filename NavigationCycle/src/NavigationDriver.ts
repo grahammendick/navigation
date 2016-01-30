@@ -15,7 +15,7 @@ function isolate(NavigationSource, key) {
         .filter((context) => context.state.parent.index + '-' + context.state.index === key);
     return {
         navigated: navigated$    
-    }
+    };
 }
 
 var NavigationDriver = (url) => {
@@ -38,9 +38,7 @@ var NavigationDriver = (url) => {
             }
         });
         var navigated$ = new Rx.ReplaySubject(1);
-        Navigation.StateController.onNavigate(() => {
-            navigated$.onNext(Navigation.StateContext);
-        })
+        Navigation.StateController.onNavigate(() => navigated$.onNext(Navigation.StateContext));
         return {
             navigated: navigated$,
             isolateSource: isolate
