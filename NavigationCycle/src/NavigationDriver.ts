@@ -10,6 +10,14 @@ function navigate(e) {
         Navigation.StateController.navigateBack(e.distance, e.historyAction);
 }
 
+function isolate(NavigationSource, key) {
+    var navigated$ = NavigationSource.navigated
+        .filter((context) => context.state.parent.index + '-' + context.state.index === key);
+    return {
+        navigated: navigated$    
+    }
+}
+
 var NavigationDriver = (url) => {
     return (navigate$) => {
         var started = false;
@@ -33,13 +41,6 @@ var NavigationDriver = (url) => {
         Navigation.StateController.onNavigate(() => {
             navigated$.onNext(Navigation.StateContext);
         })
-        function isolate(NavigationSource, key) {
-            var navigated$ = NavigationSource.navigated
-                .filter((context) => context.state.parent.index + '-' + context.state.index === key);
-            return {
-                navigated: navigated$    
-            }
-        }
         return {
             navigated: navigated$,
             isolateSource: isolate
