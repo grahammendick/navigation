@@ -94,8 +94,9 @@
             };
             listState.component = function(sources) {
                 var vtree$ = listState.view(listState.model(listState.intent(sources)));
-                var navigateLink$ = sources.DOM.select('a').events('click');
-                var refreshSearch$ = sources.DOM.select('input').events('blur')
+                var select$ = sources.DOM.select('table a').events('click');
+                var page$ = sources.DOM.select('ul a').events('click');
+                var search$ = sources.DOM.select('input').events('blur')
                     .map(function(e) {
                         return { 
                             toData: Navigation.StateContext.includeCurrentData({ 
@@ -107,7 +108,7 @@
                 ) 
                 return {
                     DOM: vtree$,
-                    Navigation: navigateLink$.merge(refreshSearch$)
+                    Navigation: select$.merge(page$).merge(search$)
                 }
             };
             
@@ -134,9 +135,10 @@
             };
             detailsState.component = function(sources) {
                 var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
+                var back$ = sources.DOM.select('a').events('click')
                 return {
                     DOM: vtree$,
-                    Navigation: sources.DOM.select('a').events('click')
+                    Navigation: back$
                 }
             };
         }
