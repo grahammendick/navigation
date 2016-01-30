@@ -27,15 +27,16 @@
             var personDialog = dialogs.person;
             var listState = personDialog.states.list;        
             listState.intent = function(sources) {
-                return sources.Navigation.map(function(context) {
-                    return { 
-                        people: personSearch.search(context.data.name, context.data.sortExpression),
-                        startRowIndex: context.data.startRowIndex,
-                        maximumRows: context.data.maximumRows,
-                        sortExpression: context.data.sortExpression,
-                        name: context.data.name
-                    }
-                })
+                return sources.Navigation.navigated
+                    .map(function(context) {
+                        return { 
+                            people: personSearch.search(context.data.name, context.data.sortExpression),
+                            startRowIndex: context.data.startRowIndex,
+                            maximumRows: context.data.maximumRows,
+                            sortExpression: context.data.sortExpression,
+                            name: context.data.name
+                        }
+                    })
             };
             listState.model = function(data$) {
                 return data$.map(function(data) {
@@ -112,9 +113,10 @@
             
             var detailsState = personDialog.states.details;
             detailsState.intent = function(sources) {
-                return sources.Navigation.map(function(context) {
-                    return personSearch.getDetails(context.data.id)
-                })
+                return sources.Navigation.navigated
+                    .map(function(context) {
+                        return personSearch.getDetails(context.data.id)
+                    })
             };
             detailsState.model = function(person$) {
                 return person$;
@@ -147,7 +149,7 @@
                     { key: 'details', route: 'person', title: 'Person Details', }]}
             ]);
             createStateComponents(Navigation.StateInfoConfig.dialogs);
-            var component$$ = sources.Navigation
+            var component$$ = sources.Navigation.navigated
                 .map(function(context) {
                     var key = context.state.parent.index + '-' + context.state.index;
                     return CycleIsolate(context.state.component, key)(sources);

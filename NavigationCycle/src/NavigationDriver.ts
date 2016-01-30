@@ -33,10 +33,17 @@ var NavigationDriver = (url) => {
         Navigation.StateController.onNavigate(() => {
             navigated$.onNext(Navigation.StateContext);
         })
-        navigated$['isolateSource'] = (NavigationSource, key) => (
-            NavigationSource.filter((navigated) => navigated.state.parent.index + '-' + navigated.state.index === key)
-        )
-        return navigated$;
+        function isolate(NavigationSource, key) {
+            var navigated$ = NavigationSource.navigated
+                .filter((context) => context.state.parent.index + '-' + context.state.index === key);
+            return {
+                navigated: navigated$    
+            }
+        }
+        return {
+            navigated: navigated$,
+            isolateSource: isolate
+        };
     };
 }
 export = NavigationDriver;
