@@ -8,6 +8,8 @@ function navigate(e) {
         Navigation.StateController.refresh(e.toData, e.historyAction);
     if (e.distance)
         Navigation.StateController.navigateBack(e.distance, e.historyAction);
+    if (e.url)
+        Navigation.StateController.navigateLink(e.url);
 }
 
 function isolate(NavigationSource, key) {
