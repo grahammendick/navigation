@@ -94,9 +94,6 @@
             };
             listState.component = function(sources) {
                 var vtree$ = listState.view(listState.model(listState.intent(sources)));
-                var select$ = sources.DOM.select('table a').events('click');
-                var pageSize$ = sources.DOM.select('div a').events('click');
-                var page$ = sources.DOM.select('ul a').events('click');
                 var search$ = sources.DOM.select('input').events('blur')
                     .map(function(e) {
                         return { 
@@ -109,7 +106,7 @@
                 ) 
                 return {
                     DOM: vtree$,
-                    Navigation: select$.merge(pageSize$).merge(page$).merge(search$)
+                    Navigation: sources.DOM.select('a').events('click').merge(search$)
                 }
             };
             
@@ -136,10 +133,9 @@
             };
             detailsState.component = function(sources) {
                 var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
-                var back$ = sources.DOM.select('a').events('click')
                 return {
                     DOM: vtree$,
-                    Navigation: back$
+                    Navigation: sources.DOM.select('a').events('click')
                 }
             };
         }
