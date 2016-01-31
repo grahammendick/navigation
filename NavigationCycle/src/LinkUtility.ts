@@ -3,6 +3,18 @@
 /// <reference path="rx.d.ts" />
 import Navigation = require('navigation');
 
+class HistoryActionHook {
+    private historyAction;
+    
+    constructor(historyAction) {
+        this.historyAction = historyAction;    
+    }
+    
+    hook(node) {
+        node['historyAction'] = this.historyAction;
+    }
+}
+
 class LinkUtility {
     static getData(toData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
@@ -34,13 +46,8 @@ class LinkUtility {
     }
     
     static setHistory(properties: any, historyAction) {
-        if (typeof historyAction === 'string')
-            properties.historyAction = Navigation.HistoryAction[historyAction];
-        if (properties.historyAction && typeof properties.historyAction == 'number') {
-            if (!properties.attributes)
-                properties.attributes = {};
-            properties.attributes['data-history-action'] = properties.historyAction.toString();
-        }
+        if (historyAction)
+            properties.historyAction = new HistoryActionHook(historyAction);
     }
 }
 export = LinkUtility;
