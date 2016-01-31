@@ -36,7 +36,7 @@ var NavigationDriver = (url) => {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
                     var link = Navigation.settings.historyManager.getUrl(e.target);
-                    Navigation.StateController.navigateLink(link);
+                    Navigation.StateController.navigateLink(link, false, +e.target.getAttribute('data-history-action'));
                 }
             } else {
                 navigate(e);
