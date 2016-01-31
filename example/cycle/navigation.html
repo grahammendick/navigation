@@ -41,10 +41,10 @@
              * the page requested.
              */
             listState.intent = function(sources) {
-                return sources.Navigation.map(function(navigated) {
+                return sources.Navigation.navigated.map(function(context) {
                     return { 
                         people: personSearch.getList(),
-                        pageNumber: navigated.data.pageNumber
+                        pageNumber: context.data.pageNumber
                     }
                 })
             };
@@ -100,11 +100,6 @@
                 }
             };
             
-            /**
-             * Turns the details State into a Cycle component. Adds the component functions:
-             * intent, model and view and the 'constructor' function that calls these other
-             * three in sequence.
-             */
             var detailsState = dialogs.person.states.details;
             /**
              * Creates the details State's intent. Subscribes to the Navigation event source.
@@ -112,8 +107,8 @@
              * person's details.
              */
             detailsState.intent = function(sources) {
-                return sources.Navigation.map(function(navigated) {
-                    return personSearch.getDetails(navigated.data.id)
+                return sources.Navigation.navigated.map(function(context) {
+                    return personSearch.getDetails(context.data.id)
                 })
             };
             /**
@@ -173,10 +168,10 @@
              * finds the State component to render. It sends the component the sources, isolated
              * so that the component only receives relevant Navigation and DOM events.
              */
-            var component$$ = sources.Navigation
-                .map(function(navigated) {
-                    var key = navigated.state.parent.index + '-' + navigated.state.index;
-                    return CycleIsolate(navigated.state.component, key)(sources);
+            var component$$ = sources.Navigation.navigated
+                .map(function(context) {
+                    var key = context.state.parent.index + '-' + context.state.index;
+                    return CycleIsolate(context.state.component, key)(sources);
                 });
             return {
                 DOM: component$$.map(function(component) { return component.DOM }).switch(),

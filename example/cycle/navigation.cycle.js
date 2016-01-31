@@ -38,12 +38,22 @@ var LinkUtility = (function () {
         if (active && disableActive)
             properties.href = null;
     };
+    LinkUtility.setHistory = function (properties, historyAction) {
+        if (typeof historyAction === 'string')
+            properties.historyAction = Navigation.HistoryAction[historyAction];
+        if (properties.historyAction && typeof properties.historyAction == 'number') {
+            if (!properties.attributes)
+                properties.attributes = {};
+            properties.attributes['data-history-action'] = properties.historyAction.toString();
+        }
+    };
     return LinkUtility;
 })();
 module.exports = LinkUtility;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(_dereq_,module,exports){
 (function (global){
+var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
 var CycleDOM = (typeof window !== "undefined" ? window['CycleDOM'] : typeof global !== "undefined" ? global['CycleDOM'] : null);
 var NavigationBackLink = function (properties, children) {
@@ -52,11 +62,12 @@ var NavigationBackLink = function (properties, children) {
         newProperties[key] = properties[key];
     var link = Navigation.StateController.getNavigationBackLink(properties.distance);
     newProperties.href = Navigation.settings.historyManager.getHref(link);
+    LinkUtility.setHistory(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
 module.exports = NavigationBackLink;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(_dereq_,module,exports){
+},{"./LinkUtility":1}],3:[function(_dereq_,module,exports){
 var NavigationDriver = _dereq_('./NavigationDriver');
 var NavigationBackLink = _dereq_('./NavigationBackLink');
 var NavigationLink = _dereq_('./NavigationLink');
@@ -75,27 +86,48 @@ module.exports = NavigationCycle;
 (function (global){
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
 var Rx = (typeof window !== "undefined" ? window['Rx'] : typeof global !== "undefined" ? global['Rx'] : null);
+function navigate(e) {
+    var historyAction = e.historyAction;
+    if (typeof historyAction === 'string')
+        historyAction = Navigation.HistoryAction[historyAction];
+    if (e.action)
+        Navigation.StateController.navigate(e.action, e.toData, historyAction);
+    if (!e.action && e.toData)
+        Navigation.StateController.refresh(e.toData, historyAction);
+    if (e.distance)
+        Navigation.StateController.navigateBack(e.distance, historyAction);
+    if (e.url)
+        Navigation.StateController.navigateLink(e.url, false, historyAction);
+}
+function isolate(NavigationSource, key) {
+    var navigated$ = NavigationSource.navigated
+        .filter(function (context) { return context.state.parent.index + '-' + context.state.index === key; });
+    return {
+        navigated: navigated$
+    };
+}
 var NavigationDriver = function (url) {
     return function (navigate$) {
-        var started = false;
         navigate$.subscribe(function (e) {
-            if (!started) {
+            if (!Navigation.StateContext.state)
                 Navigation.start(url);
-                started = true;
-                return;
+            if (e.target) {
+                if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
+                    e.preventDefault();
+                    var link = Navigation.settings.historyManager.getUrl(e.target);
+                    Navigation.StateController.navigateLink(link, false, +e.target.getAttribute('data-history-action'));
+                }
             }
-            if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                e.preventDefault();
-                var link = Navigation.settings.historyManager.getUrl(e.target);
-                Navigation.StateController.navigateLink(link);
+            else {
+                navigate(e);
             }
         });
         var navigated$ = new Rx.ReplaySubject(1);
-        Navigation.StateController.onNavigate(function () {
-            navigated$.onNext(Navigation.StateContext);
-        });
-        navigated$['isolateSource'] = function (NavigationSource, key) { return (NavigationSource.filter(function (navigated) { return navigated.state.parent.index + '-' + navigated.state.index === key; })); };
-        return navigated$;
+        Navigation.StateController.onNavigate(function () { return navigated$.onNext(Navigation.StateContext); });
+        return {
+            navigated: navigated$,
+            isolateSource: isolate
+        };
     };
 };
 module.exports = NavigationDriver;
@@ -122,6 +154,7 @@ var NavigationLink = function (properties, children) {
     newProperties.href = Navigation.settings.historyManager.getHref(link);
     active = active && !!newProperties.href && isActive(properties.action);
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
+    LinkUtility.setHistory(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
 module.exports = NavigationLink;
@@ -144,6 +177,7 @@ var RefreshLink = function (properties, children) {
     newProperties.href = Navigation.settings.historyManager.getHref(link);
     active = active && !!newProperties.href;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
+    LinkUtility.setHistory(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
 module.exports = RefreshLink;
