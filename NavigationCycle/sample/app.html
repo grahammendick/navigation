@@ -19,22 +19,24 @@
     <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
         var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul,
-            li = CycleDOM.li, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br,
-            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
+            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label,
+            li = CycleDOM.li, navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
             navigationBackLink = NavigationCycle.navigationBackLink; 
 
         function createStateComponents(dialogs) {
             var personDialog = dialogs.person;
             var listState = personDialog.states.list;        
             listState.intent = function(sources) {
-                return sources.Navigation.map(function(context) {
-                    return { 
-                        people: personSearch.search(null, context.data.sortExpression),
-                        startRowIndex: context.data.startRowIndex,
-                        maximumRows: context.data.maximumRows,
-                        sortExpression: context.data.sortExpression
-                    }
-                })
+                return sources.Navigation.navigated
+                    .map(function(context) {
+                        return { 
+                            people: personSearch.search(context.data.name, context.data.sortExpression),
+                            startRowIndex: context.data.startRowIndex,
+                            maximumRows: context.data.maximumRows,
+                            sortExpression: context.data.sortExpression,
+                            name: context.data.name
+                        }
+                    })
             };
             listState.model = function(data$) {
                 return data$.map(function(data) {
@@ -50,6 +52,7 @@
                     return {
                         people: people,
                         sortExpression: sortExpression,
+                        name: data.name,
                         previous: previous,
                         next: next,
                         last: last
@@ -60,6 +63,10 @@
                 return data$.map(function(data) { 
                     return div([
                         div([
+                            div([
+                               label({ htmlFor: 'name' }, 'Name'),
+                               input('#name', { value: data.name ? data.name : '' }) 
+                            ]),
                             span('Page size '),
                             refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
                             refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
@@ -87,17 +94,28 @@
             };
             listState.component = function(sources) {
                 var vtree$ = listState.view(listState.model(listState.intent(sources)));
+                var search$ = sources.DOM.select('input').events('blur')
+                    .map(function(e) {
+                        return { 
+                            toData: Navigation.StateContext.includeCurrentData({ 
+                                name: e.target.value,
+                                startRowIndex: null
+                            })
+                        };
+                    }
+                ) 
                 return {
                     DOM: vtree$,
-                    Navigation: sources.DOM.select('a').events('click')
+                    Navigation: sources.DOM.select('a').events('click').merge(search$)
                 }
             };
             
             var detailsState = personDialog.states.details;
             detailsState.intent = function(sources) {
-                return sources.Navigation.map(function(context) {
-                    return personSearch.getDetails(context.data.id)
-                })
+                return sources.Navigation.navigated
+                    .map(function(context) {
+                        return personSearch.getDetails(context.data.id)
+                    })
             };
             detailsState.model = function(person$) {
                 return person$;
@@ -130,7 +148,7 @@
                     { key: 'details', route: 'person', title: 'Person Details', }]}
             ]);
             createStateComponents(Navigation.StateInfoConfig.dialogs);
-            var component$$ = sources.Navigation
+            var component$$ = sources.Navigation.navigated
                 .map(function(context) {
                     var key = context.state.parent.index + '-' + context.state.index;
                     return CycleIsolate(context.state.component, key)(sources);
