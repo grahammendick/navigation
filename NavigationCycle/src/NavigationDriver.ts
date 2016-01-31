@@ -1,10 +1,9 @@
+import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import Rx = require('rx');
 
 function navigate(e) {
-    var historyAction = e.historyAction;
-    if (typeof historyAction === 'string')
-        historyAction = Navigation.HistoryAction[historyAction];
+    var historyAction = LinkUtility.getHistoryAction(e);
     if (e.action)
         Navigation.StateController.navigate(e.action, e.toData, historyAction);
     if (!e.action && e.toData)
@@ -32,10 +31,7 @@ var NavigationDriver = function(url) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
                     var link = Navigation.settings.historyManager.getUrl(e.target);
-                    var historyAction = e.target.historyAction;
-                    if (typeof historyAction === 'string')
-                        historyAction = Navigation.HistoryAction[historyAction];
-                    Navigation.StateController.navigateLink(link, false, historyAction);
+                    Navigation.StateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
                 }
             } else {
                 navigate(e);

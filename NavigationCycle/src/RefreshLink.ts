@@ -15,7 +15,7 @@ var RefreshLink = (properties: any, children: any) => {
     newProperties.href = Navigation.settings.historyManager.getHref(link);
     active = active && !!newProperties.href;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
-    LinkUtility.setHistory(newProperties, properties.historyAction);
+    LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 }
 export = RefreshLink;

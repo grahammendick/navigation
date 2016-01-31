@@ -45,9 +45,16 @@ class LinkUtility {
             properties.href = null;        
     }
     
-    static setHistory(properties: any, historyAction) {
+    static setHistoryAction(properties: any, historyAction) {
         if (historyAction)
             properties.historyAction = new HistoryActionHook(historyAction);
+    }
+    
+    static getHistoryAction(properties: any) {
+        var historyAction = properties.historyAction;
+        if (typeof historyAction === 'string')
+            historyAction = Navigation.HistoryAction[historyAction];
+        return historyAction;
     }
 }
 export = LinkUtility;
