@@ -25,13 +25,9 @@ function isolate(NavigationSource, key) {
 
 var NavigationDriver = (url) => {
     return (navigate$) => {
-        var started = false;
         navigate$.subscribe(e => {
-            if (!started) {
+            if (!Navigation.StateContext.state)
                 Navigation.start(url);
-                started = true;
-                return;
-            }
             if (e.target) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
