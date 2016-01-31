@@ -23,8 +23,8 @@ function isolate(NavigationSource, key) {
     };
 }
 
-var NavigationDriver = (url) => {
-    return (navigate$) => {
+var NavigationDriver = function(url) {
+    return function(navigate$) {
         navigate$.subscribe(e => {
             if (!Navigation.StateContext.state)
                 Navigation.start(url);
