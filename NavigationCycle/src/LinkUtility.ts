@@ -36,7 +36,7 @@ class LinkUtility {
     static setHistory(properties: any, historyAction) {
         if (typeof historyAction === 'string')
             properties.historyAction = Navigation.HistoryAction[historyAction];
-        if (properties.historyAction) {
+        if (properties.historyAction && typeof properties.historyAction == 'number') {
             if (!properties.attributes)
                 properties.attributes = {};
             properties.attributes['data-history-action'] = properties.historyAction.toString();
