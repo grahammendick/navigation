@@ -9,6 +9,15 @@
 /// <reference path="cycle-dom.d.ts" />
 /// <reference path="rx.d.ts" />
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
+var HistoryActionHook = (function () {
+    function HistoryActionHook(historyAction) {
+        this.historyAction = historyAction;
+    }
+    HistoryActionHook.prototype.hook = function (node) {
+        node['historyAction'] = this.historyAction;
+    };
+    return HistoryActionHook;
+})();
 var LinkUtility = (function () {
     function LinkUtility() {
     }
@@ -39,13 +48,8 @@ var LinkUtility = (function () {
             properties.href = null;
     };
     LinkUtility.setHistory = function (properties, historyAction) {
-        if (typeof historyAction === 'string')
-            properties.historyAction = Navigation.HistoryAction[historyAction];
-        if (properties.historyAction && typeof properties.historyAction == 'number') {
-            if (!properties.attributes)
-                properties.attributes = {};
-            properties.attributes['data-history-action'] = properties.historyAction.toString();
-        }
+        if (historyAction)
+            properties.historyAction = new HistoryActionHook(historyAction);
     };
     return LinkUtility;
 })();
@@ -115,7 +119,10 @@ var NavigationDriver = function (url) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
                     var link = Navigation.settings.historyManager.getUrl(e.target);
-                    Navigation.StateController.navigateLink(link, false, +e.target.getAttribute('data-history-action'));
+                    var historyAction = e.target.historyAction;
+                    if (typeof historyAction === 'string')
+                        historyAction = Navigation.HistoryAction[historyAction];
+                    Navigation.StateController.navigateLink(link, false, historyAction);
                 }
             }
             else {
