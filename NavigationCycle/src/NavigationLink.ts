@@ -20,6 +20,7 @@ var NavigationLink = (properties: any, children: any) => {
     newProperties.href = Navigation.settings.historyManager.getHref(link);
     active = active && !!newProperties.href && isActive(properties.action);
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
+    LinkUtility.setHistory(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 }
 export = NavigationLink;

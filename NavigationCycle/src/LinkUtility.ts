@@ -31,7 +31,17 @@ class LinkUtility {
             properties.className = !properties.className ? activeCssClass : properties.className + ' ' + activeCssClass;
         if (active && disableActive)
             properties.href = null;        
-    }    
+    }
+    
+    static setHistory(properties: any, historyAction) {
+        if (typeof historyAction === 'string')
+            properties.historyAction = Navigation.HistoryAction[historyAction];
+        if (properties.historyAction) {
+            if (!properties.attributes)
+                properties.attributes = {};
+            properties.attributes['data-history-action'] = properties.historyAction.toString();
+        }
+    }
 }
 export = LinkUtility;
 
