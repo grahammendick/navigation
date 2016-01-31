@@ -47,9 +47,15 @@ var LinkUtility = (function () {
         if (active && disableActive)
             properties.href = null;
     };
-    LinkUtility.setHistory = function (properties, historyAction) {
+    LinkUtility.setHistoryAction = function (properties, historyAction) {
         if (historyAction)
             properties.historyAction = new HistoryActionHook(historyAction);
+    };
+    LinkUtility.getHistoryAction = function (properties) {
+        var historyAction = properties.historyAction;
+        if (typeof historyAction === 'string')
+            historyAction = Navigation.HistoryAction[historyAction];
+        return historyAction;
     };
     return LinkUtility;
 })();
@@ -66,7 +72,7 @@ var NavigationBackLink = function (properties, children) {
         newProperties[key] = properties[key];
     var link = Navigation.StateController.getNavigationBackLink(properties.distance);
     newProperties.href = Navigation.settings.historyManager.getHref(link);
-    LinkUtility.setHistory(newProperties, properties.historyAction);
+    LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
 module.exports = NavigationBackLink;
@@ -88,12 +94,11 @@ var NavigationCycle = (function () {
 module.exports = NavigationCycle;
 },{"./NavigationBackLink":2,"./NavigationDriver":4,"./NavigationLink":5,"./RefreshLink":6}],4:[function(_dereq_,module,exports){
 (function (global){
+var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
 var Rx = (typeof window !== "undefined" ? window['Rx'] : typeof global !== "undefined" ? global['Rx'] : null);
 function navigate(e) {
-    var historyAction = e.historyAction;
-    if (typeof historyAction === 'string')
-        historyAction = Navigation.HistoryAction[historyAction];
+    var historyAction = LinkUtility.getHistoryAction(e);
     if (e.action)
         Navigation.StateController.navigate(e.action, e.toData, historyAction);
     if (!e.action && e.toData)
@@ -119,10 +124,7 @@ var NavigationDriver = function (url) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
                     var link = Navigation.settings.historyManager.getUrl(e.target);
-                    var historyAction = e.target.historyAction;
-                    if (typeof historyAction === 'string')
-                        historyAction = Navigation.HistoryAction[historyAction];
-                    Navigation.StateController.navigateLink(link, false, historyAction);
+                    Navigation.StateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
                 }
             }
             else {
@@ -139,7 +141,7 @@ var NavigationDriver = function (url) {
 };
 module.exports = NavigationDriver;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],5:[function(_dereq_,module,exports){
+},{"./LinkUtility":1}],5:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
 var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
@@ -161,7 +163,7 @@ var NavigationLink = function (properties, children) {
     newProperties.href = Navigation.settings.historyManager.getHref(link);
     active = active && !!newProperties.href && isActive(properties.action);
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
-    LinkUtility.setHistory(newProperties, properties.historyAction);
+    LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
 module.exports = NavigationLink;
@@ -184,7 +186,7 @@ var RefreshLink = function (properties, children) {
     newProperties.href = Navigation.settings.historyManager.getHref(link);
     active = active && !!newProperties.href;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
-    LinkUtility.setHistory(newProperties, properties.historyAction);
+    LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
 module.exports = RefreshLink;
