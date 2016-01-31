@@ -95,6 +95,7 @@
             listState.component = function(sources) {
                 var vtree$ = listState.view(listState.model(listState.intent(sources)));
                 var select$ = sources.DOM.select('table a').events('click');
+                var pageSize$ = sources.DOM.select('div a').events('click');
                 var page$ = sources.DOM.select('ul a').events('click');
                 var search$ = sources.DOM.select('input').events('blur')
                     .map(function(e) {
@@ -108,7 +109,7 @@
                 ) 
                 return {
                     DOM: vtree$,
-                    Navigation: select$.merge(page$).merge(search$)
+                    Navigation: select$.merge(pageSize$).merge(page$).merge(search$)
                 }
             };
             
