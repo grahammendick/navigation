@@ -1,6 +1,5 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
 import HistoryNavigator = require('./HistoryNavigator');
-import settings = require('../settings');
 import StateContext = require('../StateContext');
 
 class HTML5HistoryManager implements IHistoryManager {
@@ -11,9 +10,9 @@ class HTML5HistoryManager implements IHistoryManager {
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
     }
 
-    addHistory(stateContext: StateContext, url: string, replace?: boolean) {
+    addHistory(stateContext: StateContext, url: string, replace: boolean, applicationPath: string) {
         url = url != null ? url : stateContext.url;
-        url = settings.applicationPath + url;
+        url = applicationPath + url;
         if (!this.disabled && location.pathname + location.search !== url) {
             if (!replace)            
                 window.history.pushState(null, null, url);
@@ -22,18 +21,18 @@ class HTML5HistoryManager implements IHistoryManager {
         }
     }
 
-    getCurrentUrl(): string {
-        return location.pathname.substring(settings.applicationPath.length) + location.search;
+    getCurrentUrl(applicationPath: string): string {
+        return location.pathname.substring(applicationPath.length) + location.search;
     }
 
-    getHref(url: string): string {
+    getHref(url: string, applicationPath: string): string {
         if (!url)
             throw new Error('The Url is invalid');
-        return settings.applicationPath + url;
+        return applicationPath + url;
     }
 
-    getUrl(anchor: HTMLAnchorElement) {
-        return anchor.pathname.substring(settings.applicationPath.length) + anchor.search;
+    getUrl(anchor: HTMLAnchorElement, applicationPath: string) {
+        return anchor.pathname.substring(applicationPath.length) + anchor.search;
     }
 }
 export = HTML5HistoryManager;

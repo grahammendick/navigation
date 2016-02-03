@@ -3,9 +3,9 @@
 interface IHistoryManager {
     disabled: boolean;
     init();
-    addHistory(stateContext: StateContext, url: string, replace?: boolean): void;
-    getCurrentUrl(): string;
-    getHref(url: string): string;
-    getUrl(anchor: HTMLAnchorElement): string;
+    addHistory(stateContext: StateContext, url: string, replace: boolean, applicationPath: string): void;
+    getCurrentUrl(applicationPath: string): string;
+    getHref(url: string, applicationPath: string): string;
+    getUrl(anchor: HTMLAnchorElement, applicationPath: string): string;
 }
 export = IHistoryManager;

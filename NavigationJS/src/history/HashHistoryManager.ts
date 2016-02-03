@@ -15,7 +15,7 @@ class HashHistoryManager implements IHistoryManager {
         }
     }
 
-    addHistory(stateContext: StateContext, url: string, replace?: boolean) {
+    addHistory(stateContext: StateContext, url: string, replace: boolean) {
         url = url != null ? url : stateContext.url;
         url = '#' + this.encode(url);
         if (!this.disabled && location.hash !== url) {
