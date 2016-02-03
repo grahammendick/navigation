@@ -5,6 +5,7 @@ import IDialog = require('./config/IDialog');
 import HistoryAction = require('./history/HistoryAction');
 import NavigationData = require('./NavigationData');
 import NavigationSettings = require('./NavigationSettings');
+import INavigationSettings = require('./INavigationSettings');
 import ReturnDataManager = require('./ReturnDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
@@ -23,7 +24,7 @@ class StateController {
     _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
     
-    constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: NavigationSettings) {
+    constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         for(var setting in settings)
             this.settings[setting] = settings[setting];
         this.buildDialogs(dialogs);
