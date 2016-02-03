@@ -19,8 +19,8 @@ class StateController {
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
     stateContext: StateContext = new StateContext();
-    settings: NavigationSettings = new NavigationSettings(); 
-    _dialogs: Dialog[] = [];
+    private settings: NavigationSettings = new NavigationSettings(); 
+    private _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
     
     constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: NavigationSettings) {
