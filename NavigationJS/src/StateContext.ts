@@ -13,6 +13,8 @@ class StateContext {
     data: any = {};
     url: string = null;
     title: string = null;
+    crumbTrail: string = null;
+    crumbTrailKey: string = null;
 
     includeCurrentData(data: any, keys?: string[]): any {
         if (!keys) {

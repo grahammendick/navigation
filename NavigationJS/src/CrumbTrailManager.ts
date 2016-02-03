@@ -7,32 +7,30 @@ import StateContext = require('./StateContext');
 import StateInfoConfig = require('./config/StateInfoConfig');
 
 class CrumbTrailManager {
-    static crumbTrail: string = null;
-    static crumbTrailKey: string = null;
     private static CRUMB_1_SEP = '4_';
     private static CRUMB_2_SEP = '5_';
 
-    static buildCrumbTrail(uncombined: boolean) {
-        var crumbs = this.getCrumbs(false);
+    static buildCrumbTrail(stateContext: StateContext, uncombined: boolean) {
+        var crumbs = this.getCrumbs(stateContext, false);
         if (uncombined)
-            crumbs.push(new Crumb(StateContext.previousData, StateContext.previousState, this.getHref(StateContext.previousState, StateContext.previousData, null), false));        
-        crumbs = StateContext.state.stateHandler.truncateCrumbTrail(StateContext.state, crumbs);
+            crumbs.push(new Crumb(stateContext.previousData, stateContext.previousState, this.getHref(stateContext, stateContext.previousState, stateContext.previousData, null), false));        
+        crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
         if (settings.combineCrumbTrail)
-            crumbs.push(new Crumb(StateContext.data, StateContext.state, this.getHref(StateContext.state, StateContext.data, null), false));
+            crumbs.push(new Crumb(stateContext.data, stateContext.state, this.getHref(stateContext, stateContext.state, stateContext.data, null), false));
         crumbs.reverse();
         var trailString: string = '';
         for (var i = 0; i < crumbs.length; i++) {
             trailString += this.CRUMB_1_SEP + crumbs[i].state.id + this.CRUMB_2_SEP;
             trailString += ReturnDataManager.formatReturnData(crumbs[i].state, crumbs[i].data);
         }
-        this.crumbTrail = trailString ? trailString : null;
-        this.crumbTrailKey = settings.crumbTrailPersister.save(this.crumbTrail);
+        stateContext.crumbTrail = trailString ? trailString : null;
+        stateContext.crumbTrailKey = settings.crumbTrailPersister.save(stateContext.crumbTrail);
     }
 
-    static getCrumbs(setLast: boolean, skipLatest?: boolean): Crumb[] {
+    static getCrumbs(stateContext: StateContext, setLast: boolean, skipLatest?: boolean): Crumb[] {
         var crumbTrailArray: Crumb[] = [];
         var arrayCount = 0;
-        var trail = this.crumbTrail;
+        var trail = stateContext.crumbTrail;
         var crumbTrailSize = !trail ? 0 : trail.split(this.CRUMB_1_SEP).length - 1;
         var last = true;
         while (arrayCount < crumbTrailSize) {
@@ -45,7 +43,7 @@ class CrumbTrailManager {
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
             if (!skipLatest) {
-                crumbTrailArray.push(new Crumb(navigationData, state, this.getHref(state, navigationData, null), setLast && last));
+                crumbTrailArray.push(new Crumb(navigationData, state, this.getHref(stateContext, state, navigationData, null), setLast && last));
                 last = false;
             }
             skipLatest = false;
@@ -61,11 +59,11 @@ class CrumbTrailManager {
         return StateInfoConfig._dialogs[+ids[0]]._states[+ids[1]];
     }
 
-    static getHref(state: State, navigationData: any, returnData: any): string {
+    static getHref(stateContext: StateContext, state: State, navigationData: any, returnData: any): string {
         var data = {};
         data[settings.stateIdKey] = state.id;
-        if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state)
-            data[settings.previousStateIdKey] = StateContext.state.id;
+        if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state)
+            data[settings.previousStateIdKey] = stateContext.state.id;
         if (!settings.router.supportsDefaults) {
             navigationData = NavigationData.clone(navigationData);
             NavigationData.setDefaults(navigationData, state.defaults);
@@ -82,20 +80,20 @@ class CrumbTrailManager {
                 }
             }
         }
-        if (!settings.combineCrumbTrail && state.trackCrumbTrail && StateContext.state) {
+        if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state) {
             if (settings.trackAllPreviousData)
-                returnData = StateContext.data;
-            var returnDataString = ReturnDataManager.formatReturnData(StateContext.state, returnData);
+                returnData = stateContext.data;
+            var returnDataString = ReturnDataManager.formatReturnData(stateContext.state, returnData);
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
         }
-        if (this.crumbTrailKey && state.trackCrumbTrail)
-            data[settings.crumbTrailKey] = this.crumbTrailKey;
+        if (stateContext.crumbTrailKey && state.trackCrumbTrail)
+            data[settings.crumbTrailKey] = stateContext.crumbTrailKey;
         return state.stateHandler.getNavigationLink(state, data, arrayData);
     }
 
-    static getRefreshHref(refreshData: any): string {
-        return this.getHref(StateContext.state, refreshData, null);
+    static getRefreshHref(stateContext: StateContext, refreshData: any): string {
+        return this.getHref(stateContext, stateContext.state, refreshData, null);
     }
 }
 export = CrumbTrailManager;
