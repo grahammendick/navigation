@@ -1,6 +1,5 @@
 import CrumbTrailPersister = require('./CrumbTrailPersister');
 import StateContext = require('./StateContext');
-import settings = require('./settings');
 
 class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private maxLength: number;
@@ -9,7 +8,6 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	
 	constructor(maxLength: number = 500, historySize: number = 100, storage?: Storage) {
 		super();
-		settings.combineCrumbTrail = true;
 		this.maxLength = maxLength;
 		this.historySize = historySize;
 		this.storage = storage;

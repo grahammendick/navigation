@@ -13,7 +13,7 @@ class NavigationSettings {
     returnDataKey: string = 'c2';
     crumbTrailKey: string = 'c3';
     applicationPath: string = '';
-    combineCrumbTrail: boolean = false;
+    combineCrumbTrail: boolean = true;
     trackAllPreviousData: boolean = true;
     combineArray: boolean = false;
 }

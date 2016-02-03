@@ -1,6 +1,6 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
+import NavigationSettings = require('./NavigationSettings');
 import State = require('./config/State');
-import settings = require('./settings');
 
 class ReturnDataManager {
     private static SEPARATOR = '_';
@@ -8,7 +8,7 @@ class ReturnDataManager {
     private static RET_2_SEP = '2_';
     private static RET_3_SEP = '3_';
 
-    static formatReturnData(state: State, returnData: any): string {
+    static formatReturnData(settings: NavigationSettings, state: State, returnData: any): string {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()) {

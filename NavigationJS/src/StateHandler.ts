@@ -1,11 +1,11 @@
 ﻿import Crumb = require('./Crumb');
 import IStateHandler = require('./IStateHandler');
-import settings = require('./settings');
+import NavigationSettings = require('./NavigationSettings');
 import State = require('./config/State');
 import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
-    getNavigationLink(state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
+    getNavigationLink(settings: NavigationSettings, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
         var routeInfo = settings.router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
             return null;
@@ -30,7 +30,7 @@ class StateHandler implements IStateHandler {
     navigateLink(oldState: State, state: State, url: string) {
     }
 
-    getNavigationData(state: State, url: string, separableData: any = {}): any {
+    getNavigationData(settings: NavigationSettings, state: State, url: string, separableData: any = {}): any {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
         var data = settings.router.getData(route, separableData).data;
