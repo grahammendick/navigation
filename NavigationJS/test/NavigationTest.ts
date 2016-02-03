@@ -11,9 +11,9 @@ settings.forEach(function(setting) {
 describe('Navigation', function () {
     beforeEach(function () {
         /*stateController.clearStateContext();
-        Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
-        Navigation.settings.combineCrumbTrail = setting;
-        Navigation.settings.historyManager = new Navigation.HashHistoryManager();*/
+        stateController.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
+        stateController.settings.combineCrumbTrail = setting;
+        stateController.settings.historyManager = new Navigation.HashHistoryManager();*/
     });
 
     describe('Dialog', function() {
@@ -4186,11 +4186,11 @@ describe('Navigation', function () {
                     ]},
                     { key: 's2', route: 'r2' }]}
                 ]);
-            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            stateController.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
             stateController.navigate('d');
             stateController.navigate('t');
             var link = stateController.getNavigationLink('t');
-            Navigation.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
+            stateController.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
             stateController.navigate('d');
             stateController.navigate('d');
             stateController.navigateLink(link);
@@ -4237,11 +4237,11 @@ describe('Navigation', function () {
                     ]},
                     { key: 's2', route: 'r2' }]}
                 ]);
-            Navigation.settings.combineCrumbTrail = false;
+            stateController.settings.combineCrumbTrail = false;
             stateController.navigate('d');
             stateController.navigate('t');
             var link = stateController.getNavigationLink('t');
-            Navigation.settings.combineCrumbTrail = true;
+            stateController.settings.combineCrumbTrail = true;
             stateController.navigateLink(link);
             assert.equal(stateController.stateContext.oldState, stateController._dialogs[0]._states[1]);
             assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[1]);
@@ -4261,11 +4261,11 @@ describe('Navigation', function () {
                     ]},
                     { key: 's2', route: 'r2' }]}
                 ]);
-            Navigation.settings.combineCrumbTrail = true;
+            stateController.settings.combineCrumbTrail = true;
             stateController.navigate('d');
             stateController.navigate('t');
             var link = stateController.getNavigationLink('t');
-            Navigation.settings.combineCrumbTrail = false;
+            stateController.settings.combineCrumbTrail = false;
             stateController.navigateLink(link);
             assert.equal(stateController.stateContext.oldState, stateController._dialogs[0]._states[1]);
             assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[1]);
@@ -4532,7 +4532,7 @@ describe('Navigation', function () {
         }
     });
 
-    /*describe('History Null Refresh Navigate', function () {
+    describe('History Null Refresh Navigate', function () {
         it('should pass replace false to history manager', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -4540,7 +4540,7 @@ describe('Navigation', function () {
                 ]);
             stateController.navigate('d');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.refresh();
@@ -4556,7 +4556,7 @@ describe('Navigation', function () {
                 ]);
             stateController.navigate('d');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.refresh(null, Navigation.HistoryAction.Add);
@@ -4572,7 +4572,7 @@ describe('Navigation', function () {
                 ]);
             stateController.navigate('d');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.refresh(null, Navigation.HistoryAction.Replace);
@@ -4588,7 +4588,7 @@ describe('Navigation', function () {
                 ]);
             stateController.navigate('d');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = true;
             }
             stateController.refresh(null, Navigation.HistoryAction.None);
@@ -4608,7 +4608,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             stateController.navigate('t');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.navigateBack(1);
@@ -4628,7 +4628,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             stateController.navigate('t');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.navigateBack(1, Navigation.HistoryAction.Add);
@@ -4648,7 +4648,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             stateController.navigate('t');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.navigateBack(1, Navigation.HistoryAction.Replace);
@@ -4668,13 +4668,13 @@ describe('Navigation', function () {
             stateController.navigate('d');
             stateController.navigate('t');
             var replaceHistory;
-            Navigation.settings.historyManager.addHistory = (state: State, url: string, replace: boolean) => {
+            stateController.settings.historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
                 replaceHistory = true;
             }
             stateController.navigateBack(1, Navigation.HistoryAction.None);
             assert.strictEqual(replaceHistory, undefined);
         });
-    });*/
+    });
 
     describe('History Navigated Navigate', function () {
         it('should not call history manager', function() {

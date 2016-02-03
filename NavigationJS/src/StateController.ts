@@ -20,7 +20,7 @@ class StateController {
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
     stateContext: StateContext = new StateContext();
-    private settings: NavigationSettings = new NavigationSettings(); 
+    settings: NavigationSettings = new NavigationSettings(); 
     _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
     
