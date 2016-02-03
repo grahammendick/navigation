@@ -24,7 +24,9 @@ class StateController {
     _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
     
-    constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
+    constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: NavigationSettings) {
+        for(var setting in settings)
+            this.settings[setting] = settings[setting];
         this.buildDialogs(dialogs);
     }
     
