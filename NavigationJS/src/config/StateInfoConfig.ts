@@ -2,16 +2,14 @@
 import IDialog = require('./IDialog');
 import ConverterFactory = require('../converter/ConverterFactory');
 import ReturnDataManager = require('../ReturnDataManager');
-import settings = require('../settings');
+import NavigationSettings = require('../NavigationSettings');
 import State = require('./State');
 import IState = require('./IState');
 import Transition = require('./Transition');
 import ITransition = require('./ITransition');
 
 class StateInfoConfig {
-    static _dialogs: Dialog[] = [];
-    static dialogs: { [index: string]: Dialog } = {};
-    static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
+    static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: NavigationSettings): { dialogs: { [index: string]: Dialog }, _dialogs: Dialog[] } {
         var _builtDialogs = [];
         var builtDialogs: { [index: string]: Dialog } = {};
         for (var i = 0; i < dialogs.length; i++) {
@@ -28,7 +26,7 @@ class StateInfoConfig {
                 throw new Error('A Dialog with key ' + dialog.key + ' already exists');
             _builtDialogs.push(dialog);
             builtDialogs[dialog.key] = dialog;
-            this.processStates(dialog, dialogObject);
+            this.processStates(dialog, dialogObject, settings);
             this.processTransitions(dialog, dialogObject);
             dialog.initial = dialog.states[dialogObject.initial];
             if (!dialogObject.initial)
@@ -36,12 +34,13 @@ class StateInfoConfig {
             if (!dialog.initial)
                 throw new Error(dialog.key + ' Dialog\'s initial key of ' + dialogObject.initial + ' does not match a child State key');
         }
-        this._dialogs = _builtDialogs;
-        this.dialogs = builtDialogs;
-        settings.router.addRoutes(this._dialogs);
+        return {
+            dialogs: builtDialogs,
+            _dialogs: _builtDialogs   
+        };
     }
 
-    private static processStates(dialog: Dialog, dialogObject: IDialog<string, IState<ITransition<string>[]>[]>) {
+    private static processStates(dialog: Dialog, dialogObject: IDialog<string, IState<ITransition<string>[]>[]>, settings: NavigationSettings) {
         for (var i = 0; i < dialogObject.states.length; i++) {
             var stateObject = dialogObject.states[i];
             var state = new State();
@@ -55,7 +54,7 @@ class StateInfoConfig {
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
                     state.defaultTypes[key] = ConverterFactory.getConverter(state.defaults[key]).name;
-                var formattedData = ReturnDataManager.formatURLObject(key, state.defaults[key], state); 
+                var formattedData = ReturnDataManager.formatURLObject(settings, key, state.defaults[key], state); 
                 state.formattedDefaults[key] = formattedData.val;
                 if (formattedData.arrayVal)
                     state.formattedArrayDefaults[key] = formattedData.arrayVal;

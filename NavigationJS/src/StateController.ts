@@ -1,13 +1,18 @@
 ﻿import Crumb = require('./Crumb');
 import CrumbTrailManager = require('./CrumbTrailManager');
+import Dialog = require('./config/Dialog');
+import IDialog = require('./config/IDialog');
 import HistoryNavigator = require('./history/HistoryNavigator');
 import HistoryAction = require('./history/HistoryAction');
 import NavigationData = require('./NavigationData');
 import NavigationSettings = require('./NavigationSettings');
 import ReturnDataManager = require('./ReturnDataManager');
 import State = require('./config/State');
+import IState = require('./config/IState');
 import StateContext = require('./StateContext');
 import StateInfoConfig = require('./config/StateInfoConfig');
+import Transition = require('./config/Transition');
+import ITransition = require('./config/ITransition');
 
 class StateController {
     crumbs: Crumb[];
@@ -16,6 +21,19 @@ class StateController {
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
     stateContext: StateContext = new StateContext();
     settings: NavigationSettings = new NavigationSettings(); 
+    _dialogs: Dialog[] = [];
+    dialogs: { [index: string]: Dialog } = {};
+    
+    constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
+        this.buildDialogs(dialogs);
+    }
+    
+    buildDialogs(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
+        var config = StateInfoConfig.build(dialogs, this.settings);
+        this._dialogs = config._dialogs;
+        this.dialogs = config.dialogs;
+        this.settings.router.addRoutes(this._dialogs);
+    }
 
     setStateContext(state: State, url: string) {
         try {
@@ -33,8 +51,8 @@ class StateController {
             this.stateContext.crumbTrail = this.settings.crumbTrailPersister.load(data[this.settings.crumbTrailKey]);
             var uncombined = !!data[this.settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
-            CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, uncombined);
-            this.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, true, this.settings.combineCrumbTrail);
+            CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this._dialogs, uncombined);
+            this.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this._dialogs, true, this.settings.combineCrumbTrail);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -67,13 +85,13 @@ class StateController {
     
     private setPreviousStateContext(uncombined: boolean, data: any) {
         if (uncombined){
-            this.stateContext.previousState = CrumbTrailManager.getState(data[this.settings.previousStateIdKey]);
+            this.stateContext.previousState = CrumbTrailManager.getState(data[this.settings.previousStateIdKey], this._dialogs);
             if (this.stateContext.previousState)
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
             if (data[this.settings.returnDataKey])
                 this.stateContext.previousData = ReturnDataManager.parseReturnData(this.settings, data[this.settings.returnDataKey], this.stateContext.previousState);
         } else {
-            var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, false).pop();
+            var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this._dialogs, false).pop();
             if (previousStateCrumb){
                 this.stateContext.previousState = previousStateCrumb.state;
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
@@ -219,8 +237,8 @@ class StateController {
         var nextState: State = null;
         if (this.stateContext.state && this.stateContext.state.transitions[action])
             nextState = this.stateContext.state.transitions[action].to;
-        if (!nextState && StateInfoConfig.dialogs[action])
-            nextState = StateInfoConfig.dialogs[action].initial;
+        if (!nextState && this.dialogs[action])
+            nextState = this.dialogs[action].initial;
         if (!nextState)
             throw new Error('The action parameter must be a Dialog key or a Transition key that is a child of the current State');
         return nextState;

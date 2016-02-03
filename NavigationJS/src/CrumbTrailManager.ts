@@ -1,4 +1,5 @@
 ﻿import Crumb = require('./Crumb');
+import Dialog = require('./config/Dialog');
 import NavigationData = require('./NavigationData');
 import NavigationSettings = require('./NavigationSettings');
 import ReturnDataManager = require('./ReturnDataManager');
@@ -10,8 +11,8 @@ class CrumbTrailManager {
     private static CRUMB_1_SEP = '4_';
     private static CRUMB_2_SEP = '5_';
 
-    static buildCrumbTrail(stateContext: StateContext, settings: NavigationSettings, uncombined: boolean) {
-        var crumbs = this.getCrumbs(stateContext, settings, false);
+    static buildCrumbTrail(stateContext: StateContext, settings: NavigationSettings, dialogs: Dialog[], uncombined: boolean) {
+        var crumbs = this.getCrumbs(stateContext, settings, dialogs, false);
         if (uncombined)
             crumbs.push(new Crumb(stateContext.previousData, stateContext.previousState, this.getHref(stateContext, settings, stateContext.previousState, stateContext.previousData, null), false));        
         crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
@@ -27,7 +28,7 @@ class CrumbTrailManager {
         stateContext.crumbTrailKey = settings.crumbTrailPersister.save(stateContext.crumbTrail, stateContext);
     }
 
-    static getCrumbs(stateContext: StateContext, settings: NavigationSettings, setLast: boolean, skipLatest?: boolean): Crumb[] {
+    static getCrumbs(stateContext: StateContext, settings: NavigationSettings, dialogs: Dialog[], setLast: boolean, skipLatest?: boolean): Crumb[] {
         var crumbTrailArray: Crumb[] = [];
         var arrayCount = 0;
         var trail = stateContext.crumbTrail;
@@ -35,11 +36,11 @@ class CrumbTrailManager {
         var last = true;
         while (arrayCount < crumbTrailSize) {
             var stateKey = trail.substring(this.CRUMB_1_SEP.length).split(this.CRUMB_2_SEP)[0];
-            var state = this.getState(stateKey);
+            var state = this.getState(stateKey, dialogs);
             var navigationData: any = {};
             var data = trail.substring((trail.indexOf(this.CRUMB_2_SEP) + this.CRUMB_2_SEP.length)).split(this.CRUMB_1_SEP)[0];
             if (data)
-                navigationData = ReturnDataManager.parseReturnData(data, state);
+                navigationData = ReturnDataManager.parseReturnData(settings, data, state);
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
             if (!skipLatest) {
@@ -53,10 +54,10 @@ class CrumbTrailManager {
         return crumbTrailArray;
     }
 
-    static getState(id: string) {
+    static getState(id: string, dialogs: Dialog[]) {
         if (!id) return null;
         var ids = id.split('-');
-        return StateInfoConfig._dialogs[+ids[0]]._states[+ids[1]];
+        return dialogs[+ids[0]]._states[+ids[1]];
     }
 
     static getHref(stateContext: StateContext, settings: NavigationSettings, state: State, navigationData: any, returnData: any): string {
@@ -72,7 +73,7 @@ class CrumbTrailManager {
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString()) {
-                var formattedData = ReturnDataManager.formatURLObject(key, val, state);
+                var formattedData = ReturnDataManager.formatURLObject(settings, key, val, state);
                 val = formattedData.val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key]) {
                     data[key] = val;
