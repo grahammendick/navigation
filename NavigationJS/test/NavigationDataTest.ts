@@ -9,10 +9,7 @@ var settings = [false, true];
 settings.forEach(function(setting) {
 describe('Navigation Data', function () {
     beforeEach(function () {
-       /* stateController.clearStateContext();
-        Navigation.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
-        Navigation.settings.combineCrumbTrail = setting;
-        Navigation.settings.historyManager = new Navigation.HashHistoryManager();*/
+        //Navigation.settings.combineCrumbTrail = setting;
     });
 
     describe('Individual Data', function() {
