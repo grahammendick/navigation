@@ -3881,7 +3881,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's1', route: 'r1' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                { 
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             stateController.navigate('d');
             var link = stateController.getNavigationLink('t');
@@ -3908,7 +3911,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's2', route: 'r2' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             stateController.navigate('d1');
             stateController.navigate('t');
@@ -3928,7 +3934,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 26; i++) {
                 stateController.navigate('d');
@@ -3944,7 +3953,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 27; i++) {
                 stateController.navigate('d');
@@ -3960,7 +3972,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 52; i++) {
                 stateController.navigate('d');
@@ -3976,7 +3991,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 53; i++) {
                 stateController.navigate('d');
@@ -3992,7 +4010,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 78; i++) {
                 stateController.navigate('d');
@@ -4008,7 +4029,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 79; i++) {
                 stateController.navigate('d');
@@ -4024,7 +4048,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 104; i++) {
                 stateController.navigate('d');
@@ -4040,7 +4067,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 207; i++) {
                 stateController.navigate('d');
@@ -4056,7 +4086,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 50; i++) {
                 stateController.navigate('d');
@@ -4072,7 +4105,10 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5),
+                    combineCrumbTrail: true
+                }
             );
             for(var i = 0; i < 51; i++) {
                 stateController.navigate('d');
@@ -4091,7 +4127,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's1', route: 'r1' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5),
+                    combineCrumbTrail: true
+                }
             );
             stateController.navigate('d');
             var link = stateController.getNavigationLink('t');
@@ -4114,7 +4153,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's1', route: 'r1' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0, 5),
+                    combineCrumbTrail: true
+                }
             );
             stateController.navigate('d');
             var link = stateController.getNavigationLink('t');
@@ -4136,7 +4178,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's1', route: 'r1' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(7, 5) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(7, 5),
+                    combineCrumbTrail: true
+                }
             );
             stateController.navigate('d');
             var link = stateController.getNavigationLink('t');
@@ -4158,7 +4203,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's1', route: 'r1' }]}
                 ],
-                { crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(6, 5) }
+                {
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(6, 5),
+                    combineCrumbTrail: true
+                }
             );
             stateController.navigate('d');
             var link = stateController.getNavigationLink('t');
@@ -4182,7 +4230,10 @@ describe('Navigation', function () {
                         { key: 't', to: 's2' },
                     ]},
                     { key: 's2', route: 'r2' }]}
-                ]);
+                ],
+                {
+                    combineCrumbTrail: true                    
+                });
             stateController.settings.crumbTrailPersister = new Navigation.StorageCrumbTrailPersister(0);
             stateController.navigate('d');
             stateController.navigate('t');
@@ -4208,7 +4259,8 @@ describe('Navigation', function () {
                     crumbTrailPersister: {
                         load: crumbTrail => crumbTrail ? crumbTrail.substring(1) : crumbTrail,
                         save: crumbTrail => 'x' + crumbTrail
-                    }
+                    },
+                    combineCrumbTrail: true
                 }
             );
             stateController.navigate('d');
