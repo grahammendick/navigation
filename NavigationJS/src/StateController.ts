@@ -10,24 +10,25 @@ import StateContext = require('./StateContext');
 import StateInfoConfig = require('./config/StateInfoConfig');
 
 class StateController {
-    static crumbs: Crumb[];
-    private static NAVIGATE_HANDLER_ID = 'navigateHandlerId';
-    private static navigateHandlerId: number = 1;
-    private static navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
+    crumbs: Crumb[];
+    private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
+    private navigateHandlerId: number = 1;
+    private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
+    stateContext: StateContext = new StateContext();
 
-    static setStateContext(state: State, url: string) {
+    setStateContext(state: State, url: string) {
         try {
             this.setOldStateContext();
-            StateContext.state = state;
-            StateContext.url = url;
-            StateContext.dialog = state.parent;
-            StateContext.title = state.title;
+            this.stateContext.state = state;
+            this.stateContext.url = url;
+            this.stateContext.dialog = state.parent;
+            this.stateContext.title = state.title;
             var separableData = {};
             var data = state.stateHandler.getNavigationData(state, url, separableData);
-            StateContext.data = this.parseData(data, state, separableData);
-            StateContext.previousState = null;
-            StateContext.previousDialog = null;
-            StateContext.previousData = {};
+            this.stateContext.data = this.parseData(data, state, separableData);
+            this.stateContext.previousState = null;
+            this.stateContext.previousDialog = null;
+            this.stateContext.previousData = {};
             CrumbTrailManager.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
             var uncombined = !!data[settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
@@ -38,49 +39,49 @@ class StateController {
         }
     }
 
-    static clearStateContext() {
-        StateContext.oldState = null;
-        StateContext.oldDialog = null;
-        StateContext.oldData = {};
-        StateContext.previousState = null;
-        StateContext.previousDialog = null;
-        StateContext.previousData = {};
-        StateContext.state = null;
-        StateContext.dialog = null;
-        StateContext.data = {};
-        StateContext.url = null;
-        StateContext.title = null;
+    clearStateContext() {
+        this.stateContext.oldState = null;
+        this.stateContext.oldDialog = null;
+        this.stateContext.oldData = {};
+        this.stateContext.previousState = null;
+        this.stateContext.previousDialog = null;
+        this.stateContext.previousData = {};
+        this.stateContext.state = null;
+        this.stateContext.dialog = null;
+        this.stateContext.data = {};
+        this.stateContext.url = null;
+        this.stateContext.title = null;
         CrumbTrailManager.crumbTrail = null;
         CrumbTrailManager.crumbTrailKey = null;
     }
     
-    private static setOldStateContext() {
-        if (StateContext.state) {
-            StateContext.oldState = StateContext.state;
-            StateContext.oldDialog = StateContext.dialog;
-            StateContext.oldData = NavigationData.clone(StateContext.data);
-            NavigationData.setDefaults(StateContext.oldData, StateContext.oldState.defaults);
+    private setOldStateContext() {
+        if (this.stateContext.state) {
+            this.stateContext.oldState = this.stateContext.state;
+            this.stateContext.oldDialog = this.stateContext.dialog;
+            this.stateContext.oldData = NavigationData.clone(this.stateContext.data);
+            NavigationData.setDefaults(this.stateContext.oldData, this.stateContext.oldState.defaults);
         }
     }
     
-    private static setPreviousStateContext(uncombined: boolean, data: any) {
+    private setPreviousStateContext(uncombined: boolean, data: any) {
         if (uncombined){
-            StateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
-            if (StateContext.previousState)
-                StateContext.previousDialog = StateContext.previousState.parent;
+            this.stateContext.previousState = CrumbTrailManager.getState(data[settings.previousStateIdKey]);
+            if (this.stateContext.previousState)
+                this.stateContext.previousDialog = this.stateContext.previousState.parent;
             if (data[settings.returnDataKey])
-                StateContext.previousData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], StateContext.previousState);
+                this.stateContext.previousData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], this.stateContext.previousState);
         } else {
             var previousStateCrumb = CrumbTrailManager.getCrumbs(false).pop();
             if (previousStateCrumb){
-                StateContext.previousState = previousStateCrumb.state;
-                StateContext.previousDialog = StateContext.previousState.parent;
-                StateContext.previousData = previousStateCrumb.data;
+                this.stateContext.previousState = previousStateCrumb.state;
+                this.stateContext.previousDialog = this.stateContext.previousState.parent;
+                this.stateContext.previousData = previousStateCrumb.data;
             }
         }
     }
 
-    static onNavigate(handler: (oldState: State, state: State, data: any) => void) {
+    onNavigate(handler: (oldState: State, state: State, data: any) => void) {
         if (!handler[this.NAVIGATE_HANDLER_ID]) {
             var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
             handler[this.NAVIGATE_HANDLER_ID] = id;
@@ -88,52 +89,52 @@ class StateController {
         }
     }
 
-    static offNavigate(handler: (oldState: State, state: State, data: any) => void) {
+    offNavigate(handler: (oldState: State, state: State, data: any) => void) {
         delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    static navigate(action: string, toData?: any, historyAction?: HistoryAction) {
+    navigate(action: string, toData?: any, historyAction?: HistoryAction) {
         var url = this.getNavigationLink(action, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this._navigateLink(url, this.getNextState(action), false, historyAction);
     }
 
-    static getNavigationLink(action: string, toData?: any): string {
-        return CrumbTrailManager.getHref(this.getNextState(action), toData, StateContext.data);
+    getNavigationLink(action: string, toData?: any): string {
+        return CrumbTrailManager.getHref(this.getNextState(action), toData, this.stateContext.data);
     }
 
-    static canNavigateBack(distance: number) {
+    canNavigateBack(distance: number) {
         var canNavigate = false;
         if (distance <= this.crumbs.length && distance > 0)
             canNavigate = true;
             return canNavigate
         }
 
-    static navigateBack(distance: number, historyAction?: HistoryAction) {
+    navigateBack(distance: number, historyAction?: HistoryAction) {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this._navigateLink(url, this.getCrumb(distance).state, false, historyAction);
     }
 
-    static getNavigationBackLink(distance: number): string {
+    getNavigationBackLink(distance: number): string {
         return this.getCrumb(distance).navigationLink;
     }
 
-    static refresh(toData?: any, historyAction?: HistoryAction) {
+    refresh(toData?: any, historyAction?: HistoryAction) {
         var url = this.getRefreshLink(toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, StateContext.state, false, historyAction);
+        this._navigateLink(url, this.stateContext.state, false, historyAction);
     }
 
-    static getRefreshLink(toData?: any): string {
+    getRefreshLink(toData?: any): string {
         return CrumbTrailManager.getRefreshHref(toData);
     }
 
-    static navigateLink(url: string, history?: boolean, historyAction?: HistoryAction) {
+    navigateLink(url: string, history?: boolean, historyAction?: HistoryAction) {
         try {
             var state = settings.router.getData(url.split('?')[0]).state;
         } catch (e) {
@@ -142,9 +143,9 @@ class StateController {
         this._navigateLink(url, state, history, historyAction);
     }
 
-    private static _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
+    private _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
         try {
-            var oldUrl = StateContext.url;
+            var oldUrl = this.stateContext.url;
             var separableData = {};
             var data = state.stateHandler.getNavigationData(state, url, separableData);
             data = this.parseData(data, state, separableData);
@@ -153,38 +154,38 @@ class StateController {
         }
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, url, historyAction);
         var unloadContinuation = () => {
-            if (oldUrl === StateContext.url)
+            if (oldUrl === this.stateContext.url)
                 state.navigating(data, url, navigateContinuation, history);
         };
-        if (StateContext.state)
-            StateContext.state.unloading(state, data, url, unloadContinuation, history);
+        if (this.stateContext.state)
+            this.stateContext.state.unloading(state, data, url, unloadContinuation, history);
         else
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private static getNavigateContinuation(oldUrl: string, state: State, url: string, historyAction: HistoryAction): () => void {
+    private getNavigateContinuation(oldUrl: string, state: State, url: string, historyAction: HistoryAction): () => void {
         return (asyncData?: any) => {
-            if (oldUrl === StateContext.url) {
-                state.stateHandler.navigateLink(StateContext.state, state, url);
-                StateController.setStateContext(state, url);
-                if (StateContext.oldState && StateContext.oldState !== state)
-                    StateContext.oldState.dispose();
-                state.navigated(StateContext.data, asyncData);
+            if (oldUrl === this.stateContext.url) {
+                state.stateHandler.navigateLink(this.stateContext.state, state, url);
+                this.setStateContext(state, url);
+                if (this.stateContext.oldState && this.stateContext.oldState !== state)
+                    this.stateContext.oldState.dispose();
+                state.navigated(this.stateContext.data, asyncData);
                 for (var id in this.navigateHandlers) {
-                    if (url === StateContext.url)
-                        this.navigateHandlers[id](StateContext.oldState, state, StateContext.data);
+                    if (url === this.stateContext.url)
+                        this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data);
                 }
-                if (url === StateContext.url) {
+                if (url === this.stateContext.url) {
                     if (historyAction !== HistoryAction.None)
                         settings.historyManager.addHistory(state, url, historyAction === HistoryAction.Replace);
-                    if (StateContext.title && (typeof document !== 'undefined'))
-                        document.title = StateContext.title;
+                    if (this.stateContext.title && (typeof document !== 'undefined'))
+                        document.title = this.stateContext.title;
                 }
             }
         };
     }
 
-    private static parseData(data: any, state: State, separableData: any): any {
+    private parseData(data: any, state: State, separableData: any): any {
         var newData = {};
         for (var key in data) {
             if (key !== settings.previousStateIdKey && key !== settings.returnDataKey
@@ -195,7 +196,7 @@ class StateController {
         return newData;
     }
     
-    private static isDefault(key: string, data: any, state: State, separable: boolean) {
+    private isDefault(key: string, data: any, state: State, separable: boolean) {
         var val = data[key]
         var arrayDefaultVal = state.formattedArrayDefaults[key];
         if (!separable || !arrayDefaultVal) {
@@ -213,10 +214,10 @@ class StateController {
         }
     }
 
-    static getNextState(action: string): State {
+    getNextState(action: string): State {
         var nextState: State = null;
-        if (StateContext.state && StateContext.state.transitions[action])
-            nextState = StateContext.state.transitions[action].to;
+        if (this.stateContext.state && this.stateContext.state.transitions[action])
+            nextState = this.stateContext.state.transitions[action].to;
         if (!nextState && StateInfoConfig.dialogs[action])
             nextState = StateInfoConfig.dialogs[action].initial;
         if (!nextState)
@@ -224,7 +225,7 @@ class StateController {
         return nextState;
     }
 
-    private static getCrumb(distance: number): Crumb {
+    private getCrumb(distance: number): Crumb {
         if (distance > this.crumbs.length || distance <= 0)
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.crumbs.length + ')');
         return this.crumbs[this.crumbs.length - distance];
