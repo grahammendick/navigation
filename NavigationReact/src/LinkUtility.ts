@@ -6,28 +6,28 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 
 class LinkUtility {
-    static getLink(linkAccessor: () => string): string {
+    static getLink(stateController, linkAccessor: () => string): string {
         try {
-            return Navigation.settings.historyManager.getHref(linkAccessor());
+            return stateController.settings.historyManager.getHref(linkAccessor());
         } catch (e) {
             return null;
         }
     }
 
-    static getData(toData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateController, toData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
-            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            toData = Navigation.StateContext.includeCurrentData(toData);
+            toData = stateController.stateContext.includeCurrentData(toData);
         return toData;
     }
 
-    static isActive(key: string, val: any): boolean {
-        if (!Navigation.StateContext.state)
+    static isActive(stateController, key: string, val: any): boolean {
+        if (!stateController.stateContext.state)
             return false;
         if (val != null) {
-            var trackTypes = Navigation.StateContext.state.trackTypes;
-            var currentVal = Navigation.StateContext.data[key];
+            var trackTypes = stateController.stateContext.state.trackTypes;
+            var currentVal = stateController.stateContext.data[key];
             if (currentVal != null)
                 return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
             else
@@ -56,14 +56,14 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var link = Navigation.settings.historyManager.getUrl(element);
+                    var link = props.stateController.settings.historyManager.getUrl(element);
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {
                         e.preventDefault();
                         var historyAction = props.historyAction;
                         if (typeof historyAction === 'string')
                             historyAction = Navigation.HistoryAction[historyAction];
-                        Navigation.StateController.navigateLink(link, false, historyAction);
+                        props.stateController.navigateLink(link, false, historyAction);
                     }
                 }
             }

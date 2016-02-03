@@ -6,17 +6,17 @@ class NavigationBackLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
     private getNavigationBackLink(): string {
-        return LinkUtility.getLink(() => Navigation.StateController.getNavigationBackLink(this.props.distance));
+        return LinkUtility.getLink(this.props.stateController, () => this.props.stateController.getNavigationBackLink(this.props.distance));
     }
     
     componentDidMount() {
         if (!this.props.lazy)
-            Navigation.StateController.onNavigate(this.onNavigate);
+            this.props.stateController.onNavigate(this.onNavigate);
     }
     
     componentWillUnmount() {
         if (!this.props.lazy)
-            Navigation.StateController.offNavigate(this.onNavigate);
+            this.props.stateController.offNavigate(this.onNavigate);
     }
     
     render() {
