@@ -12,7 +12,7 @@ class ReturnDataManager {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()) {
-                var val = this.formatURLObject(key, returnData[key], state, true).val;
+                var val = this.formatURLObject(settings, key, returnData[key], state, true).val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
                     returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + val);
             }
@@ -28,11 +28,11 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
+    static formatURLObject(settings: NavigationSettings, key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converter = ConverterFactory.getConverter(urlObject);
-        var convertedValue = converter.convertTo(urlObject);
+        var convertedValue = converter.convertTo(urlObject, settings.combineArray);
         var formattedValue = convertedValue.val;
         var formattedArray = convertedValue.arrayVal;
         if (encode) {
@@ -48,7 +48,7 @@ class ReturnDataManager {
         return { val: formattedValue, arrayVal: formattedArray };
     }
 
-    static parseURLString(key: string, val: string | string[], state: State, decode = false, separable = false): any {
+    static parseURLString(settings: NavigationSettings, key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
@@ -64,15 +64,15 @@ class ReturnDataManager {
             val =  urlValue;
         else
             val[0] = urlValue;
-        return ConverterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
+        return ConverterFactory.getConverterFromKey(converterKey).convertFrom(val, settings.combineArray, separable);
     }
 
-    static parseReturnData(returnData: string, state: State): any {
+    static parseReturnData(settings: NavigationSettings, returnData: string, state: State): any {
         var navigationData = {};
         var returnDataArray = returnData.split(this.RET_3_SEP);
         for (var i = 0; i < returnDataArray.length; i++) {
             var nameValuePair = returnDataArray[i].split(this.RET_1_SEP);
-            navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state, true);
+            navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(settings, this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state, true);
         }
         return navigationData;
     }

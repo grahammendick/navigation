@@ -71,7 +71,7 @@ class StateController {
             if (this.stateContext.previousState)
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
             if (data[this.settings.returnDataKey])
-                this.stateContext.previousData = ReturnDataManager.parseReturnData(data[this.settings.returnDataKey], this.stateContext.previousState);
+                this.stateContext.previousData = ReturnDataManager.parseReturnData(this.settings, data[this.settings.returnDataKey], this.stateContext.previousState);
         } else {
             var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, false).pop();
             if (previousStateCrumb){
@@ -191,7 +191,7 @@ class StateController {
         for (var key in data) {
             if (key !== this.settings.previousStateIdKey && key !== this.settings.returnDataKey
                 && key !== this.settings.crumbTrailKey && !this.isDefault(key, data, state, !!separableData[key]))
-                newData[key] = ReturnDataManager.parseURLString(key, data[key], state, false, !!separableData[key]);
+                newData[key] = ReturnDataManager.parseURLString(this.settings, key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);
         return newData;
