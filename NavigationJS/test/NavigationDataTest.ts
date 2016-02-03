@@ -5,13 +5,7 @@ import Crumb = require('../src/Crumb');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
-var settings = [false, true];
-settings.forEach(function(setting) {
 describe('Navigation Data', function () {
-    beforeEach(function () {
-        //Navigation.settings.combineCrumbTrail = setting;
-    });
-
     describe('Individual Data', function() {
         var stateController;
         beforeEach(function() {
@@ -5729,5 +5723,4 @@ describe('Navigation Data', function () {
             });
         }
     });
-});
 });

@@ -6,13 +6,7 @@ import State = require('../src/config/State');
 import StateContext = require('../src/StateContext');
 import Navigation = require('../src/Navigation');
 
-var settings = [false, true];
-settings.forEach(function(setting) {
 describe('Navigation', function () {
-    beforeEach(function () {
-        //stateController.settings.combineCrumbTrail = setting;
-    });
-
     describe('Dialog', function() {
         var stateController;
         beforeEach(function() {
@@ -4975,5 +4969,4 @@ describe('Navigation', function () {
             });
         }
     });
-});
 });
