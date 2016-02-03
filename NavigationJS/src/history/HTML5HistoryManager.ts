@@ -1,7 +1,6 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
 import HistoryNavigator = require('./HistoryNavigator');
 import settings = require('../settings');
-import State = require('../config/State');
 import StateContext = require('../StateContext');
 
 class HTML5HistoryManager implements IHistoryManager {
@@ -12,8 +11,8 @@ class HTML5HistoryManager implements IHistoryManager {
             window.addEventListener('popstate', HistoryNavigator.navigateHistory);
     }
 
-    addHistory(state: State, url: string, replace?: boolean) {
-        url = url != null ? url : StateContext.url;
+    addHistory(stateContext: StateContext, url: string, replace?: boolean) {
+        url = url != null ? url : stateContext.url;
         url = settings.applicationPath + url;
         if (!this.disabled && location.pathname + location.search !== url) {
             if (!replace)            

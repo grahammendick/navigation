@@ -1,9 +1,9 @@
-﻿import State = require('../config/State');
+﻿import StateContext = require('../StateContext');
 
 interface IHistoryManager {
     disabled: boolean;
     init();
-    addHistory(state: State, url: string, replace?: boolean): void;
+    addHistory(stateContext: StateContext, url: string, replace?: boolean): void;
     getCurrentUrl(): string;
     getHref(url: string): string;
     getUrl(anchor: HTMLAnchorElement): string;

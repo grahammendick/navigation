@@ -1,6 +1,5 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
 import HistoryNavigator = require('./HistoryNavigator');
-import State = require('../config/State');
 import StateContext = require('../StateContext');
 
 class HashHistoryManager implements IHistoryManager {
@@ -16,8 +15,8 @@ class HashHistoryManager implements IHistoryManager {
         }
     }
 
-    addHistory(state: State, url: string, replace?: boolean) {
-        url = url != null ? url : StateContext.url;
+    addHistory(stateContext: StateContext, url: string, replace?: boolean) {
+        url = url != null ? url : stateContext.url;
         url = '#' + this.encode(url);
         if (!this.disabled && location.hash !== url) {
             if (!replace)            
