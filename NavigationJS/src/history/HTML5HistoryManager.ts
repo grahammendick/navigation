@@ -1,13 +1,12 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import HistoryNavigator = require('./HistoryNavigator');
 import StateContext = require('../StateContext');
 
 class HTML5HistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
 
-    init() {
+    init(navigateHistory: () => void) {
         if (!this.disabled)
-            window.addEventListener('popstate', HistoryNavigator.navigateHistory);
+            window.addEventListener('popstate', navigateHistory);
     }
 
     addHistory(stateContext: StateContext, url: string, replace: boolean, applicationPath: string) {

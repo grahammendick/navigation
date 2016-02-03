@@ -1,17 +1,16 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import HistoryNavigator = require('./HistoryNavigator');
 import StateContext = require('../StateContext');
 
 class HashHistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
     replaceQueryIdentifier: boolean = false;
 
-    init() {
+    init(navigateHistory) {
         if (!this.disabled) {
             if (window.addEventListener)
-                window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
+                window.addEventListener('hashchange', navigateHistory);
             else
-                window['attachEvent']('onhashchange', HistoryNavigator.navigateHistory);
+                window['attachEvent']('onhashchange', navigateHistory);
         }
     }
 

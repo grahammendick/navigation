@@ -2,7 +2,6 @@
 import CrumbTrailManager = require('./CrumbTrailManager');
 import Dialog = require('./config/Dialog');
 import IDialog = require('./config/IDialog');
-import HistoryNavigator = require('./history/HistoryNavigator');
 import HistoryAction = require('./history/HistoryAction');
 import NavigationData = require('./NavigationData');
 import NavigationSettings = require('./NavigationSettings');
@@ -251,5 +250,14 @@ class StateController {
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.crumbs.length + ')');
         return this.crumbs[this.crumbs.length - distance];
     }
+    
+    start(url?: string) {
+        this.settings.historyManager.init(() => {
+            if (this.stateContext.url === this.settings.historyManager.getCurrentUrl(this.settings.applicationPath))
+                return;
+            this.navigateLink(this.settings.historyManager.getCurrentUrl(this.settings.applicationPath), true);
+        });
+        this.navigateLink(url ? url : this.settings.historyManager.getCurrentUrl(this.settings.applicationPath));
+    };
 }
 export = StateController;
