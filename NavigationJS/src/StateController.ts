@@ -29,11 +29,11 @@ class StateController {
             this.stateContext.previousState = null;
             this.stateContext.previousDialog = null;
             this.stateContext.previousData = {};
-            CrumbTrailManager.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
+            this.stateContext.crumbTrail = settings.crumbTrailPersister.load(data[settings.crumbTrailKey]);
             var uncombined = !!data[settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
-            CrumbTrailManager.buildCrumbTrail(uncombined);
-            this.crumbs = CrumbTrailManager.getCrumbs(true, settings.combineCrumbTrail);
+            CrumbTrailManager.buildCrumbTrail(this.stateContext, uncombined);
+            this.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, true, settings.combineCrumbTrail);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -51,8 +51,8 @@ class StateController {
         this.stateContext.data = {};
         this.stateContext.url = null;
         this.stateContext.title = null;
-        CrumbTrailManager.crumbTrail = null;
-        CrumbTrailManager.crumbTrailKey = null;
+        this.stateContext.crumbTrail = null;
+        this.stateContext.crumbTrailKey = null;
     }
     
     private setOldStateContext() {
@@ -72,7 +72,7 @@ class StateController {
             if (data[settings.returnDataKey])
                 this.stateContext.previousData = ReturnDataManager.parseReturnData(data[settings.returnDataKey], this.stateContext.previousState);
         } else {
-            var previousStateCrumb = CrumbTrailManager.getCrumbs(false).pop();
+            var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, false).pop();
             if (previousStateCrumb){
                 this.stateContext.previousState = previousStateCrumb.state;
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
@@ -102,7 +102,7 @@ class StateController {
     }
 
     getNavigationLink(action: string, toData?: any): string {
-        return CrumbTrailManager.getHref(this.getNextState(action), toData, this.stateContext.data);
+        return CrumbTrailManager.getHref(this.stateContext, this.getNextState(action), toData, this.stateContext.data);
     }
 
     canNavigateBack(distance: number) {
@@ -131,7 +131,7 @@ class StateController {
     }
 
     getRefreshLink(toData?: any): string {
-        return CrumbTrailManager.getRefreshHref(toData);
+        return CrumbTrailManager.getRefreshHref(this.stateContext, toData);
     }
 
     navigateLink(url: string, history?: boolean, historyAction?: HistoryAction) {
