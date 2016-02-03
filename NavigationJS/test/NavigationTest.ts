@@ -4274,7 +4274,7 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('Uncombined To Combined Crumb Trail Navigate', function () {
+    describe('Uncombined To Combined Crumb Trail Navigate', function () {
         it('should remember crumb trail', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -4320,7 +4320,7 @@ describe('Navigation', function () {
             assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[1]);
             assert.equal(stateController.crumbs.length, 2);
         });
-    });*/
+    });
 
     describe('Route Navigate', function () {
         it('should go to State', function() {
