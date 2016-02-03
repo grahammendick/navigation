@@ -2,7 +2,6 @@
 import IStateHandler = require('./IStateHandler');
 import settings = require('./settings');
 import State = require('./config/State');
-import StateContext = require('./StateContext');
 import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
