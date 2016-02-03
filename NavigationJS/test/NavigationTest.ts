@@ -10,10 +10,7 @@ var settings = [false, true];
 settings.forEach(function(setting) {
 describe('Navigation', function () {
     beforeEach(function () {
-        /*stateController.clearStateContext();
-        stateController.settings.crumbTrailPersister = new Navigation.CrumbTrailPersister();
-        stateController.settings.combineCrumbTrail = setting;
-        stateController.settings.historyManager = new Navigation.HashHistoryManager();*/
+        //stateController.settings.combineCrumbTrail = setting;
     });
 
     describe('Dialog', function() {
