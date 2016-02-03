@@ -4174,7 +4174,7 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('Storage Mismtach Navigate', function () {
+    describe('Storage Mismtach Navigate', function () {
         it('should forget crumb trail', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -4196,7 +4196,7 @@ describe('Navigation', function () {
             stateController.navigateLink(link);
             assert.equal(stateController.crumbs.length, 0);
         });
-    });*/
+    });
     
     describe('Transition Custom Persister Navigate', function() {
         it('should set crumb trail to start with x', function() {
