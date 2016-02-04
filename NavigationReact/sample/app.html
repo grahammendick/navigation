@@ -29,7 +29,7 @@
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
                 people = people.map(function (person) {
                     return (
-                        <tr>
+                        <tr key={person.id}>
                             <td><NavigationReact.NavigationLink stateController={stateController} action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
