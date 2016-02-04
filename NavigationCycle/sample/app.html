@@ -96,10 +96,11 @@
                 var search$ = sources.DOM.select('input').events('blur')
                     .map(function(e) {
                         return { 
-                            toData: Navigation.StateContext.includeCurrentData({ 
+                            toData: { 
                                 name: e.target.value,
                                 startRowIndex: null
-                            })
+                            },
+                            includeCurrentData: true
                         };
                     }
                 ) 

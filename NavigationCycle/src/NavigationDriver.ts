@@ -7,10 +7,11 @@ import Rx = require('rx');
 
 function navigate(e, stateController) {
     var historyAction = LinkUtility.getHistoryAction(e);
+    var toData = LinkUtility.getData(stateController, e.toData, e.includeCurrentData, e.currentDataKeys);
     if (e.action)
-        stateController.navigate(e.action, e.toData, historyAction);
+        stateController.navigate(e.action, toData, historyAction);
     if (!e.action && e.toData)
-        stateController.refresh(e.toData, historyAction);
+        stateController.refresh(toData, historyAction);
     if (e.distance)
         stateController.navigateBack(e.distance, historyAction);
     if (e.url)
