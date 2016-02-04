@@ -21,7 +21,10 @@ function isolate(NavigationSource, key) {
     var navigated$ = NavigationSource.navigated
         .filter((context) => context.state.parent.index + '-' + context.state.index === key);
     return {
-        navigated: navigated$    
+        navigated: navigated$,
+        navigationBackLink: NavigationSource.navigationBackLink, 
+        navigationLink: NavigationSource.navigationLink,
+        refreshLink: NavigationSource.refreshLink 
     };
 }
 
