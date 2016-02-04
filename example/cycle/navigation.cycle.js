@@ -21,19 +21,19 @@ var HistoryActionHook = (function () {
 var LinkUtility = (function () {
     function LinkUtility() {
     }
-    LinkUtility.getData = function (toData, includeCurrentData, currentDataKeys) {
+    LinkUtility.getData = function (stateController, toData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
-            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            toData = Navigation.StateContext.includeCurrentData(toData);
+            toData = stateController.stateContext.includeCurrentData(toData);
         return toData;
     };
-    LinkUtility.isActive = function (key, val) {
-        if (!Navigation.StateContext.state)
+    LinkUtility.isActive = function (stateController, key, val) {
+        if (!stateController.stateContext.state)
             return false;
         if (val != null) {
-            var trackTypes = Navigation.StateContext.state.trackTypes;
-            var currentVal = Navigation.StateContext.data[key];
+            var trackTypes = stateController.stateContext.state.trackTypes;
+            var currentVal = stateController.stateContext.data[key];
             if (currentVal != null)
                 return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
             else
@@ -64,14 +64,13 @@ module.exports = LinkUtility;
 },{}],2:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
 var CycleDOM = (typeof window !== "undefined" ? window['CycleDOM'] : typeof global !== "undefined" ? global['CycleDOM'] : null);
-var NavigationBackLink = function (properties, children) {
+var NavigationBackLink = function (stateController, properties, children) {
     var newProperties = {};
     for (var key in properties)
         newProperties[key] = properties[key];
-    var link = Navigation.StateController.getNavigationBackLink(properties.distance);
-    newProperties.href = Navigation.settings.historyManager.getHref(link);
+    var link = stateController.getNavigationBackLink(properties.distance);
+    newProperties.href = stateController.settings.historyManager.getHref(link);
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 };
@@ -95,73 +94,87 @@ module.exports = NavigationCycle;
 },{"./NavigationBackLink":2,"./NavigationDriver":4,"./NavigationLink":5,"./RefreshLink":6}],4:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
+var NavigationBackLink = _dereq_('./NavigationBackLink');
+var NavigationLink = _dereq_('./NavigationLink');
+var RefreshLink = _dereq_('./RefreshLink');
 var Rx = (typeof window !== "undefined" ? window['Rx'] : typeof global !== "undefined" ? global['Rx'] : null);
-function navigate(e) {
+function navigate(e, stateController) {
     var historyAction = LinkUtility.getHistoryAction(e);
+    var toData = LinkUtility.getData(stateController, e.toData, e.includeCurrentData, e.currentDataKeys);
     if (e.action)
-        Navigation.StateController.navigate(e.action, e.toData, historyAction);
+        stateController.navigate(e.action, toData, historyAction);
     if (!e.action && e.toData)
-        Navigation.StateController.refresh(e.toData, historyAction);
+        stateController.refresh(toData, historyAction);
     if (e.distance)
-        Navigation.StateController.navigateBack(e.distance, historyAction);
+        stateController.navigateBack(e.distance, historyAction);
     if (e.url)
-        Navigation.StateController.navigateLink(e.url, false, historyAction);
+        stateController.navigateLink(e.url, false, historyAction);
 }
 function isolate(NavigationSource, key) {
     var navigated$ = NavigationSource.navigated
         .filter(function (context) { return context.state.parent.index + '-' + context.state.index === key; });
     return {
-        navigated: navigated$
+        navigated: navigated$,
+        navigationBackLink: NavigationSource.navigationBackLink,
+        navigationLink: NavigationSource.navigationLink,
+        refreshLink: NavigationSource.refreshLink
     };
 }
 var NavigationDriver = function (url) {
     return function (navigate$) {
+        var stateController;
+        var navigated$ = new Rx.ReplaySubject(1);
         navigate$.subscribe(function (e) {
-            if (!Navigation.StateContext.state)
-                Navigation.start(url);
+            if (e.stateController) {
+                stateController = e.stateController;
+                stateController.onNavigate(function () { return navigated$.onNext({
+                    state: stateController.stateContext.state,
+                    data: stateController.stateContext.data
+                }); });
+                stateController.start(url);
+            }
             if (e.target) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
-                    var link = Navigation.settings.historyManager.getUrl(e.target);
-                    Navigation.StateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
+                    var link = stateController.settings.historyManager.getUrl(e.target);
+                    stateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
                 }
             }
             else {
-                navigate(e);
+                navigate(e, stateController);
             }
         });
-        var navigated$ = new Rx.ReplaySubject(1);
-        Navigation.StateController.onNavigate(function () { return navigated$.onNext(Navigation.StateContext); });
         return {
             navigated: navigated$,
-            isolateSource: isolate
+            isolateSource: isolate,
+            navigationBackLink: function (properties, children) { return NavigationBackLink(stateController, properties, children); },
+            navigationLink: function (properties, children) { return NavigationLink(stateController, properties, children); },
+            refreshLink: function (properties, children) { return RefreshLink(stateController, properties, children); }
         };
     };
 };
 module.exports = NavigationDriver;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./LinkUtility":1}],5:[function(_dereq_,module,exports){
+},{"./LinkUtility":1,"./NavigationBackLink":2,"./NavigationLink":5,"./RefreshLink":6}],5:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
 var CycleDOM = (typeof window !== "undefined" ? window['CycleDOM'] : typeof global !== "undefined" ? global['CycleDOM'] : null);
-function isActive(action) {
-    var nextState = Navigation.StateController.getNextState(action);
-    return nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
+function isActive(stateController, action) {
+    var nextState = stateController.getNextState(action);
+    return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
 }
-var NavigationLink = function (properties, children) {
+var NavigationLink = function (stateController, properties, children) {
     var newProperties = {};
     for (var key in properties)
         newProperties[key] = properties[key];
     var active = true;
     for (var key in properties.toData) {
-        active = active && LinkUtility.isActive(key, properties.toData[key]);
+        active = active && LinkUtility.isActive(stateController, key, properties.toData[key]);
     }
-    var toData = LinkUtility.getData(properties.toData, properties.includeCurrentData, properties.currentDataKeys);
-    var link = Navigation.StateController.getNavigationLink(properties.action, properties.toData);
-    newProperties.href = Navigation.settings.historyManager.getHref(link);
-    active = active && !!newProperties.href && isActive(properties.action);
+    var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
+    var link = stateController.getNavigationLink(properties.action, properties.toData);
+    newProperties.href = stateController.settings.historyManager.getHref(link);
+    active = active && !!newProperties.href && isActive(stateController, properties.action);
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
@@ -171,19 +184,18 @@ module.exports = NavigationLink;
 },{"./LinkUtility":1}],6:[function(_dereq_,module,exports){
 (function (global){
 var LinkUtility = _dereq_('./LinkUtility');
-var Navigation = (typeof window !== "undefined" ? window['Navigation'] : typeof global !== "undefined" ? global['Navigation'] : null);
 var CycleDOM = (typeof window !== "undefined" ? window['CycleDOM'] : typeof global !== "undefined" ? global['CycleDOM'] : null);
-var RefreshLink = function (properties, children) {
+var RefreshLink = function (stateController, properties, children) {
     var newProperties = {};
     for (var key in properties)
         newProperties[key] = properties[key];
     var active = true;
     for (var key in properties.toData) {
-        active = active && LinkUtility.isActive(key, properties.toData[key]);
+        active = active && LinkUtility.isActive(stateController, key, properties.toData[key]);
     }
-    var toData = LinkUtility.getData(properties.toData, properties.includeCurrentData, properties.currentDataKeys);
-    var link = Navigation.StateController.getRefreshLink(toData);
-    newProperties.href = Navigation.settings.historyManager.getHref(link);
+    var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
+    var link = stateController.getRefreshLink(toData);
+    newProperties.href = stateController.settings.historyManager.getHref(link);
     active = active && !!newProperties.href;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
