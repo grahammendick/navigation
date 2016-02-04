@@ -39,7 +39,8 @@ var NavigationDriver = function(url) {
                 stateController.onNavigate(() => navigated$.onNext({
                         state: stateController.stateContext.state,
                         data: stateController.stateContext.data
-                    }));
+                    })
+                );
                 stateController.start(url);
             }
             if (e.target) {
