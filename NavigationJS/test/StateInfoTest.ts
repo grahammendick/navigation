@@ -572,7 +572,7 @@ describe('StateInfoTest', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ]);
-            var stateController = new Navigation.StateController([
+            stateController.configure([
                 { key: 'd0', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't0', to: 's1' },

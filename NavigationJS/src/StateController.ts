@@ -25,12 +25,12 @@ class StateController {
     dialogs: { [index: string]: Dialog } = {};
     
     constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
-        for(var setting in settings)
-            this.settings[setting] = settings[setting];
-        this.buildDialogs(dialogs);
+        this.configure(dialogs, settings);
     }
     
-    buildDialogs(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[]) {
+    configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
+        for(var setting in settings)
+            this.settings[setting] = settings[setting];
         var config = StateInfoConfig.build(dialogs, this.settings);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;

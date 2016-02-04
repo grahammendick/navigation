@@ -4750,7 +4750,7 @@ describe('Navigation', function () {
                     { key: 's', route: 'r' }]}
                 ]);
             try {
-                stateController = new Navigation.StateController([
+                stateController.configure([
                     { key: '', initial: 's', states: [
                         { key: 's', route: 'r' }]}
                     ]);
@@ -4795,7 +4795,7 @@ describe('Navigation', function () {
                     { key: 's1', route: 'r1' }]}
                 ]);
             try {
-                stateController = new Navigation.StateController([
+                stateController.configure([
                     { key: '', initial: 's', states: [
                         { key: 's', route: 'r' }]}
                     ]);
@@ -4853,7 +4853,7 @@ describe('Navigation', function () {
                     { key: 's1', route: 'r1' }]}
                 ]);
             try {
-                stateController = new Navigation.StateController([
+                stateController.configure([
                     { key: '', initial: 's', states: [
                         { key: 's', route: 'r' }]}
                     ]);
@@ -4917,7 +4917,7 @@ describe('Navigation', function () {
                     { key: 's2', route: 'r2' }]}
                 ]);
             try {
-                stateController = new Navigation.StateController([
+                stateController.configure([
                     { key: '', initial: 's', states: [
                         { key: 's', route: 'r' }]}
                     ]);
