@@ -3,6 +3,7 @@ import CrumbTrailManager = require('./CrumbTrailManager');
 import Dialog = require('./config/Dialog');
 import IDialog = require('./config/IDialog');
 import HistoryAction = require('./history/HistoryAction');
+import IHistoryManager = require('./history/IHistoryManager');
 import NavigationData = require('./NavigationData');
 import NavigationSettings = require('./NavigationSettings');
 import INavigationSettings = require('./INavigationSettings');
@@ -23,6 +24,7 @@ class StateController {
     private settings: NavigationSettings = new NavigationSettings(); 
     _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
+    historyManager: IHistoryManager;
     
     constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         this.configure(dialogs, settings);
@@ -31,6 +33,7 @@ class StateController {
     configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         for(var setting in settings)
             this.settings[setting] = settings[setting];
+        this.historyManager = this.settings.historyManager;
         var config = StateInfoConfig.build(dialogs, this.settings);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
