@@ -8,7 +8,7 @@ import ReactDOM = require('react-dom');
 class LinkUtility {
     static getLink(stateController, linkAccessor: () => string): string {
         try {
-            return stateController.settings.historyManager.getHref(linkAccessor());
+            return stateController.historyManager.getHref(linkAccessor());
         } catch (e) {
             return null;
         }
@@ -56,7 +56,7 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var link = props.stateController.settings.historyManager.getUrl(element);
+                    var link = props.stateController.historyManager.getUrl(element);
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {
                         e.preventDefault();
