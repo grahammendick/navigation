@@ -16,20 +16,20 @@ class HistoryActionHook {
 }
 
 class LinkUtility {
-    static getData(toData, includeCurrentData, currentDataKeys) {
+    static getData(stateController, toData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
-            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            toData = Navigation.StateContext.includeCurrentData(toData);
+            toData = stateController.stateContext.includeCurrentData(toData);
         return toData;
     }
     
-    static isActive(key: string, val: any): boolean {
-        if (!Navigation.StateContext.state)
+    static isActive(stateController, key: string, val: any): boolean {
+        if (!stateController.stateContext.state)
             return false;
         if (val != null) {
-            var trackTypes = Navigation.StateContext.state.trackTypes;
-            var currentVal = Navigation.StateContext.data[key];
+            var trackTypes = stateController.stateContext.state.trackTypes;
+            var currentVal = stateController.stateContext.data[key];
             if (currentVal != null)
                 return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
             else

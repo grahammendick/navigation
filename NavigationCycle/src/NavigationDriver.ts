@@ -1,17 +1,20 @@
 import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
+import NavigationBackLink = require('./NavigationBackLink');
+import NavigationLink = require('./NavigationLink');
+import RefreshLink = require('./RefreshLink');
 import Rx = require('rx');
 
-function navigate(e) {
+function navigate(e, stateController) {
     var historyAction = LinkUtility.getHistoryAction(e);
     if (e.action)
-        Navigation.StateController.navigate(e.action, e.toData, historyAction);
+        stateController.navigate(e.action, e.toData, historyAction);
     if (!e.action && e.toData)
-        Navigation.StateController.refresh(e.toData, historyAction);
+        stateController.refresh(e.toData, historyAction);
     if (e.distance)
-        Navigation.StateController.navigateBack(e.distance, historyAction);
+        stateController.navigateBack(e.distance, historyAction);
     if (e.url)
-        Navigation.StateController.navigateLink(e.url, false, historyAction);
+        stateController.navigateLink(e.url, false, historyAction);
 }
 
 function isolate(NavigationSource, key) {
@@ -24,24 +27,33 @@ function isolate(NavigationSource, key) {
 
 var NavigationDriver = function(url) {
     return function(navigate$) {
+        var stateController;
+        var navigated$ = new Rx.ReplaySubject(1);
         navigate$.subscribe(e => {
-            if (!Navigation.StateContext.state)
-                Navigation.start(url);
+            if (e.stateController) {
+                stateController = e.stateController;
+                stateController.onNavigate(() => navigated$.onNext({
+                        state: stateController.stateContext.state,
+                        data: stateController.stateContext.data
+                    }));
+                stateController.start(url);
+            }
             if (e.target) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
-                    var link = Navigation.settings.historyManager.getUrl(e.target);
-                    Navigation.StateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
+                    var link = stateController.settings.historyManager.getUrl(e.target);
+                    stateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
                 }
             } else {
-                navigate(e);
+                navigate(e, stateController);
             }
         });
-        var navigated$ = new Rx.ReplaySubject(1);
-        Navigation.StateController.onNavigate(() => navigated$.onNext(Navigation.StateContext));
         return {
             navigated: navigated$,
-            isolateSource: isolate
+            isolateSource: isolate,
+            navigationBackLink: (properties, children) => NavigationBackLink(stateController, properties, children),
+            navigationLink: (properties, children) => NavigationLink(stateController, properties, children),
+            refreshLink: (properties, children) => RefreshLink(stateController, properties, children)
         };
     };
 }
