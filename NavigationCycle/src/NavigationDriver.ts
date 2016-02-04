@@ -46,7 +46,7 @@ var NavigationDriver = function(url) {
             if (e.target) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
-                    var link = stateController.settings.historyManager.getUrl(e.target);
+                    var link = stateController.historyManager.getUrl(e.target);
                     stateController.navigateLink(link, false, LinkUtility.getHistoryAction(e.target));
                 }
             } else {
