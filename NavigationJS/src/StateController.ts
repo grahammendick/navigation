@@ -1,4 +1,4 @@
-﻿import Crumb = require('./Crumb');
+﻿import Crumb = require('./config/Crumb');
 import CrumbTrailManager = require('./CrumbTrailManager');
 import Dialog = require('./config/Dialog');
 import IDialog = require('./config/IDialog');
@@ -11,7 +11,7 @@ import ReturnDataManager = require('./ReturnDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
-import StateInfoConfig = require('./config/StateInfoConfig');
+import StateInfoConfig = require('./StateInfoConfig');
 import Transition = require('./config/Transition');
 import ITransition = require('./config/ITransition');
 

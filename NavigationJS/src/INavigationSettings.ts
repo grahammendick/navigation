@@ -1,4 +1,4 @@
-import IRouter = require('./IRouter');
+import IRouter = require('./config/IRouter');
 import IHistoryManager = require('./history/IHistoryManager');
 import CrumbTrailPersister = require('./CrumbTrailPersister');
 

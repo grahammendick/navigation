@@ -1,5 +1,5 @@
-﻿import Dialog = require('./config/Dialog');
-import State = require('./config/State');
+﻿import Dialog = require('./Dialog');
+import State = require('./State');
 
 interface IRouter {
     getData(route: string, separableData?: any): { state: State; data: any };

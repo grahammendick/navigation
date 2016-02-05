@@ -1,7 +1,7 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import Crumb = require('../src/Crumb');
+import Crumb = require('../src/config/Crumb');
 import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 

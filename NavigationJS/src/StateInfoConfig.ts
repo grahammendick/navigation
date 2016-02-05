@@ -1,12 +1,12 @@
-﻿import Dialog = require('./Dialog');
-import IDialog = require('./IDialog');
-import ConverterFactory = require('../converter/ConverterFactory');
-import ReturnDataManager = require('../ReturnDataManager');
-import NavigationSettings = require('../NavigationSettings');
-import State = require('./State');
-import IState = require('./IState');
-import Transition = require('./Transition');
-import ITransition = require('./ITransition');
+﻿import Dialog = require('./config/Dialog');
+import IDialog = require('./config/IDialog');
+import ConverterFactory = require('./converter/ConverterFactory');
+import ReturnDataManager = require('./ReturnDataManager');
+import NavigationSettings = require('./NavigationSettings');
+import State = require('./config/State');
+import IState = require('./config/IState');
+import Transition = require('./config/Transition');
+import ITransition = require('./config/ITransition');
 
 class StateInfoConfig {
     static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: NavigationSettings): { dialogs: { [index: string]: Dialog }, _dialogs: Dialog[] } {

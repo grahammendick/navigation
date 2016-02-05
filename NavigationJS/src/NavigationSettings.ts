@@ -1,4 +1,4 @@
-﻿import IRouter = require('./IRouter');
+﻿import IRouter = require('./config/IRouter');
 import StateRouter = require('./StateRouter');
 import IHistoryManager = require('./history/IHistoryManager');
 import INavigationSettings = require('./INavigationSettings');

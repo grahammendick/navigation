@@ -1,7 +1,7 @@
 ﻿import Dialog = require('./Dialog');
 import IState = require('./IState');
-import IStateHandler = require('../IStateHandler');
-import StateHandler = require('../StateHandler');
+import IStateHandler = require('./IStateHandler');
+import StateHandler = require('./StateHandler');
 import Transition = require('./Transition');
 
 class State implements IState<{ [index: string]: Transition }> {

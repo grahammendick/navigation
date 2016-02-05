@@ -1,6 +1,6 @@
 ﻿import Crumb = require('./Crumb');
 import IRouter = require('./IRouter');
-import State = require('./config/State');
+import State = require('./State');
 
 interface IStateHandler {
     getNavigationLink(router: IRouter, state: State, data: any, arrayData?: { [index: string]: string[] }): string;

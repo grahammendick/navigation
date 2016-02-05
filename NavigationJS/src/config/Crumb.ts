@@ -1,4 +1,4 @@
-﻿import State = require('./config/State');
+﻿import State = require('./State');
 
 class Crumb {
     data: any;

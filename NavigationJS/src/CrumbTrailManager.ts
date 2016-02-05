@@ -1,4 +1,4 @@
-﻿import Crumb = require('./Crumb');
+﻿import Crumb = require('./config/Crumb');
 import Dialog = require('./config/Dialog');
 import NavigationData = require('./NavigationData');
 import NavigationSettings = require('./NavigationSettings');
