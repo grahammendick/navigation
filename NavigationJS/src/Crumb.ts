@@ -1,6 +1,4 @@
-﻿import CrumbTrailManager = require('./CrumbTrailManager');
-import NavigationData = require('./NavigationData');
-import State = require('./config/State');
+﻿import State = require('./config/State');
 
 class Crumb {
     data: any;
@@ -15,7 +13,6 @@ class Crumb {
         this.last = last;
         this.title = state.title;
         this.navigationLink = link;
-        NavigationData.setDefaults(this.data, this.state.defaults);
     }
 }
 export = Crumb;

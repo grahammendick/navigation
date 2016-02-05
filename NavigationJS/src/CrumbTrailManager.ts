@@ -13,10 +13,10 @@ class CrumbTrailManager {
     static buildCrumbTrail(stateContext: StateContext, settings: NavigationSettings, dialogs: Dialog[], uncombined: boolean) {
         var crumbs = this.getCrumbs(stateContext, settings, dialogs, false);
         if (uncombined)
-            crumbs.push(new Crumb(stateContext.previousData, stateContext.previousState, this.getHref(stateContext, settings, stateContext.previousState, stateContext.previousData, null), false));        
+            crumbs.push(new Crumb(NavigationData.setDefaults(stateContext.previousData, stateContext.previousState.defaults), stateContext.previousState, this.getHref(stateContext, settings, stateContext.previousState, stateContext.previousData, null), false));        
         crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
         if (settings.combineCrumbTrail)
-            crumbs.push(new Crumb(stateContext.data, stateContext.state, this.getHref(stateContext, settings, stateContext.state, stateContext.data, null), false));
+            crumbs.push(new Crumb(NavigationData.setDefaults(stateContext.data, stateContext.state.defaults), stateContext.state, this.getHref(stateContext, settings, stateContext.state, stateContext.data, null), false));
         crumbs.reverse();
         var trailString: string = '';
         for (var i = 0; i < crumbs.length; i++) {
@@ -43,7 +43,7 @@ class CrumbTrailManager {
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
             if (!skipLatest) {
-                crumbTrailArray.push(new Crumb(navigationData, state, this.getHref(stateContext, settings, state, navigationData, null), setLast && last));
+                crumbTrailArray.push(new Crumb(NavigationData.setDefaults(navigationData, state.defaults), state, this.getHref(stateContext, settings, state, navigationData, null), setLast && last));
                 last = false;
             }
             skipLatest = false;

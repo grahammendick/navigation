@@ -4,6 +4,7 @@
             if (data[key] == null || !data[key].toString())
                 data[key] = defaults[key];
         }
+        return data;
     }
 
     static clone(data: any) {
