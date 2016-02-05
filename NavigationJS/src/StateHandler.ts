@@ -2,7 +2,6 @@
 import IStateHandler = require('./IStateHandler');
 import NavigationSettings = require('./NavigationSettings');
 import State = require('./config/State');
-import StateController = require('./StateController');
 
 class StateHandler implements IStateHandler {
     getNavigationLink(settings: NavigationSettings, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
