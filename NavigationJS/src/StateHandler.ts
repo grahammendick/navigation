@@ -1,6 +1,6 @@
 ﻿import Crumb = require('./Crumb');
-import IStateHandler = require('./IStateHandler');
 import IRouter = require('./IRouter');
+import IStateHandler = require('./IStateHandler');
 import State = require('./config/State');
 
 class StateHandler implements IStateHandler {
