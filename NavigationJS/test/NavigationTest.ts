@@ -4423,7 +4423,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController = new Navigation.StateController([
@@ -4462,7 +4462,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController = new Navigation.StateController([
@@ -4501,7 +4501,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController = new Navigation.StateController([
@@ -4540,7 +4540,7 @@ describe('Navigation', function () {
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController = new Navigation.StateController([
@@ -4583,7 +4583,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4602,7 +4602,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4621,7 +4621,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4640,7 +4640,7 @@ describe('Navigation', function () {
             stateController.navigate('d');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4663,7 +4663,7 @@ describe('Navigation', function () {
             stateController.navigate('t');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4686,7 +4686,7 @@ describe('Navigation', function () {
             stateController.navigate('t');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4709,7 +4709,7 @@ describe('Navigation', function () {
             stateController.navigate('t');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4732,7 +4732,7 @@ describe('Navigation', function () {
             stateController.navigate('t');
             var historyManager = new Navigation.HashHistoryManager();
             var replaceHistory = undefined;
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, { historyManager: historyManager });
@@ -4745,7 +4745,7 @@ describe('Navigation', function () {
         it('should not call history manager', function() {
             var called = false;
             var historyManager = new Navigation.HashHistoryManager();
-            historyManager.addHistory = (stateContext: StateContext, url: string, replace: boolean) => {
+            historyManager.addHistory = (url: string, replace: boolean) => {
                 called = true;
             }
             var stateController = new Navigation.StateController([

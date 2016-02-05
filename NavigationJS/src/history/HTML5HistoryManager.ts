@@ -9,8 +9,7 @@ class HTML5HistoryManager implements IHistoryManager {
             window.addEventListener('popstate', navigateHistory);
     }
 
-    addHistory(stateContext: StateContext, url: string, replace: boolean, applicationPath: string) {
-        url = url != null ? url : stateContext.url;
+    addHistory(url: string, replace: boolean, applicationPath: string) {
         url = applicationPath + url;
         if (!this.disabled && location.pathname + location.search !== url) {
             if (!replace)            
