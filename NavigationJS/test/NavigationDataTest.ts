@@ -1,8 +1,6 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import Crumb = require('../src/config/Crumb');
-import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('Navigation Data', function () {
@@ -3221,7 +3219,7 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r4' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3284,7 +3282,7 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r4' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3344,7 +3342,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -3413,7 +3411,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -3485,7 +3483,7 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r4' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -3561,7 +3559,7 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r4' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -3637,7 +3635,7 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r4' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3702,7 +3700,7 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r4' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3758,7 +3756,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r1'}]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3805,7 +3803,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r1'}]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3858,7 +3856,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3917,7 +3915,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -3976,7 +3974,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -4033,7 +4031,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -4519,7 +4517,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r2' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
          });
