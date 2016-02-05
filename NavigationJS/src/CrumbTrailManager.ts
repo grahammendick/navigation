@@ -88,7 +88,7 @@ class CrumbTrailManager {
         }
         if (stateContext.crumbTrailKey && state.trackCrumbTrail)
             data[settings.crumbTrailKey] = stateContext.crumbTrailKey;
-        return state.stateHandler.getNavigationLink(settings, state, data, arrayData);
+        return state.stateHandler.getNavigationLink(settings.router, state, data, arrayData);
     }
 
     static getRefreshHref(stateContext: StateContext, settings: NavigationSettings, refreshData: any): string {
