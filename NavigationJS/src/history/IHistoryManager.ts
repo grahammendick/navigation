@@ -1,6 +1,4 @@
-﻿import StateContext = require('../StateContext');
-
-interface IHistoryManager {
+﻿interface IHistoryManager {
     disabled: boolean;
     init(navigateHistory: () => void);
     addHistory(url: string, replace: boolean, applicationPath: string): void;

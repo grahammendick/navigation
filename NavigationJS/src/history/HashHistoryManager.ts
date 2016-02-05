@@ -1,5 +1,4 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import StateContext = require('../StateContext');
 
 class HashHistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);

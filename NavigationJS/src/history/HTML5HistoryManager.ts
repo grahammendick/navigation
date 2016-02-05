@@ -1,5 +1,4 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import StateContext = require('../StateContext');
 
 class HTML5HistoryManager implements IHistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
