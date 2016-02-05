@@ -1,8 +1,6 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import Crumb = require('../src/config/Crumb');
-import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('Navigation', function () {
@@ -1814,7 +1812,7 @@ describe('Navigation', function () {
                     { key: 's', route: 'r1' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1858,7 +1856,7 @@ describe('Navigation', function () {
                     { key: 's', route: 'r2' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1903,7 +1901,7 @@ describe('Navigation', function () {
                     { key: 's', route: 'r1' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1953,7 +1951,7 @@ describe('Navigation', function () {
                     { key: 's', route: 'r2' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -2018,7 +2016,7 @@ describe('Navigation', function () {
                     { key: 's1', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -2077,7 +2075,7 @@ describe('Navigation', function () {
                     { key: 's1', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -2142,7 +2140,7 @@ describe('Navigation', function () {
                     { key: 's1', route: 'r3' }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
-            state.stateHandler.truncateCrumbTrail = (state: State, crumbs: Crumb[]): Crumb[] => {
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 var newCrumbs = [];
                 for (var i = 0; i < crumbs.length; i++) {
                     if (crumbs[i].state === state)
@@ -3227,8 +3225,8 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates: Array<State> = [];
-            var states: Array<State> = [];
+            var oldStates = [];
+            var states = [];
             stateController.navigate('d0');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
@@ -3260,8 +3258,8 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates: Array<State> = [];
-            var states: Array<State> = [];
+            var oldStates = [];
+            var states = [];
             stateController.navigate('d0');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
@@ -3283,8 +3281,8 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates: Array<State> = [];
-            var states: Array<State> = [];
+            var oldStates = [];
+            var states = [];
             stateController.navigate('d0');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
@@ -3318,8 +3316,8 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates: Array<State> = [];
-            var states: Array<State> = [];
+            var oldStates = [];
+            var states = [];
             stateController.navigate('d0');
             var navigatedHandler1 = (oldState, state, data) => {
                 oldStates.push(oldState);
@@ -3361,10 +3359,10 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates1: Array<State> = [];
-            var states1: Array<State> = [];
-            var oldStates2: Array<State> = [];
-            var states2: Array<State> = [];
+            var oldStates1 = [];
+            var states1 = [];
+            var oldStates2 = [];
+            var states2 = [];
             stateController.navigate('d0');
             var navigatedHandler1 = (oldState, state, data) => {
                 oldStates1.push(oldState);
@@ -3408,8 +3406,8 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates: Array<State> = [];
-            var states: Array<State> = [];
+            var oldStates = [];
+            var states = [];
             stateController.navigate('d0');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
@@ -3440,10 +3438,10 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2' }]}
                 ]);
-            var oldStates1: Array<State> = [];
-            var states1: Array<State> = [];
-            var oldStates2: Array<State> = [];
-            var states2: Array<State> = [];
+            var oldStates1 = [];
+            var states1 = [];
+            var oldStates2 = [];
+            var states2 = [];
             stateController.navigate('d0');
             var navigatedHandler1 = (oldState, state, data) => {
                 oldStates1.push(oldState);

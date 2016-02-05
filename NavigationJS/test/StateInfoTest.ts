@@ -1,7 +1,6 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import State = require('../src/config/State');
 import Navigation = require('../src/Navigation');
 
 describe('StateInfoTest', function () {
@@ -36,7 +35,7 @@ describe('StateInfoTest', function () {
                     { key: 's1', route: 'r1', title: 't1' }]}
                 ]);
             var dialog = stateController._dialogs[0];
-            var state0: State = dialog._states[0];
+            var state0 = dialog._states[0];
             var state1 = (<any> dialog.states).s1; 
             assert.equal(dialog._states.length, 2);
             assert.equal(state0.key, 's0');
