@@ -24,7 +24,7 @@ class CrumbTrailManager {
             trailString += ReturnDataManager.formatReturnData(settings, crumbs[i].state, crumbs[i].data);
         }
         stateContext.crumbTrail = trailString ? trailString : null;
-        stateContext.crumbTrailKey = settings.crumbTrailPersister.save(stateContext.crumbTrail, stateContext);
+        stateContext.crumbTrailKey = settings.crumbTrailPersister.save(stateContext.crumbTrail, stateContext.state);
     }
 
     static getCrumbs(stateContext: StateContext, settings: NavigationSettings, dialogs: Dialog[], setLast: boolean, skipLatest?: boolean): Crumb[] {

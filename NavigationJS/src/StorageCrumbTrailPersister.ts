@@ -1,5 +1,5 @@
 import CrumbTrailPersister = require('./CrumbTrailPersister');
-import StateContext = require('./StateContext');
+import State = require('./config/State');
 
 class StorageCrumbTrailPersister extends CrumbTrailPersister {
 	private maxLength: number;
@@ -35,15 +35,15 @@ class StorageCrumbTrailPersister extends CrumbTrailPersister {
 		return crumbTrail;
 	}
 	
-	save(crumbTrail: string, stateContext: StateContext): string {
+	save(crumbTrail: string, state: State): string {
 		if (!crumbTrail)
 			return crumbTrail;
 		if (crumbTrail.length > this.maxLength) {
 			var count = 0;
 			if (this.storage.getItem('CrumbTrailCount') != null)
 				count = +this.storage.getItem('CrumbTrailCount');
-			var dialogCode = StorageCrumbTrailPersister.toCode(stateContext.dialog.index);
-			var stateCode = StorageCrumbTrailPersister.toCode(stateContext.state.index);
+			var dialogCode = StorageCrumbTrailPersister.toCode(state.parent.index);
+			var stateCode = StorageCrumbTrailPersister.toCode(state.index);
 			var countCode = StorageCrumbTrailPersister.toCode(count % (10 * this.historySize));
 			if (count >= this.historySize) {
 				var purgeCode = StorageCrumbTrailPersister.toCode((count - this.historySize) % (10 * this.historySize));

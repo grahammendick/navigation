@@ -1,11 +1,11 @@
-import StateContext = require('./StateContext');
+import State = require('./config/State');
 
 class CrumbTrailPersister {
 	load(crumbTrail: string): string {
 		return crumbTrail;
 	}
 	
-	save(crumbTrail: string, stateContext: StateContext): string {
+	save(crumbTrail: string, state: State): string {
 		return crumbTrail;
 	}
 }
