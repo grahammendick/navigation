@@ -1,4 +1,5 @@
-﻿import Crumb = require('./config/Crumb');
+﻿import ConverterFactory = require('./converter/ConverterFactory');
+import Crumb = require('./config/Crumb');
 import CrumbTrailManager = require('./CrumbTrailManager');
 import Dialog = require('./config/Dialog');
 import IDialog = require('./config/IDialog');
@@ -25,6 +26,7 @@ class StateController {
     _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
     historyManager: IHistoryManager;
+    converterFactory: ConverterFactory = new ConverterFactory();
     
     constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         this.configure(dialogs, settings);
@@ -34,7 +36,7 @@ class StateController {
         for(var setting in settings)
             this.settings[setting] = settings[setting];
         this.historyManager = this.settings.historyManager;
-        var config = StateInfoConfig.build(dialogs, this.settings);
+        var config = StateInfoConfig.build(dialogs, this.settings, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
         this.settings.router.addRoutes(this._dialogs);
@@ -56,8 +58,8 @@ class StateController {
             this.stateContext.crumbTrail = this.settings.crumbTrailPersister.load(data[this.settings.crumbTrailKey]);
             var uncombined = !!data[this.settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
-            CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this._dialogs, uncombined);
-            this.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this._dialogs, true, this.settings.combineCrumbTrail);
+            CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this.converterFactory, this._dialogs, uncombined);
+            this.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this.converterFactory, this._dialogs, true, this.settings.combineCrumbTrail);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -94,9 +96,9 @@ class StateController {
             if (this.stateContext.previousState)
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
             if (data[this.settings.returnDataKey])
-                this.stateContext.previousData = ReturnDataManager.parseReturnData(this.settings, data[this.settings.returnDataKey], this.stateContext.previousState);
+                this.stateContext.previousData = ReturnDataManager.parseReturnData(this.settings, this.converterFactory, data[this.settings.returnDataKey], this.stateContext.previousState);
         } else {
-            var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this._dialogs, false).pop();
+            var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this.converterFactory, this._dialogs, false).pop();
             if (previousStateCrumb){
                 this.stateContext.previousState = previousStateCrumb.state;
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
@@ -128,7 +130,7 @@ class StateController {
     }
 
     getNavigationLink(action: string, toData?: any): string {
-        return CrumbTrailManager.getHref(this.stateContext, this.settings, this.getNextState(action), toData, this.stateContext.data);
+        return CrumbTrailManager.getHref(this.stateContext, this.settings, this.converterFactory, this.getNextState(action), toData, this.stateContext.data);
     }
 
     canNavigateBack(distance: number) {
@@ -157,7 +159,7 @@ class StateController {
     }
 
     getRefreshLink(toData?: any): string {
-        return CrumbTrailManager.getRefreshHref(this.stateContext, this.settings, toData);
+        return CrumbTrailManager.getRefreshHref(this.stateContext, this.settings, this.converterFactory, toData);
     }
 
     navigateLink(url: string, history?: boolean, historyAction?: HistoryAction) {
@@ -216,7 +218,7 @@ class StateController {
         for (var key in data) {
             if (key !== this.settings.previousStateIdKey && key !== this.settings.returnDataKey
                 && key !== this.settings.crumbTrailKey && !this.isDefault(key, data, state, !!separableData[key]))
-                newData[key] = ReturnDataManager.parseURLString(this.settings, key, data[key], state, false, !!separableData[key]);
+                newData[key] = ReturnDataManager.parseURLString(this.settings, this.converterFactory, key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);
         return newData;

@@ -9,7 +9,7 @@ import Transition = require('./config/Transition');
 import ITransition = require('./config/ITransition');
 
 class StateInfoConfig {
-    static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: NavigationSettings): { dialogs: { [index: string]: Dialog }, _dialogs: Dialog[] } {
+    static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: NavigationSettings, converterFactory: ConverterFactory): { dialogs: { [index: string]: Dialog }, _dialogs: Dialog[] } {
         var _builtDialogs = [];
         var builtDialogs: { [index: string]: Dialog } = {};
         for (var i = 0; i < dialogs.length; i++) {
@@ -26,7 +26,7 @@ class StateInfoConfig {
                 throw new Error('A Dialog with key ' + dialog.key + ' already exists');
             _builtDialogs.push(dialog);
             builtDialogs[dialog.key] = dialog;
-            this.processStates(dialog, dialogObject, settings);
+            this.processStates(dialog, dialogObject, settings, converterFactory);
             this.processTransitions(dialog, dialogObject);
             dialog.initial = dialog.states[dialogObject.initial];
             if (!dialogObject.initial)
@@ -40,7 +40,7 @@ class StateInfoConfig {
         };
     }
 
-    private static processStates(dialog: Dialog, dialogObject: IDialog<string, IState<ITransition<string>[]>[]>, settings: NavigationSettings) {
+    private static processStates(dialog: Dialog, dialogObject: IDialog<string, IState<ITransition<string>[]>[]>, settings: NavigationSettings, converterFactory: ConverterFactory) {
         for (var i = 0; i < dialogObject.states.length; i++) {
             var stateObject = dialogObject.states[i];
             var state = new State();
@@ -53,14 +53,14 @@ class StateInfoConfig {
             }
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
-                    state.defaultTypes[key] = ConverterFactory.getConverter(state.defaults[key]).name;
-                var formattedData = ReturnDataManager.formatURLObject(settings, key, state.defaults[key], state); 
+                    state.defaultTypes[key] = converterFactory.getConverter(state.defaults[key]).name;
+                var formattedData = ReturnDataManager.formatURLObject(settings, converterFactory, key, state.defaults[key], state); 
                 state.formattedDefaults[key] = formattedData.val;
                 if (formattedData.arrayVal)
                     state.formattedArrayDefaults[key] = formattedData.arrayVal;
             }
             for (var key in state.defaultTypes) {
-                ConverterFactory.getConverterFromName(state.defaultTypes[key]);
+                converterFactory.getConverterFromName(state.defaultTypes[key]);
             }
             if (!state.key)
                 throw new Error('key is mandatory for a State');
