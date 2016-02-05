@@ -10,7 +10,7 @@ class StateHandler implements IStateHandler {
             return null;
         var query: string[] = [];
         for (var key in data) {
-            if (key !== settings.stateIdKey && !routeInfo.data[key]) {
+            if (!routeInfo.data[key]) {
                 var arr = arrayData[key];
                 var encodedKey = this.urlEncode(state, null, key, true);
                 if (!arr) {

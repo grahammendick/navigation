@@ -61,7 +61,6 @@ class CrumbTrailManager {
 
     static getHref(stateContext: StateContext, settings: NavigationSettings, state: State, navigationData: any, returnData: any): string {
         var data = {};
-        data[settings.stateIdKey] = state.id;
         if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state)
             data[settings.previousStateIdKey] = stateContext.state.id;
         if (!settings.router.supportsDefaults) {
