@@ -5,7 +5,6 @@ import NavigationSettings = require('./NavigationSettings');
 import ReturnDataManager = require('./ReturnDataManager');
 import State = require('./config/State');
 import StateContext = require('./StateContext');
-import StateInfoConfig = require('./config/StateInfoConfig');
 
 class CrumbTrailManager {
     private static CRUMB_1_SEP = '4_';

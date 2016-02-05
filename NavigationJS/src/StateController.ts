@@ -110,6 +110,8 @@ class StateController {
             var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
             handler[this.NAVIGATE_HANDLER_ID] = id;
             this.navigateHandlers[id] = handler;
+        } else {
+            throw new Error('Cannot add the same handler more than once');
         }
     }
 

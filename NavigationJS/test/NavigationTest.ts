@@ -3251,7 +3251,7 @@ describe('Navigation', function () {
     });
 
     describe('Duplicate On Navigate', function () {
-        it('should not duplicate call onNavigate listener', function() {
+        it('should throw error', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
@@ -3269,18 +3269,7 @@ describe('Navigation', function () {
                 states.push(state);
             };
             stateController.onNavigate(navigatedHandler);
-            stateController.onNavigate(navigatedHandler);
-            var link = stateController.getNavigationLink('t');
-            stateController.navigateLink(link);
-            stateController.navigate('d1');
-            stateController.offNavigate(navigatedHandler);
-            assert.equal(oldStates[0], stateController.dialogs['d0'].states['s0']);
-            assert.equal(states[0], stateController.dialogs['d0'].states['s1']);
-            assert.equal(oldStates[1], stateController.dialogs['d0'].states['s1']);
-            assert.equal(states[1], stateController.dialogs['d1'].states['s0']);
-            assert.equal(oldStates.length, 2);
-            assert.equal(states.length, 2);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d1'].states['s0']);
+            assert.throws(() => stateController.onNavigate(navigatedHandler));
         });
     });
 
