@@ -14,10 +14,10 @@ class CrumbTrailManager {
     static buildCrumbTrail(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, dialogs: Dialog[], uncombined: boolean) {
         var crumbs = this.getCrumbs(stateContext, settings, converterFactory, dialogs, false);
         if (uncombined)
-            crumbs.push(new Crumb(NavigationData.setDefaults(stateContext.previousData, stateContext.previousState.defaults), stateContext.previousState, this.getHref(stateContext, settings, converterFactory, stateContext.previousState, stateContext.previousData, null), false));        
+            crumbs.push(this.getCrumb(stateContext, settings, converterFactory, stateContext.previousData, stateContext.previousState, false));        
         crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
         if (settings.combineCrumbTrail)
-            crumbs.push(new Crumb(NavigationData.setDefaults(stateContext.data, stateContext.state.defaults), stateContext.state, this.getHref(stateContext, settings, converterFactory, stateContext.state, stateContext.data, null), false));
+            crumbs.push(this.getCrumb(stateContext, settings, converterFactory, stateContext.data, stateContext.state, false));
         crumbs.reverse();
         var trailString: string = '';
         for (var i = 0; i < crumbs.length; i++) {
@@ -44,7 +44,7 @@ class CrumbTrailManager {
             var nextTrailStart = trail.indexOf(this.CRUMB_1_SEP, 1);
             trail = nextTrailStart != -1 ? trail.substring(nextTrailStart) : '';
             if (!skipLatest) {
-                crumbTrailArray.push(new Crumb(NavigationData.setDefaults(navigationData, state.defaults), state, this.getHref(stateContext, settings, converterFactory, state, navigationData, null), setLast && last));
+                crumbTrailArray.push(this.getCrumb(stateContext, settings, converterFactory, navigationData, state, setLast && last));
                 last = false;
             }
             skipLatest = false;
@@ -52,6 +52,10 @@ class CrumbTrailManager {
         }
         crumbTrailArray.reverse();
         return crumbTrailArray;
+    }
+    
+    static getCrumb(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, data: any, state: State, last: boolean): Crumb {
+        return new Crumb(NavigationData.setDefaults(data, state.defaults), state, this.getHref(stateContext, settings, converterFactory, state, data, null), last);        
     }
 
     static getState(id: string, dialogs: Dialog[]) {
