@@ -28,8 +28,9 @@ class StateController {
     historyManager: IHistoryManager;
     converterFactory: ConverterFactory = new ConverterFactory();
     
-    constructor(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
-        this.configure(dialogs, settings);
+    constructor(dialogs?: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
+        if (dialogs)
+            this.configure(dialogs, settings);
     }
     
     configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
