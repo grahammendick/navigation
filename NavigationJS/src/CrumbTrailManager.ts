@@ -55,7 +55,8 @@ class CrumbTrailManager {
     }
     
     static getCrumb(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, state: State, data: any, last: boolean): Crumb {
-        return new Crumb(NavigationData.setDefaults(data, state.defaults), state, this.getHref(stateContext, settings, converterFactory, state, data, null), last);        
+        var link = this.getHref(stateContext, settings, converterFactory, state, data, null);
+        return new Crumb(NavigationData.setDefaults(data, state.defaults), state, link, last);        
     }
 
     static getState(id: string, dialogs: Dialog[]) {
