@@ -29,10 +29,10 @@ class StateHandler implements IStateHandler {
     navigateLink(oldState: State, state: State, url: string) {
     }
 
-    getNavigationData(router: IRouter, state: State, url: string, separableData: any = {}): any {
+    getNavigationData(router: IRouter, state: State, url: string): { data: any, separableData: any } {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var data = router.getData(route, separableData).data;
+        var { data, separableData } = router.getData(route);
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
@@ -52,7 +52,7 @@ class StateHandler implements IStateHandler {
                 }
             }
         }
-        return data;
+        return { data: data, separableData: separableData };
     }
     
     urlEncode(state: State, key: string, val: string, queryString: boolean): string {

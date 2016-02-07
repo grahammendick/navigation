@@ -50,8 +50,7 @@ class StateController {
             this.stateContext.url = url;
             this.stateContext.dialog = state.parent;
             this.stateContext.title = state.title;
-            var separableData = {};
-            var data = state.stateHandler.getNavigationData(this.settings.router, state, url, separableData);
+            var { data, separableData } = state.stateHandler.getNavigationData(this.settings.router, state, url);
             this.stateContext.data = this.parseData(data, state, separableData);
             this.stateContext.previousState = null;
             this.stateContext.previousDialog = null;
@@ -175,8 +174,7 @@ class StateController {
     private _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
         try {
             var oldUrl = this.stateContext.url;
-            var separableData = {};
-            var data = state.stateHandler.getNavigationData(this.settings.router, state, url, separableData);
+            var { data, separableData } = state.stateHandler.getNavigationData(this.settings.router, state, url);
             data = this.parseData(data, state, separableData);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
