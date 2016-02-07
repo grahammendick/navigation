@@ -17,7 +17,6 @@ import Transition = require('./config/Transition');
 import ITransition = require('./config/ITransition');
 
 class StateController {
-    crumbs: Crumb[];
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
@@ -59,7 +58,7 @@ class StateController {
             var uncombined = !!data[this.settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
             CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this.converterFactory, this._dialogs, uncombined);
-            this.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this.converterFactory, this._dialogs, true, this.settings.combineCrumbTrail);
+            this.stateContext.crumbs = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this.converterFactory, this._dialogs, true, this.settings.combineCrumbTrail);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -135,7 +134,7 @@ class StateController {
 
     canNavigateBack(distance: number) {
         var canNavigate = false;
-        if (distance <= this.crumbs.length && distance > 0)
+        if (distance <= this.stateContext.crumbs.length && distance > 0)
             canNavigate = true;
             return canNavigate
         }
@@ -253,9 +252,9 @@ class StateController {
     }
 
     private getCrumb(distance: number): Crumb {
-        if (distance > this.crumbs.length || distance <= 0)
-            throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.crumbs.length + ')');
-        return this.crumbs[this.crumbs.length - distance];
+        if (distance > this.stateContext.crumbs.length || distance <= 0)
+            throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
+        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance];
     }
     
     start(url?: string) {

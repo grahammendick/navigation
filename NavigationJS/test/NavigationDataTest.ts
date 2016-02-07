@@ -1634,8 +1634,8 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['n'], 5);
                 assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.previousData['n'], 5);
-                assert.strictEqual(stateController.crumbs[1].data['s'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['n'], 5);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['n'], 5);
                 assert.strictEqual(stateController.stateContext.data['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.data['n'], 5);
             });
@@ -1694,10 +1694,10 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['t'], '2');
                 assert.strictEqual(stateController.stateContext.previousData['s'], 2);
                 assert.strictEqual(stateController.stateContext.previousData['t'], '2');
-                assert.strictEqual(stateController.crumbs[0].data['s'], 1);
-                assert.strictEqual(stateController.crumbs[0].data['t'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['s'], 2);
-                assert.strictEqual(stateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['t'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], 2);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['t'], '2');
                 assert.strictEqual(stateController.stateContext.data['s'], 3);
                 assert.strictEqual(stateController.stateContext.data['t'], '3');
             });
@@ -1750,9 +1750,9 @@ describe('Navigation Data', function () {
             it('should populate data', function () {
                 assert.strictEqual(stateController.stateContext.oldData.s, '2');
                 assert.strictEqual(stateController.stateContext.previousData.s, '2');
-                assert.strictEqual(stateController.crumbs[0].data.s, 1);
-                assert.strictEqual(stateController.crumbs[0].data['s'], 1);
-                assert.strictEqual(stateController.crumbs[1].data.s, '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data.s, 1);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data.s, '2');
                 assert.strictEqual(stateController.stateContext.data.s, '3');
             });
         }
@@ -1818,10 +1818,10 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['t'], '2');
                 assert.strictEqual(stateController.stateContext.previousData['s'], '22');
                 assert.strictEqual(stateController.stateContext.previousData['t'], '2');
-                assert.strictEqual(stateController.crumbs[0].data['s'], 11);
-                assert.strictEqual(stateController.crumbs[0].data['t'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['s'], '22');
-                assert.strictEqual(stateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], 11);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['t'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], '22');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['t'], '2');
                 assert.strictEqual(stateController.stateContext.data['s'], 3);
                 assert.strictEqual(stateController.stateContext.data['t'], '3');
             });
@@ -1846,7 +1846,7 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 stateController.navigate('d', data);
                 stateController.navigate('t');
-                var crumb = stateController.crumbs[0];
+                var crumb = stateController.stateContext.crumbs[0];
                 crumb.data['s'] = 'Changed';
                 stateController.navigateBack(1);
             });
@@ -1859,7 +1859,7 @@ describe('Navigation Data', function () {
                 stateController.navigateLink(link);
                 link = stateController.getNavigationLink('t');
                 stateController.navigateLink(link);
-                var crumb = stateController.crumbs[0];
+                var crumb = stateController.stateContext.crumbs[0];
                 crumb.data['s'] = 'Changed';
                 link = stateController.getNavigationBackLink(1);
                 stateController.navigateLink(link);
@@ -2815,14 +2815,14 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.previousData['emptyString'], '');
                 assert.strictEqual(stateController.stateContext.previousData['number'], 4);
                 assert.strictEqual(stateController.stateContext.previousData['char'], 7);
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['_bool'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[2].data['emptyString'], '');
-                assert.strictEqual(stateController.crumbs[2].data['number'], 4);
-                assert.strictEqual(stateController.crumbs[2].data['char'], 7);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['_bool'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['emptyString'], '');
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['number'], 4);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['char'], 7);
             });
         }
     });
@@ -2874,14 +2874,14 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.previousData['emptyString'], '');
                 assert.strictEqual(stateController.stateContext.previousData['number'], 4);
                 assert.strictEqual(stateController.stateContext.previousData['char'], 7);
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['_bool'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[2].data['emptyString'], '');
-                assert.strictEqual(stateController.crumbs[2].data['number'], 4);
-                assert.strictEqual(stateController.crumbs[2].data['char'], 7);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['_bool'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['emptyString'], '');
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['number'], 4);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['char'], 7);
             });
         }
     });
@@ -2928,13 +2928,13 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.previousData['number'], 1);
                 assert.strictEqual(stateController.stateContext.previousData['s'], 1);
                 assert.strictEqual(stateController.stateContext.previousData['t'], '2');
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['s'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['s'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['t'], '2');
             });
         }
     });
@@ -2983,13 +2983,13 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.previousData['number'], 1);
                 assert.strictEqual(stateController.stateContext.previousData['s'], 1);
                 assert.strictEqual(stateController.stateContext.previousData['t'], '2');
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['s'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['s'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['t'], '2');
             });
         }
     });
@@ -3038,9 +3038,9 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.previousData['string'], 'World');
                 assert.strictEqual(stateController.stateContext.previousData['_bool'], true);
                 assert.strictEqual(stateController.stateContext.previousData['number'], 0);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'World');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'World');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
     });
@@ -3089,9 +3089,9 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.previousData['string'], 'World');
                 assert.strictEqual(stateController.stateContext.previousData['_bool'], true);
                 assert.strictEqual(stateController.stateContext.previousData['number'], 0);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'World');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'World');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
     });
@@ -3135,15 +3135,15 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var crumb = stateController.crumbs[1];
+                var crumb = stateController.stateContext.crumbs[1];
                 crumb.data['string'] = 'Hello';
                 crumb.data['number'] = 0;
                 assert.strictEqual(stateController.stateContext.previousData['string'], 'Hello');
                 assert.strictEqual(stateController.stateContext.previousData['_bool'], true);
                 assert.strictEqual(stateController.stateContext.previousData['number'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
     });
@@ -3187,15 +3187,15 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                var crumb = stateController.crumbs[1];
+                var crumb = stateController.stateContext.crumbs[1];
                 crumb.data['string'] = 'Hello';
                 crumb.data['number'] = 0;
                 assert.strictEqual(stateController.stateContext.previousData['string'], 'Hello');
                 assert.strictEqual(stateController.stateContext.previousData['_bool'], true);
                 assert.strictEqual(stateController.stateContext.previousData['number'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
     });
@@ -3669,14 +3669,14 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['number'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[2].data['emptyString'], '');
-                assert.strictEqual(stateController.crumbs[2].data['number'], 4);
-                assert.strictEqual(stateController.crumbs[2].data['char'], 7);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['number'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['emptyString'], '');
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['number'], 4);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['char'], 7);
             });
         }
     });
@@ -3734,14 +3734,14 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['number'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[2].data['emptyString'], '');
-                assert.strictEqual(stateController.crumbs[2].data['number'], 4);
-                assert.strictEqual(stateController.crumbs[2].data['char'], 7);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['number'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['emptyString'], '');
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['number'], 4);
+                assert.strictEqual(stateController.stateContext.crumbs[2].data['char'], 7);
             });
         }
     });
@@ -3888,13 +3888,13 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['s'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['s'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['t'], '2');
             });
         }
     });
@@ -3947,13 +3947,13 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateController.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateController.crumbs[0].data['s'], undefined);
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['s'], 1);
-                assert.strictEqual(stateController.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['string'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[0].data['s'], undefined);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['s'], 1);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['t'], '2');
             });
         }
     });
@@ -4008,9 +4008,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'World');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'World');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
     });
@@ -4065,9 +4065,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateController.crumbs[1].data['string'], 'World');
-                assert.strictEqual(stateController.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'World');
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
+                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
     });
@@ -5048,7 +5048,7 @@ describe('Navigation Data', function () {
             stateController.stateContext.data['string'] = 4;
             stateController.refresh(stateController.stateContext.includeCurrentData({}))
             stateController.navigate('t');
-            var link = stateController.crumbs[1].navigationLink;
+            var link = stateController.stateContext.crumbs[1].navigationLink;
             assert.equal(link.indexOf('_bool'), -1);
             assert.equal(link.indexOf('number'), -1);
             assert.notEqual(link.indexOf('string'), -1);

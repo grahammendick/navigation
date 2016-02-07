@@ -1,4 +1,5 @@
-﻿import Dialog = require('./config/Dialog');
+﻿import Crumb = require('./config/Crumb');
+import Dialog = require('./config/Dialog');
 import State = require('./config/State');
 
 class StateContext {
@@ -13,6 +14,7 @@ class StateContext {
     data: any = {};
     url: string = null;
     title: string = null;
+    crumbs: Crumb[];
     crumbTrail: string = null;
     crumbTrailKey: string = null;
 
