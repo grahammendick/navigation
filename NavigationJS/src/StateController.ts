@@ -76,6 +76,7 @@ class StateController {
         this.stateContext.data = {};
         this.stateContext.url = null;
         this.stateContext.title = null;
+        this.stateContext.crumbs = [];
         this.stateContext.crumbTrail = null;
         this.stateContext.crumbTrailKey = null;
     }

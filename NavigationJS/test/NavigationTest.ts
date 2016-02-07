@@ -4409,7 +4409,9 @@ describe('Navigation', function () {
                 assert.strictEqual(stateController.stateContext.dialog, null);
                 assert.strictEqual(stateController.stateContext.url, null);
                 assert.strictEqual(stateController.stateContext.title, null);
-                assert.equal(stateController.stateContext.crumbs.length, 0);
+                assert.strictEqual(stateController.stateContext.crumbs.length, 0);
+                assert.strictEqual(stateController.stateContext.crumbTrail, null);
+                assert.strictEqual(stateController.stateContext.crumbTrailKey, null);
             });
         }
     });
