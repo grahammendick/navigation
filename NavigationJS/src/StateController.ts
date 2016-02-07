@@ -25,7 +25,7 @@ class StateController {
     _dialogs: Dialog[] = [];
     dialogs: { [index: string]: Dialog } = {};
     historyManager: IHistoryManager;
-    converterFactory: ConverterFactory = new ConverterFactory();
+    private converterFactory: ConverterFactory = new ConverterFactory();
     
     constructor(dialogs?: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         if (dialogs)
