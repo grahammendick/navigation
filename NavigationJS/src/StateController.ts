@@ -20,12 +20,12 @@ class StateController {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
-    stateContext: StateContext = new StateContext();
     private settings: NavigationSettings = new NavigationSettings(); 
-    _dialogs: Dialog[] = [];
-    dialogs: { [index: string]: Dialog } = {};
-    historyManager: IHistoryManager;
     private converterFactory: ConverterFactory = new ConverterFactory();
+    stateContext: StateContext = new StateContext();
+    historyManager: IHistoryManager;
+    dialogs: { [index: string]: Dialog } = {};
+    _dialogs: Dialog[] = [];
     
     constructor(dialogs?: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         if (dialogs)
