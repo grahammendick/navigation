@@ -63,7 +63,7 @@ class LinkUtility {
                         var historyAction = props.historyAction;
                         if (typeof historyAction === 'string')
                             historyAction = Navigation.HistoryAction[historyAction];
-                        props.stateController.navigateLink(link, false, historyAction);
+                        props.stateController.navigateLink(link, historyAction);
                     }
                 }
             }

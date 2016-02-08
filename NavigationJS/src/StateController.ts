@@ -43,7 +43,7 @@ class StateController {
             this.historyManager.init(() => {
                 if (this.stateContext.url === this.historyManager.getCurrentUrl())
                     return;
-                this.navigateLink(this.historyManager.getCurrentUrl(), true);
+                this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
             }, this.settings.applicationPath);
         }
         var config = StateInfoConfig.build(dialogs, this.settings, this.converterFactory);
@@ -136,7 +136,7 @@ class StateController {
         var url = this.getNavigationLink(action, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getNextState(action), false, historyAction);
+        this._navigateLink(url, this.getNextState(action), historyAction);
     }
 
     getNavigationLink(action: string, toData?: any): string {
@@ -154,7 +154,7 @@ class StateController {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getCrumb(distance).state, false, historyAction);
+        this._navigateLink(url, this.getCrumb(distance).state, historyAction);
     }
 
     getNavigationBackLink(distance: number): string {
@@ -165,23 +165,23 @@ class StateController {
         var url = this.getRefreshLink(toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.stateContext.state, false, historyAction);
+        this._navigateLink(url, this.stateContext.state, historyAction);
     }
 
     getRefreshLink(toData?: any): string {
         return CrumbTrailManager.getRefreshHref(this.stateContext, this.settings, this.converterFactory, toData);
     }
 
-    navigateLink(url: string, history?: boolean, historyAction?: HistoryAction) {
+    navigateLink(url: string, historyAction?: HistoryAction, history?: boolean) {
         try {
             var state = this.settings.router.getData(url.split('?')[0]).state;
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-        this._navigateLink(url, state, history, historyAction);
+        this._navigateLink(url, state, historyAction, history);
     }
 
-    private _navigateLink(url: string, state: State, history = false, historyAction = HistoryAction.Add) {
+    private _navigateLink(url: string, state: State, historyAction = HistoryAction.Add, history = false) {
         try {
             var oldUrl = this.stateContext.url;
             var { data, separableData } = state.stateHandler.getNavigationData(this.settings.router, state, url);

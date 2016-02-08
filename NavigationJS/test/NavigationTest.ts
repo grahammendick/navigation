@@ -3716,7 +3716,7 @@ describe('Navigation', function () {
                 navigatingHistory = history;
                 navigate();
             }
-            stateController.navigateLink(link, true);
+            stateController.navigateLink(link, undefined, true);
             assert.strictEqual(unloadingHistory, true);
             assert.strictEqual(navigatingHistory, true);
         });
@@ -4482,7 +4482,7 @@ describe('Navigation', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link, false, Navigation.HistoryAction.Add);
+                stateController.navigateLink(link, Navigation.HistoryAction.Add);
             });
             test();
         });
@@ -4521,7 +4521,7 @@ describe('Navigation', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link, false, Navigation.HistoryAction.Replace);
+                stateController.navigateLink(link, Navigation.HistoryAction.Replace);
             });
             test();
         });
@@ -4560,7 +4560,7 @@ describe('Navigation', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link, false, Navigation.HistoryAction.None);
+                stateController.navigateLink(link, Navigation.HistoryAction.None);
             });
             test();
         });
