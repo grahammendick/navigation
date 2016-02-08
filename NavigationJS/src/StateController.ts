@@ -35,7 +35,17 @@ class StateController {
     configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         for(var setting in settings)
             this.settings[setting] = settings[setting];
+        var oldHistoryManager = this.historyManager;
         this.historyManager = this.settings.historyManager;
+        if (this.historyManager !== oldHistoryManager) {
+            if (oldHistoryManager)
+                oldHistoryManager.stop();
+            this.historyManager.init(() => {
+                if (this.stateContext.url === this.historyManager.getCurrentUrl())
+                    return;
+                this.navigateLink(this.historyManager.getCurrentUrl(), true);
+            }, this.settings.applicationPath);
+        }
         var config = StateInfoConfig.build(dialogs, this.settings, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
@@ -204,7 +214,7 @@ class StateController {
                 }
                 if (url === this.stateContext.url) {
                     if (historyAction !== HistoryAction.None)
-                        this.settings.historyManager.addHistory(url, historyAction === HistoryAction.Replace, this.settings.applicationPath);
+                        this.settings.historyManager.addHistory(url, historyAction === HistoryAction.Replace);
                     if (this.stateContext.title && (typeof document !== 'undefined'))
                         document.title = this.stateContext.title;
                 }
@@ -259,12 +269,7 @@ class StateController {
     }
     
     start(url?: string) {
-        this.settings.historyManager.init(() => {
-            if (this.stateContext.url === this.settings.historyManager.getCurrentUrl(this.settings.applicationPath))
-                return;
-            this.navigateLink(this.settings.historyManager.getCurrentUrl(this.settings.applicationPath), true);
-        });
-        this.navigateLink(url ? url : this.settings.historyManager.getCurrentUrl(this.settings.applicationPath));
+        this.navigateLink(url ? url : this.settings.historyManager.getCurrentUrl());
     };
 }
 export = StateController;

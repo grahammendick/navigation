@@ -1,9 +1,10 @@
 ﻿interface IHistoryManager {
     disabled: boolean;
-    init(navigateHistory: () => void);
-    addHistory(url: string, replace: boolean, applicationPath: string): void;
-    getCurrentUrl(applicationPath: string): string;
-    getHref(url: string, applicationPath: string): string;
-    getUrl(anchor: HTMLAnchorElement, applicationPath: string): string;
+    init(navigateHistory: () => void, applicationPath: string);
+    addHistory(url: string, replace: boolean): void;
+    getCurrentUrl(): string;
+    getHref(url: string): string;
+    getUrl(anchor: HTMLAnchorElement): string;
+    stop();
 }
 export = IHistoryManager;

@@ -1,15 +1,19 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
 
 class HTML5HistoryManager implements IHistoryManager {
+    private navigateHistory: () => void;
+    private applicationPath: string;
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
 
-    init(navigateHistory: () => void) {
+    init(navigateHistory: () => void, applicationPath: string) {
+        this.navigateHistory = navigateHistory;
+        this.applicationPath = applicationPath;
         if (!this.disabled)
-            window.addEventListener('popstate', navigateHistory);
+            window.addEventListener('popstate', this.navigateHistory);
     }
 
-    addHistory(url: string, replace: boolean, applicationPath: string) {
-        url = applicationPath + url;
+    addHistory(url: string, replace: boolean) {
+        url = this.applicationPath + url;
         if (!this.disabled && location.pathname + location.search !== url) {
             if (!replace)            
                 window.history.pushState(null, null, url);
@@ -18,18 +22,23 @@ class HTML5HistoryManager implements IHistoryManager {
         }
     }
 
-    getCurrentUrl(applicationPath: string): string {
-        return location.pathname.substring(applicationPath.length) + location.search;
+    getCurrentUrl(): string {
+        return location.pathname.substring(this.applicationPath.length) + location.search;
     }
 
-    getHref(url: string, applicationPath: string): string {
+    getHref(url: string): string {
         if (!url)
             throw new Error('The Url is invalid');
-        return applicationPath + url;
+        return this.applicationPath + url;
     }
 
-    getUrl(anchor: HTMLAnchorElement, applicationPath: string) {
-        return anchor.pathname.substring(applicationPath.length) + anchor.search;
+    getUrl(anchor: HTMLAnchorElement) {
+        return anchor.pathname.substring(this.applicationPath.length) + anchor.search;
+    }
+    
+    stop() {
+        if (!this.disabled)
+            window.removeEventListener('popstate', this.navigateHistory);
     }
 }
 export = HTML5HistoryManager;

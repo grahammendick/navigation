@@ -1,15 +1,17 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
 
 class HashHistoryManager implements IHistoryManager {
+    private navigateHistory: () => void;
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
     replaceQueryIdentifier: boolean = false;
 
     init(navigateHistory) {
+        this.navigateHistory = navigateHistory;
         if (!this.disabled) {
             if (window.addEventListener)
-                window.addEventListener('hashchange', navigateHistory);
+                window.addEventListener('hashchange', this.navigateHistory);
             else
-                window['attachEvent']('onhashchange', navigateHistory);
+                window['attachEvent']('onhashchange', this.navigateHistory);
         }
     }
 
@@ -35,6 +37,15 @@ class HashHistoryManager implements IHistoryManager {
 
     getUrl(anchor: HTMLAnchorElement) {
         return this.decode(anchor.hash.substring(1));
+    }
+    
+    stop() {
+        if (!this.disabled) {
+            if (window.removeEventListener)
+                window.removeEventListener('hashchange', this.navigateHistory);
+            else
+                window['detachEvent']('onhashchange', this.navigateHistory);
+        }
     }
 
     private encode(url: string): string {
