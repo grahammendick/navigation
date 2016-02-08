@@ -35,17 +35,14 @@ class StateController {
     configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
         for(var setting in settings)
             this.settings[setting] = settings[setting];
-        var oldHistoryManager = this.historyManager;
+        if (this.historyManager)
+            this.historyManager.stop();
         this.historyManager = this.settings.historyManager;
-        if (this.historyManager !== oldHistoryManager) {
-            if (oldHistoryManager)
-                oldHistoryManager.stop();
-            this.historyManager.init(() => {
-                if (this.stateContext.url === this.historyManager.getCurrentUrl())
-                    return;
-                this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
-            }, this.settings.applicationPath);
-        }
+        this.historyManager.init(() => {
+            if (this.stateContext.url === this.historyManager.getCurrentUrl())
+                return;
+            this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
+        }, this.settings.applicationPath);
         var config = StateInfoConfig.build(dialogs, this.settings, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
