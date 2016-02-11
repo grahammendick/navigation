@@ -50,7 +50,7 @@ module NavigationTests {
 			{ key: 'details', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' } }
 		]}
 	];
-    var stateController = new stateController(config, settings);
+    var stateController = new Navigation.StateController(config, settings);
 	
 	// StateInfo
 	var dialogs = stateController.dialogs;
@@ -127,11 +127,11 @@ module NavigationTests {
 	link = stateController.getNavigationLink('select', { id: 10 });
 	var nextDialog = stateController.getNextState('select').parent;
 	person = nextDialog;
-	stateController.navigateLink(link, false);
+	stateController.navigateLink(link, Navigation.HistoryAction.Replace);
 	link = stateController.getNavigationBackLink(1);
-	var crumb = stateController.crumbs[0];
+	var crumb = stateController.stateContext.crumbs[0];
 	link = crumb.navigationLink;
-	stateController.navigateLink(link, true, Navigation.HistoryAction.None);
+	stateController.navigateLink(link, Navigation.HistoryAction.None, true);
 	
 	// StateContext
 	stateController.navigate('home');
@@ -152,9 +152,6 @@ module NavigationTests {
 	// Navigation Data
 	var data = stateController.stateContext.includeCurrentData({ sort: 'name' }, ['page']);
 	stateController.refresh(data);
-	stateController.stateContext.clear('sort');
 	var data = stateController.stateContext.includeCurrentData({ pageSize: 10 });
 	stateController.refresh(data);
-	stateController.stateContext.clear();
-	stateController.refresh();
 }
