@@ -13,7 +13,10 @@ var RefreshLink = (properties: any, children: any) => {
     }
     var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
     var link = stateController.getRefreshLink(toData);
-    newProperties.href = stateController.historyManager.getHref(link);
+    try {
+        newProperties.href = stateController.historyManager.getHref(link);
+    } catch(e) {
+    }
     active = active && !!newProperties.href;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);

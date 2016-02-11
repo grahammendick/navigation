@@ -7,8 +7,11 @@ var NavigationBackLink = (properties: any, children: any) => {
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];
-    var link = stateController.getNavigationBackLink(properties.distance);
-    newProperties.href = stateController.historyManager.getHref(link);
+    var link = stateController.getNavigationBackLink(properties.distance)
+    try {
+        newProperties.href = stateController.historyManager.getHref(link);
+    } catch(e) {
+    }
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 }
