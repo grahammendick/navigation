@@ -1012,6 +1012,15 @@ declare module Navigation {
          * key of a Dialog
          */
         getNextState(action: string): State;
+        /**
+         * Navigates to the current location 
+         */
+        start(): void;
+        /**
+         * Navigates to the passed in url
+         * @param url The url to navigate to 
+         */
+        start(url: string): void;
     }
 
     /**
@@ -1233,16 +1242,4 @@ declare module Navigation {
          */
         sort(compare: (routeA: Route, routeB: Route) => number): void;
     }
-
-    /**
-     * Gets the Navigation settings
-     */
-    export var settings: NavigationSettings;
-
-    /**
-     * Initializes the history manager and navigates to the current location.
-     * If used outside of a browser environment, pass in the Url to navigate to
-     * @param url If used outside of a browser, the url to navigate to 
-     */
-    export var start: (url?: string) => void;
 }
