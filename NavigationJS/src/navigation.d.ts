@@ -769,15 +769,6 @@ declare module Navigation {
          * @returns The combined data
          */
         includeCurrentData(data: any, keys: string[]): any;
-        /**
-         * Removes all items from the NavigationData
-         */
-        clear(): void;
-        /**
-         * Removes a single item from the NavigationData
-         * @param The key of the item to remove
-         */
-        clear(key: string): void;
     }
 
     /**

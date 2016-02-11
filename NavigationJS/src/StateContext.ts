@@ -31,15 +31,5 @@ class StateContext {
             newData[key] = data[key];
         return newData;
     }
-
-    clear(key?: string) {
-        if (key)
-            this.data[key] = this.state.defaults[key];
-        else {
-            for (var dataKey in this.data) {
-                this.data[dataKey] = this.state.defaults[dataKey];
-            }
-        }
-    }
 }
 export = StateContext;
