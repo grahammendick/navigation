@@ -148,8 +148,7 @@
             ]);
             createStateComponents(stateController);
             var component$$ = sources.Navigation.map(function(context) {
-                var key = context.state.parent.index + '-' + context.state.index;
-                return CycleIsolate(context.state.component, key)(sources);
+                return context.state.component(sources);
             });
             return {
                 DOM: component$$.map(function(component) { return component.DOM }).switch(),

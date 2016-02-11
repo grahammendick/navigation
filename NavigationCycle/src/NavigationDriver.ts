@@ -46,9 +46,6 @@ var NavigationDriver = function(url) {
                 navigate(e, stateController);
             }
         });
-        (<any> navigated$).isolateSource = (NavigationSource, key) => (
-            NavigationSource.filter((context) => context.state.parent.index + '-' + context.state.index === key)
-        );
         return navigated$;
     };
 }
