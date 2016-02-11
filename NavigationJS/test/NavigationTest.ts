@@ -2,10 +2,11 @@
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
 import Navigation = require('../src/Navigation');
+import StateController = require('../src/StateController');
 
 describe('Navigation', function () {
     describe('Dialog', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -40,7 +41,7 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Dialog', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -62,7 +63,7 @@ describe('Navigation', function () {
     });
 
     describe('Cross Dialog', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -110,7 +111,7 @@ describe('Navigation', function () {
     });
 
     describe('Cross Dialog Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -158,8 +159,8 @@ describe('Navigation', function () {
     });
 
     describe('Dialog Dialog', function() {
-        var stateController;
-        var stateController;
+        var stateController: StateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -205,8 +206,8 @@ describe('Navigation', function () {
     });
 
     describe('Dialog Dialog Without Trail', function() {
-        var stateController;
-        var stateController;
+        var stateController: StateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -252,7 +253,7 @@ describe('Navigation', function () {
     });
     
     describe('Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -303,7 +304,7 @@ describe('Navigation', function () {
     });
 
     describe('First Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -356,7 +357,7 @@ describe('Navigation', function () {
     });
 
     describe('Second Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -409,7 +410,7 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Action', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -437,7 +438,7 @@ describe('Navigation', function () {
     });
 
     describe('Null Action', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -465,7 +466,7 @@ describe('Navigation', function () {
     });
     
     describe('Transition From Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -513,7 +514,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -568,7 +569,7 @@ describe('Navigation', function () {
     });
     
     describe('Transition Transition Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -622,7 +623,7 @@ describe('Navigation', function () {
     });
     
     describe('Dialog and Transition Match', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -673,7 +674,7 @@ describe('Navigation', function () {
     });
     
     describe('Refresh', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -727,7 +728,7 @@ describe('Navigation', function () {
     });
 
     describe('Refresh Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -779,7 +780,7 @@ describe('Navigation', function () {
     });
     
     describe('Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -839,7 +840,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -897,7 +898,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Two', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -972,7 +973,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Two Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1042,7 +1043,7 @@ describe('Navigation', function () {
     });
 
     describe('Back One By One', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1103,7 +1104,7 @@ describe('Navigation', function () {
     });
 
     describe('Back One By One Without Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1164,7 +1165,7 @@ describe('Navigation', function () {
     });
 
     describe('Can Navigate Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1216,7 +1217,7 @@ describe('Navigation', function () {
     });
 
     describe('Without Trail Can Navigate Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1262,7 +1263,7 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1303,7 +1304,7 @@ describe('Navigation', function () {
     });
 
     describe('Without Trail Invalid Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1344,7 +1345,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Invalid Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1388,7 +1389,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Without Trail Invalid Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1432,7 +1433,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1487,7 +1488,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Without Trail Refresh', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1542,7 +1543,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1613,7 +1614,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Without Trail Refresh Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1681,7 +1682,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition Without Trail Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1738,7 +1739,7 @@ describe('Navigation', function () {
     });
 
     describe('Crumb Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -1803,7 +1804,7 @@ describe('Navigation', function () {
     });
 
     describe('Dialog Dialog Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's', states: [
@@ -1844,7 +1845,7 @@ describe('Navigation', function () {
     });
 
     describe('Cross Dialog Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -1892,7 +1893,7 @@ describe('Navigation', function () {
     });
 
     describe('Dialog Dialog Back Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's', states: [
@@ -1939,7 +1940,7 @@ describe('Navigation', function () {
     });
 
     describe('Cross Dialog Back Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -2001,7 +2002,7 @@ describe('Navigation', function () {
     });
 
     describe('Cross Dialog Back Two Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -2060,7 +2061,7 @@ describe('Navigation', function () {
     });
 
     describe('Dialog Back Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -2125,7 +2126,7 @@ describe('Navigation', function () {
     });
 
     describe('Cross Dialog Back One By One Custom Trail', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
@@ -4372,7 +4373,7 @@ describe('Navigation', function () {
     });
 
     describe('Clear State Context', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -4418,7 +4419,7 @@ describe('Navigation', function () {
 
     describe('History Null', function () {
         var replaceHistory;
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -4457,7 +4458,7 @@ describe('Navigation', function () {
 
     describe('History Add', function () {
         var replaceHistory;
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -4496,7 +4497,7 @@ describe('Navigation', function () {
 
     describe('History Replace', function () {
         var replaceHistory;
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -4535,7 +4536,7 @@ describe('Navigation', function () {
 
     describe('History None', function () {
         var replaceHistory;
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -4764,7 +4765,7 @@ describe('Navigation', function () {
     });
 
     describe('Reload Error Dialog', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -4806,7 +4807,7 @@ describe('Navigation', function () {
     });
 
     describe('Reload Error Transition', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -4864,7 +4865,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Refresh', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -4925,7 +4926,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Back', function() {
-        var stateController;
+        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
