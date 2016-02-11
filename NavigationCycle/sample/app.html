@@ -51,6 +51,7 @@
                     return {
                         people: people,
                         sortExpression: sortExpression,
+                        totalRowCount: totalRowCount,
                         name: data.name,
                         previous: previous,
                         next: next,
@@ -87,7 +88,8 @@
                             li([ refreshLink({ stateController: stateController, toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
                             li([ refreshLink({ stateController: stateController, toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
                             li([ refreshLink({ stateController: stateController, toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
-                        ])
+                        ]),
+                        span('Total Count ' + data.totalRowCount)
                     ])
                 })
             };
