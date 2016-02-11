@@ -5,18 +5,22 @@ import React = require('react');
 class NavigationBackLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
+    private getStateController(): Navigation.StateController {
+        return this.props.stateController;
+    }
+    
     private getNavigationBackLink(): string {
-        return LinkUtility.getLink(this.props.stateController, () => this.props.stateController.getNavigationBackLink(this.props.distance));
+        return LinkUtility.getLink(this.getStateController(), () => this.getStateController().getNavigationBackLink(this.props.distance));
     }
     
     componentDidMount() {
         if (!this.props.lazy)
-            this.props.stateController.onNavigate(this.onNavigate);
+            this.getStateController().onNavigate(this.onNavigate);
     }
     
     componentWillUnmount() {
         if (!this.props.lazy)
-            this.props.stateController.offNavigate(this.onNavigate);
+            this.getStateController().offNavigate(this.onNavigate);
     }
     
     render() {

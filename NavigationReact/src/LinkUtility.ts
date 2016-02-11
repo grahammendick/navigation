@@ -6,7 +6,7 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 
 class LinkUtility {
-    static getLink(stateController, linkAccessor: () => string): string {
+    static getLink(stateController: Navigation.StateController, linkAccessor: () => string): string {
         try {
             return stateController.historyManager.getHref(linkAccessor());
         } catch (e) {
@@ -14,7 +14,7 @@ class LinkUtility {
         }
     }
 
-    static getData(stateController, toData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateController: Navigation.StateController, toData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
             toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
@@ -22,7 +22,7 @@ class LinkUtility {
         return toData;
     }
 
-    static isActive(stateController, key: string, val: any): boolean {
+    static isActive(stateController: Navigation.StateController, key: string, val: any): boolean {
         if (!stateController.stateContext.state)
             return false;
         if (val != null) {
@@ -56,14 +56,15 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var link = props.stateController.historyManager.getUrl(element);
+                    var stateController = <Navigation.StateController> props.stateController;
+                    var link = stateController.historyManager.getUrl(element);
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {
                         e.preventDefault();
                         var historyAction = props.historyAction;
                         if (typeof historyAction === 'string')
                             historyAction = Navigation.HistoryAction[historyAction];
-                        props.stateController.navigateLink(link, historyAction);
+                        stateController.navigateLink(link, historyAction);
                     }
                 }
             }

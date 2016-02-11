@@ -5,19 +5,23 @@ import React = require('react');
 class RefreshLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
+    private getStateController(): Navigation.StateController {
+        return this.props.stateController;
+    }
+    
     getRefreshLink(): string {
-        var toData = LinkUtility.getData(this.props.stateController, this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
-        return LinkUtility.getLink(this.props.stateController, () => this.props.stateController.getRefreshLink(toData));
+        var toData = LinkUtility.getData(this.getStateController(), this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
+        return LinkUtility.getLink(this.getStateController(), () => this.getStateController().getRefreshLink(toData));
     }
     
     componentDidMount() {
         if (!this.props.lazy)
-            this.props.stateController.onNavigate(this.onNavigate);
+            this.getStateController().onNavigate(this.onNavigate);
     }
     
     componentWillUnmount() {
         if (!this.props.lazy)
-            this.props.stateController.offNavigate(this.onNavigate);
+            this.getStateController().offNavigate(this.onNavigate);
     }
     
     render() {
@@ -26,7 +30,7 @@ class RefreshLink extends React.Component<any, any> {
             props[key] = this.props[key];
         var active = true;
         for (var key in this.props.toData) {
-            active = active && LinkUtility.isActive(this.props.stateController, key, this.props.toData[key]);
+            active = active && LinkUtility.isActive(this.getStateController(), key, this.props.toData[key]);
         }
         props.href = this.getRefreshLink();
         LinkUtility.addListeners(this, props, () => this.getRefreshLink());
