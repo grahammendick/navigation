@@ -19,13 +19,15 @@
     <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
         var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul, li = CycleDOM.li
-            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label;
+            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label,
+            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
+            navigationBackLink = NavigationCycle.navigationBackLink; 
 
-        function createStateComponents(dialogs) {
-            var personDialog = dialogs.person;
+        function createStateComponents(stateController) {
+            var personDialog = stateController.dialogs.person;
             var listState = personDialog.states.list;        
             listState.intent = function(sources) {
-                return sources.Navigation.navigated
+                return sources.Navigation
                     .map(function(context) {
                         return { 
                             people: personSearch.search(context.data.name, context.data.sortExpression),
@@ -57,7 +59,7 @@
                     }
                 })
             };
-            listState.view = function(data$, NavigationSource) {
+            listState.view = function(data$) {
                 return data$.map(function(data) { 
                     return div([
                         div([
@@ -66,32 +68,32 @@
                                input('#name', { value: data.name ? data.name : '' }) 
                             ]),
                             span('Page size '),
-                            NavigationSource.refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
-                            NavigationSource.refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
+                            refreshLink({ stateController: stateController, toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
+                            refreshLink({ stateController: stateController, toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
                         ]),
                         table([
                             tr([
-                                th([ NavigationSource.refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
+                                th([ refreshLink({ stateController: stateController, toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                                 th('Date of Birth')                            
                             ])]
                             .concat(data.people.map(function(person) {
                                 return tr([
-                                    td([ NavigationSource.navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                                    td([ navigationLink({ stateController: stateController, action: 'select', toData: { id: person.id }}, person.name) ]),
                                     td(person.dateOfBirth)
                                 ])
                             }))
                         ),
                         ul([
-                            li([ NavigationSource.refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
-                            li([ NavigationSource.refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
-                            li([ NavigationSource.refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
-                            li([ NavigationSource.refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
+                            li([ refreshLink({ stateController: stateController, toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
+                            li([ refreshLink({ stateController: stateController, toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
+                            li([ refreshLink({ stateController: stateController, toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
+                            li([ refreshLink({ stateController: stateController, toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
                         ])
                     ])
                 })
             };
             listState.component = function(sources) {
-                var vtree$ = listState.view(listState.model(listState.intent(sources)), sources.Navigation);
+                var vtree$ = listState.view(listState.model(listState.intent(sources)));
                 var search$ = sources.DOM.select('input').events('blur')
                     .map(function(e) {
                         return { 
@@ -111,7 +113,7 @@
             
             var detailsState = personDialog.states.details;
             detailsState.intent = function(sources) {
-                return sources.Navigation.navigated
+                return sources.Navigation
                     .map(function(context) {
                         return personSearch.getDetails(context.data.id)
                     })
@@ -119,10 +121,10 @@
             detailsState.model = function(person$) {
                 return person$;
             }   
-            detailsState.view = function(person$, NavigationSource) {
+            detailsState.view = function(person$) {
                 return person$.map(function(person) {
                     return div([
-                        NavigationSource.navigationBackLink({ distance: 1 }, 'Person Search'),
+                        navigationBackLink({ stateController: stateController, distance: 1 }, 'Person Search'),
                         div([
                             span('Name:' + person.name), br(),
                             span('Date of birth:' + person.dateOfBirth)
@@ -131,7 +133,7 @@
                 })
             };
             detailsState.component = function(sources) {
-                var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)), sources.Navigation);
+                var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
                 return {
                     DOM: vtree$,
                     Navigation: sources.DOM.select('a').events('click')
@@ -146,8 +148,8 @@
                         { key: 'select', to: 'details' }]},
                     { key: 'details', route: 'person', title: 'Person Details', }]}
             ]);
-            createStateComponents(stateController.dialogs);
-            var component$$ = sources.Navigation.navigated
+            createStateComponents(stateController);
+            var component$$ = sources.Navigation
                 .map(function(context) {
                     var key = context.state.parent.index + '-' + context.state.index;
                     return CycleIsolate(context.state.component, key)(sources);

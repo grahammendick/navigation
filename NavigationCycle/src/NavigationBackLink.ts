@@ -2,7 +2,8 @@ import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import CycleDOM = require('@cycle/dom');
 
-var NavigationBackLink = (stateController, properties: any, children: any) => {
+var NavigationBackLink = (properties: any, children: any) => {
+    var stateController: Navigation.StateController = properties.stateController;
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];

@@ -16,7 +16,7 @@ class HistoryActionHook {
 }
 
 class LinkUtility {
-    static getData(stateController, toData, includeCurrentData, currentDataKeys) {
+    static getData(stateController: Navigation.StateController, toData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
             toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
@@ -24,7 +24,7 @@ class LinkUtility {
         return toData;
     }
     
-    static isActive(stateController, key: string, val: any): boolean {
+    static isActive(stateController: Navigation.StateController, key: string, val: any): boolean {
         if (!stateController.stateContext.state)
             return false;
         if (val != null) {

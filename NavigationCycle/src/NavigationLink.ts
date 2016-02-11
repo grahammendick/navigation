@@ -2,12 +2,13 @@ import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import CycleDOM = require('@cycle/dom');
 
-function isActive(stateController, action: string): boolean {
+function isActive(stateController: Navigation.StateController, action: string): boolean {
     var nextState = stateController.getNextState(action);
     return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
 }
 
-var NavigationLink = (stateController, properties: any, children: any) => {
+var NavigationLink = (properties: any, children: any) => {
+    var stateController: Navigation.StateController = properties.stateController;
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];
