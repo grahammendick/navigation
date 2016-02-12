@@ -5,31 +5,33 @@ import NumberConverter = require('./NumberConverter');
 import StringConverter = require('./StringConverter');
 import TypeConverter = require('./TypeConverter');
 
-var keyToConverterList: { [index: string]: TypeConverter } = {};
-var nameToKeyList: { [index: string]: string } = {};
-var converterArray: TypeConverter[] = [
-    new StringConverter('0'), new BooleanConverter('1'), 
-    new NumberConverter('2'), new DateConverter('3')];
-for (var i = 0; i < converterArray.length; i++) {
-    var converter = converterArray[i];
-    var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)
-    keyToConverterList[converter.key] = converter;
-    keyToConverterList[arrayConverter.key] = arrayConverter;
-    nameToKeyList[converter.name] = converter.key;
-    nameToKeyList[arrayConverter.name] = arrayConverter.key;
-}
-
 class ConverterFactory {
-    static getConverter(obj: any) {
+    private keyToConverterList: { [index: string]: TypeConverter } = {};
+    private nameToKeyList: { [index: string]: string } = {};
+    constructor() {
+        var converterArray: TypeConverter[] = [
+            new StringConverter('0'), new BooleanConverter('1'), 
+            new NumberConverter('2'), new DateConverter('3')];
+        for (var i = 0; i < converterArray.length; i++) {
+            var converter = converterArray[i];
+            var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)
+            this.keyToConverterList[converter.key] = converter;
+            this.keyToConverterList[arrayConverter.key] = arrayConverter;
+            this.nameToKeyList[converter.name] = converter.key;
+            this.nameToKeyList[arrayConverter.name] = arrayConverter.key;
+        }
+    }
+    
+    getConverter(obj: any) {
         return this.getConverterFromName(TypeConverter.getName(obj));
     }
 
-    static getConverterFromKey(key: string): TypeConverter {
-        return keyToConverterList[key];
+    getConverterFromKey(key: string): TypeConverter {
+        return this.keyToConverterList[key];
     }
     
-    static getConverterFromName(name: string): TypeConverter {
-        var key = nameToKeyList[name];
+    getConverterFromName(name: string): TypeConverter {
+        var key = this.nameToKeyList[name];
         if (!key)
             throw new Error('No TypeConverter found for ' + name);
         return this.getConverterFromKey(key);

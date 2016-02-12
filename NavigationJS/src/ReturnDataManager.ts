@@ -1,6 +1,6 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
+import NavigationSettings = require('./NavigationSettings');
 import State = require('./config/State');
-import settings = require('./settings');
 
 class ReturnDataManager {
     private static SEPARATOR = '_';
@@ -8,11 +8,11 @@ class ReturnDataManager {
     private static RET_2_SEP = '2_';
     private static RET_3_SEP = '3_';
 
-    static formatReturnData(state: State, returnData: any): string {
+    static formatReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, state: State, returnData: any): string {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()) {
-                var val = this.formatURLObject(key, returnData[key], state, true).val;
+                var val = this.formatURLObject(settings, converterFactory, key, returnData[key], state, true).val;
                 if (!settings.router.supportsDefaults || val !== state.formattedDefaults[key])
                     returnDataArray.push(this.encodeUrlValue(key) + this.RET_1_SEP + val);
             }
@@ -28,11 +28,11 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
+    static formatURLObject(settings: NavigationSettings, converterFactory: ConverterFactory, key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
-        var converter = ConverterFactory.getConverter(urlObject);
-        var convertedValue = converter.convertTo(urlObject);
+        var converter = converterFactory.getConverter(urlObject);
+        var convertedValue = converter.convertTo(urlObject, settings.combineArray);
         var formattedValue = convertedValue.val;
         var formattedArray = convertedValue.arrayVal;
         if (encode) {
@@ -48,11 +48,11 @@ class ReturnDataManager {
         return { val: formattedValue, arrayVal: formattedArray };
     }
 
-    static parseURLString(key: string, val: string | string[], state: State, decode = false, separable = false): any {
+    static parseURLString(settings: NavigationSettings, converterFactory: ConverterFactory, key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
-        var converterKey = ConverterFactory.getConverterFromName(defaultType).key;
+        var converterKey = converterFactory.getConverterFromName(defaultType).key;
         if (state.trackTypes && urlValue.indexOf(this.RET_2_SEP) > -1) {
             var arr = urlValue.split(this.RET_2_SEP);
             urlValue = arr[0];
@@ -64,15 +64,15 @@ class ReturnDataManager {
             val =  urlValue;
         else
             val[0] = urlValue;
-        return ConverterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
+        return converterFactory.getConverterFromKey(converterKey).convertFrom(val, settings.combineArray, separable);
     }
 
-    static parseReturnData(returnData: string, state: State): any {
+    static parseReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, returnData: string, state: State): any {
         var navigationData = {};
         var returnDataArray = returnData.split(this.RET_3_SEP);
         for (var i = 0; i < returnDataArray.length; i++) {
             var nameValuePair = returnDataArray[i].split(this.RET_1_SEP);
-            navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state, true);
+            navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(settings, converterFactory, this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state, true);
         }
         return navigationData;
     }

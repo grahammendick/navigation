@@ -1,5 +1,5 @@
 ﻿import Dialog = require('./config/Dialog');
-import IRouter = require('./IRouter');
+import IRouter = require('./config/IRouter');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
@@ -10,8 +10,9 @@ class StateRouter implements IRouter {
     router: Router;
     supportsDefaults: boolean = true;
 
-    getData(route: string, separableData: any = {}): { state: State; data: any } {
+    getData(route: string): { state: State; data: any, separableData: any } {
         var match = this.router.match(route, StateRouter.urlDecode);
+        var separableData = {};
         if (match.route['_splat']) {
             for (var i = 0; i < match.route.params.length; i++) {
                 var param = match.route.params[i];
@@ -19,7 +20,7 @@ class StateRouter implements IRouter {
                     separableData[param.name] = true;
             }
         }
-        return { state: match.route['_state'], data: match.data };
+        return { state: match.route['_state'], data: match.data, separableData: separableData };
     }
 
     getRoute(state: State, data: any, arrayData: { [index: string]: string[] } = {}): { route: string; data: any } {

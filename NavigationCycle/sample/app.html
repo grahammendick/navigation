@@ -14,29 +14,28 @@
     <script src="rx.all.js"></script>
     <script src="cycle.js"></script>
     <script src="cycle-dom.js"></script>
-    <script src="cycle-isolate.js"></script>
     <script src="../../build/dist/navigation.js"></script>
     <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
-        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul,
-            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label,
-            li = CycleDOM.li, navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
-            navigationBackLink = NavigationCycle.navigationBackLink; 
+        var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul, li = CycleDOM.li
+            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label; 
 
-        function createStateComponents(dialogs) {
-            var personDialog = dialogs.person;
+        function createStateComponents(stateController) {
+            var navigationLink = (properties, children) => NavigationCycle.navigationLink(stateController, properties, children);
+            var refreshLink = (properties, children) => NavigationCycle.refreshLink(stateController, properties, children);
+            var navigationBackLink = (properties, children) => NavigationCycle.navigationBackLink(stateController, properties, children);
+            var personDialog = stateController.dialogs.person;
             var listState = personDialog.states.list;        
             listState.intent = function(sources) {
-                return sources.Navigation.navigated
-                    .map(function(context) {
-                        return { 
-                            people: personSearch.search(context.data.name, context.data.sortExpression),
-                            startRowIndex: context.data.startRowIndex,
-                            maximumRows: context.data.maximumRows,
-                            sortExpression: context.data.sortExpression,
-                            name: context.data.name
-                        }
-                    })
+                return sources.Navigation.map(function(context) {
+                    return { 
+                        people: personSearch.search(context.data.name, context.data.sortExpression),
+                        startRowIndex: context.data.startRowIndex,
+                        maximumRows: context.data.maximumRows,
+                        sortExpression: context.data.sortExpression,
+                        name: context.data.name
+                    }
+                })
             };
             listState.model = function(data$) {
                 return data$.map(function(data) {
@@ -52,6 +51,7 @@
                     return {
                         people: people,
                         sortExpression: sortExpression,
+                        totalRowCount: totalRowCount,
                         name: data.name,
                         previous: previous,
                         next: next,
@@ -88,7 +88,8 @@
                             li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
                             li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
                             li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
-                        ])
+                        ]),
+                        span('Total Count ' + data.totalRowCount)
                     ])
                 })
             };
@@ -97,10 +98,11 @@
                 var search$ = sources.DOM.select('input').events('blur')
                     .map(function(e) {
                         return { 
-                            toData: Navigation.StateContext.includeCurrentData({ 
+                            toData: { 
                                 name: e.target.value,
                                 startRowIndex: null
-                            })
+                            },
+                            includeCurrentData: true
                         };
                     }
                 ) 
@@ -112,10 +114,9 @@
             
             var detailsState = personDialog.states.details;
             detailsState.intent = function(sources) {
-                return sources.Navigation.navigated
-                    .map(function(context) {
-                        return personSearch.getDetails(context.data.id)
-                    })
+                return sources.Navigation.map(function(context) {
+                    return personSearch.getDetails(context.data.id)
+                })
             };
             detailsState.model = function(person$) {
                 return person$;
@@ -141,21 +142,20 @@
         }
         
         function main(sources) {
-            Navigation.StateInfoConfig.build([
+            var stateController = new Navigation.StateController([
                 { key: 'person', initial: 'list', states: [
                     { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
                         { key: 'select', to: 'details' }]},
                     { key: 'details', route: 'person', title: 'Person Details', }]}
             ]);
-            createStateComponents(Navigation.StateInfoConfig.dialogs);
-            var component$$ = sources.Navigation.navigated
-                .map(function(context) {
-                    var key = context.state.parent.index + '-' + context.state.index;
-                    return CycleIsolate(context.state.component, key)(sources);
-                });
+            createStateComponents(stateController);
+            var component$$ = sources.Navigation.map(function(context) {
+                return context.state.component(sources);
+            });
             return {
                 DOM: component$$.map(function(component) { return component.DOM }).switch(),
-                Navigation: component$$.map(function(component) { return component.Navigation }).switch().startWith({})
+                Navigation: component$$.map(function(component) { return component.Navigation }).switch()
+                    .startWith({ stateController: stateController })
             };
         }
 

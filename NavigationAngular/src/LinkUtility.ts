@@ -6,28 +6,28 @@ import angular = require('angular');
 import jquery = require('jquery');
 
 class LinkUtility {
-    static setLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
+    static setLink(stateController: Navigation.StateController, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
         try {
-            attrs.$set('href', Navigation.settings.historyManager.getHref(linkAccessor()));
+            attrs.$set('href', stateController.historyManager.getHref(linkAccessor()));
         } catch (e) {
             attrs.$set('href', null);
         }
     }
 
-    static getData(toData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateController: Navigation.StateController, toData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
-            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            toData = Navigation.StateContext.includeCurrentData(toData);
+            toData = stateController.stateContext.includeCurrentData(toData);
         return toData;
     }
 
-    static isActive(key: string, val: any): boolean {
-        if (!Navigation.StateContext.state)
+    static isActive(stateController: Navigation.StateController, key: string, val: any): boolean {
+        if (!stateController.stateContext.state)
             return false;
         if (val != null) {
-            var trackTypes = Navigation.StateContext.state.trackTypes;
-            var currentVal = Navigation.StateContext.data[key];
+            var trackTypes = stateController.stateContext.state.trackTypes;
+            var currentVal = stateController.stateContext.data[key];
             if (currentVal != null)
                 return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
             else
@@ -44,27 +44,28 @@ class LinkUtility {
 
     static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, $parse: ng.IParseService, attrs: ng.IAttributes, scope: ng.IScope) {
         var lazy = !!scope.$eval(attrs['lazy']);
+        var stateController: Navigation.StateController = scope.$eval(attrs['stateController']);
         element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
             if (lazy)
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (anchor.href) {
-                    var link = Navigation.settings.historyManager.getUrl(anchor);
+                    var link = stateController.historyManager.getUrl(anchor);
                     var navigating = this.getNavigating($parse, attrs, scope);
                     if (navigating(e, link)) {
                         e.preventDefault();
                         var historyAction = scope.$eval(attrs['historyAction']);
                         if (typeof historyAction === 'string')
                             historyAction = Navigation.HistoryAction[historyAction];
-                        Navigation.StateController.navigateLink(link, false, historyAction);
+                        stateController.navigateLink(link, historyAction);
                     }
                 }
             }
         });
         if (!lazy) {
-            Navigation.StateController.onNavigate(setLink);
-            element.on('$destroy', () => Navigation.StateController.offNavigate(setLink));
+            stateController.onNavigate(setLink);
+            element.on('$destroy', () => stateController.offNavigate(setLink));
         } else {
             element.on('mousedown', (e) => setLink());
             element.on('contextmenu', (e) => setLink());

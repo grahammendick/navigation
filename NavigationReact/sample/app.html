@@ -29,25 +29,25 @@
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
                 people = people.map(function (person) {
                     return (
-                        <tr>
-                            <td><NavigationReact.NavigationLink action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                        <tr key={person.id}>
+                            <td><NavigationReact.NavigationLink stateController={stateController} action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
                     );
                 });
                 return (
                     <div>
-                        <Filter initialName={this.props.name} />
+                        <Filter stateController={this.props.stateController} initialName={this.props.name} />
                         <table>
                             <thead>
                                 <tr>
-                                    <th><NavigationReact.RefreshLink toData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
+                                    <th><NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
                                     <th>Date of Birth</th>
                                 </tr>
                             </thead>
                             <tbody>{people}</tbody>
                         </table>
-                        <Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
+                        <Pager stateController={this.props.stateController} startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
                     </div>
                 );
             }
@@ -67,7 +67,7 @@
                 this.setState({name: event.target.value});
             },
             nameBlur(event) {
-                Navigation.StateController.refresh(Navigation.StateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
+                stateController.refresh(this.props.stateController.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
             },
             render() {
                 return (
@@ -77,8 +77,8 @@
                             <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
                         </div>
                         Page size&nbsp;
-                        <NavigationReact.RefreshLink toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
-                        <NavigationReact.RefreshLink toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
+                        <NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
+                        <NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
                     </div>
                 );
             }
@@ -99,10 +99,10 @@
                 return (
                     <div>
                         <ul>
-                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink toData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink stateController={this.props.stateController} toData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
                         </ul>
                         Total Count {this.props.totalRowCount}
                     </div>
@@ -118,7 +118,7 @@
                 var person = personSearch.getDetails(this.props.id);
                 return (
                     <div>
-                        <NavigationReact.NavigationBackLink distance={1}>Person Search</NavigationReact.NavigationBackLink>
+                        <NavigationReact.NavigationBackLink stateController={this.props.stateController} distance={1}>Person Search</NavigationReact.NavigationBackLink>
                         <div>
                             Name: {person.name}<br />
                             Date of Birth: {person.dateOfBirth}
@@ -128,27 +128,27 @@
             }
         });
 
-        Navigation.StateInfoConfig.build([
+        var stateController = new Navigation.StateController([
             { key: 'person', initial: 'list', states: [
                 { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
                     { key: 'select', to: 'details' }]},
                 { key: 'details', route: 'person', title: 'Person Details', }]}
         ]);
 
-        var personStates = Navigation.StateInfoConfig.dialogs.person.states;
+        var personStates = stateController.dialogs.person.states;
         personStates.list.navigated = function (data) {
             ReactDOM.render(
-                <List name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
+                <List stateController={stateController} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
                 document.getElementById('content')
             );
         };
         personStates.details.navigated = function (data) {
             ReactDOM.render(
-                <Details id={data.id} />,
+                <Details stateController={stateController} id={data.id} />,
                 document.getElementById('content')
             );
         }
-        Navigation.start();
+        stateController.start();
     </script>
 </body>
 </html>

@@ -1,18 +1,16 @@
 ﻿import Crumb = require('./Crumb');
+import IRouter = require('./IRouter');
 import IStateHandler = require('./IStateHandler');
-import settings = require('./settings');
-import State = require('./config/State');
-import StateContext = require('./StateContext');
-import StateController = require('./StateController');
+import State = require('./State');
 
 class StateHandler implements IStateHandler {
-    getNavigationLink(state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
-        var routeInfo = settings.router.getRoute(state, data, arrayData);
+    getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
+        var routeInfo = router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
             return null;
         var query: string[] = [];
         for (var key in data) {
-            if (key !== settings.stateIdKey && !routeInfo.data[key]) {
+            if (!routeInfo.data[key]) {
                 var arr = arrayData[key];
                 var encodedKey = this.urlEncode(state, null, key, true);
                 if (!arr) {
@@ -31,10 +29,10 @@ class StateHandler implements IStateHandler {
     navigateLink(oldState: State, state: State, url: string) {
     }
 
-    getNavigationData(state: State, url: string, separableData: any = {}): any {
+    getNavigationData(router: IRouter, state: State, url: string): { data: any, separableData: any } {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var data = settings.router.getData(route, separableData).data;
+        var { data, separableData } = router.getData(route);
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
@@ -54,7 +52,7 @@ class StateHandler implements IStateHandler {
                 }
             }
         }
-        return data;
+        return { data: data, separableData: separableData };
     }
     
     urlEncode(state: State, key: string, val: string, queryString: boolean): string {

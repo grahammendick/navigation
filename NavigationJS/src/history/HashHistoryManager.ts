@@ -1,23 +1,25 @@
 ﻿import IHistoryManager = require('./IHistoryManager');
-import HistoryNavigator = require('./HistoryNavigator');
-import State = require('../config/State');
-import StateContext = require('../StateContext');
 
 class HashHistoryManager implements IHistoryManager {
+    private navigateHistory: () => void;
+    private replaceQueryIdentifier: boolean = false;
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
-    replaceQueryIdentifier: boolean = false;
+    
+    constructor(replaceQueryIdentifier: boolean = false) {
+        this.replaceQueryIdentifier = replaceQueryIdentifier;
+    }
 
-    init() {
+    init(navigateHistory) {
+        this.navigateHistory = navigateHistory;
         if (!this.disabled) {
             if (window.addEventListener)
-                window.addEventListener('hashchange', HistoryNavigator.navigateHistory);
+                window.addEventListener('hashchange', this.navigateHistory);
             else
-                window['attachEvent']('onhashchange', HistoryNavigator.navigateHistory);
+                window['attachEvent']('onhashchange', this.navigateHistory);
         }
     }
 
-    addHistory(state: State, url: string, replace?: boolean) {
-        url = url != null ? url : StateContext.url;
+    addHistory(url: string, replace: boolean) {
         url = '#' + this.encode(url);
         if (!this.disabled && location.hash !== url) {
             if (!replace)            
@@ -39,6 +41,15 @@ class HashHistoryManager implements IHistoryManager {
 
     getUrl(anchor: HTMLAnchorElement) {
         return this.decode(anchor.hash.substring(1));
+    }
+    
+    stop() {
+        if (!this.disabled) {
+            if (window.removeEventListener)
+                window.removeEventListener('hashchange', this.navigateHistory);
+            else
+                window['detachEvent']('onhashchange', this.navigateHistory);
+        }
     }
 
     private encode(url: string): string {

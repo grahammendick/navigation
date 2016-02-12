@@ -5,24 +5,28 @@ import React = require('react');
 class NavigationLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
+    private getStateController(): Navigation.StateController {
+        return this.props.stateController;
+    }
+    
     private getNavigationLink(): string {
-        var toData = LinkUtility.getData(this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
-        return LinkUtility.getLink(() => Navigation.StateController.getNavigationLink(this.props.action, toData));
+        var toData = LinkUtility.getData(this.getStateController(), this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
+        return LinkUtility.getLink(this.getStateController(), () => this.getStateController().getNavigationLink(this.props.action, toData));
     }
     
     private isActive(action: string): boolean {
-        var nextState = Navigation.StateController.getNextState(action);
-        return nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
+        var nextState = this.getStateController().getNextState(action);
+        return nextState === nextState.parent.initial && nextState.parent === this.getStateController().stateContext.dialog;
     }
     
     componentDidMount() {
         if (!this.props.lazy)
-            Navigation.StateController.onNavigate(this.onNavigate);
+            this.getStateController().onNavigate(this.onNavigate);
     }
     
     componentWillUnmount() {
         if (!this.props.lazy)
-            Navigation.StateController.offNavigate(this.onNavigate);
+            this.getStateController().offNavigate(this.onNavigate);
     }
     
     render() {
@@ -31,7 +35,7 @@ class NavigationLink extends React.Component<any, any> {
             props[key] = this.props[key];
         var active = true;
         for (var key in this.props.toData) {
-            active = active && LinkUtility.isActive(key, this.props.toData[key]);
+            active = active && LinkUtility.isActive(this.getStateController(), key, this.props.toData[key]);
         }
         props.href = this.getNavigationLink();
         LinkUtility.addListeners(this, props, () => this.getNavigationLink());

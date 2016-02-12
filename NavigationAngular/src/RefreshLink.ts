@@ -7,8 +7,9 @@ var RefreshLink = ($parse: ng.IParseService) => {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
-            LinkUtility.addListeners(element, () => setRefreshLink(element, attrs, toData, includeCurrentData, 
-                currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope);
+            var stateController: Navigation.StateController = scope.$eval(attrs['stateController']);
+            LinkUtility.addListeners(element, () => setRefreshLink(element, attrs, stateController, toData,
+                includeCurrentData, currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope);
             var watchAttrs = [attrs['refreshLink'], attrs['includeCurrentData'], 
                 attrs['currentDataKeys'], attrs['activeCssClass'], attrs['disableActive']];
             scope.$watchGroup(watchAttrs, function (values) {
@@ -17,20 +18,20 @@ var RefreshLink = ($parse: ng.IParseService) => {
                 currentDataKeys = values[2];
                 activeCssClass = values[3];
                 disableActive = values[4];
-                setRefreshLink(element, attrs, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive);
+                setRefreshLink(element, attrs, stateController, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive);
             });
         }
     }
 };
 
-function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes,
+function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateController: Navigation.StateController,
     toData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
     var active = true;
     for (var key in toData) {
-        active = active && LinkUtility.isActive(key, toData[key]);
+        active = active && LinkUtility.isActive(stateController, key, toData[key]);
     }
-    LinkUtility.setLink(element, attrs, () => Navigation.StateController.getRefreshLink(
-        LinkUtility.getData(toData, includeCurrentData, currentDataKeys))
+    LinkUtility.setLink(stateController, element, attrs, () => stateController.getRefreshLink(
+        LinkUtility.getData(stateController, toData, includeCurrentData, currentDataKeys))
     );
     active = active && !!attrs['href'];
     LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
