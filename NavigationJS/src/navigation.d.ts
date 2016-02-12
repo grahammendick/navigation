@@ -297,9 +297,8 @@ declare module Navigation {
         /**
          * Registers browser history event listeners
          * @param navigateHistory The history navigation event handler
-         * @param applicationPath The application path
          */
-        init(navigateHistory: () => void, applicationPath: string): void;
+        init(navigateHistory: () => void): void;
         /**
          * Adds browser history
          * @param url The current url
@@ -338,10 +337,15 @@ declare module Navigation {
          */
         disabled: boolean;
         /**
-         * Gets or sets a value indicating whether to use '#' in place of '?'
-         * in Urls. Set to true for Internet explorer 6 and 7 support
+         * Initializes a new instance of the HashHistoryManager class
          */
-        replaceQueryIdentifier: boolean;
+        constructor();
+        /**
+         * Initializes a new instance of the HashHistoryManager class
+         * @param replaceQueryIdentifier a value indicating whether to use '#'
+         * in place of '?'. Set to true for Internet explorer 6 and 7 support
+         */
+        constructor(replaceQueryIdentifier: boolean);
         /**
          * Registers a listener for the hashchange event
          * @param navigateHistory The history navigation event handler
@@ -385,11 +389,19 @@ declare module Navigation {
          */
         disabled: boolean;
         /**
-         * Registers a listener for the popstate event
-         * @param navigateHistory The history navigation event handler
+         * Initializes a new instance of the HTML5HistoryManager class
+         */
+        constructor();
+        /**
+         * Initializes a new instance of the HTML5HistoryManager class
          * @param applicationPath The application path
          */
-        init(navigateHistory: () => void, applicationPath: string): void;
+        constructor(applicationPath: string);
+        /**
+         * Registers a listener for the popstate event
+         * @param navigateHistory The history navigation event handler
+         */
+        init(navigateHistory: () => void): void;
         /**
          * Sets the browser Url to the url using pushState
          * @param url The current url 
@@ -621,10 +633,6 @@ declare module Navigation {
          */
         crumbTrailKey?: string;
         /**
-         * Gets or sets the application path
-         */
-        applicationPath?: string;
-        /**
          * Gets or sets a value indicating whether the PreviousStateId and
          * ReturnData should be part of the CrumbTrail
          */
@@ -673,10 +681,6 @@ declare module Navigation {
          * Gets or sets the key that identifies the CrumbTrail
          */
         crumbTrailKey: string;
-        /**
-         * Gets or sets the application path
-         */
-        applicationPath: string;
         /**
          * Gets or sets a value indicating whether the PreviousStateId and
          * ReturnData should be part of the CrumbTrail
