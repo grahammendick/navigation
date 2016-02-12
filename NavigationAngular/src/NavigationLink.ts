@@ -7,8 +7,9 @@ var NavigationLink = ($parse: ng.IParseService) => {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var action, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
-            LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, action, toData, includeCurrentData, 
-                currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope)
+            var stateController: Navigation.StateController = scope.$eval(attrs['stateController']);
+            LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, stateController, action, toData,
+                includeCurrentData, currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope)
             var watchAttrs = [attrs['navigationLink'], attrs['toData'], attrs['includeCurrentData'], 
                 attrs['currentDataKeys'], attrs['activeCssClass'], attrs['disableActive']];
             scope.$watchGroup(watchAttrs, function (values) {
@@ -18,27 +19,27 @@ var NavigationLink = ($parse: ng.IParseService) => {
                 currentDataKeys = values[3];
                 activeCssClass = values[4];
                 disableActive = values[5];
-                setNavigationLink(element, attrs, action, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive);
+                setNavigationLink(element, attrs, stateController, action, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive);
             });
         }
     }
 };
 
-function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes,
+function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateController: Navigation.StateController,
     action: string, toData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
     var active = true;
     for (var key in toData) {
-        active = active && LinkUtility.isActive(key, toData[key]);
+        active = active && LinkUtility.isActive(stateController, key, toData[key]);
     }
-    LinkUtility.setLink(element, attrs, () => Navigation.StateController.getNavigationLink(action,
-        LinkUtility.getData(toData, includeCurrentData, currentDataKeys))
+    LinkUtility.setLink(stateController, element, attrs, () => stateController.getNavigationLink(action,
+        LinkUtility.getData(stateController, toData, includeCurrentData, currentDataKeys))
     );
-    active = active && !!attrs['href'] && isActive(action);
+    active = active && !!attrs['href'] && isActive(stateController, action);
     LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
 }
 
-function isActive(action: string): boolean {
-    var nextState = Navigation.StateController.getNextState(action);
-    return nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
+function isActive(stateController: Navigation.StateController, action: string): boolean {
+    var nextState = stateController.getNextState(action);
+    return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
 }
 export = NavigationLink;

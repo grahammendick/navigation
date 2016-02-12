@@ -16,32 +16,32 @@
                 <input id="name" ng-model="$parent.name" ng-blur="nameChange()" />
             </div>
             Page size
-            <a refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true" active-css-class="'active'">5</a>
-            <a refresh-link="{ maximumRows: 10, startRowIndex: null }" include-current-data="true" active-css-class="'active'">10</a>
+            <a state-controller="stateController" refresh-link="{ maximumRows: 5, startRowIndex: null }" include-current-data="true" active-css-class="'active'">5</a>
+            <a state-controller="stateController" refresh-link="{ maximumRows: 10, startRowIndex: null }" include-current-data="true" active-css-class="'active'">10</a>
             <table>
                 <thead>
                     <tr>
-                        <th><a refresh-link="{ sortExpression: sortExpression }" include-current-data="true">Name</a></th>
+                        <th><a state-controller="stateController" refresh-link="{ sortExpression: sortExpression }" include-current-data="true">Name</a></th>
                         <th>Date of Birth</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="person in people">
-                        <td><a navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
+                        <td><a state-controller="stateController" navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
                         <td>{{person.dateOfBirth}}</td>
                     </tr>
                 </tbody>
             </table>
             <ul>
-                <li><a refresh-link="{ startRowIndex: 0 }" include-current-data="true" disable-active="true">First</a></li>
-                <li><a refresh-link="{ startRowIndex: previous }" include-current-data="true" disable-active="true">Previous</a></li>
-                <li><a refresh-link="{ startRowIndex: next }" include-current-data="true" disable-active="true">Next</a></li>
-                <li><a refresh-link="{ startRowIndex: last }" include-current-data="true" disable-active="true">Last</a></li>
+                <li><a state-controller="stateController" refresh-link="{ startRowIndex: 0 }" include-current-data="true" disable-active="true">First</a></li>
+                <li><a state-controller="stateController" refresh-link="{ startRowIndex: previous }" include-current-data="true" disable-active="true">Previous</a></li>
+                <li><a state-controller="stateController" refresh-link="{ startRowIndex: next }" include-current-data="true" disable-active="true">Next</a></li>
+                <li><a state-controller="stateController" refresh-link="{ startRowIndex: last }" include-current-data="true" disable-active="true">Last</a></li>
             </ul>
             Total Count {{totalCount}}
         </div>
         <div ng-if="id">
-            <a navigation-back-link="1">Person Search</a>
+            <a state-controller="stateController" navigation-back-link="1">Person Search</a>
             <div>
                 Name: {{personName}}<br />
                 Date of Birth: {{dateOfBirth}}
