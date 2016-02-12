@@ -4744,6 +4744,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 1);
             assert.strictEqual(stateController1.stateContext.data.x, 'efg');
         });
+        
+        it('should not match', function() {
+            assert.throws(() => stateController0.navigateLink('/cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController1.navigateLink('/ab/cde'), /Url is invalid/, '');
+        });
 
         it('should build', function() {
             assert.strictEqual(stateController0.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
@@ -4779,6 +4784,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 1);
             assert.strictEqual(stateController1.stateContext.data.x, 1);
         });
+        
+        it('should not match', function() {
+            assert.throws(() => stateController0.navigateLink('/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController1.navigateLink('/ab'), /Url is invalid/, '');
+        });
 
         it('should build', function() {
             assert.strictEqual(stateController0.getNavigationLink('d', { x: 'cd' }), '/ab');
@@ -4809,6 +4819,11 @@ describe('MatchTest', function () {
             stateController1.navigateLink('/cd/1');
             assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 1);
             assert.strictEqual(stateController1.stateContext.data.x, 1);
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => stateController0.navigateLink('/cd/1'), /Url is invalid/, '');
+            assert.throws(() => stateController1.navigateLink('/ab/1'), /Url is invalid/, '');
         });
 
         it('should build', function() {
