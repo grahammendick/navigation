@@ -4759,4 +4759,33 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController1.getNavigationLink('d', { x: 1 }), '/cd/1');
         });
     });
+
+    describe('Two Controllers Param Default Type', function () {
+        var stateController0: StateController;
+        var stateController1: StateController;
+        beforeEach(function () {
+            stateController0 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                ]);
+            stateController1 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'cd/{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            stateController0.navigateLink('/ab/1');
+            assert.strictEqual(Object.keys(stateController0.stateContext.data).length, 1);
+            assert.strictEqual(stateController0.stateContext.data.x, '1');
+            stateController1.navigateLink('/cd/1');
+            assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 1);
+            assert.strictEqual(stateController1.stateContext.data.x, 1);
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateController0.getNavigationLink('d', { x: '1' }), '/ab/1');
+            assert.strictEqual(stateController1.getNavigationLink('d', { x: 1 }), '/cd/1');
+        });
+    });
 });
