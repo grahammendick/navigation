@@ -4694,6 +4694,34 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Reload Param', function () {
+        var stateController: StateController;
+        beforeEach(function () {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                ]);
+            stateController.configure([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'cd/{x}', trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            stateController.navigateLink('/cd/efg');
+            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
+            assert.strictEqual(stateController.stateContext.data.x, 'efg');
+        });
+        
+        it('should not match', function() {
+            assert.throws(() => stateController.navigateLink('/ab/cde'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'efg' }), '/cd/efg');
+        });
+    });
+
     describe('Two Controllers Param', function () {
         var stateController0: StateController;
         var stateController1: StateController;
