@@ -18,11 +18,12 @@
     <script src="../../build/dist/navigation.cycle.js"></script>
     <script>
         var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul, li = CycleDOM.li
-            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label,
-            navigationLink = NavigationCycle.navigationLink, refreshLink = NavigationCycle.refreshLink,
-            navigationBackLink = NavigationCycle.navigationBackLink; 
+            input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label; 
 
         function createStateComponents(stateController) {
+            var navigationLink = (properties, children) => NavigationCycle.navigationLink(stateController, properties, children);
+            var refreshLink = (properties, children) => NavigationCycle.refreshLink(stateController, properties, children);
+            var navigationBackLink = (properties, children) => NavigationCycle.navigationBackLink(stateController, properties, children);
             var personDialog = stateController.dialogs.person;
             var listState = personDialog.states.list;        
             listState.intent = function(sources) {
@@ -67,26 +68,26 @@
                                input('#name', { value: data.name ? data.name : '' }) 
                             ]),
                             span('Page size '),
-                            refreshLink(stateController, { toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
-                            refreshLink(stateController, { toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
+                            refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
+                            refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
                         ]),
                         table([
                             tr([
-                                th([ refreshLink(stateController, { toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
+                                th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                                 th('Date of Birth')                            
                             ])]
                             .concat(data.people.map(function(person) {
                                 return tr([
-                                    td([ navigationLink(stateController, { action: 'select', toData: { id: person.id }}, person.name) ]),
+                                    td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
                                     td(person.dateOfBirth)
                                 ])
                             }))
                         ),
                         ul([
-                            li([ refreshLink(stateController, { toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
-                            li([ refreshLink(stateController, { toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
-                            li([ refreshLink(stateController, { toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
-                            li([ refreshLink(stateController, { toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
+                            li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
+                            li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
+                            li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
+                            li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
                         ]),
                         span('Total Count ' + data.totalRowCount)
                     ])
@@ -123,7 +124,7 @@
             detailsState.view = function(person$) {
                 return person$.map(function(person) {
                     return div([
-                        navigationBackLink(stateController, { distance: 1 }, 'Person Search'),
+                        navigationBackLink({ distance: 1 }, 'Person Search'),
                         div([
                             span('Name:' + person.name), br(),
                             span('Date of birth:' + person.dateOfBirth)
