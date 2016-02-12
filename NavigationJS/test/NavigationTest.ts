@@ -5503,4 +5503,20 @@ describe('Navigation', function () {
             });
         }
     });
+
+    describe('Reload History', function () {
+        it('should call stop and init', function() {
+            var dialogs = [
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ];
+            var stateController = new Navigation.StateController(dialogs);
+            var stop = false, init = false;
+            stateController.historyManager.stop = () => stop = true;
+            stateController.historyManager.init = () => init = true;
+            stateController.configure(dialogs);
+            assert.strictEqual(stop, true);
+            assert.strictEqual(init, true);
+        });
+    });
 });
