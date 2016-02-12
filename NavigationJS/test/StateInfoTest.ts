@@ -614,4 +614,62 @@ describe('StateInfoTest', function () {
             assert.equal(state0.index, 0);
         })
     });
+
+    describe('Two Controllers', function () {
+        it('should configure State Info', function() {
+            var stateController0 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            var stateController1 = new Navigation.StateController([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't0', to: 's1' },
+                        { key: 't1', to: 's2' }]},
+                    { key: 's1', route: 'r1' },
+                    { key: 's2', route: 'r2' }]},
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r3' }]}
+                ]);
+            var dialog = stateController0._dialogs[0];
+            var state = dialog._states[0];
+            assert.equal(dialog._states.length, 1);
+            assert.equal(dialog.initial, state);
+            assert.equal(state.key, 's');
+            assert.equal(state.route, 'r');
+            assert.equal(state.index, 0);
+            assert.equal(state._transitions.length, 0);            
+            var dialog0 = stateController1._dialogs[0];
+            var dialog1 = stateController1._dialogs[1];
+            var state0 = dialog0._states[0];
+            var state1 = dialog0._states[1];
+            var state2 = dialog0._states[2];
+            assert.equal(dialog0._states.length, 3);
+            assert.equal(dialog0.initial, state0);
+            assert.equal(state0.key, 's0');
+            assert.equal(state0.route, 'r0');
+            assert.equal(state0.index, 0);
+            assert.equal(state1.key, 's1');
+            assert.equal(state1.route, 'r1');
+            assert.equal(state1.index, 1);
+            assert.equal(state2.key, 's2');
+            assert.equal(state2.route, 'r2');
+            assert.equal(state2.index, 2);
+            var transition0 = state0._transitions[0];
+            var transition1 = state0._transitions[1];
+            assert.equal(state0._transitions.length, 2);
+            assert.equal(transition0.key, 't0');
+            assert.equal(transition0.index, 0);
+            assert.equal(transition0.to, state1);
+            assert.equal(transition1.key, 't1');
+            assert.equal(transition1.index, 1);
+            assert.equal(transition1.to, state2);
+            state0 = dialog1._states[0];
+            assert.equal(dialog1._states.length, 1);
+            assert.equal(dialog1.initial, state0);
+            assert.equal(state0.key, 's0');
+            assert.equal(state0.route, 'r3');
+            assert.equal(state0.index, 0);
+        })
+    });
  });
