@@ -7,8 +7,7 @@ function isActive(stateController: Navigation.StateController, action: string): 
     return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
 }
 
-var NavigationLink = (properties: any, children: any) => {
-    var stateController: Navigation.StateController = properties.stateController;
+var NavigationLink = (stateController: Navigation.StateController, properties: any, children: any) => {
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];
