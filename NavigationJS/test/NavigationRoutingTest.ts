@@ -4831,4 +4831,37 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController1.getNavigationLink('d', { x: 1 }), '/cd/1');
         });
     });
+
+    describe('Two Controllers Param Encode', function () {
+        var stateController0: StateController;
+        var stateController1: StateController;
+        beforeEach(function () {
+            stateController0 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '0/{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = stateController0.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '0')  
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('0', ' ')  
+            stateController1 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: '1/{x}', trackCrumbTrail: false }]}
+                ]);
+            var state = stateController1.dialogs['d'].states['s'];
+            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '1')  
+            state.stateHandler.urlDecode = (state, key, val) => val.replace('1', ' ')  
+        });
+
+        it('should match', function() {
+            stateController0.navigateLink('/0/a0b');
+            assert.strictEqual(stateController0.stateContext.data.x, 'a b');
+            stateController1.navigateLink('/1/a1b');
+            assert.strictEqual(stateController1.stateContext.data.x, 'a b');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateController0.getNavigationLink('d', { x: 'a b' }), '/0/a0b');
+            assert.strictEqual(stateController1.getNavigationLink('d', { x: 'a b' }), '/1/a1b');
+        });
+    });
 });
