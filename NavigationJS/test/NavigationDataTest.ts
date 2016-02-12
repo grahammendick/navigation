@@ -5402,4 +5402,54 @@ describe('Navigation Data', function () {
             });
         }
     });
+
+    describe('Two Controllers Data', function() {
+        var stateController0: StateController;
+        var stateController1: StateController;
+        beforeEach(function() {
+            stateController0 = new Navigation.StateController([
+                { key: 'd0', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+            stateController1 = new Navigation.StateController([
+                { key: 'd1', initial: 's', states: [
+                    { key: 's', route: 'r' }]}
+                ]);
+        });
+        var data0 = {};
+        data0['string'] = 'Hello';
+        data0['boolean'] = true;
+        var data1 = {};
+        data1['number'] = 0;
+        data1['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController0.navigate('d0', data0);
+                stateController1.navigate('d1', data1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController0.getNavigationLink('d0', data0);
+                stateController0.navigateLink(link);
+                link = stateController1.getNavigationLink('d1', data1);
+                stateController1.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController0.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateController0.stateContext.data['boolean'], true);
+                assert.strictEqual(stateController1.stateContext.data['number'], 0);
+                assert.strictEqual(+stateController1.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateController0.stateContext.data).length, 2);
+                assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 2);
+            });
+        }
+    });
 });
