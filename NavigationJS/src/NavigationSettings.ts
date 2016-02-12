@@ -12,7 +12,6 @@ class NavigationSettings implements INavigationSettings {
     previousStateIdKey: string = 'c1';
     returnDataKey: string = 'c2';
     crumbTrailKey: string = 'c3';
-    applicationPath: string = '';
     combineCrumbTrail: boolean = true;
     trackAllPreviousData: boolean = true;
     combineArray: boolean = false;

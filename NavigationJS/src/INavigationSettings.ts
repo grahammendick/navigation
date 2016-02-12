@@ -9,7 +9,6 @@ interface INavigationSettings {
     previousStateIdKey?: string;
     returnDataKey?: string;
     crumbTrailKey?: string;
-    applicationPath?: string;
     combineCrumbTrail?: boolean;
     trackAllPreviousData?: boolean;
     combineArray?: boolean;

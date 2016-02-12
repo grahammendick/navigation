@@ -2,8 +2,12 @@
 
 class HashHistoryManager implements IHistoryManager {
     private navigateHistory: () => void;
+    private replaceQueryIdentifier: boolean = false;
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);
-    replaceQueryIdentifier: boolean = false;
+    
+    constructor(replaceQueryIdentifier: boolean = false) {
+        this.replaceQueryIdentifier = replaceQueryIdentifier;
+    }
 
     init(navigateHistory) {
         this.navigateHistory = navigateHistory;

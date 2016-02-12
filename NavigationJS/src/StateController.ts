@@ -42,7 +42,7 @@ class StateController {
             if (this.stateContext.url === this.historyManager.getCurrentUrl())
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
-        }, this.settings.applicationPath);
+        });
         var config = StateInfoConfig.build(dialogs, this.settings, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;

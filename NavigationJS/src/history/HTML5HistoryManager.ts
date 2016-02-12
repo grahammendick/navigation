@@ -2,12 +2,15 @@
 
 class HTML5HistoryManager implements IHistoryManager {
     private navigateHistory: () => void;
-    private applicationPath: string;
+    private applicationPath: string = '';
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
-
-    init(navigateHistory: () => void, applicationPath: string) {
-        this.navigateHistory = navigateHistory;
+    
+    constructor(applicationPath: string = '') {
         this.applicationPath = applicationPath;
+    }
+
+    init(navigateHistory: () => void) {
+        this.navigateHistory = navigateHistory;
         if (!this.disabled)
             window.addEventListener('popstate', this.navigateHistory);
     }
