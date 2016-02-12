@@ -5281,8 +5281,8 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateController0.navigate('d0');
-                stateController0.navigate('t');
                 stateController1.navigate('d1');
+                stateController0.navigate('t');
                 stateController1.navigate('t');
             });
             test();
@@ -5292,10 +5292,10 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateController0.getNavigationLink('d0');
                 stateController0.navigateLink(link);
-                link = stateController0.getNavigationLink('t');
-                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('d1');
                 stateController1.navigateLink(link);
+                link = stateController0.getNavigationLink('t');
+                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('t');
                 stateController1.navigateLink(link);
             });
@@ -5355,10 +5355,10 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateController0.navigate('d0');
-                stateController0.navigate('t');
-                stateController0.refresh();
                 stateController1.navigate('d1');
+                stateController0.navigate('t');
                 stateController1.navigate('t');
+                stateController0.refresh();
                 stateController1.refresh();
             });
             test();
@@ -5368,14 +5368,14 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateController0.getNavigationLink('d0');
                 stateController0.navigateLink(link);
-                link = stateController0.getNavigationLink('t');
-                stateController0.navigateLink(link);
-                link = stateController0.getRefreshLink();
-                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('d1');
                 stateController1.navigateLink(link);
+                link = stateController0.getNavigationLink('t');
+                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('t');
                 stateController1.navigateLink(link);
+                link = stateController0.getRefreshLink();
+                stateController0.navigateLink(link);
                 link = stateController1.getRefreshLink();
                 stateController1.navigateLink(link);
             });
@@ -5441,12 +5441,12 @@ describe('Navigation', function () {
         describe('Navigate', function() {
             beforeEach(function() {
                 stateController0.navigate('d0');
-                stateController0.navigate('t0');
-                stateController0.navigate('t1');
-                stateController0.navigateBack(1);
                 stateController1.navigate('d1');
+                stateController0.navigate('t0');
                 stateController1.navigate('t0');
+                stateController0.navigate('t1');
                 stateController1.navigate('t1');
+                stateController0.navigateBack(1);
                 stateController1.navigateBack(1);
             });
             test();
@@ -5456,18 +5456,18 @@ describe('Navigation', function () {
             beforeEach(function() {
                 var link = stateController0.getNavigationLink('d0');
                 stateController0.navigateLink(link);
-                link = stateController0.getNavigationLink('t0');
-                stateController0.navigateLink(link);
-                link = stateController0.getNavigationLink('t1');
-                stateController0.navigateLink(link);
-                link = stateController0.getNavigationBackLink(1);
-                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('d1');
                 stateController1.navigateLink(link);
+                link = stateController0.getNavigationLink('t0');
+                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('t0');
                 stateController1.navigateLink(link);
+                link = stateController0.getNavigationLink('t1');
+                stateController0.navigateLink(link);
                 link = stateController1.getNavigationLink('t1');
                 stateController1.navigateLink(link);
+                link = stateController0.getNavigationBackLink(1);
+                stateController0.navigateLink(link);
                 link = stateController1.getNavigationBackLink(1);
                 stateController1.navigateLink(link);
             });
