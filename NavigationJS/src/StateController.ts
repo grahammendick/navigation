@@ -49,7 +49,7 @@ class StateController {
         this.settings.router.addRoutes(this._dialogs);
     }
 
-    setStateContext(state: State, url: string) {
+    private setStateContext(state: State, url: string) {
         try {
             this.setOldStateContext();
             this.stateContext.state = state;

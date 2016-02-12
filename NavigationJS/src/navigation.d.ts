@@ -829,13 +829,6 @@ declare module Navigation {
          */
         configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings: INavigationSettings): void;
         /**
-         * Sets the Context Data with the data returned from the current
-         * State's IStateHandler
-         * @param state The current State
-         * @param url The current Url
-         */
-        setStateContext(state: State, url: string): void;
-        /**
          * Clears the Context Data
          */
         clearStateContext(): void;
