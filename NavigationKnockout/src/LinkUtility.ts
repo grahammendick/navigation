@@ -4,28 +4,28 @@ import Navigation = require('navigation');
 import ko = require('knockout');
 
 class LinkUtility {
-    static setLink(element: HTMLAnchorElement, linkAccessor: () => string) {
+    static setLink(stateController: Navigation.StateController, element: HTMLAnchorElement, linkAccessor: () => string) {
         try {
-            element.href = Navigation.settings.historyManager.getHref(linkAccessor());
+            element.href = stateController.historyManager.getHref(linkAccessor());
         } catch (e) {
             element.removeAttribute('href');
         }
     }
 
-    static getData(toData, includeCurrentData, currentDataKeys) {
+    static getData(stateController: Navigation.StateController, toData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
-            toData = Navigation.StateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            toData = Navigation.StateContext.includeCurrentData(toData);
+            toData = stateController.stateContext.includeCurrentData(toData);
         return toData;
     }
 
-    static isActive(key: string, val: any): boolean {
-        if (!Navigation.StateContext.state)
+    static isActive(stateController: Navigation.StateController, key: string, val: any): boolean {
+        if (!stateController.stateContext.state)
             return false;
         if (val != null) {
-            var trackTypes = Navigation.StateContext.state.trackTypes;
-            var currentVal = Navigation.StateContext.data[key];
+            var trackTypes = stateController.stateContext.state.trackTypes;
+            var currentVal = stateController.stateContext.data[key];
             if (currentVal != null)
                 return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
             else
@@ -42,12 +42,13 @@ class LinkUtility {
 
     static addListeners(element: HTMLAnchorElement, setLink: () => void, allBindings: KnockoutAllBindingsAccessor, viewModel: any) {
         var lazy = !!allBindings.get('lazy');
+        var stateController: Navigation.StateController = allBindings.get('stateController');
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (element.href) {
-                    var link = Navigation.settings.historyManager.getUrl(element);
+                    var link = stateController.historyManager.getUrl(element);
                     var navigating = this.getNavigating(allBindings, viewModel);
                     if (navigating(e, link)) {
                         if (e.preventDefault)
@@ -57,14 +58,14 @@ class LinkUtility {
                         var historyAction = ko.unwrap(allBindings.get('historyAction'));
                         if (typeof historyAction === 'string')
                             historyAction = Navigation.HistoryAction[historyAction];
-                        Navigation.StateController.navigateLink(link, false, historyAction);
+                        stateController.navigateLink(link, historyAction);
                     }
                 }
             }
         });
         if (!lazy) {
-            Navigation.StateController.onNavigate(setLink);
-            ko.utils.domNodeDisposal.addDisposeCallback(element, () => Navigation.StateController.offNavigate(setLink));
+            stateController.onNavigate(setLink);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, () => stateController.offNavigate(setLink));
         } else {
             ko.utils.registerEventHandler(element, 'mousedown', (e: MouseEvent) => setLink());
             ko.utils.registerEventHandler(element, 'contextmenu', (e: MouseEvent) => setLink());

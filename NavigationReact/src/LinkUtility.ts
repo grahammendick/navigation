@@ -56,7 +56,7 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var stateController = <Navigation.StateController> props.stateController;
+                    var stateController: Navigation.StateController = props.stateController;
                     var link = stateController.historyManager.getUrl(element);
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {

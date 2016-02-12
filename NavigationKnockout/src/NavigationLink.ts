@@ -16,20 +16,21 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
     var data = {};
     var toData = ko.unwrap(allBindings.get('toData'));
     var active = true;
+    var stateController: Navigation.StateController = allBindings.get('stateController');
     for (var key in toData) {
         var val = ko.unwrap(toData[key]);
         data[key] = val;
-        active = active && LinkUtility.isActive(key, val);
+        active = active && LinkUtility.isActive(stateController, key, val);
     }
-    LinkUtility.setLink(element, () => Navigation.StateController.getNavigationLink(action,
-        LinkUtility.getData(data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
+    LinkUtility.setLink(stateController, element, () => stateController.getNavigationLink(action,
+        LinkUtility.getData(stateController, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    active = active && !!element.href && isActive(action);
+    active = active && !!element.href && isActive(stateController, action);
     LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
 
-function isActive(action: string): boolean {
-    var nextState = Navigation.StateController.getNextState(action);
-    return nextState === nextState.parent.initial && nextState.parent === Navigation.StateContext.dialog;
+function isActive(stateController: Navigation.StateController, action: string): boolean {
+    var nextState = stateController.getNextState(action);
+    return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
 }
 export = NavigationLink;

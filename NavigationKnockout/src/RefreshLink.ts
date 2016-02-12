@@ -15,13 +15,14 @@ function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, al
     var data = {};
     var toData = ko.unwrap(valueAccessor());
     var active = true;
+    var stateController: Navigation.StateController = allBindings.get('stateController');
     for (var key in toData) {
         var val = ko.unwrap(toData[key]);
         data[key] = val;
-        active = active && LinkUtility.isActive(key, val);
+        active = active && LinkUtility.isActive(stateController, key, val);
     }
-    LinkUtility.setLink(element, () => Navigation.StateController.getRefreshLink(
-        LinkUtility.getData(data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
+    LinkUtility.setLink(stateController, element, () => stateController.getRefreshLink(
+        LinkUtility.getData(stateController, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
     active = active && !!element.href;
     LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
