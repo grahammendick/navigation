@@ -5539,4 +5539,49 @@ describe('Navigation', function () {
             assert.strictEqual(url1, '/r1');
         });
     });
+
+    describe('Two Controllers Storage Navigate', function () {
+        it('should set crumb trail to aaa', function() {
+            var stateController0 = new Navigation.StateController([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ],
+                { 
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
+            );
+            var stateController1 = new Navigation.StateController([
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' },
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ],
+                { 
+                    crumbTrailPersister: new Navigation.StorageCrumbTrailPersister(0),
+                    combineCrumbTrail: true
+                }
+            );
+            stateController0.navigate('d0');
+            var link0 = stateController0.getNavigationLink('t');
+            stateController0.navigateLink(link0);
+            stateController1.navigate('d1');
+            var link1 = stateController1.getNavigationLink('t');
+            stateController1.navigateLink(link1);
+            assert.notEqual(link0.indexOf('aaa'), -1);
+            assert.equal(stateController0.stateContext.state, stateController0._dialogs[0]._states[1]);
+            assert.equal(stateController0.stateContext.oldState, stateController0._dialogs[0]._states[0]);
+            assert.equal(stateController0.stateContext.previousState, stateController0._dialogs[0]._states[0]);
+            assert.equal(stateController0.stateContext.crumbs.length, 1);
+            assert.notEqual(link1.indexOf('aaa'), -1);
+            assert.equal(stateController1.stateContext.state, stateController1._dialogs[0]._states[1]);
+            assert.equal(stateController1.stateContext.oldState, stateController1._dialogs[0]._states[0]);
+            assert.equal(stateController1.stateContext.previousState, stateController1._dialogs[0]._states[0]);
+            assert.equal(stateController1.stateContext.crumbs.length, 1);
+        });
+    });
 });
