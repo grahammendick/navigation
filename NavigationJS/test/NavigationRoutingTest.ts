@@ -4693,4 +4693,33 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab'], y: ['fgh'] }), '/ab?y=fgh');
         });
     });
+
+    describe('Two Controllers Param', function () {
+        var stateController0: StateController;
+        var stateController1: StateController;
+        beforeEach(function () {
+            stateController0 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                ]);
+            stateController1 = new Navigation.StateController([
+                { key: 'd', initial: 's', states: [
+                    { key: 's', route: 'cd/{x}', trackCrumbTrail: false }]}
+                ]);
+        });
+
+        it('should match', function() {
+            stateController0.navigateLink('ab/cde');
+            assert.strictEqual(Object.keys(stateController0.stateContext.data).length, 1);
+            assert.strictEqual(stateController0.stateContext.data.x, 'cde');
+            stateController1.navigateLink('cd/efg');
+            assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 1);
+            assert.strictEqual(stateController1.stateContext.data.x, 'efg');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateController0.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateController1.getNavigationLink('d', { x: 'efg' }), '/cd/efg');
+        });
+    });
 });
