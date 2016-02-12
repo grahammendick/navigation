@@ -5452,4 +5452,72 @@ describe('Navigation Data', function () {
             });
         }
     });
+
+    describe('Navigate Data Back', function() {
+        var stateController0: StateController;
+        var stateController1: StateController;
+        beforeEach(function() {
+            stateController0 = new Navigation.StateController([
+                { key: 'd0', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            stateController1 = new Navigation.StateController([
+                { key: 'd1', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data0 = {};
+        data0['string'] = 'Hello';
+        data0['boolean'] = true;
+        var data1 = {};
+        data1['number'] = 0;
+        data1['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController0.navigate('d0', data0);
+                stateController1.navigate('d1', data1);
+                stateController0.navigate('t');
+                stateController1.navigate('t');
+                stateController0.navigateBack(1);
+                stateController1.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController0.getNavigationLink('d0', data0);
+                stateController0.navigateLink(link);
+                link = stateController1.getNavigationLink('d1', data1);
+                stateController1.navigateLink(link);
+                link = stateController0.getNavigationLink('t');
+                stateController0.navigateLink(link);
+                link = stateController1.getNavigationLink('t');
+                stateController1.navigateLink(link);
+                link = stateController0.getNavigationBackLink(1);
+                stateController0.navigateLink(link);
+                link = stateController1.getNavigationBackLink(1);
+                stateController1.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController0.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateController0.stateContext.data['boolean'], true);
+                assert.strictEqual(stateController1.stateContext.data['number'], 0);
+                assert.strictEqual(+stateController1.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateController0.stateContext.data).length, 2);
+                assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 2);
+            });
+        }
+    });
 });
