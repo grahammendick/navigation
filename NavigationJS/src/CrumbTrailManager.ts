@@ -129,12 +129,6 @@ class CrumbTrailManager {
                 }
             }
         }
-        /*if (state.trackCrumbTrail && stateContext.crumbTrail.length > 0) {
-            var formattedCrumbData = ReturnDataManager.formatURLObject(settings, converterFactory, 'crumb', stateContext.crumbTrail, state);
-            var crumbVal = formattedCrumbData.val;
-            data['crumb'] = crumbVal;
-            arrayData['crumb'] = formattedCrumbData.arrayVal;
-        }*/
         /*if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state) {
             if (settings.trackAllPreviousData)
                 returnData = stateContext.data;
