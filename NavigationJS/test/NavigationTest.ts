@@ -1040,7 +1040,7 @@ describe('Navigation', function () {
         }
     });
 
-    /*describe('Back One By One', function() {
+    describe('Back One By One', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -1091,9 +1091,9 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController._dialogs[0]._states[1]);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
-            it('should populate previous State with previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[1]);
-                assert.equal(stateController.stateContext.previousDialog, stateController._dialogs[0]);
+            it('should not populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, null);
+                assert.equal(stateController.stateContext.previousDialog, null);
             });
             it('should have no crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 0);
@@ -3575,10 +3575,10 @@ describe('Navigation', function () {
                     ]},
                     { key: 's1', route: 'r1' }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
+                    { key: 's0', route: 'r2', transitions: [
                         { key: 't', to: 's1' },
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r3' }]}
                 ]);
             stateController.navigate('d0');
             stateController.navigate('t');
@@ -3851,7 +3851,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Transition Storage Navigate', function () {
+    /*describe('Transition Storage Navigate', function () {
         it('should set crumb trail to aaa', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
