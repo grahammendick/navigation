@@ -8,7 +8,7 @@ class ReturnDataManager {
     private static RET_2_SEP = '2_';
     private static RET_3_SEP = '3_';
 
-    static formatReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, state: State, returnData: any): string {
+    /*static formatReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, state: State, returnData: any): string {
         var returnDataArray: string[] = [];
         for (var key in returnData) {
             if (returnData[key] != null && returnData[key].toString()) {
@@ -18,7 +18,7 @@ class ReturnDataManager {
             }
         }
         return returnDataArray.join(this.RET_3_SEP);
-    }
+    }*/
 
     private static decodeUrlValue(urlValue: string): string {
         return urlValue.replace(new RegExp('0' + this.SEPARATOR, 'g'), this.SEPARATOR);
@@ -67,7 +67,7 @@ class ReturnDataManager {
         return converterFactory.getConverterFromKey(converterKey).convertFrom(val, settings.combineArray, separable);
     }
 
-    static parseReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, returnData: string, state: State): any {
+    /*static parseReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, returnData: string, state: State): any {
         var navigationData = {};
         var returnDataArray = returnData.split(this.RET_3_SEP);
         for (var i = 0; i < returnDataArray.length; i++) {
@@ -75,6 +75,6 @@ class ReturnDataManager {
             navigationData[this.decodeUrlValue(nameValuePair[0])] = this.parseURLString(settings, converterFactory, this.decodeUrlValue(nameValuePair[0]), nameValuePair[1], state, true);
         }
         return navigationData;
-    }
+    }*/
 }
 export = ReturnDataManager;
