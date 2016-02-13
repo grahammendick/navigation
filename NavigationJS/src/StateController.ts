@@ -157,8 +157,7 @@ class StateController {
     }
 
     getNavigationBackLink(distance: number): string {
-        var crumbs = this.stateContext.crumbTrail.slice(0, this.stateContext.crumbTrail.length - distance - 1);
-        return CrumbTrailManager.appendCrumbs(this.getCrumb(distance).navigationLink, crumbs);
+        return this.getCrumb(distance).navigationLink;
     }
 
     refresh(toData?: any, historyAction?: HistoryAction) {

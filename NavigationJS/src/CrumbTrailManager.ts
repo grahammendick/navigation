@@ -39,7 +39,8 @@ class CrumbTrailManager {
         var len = stateContext.crumbTrail.length - (skipLatest ? 1 : 0);
         for(var i = 0; i < len; i++) {
             var state = settings.router.getData(stateContext.crumbTrail[i].split('?')[0]).state;
-            crumbTrailArray.push(new Crumb(null, state, stateContext.crumbTrail[i], i === len - 1));            
+            var link = this.appendCrumbs(stateContext.crumbTrail[i], stateContext.crumbTrail.slice(0, i));
+            crumbTrailArray.push(new Crumb(null, state, link, i === len - 1));            
         }
         //console.log(crumbTrailArray);
         /*var arrayCount = 0;
