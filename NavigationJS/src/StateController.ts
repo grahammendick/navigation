@@ -62,7 +62,7 @@ class StateController {
             this.stateContext.previousDialog = null;
             this.stateContext.previousData = {};
             this.stateContext.crumbTrail = this.stateContext.data['crumb'] ? this.stateContext.data['crumb'] : [];
-            this.stateContext.data['crumb'] = null;
+            delete this.stateContext.data['crumb'];
             var uncombined = !!data[this.settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
             CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this.converterFactory, this._dialogs, uncombined);
