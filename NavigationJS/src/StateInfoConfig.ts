@@ -62,6 +62,7 @@ class StateInfoConfig {
             for (var key in state.defaultTypes) {
                 converterFactory.getConverterFromName(state.defaultTypes[key]);
             }
+            state.defaultTypes['crumb'] = 'stringarray';
             if (!state.key)
                 throw new Error('key is mandatory for a State');
             if (dialog.states[state.key])

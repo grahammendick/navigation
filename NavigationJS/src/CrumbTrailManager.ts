@@ -16,8 +16,8 @@ class CrumbTrailManager {
         crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
         stateContext.crumbTrail = [];
         for(var i = 0; i < crumbs.length; i++)
-            stateContext.crumbTrail.push(crumbs[i].navigationLink);
-        stateContext.crumbTrail.push(stateContext.url);
+            stateContext.crumbTrail.push(this.removeCrumbs(crumbs[i].navigationLink));
+        stateContext.crumbTrail.push(this.removeCrumbs(stateContext.url));
         /*var crumbs = this.getCrumbs(stateContext, settings, converterFactory, dialogs, false);
         if (uncombined)
             crumbs.push(this.getCrumb(stateContext, settings, converterFactory, stateContext.previousState, stateContext.previousData, false));        
@@ -97,12 +97,12 @@ class CrumbTrailManager {
                 }
             }
         }
-        if (state.trackCrumbTrail && stateContext.crumbTrail.length > 0) {
+        /*if (state.trackCrumbTrail && stateContext.crumbTrail.length > 0) {
             var formattedCrumbData = ReturnDataManager.formatURLObject(settings, converterFactory, 'crumb', stateContext.crumbTrail, state);
             var crumbVal = formattedCrumbData.val;
             data['crumb'] = crumbVal;
             arrayData['crumb'] = formattedCrumbData.arrayVal;
-        }
+        }*/
         /*if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state) {
             if (settings.trackAllPreviousData)
                 returnData = stateContext.data;
@@ -112,7 +112,26 @@ class CrumbTrailManager {
         }*
         if (stateContext.crumbTrailKey && state.trackCrumbTrail)
             data[settings.crumbTrailKey] = stateContext.crumbTrailKey;*/
-        return state.stateHandler.getNavigationLink(settings.router, state, data, arrayData);
+        var link = state.stateHandler.getNavigationLink(settings.router, state, data, arrayData);
+        if (state.trackCrumbTrail)
+            link = this.appendCrumbs(link, stateContext.crumbTrail);
+        return link;
+    }
+    
+    static removeCrumbs(link: string): string{
+        var ind = link.indexOf('crumb=');
+        if (ind >= 0)
+            link = link.substring(0, ind - 1);
+        return link;
+    }
+    
+    static appendCrumbs(link: string, crumbs: string[]): string {
+        var sep = link.indexOf('?') >= 0 ? '&' : '?';
+        for(var i = 0; i < crumbs.length; i++) {
+            link += sep + 'crumb=' + encodeURIComponent(crumbs[i]);
+            sep = '&';
+        }
+        return link;
     }
 
     static getRefreshHref(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, refreshData: any): string {
