@@ -8,8 +8,8 @@ import State = require('./config/State');
 import StateContext = require('./StateContext');
 
 class CrumbTrailManager {
-    private static CRUMB_1_SEP = '4_';
-    private static CRUMB_2_SEP = '5_';
+    //private static CRUMB_1_SEP = '4_';
+    //private static CRUMB_2_SEP = '5_';
 
     static buildCrumbTrail(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, dialogs: Dialog[], uncombined: boolean) {
         var crumbs = this.getCrumbs(stateContext, settings, converterFactory, dialogs, false);

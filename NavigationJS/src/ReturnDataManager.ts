@@ -4,9 +4,9 @@ import State = require('./config/State');
 
 class ReturnDataManager {
     private static SEPARATOR = '_';
-    private static RET_1_SEP = '1_';
+    //private static RET_1_SEP = '1_';
     private static RET_2_SEP = '2_';
-    private static RET_3_SEP = '3_';
+    //private static RET_3_SEP = '3_';
 
     /*static formatReturnData(settings: NavigationSettings, converterFactory: ConverterFactory, state: State, returnData: any): string {
         var returnDataArray: string[] = [];
