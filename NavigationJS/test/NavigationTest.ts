@@ -160,7 +160,6 @@ describe('Navigation', function () {
 
     describe('Dialog Dialog', function() {
         var stateController: StateController;
-        var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -206,7 +205,6 @@ describe('Navigation', function () {
     });
 
     describe('Dialog Dialog Without Trail', function() {
-        var stateController: StateController;
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -827,8 +825,8 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s2']);
                 assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
             });
-            it('should populate previous State with current State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s2']);
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
                 assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
             });
             it('should reduce crumb trail by one', function() {
@@ -957,8 +955,8 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController._dialogs[0]._states[4]);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
-            it('should populate previous State with current State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[4]);
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[1]);
                 assert.equal(stateController.stateContext.previousDialog, stateController._dialogs[0]);
             });
             it('should reduce crumb trail by two', function() {
@@ -1042,7 +1040,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Back One By One', function() {
+    /*describe('Back One By One', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -5583,5 +5581,5 @@ describe('Navigation', function () {
             assert.equal(stateController1.stateContext.previousState, stateController1._dialogs[0]._states[0]);
             assert.equal(stateController1.stateContext.crumbs.length, 1);
         });
-    });
+    });*/
 });
