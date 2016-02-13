@@ -119,8 +119,9 @@ class CrumbTrailManager {
         return link;
     }
     
+    //Do all the clearing and appending crumbs by just building navigation links
+    //No parsing urls!! Means crumb handling is automatic
     private static removeCrumbs(link: string): string {
-        //maybe do this better with split and join so the crumbs can be interspersed?
         var ind = link.indexOf('crumb=');
         if (ind >= 0)
             link = link.substring(0, ind - 1);
