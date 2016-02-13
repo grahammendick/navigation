@@ -3883,8 +3883,8 @@ describe('Navigation Data', function () {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t'], undefined);
             });
@@ -3989,9 +3989,9 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'World');
                 assert.strictEqual(stateController.stateContext.oldData['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.oldData['t2'], 2);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'World');
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
                 assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['t2'], 2);
+                assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t2'], undefined);
@@ -4112,8 +4112,8 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t1'], 1);
                 assert.strictEqual(stateController.stateContext.oldData['t2'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t1'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t2'], undefined);
@@ -4241,8 +4241,8 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t1'], 1);
                 assert.strictEqual(stateController.stateContext.oldData['t2'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t1'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t2'], undefined);
@@ -4836,7 +4836,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Link Default Types Back Navigate', function() {
+    /*describe('Link Default Types Back Navigate', function() {
         it('should not include default types in link', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -4859,7 +4859,7 @@ describe('Navigation Data', function () {
             assert.notEqual(url.indexOf('n1=0&'), -1);
             assert.notEqual(url.indexOf('n2=12_'), -1);
         });
-    });
+    });*/
 
     describe('Link Default Types Refresh Navigate', function() {
         it('should not include default types in link', function() {
@@ -4882,7 +4882,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Link Default Types Back Two Navigate', function() {
+    /*describe('Link Default Types Back Two Navigate', function() {
         it('should not include default types in link', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
@@ -4903,7 +4903,7 @@ describe('Navigation Data', function () {
             var url = stateController.getNavigationBackLink(2);
             assert.notEqual(url.indexOf('_bool=1&'), -1);
         });
-    });
+    });*/
 
     describe('Override Default Types', function() {
         var stateController: StateController;

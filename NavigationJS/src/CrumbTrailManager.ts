@@ -38,9 +38,12 @@ class CrumbTrailManager {
         var crumbTrailArray: Crumb[] = [];
         var len = stateContext.crumbTrail.length - (skipLatest ? 1 : 0);
         for(var i = 0; i < len; i++) {
-            var state = settings.router.getData(stateContext.crumbTrail[i].split('?')[0]).state;
-            var link = this.appendCrumbs(stateContext.crumbTrail[i], stateContext.crumbTrail.slice(0, i));
-            crumbTrailArray.push(new Crumb(null, state, link, i === len - 1));            
+            var link = stateContext.crumbTrail[i];
+            var state = settings.router.getData(link.split('?')[0]).state;
+            var { data, separableData } = state.stateHandler.getNavigationData(settings.router, state, link);
+            data = this.parseData(settings, converterFactory, data, state, separableData);
+            link = this.appendCrumbs(link, stateContext.crumbTrail.slice(0, i));
+            crumbTrailArray.push(new Crumb(data, state, link, i === len - 1));            
         }
         //console.log(crumbTrailArray);
         /*var arrayCount = 0;
@@ -65,6 +68,34 @@ class CrumbTrailManager {
         }
         crumbTrailArray.reverse();*/
         return crumbTrailArray;
+    }
+
+    static parseData(settings, converterFactory, data: any, state: State, separableData: any): any {
+        var newData = {};
+        for (var key in data) {
+            if (!this.isDefault(key, data, state, !!separableData[key]))
+                newData[key] = ReturnDataManager.parseURLString(settings, converterFactory, key, data[key], state, false, !!separableData[key]);
+        }
+        NavigationData.setDefaults(newData, state.defaults);
+        return newData;
+    }
+    
+    static isDefault(key: string, data: any, state: State, separable: boolean) {
+        var val = data[key]
+        var arrayDefaultVal = state.formattedArrayDefaults[key];
+        if (!separable || !arrayDefaultVal) {
+            return val === state.formattedDefaults[key];
+        } else {
+            if (typeof val === 'string')
+                val = [val];
+            if (val.length !== arrayDefaultVal.length) 
+                return false;
+            for(var i = 0; i < val.length; i++) {
+                if (val[i] !== arrayDefaultVal[i])
+                    return false;
+            }
+            return true;
+        }
     }
     
     static getCrumb(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, state: State, data: any, last: boolean): Crumb {
@@ -122,17 +153,21 @@ class CrumbTrailManager {
     //Do all the clearing and appending crumbs by just building navigation links
     //No parsing urls!! Means crumb handling is automatic
     private static removeCrumbs(link: string): string {
-        var ind = link.indexOf('crumb=');
-        if (ind >= 0)
-            link = link.substring(0, ind - 1);
+        if (link) {
+            var ind = link.indexOf('crumb=');
+            if (ind >= 0)
+                link = link.substring(0, ind - 1);
+        }
         return link;
     }
     
     private static appendCrumbs(link: string, crumbs: string[]): string {
-        var sep = link.indexOf('?') >= 0 ? '&' : '?';
-        for(var i = 0; i < crumbs.length; i++) {
-            link += sep + 'crumb=' + encodeURIComponent(crumbs[i]);
-            sep = '&';
+        if (link) {
+            var sep = link.indexOf('?') >= 0 ? '&' : '?';
+            for(var i = 0; i < crumbs.length; i++) {
+                link += sep + 'crumb=' + encodeURIComponent(crumbs[i]);
+                sep = '&';
+            }
         }
         return link;
     }
