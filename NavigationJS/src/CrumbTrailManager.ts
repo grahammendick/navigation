@@ -13,6 +13,12 @@ class CrumbTrailManager {
 
     static buildCrumbTrail(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, dialogs: Dialog[], uncombined: boolean) {
         var crumbs = this.getCrumbs(stateContext, settings, converterFactory, dialogs, false);
+        crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
+        stateContext.crumbTrail = [];
+        for(var i = 0; i < crumbs.length; i++)
+            stateContext.crumbTrail.push(crumbs[i].navigationLink);
+        stateContext.crumbTrail.push(stateContext.url);
+        /*var crumbs = this.getCrumbs(stateContext, settings, converterFactory, dialogs, false);
         if (uncombined)
             crumbs.push(this.getCrumb(stateContext, settings, converterFactory, stateContext.previousState, stateContext.previousData, false));        
         crumbs = stateContext.state.stateHandler.truncateCrumbTrail(stateContext.state, crumbs);
@@ -25,12 +31,18 @@ class CrumbTrailManager {
             trailString += ReturnDataManager.formatReturnData(settings, converterFactory, crumbs[i].state, crumbs[i].data);
         }
         stateContext.crumbTrail = trailString ? trailString : null;
-        stateContext.crumbTrailKey = settings.crumbTrailPersister.save(stateContext.crumbTrail, stateContext.state);
+        stateContext.crumbTrailKey = settings.crumbTrailPersister.save(stateContext.crumbTrail, stateContext.state);*/
     }
 
     static getCrumbs(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, dialogs: Dialog[], setLast: boolean, skipLatest?: boolean): Crumb[] {
         var crumbTrailArray: Crumb[] = [];
-        var arrayCount = 0;
+        var len = stateContext.crumbTrail.length - (skipLatest ? 1 : 0);
+        for(var i = 0; i < len; i++) {
+            var state = settings.router.getData(stateContext.crumbTrail[i].split('?')[0]).state;
+            crumbTrailArray.push(new Crumb(null, state, stateContext.crumbTrail[i], i === len - 1));            
+        }
+        //console.log(crumbTrailArray);
+        /*var arrayCount = 0;
         var trail = stateContext.crumbTrail;
         var crumbTrailSize = !trail ? 0 : trail.split(this.CRUMB_1_SEP).length - 1;
         var last = true;
@@ -50,7 +62,7 @@ class CrumbTrailManager {
             skipLatest = false;
             arrayCount++;
         }
-        crumbTrailArray.reverse();
+        crumbTrailArray.reverse();*/
         return crumbTrailArray;
     }
     
@@ -59,16 +71,16 @@ class CrumbTrailManager {
         return new Crumb(NavigationData.setDefaults(data, state.defaults), state, link, last);        
     }
 
-    static getState(id: string, dialogs: Dialog[]) {
+    /*static getState(id: string, dialogs: Dialog[]) {
         if (!id) return null;
         var ids = id.split('-');
         return dialogs[+ids[0]]._states[+ids[1]];
-    }
+    }*/
 
     static getHref(stateContext: StateContext, settings: NavigationSettings, converterFactory: ConverterFactory, state: State, navigationData: any, returnData: any): string {
         var data = {};
-        if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state)
-            data[settings.previousStateIdKey] = stateContext.state.id;
+        /*if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state)
+            data[settings.previousStateIdKey] = stateContext.state.id;*/
         if (!settings.router.supportsDefaults) {
             navigationData = NavigationData.clone(navigationData);
             NavigationData.setDefaults(navigationData, state.defaults);
@@ -85,15 +97,21 @@ class CrumbTrailManager {
                 }
             }
         }
-        if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state) {
+        if (state.trackCrumbTrail && stateContext.crumbTrail.length > 0) {
+            var formattedCrumbData = ReturnDataManager.formatURLObject(settings, converterFactory, 'crumb', stateContext.crumbTrail, state);
+            var crumbVal = formattedCrumbData.val;
+            data['crumb'] = crumbVal;
+            arrayData['crumb'] = formattedCrumbData.arrayVal;
+        }
+        /*if (!settings.combineCrumbTrail && state.trackCrumbTrail && stateContext.state) {
             if (settings.trackAllPreviousData)
                 returnData = stateContext.data;
             var returnDataString = ReturnDataManager.formatReturnData(settings, converterFactory, stateContext.state, returnData);
             if (returnDataString)
                 data[settings.returnDataKey] = returnDataString;
-        }
+        }*
         if (stateContext.crumbTrailKey && state.trackCrumbTrail)
-            data[settings.crumbTrailKey] = stateContext.crumbTrailKey;
+            data[settings.crumbTrailKey] = stateContext.crumbTrailKey;*/
         return state.stateHandler.getNavigationLink(settings.router, state, data, arrayData);
     }
 

@@ -15,7 +15,7 @@ class StateContext {
     url: string = null;
     title: string = null;
     crumbs: Crumb[] = [];
-    crumbTrail: string = null;
+    crumbTrail: string[] = [];
     crumbTrailKey: string = null;
 
     includeCurrentData(data: any, keys?: string[]): any {

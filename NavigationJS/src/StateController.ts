@@ -61,7 +61,8 @@ class StateController {
             this.stateContext.previousState = null;
             this.stateContext.previousDialog = null;
             this.stateContext.previousData = {};
-            this.stateContext.crumbTrail = this.settings.crumbTrailPersister.load(data[this.settings.crumbTrailKey]);
+            this.stateContext.crumbTrail = this.stateContext.data['crumb'] ? this.stateContext.data['crumb'] : [];
+            this.stateContext.data['crumb'] = null;
             var uncombined = !!data[this.settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
             CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this.converterFactory, this._dialogs, uncombined);
@@ -84,7 +85,7 @@ class StateController {
         this.stateContext.url = null;
         this.stateContext.title = null;
         this.stateContext.crumbs = [];
-        this.stateContext.crumbTrail = null;
+        this.stateContext.crumbTrail = [];
         this.stateContext.crumbTrailKey = null;
     }
     
@@ -98,20 +99,21 @@ class StateController {
     }
     
     private setPreviousStateContext(uncombined: boolean, data: any) {
-        if (uncombined){
+        /*if (uncombined){
             this.stateContext.previousState = CrumbTrailManager.getState(data[this.settings.previousStateIdKey], this._dialogs);
             if (this.stateContext.previousState)
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
             if (data[this.settings.returnDataKey])
                 this.stateContext.previousData = ReturnDataManager.parseReturnData(this.settings, this.converterFactory, data[this.settings.returnDataKey], this.stateContext.previousState);
-        } else {
+        } else {*/
             var previousStateCrumb = CrumbTrailManager.getCrumbs(this.stateContext, this.settings, this.converterFactory, this._dialogs, false).pop();
             if (previousStateCrumb){
-                this.stateContext.previousState = previousStateCrumb.state;
+                var state = this.settings.router.getData(previousStateCrumb.navigationLink.split('?')[0]).state;
+                this.stateContext.previousState = state;
                 this.stateContext.previousDialog = this.stateContext.previousState.parent;
                 this.stateContext.previousData = previousStateCrumb.data;
             }
-        }
+        //}
     }
 
     onNavigate(handler: (oldState: State, state: State, data: any) => void) {
@@ -222,8 +224,7 @@ class StateController {
     private parseData(data: any, state: State, separableData: any): any {
         var newData = {};
         for (var key in data) {
-            if (key !== this.settings.previousStateIdKey && key !== this.settings.returnDataKey
-                && key !== this.settings.crumbTrailKey && !this.isDefault(key, data, state, !!separableData[key]))
+            if (!this.isDefault(key, data, state, !!separableData[key]))
                 newData[key] = ReturnDataManager.parseURLString(this.settings, this.converterFactory, key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);
