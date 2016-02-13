@@ -119,14 +119,14 @@ class CrumbTrailManager {
         return link;
     }
     
-    static removeCrumbs(link: string): string{
+    private static removeCrumbs(link: string): string{
         var ind = link.indexOf('crumb=');
         if (ind >= 0)
             link = link.substring(0, ind - 1);
         return link;
     }
     
-    static appendCrumbs(link: string, crumbs: string[]): string {
+    private static appendCrumbs(link: string, crumbs: string[]): string {
         var sep = link.indexOf('?') >= 0 ? '&' : '?';
         for(var i = 0; i < crumbs.length; i++) {
             link += sep + 'crumb=' + encodeURIComponent(crumbs[i]);
