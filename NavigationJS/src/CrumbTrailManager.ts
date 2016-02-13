@@ -119,7 +119,8 @@ class CrumbTrailManager {
         return link;
     }
     
-    private static removeCrumbs(link: string): string{
+    private static removeCrumbs(link: string): string {
+        //maybe do this better with split and join so the crumbs can be interspersed?
         var ind = link.indexOf('crumb=');
         if (ind >= 0)
             link = link.substring(0, ind - 1);
