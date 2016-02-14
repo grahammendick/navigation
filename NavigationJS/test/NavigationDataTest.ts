@@ -4401,62 +4401,6 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Navigate Previous Data Clear Defaults', function() {
-        var stateController: StateController;
-        beforeEach(function() {
-            stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', defaults: { x: 2 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-         });
-        var data = {};
-        data['s'] = 'Hello';
-        data['t'] = 1;
-        
-        describe('Navigate', function() {
-            beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t', data);
-                stateController.stateContext.data.x = null;
-                stateController.navigate('t');
-            });
-            test();
-        });
-
-        describe('Navigate Link', function() {
-            beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data);
-                stateController.navigateLink(link);
-                stateController.stateContext.data.x = null;
-                link = stateController.getNavigationLink('t');
-                stateController.navigateLink(link);
-            });
-            test();
-        });
-
-        function test() {
-            it('should populate old and previous data', function () {
-                assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.oldData['x'], 2);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['x'], 2);
-                assert.strictEqual(stateController.stateContext.data['s'], undefined);
-                assert.strictEqual(stateController.stateContext.data['t'], undefined);
-                assert.strictEqual(stateController.stateContext.data['x'], undefined);
-            });
-        }
-    });
-
     describe('Navigate Previous Data Bookmarked Link', function() {
         it('should populate old but not previous data', function () {
             var stateController = new Navigation.StateController([

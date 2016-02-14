@@ -88,7 +88,6 @@ class StateController {
             this.stateContext.oldState = this.stateContext.state;
             this.stateContext.oldDialog = this.stateContext.dialog;
             this.stateContext.oldData = this.stateContext.data;
-            this.setDataDefaults(this.stateContext.oldData, this.stateContext.oldState.defaults);
         }
     }
     
@@ -297,7 +296,10 @@ class StateController {
             if (key !== 'crumb' && !this.isDefault(key, data, state, !!separableData[key]))
                 newData[key] = ReturnDataManager.parseURLString(this.converterFactory, key, data[key], state, false, !!separableData[key]);
         }
-        this.setDataDefaults(newData, state.defaults);
+        for (var key in state.defaults) {
+            if (newData[key] == null || !newData[key].toString())
+                newData[key] = state.defaults[key];
+        }
         return newData;
     }
     
@@ -334,13 +336,6 @@ class StateController {
         if (distance > this.stateContext.crumbs.length || distance <= 0)
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance];
-    }
-    
-    private setDataDefaults(data: any, defaults: any) {
-        for (var key in defaults) {
-            if (data[key] == null || !data[key].toString())
-                data[key] = defaults[key];
-        }
     }
     
     start(url?: string) {
