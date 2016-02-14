@@ -4780,31 +4780,6 @@ describe('Navigation Data', function () {
         });
     });
 
-    /*describe('Link Default Types Back Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', defaultTypes: { s1: 'string', s2: 'number', n1: 'number' }, transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            var data = {
-                s2: 'world',
-                n1: 0,
-                n2: 1
-            };
-            data['s1'] = 'hello';
-            stateController.navigate('d', data);
-            stateController.navigate('t');
-            var url = stateController.getNavigationBackLink(1);
-            assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world2_'), -1);
-            assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=12_'), -1);
-        });
-    });*/
-
     describe('Link Default Types Refresh Navigate', function() {
         it('should not include default types in link', function() {
             var stateController = new Navigation.StateController([
@@ -4825,29 +4800,6 @@ describe('Navigation Data', function () {
             assert.notEqual(url.indexOf('n2=12_'), -1);
         });
     });
-
-    /*describe('Link Default Types Back Two Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', defaultTypes: { _bool: 'number' }, transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-            var data = {
-                _bool: 1
-            };
-            stateController.navigate('d', data);
-            stateController.navigate('t');
-            stateController.navigate('t');
-            var url = stateController.getNavigationBackLink(2);
-            assert.notEqual(url.indexOf('_bool=1&'), -1);
-        });
-    });*/
 
     describe('Override Default Types', function() {
         var stateController: StateController;
