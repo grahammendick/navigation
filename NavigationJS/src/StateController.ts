@@ -55,7 +55,6 @@ class StateController {
             this.stateContext.title = state.title;
             this.stateContext.data = this.parseNavigationLink(url, state).data;
             this.buildCrumbTrail(false);
-            this.stateContext.crumbs = this.getCrumbs(true);
             this.setPreviousStateContext(false);
             this.stateContext.crumblessUrl = this.getHref(this.stateContext.state, this.stateContext.data, []);
         } catch (e) {
@@ -94,7 +93,7 @@ class StateController {
         this.stateContext.previousDialog = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
-            var previousStateCrumb = this.stateContext.crumbs[this.stateContext.crumbs.length - 1];
+            var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
             this.stateContext.previousState = previousStateCrumb.state;
             this.stateContext.previousDialog = this.stateContext.previousState.parent;
             this.stateContext.previousData = previousStateCrumb.data;
@@ -106,22 +105,25 @@ class StateController {
         if (this.stateContext.data.crumb)
             this.stateContext.crumbTrail = this.stateContext.data.crumb;
         delete this.stateContext.data.crumb;
-        var crumbs = this.getCrumbs(false);
+        var crumbs = this.getCrumbs();
         crumbs = this.stateContext.state.stateHandler.truncateCrumbTrail(this.stateContext.state, crumbs);
         var crumbTrail = [];
         for(var i = 0; i < crumbs.length; i++)
             crumbTrail.push(crumbs[i].crumblessLink);
         this.stateContext.crumbTrail = crumbTrail;
+        this.stateContext.crumbs = crumbs;
+        if (this.stateContext.crumbs.length > 0)
+            this.stateContext.crumbs.slice(-1)[0].last = true;
     }
 
-    private getCrumbs(setLast: boolean): Crumb[] {
+    private getCrumbs(): Crumb[] {
         var crumbTrailArray: Crumb[] = [];
         var len = this.stateContext.crumbTrail.length;
         for(var i = 0; i < len; i++) {
             var crumblessLink = this.stateContext.crumbTrail[i];
             var { state, data } = this.parseNavigationLink(crumblessLink);
             var link = this.getHref(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbTrailArray.push(new Crumb(data, state, link, crumblessLink, i === len - 1));            
+            crumbTrailArray.push(new Crumb(data, state, link, crumblessLink, false));            
         }
         return crumbTrailArray;
     }
