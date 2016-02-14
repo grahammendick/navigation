@@ -6,7 +6,6 @@ interface INavigationSettings {
     router?: IRouter;
     historyManager?: IHistoryManager;
     crumbTrailPersister?: CrumbTrailPersister;
-    trackAllPreviousData?: boolean;
     combineArray?: boolean;
 }
 export = INavigationSettings;

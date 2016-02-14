@@ -9,7 +9,6 @@ class NavigationSettings implements INavigationSettings {
     router: IRouter = new StateRouter();
     historyManager: IHistoryManager = new HashHistoryManager();
     crumbTrailPersister: CrumbTrailPersister = new CrumbTrailPersister();
-    trackAllPreviousData: boolean = true;
     combineArray: boolean = false;
 }
 export = NavigationSettings;
