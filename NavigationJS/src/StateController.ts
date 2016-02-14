@@ -104,7 +104,7 @@ class StateController {
         this.stateContext.crumbTrail = [];
         if (this.stateContext.data.crumb)
             this.stateContext.crumbTrail = this.stateContext.data.crumb;
-        delete this.stateContext.data.crumb;
+        delete this.stateContext.data['crumb'];
         var crumbs = this.getCrumbs();
         crumbs = this.stateContext.state.stateHandler.truncateCrumbTrail(this.stateContext.state, crumbs);
         var crumbTrail = [];
