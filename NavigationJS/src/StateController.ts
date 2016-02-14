@@ -177,10 +177,10 @@ class StateController {
     }
 
     getNavigationLink(action: string, toData?: any): string {
-        return this.getHref(this.getNextState(action), toData, this.stateContext.data);
+        return this.getHref(this.getNextState(action), toData);
     }
 
-    private getHref(state: State, navigationData: any, returnData: any): string {
+    private getHref(state: State, navigationData: any): string {
         var data = {};
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
@@ -201,7 +201,7 @@ class StateController {
     }
 
     private getRefreshHref(refreshData: any): string {
-        return this.getHref(this.stateContext.state, refreshData, null);
+        return this.getHref(this.stateContext.state, refreshData);
     }
     
     canNavigateBack(distance: number) {
