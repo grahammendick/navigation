@@ -97,8 +97,7 @@ class StateController {
             this.stateContext.crumbTrail = this.stateContext.data.crumb;
         var previousStateCrumb = this.getCrumbs(false).pop();
         if (previousStateCrumb){
-            var state = this.router.getData(previousStateCrumb.navigationLink.split('?')[0]).state;
-            this.stateContext.previousState = state;
+            this.stateContext.previousState = previousStateCrumb.state;
             this.stateContext.previousDialog = this.stateContext.previousState.parent;
             this.stateContext.previousData = previousStateCrumb.data;
         }
