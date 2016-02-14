@@ -87,7 +87,7 @@ class StateController {
         if (this.stateContext.state) {
             this.stateContext.oldState = this.stateContext.state;
             this.stateContext.oldDialog = this.stateContext.dialog;
-            this.stateContext.oldData = this.cloneData(this.stateContext.data);
+            this.stateContext.oldData = this.stateContext.data;
             this.setDataDefaults(this.stateContext.oldData, this.stateContext.oldState.defaults);
         }
     }
@@ -341,13 +341,6 @@ class StateController {
             if (data[key] == null || !data[key].toString())
                 data[key] = defaults[key];
         }
-    }
-
-    private cloneData(data: any) {
-        var clone = {};
-        for (var key in data)
-            clone[key] = data[key];
-        return clone;
     }
     
     start(url?: string) {
