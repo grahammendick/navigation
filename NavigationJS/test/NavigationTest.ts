@@ -3969,7 +3969,7 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { historyManager: historyManager }
+                historyManager
             );
         });
         
@@ -4008,7 +4008,7 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { historyManager: historyManager }
+                historyManager
             );
         });
         
@@ -4047,7 +4047,7 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { historyManager: historyManager }
+                historyManager
             );
         });
         
@@ -4086,7 +4086,7 @@ describe('Navigation', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ],
-                { historyManager: historyManager }
+                historyManager
             );
         });
         
@@ -4125,7 +4125,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.refresh();
             assert.strictEqual(replaceHistory, false);
         });
@@ -4144,7 +4144,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.refresh(null, Navigation.HistoryAction.Add);
             assert.strictEqual(replaceHistory, false);
         });
@@ -4163,7 +4163,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.refresh(null, Navigation.HistoryAction.Replace);
             assert.strictEqual(replaceHistory, true);
         });
@@ -4182,7 +4182,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.refresh(null, Navigation.HistoryAction.None);
             assert.strictEqual(replaceHistory, undefined);
         });
@@ -4205,7 +4205,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.navigateBack(1);
             assert.strictEqual(replaceHistory, false);
         });
@@ -4228,7 +4228,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.navigateBack(1, Navigation.HistoryAction.Add);
             assert.strictEqual(replaceHistory, false);
         });
@@ -4251,7 +4251,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.navigateBack(1, Navigation.HistoryAction.Replace);
             assert.strictEqual(replaceHistory, true);
         });
@@ -4274,7 +4274,7 @@ describe('Navigation', function () {
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateController.configure(dialogs, { historyManager: historyManager });
+            stateController.configure(dialogs, historyManager);
             stateController.navigateBack(1, Navigation.HistoryAction.None);
             assert.strictEqual(replaceHistory, undefined);
         });
@@ -4293,7 +4293,7 @@ describe('Navigation', function () {
                 { key: 'd1', initial: 's', states: [
                     { key: 's', route: 'r1' }]}
                 ],
-                { historyManager: historyManager }
+                historyManager
             );
             stateController.dialogs['d0'].states['s'].navigated = () => {
                 stateController.navigate('d1', null, Navigation.HistoryAction.None);
@@ -5047,18 +5047,16 @@ describe('Navigation', function () {
     });
 
     describe('Reload History', function () {
-        it('should call stop and init', function() {
+        it('should call stop', function() {
             var dialogs = [
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'r' }]}
                 ];
             var stateController = new Navigation.StateController(dialogs);
-            var stop = false, init = false;
+            var stop = false;
             stateController.historyManager.stop = () => stop = true;
-            stateController.historyManager.init = () => init = true;
             stateController.configure(dialogs);
             assert.strictEqual(stop, true);
-            assert.strictEqual(init, true);
         });
     });
 

@@ -9,7 +9,6 @@ import HTML5HistoryManager = require('./history/HTML5HistoryManager');
 import Crumb = require('./config/Crumb');
 import StateHandler = require('./config/StateHandler');
 import StateRouter = require('./StateRouter');
-import NavigationSettings = require('./NavigationSettings');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 
@@ -21,7 +20,6 @@ class Navigation {
     static HashHistoryManager = HashHistoryManager;
     static HTML5HistoryManager = HTML5HistoryManager;
     static Crumb = Crumb;
-    static NavigationSettings = NavigationSettings;
     static StateContext = StateContext;
     static StateController = StateController;
     static StateHandler = StateHandler;

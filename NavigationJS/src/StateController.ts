@@ -2,11 +2,10 @@
 import Crumb = require('./config/Crumb');
 import Dialog = require('./config/Dialog');
 import IDialog = require('./config/IDialog');
+import HashHistoryManager = require('./history/HashHistoryManager');
 import HistoryAction = require('./history/HistoryAction');
 import IHistoryManager = require('./history/IHistoryManager');
 import NavigationData = require('./NavigationData');
-import NavigationSettings = require('./NavigationSettings');
-import INavigationSettings = require('./INavigationSettings');
 import ReturnDataManager = require('./ReturnDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
@@ -21,7 +20,6 @@ class StateController {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
-    private settings: NavigationSettings = new NavigationSettings(); 
     private converterFactory: ConverterFactory = new ConverterFactory();
     private router: IRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
@@ -29,17 +27,15 @@ class StateController {
     dialogs: { [index: string]: Dialog } = {};
     _dialogs: Dialog[] = [];
     
-    constructor(dialogs?: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
+    constructor(dialogs?: IDialog<string, IState<ITransition<string>[]>[]>[], historyManager?: IHistoryManager) {
         if (dialogs)
-            this.configure(dialogs, settings);
+            this.configure(dialogs, historyManager);
     }
     
-    configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], settings?: INavigationSettings) {
-        for(var setting in settings)
-            this.settings[setting] = settings[setting];
+    configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], historyManager?: IHistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
-        this.historyManager = this.settings.historyManager;
+        this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init(() => {
             if (this.stateContext.url === this.historyManager.getCurrentUrl())
                 return;
@@ -280,7 +276,7 @@ class StateController {
                 }
                 if (url === this.stateContext.url) {
                     if (historyAction !== HistoryAction.None)
-                        this.settings.historyManager.addHistory(url, historyAction === HistoryAction.Replace);
+                        this.historyManager.addHistory(url, historyAction === HistoryAction.Replace);
                     if (this.stateContext.title && (typeof document !== 'undefined'))
                         document.title = this.stateContext.title;
                 }
@@ -342,7 +338,7 @@ class StateController {
     }
     
     start(url?: string) {
-        this.navigateLink(url ? url : this.settings.historyManager.getCurrentUrl());
+        this.navigateLink(url ? url : this.historyManager.getCurrentUrl());
     };
 }
 export = StateController;
