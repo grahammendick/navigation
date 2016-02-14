@@ -108,15 +108,15 @@ class StateController {
     }
 
     private getCrumbs(): Crumb[] {
-        var crumbTrailArray: Crumb[] = [];
+        var crumbs: Crumb[] = [];
         var len = this.stateContext.crumbTrail.length;
         for(var i = 0; i < len; i++) {
             var crumblessLink = this.stateContext.crumbTrail[i];
             var { state, data } = this.parseNavigationLink(crumblessLink);
             var link = this.getHref(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbTrailArray.push(new Crumb(data, state, link, crumblessLink, i + 1 == len));
+            crumbs.push(new Crumb(data, state, link, crumblessLink, i + 1 == len));
         }
-        return crumbTrailArray;
+        return crumbs;
     }
     
     onNavigate(handler: (oldState: State, state: State, data: any) => void) {
