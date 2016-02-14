@@ -13,6 +13,7 @@ class StateContext {
     dialog: Dialog = null;
     data: any = {};
     url: string = null;
+    crumblessUrl: string = null;
     title: string = null;
     crumbs: Crumb[] = [];
     crumbTrail: string[] = [];

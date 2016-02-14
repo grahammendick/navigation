@@ -100,9 +100,9 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController.dialogs['d0'].states['s0']);
                 assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d0']);
             });
-            it('should populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d0'].states['s0']);
-                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d0']);
+            it('should not populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, null);
+                assert.equal(stateController.stateContext.previousDialog, null);
             });
             it('should have no crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 0);
@@ -194,9 +194,9 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController.stateContext.state);
                 assert.equal(stateController.stateContext.oldDialog, stateController.stateContext.dialog);
             });
-            it('should populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.stateContext.state);
-                assert.equal(stateController.stateContext.previousDialog, stateController.stateContext.dialog);
+            it('should not populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, null);
+                assert.equal(stateController.stateContext.previousDialog, null);
             });
             it('should have no crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 0);
@@ -713,8 +713,8 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s1']);
                 assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
             });
-            it('should populate previous State with current State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s1']);
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
                 assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
             });
             it('should not change crumb trail', function() {
@@ -1475,9 +1475,9 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController._dialogs[0].states['s0']);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
-            it('should populate previous State with previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController._dialogs[0].states['s0']);
-                assert.equal(stateController.stateContext.previousDialog, stateController._dialogs[0]);
+            it('should not populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, null);
+                assert.equal(stateController.stateContext.previousDialog, null);
             });
             it('should have no crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 0);
@@ -3533,7 +3533,7 @@ describe('Navigation', function () {
             }
             stateController.navigate('d1');
             assert.equal(stateController.stateContext.oldState, stateController.dialogs['d0'].states['s1']);
-            assert.equal(stateController.stateContext.previousState, stateController.dialogs['d0'].states['s1']);
+            assert.equal(stateController.stateContext.previousState, null);
             assert.equal(stateController.stateContext.state, stateController.dialogs['d1'].states['s0']);
             assert.strictEqual(navigating, 1);
         });
@@ -3948,6 +3948,7 @@ describe('Navigation', function () {
                 assert.strictEqual(stateController.stateContext.state, null);
                 assert.strictEqual(stateController.stateContext.dialog, null);
                 assert.strictEqual(stateController.stateContext.url, null);
+                assert.strictEqual(stateController.stateContext.crumblessUrl, null);
                 assert.strictEqual(stateController.stateContext.title, null);
                 assert.strictEqual(stateController.stateContext.crumbs.length, 0);
                 assert.strictEqual(stateController.stateContext.crumbTrail.length, 0);
@@ -4448,8 +4449,8 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController.dialogs['d1'].states['s1']);
                 assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d1']);
             });
-            it('should populate previous State with current State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d1'].states['s1']);
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d1'].states['s0']);
                 assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d1']);
             });
             it('should not change crumb trail', function() {
@@ -4675,8 +4676,8 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s1']);
                 assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
             });
-            it('should populate previous State with current State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s1']);
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
                 assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
             });
             it('should not change crumb trail', function() {
@@ -4937,10 +4938,10 @@ describe('Navigation', function () {
                 assert.equal(stateController1.stateContext.oldState, stateController1.dialogs['d1'].states['s1']);
                 assert.equal(stateController1.stateContext.oldDialog, stateController1.dialogs['d1']);
             });
-            it('should populate previous State with current State', function() {
-                assert.equal(stateController0.stateContext.previousState, stateController0.dialogs['d0'].states['s1']);
+            it('should populate previous State', function() {
+                assert.equal(stateController0.stateContext.previousState, stateController0.dialogs['d0'].states['s0']);
                 assert.equal(stateController0.stateContext.previousDialog, stateController0.dialogs['d0']);
-                assert.equal(stateController1.stateContext.previousState, stateController1.dialogs['d1'].states['s1']);
+                assert.equal(stateController1.stateContext.previousState, stateController1.dialogs['d1'].states['s0']);
                 assert.equal(stateController1.stateContext.previousDialog, stateController1.dialogs['d1']);
             });
             it('should not change crumb trail', function() {

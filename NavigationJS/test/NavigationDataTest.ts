@@ -2777,7 +2777,7 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Override Crumb Defaults', function() {
+    /*describe('Override Crumb Defaults', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -2827,9 +2827,9 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
-    });
+    });*/
 
-    describe('Override Crumb Defaults Route', function() {
+    /*describe('Override Crumb Defaults Route', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -2879,7 +2879,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
             });
         }
-    });
+    });*/
 
     describe('Back Defaults Custom Trail', function() {
         var stateController: StateController;
@@ -4291,8 +4291,8 @@ describe('Navigation Data', function () {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t'], undefined);
             });
