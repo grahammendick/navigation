@@ -54,13 +54,6 @@ class StateController {
             this.stateContext.dialog = state.parent;
             this.stateContext.title = state.title;
             this.stateContext.data = this.parseNavigationLink(url, state).data;
-            this.stateContext.crumbTrail = [];
-            this.stateContext.previousState = null;
-            this.stateContext.previousDialog = null;
-            this.stateContext.previousData = {};
-            if (this.stateContext.data.crumb)
-                this.stateContext.crumbTrail = this.stateContext.data.crumb;
-            delete this.stateContext.data.crumb;
             this.buildCrumbTrail(false);
             this.stateContext.crumbs = this.getCrumbs(true);
             this.setPreviousStateContext(false);
@@ -97,6 +90,9 @@ class StateController {
     }
     
     private setPreviousStateContext(uncombined: boolean) {
+        this.stateContext.previousState = null;
+        this.stateContext.previousDialog = null;
+        this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
             var previousStateCrumb = this.stateContext.crumbs[this.stateContext.crumbs.length - 1];
             this.stateContext.previousState = previousStateCrumb.state;
@@ -106,6 +102,10 @@ class StateController {
     }
     
     private buildCrumbTrail(uncombined: boolean) {
+        this.stateContext.crumbTrail = [];
+        if (this.stateContext.data.crumb)
+            this.stateContext.crumbTrail = this.stateContext.data.crumb;
+        delete this.stateContext.data.crumb;
         var crumbs = this.getCrumbs(false);
         crumbs = this.stateContext.state.stateHandler.truncateCrumbTrail(this.stateContext.state, crumbs);
         var crumbTrail = [];
