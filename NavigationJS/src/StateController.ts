@@ -165,7 +165,8 @@ class StateController {
                 }
             }
         }
-        if (!crumbs) crumbs = this.stateContext.crumbTrail;
+        if (!crumbs)
+            crumbs = this.stateContext.crumbTrail;
         if (state.trackCrumbTrail && crumbs.length > 0) {
             var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, 'crumb', crumbs, state);
             data['crumb'] = formattedData.val;
