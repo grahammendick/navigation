@@ -60,10 +60,9 @@ class StateController {
             this.stateContext.previousState = null;
             this.stateContext.previousDialog = null;
             this.stateContext.previousData = {};
-            var uncombined = !!data[this.settings.previousStateIdKey];
-            this.setPreviousStateContext(uncombined, data);
-            this.buildCrumbTrail(uncombined);
-            this.stateContext.crumbs = this.getCrumbs(true, this.settings.combineCrumbTrail);
+            this.setPreviousStateContext(false, data);
+            this.buildCrumbTrail(false);
+            this.stateContext.crumbs = this.getCrumbs(true, true);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }

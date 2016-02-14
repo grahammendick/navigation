@@ -6,10 +6,6 @@ interface INavigationSettings {
     router?: IRouter;
     historyManager?: IHistoryManager;
     crumbTrailPersister?: CrumbTrailPersister;
-    previousStateIdKey?: string;
-    returnDataKey?: string;
-    crumbTrailKey?: string;
-    combineCrumbTrail?: boolean;
     trackAllPreviousData?: boolean;
     combineArray?: boolean;
 }
