@@ -42,7 +42,7 @@ class CrumbTrailManager {
             var state = settings.router.getData(link.split('?')[0]).state;
             var { data, separableData } = state.stateHandler.getNavigationData(settings.router, state, link);
             data = this.parseData(settings, converterFactory, data, state, separableData);
-            link = this.appendCrumbs(link, stateContext.crumbTrail.slice(0, i));
+            link = this.appendCrumbs(state, link, stateContext.crumbTrail.slice(0, i));
             crumbTrailArray.push(new Crumb(data, state, link, i === len - 1));            
         }
         //console.log(crumbTrailArray);
@@ -140,7 +140,7 @@ class CrumbTrailManager {
             data[settings.crumbTrailKey] = stateContext.crumbTrailKey;*/
         var link = state.stateHandler.getNavigationLink(settings.router, state, data, arrayData);
         if (state.trackCrumbTrail)
-            link = this.appendCrumbs(link, stateContext.crumbTrail);
+            link = this.appendCrumbs(state, link, stateContext.crumbTrail);
         return link;
     }
     
@@ -155,11 +155,11 @@ class CrumbTrailManager {
         return link;
     }
     
-    private static appendCrumbs(link: string, crumbs: string[]): string {
+    private static appendCrumbs(state: State, link: string, crumbs: string[]): string {
         if (link) {
             var sep = link.indexOf('?') >= 0 ? '&' : '?';
             for(var i = 0; i < crumbs.length; i++) {
-                link += sep + 'crumb=' + encodeURIComponent(crumbs[i]);
+                link += sep + 'crumb=' + state.stateHandler.urlEncode(state, 'crumb', crumbs[i], true);
                 sep = '&';
             }
         }
