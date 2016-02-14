@@ -7,6 +7,5 @@ import HashHistoryManager = require('./history/HashHistoryManager');
 class NavigationSettings implements INavigationSettings {
     router: IRouter = new StateRouter();
     historyManager: IHistoryManager = new HashHistoryManager();
-    combineArray: boolean = false;
 }
 export = NavigationSettings;

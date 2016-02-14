@@ -42,7 +42,7 @@ class StateController {
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var config = StateInfoConfig.build(dialogs, this.settings, this.converterFactory);
+        var config = StateInfoConfig.build(dialogs, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
         this.settings.router.addRoutes(this._dialogs);
@@ -193,7 +193,7 @@ class StateController {
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString()) {
-                var formattedData = ReturnDataManager.formatURLObject(this.settings, this.converterFactory, key, val, state);
+                var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, key, val, state);
                 val = formattedData.val;
                 if (!this.settings.router.supportsDefaults || val !== state.formattedDefaults[key]) {
                     data[key] = val;
@@ -301,7 +301,7 @@ class StateController {
         var newData = {};
         for (var key in data) {
             if (key !== 'crumb' && !this.isDefault(key, data, state, !!separableData[key]))
-                newData[key] = ReturnDataManager.parseURLString(this.settings, this.converterFactory, key, data[key], state, false, !!separableData[key]);
+                newData[key] = ReturnDataManager.parseURLString(this.converterFactory, key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);
         return newData;

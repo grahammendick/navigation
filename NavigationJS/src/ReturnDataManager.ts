@@ -1,5 +1,4 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
-import NavigationSettings = require('./NavigationSettings');
 import State = require('./config/State');
 
 class ReturnDataManager {
@@ -14,11 +13,11 @@ class ReturnDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(settings: NavigationSettings, converterFactory: ConverterFactory, key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
+    static formatURLObject(converterFactory: ConverterFactory, key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var converter = converterFactory.getConverter(urlObject);
-        var convertedValue = converter.convertTo(urlObject, settings.combineArray);
+        var convertedValue = converter.convertTo(urlObject);
         var formattedValue = convertedValue.val;
         var formattedArray = convertedValue.arrayVal;
         if (encode) {
@@ -34,7 +33,7 @@ class ReturnDataManager {
         return { val: formattedValue, arrayVal: formattedArray };
     }
 
-    static parseURLString(settings: NavigationSettings, converterFactory: ConverterFactory, key: string, val: string | string[], state: State, decode = false, separable = false): any {
+    static parseURLString(converterFactory: ConverterFactory, key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
@@ -50,7 +49,7 @@ class ReturnDataManager {
             val =  urlValue;
         else
             val[0] = urlValue;
-        return converterFactory.getConverterFromKey(converterKey).convertFrom(val, settings.combineArray, separable);
+        return converterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
     }
 }
 export = ReturnDataManager;
