@@ -12,7 +12,6 @@ import StateContext = require('./StateContext');
 import StateInfoConfig = require('./StateInfoConfig');
 import IRouter = require('./config/IRouter');
 import StateRouter = require('./StateRouter');
-import Transition = require('./config/Transition');
 import ITransition = require('./config/ITransition');
 
 class StateController {
