@@ -76,7 +76,6 @@ class StateController {
         this.stateContext.title = null;
         this.stateContext.crumbs = [];
         this.stateContext.crumbTrail = [];
-        this.stateContext.crumbTrailKey = null;
     }
     
     private setOldStateContext() {
