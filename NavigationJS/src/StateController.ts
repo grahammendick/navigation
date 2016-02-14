@@ -156,23 +156,23 @@ class StateController {
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
             var val = navigationData[key]; 
-            if (val != null && val.toString()) {
-                var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, key, val, state);
-                val = formattedData.val;
-                if (val !== state.formattedDefaults[key]) {
-                    data[key] = val;
-                    arrayData[key] = formattedData.arrayVal;
-                }
-            }
+            if (val != null && val.toString())
+                this.formatData(state, key, val, data, arrayData);
         }
         if (!crumbs)
             crumbs = this.stateContext.crumbTrail;
-        if (state.trackCrumbTrail && crumbs.length > 0) {
-            var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, 'crumb', crumbs, state);
-            data['crumb'] = formattedData.val;
-            arrayData['crumb'] = formattedData.arrayVal;
-        }
+        if (state.trackCrumbTrail && crumbs.length > 0)
+            this.formatData(state, 'crumb', crumbs, data, arrayData);
         return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
+    }
+    
+    private formatData(state: State, key: string, val: any, data: any, arrayData: any) {
+        var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, key, val, state);
+        val = formattedData.val;
+        if (val !== state.formattedDefaults[key]) {
+            data[key] = val;
+            arrayData[key] = formattedData.arrayVal;
+        }
     }
 
     private getRefreshHref(refreshData: any): string {
