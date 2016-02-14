@@ -61,8 +61,6 @@ class StateController {
             this.stateContext.previousState = null;
             this.stateContext.previousDialog = null;
             this.stateContext.previousData = {};
-            this.stateContext.crumbTrail = this.stateContext.data['crumb'] ? this.stateContext.data['crumb'] : [];
-            delete this.stateContext.data['crumb'];
             var uncombined = !!data[this.settings.previousStateIdKey];
             this.setPreviousStateContext(uncombined, data);
             CrumbTrailManager.buildCrumbTrail(this.stateContext, this.settings, this.converterFactory, this._dialogs, uncombined);
@@ -99,6 +97,17 @@ class StateController {
     }
     
     private setPreviousStateContext(uncombined: boolean, data: any) {
+        var crumb: string[] | string = data['crumb'];
+        var crumbTrail: string[] = [];
+        if (crumb) {
+            if (typeof crumb === 'string') {
+                crumbTrail.push(crumb);
+            } else {
+                for(var i = 0; i < crumb.length; i++)
+                    crumbTrail.push(crumb[i]);
+            }
+        }
+        this.stateContext.crumbTrail = crumbTrail;
         /*if (uncombined){
             this.stateContext.previousState = CrumbTrailManager.getState(data[this.settings.previousStateIdKey], this._dialogs);
             if (this.stateContext.previousState)
@@ -224,7 +233,7 @@ class StateController {
     private parseData(data: any, state: State, separableData: any): any {
         var newData = {};
         for (var key in data) {
-            if (!this.isDefault(key, data, state, !!separableData[key]))
+            if (key !== 'crumb' && !this.isDefault(key, data, state, !!separableData[key]))
                 newData[key] = ReturnDataManager.parseURLString(this.settings, this.converterFactory, key, data[key], state, false, !!separableData[key]);
         }
         NavigationData.setDefaults(newData, state.defaults);

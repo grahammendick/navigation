@@ -53,12 +53,12 @@ class ReturnDataManager {
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
         var converterKey = converterFactory.getConverterFromName(defaultType).key;
-        if (state.trackTypes && key !== 'crumb' && urlValue.indexOf(this.RET_2_SEP) > -1) {
+        if (state.trackTypes && urlValue.indexOf(this.RET_2_SEP) > -1) {
             var arr = urlValue.split(this.RET_2_SEP);
             urlValue = arr[0];
             converterKey = arr[1];
         }
-        if (decode && key !== 'crumb')
+        if (decode)
             urlValue = this.decodeUrlValue(urlValue);
         if (typeof val === 'string')
             val =  urlValue;
