@@ -12,6 +12,8 @@ import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
 import StateInfoConfig = require('./StateInfoConfig');
+import IRouter = require('./config/IRouter');
+import StateRouter = require('./StateRouter');
 import Transition = require('./config/Transition');
 import ITransition = require('./config/ITransition');
 
@@ -21,6 +23,7 @@ class StateController {
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
     private settings: NavigationSettings = new NavigationSettings(); 
     private converterFactory: ConverterFactory = new ConverterFactory();
+    private router: IRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
     historyManager: IHistoryManager;
     dialogs: { [index: string]: Dialog } = {};
@@ -45,7 +48,7 @@ class StateController {
         var config = StateInfoConfig.build(dialogs, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
-        this.settings.router.addRoutes(this._dialogs);
+        this.router.addRoutes(this._dialogs);
     }
 
     private setStateContext(state: State, url: string) {
@@ -108,7 +111,7 @@ class StateController {
         this.stateContext.crumbTrail = crumbTrail;
         var previousStateCrumb = this.getCrumbs(false).pop();
         if (previousStateCrumb){
-            var state = this.settings.router.getData(previousStateCrumb.navigationLink.split('?')[0]).state;
+            var state = this.router.getData(previousStateCrumb.navigationLink.split('?')[0]).state;
             this.stateContext.previousState = state;
             this.stateContext.previousDialog = this.stateContext.previousState.parent;
             this.stateContext.previousData = previousStateCrumb.data;
@@ -185,23 +188,19 @@ class StateController {
 
     private getHref(state: State, navigationData: any, returnData: any): string {
         var data = {};
-        if (!this.settings.router.supportsDefaults) {
-            navigationData = NavigationData.clone(navigationData);
-            NavigationData.setDefaults(navigationData, state.defaults);
-        }
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString()) {
                 var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, key, val, state);
                 val = formattedData.val;
-                if (!this.settings.router.supportsDefaults || val !== state.formattedDefaults[key]) {
+                if (val !== state.formattedDefaults[key]) {
                     data[key] = val;
                     arrayData[key] = formattedData.arrayVal;
                 }
             }
         }
-        var link = state.stateHandler.getNavigationLink(this.settings.router, state, data, arrayData);
+        var link = state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
         if (state.trackCrumbTrail)
             link = this.appendCrumbs(state, link, this.stateContext.crumbTrail);
         return link;
@@ -242,7 +241,7 @@ class StateController {
 
     navigateLink(url: string, historyAction?: HistoryAction, history?: boolean) {
         try {
-            var state = this.settings.router.getData(url.split('?')[0]).state;
+            var state = this.router.getData(url.split('?')[0]).state;
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -291,8 +290,8 @@ class StateController {
     
     parseNavigationLink(url: string, state?: State): { state: State, data: any, rawData: any } {
         if (!state)
-            state = this.settings.router.getData(url.split('?')[0]).state;
-        var { data, separableData } = state.stateHandler.getNavigationData(this.settings.router, state, url);
+            state = this.router.getData(url.split('?')[0]).state;
+        var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
         var parsedData = this.parseData(data, state, separableData);
         return { state: state, data: parsedData, rawData: data };
     }
