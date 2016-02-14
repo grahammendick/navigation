@@ -3948,10 +3948,10 @@ describe('Navigation', function () {
                 assert.strictEqual(stateController.stateContext.state, null);
                 assert.strictEqual(stateController.stateContext.dialog, null);
                 assert.strictEqual(stateController.stateContext.url, null);
-                assert.strictEqual(stateController.stateContext.crumblessUrl, null);
                 assert.strictEqual(stateController.stateContext.title, null);
                 assert.strictEqual(stateController.stateContext.crumbs.length, 0);
                 assert.strictEqual(stateController.stateContext.crumbTrail.length, 0);
+                assert.strictEqual(stateController.stateContext.nextCrumb, null);
             });
         }
     });
