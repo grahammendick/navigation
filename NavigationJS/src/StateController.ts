@@ -54,12 +54,12 @@ class StateController {
             this.stateContext.dialog = state.parent;
             this.stateContext.title = state.title;
             this.stateContext.data = this.parseNavigationLink(url, state).data;
-            this.stateContext.crumbTrail = this.stateContext.data.crumb ? this.stateContext.data.crumb : [];
-            delete this.stateContext.data.crumb;
+            this.stateContext.crumbTrail = [];
             this.stateContext.previousState = null;
             this.stateContext.previousDialog = null;
             this.stateContext.previousData = {};
             this.setPreviousStateContext(false);
+            delete this.stateContext.data.crumb;
             this.buildCrumbTrail(false);
             this.stateContext.crumbs = this.getCrumbs(true, true);
         } catch (e) {
@@ -93,6 +93,8 @@ class StateController {
     }
     
     private setPreviousStateContext(uncombined: boolean) {
+        if (this.stateContext.data.crumb)
+            this.stateContext.crumbTrail = this.stateContext.data.crumb;
         var previousStateCrumb = this.getCrumbs(false).pop();
         if (previousStateCrumb){
             var state = this.router.getData(previousStateCrumb.navigationLink.split('?')[0]).state;
