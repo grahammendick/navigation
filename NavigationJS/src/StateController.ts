@@ -52,7 +52,7 @@ class StateController {
             this.stateContext.url = url;
             this.stateContext.dialog = state.parent;
             this.stateContext.title = state.title;
-            this.stateContext.data = this.parseNavigationLink(url, state).data;
+            this.stateContext.data = this.parseLink(url, state).data;
             this.buildCrumbTrail(false);
             this.setPreviousStateContext(false);
         } catch (e) {
@@ -112,7 +112,7 @@ class StateController {
         var len = this.stateContext.crumbTrail.length;
         for(var i = 0; i < len; i++) {
             var crumblessLink = this.stateContext.crumbTrail[i];
-            var { state, data } = this.parseNavigationLink(crumblessLink);
+            var { state, data } = this.parseLink(crumblessLink);
             var link = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, link, crumblessLink, i + 1 == len));
         }
@@ -200,7 +200,7 @@ class StateController {
     private _navigateLink(url: string, state: State, historyAction = HistoryAction.Add, history = false) {
         try {
             var oldUrl = this.stateContext.url;
-            var data = this.parseNavigationLink(url, state).data;
+            var data = this.parseLink(url, state).data;
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
@@ -237,7 +237,7 @@ class StateController {
         };
     }
     
-    parseNavigationLink(url: string, state?: State): { state: State, data: any } {
+    parseLink(url: string, state?: State): { state: State, data: any } {
         if (!state)
             state = this.router.getData(url.split('?')[0]).state;
         var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
