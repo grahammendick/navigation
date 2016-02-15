@@ -99,9 +99,10 @@ class StateController {
     
     private buildCrumbTrail(uncombined: boolean) {
         this.stateContext.crumbTrail = [];
-        if (this.stateContext.data.crumb)
-            this.stateContext.crumbTrail = this.stateContext.data.crumb;
-        delete this.stateContext.data['crumb'];
+        var crumbTrail = this.stateContext.data[this.stateContext.state.crumbTrailKey];
+        if (crumbTrail)
+            this.stateContext.crumbTrail = crumbTrail;
+        delete this.stateContext.data[this.stateContext.state.crumbTrailKey];
         this.stateContext.crumbs = this.getCrumbs();
         var crumblessUrl = this.getLink(this.stateContext.state, this.stateContext.data, []);
         this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, null, crumblessUrl, false);

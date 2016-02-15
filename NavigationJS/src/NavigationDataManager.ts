@@ -15,7 +15,7 @@ class NavigationDataManager {
                 this.formatDataItem(converterFactory, state, key, val, data, arrayData);
         }
         if (state.trackCrumbTrail && crumbTrail.length > 0)
-            this.formatDataItem(converterFactory, state, 'crumb', crumbTrail, data, arrayData);
+            this.formatDataItem(converterFactory, state, state.crumbTrailKey, crumbTrail, data, arrayData);
         return { data: data, arrayData: arrayData };
     }
     

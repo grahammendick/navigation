@@ -50,6 +50,12 @@ class StateInfoConfig {
                 if (key !== 'transitions')
                     state[key] = stateObject[key];
             }
+            if (state.trackCrumbTrail) {
+                var trackCrumbTrail = stateObject.trackCrumbTrail;
+                if (typeof trackCrumbTrail === 'string')
+                    state.crumbTrailKey = trackCrumbTrail;
+                state.defaultTypes[state.crumbTrailKey] = 'stringarray';
+            }
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
                     state.defaultTypes[key] = converterFactory.getConverter(state.defaults[key]).name;
