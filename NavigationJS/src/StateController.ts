@@ -154,7 +154,7 @@ class StateController {
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessLink)
         }
-        var { data, arrayData } = NavigationDataManager.formatData(this.stateContext, this.converterFactory, state, navigationData, crumbTrail);
+        var { data, arrayData } = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail);
         return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
     }
 

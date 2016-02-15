@@ -1,12 +1,11 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import State = require('./config/State');
-import StateContext = require('./StateContext');
 
 class NavigationDataManager {
     private static SEPARATOR = '_';
     private static SEPARATOR1 = '1_';
 
-    static formatData(stateContext: StateContext, converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
+    static formatData(converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
         var data = {};
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
