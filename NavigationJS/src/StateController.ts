@@ -46,18 +46,14 @@ class StateController {
     }
 
     private setStateContext(state: State, url: string) {
-        try {
-            this.setOldStateContext();
-            this.stateContext.state = state;
-            this.stateContext.url = url;
-            this.stateContext.dialog = state.parent;
-            this.stateContext.title = state.title;
-            this.stateContext.data = this.parseLink(url, state).data;
-            this.buildCrumbTrail(false);
-            this.setPreviousStateContext(false);
-        } catch (e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
+        this.setOldStateContext();
+        this.stateContext.state = state;
+        this.stateContext.url = url;
+        this.stateContext.dialog = state.parent;
+        this.stateContext.title = state.title;
+        this.stateContext.data = this.parseLink(url, state).data;
+        this.buildCrumbTrail(false);
+        this.setPreviousStateContext(false);
     }
 
     clearStateContext() {
