@@ -51,6 +51,7 @@ class StateInfoConfig {
                     state[key] = stateObject[key];
             }
             if (state.trackCrumbTrail) {
+                state.trackCrumbTrail = true;
                 var trackCrumbTrail = stateObject.trackCrumbTrail;
                 if (typeof trackCrumbTrail === 'string')
                     state.crumbTrailKey = trackCrumbTrail;
