@@ -113,6 +113,8 @@ class StateController {
         var len = this.stateContext.crumbTrail.length;
         for(var i = 0; i < len; i++) {
             var crumblessLink = this.stateContext.crumbTrail[i];
+            if (crumblessLink.substring(0, 1) !== '/')
+                throw new Error(crumblessLink + '  is not a valid crumb');
             var { state, data } = this.parseLink(crumblessLink);
             var link = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, link, crumblessLink, i + 1 == len));
