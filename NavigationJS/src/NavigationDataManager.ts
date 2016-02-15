@@ -6,22 +6,13 @@ class NavigationDataManager {
     private static SEPARATOR = '_';
     private static RET_2_SEP = '2_';
 
-    static formatData(stateContext: StateContext, converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail?: string[]): { data: any, arrayData: { [index: string]: string[] }} {
+    static formatData(stateContext: StateContext, converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
         var data = {};
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString())
                 this.formatDataItem(converterFactory, state, key, val, data, arrayData);
-        }
-        if (!crumbTrail) {
-            crumbTrail = [];
-            var crumbs = stateContext.crumbs.slice();
-            if (stateContext.nextCrumb)
-                crumbs.push(stateContext.nextCrumb);
-            crumbs = state.stateHandler.truncateCrumbTrail(state, crumbs);
-            for(var i = 0; i < crumbs.length; i++)
-                crumbTrail.push(crumbs[i].crumblessLink)
         }
         if (state.trackCrumbTrail && crumbTrail.length > 0)
             this.formatDataItem(converterFactory, state, 'crumb', crumbTrail, data, arrayData);
