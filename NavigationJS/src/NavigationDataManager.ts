@@ -87,7 +87,7 @@ class NavigationDataManager {
         }
     }
 
-    static parseURLString(converterFactory: ConverterFactory, key: string, val: string | string[], state: State, decode = false, separable = false): any {
+    private static parseURLString(converterFactory: ConverterFactory, key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
