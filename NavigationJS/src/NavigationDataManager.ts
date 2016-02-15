@@ -2,7 +2,7 @@
 import State = require('./config/State');
 import StateContext = require('./StateContext');
 
-class ReturnDataManager {
+class NavigationDataManager {
     private static SEPARATOR = '_';
     private static RET_2_SEP = '2_';
 
@@ -116,4 +116,4 @@ class ReturnDataManager {
         return converterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
     }
 }
-export = ReturnDataManager;
+export = NavigationDataManager;

@@ -5,7 +5,7 @@ import IDialog = require('./config/IDialog');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HistoryAction = require('./history/HistoryAction');
 import IHistoryManager = require('./history/IHistoryManager');
-import ReturnDataManager = require('./ReturnDataManager');
+import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
@@ -146,7 +146,7 @@ class StateController {
     }
 
     private getHref(state: State, navigationData: any, crumbTrail?: string[]): string {
-        var { data, arrayData } = ReturnDataManager.formatData(this.stateContext, this.converterFactory, state, navigationData, crumbTrail);
+        var { data, arrayData } = NavigationDataManager.formatData(this.stateContext, this.converterFactory, state, navigationData, crumbTrail);
         return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
     }
 
@@ -236,7 +236,7 @@ class StateController {
         if (!state)
             state = this.router.getData(url.split('?')[0]).state;
         var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
-        data = ReturnDataManager.parseData(this.converterFactory, data, state, separableData);
+        data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
         return { state: state, data: data };
     }
     

@@ -1,7 +1,7 @@
 ﻿import Dialog = require('./config/Dialog');
 import IDialog = require('./config/IDialog');
 import ConverterFactory = require('./converter/ConverterFactory');
-import ReturnDataManager = require('./ReturnDataManager');
+import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
 import Transition = require('./config/Transition');
@@ -53,7 +53,7 @@ class StateInfoConfig {
             for (var key in state.defaults) {
                 if (!state.defaultTypes[key])
                     state.defaultTypes[key] = converterFactory.getConverter(state.defaults[key]).name;
-                var formattedData = ReturnDataManager.formatURLObject(converterFactory, key, state.defaults[key], state); 
+                var formattedData = NavigationDataManager.formatURLObject(converterFactory, key, state.defaults[key], state); 
                 state.formattedDefaults[key] = formattedData.val;
                 if (formattedData.arrayVal)
                     state.formattedArrayDefaults[key] = formattedData.arrayVal;
