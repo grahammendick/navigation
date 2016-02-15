@@ -103,7 +103,7 @@ class StateController {
             this.stateContext.crumbTrail = this.stateContext.data.crumb;
         delete this.stateContext.data['crumb'];
         this.stateContext.crumbs = this.getCrumbs();
-        var crumblessUrl = this.getHref(this.stateContext.state, this.stateContext.data, []);
+        var crumblessUrl = this.getLink(this.stateContext.state, this.stateContext.data, []);
         this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, null, crumblessUrl, false);
     }
 
@@ -113,7 +113,7 @@ class StateController {
         for(var i = 0; i < len; i++) {
             var crumblessLink = this.stateContext.crumbTrail[i];
             var { state, data } = this.parseNavigationLink(crumblessLink);
-            var link = this.getHref(state, data, this.stateContext.crumbTrail.slice(0, i));
+            var link = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, link, crumblessLink, i + 1 == len));
         }
         return crumbs;
@@ -142,18 +142,14 @@ class StateController {
     }
 
     getNavigationLink(action: string, toData?: any): string {
-        return this.getHref(this.getNextState(action), toData);
+        return this.getLink(this.getNextState(action), toData);
     }
 
-    private getHref(state: State, navigationData: any, crumbTrail?: string[]): string {
+    private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
         var { data, arrayData } = NavigationDataManager.formatData(this.stateContext, this.converterFactory, state, navigationData, crumbTrail);
         return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
     }
 
-    private getRefreshHref(refreshData: any): string {
-        return this.getHref(this.stateContext.state, refreshData);
-    }
-    
     canNavigateBack(distance: number) {
         var canNavigate = false;
         if (distance <= this.stateContext.crumbs.length && distance > 0)
@@ -180,7 +176,7 @@ class StateController {
     }
 
     getRefreshLink(toData?: any): string {
-        return this.getRefreshHref(toData);
+        return this.getLink(this.stateContext.state, toData);
     }
 
     navigateLink(url: string, historyAction?: HistoryAction, history?: boolean) {
