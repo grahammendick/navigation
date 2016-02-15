@@ -146,34 +146,8 @@ class StateController {
     }
 
     private getHref(state: State, navigationData: any, crumbTrail?: string[]): string {
-        var data = {};
-        var arrayData: { [index: string]: string[] } = {};
-        for (var key in navigationData) {
-            var val = navigationData[key]; 
-            if (val != null && val.toString())
-                this.formatData(state, key, val, data, arrayData);
-        }
-        if (!crumbTrail) {
-            crumbTrail = [];
-            var crumbs = this.stateContext.crumbs.slice();
-            if (this.stateContext.nextCrumb)
-                crumbs.push(this.stateContext.nextCrumb);
-            crumbs = state.stateHandler.truncateCrumbTrail(state, crumbs);
-            for(var i = 0; i < crumbs.length; i++)
-                crumbTrail.push(crumbs[i].crumblessLink)
-        }
-        if (state.trackCrumbTrail && crumbTrail.length > 0)
-            this.formatData(state, 'crumb', crumbTrail, data, arrayData);
+        var { data, arrayData } = ReturnDataManager.formatData(this.stateContext, this.converterFactory, state, navigationData, crumbTrail);
         return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
-    }
-    
-    private formatData(state: State, key: string, val: any, data: any, arrayData: any) {
-        var formattedData = ReturnDataManager.formatURLObject(this.converterFactory, key, val, state);
-        val = formattedData.val;
-        if (val !== state.formattedDefaults[key]) {
-            data[key] = val;
-            arrayData[key] = formattedData.arrayVal;
-        }
     }
 
     private getRefreshHref(refreshData: any): string {
@@ -262,21 +236,8 @@ class StateController {
         if (!state)
             state = this.router.getData(url.split('?')[0]).state;
         var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
-        data = this.parseData(data, state, separableData);
+        data = ReturnDataManager.parseData(this.converterFactory, data, state, separableData);
         return { state: state, data: data };
-    }
-
-    private parseData(data: any, state: State, separableData: any): any {
-        var newData = {};
-        for (var key in data) {
-            if (!this.isDefault(key, data, state, !!separableData[key]))
-                newData[key] = ReturnDataManager.parseURLString(this.converterFactory, key, data[key], state, false, !!separableData[key]);
-        }
-        for (var key in state.defaults) {
-            if (newData[key] == null || !newData[key].toString())
-                newData[key] = state.defaults[key];
-        }
-        return newData;
     }
     
     private isDefault(key: string, data: any, state: State, separable: boolean) {
