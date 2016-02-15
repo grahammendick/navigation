@@ -4,7 +4,7 @@ import StateContext = require('./StateContext');
 
 class NavigationDataManager {
     private static SEPARATOR = '_';
-    private static RET_2_SEP = '2_';
+    private static SEPARATOR1 = '1_';
 
     static formatData(stateContext: StateContext, converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
         var data = {};
@@ -49,9 +49,9 @@ class NavigationDataManager {
                 formattedArray[0] = this.encodeUrlValue(formattedArray[0]);
         }
         if (state.trackTypes && converter.name !== defaultType) {
-            formattedValue += this.RET_2_SEP + converter.key;
+            formattedValue += this.SEPARATOR1 + converter.key;
             if (formattedArray)
-                formattedArray[0] = formattedArray[0] + this.RET_2_SEP + converter.key;
+                formattedArray[0] = formattedArray[0] + this.SEPARATOR1 + converter.key;
         }
         return { val: formattedValue, arrayVal: formattedArray };
     }
@@ -93,8 +93,8 @@ class NavigationDataManager {
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
         var converterKey = converterFactory.getConverterFromName(defaultType).key;
-        if (state.trackTypes && urlValue.indexOf(this.RET_2_SEP) > -1) {
-            var arr = urlValue.split(this.RET_2_SEP);
+        if (state.trackTypes && urlValue.indexOf(this.SEPARATOR1) > -1) {
+            var arr = urlValue.split(this.SEPARATOR1);
             urlValue = arr[0];
             converterKey = arr[1];
         }

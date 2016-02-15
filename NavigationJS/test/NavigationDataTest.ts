@@ -4646,7 +4646,7 @@ describe('Navigation Data', function () {
             var data = { s1: 'hello', s2: 'world' };
             var url = stateController.getNavigationLink('d', data);
             assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world2_'), -1);
+            assert.notEqual(url.indexOf('s2=world1_'), -1);
         });
     });
 
@@ -4659,7 +4659,7 @@ describe('Navigation Data', function () {
             var data = { b1: true, b2: false };
             var url = stateController.getNavigationLink('d', data);
             assert.notEqual(url.indexOf('b1=true&'), -1);
-            assert.notEqual(url.indexOf('b2=false2_'), -1);
+            assert.notEqual(url.indexOf('b2=false1_'), -1);
         });
     });
 
@@ -4672,7 +4672,7 @@ describe('Navigation Data', function () {
             var data = { n1: 0, n2: 1 };
             var url = stateController.getNavigationLink('d', data);
             assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=12_'), -1);
+            assert.notEqual(url.indexOf('n2=11_'), -1);
         });
     });
 
@@ -4691,9 +4691,9 @@ describe('Navigation Data', function () {
             stateController.navigate('d', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData(null));
             assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world2_'), -1);
+            assert.notEqual(url.indexOf('s2=world1_'), -1);
             assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=12_'), -1);
+            assert.notEqual(url.indexOf('n2=11_'), -1);
         });
     });
 
@@ -4861,7 +4861,7 @@ describe('Navigation Data', function () {
             stateController.navigate('d', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData({}));
             assert.notEqual(url.indexOf('=0&'), -1);
-            assert.notEqual(url.indexOf('=12_'), -1);
+            assert.notEqual(url.indexOf('=11_'), -1);
             assert.strictEqual(stateController.stateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
             assert.strictEqual(stateController.stateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
         });
@@ -4879,7 +4879,7 @@ describe('Navigation Data', function () {
             stateController.navigate('d', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData(null));
             assert.notEqual(url.indexOf('=10&'), -1);
-            assert.notEqual(url.indexOf('=202_'), -1);
+            assert.notEqual(url.indexOf('=201_'), -1);
             assert.strictEqual(stateController.stateContext.data['_0_1_2_3_4_5_'], 10);
             assert.strictEqual(stateController.stateContext.data['__0_1_2_3_4_5_'], 20);
         });

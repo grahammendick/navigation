@@ -4,7 +4,6 @@ class ArrayConverter extends TypeConverter {
     private converter: TypeConverter;
     private static SEPARATOR = '-';
     private static SEPARATOR1 = '1-';
-    private static SEPARATOR2 = '2-';
 
     constructor(converter: TypeConverter, key: string) {
         super(key, converter.name + 'array');
@@ -18,7 +17,7 @@ class ArrayConverter extends TypeConverter {
                 var vals = val.split(ArrayConverter.SEPARATOR1);
                 for (var i = 0; i < vals.length; i++) {
                     if (vals[i].length !== 0)
-                        arr.push(this.converter.convertFrom(vals[i].replace(new RegExp(ArrayConverter.SEPARATOR2, 'g'), ArrayConverter.SEPARATOR)));
+                        arr.push(this.converter.convertFrom(vals[i].replace(new RegExp('0' + ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR)));
                     else
                         arr.push(null);
                 }
@@ -43,7 +42,7 @@ class ArrayConverter extends TypeConverter {
             if (val[i] != null && val[i].toString()) {
                 var convertedValue = this.converter.convertTo(val[i]).val;
                 arr.push(convertedValue);
-                vals.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR2));
+                vals.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), '0' + ArrayConverter.SEPARATOR));
             } else {
                 arr.push('');
                 vals.push('');

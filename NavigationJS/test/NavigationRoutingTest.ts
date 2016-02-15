@@ -2522,23 +2522,23 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.stateContext.data.x[0], 'Hello');
             assert.strictEqual(stateController.stateContext.data.x[1], 'World');
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/H12-ello1-W22-orld');
+            stateController.navigateLink('/H10-ello1-W20-orld');
             assert.strictEqual(stateController.stateContext.data.x[0], 'H1-ello');
             assert.strictEqual(stateController.stateContext.data.x[1], 'W2-orld');
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/H12-ello');
+            stateController.navigateLink('/H10-ello');
             assert.strictEqual(stateController.stateContext.data.x[0], 'H1-ello');
             assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/H22-ello');
+            stateController.navigateLink('/H20-ello');
             assert.strictEqual(stateController.stateContext.data.x[0], 'H2-ello');
             assert.strictEqual(stateController.stateContext.data.x.length, 1);
         });
         
         it('should build', function() {
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/Hello1-World');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/H12-ello1-W22-orld');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello'] }), '/H12-ello');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H2-ello'] }), '/H22-ello');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/H10-ello1-W20-orld');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello'] }), '/H10-ello');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H2-ello'] }), '/H20-ello');
         });
     });
 
@@ -2727,12 +2727,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=ab2_0');
+            stateController.navigateLink('/?x=ab1_0');
             assert.strictEqual(stateController.stateContext.data.x, 'ab');
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/?x=ab2_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/?x=ab1_0');
         });
     });
 
@@ -2746,12 +2746,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab2_0');
+            stateController.navigateLink('/ab1_0');
             assert.strictEqual(stateController.stateContext.data.x, 'ab');
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -2765,12 +2765,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=1242_2');
+            stateController.navigateLink('/?x=1241_2');
             assert.strictEqual(stateController.stateContext.data.x, 124);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 124 }), '/?x=1242_2');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 124 }), '/?x=1241_2');
         });
     });
 
@@ -2784,12 +2784,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/1242_2');
+            stateController.navigateLink('/1241_2');
             assert.strictEqual(stateController.stateContext.data.x, 124);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 124 }), '/1242_2');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 124 }), '/1241_2');
         });
     });
 
@@ -2803,12 +2803,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=true2_1');
+            stateController.navigateLink('/?x=true1_1');
             assert.strictEqual(stateController.stateContext.data.x, true);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/?x=true2_1');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/?x=true1_1');
         });
     });
 
@@ -2822,12 +2822,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/true2_1');
+            stateController.navigateLink('/true1_1');
             assert.strictEqual(stateController.stateContext.data.x, true);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true2_1');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true1_1');
         });
     });
 
@@ -2841,12 +2841,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=2010-04-072_3');
+            stateController.navigateLink('/?x=2010-04-071_3');
             assert.strictEqual(+stateController.stateContext.data.x, +new Date(2010, 3, 7));
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/?x=2010-04-072_3');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/?x=2010-04-071_3');
         });
     });
 
@@ -2860,12 +2860,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/2010-04-072_3');
+            stateController.navigateLink('/2010-04-071_3');
             assert.strictEqual(+stateController.stateContext.data.x, +new Date(2010, 3, 7));
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/2010-04-072_3');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/2010-04-071_3');
         });
     });
 
@@ -2879,14 +2879,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=ab2_a0&x=cde');
+            stateController.navigateLink('/?x=ab1_a0&x=cde');
             assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
             assert.strictEqual(stateController.stateContext.data.x[1], 'cde');
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/?x=ab2_a0&x=cde');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/?x=ab1_a0&x=cde');
         });
     });
 
@@ -2900,14 +2900,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab1-cde2_a0');
+            stateController.navigateLink('/ab1-cde1_a0');
             assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
             assert.strictEqual(stateController.stateContext.data.x[1], 'cde');
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/ab1-cde2_a0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/ab1-cde1_a0');
         });
     });
 
@@ -2921,14 +2921,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=1242_a2&x=35');
+            stateController.navigateLink('/?x=1241_a2&x=35');
             assert.strictEqual(stateController.stateContext.data.x[0], 124);
             assert.strictEqual(stateController.stateContext.data.x[1], 35);
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [124, 35] }), '/?x=1242_a2&x=35');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: [124, 35] }), '/?x=1241_a2&x=35');
         });
     });
 
@@ -2942,14 +2942,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/1241-352_a2');
+            stateController.navigateLink('/1241-351_a2');
             assert.strictEqual(stateController.stateContext.data.x[0], 124);
             assert.strictEqual(stateController.stateContext.data.x[1], 35);
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [124, 35] }), '/1241-352_a2');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: [124, 35] }), '/1241-351_a2');
         });
     });
 
@@ -2963,14 +2963,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=true2_a1&x=false');
+            stateController.navigateLink('/?x=true1_a1&x=false');
             assert.strictEqual(stateController.stateContext.data.x[0], true);
             assert.strictEqual(stateController.stateContext.data.x[1], false);
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/?x=true2_a1&x=false');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/?x=true1_a1&x=false');
         });
     });
 
@@ -2984,14 +2984,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/true1-false2_a1');
+            stateController.navigateLink('/true1-false1_a1');
             assert.strictEqual(stateController.stateContext.data.x[0], true);
             assert.strictEqual(stateController.stateContext.data.x[1], false);
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/true1-false2_a1');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/true1-false1_a1');
         });
     });
 
@@ -3005,14 +3005,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=2010-04-072_a3&x=2011-08-03');
+            stateController.navigateLink('/?x=2010-04-071_a3&x=2011-08-03');
             assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
             assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/?x=2010-04-072_a3&x=2011-08-03');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/?x=2010-04-071_a3&x=2011-08-03');
         });
     });
 
@@ -3026,14 +3026,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/20102-042-071-20112-082-032_a3');
+            stateController.navigateLink('/20100-040-071-20110-080-031_a3');
             assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
             assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/20102-042-071-20112-082-032_a3');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/20100-040-071-20110-080-031_a3');
         });
     });
 
@@ -4169,10 +4169,10 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
             assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
             assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            stateController.navigateLink('/a/cd2_0');
+            stateController.navigateLink('/a/cd1_0');
             assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
             assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            stateController.navigateLink('/b/cd2_0/efg');
+            stateController.navigateLink('/b/cd1_0/efg');
             assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
             assert.strictEqual(stateController.stateContext.data.x, 'cd');
             assert.strictEqual(stateController.stateContext.data.y, 'efg');
@@ -4186,8 +4186,8 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/a/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), '/a/cd2_0');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/b/cd2_0/efg');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), '/a/cd1_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/b/cd1_0/efg');
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'], y: 'hi' }), '/b/cd1-efg/hi');
         });
     })
@@ -4220,7 +4220,7 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
             assert.strictEqual(stateController.stateContext.data.x.length, 1);
             assert.strictEqual(stateController.stateContext.data.x[0], 'cde1-fg');
-            stateController.navigateLink('/true2_1/ab');
+            stateController.navigateLink('/true1_1/ab');
             assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
             assert.strictEqual(stateController.stateContext.data.x, true);
         });
@@ -4237,7 +4237,7 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/cd/efg/ab');
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['cde', 'fg'] }), '/cde/fg/ab');
             assert.strictEqual(stateController.getNavigationLink('d', { x: ['cde1-fg'] }), '/cde1-fg/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true2_1/ab');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true1_1/ab');
         });
     });
 
@@ -4409,14 +4409,14 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.stateContext.data.x[0], 12);
             assert.strictEqual(stateController.stateContext.data.x[1], 345);
             assert.strictEqual(stateController.stateContext.data.x[2], 67);
-            stateController.navigateLink('/ab2_0');
+            stateController.navigateLink('/ab1_0');
             assert.strictEqual(stateController.stateContext.data.x, 'ab');
         });
 
         it('should build', function() {
             assert.strictEqual(stateController.getNavigationLink('d', { x: [123] }), '/123');
             assert.strictEqual(stateController.getNavigationLink('d', { x: [12, 345, 67] }), '/12/345/67');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4438,14 +4438,14 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.stateContext.data.x[0], true);
             assert.strictEqual(stateController.stateContext.data.x[1], false);
             assert.strictEqual(stateController.stateContext.data.x[2], true);
-            stateController.navigateLink('/ab2_0');
+            stateController.navigateLink('/ab1_0');
             assert.strictEqual(stateController.stateContext.data.x, 'ab');
         });
 
         it('should build', function() {
             assert.strictEqual(stateController.getNavigationLink('d', { x: [true] }), '/true');
             assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false, true] }), '/true/false/true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4466,14 +4466,14 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
             assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
             assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
-            stateController.navigateLink('/ab2_0');
+            stateController.navigateLink('/ab1_0');
             assert.strictEqual(stateController.stateContext.data.x, 'ab');
         });
 
         it('should build', function() {
             assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
             assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4498,7 +4498,7 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.stateContext.data.x.length, 2);
             assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
             assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
-            stateController.navigateLink('/ab2_0');
+            stateController.navigateLink('/ab1_0');
             assert.strictEqual(stateController.stateContext.data.x, 'ab');
         });
 
@@ -4506,7 +4506,7 @@ describe('MatchTest', function () {
             assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/');
             assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
             assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab2_0');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4555,7 +4555,7 @@ describe('MatchTest', function () {
         it('should match', function() {
             stateController.navigateLink('/abcd');
             assert.strictEqual(stateController.stateContext.data.x, 'abcd');
-            stateController.navigateLink('/1232_2');
+            stateController.navigateLink('/1231_2');
             assert.strictEqual(stateController.stateContext.data.x, 123);
         });
 
@@ -4566,7 +4566,7 @@ describe('MatchTest', function () {
 
         it('should build', function() {
             assert.strictEqual(stateController.getNavigationLink('d', { x: 'abcd' }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 123 }), '/1232_2');
+            assert.strictEqual(stateController.getNavigationLink('d', { x: 123 }), '/1231_2');
         });
 
         it('should not build', function() {
