@@ -5381,4 +5381,65 @@ describe('Navigation', function () {
             });
         }
     });
+    
+    describe('Crumb Trail Repeated States', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            var state = stateController.dialogs['d'].states['s1'];
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d');
+                stateController.navigate('t');
+                stateController.refresh();
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getRefreshLink();
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should go to to State', function() {
+                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
+                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+            });
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s1']);
+                assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
+            });
+            it('should not populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
+                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
+            });
+            it('should have no crumb trail', function() {
+                assert.equal(stateController.stateContext.crumbs.length, 1);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.stateContext.dialog.initial);
+                assert.ok(stateController.stateContext.crumbs[0].last);
+            });
+        }
+    });
 });
