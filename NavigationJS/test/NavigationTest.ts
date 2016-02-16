@@ -5216,6 +5216,85 @@ describe('Navigation', function () {
         }
     });
     
+    describe('Crumb Trail Mixed Param', function() {
+        var stateController: StateController;
+        var s2Link: string; 
+        var s3Link: string; 
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2/{*crumb?}', transitions: [
+                        { key: 't', to: 's3' }
+                    ]},
+                    { key: 's3', route: 'r3/{crumb?}' }]}
+                ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d');
+                stateController.navigate('t');
+                stateController.navigate('t');
+                s2Link = stateController.stateContext.url;
+                stateController.navigate('t');
+                s3Link = stateController.stateContext.url;
+                stateController.navigateBack(2);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                s2Link = stateController.stateContext.url;
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                s3Link = stateController.stateContext.url;
+                link = stateController.getNavigationBackLink(2);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should have no query string', function() {
+                assert.equal(s2Link.slice(1).split('/').length, 3);
+                assert.equal(s3Link.slice(1).split('/').length, 2);
+                assert.equal(s2Link.indexOf('?'), -1);
+                assert.equal(s3Link.indexOf('?'), -1);
+                assert.notEqual(stateController.stateContext.url.indexOf('?'), -1);
+            })          
+            it('should go to to State', function() {
+                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
+                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+            });
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s3']);
+                assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
+            });
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
+                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
+            });
+            it('should have crumb trail of length 1', function() {
+                assert.equal(stateController.stateContext.crumbs.length, 1);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.stateContext.dialog.initial);
+                assert.ok(stateController.stateContext.crumbs[0].last);
+            });
+        }
+    });
+    
     describe('Crumb Trail Mandatory Route Param', function() {
         it ('', function() {
             var stateController = new Navigation.StateController([
