@@ -5296,7 +5296,7 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Mandatory Route Param', function() {
-        it ('', function() {
+        it ('should throw error', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
@@ -5441,5 +5441,21 @@ describe('Navigation', function () {
                 assert.ok(stateController.stateContext.crumbs[0].last);
             });
         }
+    });
+    
+    describe('Crumb Trail Malicious', function() {
+        it ('should throw error', function() {
+            var stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: '{x}', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            stateController.navigateLink('/r2?crumb=%2Fwww.google.com');
+            stateController.navigateBack(1);
+            assert(stateController.stateContext.data.x, 'www.google.com');
+            assert.throws(() => stateController.navigateLink('/r2?crumb=www.google.com'), /is not a valid crumb/);
+        });
     });
 });
