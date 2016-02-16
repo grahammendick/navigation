@@ -3551,7 +3551,7 @@ describe('Navigation', function () {
                     ]},
                     { key: 's2', route: 'r2' }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
+                    { key: 's0', route: 'r3' }]}
                 ]);
             stateController.navigate('d0');
             stateController.navigate('t');
