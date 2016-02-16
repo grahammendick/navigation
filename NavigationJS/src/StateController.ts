@@ -138,7 +138,7 @@ class StateController {
         var url = this.getNavigationLink(action, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getNextState(action), historyAction);
+        this.navigateLink(url, historyAction);
     }
 
     getNavigationLink(action: string, toData?: any): string {
@@ -170,7 +170,7 @@ class StateController {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.getCrumb(distance).state, historyAction);
+        this.navigateLink(url, historyAction);
     }
 
     getNavigationBackLink(distance: number): string {
@@ -181,25 +181,16 @@ class StateController {
         var url = this.getRefreshLink(toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-        this._navigateLink(url, this.stateContext.state, historyAction);
+        this.navigateLink(url, historyAction);
     }
 
     getRefreshLink(toData?: any): string {
         return this.getLink(this.stateContext.state, toData);
     }
 
-    navigateLink(url: string, historyAction?: HistoryAction, history?: boolean) {
-        try {
-            var state = this.router.getData(url.split('?')[0]).state;
-        } catch (e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
-        this._navigateLink(url, state, historyAction, history);
-    }
-
-    private _navigateLink(url: string, state: State, historyAction = HistoryAction.Add, history = false) {
+    navigateLink(url: string, historyAction = HistoryAction.Add, history = false) {
         var oldUrl = this.stateContext.url;
-        var data = this.parseLink(url, state).data;
+        var { state, data } = this.parseLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -233,10 +224,9 @@ class StateController {
         };
     }
     
-    parseLink(url: string, state?: State): { state: State, data: any } {
+    parseLink(url: string): { state: State, data: any } {
         try {
-            if (!state)
-                state = this.router.getData(url.split('?')[0]).state;
+            var state = this.router.getData(url.split('?')[0]).state;
             var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
             return { state: state, data: data };
