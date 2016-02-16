@@ -5385,7 +5385,7 @@ describe('Navigation', function () {
         }
     });
     
-    describe('Crumb Trail Repeated States', function() {
+    describe('Repeated States Back', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([

@@ -5510,4 +5510,60 @@ describe('Navigation Data', function () {
             });
         }
     });
+    
+    describe('Repeated States Data Back', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            var state = stateController.dialogs['d'].states['s1'];
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d');
+                stateController.navigate('t', data);
+                stateController.refresh();
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t', data);
+                stateController.navigateLink(link);
+                link = stateController.getRefreshLink();
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.data['boolean'], true);
+                assert.strictEqual(stateController.stateContext.data['number'], 0);
+                assert.strictEqual(+stateController.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
+            });
+        }
+    });
 });
