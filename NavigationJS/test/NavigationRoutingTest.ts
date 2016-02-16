@@ -15,18 +15,18 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/?x=ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ '), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/a'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/?x=a&x=b'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ '), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/?x=a&x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -45,23 +45,23 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/abc?x=ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/abc?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc '), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/dbc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/adc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aabc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -80,23 +80,23 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('ab/c');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('ab/c?x=ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('ab/c');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('ab/c?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c '), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/a/b/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ad/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c '), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/a/b/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ad/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -115,20 +115,20 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'abcd');
-            stateController.navigateLink('/ab?y=cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y, 'cd');
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abcd');
+            var { data } = stateController.parseLink('/ab?y=cd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'cd');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/a?x=b'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/a?x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -151,24 +151,24 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            stateController.navigateLink('/ab/cd?y=ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'ef');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            var { data } = stateController.parseLink('/ab/cd?y=ef');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'ef');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/d/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/a/b/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cab/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/a/b/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cab/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -192,22 +192,22 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -233,26 +233,26 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab/cd/efg?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            assert.strictEqual(data.z, 'hi');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cde'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd/efg/h'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('//cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd/efg/h'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('//cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -278,25 +278,25 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/yy/c/xyz');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'yy');
-            assert.strictEqual(stateController.stateContext.data.y, 'xyz');
-            stateController.navigateLink('/ab/yy/c/xyz?z=xx');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'yy');
-            assert.strictEqual(stateController.stateContext.data.y, 'xyz');
-            assert.strictEqual(stateController.stateContext.data.z, 'xx');
+            var { data } = stateController.parseLink('/ab/yy/c/xyz');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'yy');
+            assert.strictEqual(data.y, 'xyz');
+            var { data } = stateController.parseLink('/ab/yy/c/xyz?z=xx');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'yy');
+            assert.strictEqual(data.y, 'xyz');
+            assert.strictEqual(data.z, 'xx');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/yy/c/xyz'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/b/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/b/c/d/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/b/c//d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//b/c/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/yy/c/xyz'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/b/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/b/c/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/b/c//d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//b/c/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -322,23 +322,23 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'abcd');
-            stateController.navigateLink('/abcd?y=ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'abcd');
-            assert.strictEqual(stateController.stateContext.data.y, 'ef');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/?y=ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.y, 'ef');
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abcd');
+            var { data } = stateController.parseLink('/abcd?y=ef');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'abcd');
+            assert.strictEqual(data.y, 'ef');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/?y=ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'ef');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -359,28 +359,28 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            stateController.navigateLink('/ab/cd?y=ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'ef');
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/ab?y=ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.y, 'ef');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            var { data } = stateController.parseLink('/ab/cd?y=ef');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'ef');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/ab?y=ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'ef');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/d/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/a/b/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cab/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/a/b/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cab/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -401,32 +401,32 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
-            stateController.navigateLink('/aab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'aab');
-            stateController.navigateLink('/aab?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aab');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateController.parseLink('/aab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'aab');
+            var { data } = stateController.parseLink('/aab?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aab');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.z, 'cccc');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -453,35 +453,35 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab/cd/efg?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
-            stateController.navigateLink('/ab/cde');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            stateController.navigateLink('/ab/cde?z=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            assert.strictEqual(stateController.stateContext.data.z, 'fg');
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/ab?z=cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.z, 'cd');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            assert.strictEqual(data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateController.parseLink('/ab/cde?z=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.z, 'fg');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/ab?z=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.z, 'cd');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd/efg/h'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('//cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd/efg/h'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('//cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -508,28 +508,28 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
-            stateController.navigateLink('/aab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'aab');
-            stateController.navigateLink('/aab?z=ccd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aab');
-            assert.strictEqual(stateController.stateContext.data.z, 'ccd');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateController.parseLink('/aab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'aab');
+            var { data } = stateController.parseLink('/aab?z=ccd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aab');
+            assert.strictEqual(data.z, 'ccd');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -554,31 +554,31 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab/cd/efg?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
-            stateController.navigateLink('/ab/cde');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            stateController.navigateLink('/ab/cde?z=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            assert.strictEqual(stateController.stateContext.data.z, 'fg');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            assert.strictEqual(data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateController.parseLink('/ab/cde?z=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.z, 'fg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd/efg/h'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('//cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd/efg/h'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('//cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -604,31 +604,31 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/yy/c/xyz');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'yy');
-            assert.strictEqual(stateController.stateContext.data.y, 'xyz');
-            stateController.navigateLink('/ab/yy/c/xyz?z=xx');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'yy');
-            assert.strictEqual(stateController.stateContext.data.y, 'xyz');
-            assert.strictEqual(stateController.stateContext.data.z, 'xx');
-            stateController.navigateLink('/ab/yy/c');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'yy');
-            stateController.navigateLink('/ab/yy/c?z=xx');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'yy');
-            assert.strictEqual(stateController.stateContext.data.z, 'xx');
+            var { data } = stateController.parseLink('/ab/yy/c/xyz');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'yy');
+            assert.strictEqual(data.y, 'xyz');
+            var { data } = stateController.parseLink('/ab/yy/c/xyz?z=xx');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'yy');
+            assert.strictEqual(data.y, 'xyz');
+            assert.strictEqual(data.z, 'xx');
+            var { data } = stateController.parseLink('/ab/yy/c');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'yy');
+            var { data } = stateController.parseLink('/ab/yy/c?z=xx');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'yy');
+            assert.strictEqual(data.z, 'xx');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/yy/c/xyz'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/b/c/d/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/b/c//d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//b/c/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/yy/c/xyz'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/b/c/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/b/c//d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//b/c/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -654,20 +654,20 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcde');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            stateController.navigateLink('/abcde?y=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            assert.strictEqual(stateController.stateContext.data.y, 'fg');
+            var { data } = stateController.parseLink('/abcde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateController.parseLink('/abcde?y=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'fg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab/cde'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abcd//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcd//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -690,25 +690,25 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcdefgh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'fgh');
-            stateController.navigateLink('/abcdefgh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'fgh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
+            var { data } = stateController.parseLink('/abcdefgh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'fgh');
+            var { data } = stateController.parseLink('/abcdefgh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'fgh');
+            assert.strictEqual(data.z, 'i');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ abcdefgh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cdefgh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abcdefgh//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abcde'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abcdefgh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cdefgh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcdefgh//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcde'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -733,30 +733,30 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcab/de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            assert.strictEqual(stateController.stateContext.data.y, 'de');
-            stateController.navigateLink('/abcab/de?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            assert.strictEqual(stateController.stateContext.data.y, 'de');
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/abcab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            stateController.navigateLink('/abcab?z=de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            assert.strictEqual(stateController.stateContext.data.z, 'de');
+            var { data } = stateController.parseLink('/abcab/de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'abc');
+            assert.strictEqual(data.y, 'de');
+            var { data } = stateController.parseLink('/abcab/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'abc');
+            assert.strictEqual(data.y, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/abcab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abc');
+            var { data } = stateController.parseLink('/abcab?z=de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'abc');
+            assert.strictEqual(data.z, 'de');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/abcab /de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abcab/de/fg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abcab//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcab /de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcab/de/fg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcab//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -782,25 +782,25 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            stateController.navigateLink('/ab?z=cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.z, 'cd');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            stateController.navigateLink('/?z=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            assert.strictEqual(stateController.stateContext.data.z, 'fg');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            var { data } = stateController.parseLink('/ab?z=cd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.z, 'cd');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateController.parseLink('/?z=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.z, 'fg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -823,28 +823,28 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/12');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 12);
-            stateController.navigateLink('/12?z=34');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 12);
-            assert.strictEqual(stateController.stateContext.data.z, '34');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 345);
-            stateController.navigateLink('/?z=67');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 345);
-            assert.strictEqual(stateController.stateContext.data.z, '67');
+            var { data } = stateController.parseLink('/12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 12);
+            var { data } = stateController.parseLink('/12?z=34');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 12);
+            assert.strictEqual(data.z, '34');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 345);
+            var { data } = stateController.parseLink('/?z=67');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 345);
+            assert.strictEqual(data.z, '67');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/12/34'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/12//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/true'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/1a2'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/12?x=34'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/12/34'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/12//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/true'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/1a2'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/12?x=34'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -867,28 +867,28 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/false');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, false);
-            stateController.navigateLink('/false?z=true');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, false);
-            assert.strictEqual(stateController.stateContext.data.z, 'true');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, true);
-            stateController.navigateLink('/?z=false');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, true);
-            assert.strictEqual(stateController.stateContext.data.z, 'false');
+            var { data } = stateController.parseLink('/false');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, false);
+            var { data } = stateController.parseLink('/false?z=true');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, false);
+            assert.strictEqual(data.z, 'true');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, true);
+            var { data } = stateController.parseLink('/?z=false');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, true);
+            assert.strictEqual(data.z, 'false');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/false/true'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/false//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/1'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/fals'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/false?x=true'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/false/true'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/false//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/1'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/fals'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/false?x=true'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -911,37 +911,37 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/2011-08-03');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2011, 7, 3));
-            stateController.navigateLink('/2011-12-31');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2011, 11, 31));
-            stateController.navigateLink('/2011-8-3');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2011, 7, 3));
-            stateController.navigateLink('/2011-08-03?z=2012-09-04');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2011, 7, 3));
-            assert.strictEqual(stateController.stateContext.data.z, '2012-09-04');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2010, 3, 7));
-            stateController.navigateLink('/?z=2012-09-04');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2010, 3, 7));
-            assert.strictEqual(stateController.stateContext.data.z, '2012-09-04');
+            var { data } = stateController.parseLink('/2011-08-03');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(+data.x, +new Date(2011, 7, 3));
+            var { data } = stateController.parseLink('/2011-12-31');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(+data.x, +new Date(2011, 11, 31));
+            var { data } = stateController.parseLink('/2011-8-3');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(+data.x, +new Date(2011, 7, 3));
+            var { data } = stateController.parseLink('/2011-08-03?z=2012-09-04');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(+data.x, +new Date(2011, 7, 3));
+            assert.strictEqual(data.z, '2012-09-04');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(+data.x, +new Date(2010, 3, 7));
+            var { data } = stateController.parseLink('/?z=2012-09-04');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(+data.x, +new Date(2010, 3, 7));
+            assert.strictEqual(data.z, '2012-09-04');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/2011-08-03/2012-09-04'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/2011-08-03//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/true'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/2011/08/03'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/2011-08'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/2011-08-a'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/2011-08-03-01'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/2011-08-03?x=2012-09-04'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011-08-03/2012-09-04'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011-08-03//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/true'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011/08/03'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011-08'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011-08-a'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011-08-03-01'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/2011-08-03?x=2012-09-04'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -965,26 +965,26 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/abc?x=12');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 12);
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/abc?x=12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 12);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc '), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/dbc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/adc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aabc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=true'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=1a2'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=12&x=345'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=true'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=1a2'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=12&x=345'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1003,26 +1003,26 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/abc?x=true');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, true);
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/abc?x=true');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, true);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc '), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/dbc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/adc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aabc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=1'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=tru'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=true&x=false'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=1'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=tru'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=true&x=false'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1041,32 +1041,32 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/abc?x=2011-08-03');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2011, 7, 3));
-            stateController.navigateLink('/abc?x=2011-8-3');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2011, 7, 3));
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/abc?x=2011-08-03');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(+data.x, +new Date(2011, 7, 3));
+            var { data } = stateController.parseLink('/abc?x=2011-8-3');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(+data.x, +new Date(2011, 7, 3));
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc '), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/dbc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/adc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aabc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=true'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=2011/08/03'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=2011-08'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=2011-08-a'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=2011-08-03-01'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc?x=2011-08-03&x=2012-09-04'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc '), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/dbc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/adc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aabc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=true'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=2011/08/03'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=2011-08'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=2011-08-a'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=2011-08-03-01'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc?x=2011-08-03&x=2012-09-04'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1085,30 +1085,30 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cde');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            stateController.navigateLink('/ab/cde?y=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            assert.strictEqual(stateController.stateContext.data.y, 'fg');
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ccdd');
-            stateController.navigateLink('/ab?y=ee');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ccdd');
-            assert.strictEqual(stateController.stateContext.data.y, 'ee');
+            var { data } = stateController.parseLink('/ab/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateController.parseLink('/ab/cde?y=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'fg');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ccdd');
+            var { data } = stateController.parseLink('/ab?y=ee');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ccdd');
+            assert.strictEqual(data.y, 'ee');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/d/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/a/b/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cab/d'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/a/b/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cab/d'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1131,38 +1131,38 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
-            stateController.navigateLink('/aa');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'c');
-            stateController.navigateLink('/aa?z=d');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'c');
-            assert.strictEqual(stateController.stateContext.data.z, 'd');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y, 'c');
-            stateController.navigateLink('/?z=d');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y, 'c');
-            assert.strictEqual(stateController.stateContext.data.z, 'd');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateController.parseLink('/aa');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'c');
+            var { data } = stateController.parseLink('/aa?z=d');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'c');
+            assert.strictEqual(data.z, 'd');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'c');
+            var { data } = stateController.parseLink('/?z=d');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'c');
+            assert.strictEqual(data.z, 'd');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
         });
    
         it('should build', function() {
@@ -1195,30 +1195,30 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
-            stateController.navigateLink('/aa');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'ab');
-            stateController.navigateLink('/aa?z=bb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'ab');
-            assert.strictEqual(stateController.stateContext.data.z, 'bb');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateController.parseLink('/aa');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'ab');
+            var { data } = stateController.parseLink('/aa?z=bb');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'ab');
+            assert.strictEqual(data.z, 'bb');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1246,34 +1246,34 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
-            stateController.navigateLink('/aab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'aab');
-            stateController.navigateLink('/aab?z=ccd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aab');
-            assert.strictEqual(stateController.stateContext.data.z, 'ccd');
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            stateController.navigateLink('/?z=de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            assert.strictEqual(stateController.stateContext.data.z, 'de');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateController.parseLink('/aab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'aab');
+            var { data } = stateController.parseLink('/aab?z=ccd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aab');
+            assert.strictEqual(data.z, 'ccd');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abc');
+            var { data } = stateController.parseLink('/?z=de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'abc');
+            assert.strictEqual(data.z, 'de');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1302,67 +1302,67 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd/ef/hi/jk');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
-            assert.strictEqual(stateController.stateContext.data.w, 'cd');
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
-            assert.strictEqual(stateController.stateContext.data.y, 'hi');
-            assert.strictEqual(stateController.stateContext.data.z, 'jk');
-            stateController.navigateLink('/ab/cd/ef/hi/jk?a=lm');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 5);
-            assert.strictEqual(stateController.stateContext.data.w, 'cd');
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
-            assert.strictEqual(stateController.stateContext.data.y, 'hi');
-            assert.strictEqual(stateController.stateContext.data.z, 'jk');
-            assert.strictEqual(stateController.stateContext.data.a, 'lm');
-            stateController.navigateLink('/ab/cde/fg/h');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.w, 'cde');
-            assert.strictEqual(stateController.stateContext.data.x, 'fg');
-            assert.strictEqual(stateController.stateContext.data.y, 'h');
-            stateController.navigateLink('/ab/cde/fg/h?a=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
-            assert.strictEqual(stateController.stateContext.data.w, 'cde');
-            assert.strictEqual(stateController.stateContext.data.x, 'fg');
-            assert.strictEqual(stateController.stateContext.data.y, 'h');
-            assert.strictEqual(stateController.stateContext.data.a, 'i');
-            stateController.navigateLink('/ab/cc/def');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.w, 'cc');
-            assert.strictEqual(stateController.stateContext.data.x, 'def');
-            stateController.navigateLink('/ab/cc/def?a=gg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.w, 'cc');
-            assert.strictEqual(stateController.stateContext.data.x, 'def');
-            assert.strictEqual(stateController.stateContext.data.a, 'gg');
-            stateController.navigateLink('/ab/ccdd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.w, 'ccdd');
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/ab/ccdd?a=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.w, 'ccdd');
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.a, 'fg');
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.w, 'abc');
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/ab?a=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.w, 'abc');
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.a, 'fg');
+            var { data } = stateController.parseLink('/ab/cd/ef/hi/jk');
+            assert.strictEqual(Object.keys(data).length, 4);
+            assert.strictEqual(data.w, 'cd');
+            assert.strictEqual(data.x, 'ef');
+            assert.strictEqual(data.y, 'hi');
+            assert.strictEqual(data.z, 'jk');
+            var { data } = stateController.parseLink('/ab/cd/ef/hi/jk?a=lm');
+            assert.strictEqual(Object.keys(data).length, 5);
+            assert.strictEqual(data.w, 'cd');
+            assert.strictEqual(data.x, 'ef');
+            assert.strictEqual(data.y, 'hi');
+            assert.strictEqual(data.z, 'jk');
+            assert.strictEqual(data.a, 'lm');
+            var { data } = stateController.parseLink('/ab/cde/fg/h');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.w, 'cde');
+            assert.strictEqual(data.x, 'fg');
+            assert.strictEqual(data.y, 'h');
+            var { data } = stateController.parseLink('/ab/cde/fg/h?a=i');
+            assert.strictEqual(Object.keys(data).length, 4);
+            assert.strictEqual(data.w, 'cde');
+            assert.strictEqual(data.x, 'fg');
+            assert.strictEqual(data.y, 'h');
+            assert.strictEqual(data.a, 'i');
+            var { data } = stateController.parseLink('/ab/cc/def');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.w, 'cc');
+            assert.strictEqual(data.x, 'def');
+            var { data } = stateController.parseLink('/ab/cc/def?a=gg');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.w, 'cc');
+            assert.strictEqual(data.x, 'def');
+            assert.strictEqual(data.a, 'gg');
+            var { data } = stateController.parseLink('/ab/ccdd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.w, 'ccdd');
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/ab/ccdd?a=fg');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.w, 'ccdd');
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.a, 'fg');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.w, 'abc');
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/ab?a=fg');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.w, 'abc');
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.a, 'fg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cde/fg/h'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cde/fg/h/ij/k'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cde/fg/h//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cde/fg//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cde/fg/h'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde/fg/h/ij/k'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde/fg/h//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde/fg//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1438,13 +1438,13 @@ describe('MatchTest', function () {
                 ]);
         });
         it('should match', function() {
-            stateController.navigateLink('/   a  ');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, '   a  ');
-            stateController.navigateLink('/   a  ?y=   b  ');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, '   a  ');
-            assert.strictEqual(stateController.stateContext.data.y, '   b  ');
+            var { data } = stateController.parseLink('/   a  ');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, '   a  ');
+            var { data } = stateController.parseLink('/   a  ?y=   b  ');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, '   a  ');
+            assert.strictEqual(data.y, '   b  ');
         });
 
         it('should build', function() {
@@ -1462,13 +1462,13 @@ describe('MatchTest', function () {
                 ]);
         });
         it('should match', function() {
-            stateController.navigateLink('/a/someVal');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.someVar, 'someVal');
-            stateController.navigateLink('/a/someVal?anotherVar=anotherVal');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.someVar, 'someVal');
-            assert.strictEqual(stateController.stateContext.data.anotherVar, 'anotherVal');
+            var { data } = stateController.parseLink('/a/someVal');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.someVar, 'someVal');
+            var { data } = stateController.parseLink('/a/someVal?anotherVar=anotherVal');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.someVar, 'someVal');
+            assert.strictEqual(data.anotherVar, 'anotherVal');
         });
 
         it('should build', function() {
@@ -1483,9 +1483,9 @@ describe('MatchTest', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: '{x}', trackCrumbTrail: false }]}
                 ]);
-            stateController.navigateLink('abc/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
+            var { data } = stateController.parseLink('abc/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abc');
         });
     });
 
@@ -1499,20 +1499,20 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            stateController.navigateLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            assert.strictEqual(stateController.stateContext.data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
-            stateController.navigateLink('/a');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            stateController.navigateLink('/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            assert.strictEqual(stateController.stateContext.data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+            var { data } = stateController.parseLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            var { data } = stateController.parseLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+            var { data } = stateController.parseLink('/a');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            var { data } = stateController.parseLink('/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
         });
 
         it('should build', function() {
@@ -1535,13 +1535,13 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/.+*\^$\[\]()\'/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            stateController.navigateLink('/.+*\^$\[\]()\'/abc?y=de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            assert.strictEqual(stateController.stateContext.data.y, 'de');
+            var { data } = stateController.parseLink('/.+*\^$\[\]()\'/abc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'abc');
+            var { data } = stateController.parseLink('/.+*\^$\[\]()\'/abc?y=de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'abc');
+            assert.strictEqual(data.y, 'de');
         });
 
         it('should build', function() {
@@ -1560,20 +1560,20 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcde');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            stateController.navigateLink('/abcde?y=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cde');
-            assert.strictEqual(stateController.stateContext.data.y, 'fg');
+            var { data } = stateController.parseLink('/abcde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateController.parseLink('/abcde?y=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'fg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab/cde'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abcd//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abcd//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1596,25 +1596,25 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab/cd/efg?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            assert.strictEqual(data.z, 'hi');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd/efg/h'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('//cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cde'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd/efg/h'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('//cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1639,22 +1639,22 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aa/bbb');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            stateController.navigateLink('/aa/bbb?z=cccc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'aa');
-            assert.strictEqual(stateController.stateContext.data.y, 'bbb');
-            assert.strictEqual(stateController.stateContext.data.z, 'cccc');
+            var { data } = stateController.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateController.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb/e'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/aa'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1680,28 +1680,28 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd/efg/c');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab/cd/efg/c?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cd/efg/c');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg/c?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            assert.strictEqual(data.z, 'hi');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ ab/cd/efg/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd/efg/c//'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab//efg/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd//c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab///c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/c'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ ab/cd/efg/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd/efg'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd/efg/c//'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab//efg/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd//c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab///c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/c'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1723,15 +1723,15 @@ describe('MatchTest', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }]}
                 ]);
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'a');
-            assert.strictEqual(stateController.stateContext.data.y, 'b');
-            stateController.navigateLink('/?z=c');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'a');
-            assert.strictEqual(stateController.stateContext.data.y, 'b');
-            assert.strictEqual(stateController.stateContext.data.z, 'c');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'a');
+            assert.strictEqual(data.y, 'b');
+            var { data } = stateController.parseLink('/?z=c');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'a');
+            assert.strictEqual(data.y, 'b');
+            assert.strictEqual(data.z, 'c');
         });
     });
 
@@ -1741,13 +1741,13 @@ describe('MatchTest', function () {
                 { key: 'd', initial: 's', states: [
                     { key: 's', route: 'abc/{x}', trackCrumbTrail: false }]}
                 ]);
-            stateController.navigateLink('/AbC/aBc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'aBc');
-            stateController.navigateLink('/AbC/aBc?y=dE');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'aBc');
-            assert.strictEqual(stateController.stateContext.data.y, 'dE');
+            var { data } = stateController.parseLink('/AbC/aBc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'aBc');
+            var { data } = stateController.parseLink('/AbC/aBc?y=dE');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aBc');
+            assert.strictEqual(data.y, 'dE');
         });
     });
 
@@ -1762,26 +1762,26 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
-            stateController.navigateLink('/ab/ef?y=gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/cd/ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
-            stateController.navigateLink('/cd/ef?y=gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
+            var { data } = stateController.parseLink('/ab/ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ef');
+            var { data } = stateController.parseLink('/ab/ef?y=gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ef');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/cd/ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ef');
+            var { data } = stateController.parseLink('/cd/ef?y=gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ef');
+            assert.strictEqual(data.y, 'gh');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cd'), /Url is invalid/, '');
         });
     });
 
@@ -1795,25 +1795,25 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/?y=d');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.y, 'd');
-            stateController.navigateLink('/abc/de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/abc/de?y=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'f');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/?y=d');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'd');
+            var { data } = stateController.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/abc/de?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'f');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('//abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('//abc/de'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1834,40 +1834,40 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc/de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/abc/de?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/def/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/def/gh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
-            stateController.navigateLink('/abc/de?y=fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'fg');
-            stateController.navigateLink('/abc/de?y=fg&z=h');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'fg');
-            assert.strictEqual(stateController.stateContext.data.z, 'h');
+            var { data } = stateController.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/def/gh');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+            var { data } = stateController.parseLink('/abc/de?y=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'fg');
+            var { data } = stateController.parseLink('/abc/de?y=fg&z=h');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'fg');
+            assert.strictEqual(data.z, 'h');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/def'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ def/gh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd/ef'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/f'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/def/gh/i'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/def'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd/ef'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/f'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1895,33 +1895,33 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc/de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/abc/de?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/abc/de/def/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/abc/de/def/gh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
+            var { data } = stateController.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/abc/de/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/abc'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/def'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/def/gh/i'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/deg/gh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de/def/gh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -1947,48 +1947,48 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'd');
-            stateController.navigateLink('/abc?z=e');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'd');
-            assert.strictEqual(stateController.stateContext.data.z, 'e');
-            stateController.navigateLink('/abc/de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/abc/de?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/def/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'd');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/def/gh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'd');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
-            stateController.navigateLink('/abc/de?y=gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/abc/de?y=gh&z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'd');
+            var { data } = stateController.parseLink('/abc?z=e');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.z, 'e');
+            var { data } = stateController.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+            var { data } = stateController.parseLink('/abc/de?y=gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/abc/de?y=gh&z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/def'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ def/gh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd/ef'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/f'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/def/gh/i'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/def'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd/ef'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/f'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -2015,37 +2015,37 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/abc?z=d');
-            assert.strictEqual(stateController.stateContext.data.z, 'd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            stateController.navigateLink('/abc/de');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            stateController.navigateLink('/abc/de?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/abc/de/def/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/abc/de/def/gh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'de');
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/abc?z=d');
+            assert.strictEqual(data.z, 'd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            var { data } = stateController.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateController.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/abc/de/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/abc/de/def'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/def/gh/i'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abd/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/abc/de/deg/gh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ abc/de/def/gh'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -2068,38 +2068,38 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 2);
-            stateController.navigateLink('/abc?z=e');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 2);
-            assert.strictEqual(stateController.stateContext.data.z, 'e');
-            stateController.navigateLink('/abc/3');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            stateController.navigateLink('/abc/3?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/def/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 2);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/def/gh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 2);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
-            stateController.navigateLink('/def/gh?x=3');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/def/gh?x=3&z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 2);
+            var { data } = stateController.parseLink('/abc?z=e');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 2);
+            assert.strictEqual(data.z, 'e');
+            var { data } = stateController.parseLink('/abc/3');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 3);
+            var { data } = stateController.parseLink('/abc/3?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 2);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 2);
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+            var { data } = stateController.parseLink('/def/gh?x=3');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/def/gh?x=3&z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
         });
 
         it('should build', function() {
@@ -2126,29 +2126,29 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc/3');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            stateController.navigateLink('/abc/3?z=f');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            assert.strictEqual(stateController.stateContext.data.z, 'f');
-            stateController.navigateLink('/def/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/def/gh?z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
-            stateController.navigateLink('/def/gh?x=3');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            stateController.navigateLink('/def/gh?x=3&z=i');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 3);
-            assert.strictEqual(stateController.stateContext.data.y, 'gh');
-            assert.strictEqual(stateController.stateContext.data.z, 'i');
+            var { data } = stateController.parseLink('/abc/3');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 3);
+            var { data } = stateController.parseLink('/abc/3?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateController.parseLink('/def/gh');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+            var { data } = stateController.parseLink('/def/gh?x=3');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateController.parseLink('/def/gh?x=3&z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
         });
 
         it('should build', function() {
@@ -2171,14 +2171,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc');
-            assert.strictEqual(stateController.stateContext.data.x, 'abc');
-            stateController.navigateLink('/3');
-            assert.strictEqual(stateController.stateContext.data.x, '3');
-            stateController.navigateLink('/true');
-            assert.strictEqual(stateController.stateContext.data.x, 'true');
-            stateController.navigateLink('/0_1_2_');
-            assert.strictEqual(stateController.stateContext.data.x, '0_1_2_');
+            var { data } = stateController.parseLink('/abc');
+            assert.strictEqual(data.x, 'abc');
+            var { data } = stateController.parseLink('/3');
+            assert.strictEqual(data.x, '3');
+            var { data } = stateController.parseLink('/true');
+            assert.strictEqual(data.x, 'true');
+            var { data } = stateController.parseLink('/0_1_2_');
+            assert.strictEqual(data.x, '0_1_2_');
         });
 
         it('should build', function() {
@@ -2199,15 +2199,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, 2);
-            stateController.navigateLink('/3');
-            assert.strictEqual(stateController.stateContext.data.x, 3);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, 2);
+            var { data } = stateController.parseLink('/3');
+            assert.strictEqual(data.x, 3);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/a'), /not a valid number/, '');
-            assert.throws(() => stateController.navigateLink('/true'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/a'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/true'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -2229,15 +2229,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/true');
-            assert.strictEqual(stateController.stateContext.data.x, true);
-            stateController.navigateLink('/false');
-            assert.strictEqual(stateController.stateContext.data.x, false);
+            var { data } = stateController.parseLink('/true');
+            assert.strictEqual(data.x, true);
+            var { data } = stateController.parseLink('/false');
+            assert.strictEqual(data.x, false);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/a'), /not a valid boolean/, '');
-            assert.throws(() => stateController.navigateLink('/2'), /not a valid boolean/, '');
+            assert.throws(() => stateController.parseLink('/a'), /not a valid boolean/, '');
+            assert.throws(() => stateController.parseLink('/2'), /not a valid boolean/, '');
         });
 
         it('should build', function() {
@@ -2256,15 +2256,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, '2');
-            stateController.navigateLink('/3');
-            assert.strictEqual(stateController.stateContext.data.x, 3);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, '2');
+            var { data } = stateController.parseLink('/3');
+            assert.strictEqual(data.x, 3);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/a'), /not a valid number/, '');
-            assert.throws(() => stateController.navigateLink('/true'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/a'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/true'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -2285,14 +2285,14 @@ describe('MatchTest', function () {
                 ]);
         });
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, 'a');
-            stateController.navigateLink('/a');
-            assert.strictEqual(stateController.stateContext.data.x, 'a');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, 'a');
+            var { data } = stateController.parseLink('/a');
+            assert.strictEqual(data.x, 'a');
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/b'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/b'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -2313,14 +2313,14 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, undefined);
-            stateController.navigateLink('/?x=3');
-            assert.strictEqual(stateController.stateContext.data.x, '3');
-            stateController.navigateLink('/?x=true');
-            assert.strictEqual(stateController.stateContext.data.x, 'true');
-            stateController.navigateLink('/?x=0_1_2_');
-            assert.strictEqual(stateController.stateContext.data.x, '0_1_2_');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, undefined);
+            var { data } = stateController.parseLink('/?x=3');
+            assert.strictEqual(data.x, '3');
+            var { data } = stateController.parseLink('/?x=true');
+            assert.strictEqual(data.x, 'true');
+            var { data } = stateController.parseLink('/?x=0_1_2_');
+            assert.strictEqual(data.x, '0_1_2_');
         });
 
         it('should build', function() {
@@ -2341,15 +2341,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, 2);
-            stateController.navigateLink('/?x=3');
-            assert.strictEqual(stateController.stateContext.data.x, 3);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, 2);
+            var { data } = stateController.parseLink('/?x=3');
+            assert.strictEqual(data.x, 3);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/?x=a'), /not a valid number/, '');
-            assert.throws(() => stateController.navigateLink('/?x=true'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/?x=a'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/?x=true'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -2371,15 +2371,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=true');
-            assert.strictEqual(stateController.stateContext.data.x, true);
-            stateController.navigateLink('/?x=false');
-            assert.strictEqual(stateController.stateContext.data.x, false);
+            var { data } = stateController.parseLink('/?x=true');
+            assert.strictEqual(data.x, true);
+            var { data } = stateController.parseLink('/?x=false');
+            assert.strictEqual(data.x, false);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/?x=a'), /not a valid boolean/, '');
-            assert.throws(() => stateController.navigateLink('/?x=2'), /not a valid boolean/, '');
+            assert.throws(() => stateController.parseLink('/?x=a'), /not a valid boolean/, '');
+            assert.throws(() => stateController.parseLink('/?x=2'), /not a valid boolean/, '');
         });
 
         it('should build', function() {
@@ -2398,15 +2398,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, '2');
-            stateController.navigateLink('/?x=3');
-            assert.strictEqual(stateController.stateContext.data.x, 3);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, '2');
+            var { data } = stateController.parseLink('/?x=3');
+            assert.strictEqual(data.x, 3);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/?x=a'), /not a valid number/, '');
-            assert.throws(() => stateController.navigateLink('/?x=true'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/?x=a'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/?x=true'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -2428,14 +2428,14 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, 'a');
-            stateController.navigateLink('/?x=a');
-            assert.strictEqual(stateController.stateContext.data.x, 'a');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, 'a');
+            var { data } = stateController.parseLink('/?x=a');
+            assert.strictEqual(data.x, 'a');
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/?x=b'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/?x=b'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -2484,20 +2484,20 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=Hello&x=World');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'Hello');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'World');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/?x=H1-ello&x=W2-orld');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'H1-ello');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'W2-orld');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/?x=H1-ello');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'H1-ello');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/?x=H2-ello');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'H2-ello');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
+            var { data } = stateController.parseLink('/?x=Hello&x=World');
+            assert.strictEqual(data.x[0], 'Hello');
+            assert.strictEqual(data.x[1], 'World');
+            assert.strictEqual(data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=H1-ello&x=W2-orld');
+            assert.strictEqual(data.x[0], 'H1-ello');
+            assert.strictEqual(data.x[1], 'W2-orld');
+            assert.strictEqual(data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=H1-ello');
+            assert.strictEqual(data.x[0], 'H1-ello');
+            assert.strictEqual(data.x.length, 1);
+            var { data } = stateController.parseLink('/?x=H2-ello');
+            assert.strictEqual(data.x[0], 'H2-ello');
+            assert.strictEqual(data.x.length, 1);
         });
         
         it('should build', function() {
@@ -2518,20 +2518,20 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/Hello1-World');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'Hello');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'World');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/H10-ello1-W20-orld');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'H1-ello');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'W2-orld');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/H10-ello');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'H1-ello');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/H20-ello');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'H2-ello');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
+            var { data } = stateController.parseLink('/Hello1-World');
+            assert.strictEqual(data.x[0], 'Hello');
+            assert.strictEqual(data.x[1], 'World');
+            assert.strictEqual(data.x.length, 2);
+            var { data } = stateController.parseLink('/H10-ello1-W20-orld');
+            assert.strictEqual(data.x[0], 'H1-ello');
+            assert.strictEqual(data.x[1], 'W2-orld');
+            assert.strictEqual(data.x.length, 2);
+            var { data } = stateController.parseLink('/H10-ello');
+            assert.strictEqual(data.x[0], 'H1-ello');
+            assert.strictEqual(data.x.length, 1);
+            var { data } = stateController.parseLink('/H20-ello');
+            assert.strictEqual(data.x[0], 'H2-ello');
+            assert.strictEqual(data.x.length, 1);
         });
         
         it('should build', function() {
@@ -2552,11 +2552,11 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=1&x=2&x=4');
-            assert.strictEqual(stateController.stateContext.data.x[0], 1);
-            assert.strictEqual(stateController.stateContext.data.x[1], 2);
-            assert.strictEqual(stateController.stateContext.data.x[2], 4);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
+            var { data } = stateController.parseLink('/?x=1&x=2&x=4');
+            assert.strictEqual(data.x[0], 1);
+            assert.strictEqual(data.x[1], 2);
+            assert.strictEqual(data.x[2], 4);
+            assert.strictEqual(data.x.length, 3);
         });
         
         it('should build', function() {
@@ -2574,10 +2574,10 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=true&x=false');
-            assert.strictEqual(stateController.stateContext.data.x[0], true);
-            assert.strictEqual(stateController.stateContext.data.x[1], false);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=true&x=false');
+            assert.strictEqual(data.x[0], true);
+            assert.strictEqual(data.x[1], false);
+            assert.strictEqual(data.x.length, 2);
         });
         
         it('should build', function() {
@@ -2595,15 +2595,15 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=He_llo&x=Wor-ld');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'He_llo');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'Wor-ld');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/?x=1&x=2&x=4');
-            assert.strictEqual(stateController.stateContext.data.x[0], '1');
-            assert.strictEqual(stateController.stateContext.data.x[1], '2');
-            assert.strictEqual(stateController.stateContext.data.x[2], '4');
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
+            var { data } = stateController.parseLink('/?x=He_llo&x=Wor-ld');
+            assert.strictEqual(data.x[0], 'He_llo');
+            assert.strictEqual(data.x[1], 'Wor-ld');
+            assert.strictEqual(data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=1&x=2&x=4');
+            assert.strictEqual(data.x[0], '1');
+            assert.strictEqual(data.x[1], '2');
+            assert.strictEqual(data.x[2], '4');
+            assert.strictEqual(data.x.length, 3);
         });
         
         it('should build', function() {
@@ -2622,13 +2622,13 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=Hello');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'Hello');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/?x=World&x=Hello');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'World');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'Hello');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=Hello');
+            assert.strictEqual(data.x[0], 'Hello');
+            assert.strictEqual(data.x.length, 1);
+            var { data } = stateController.parseLink('/?x=World&x=Hello');
+            assert.strictEqual(data.x[0], 'World');
+            assert.strictEqual(data.x[1], 'Hello');
+            assert.strictEqual(data.x.length, 2);
         });
         
         it('should build', function() {
@@ -2648,14 +2648,14 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=1');
-            assert.strictEqual(stateController.stateContext.data.x[0], 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/?x=1&x=4&x=2');
-            assert.strictEqual(stateController.stateContext.data.x[0], 1);
-            assert.strictEqual(stateController.stateContext.data.x[1], 4);
-            assert.strictEqual(stateController.stateContext.data.x[2], 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
+            var { data } = stateController.parseLink('/?x=1');
+            assert.strictEqual(data.x[0], 1);
+            assert.strictEqual(data.x.length, 1);
+            var { data } = stateController.parseLink('/?x=1&x=4&x=2');
+            assert.strictEqual(data.x[0], 1);
+            assert.strictEqual(data.x[1], 4);
+            assert.strictEqual(data.x[2], 2);
+            assert.strictEqual(data.x.length, 3);
         });
         
         it('should build', function() {
@@ -2675,13 +2675,13 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=false');
-            assert.strictEqual(stateController.stateContext.data.x[0], false);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/?x=false&x=true');
-            assert.strictEqual(stateController.stateContext.data.x[0], false);
-            assert.strictEqual(stateController.stateContext.data.x[1], true);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=false');
+            assert.strictEqual(data.x[0], false);
+            assert.strictEqual(data.x.length, 1);
+            var { data } = stateController.parseLink('/?x=false&x=true');
+            assert.strictEqual(data.x[0], false);
+            assert.strictEqual(data.x[1], true);
+            assert.strictEqual(data.x.length, 2);
         });
         
         it('should build', function() {
@@ -2701,13 +2701,13 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/?x=2011-08-03');
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2011, 7, 3));
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            stateController.navigateLink('/?x=2011-08-03&x=2010-04-07');
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2011, 7, 3));
-            assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2010, 3, 7));
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=2011-08-03');
+            assert.strictEqual(+data.x[0], +new Date(2011, 7, 3));
+            assert.strictEqual(data.x.length, 1);
+            var { data } = stateController.parseLink('/?x=2011-08-03&x=2010-04-07');
+            assert.strictEqual(+data.x[0], +new Date(2011, 7, 3));
+            assert.strictEqual(+data.x[1], +new Date(2010, 3, 7));
+            assert.strictEqual(data.x.length, 2);
         });
         
         it('should build', function() {
@@ -2727,8 +2727,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=ab1_0');
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/?x=ab1_0');
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should build', function() {
@@ -2746,8 +2746,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab1_0');
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/ab1_0');
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should build', function() {
@@ -2765,8 +2765,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=1241_2');
-            assert.strictEqual(stateController.stateContext.data.x, 124);
+            var { data } = stateController.parseLink('/?x=1241_2');
+            assert.strictEqual(data.x, 124);
         });
 
         it('should build', function() {
@@ -2784,8 +2784,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/1241_2');
-            assert.strictEqual(stateController.stateContext.data.x, 124);
+            var { data } = stateController.parseLink('/1241_2');
+            assert.strictEqual(data.x, 124);
         });
 
         it('should build', function() {
@@ -2803,8 +2803,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=true1_1');
-            assert.strictEqual(stateController.stateContext.data.x, true);
+            var { data } = stateController.parseLink('/?x=true1_1');
+            assert.strictEqual(data.x, true);
         });
 
         it('should build', function() {
@@ -2822,8 +2822,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/true1_1');
-            assert.strictEqual(stateController.stateContext.data.x, true);
+            var { data } = stateController.parseLink('/true1_1');
+            assert.strictEqual(data.x, true);
         });
 
         it('should build', function() {
@@ -2841,8 +2841,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=2010-04-071_3');
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2010, 3, 7));
+            var { data } = stateController.parseLink('/?x=2010-04-071_3');
+            assert.strictEqual(+data.x, +new Date(2010, 3, 7));
         });
 
         it('should build', function() {
@@ -2860,8 +2860,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/2010-04-071_3');
-            assert.strictEqual(+stateController.stateContext.data.x, +new Date(2010, 3, 7));
+            var { data } = stateController.parseLink('/2010-04-071_3');
+            assert.strictEqual(+data.x, +new Date(2010, 3, 7));
         });
 
         it('should build', function() {
@@ -2879,10 +2879,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=ab1_a0&x=cde');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cde');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=ab1_a0&x=cde');
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cde');
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -2900,10 +2900,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab1-cde1_a0');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cde');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/ab1-cde1_a0');
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cde');
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -2921,10 +2921,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=1241_a2&x=35');
-            assert.strictEqual(stateController.stateContext.data.x[0], 124);
-            assert.strictEqual(stateController.stateContext.data.x[1], 35);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=1241_a2&x=35');
+            assert.strictEqual(data.x[0], 124);
+            assert.strictEqual(data.x[1], 35);
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -2942,10 +2942,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/1241-351_a2');
-            assert.strictEqual(stateController.stateContext.data.x[0], 124);
-            assert.strictEqual(stateController.stateContext.data.x[1], 35);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/1241-351_a2');
+            assert.strictEqual(data.x[0], 124);
+            assert.strictEqual(data.x[1], 35);
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -2963,10 +2963,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=true1_a1&x=false');
-            assert.strictEqual(stateController.stateContext.data.x[0], true);
-            assert.strictEqual(stateController.stateContext.data.x[1], false);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=true1_a1&x=false');
+            assert.strictEqual(data.x[0], true);
+            assert.strictEqual(data.x[1], false);
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -2984,10 +2984,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/true1-false1_a1');
-            assert.strictEqual(stateController.stateContext.data.x[0], true);
-            assert.strictEqual(stateController.stateContext.data.x[1], false);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/true1-false1_a1');
+            assert.strictEqual(data.x[0], true);
+            assert.strictEqual(data.x[1], false);
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -3005,10 +3005,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=2010-04-071_a3&x=2011-08-03');
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
-            assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=2010-04-071_a3&x=2011-08-03');
+            assert.strictEqual(+data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+data.x[1], +new Date(2011, 7, 3));
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -3026,10 +3026,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/20100-040-071-20110-080-031_a3');
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
-            assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/20100-040-071-20110-080-031_a3');
+            assert.strictEqual(+data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+data.x[1], +new Date(2011, 7, 3));
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -3050,8 +3050,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abc?x=a+b');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
+            var { data } = stateController.parseLink('/abc?x=a+b');
+            assert.strictEqual(data.x, 'a b');
         });
 
         it('should build', function() {
@@ -3072,8 +3072,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a+b');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
+            var { data } = stateController.parseLink('/a+b');
+            assert.strictEqual(data.x, 'a b');
         });
 
         it('should build', function() {
@@ -3098,9 +3098,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a%20b?y=c+d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a%20b?y=c+d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3125,9 +3125,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a+b?y=c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a+b?y=c%20d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3157,10 +3157,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a?x=c+d');
-            assert.strictEqual(stateController.stateContext.data.x, 'c d');
-            stateController.navigateLink('/b?x=c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'c d');
+            var { data } = stateController.parseLink('/a?x=c+d');
+            assert.strictEqual(data.x, 'c d');
+            var { data } = stateController.parseLink('/b?x=c%20d');
+            assert.strictEqual(data.x, 'c d');
         });
 
         it('should build', function() {
@@ -3191,10 +3191,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a/c+d');
-            assert.strictEqual(stateController.stateContext.data.x, 'c d');
-            stateController.navigateLink('/b/c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'c d');
+            var { data } = stateController.parseLink('/a/c+d');
+            assert.strictEqual(data.x, 'c d');
+            var { data } = stateController.parseLink('/b/c%20d');
+            assert.strictEqual(data.x, 'c d');
         });
 
         it('should build', function() {
@@ -3226,10 +3226,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a/c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'c d');
-            stateController.navigateLink('/b/c+d');
-            assert.strictEqual(stateController.stateContext.data.x, 'c d');
+            var { data } = stateController.parseLink('/a/c%20d');
+            assert.strictEqual(data.x, 'c d');
+            var { data } = stateController.parseLink('/b/c+d');
+            assert.strictEqual(data.x, 'c d');
         });
 
         it('should build', function() {
@@ -3255,9 +3255,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a%20b?y=c+d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a%20b?y=c+d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3282,9 +3282,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a+b?y=c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a+b?y=c%20d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3309,9 +3309,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a+b/c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a+b/c%20d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3336,9 +3336,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a+b?y=c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a+b?y=c%20d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3363,9 +3363,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/aba+b?y=c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/aba+b?y=c%20d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3390,9 +3390,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=a%20b&y=c+d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/?x=a%20b&y=c+d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3417,8 +3417,8 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?a+b=c%20d');
-            assert.strictEqual(stateController.stateContext.data['a b'], 'c d');
+            var { data } = stateController.parseLink('/?a+b=c%20d');
+            assert.strictEqual(data['a b'], 'c d');
         });
 
         it('should build', function() {
@@ -3443,9 +3443,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?a+b=c%20d&e%20f=g%20h');
-            assert.strictEqual(stateController.stateContext.data['a b'], 'c d');
-            assert.strictEqual(stateController.stateContext.data['e f'], 'g h');
+            var { data } = stateController.parseLink('/?a+b=c%20d&e%20f=g%20h');
+            assert.strictEqual(data['a b'], 'c d');
+            assert.strictEqual(data['e f'], 'g h');
         });
 
         it('should build', function() {
@@ -3466,9 +3466,9 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a%20b?y=c%20d');
-            assert.strictEqual(stateController.stateContext.data.x, 'a b');
-            assert.strictEqual(stateController.stateContext.data.y, 'c d');
+            var { data } = stateController.parseLink('/a%20b?y=c%20d');
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(data.y, 'c d');
         });
 
         it('should build', function() {
@@ -3489,10 +3489,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=a+b&x=c+de');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a b');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'c de');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=a+b&x=c+de');
+            assert.strictEqual(data.x[0], 'a b');
+            assert.strictEqual(data.x[1], 'c de');
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -3517,10 +3517,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=a+b&x=c+de');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a b');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'c de');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/?x=a+b&x=c+de');
+            assert.strictEqual(data.x[0], 'a b');
+            assert.strictEqual(data.x[1], 'c de');
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -3545,12 +3545,12 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/?x=a+b&x=c+de&y=f%20g');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a b');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'c de');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'f g');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
+            var { data } = stateController.parseLink('/?x=a+b&x=c+de&y=f%20g');
+            assert.strictEqual(data.x[0], 'a b');
+            assert.strictEqual(data.x[1], 'c de');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.y[0], 'f g');
+            assert.strictEqual(data.y.length, 1);
         });
 
         it('should build', function() {
@@ -3580,14 +3580,14 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a?x=a+b&x=c+de');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a b');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'c de');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            stateController.navigateLink('/b?x=a%20b&x=c%20de');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a b');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'c de');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/a?x=a+b&x=c+de');
+            assert.strictEqual(data.x[0], 'a b');
+            assert.strictEqual(data.x[1], 'c de');
+            assert.strictEqual(data.x.length, 2);
+            var { data } = stateController.parseLink('/b?x=a%20b&x=c%20de');
+            assert.strictEqual(data.x[0], 'a b');
+            assert.strictEqual(data.x[1], 'c de');
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -3609,8 +3609,8 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x, undefined);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x, undefined);
         });
 
         it('should build', function() {
@@ -3631,7 +3631,7 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should not build', function() {
@@ -3652,7 +3652,7 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
         });
 
         it('should not build', function() {
@@ -3670,43 +3670,43 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'abcd');
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            stateController.navigateLink('/ab/cd?y=efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab//cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], null);
-            assert.strictEqual(stateController.stateContext.data.x[2], 'cd');
-            stateController.navigateLink('//ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], null);
-            assert.strictEqual(stateController.stateContext.data.x[1], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[2], 'cd');
-            stateController.navigateLink('/ab/cd//');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[2], null);
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'abcd');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+            var { data } = stateController.parseLink('/ab/cd?y=efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab//cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], null);
+            assert.strictEqual(data.x[2], 'cd');
+            var { data } = stateController.parseLink('//ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], null);
+            assert.strictEqual(data.x[1], 'ab');
+            assert.strictEqual(data.x[2], 'cd');
+            var { data } = stateController.parseLink('/ab/cd//');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+            assert.strictEqual(data.x[2], null);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3733,20 +3733,20 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ef');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'ghi');
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'abcd');
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ef');
+            assert.strictEqual(data.x[1], 'ghi');
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'abcd');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
         });
 
         it('should build', function() {
@@ -3768,41 +3768,41 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'abcd');
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            stateController.navigateLink('/ab/cd?y=efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/ab//cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], null);
-            assert.strictEqual(stateController.stateContext.data.x[2], 'cd');
-            stateController.navigateLink('//ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], null);
-            assert.strictEqual(stateController.stateContext.data.x[1], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[2], 'cd');
-            stateController.navigateLink('/ab/cd//');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[2], null);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'abcd');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+            var { data } = stateController.parseLink('/ab/cd?y=efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/ab//cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], null);
+            assert.strictEqual(data.x[2], 'cd');
+            var { data } = stateController.parseLink('//ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], null);
+            assert.strictEqual(data.x[1], 'ab');
+            assert.strictEqual(data.x[2], 'cd');
+            var { data } = stateController.parseLink('/ab/cd//');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+            assert.strictEqual(data.x[2], null);
         });
 
         it('should build', function() {
@@ -3827,44 +3827,44 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            stateController.navigateLink('/ab/cd/efg?y=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y, 'hi');
-            stateController.navigateLink('/ab/cd//efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], null);
-            assert.strictEqual(stateController.stateContext.data.x[2], 'efg');
-            stateController.navigateLink('/ab//cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], null);
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[2], 'efg');
-            stateController.navigateLink('/ab/cd/efg//');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.x[2], null);
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?y=hi');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            assert.strictEqual(data.y, 'hi');
+            var { data } = stateController.parseLink('/ab/cd//efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], null);
+            assert.strictEqual(data.x[2], 'efg');
+            var { data } = stateController.parseLink('/ab//cd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], null);
+            assert.strictEqual(data.x[1], 'cd');
+            assert.strictEqual(data.x[2], 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg//');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            assert.strictEqual(data.x[2], null);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3891,24 +3891,24 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ef');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'ghi');
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ef');
+            assert.strictEqual(data.x[1], 'ghi');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3929,50 +3929,50 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'efg');
-            stateController.navigateLink('/ab/cd/efg?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
-            stateController.navigateLink('/ab/cd//efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 3);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], null);
-            assert.strictEqual(stateController.stateContext.data.y[2], 'efg');
-            stateController.navigateLink('/ab//cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 3);
-            assert.strictEqual(stateController.stateContext.data.y[0], null);
-            assert.strictEqual(stateController.stateContext.data.y[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[2], 'efg');
-            stateController.navigateLink('/ab/cd/efg//');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 3);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y[2], null);
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'cd');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], 'efg');
+            assert.strictEqual(data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cd//efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 3);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], null);
+            assert.strictEqual(data.y[2], 'efg');
+            var { data } = stateController.parseLink('/ab//cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 3);
+            assert.strictEqual(data.y[0], null);
+            assert.strictEqual(data.y[1], 'cd');
+            assert.strictEqual(data.y[2], 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg//');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 3);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], 'efg');
+            assert.strictEqual(data.y[2], null);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -4002,52 +4002,52 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            stateController.navigateLink('/ab/cd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            stateController.navigateLink('/ab/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'efg');
-            stateController.navigateLink('/ab/cd/efg?z=hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 3);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.z, 'hi');
-            stateController.navigateLink('/ab/cd//efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 3);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], null);
-            assert.strictEqual(stateController.stateContext.data.y[2], 'efg');
-            stateController.navigateLink('/ab//cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 3);
-            assert.strictEqual(stateController.stateContext.data.y[0], null);
-            assert.strictEqual(stateController.stateContext.data.y[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[2], 'efg');
-            stateController.navigateLink('/ab/cd/efg//');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 3);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y[2], null);
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            var { data } = stateController.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'cd');
+            var { data } = stateController.parseLink('/ab/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg?z=hi');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], 'efg');
+            assert.strictEqual(data.z, 'hi');
+            var { data } = stateController.parseLink('/ab/cd//efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 3);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], null);
+            assert.strictEqual(data.y[2], 'efg');
+            var { data } = stateController.parseLink('/ab//cd/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 3);
+            assert.strictEqual(data.y[0], null);
+            assert.strictEqual(data.y[1], 'cd');
+            assert.strictEqual(data.y[2], 'efg');
+            var { data } = stateController.parseLink('/ab/cd/efg//');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y.length, 3);
+            assert.strictEqual(data.y[0], 'cd');
+            assert.strictEqual(data.y[1], 'efg');
+            assert.strictEqual(data.y[2], null);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -4077,50 +4077,50 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/cd/ab/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'efg');
-            stateController.navigateLink('/cd/efg/ab/hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'hi');
-            stateController.navigateLink('/cd/ab/efg/hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'hi');
-            stateController.navigateLink('/cd/efg/ab/hij/kl');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'hij');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'kl');
-            stateController.navigateLink('//cd/ab/efg//');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], null);
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cd');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y[1], null);
+            var { data } = stateController.parseLink('/cd/ab/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'efg');
+            var { data } = stateController.parseLink('/cd/efg/ab/hi');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'hi');
+            var { data } = stateController.parseLink('/cd/ab/efg/hi');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'efg');
+            assert.strictEqual(data.y[1], 'hi');
+            var { data } = stateController.parseLink('/cd/efg/ab/hij/kl');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'hij');
+            assert.strictEqual(data.y[1], 'kl');
+            var { data } = stateController.parseLink('//cd/ab/efg//');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], null);
+            assert.strictEqual(data.x[1], 'cd');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'efg');
+            assert.strictEqual(data.y[1], null);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cd/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cd/efg/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cd/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cd/efg/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -4148,24 +4148,24 @@ describe('MatchTest', function () {
         });
         
         it('should match', function() {
-            stateController.navigateLink('/a/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            stateController.navigateLink('/a/cd1_0');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            stateController.navigateLink('/b/cd1_0/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x, 'cd');
-            assert.strictEqual(stateController.stateContext.data.y, 'efg');
-            stateController.navigateLink('/b/cd1-efg/hi');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 2);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            assert.strictEqual(stateController.stateContext.data.y, 'hi');
+            var { data } = stateController.parseLink('/a/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            var { data } = stateController.parseLink('/a/cd1_0');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            var { data } = stateController.parseLink('/b/cd1_0/efg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'efg');
+            var { data } = stateController.parseLink('/b/cd1-efg/hi');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            assert.strictEqual(data.y, 'hi');
         });
 
         it('should build', function() {
@@ -4186,33 +4186,33 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/cd/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            stateController.navigateLink('/cd/efg/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
-            stateController.navigateLink('/cde/fg/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cde');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'fg');
-            stateController.navigateLink('/cde1-fg/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cde1-fg');
-            stateController.navigateLink('/true1_1/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, true);
+            var { data } = stateController.parseLink('/cd/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            var { data } = stateController.parseLink('/cd/efg/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+            var { data } = stateController.parseLink('/cde/fg/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cde');
+            assert.strictEqual(data.x[1], 'fg');
+            var { data } = stateController.parseLink('/cde1-fg/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cde1-fg');
+            var { data } = stateController.parseLink('/true1_1/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, true);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cd'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -4235,26 +4235,26 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcde/fg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cde');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'fg');
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            stateController.navigateLink('/abcd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'cd');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'efg');
+            var { data } = stateController.parseLink('/abcde/fg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cde');
+            assert.strictEqual(data.x[1], 'fg');
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            var { data } = stateController.parseLink('/abcd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/acd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/acd'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -4274,20 +4274,20 @@ describe('MatchTest', function () {
                 ]);
         });
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'bc');
-            stateController.navigateLink('/a/bc');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'bc');
-            stateController.navigateLink('/3');
-            assert.strictEqual(stateController.stateContext.data.x, 3);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'a');
+            assert.strictEqual(data.x[1], 'bc');
+            var { data } = stateController.parseLink('/a/bc');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'a');
+            assert.strictEqual(data.x[1], 'bc');
+            var { data } = stateController.parseLink('/3');
+            assert.strictEqual(data.x, 3);
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/1/2'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/1/2'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -4307,19 +4307,19 @@ describe('MatchTest', function () {
                 ]);
         });
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a');
-            stateController.navigateLink('/a');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a');
-            stateController.navigateLink('/3');
-            assert.strictEqual(stateController.stateContext.data.x, 3);
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'a');
+            var { data } = stateController.parseLink('/a');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'a');
+            var { data } = stateController.parseLink('/3');
+            assert.strictEqual(data.x, 3);
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/b'), /not a valid number/, '');
-            assert.throws(() => stateController.navigateLink('/1/2'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/b'), /not a valid number/, '');
+            assert.throws(() => stateController.parseLink('/1/2'), /not a valid number/, '');
         });
 
         it('should build', function() {
@@ -4340,10 +4340,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
+            var { data } = stateController.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'ab');
         });
 
         it('should build', function() {
@@ -4364,10 +4364,10 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/a+b/c+de');
-            assert.strictEqual(stateController.stateContext.data.x[0], 'a b');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'c de');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
+            var { data } = stateController.parseLink('/a+b/c+de');
+            assert.strictEqual(data.x[0], 'a b');
+            assert.strictEqual(data.x[1], 'c de');
+            assert.strictEqual(data.x.length, 2);
         });
 
         it('should build', function() {
@@ -4385,16 +4385,16 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/123');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 123);
-            stateController.navigateLink('/12/345/67');
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], 12);
-            assert.strictEqual(stateController.stateContext.data.x[1], 345);
-            assert.strictEqual(stateController.stateContext.data.x[2], 67);
-            stateController.navigateLink('/ab1_0');
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/123');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 123);
+            var { data } = stateController.parseLink('/12/345/67');
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], 12);
+            assert.strictEqual(data.x[1], 345);
+            assert.strictEqual(data.x[2], 67);
+            var { data } = stateController.parseLink('/ab1_0');
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should build', function() {
@@ -4414,16 +4414,16 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/true');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], true);
-            stateController.navigateLink('/true/false/true');
-            assert.strictEqual(stateController.stateContext.data.x.length, 3);
-            assert.strictEqual(stateController.stateContext.data.x[0], true);
-            assert.strictEqual(stateController.stateContext.data.x[1], false);
-            assert.strictEqual(stateController.stateContext.data.x[2], true);
-            stateController.navigateLink('/ab1_0');
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/true');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], true);
+            var { data } = stateController.parseLink('/true/false/true');
+            assert.strictEqual(data.x.length, 3);
+            assert.strictEqual(data.x[0], true);
+            assert.strictEqual(data.x[1], false);
+            assert.strictEqual(data.x[2], true);
+            var { data } = stateController.parseLink('/ab1_0');
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should build', function() {
@@ -4443,15 +4443,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/2010-04-07');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
-            stateController.navigateLink('/2010-04-07/2011-08-03');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
-            assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
-            stateController.navigateLink('/ab1_0');
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/2010-04-07');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(+data.x[0], +new Date(2010, 3, 7));
+            var { data } = stateController.parseLink('/2010-04-07/2011-08-03');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(+data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+data.x[1], +new Date(2011, 7, 3));
+            var { data } = stateController.parseLink('/ab1_0');
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should build', function() {
@@ -4471,19 +4471,19 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2011, 7, 3));
-            assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2010, 3, 7));
-            stateController.navigateLink('/2010-04-07');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
-            stateController.navigateLink('/2010-04-07/2011-08-03');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(+stateController.stateContext.data.x[0], +new Date(2010, 3, 7));
-            assert.strictEqual(+stateController.stateContext.data.x[1], +new Date(2011, 7, 3));
-            stateController.navigateLink('/ab1_0');
-            assert.strictEqual(stateController.stateContext.data.x, 'ab');
+            var { data } = stateController.parseLink('/');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(+data.x[0], +new Date(2011, 7, 3));
+            assert.strictEqual(+data.x[1], +new Date(2010, 3, 7));
+            var { data } = stateController.parseLink('/2010-04-07');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(+data.x[0], +new Date(2010, 3, 7));
+            var { data } = stateController.parseLink('/2010-04-07/2011-08-03');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(+data.x[0], +new Date(2010, 3, 7));
+            assert.strictEqual(+data.x[1], +new Date(2011, 7, 3));
+            var { data } = stateController.parseLink('/ab1_0');
+            assert.strictEqual(data.x, 'ab');
         });
 
         it('should build', function() {
@@ -4505,25 +4505,25 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ef');
-            stateController.navigateLink('/ab/ef/gh');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ef');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'gh');
-            stateController.navigateLink('/cd/ef');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'ef');
+            var { data } = stateController.parseLink('/ab/ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'ef');
+            var { data } = stateController.parseLink('/ab/ef/gh');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ef');
+            assert.strictEqual(data.x[1], 'gh');
+            var { data } = stateController.parseLink('/cd/ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ef');
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/aa/bbb'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cd'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/cd/ef/gh'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/aa/bbb'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/cd/ef/gh'), /Url is invalid/, '');
         });
     });
 
@@ -4537,15 +4537,15 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/abcd');
-            assert.strictEqual(stateController.stateContext.data.x, 'abcd');
-            stateController.navigateLink('/1231_2');
-            assert.strictEqual(stateController.stateContext.data.x, 123);
+            var { data } = stateController.parseLink('/abcd');
+            assert.strictEqual(data.x, 'abcd');
+            var { data } = stateController.parseLink('/1231_2');
+            assert.strictEqual(data.x, 123);
         });
 
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/'), /Url is invalid/, '');
-            assert.throws(() => stateController.navigateLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cd'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -4568,30 +4568,30 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/ab/cde?y=fgh&y=ij');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cde');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'fgh');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'ij');
-            stateController.navigateLink('/ab?y=fgh&y=ij');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 2);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'fgh');
-            assert.strictEqual(stateController.stateContext.data.y[1], 'ij');
-            stateController.navigateLink('/ab/cde?y=fgh');
-            assert.strictEqual(stateController.stateContext.data.x.length, 2);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.x[1], 'cde');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'fgh');
-            stateController.navigateLink('/ab?y=fgh');
-            assert.strictEqual(stateController.stateContext.data.x.length, 1);
-            assert.strictEqual(stateController.stateContext.data.x[0], 'ab');
-            assert.strictEqual(stateController.stateContext.data.y.length, 1);
-            assert.strictEqual(stateController.stateContext.data.y[0], 'fgh');
+            var { data } = stateController.parseLink('/ab/cde?y=fgh&y=ij');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cde');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'fgh');
+            assert.strictEqual(data.y[1], 'ij');
+            var { data } = stateController.parseLink('/ab?y=fgh&y=ij');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'fgh');
+            assert.strictEqual(data.y[1], 'ij');
+            var { data } = stateController.parseLink('/ab/cde?y=fgh');
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cde');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'fgh');
+            var { data } = stateController.parseLink('/ab?y=fgh');
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'fgh');
         });
 
         it('should build', function() {
@@ -4616,13 +4616,13 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
-            stateController.navigateLink('/cd/efg');
-            assert.strictEqual(Object.keys(stateController.stateContext.data).length, 1);
-            assert.strictEqual(stateController.stateContext.data.x, 'efg');
+            var { data } = stateController.parseLink('/cd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'efg');
         });
         
         it('should not match', function() {
-            assert.throws(() => stateController.navigateLink('/ab/cde'), /Url is invalid/, '');
+            assert.throws(() => stateController.parseLink('/ab/cde'), /Url is invalid/, '');
         });
 
         it('should build', function() {
