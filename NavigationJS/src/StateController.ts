@@ -10,7 +10,6 @@ import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
 import StateInfoConfig = require('./StateInfoConfig');
-import IRouter = require('./config/IRouter');
 import StateRouter = require('./StateRouter');
 import ITransition = require('./config/ITransition');
 
@@ -19,7 +18,7 @@ class StateController {
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
     private converterFactory: ConverterFactory = new ConverterFactory();
-    private router: IRouter = new StateRouter();
+    private router: StateRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
     historyManager: IHistoryManager;
     dialogs: { [index: string]: Dialog } = {};
