@@ -101,6 +101,8 @@ class StateController {
         delete this.stateContext.data[this.stateContext.state.crumbTrailKey];
         this.stateContext.crumbs = this.getCrumbs();
         var crumblessLink = this.getLink(this.stateContext.state, this.stateContext.data, []);
+        if (!crumblessLink)
+            throw new Error(this.stateContext.state.crumbTrailKey + ' cannot be a mandatory route parameter')
         this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, this.stateContext.url, crumblessLink, false);
     }
 
