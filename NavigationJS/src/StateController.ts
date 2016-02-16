@@ -171,7 +171,9 @@ class StateController {
     }
 
     getNavigationBackLink(distance: number): string {
-        return this.getCrumb(distance).navigationLink;
+        if (!this.canNavigateBack(distance))
+            throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
+        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].navigationLink;
     }
 
     refresh(toData?: any, historyAction?: HistoryAction) {
@@ -259,12 +261,6 @@ class StateController {
         if (!nextState)
             throw new Error('The action parameter must be a Dialog key or a Transition key that is a child of the current State');
         return nextState;
-    }
-
-    private getCrumb(distance: number): Crumb {
-        if (!this.canNavigateBack(distance))
-            throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
-        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance];
     }
     
     start(url?: string) {
