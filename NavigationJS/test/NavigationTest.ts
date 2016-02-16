@@ -5458,4 +5458,17 @@ describe('Navigation', function () {
             assert.throws(() => stateController.navigateLink('/r2?crumb=www.google.com'), /is not a valid crumb/);
         });
     });
+    
+    describe('Crumb Trail Invalid', function() {
+        it ('should throw error', function() {
+            var stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2' }]}
+                ]);
+            assert.throws(() => stateController.navigateLink('/r2?crumb=%2Fr3'), /The Url is invalid/);
+        });
+    });
 });

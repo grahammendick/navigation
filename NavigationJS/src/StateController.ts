@@ -199,12 +199,8 @@ class StateController {
     }
 
     private _navigateLink(url: string, state: State, historyAction = HistoryAction.Add, history = false) {
-        try {
-            var oldUrl = this.stateContext.url;
-            var data = this.parseLink(url, state).data;
-        } catch (e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
+        var oldUrl = this.stateContext.url;
+        var data = this.parseLink(url, state).data;
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -239,11 +235,15 @@ class StateController {
     }
     
     parseLink(url: string, state?: State): { state: State, data: any } {
-        if (!state)
-            state = this.router.getData(url.split('?')[0]).state;
-        var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
-        data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
-        return { state: state, data: data };
+        try {
+            if (!state)
+                state = this.router.getData(url.split('?')[0]).state;
+            var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
+            data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
+            return { state: state, data: data };
+        } catch (e) {
+            throw new Error('The Url is invalid\n' + e.message);
+        }
     }
     
     private isDefault(key: string, data: any, state: State, separable: boolean) {
