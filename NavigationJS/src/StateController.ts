@@ -160,11 +160,8 @@ class StateController {
     }
 
     canNavigateBack(distance: number) {
-        var canNavigate = false;
-        if (distance <= this.stateContext.crumbs.length && distance > 0)
-            canNavigate = true;
-            return canNavigate
-        }
+        return distance <= this.stateContext.crumbs.length && distance > 0;
+    }
 
     navigateBack(distance: number, historyAction?: HistoryAction) {
         var url = this.getNavigationBackLink(distance);
