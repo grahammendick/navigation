@@ -9,35 +9,6 @@ module NavigationTests {
 	    }
 	}
 	
-	// Crumb Trail Persister
-	class LogCrumbTrailPersister extends Navigation.CrumbTrailPersister {
-		load(crumbTrail: string): string {
-			console.log('load');
-			return crumbTrail;
-		}
-		
-		save(crumbTrail: string): string {
-			console.log('save');
-			return crumbTrail;
-		}
-	}
-	
-	// State Router
-	class LogStateRouter extends Navigation.StateRouter {
-	    getData(route: string): { state: Navigation.State; data: any; separableData: any; } {
-			console.log('get data');
-			return super.getData(route);
-	    }
-	}
-	
-	// Settings
-    var settings = {
-	   router: new LogStateRouter(),
-	   historyManager: new LogHistoryManager(),
-	   crumbTrailPersister: new LogCrumbTrailPersister(),
-	   stateIdKey: 'state'
-    }
-	
 	// Configuration
 	var config = [
 		{ key: 'home', initial: 'page', help: 'home.htm', states: [
@@ -50,7 +21,7 @@ module NavigationTests {
 			{ key: 'details', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' } }
 		]}
 	];
-    var stateController = new Navigation.StateController(config, settings);
+    var stateController = new Navigation.StateController(config, new LogHistoryManager());
 	
 	// StateInfo
 	var dialogs = stateController.dialogs;
