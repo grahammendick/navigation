@@ -3596,22 +3596,6 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Router Empty Decode', function () {
-        it('should match', function() {
-            var router = new Navigation.Router();
-            var route = router.addRoute('{x}');
-            assert.strictEqual(router.match('/a%20b').data.x, 'a b');
-        })
-    });
-
-    describe('Router Empty Encode', function () {
-        it('should build', function() {
-            var router = new Navigation.Router();
-            var route = router.addRoute('{x}');
-            assert.strictEqual(route.build({ x: 'a b' }), '/a%20b');
-        })
-    });
-
     describe('One Optional Empty Param Route Encode', function () {
         var stateController: StateController;
         beforeEach(function () {
