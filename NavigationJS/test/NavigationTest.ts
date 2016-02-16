@@ -5451,14 +5451,14 @@ describe('Navigation', function () {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: '{x}', transitions: [
-                        { key: 't', to: 's2' }
+                        { key: 't', to: 's1' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's1', route: 'r1' }]}
                 ]);
-            stateController.navigateLink('/r2?crumb=%2Fwww.google.com');
+            stateController.navigateLink('/r1?crumb=%2Fwww.google.com');
             stateController.navigateBack(1);
             assert(stateController.stateContext.data.x, 'www.google.com');
-            assert.throws(() => stateController.navigateLink('/r2?crumb=www.google.com'), /is not a valid crumb/);
+            assert.throws(() => stateController.navigateLink('/r1?crumb=www.google.com'), /is not a valid crumb/);
         });
     });
     
@@ -5466,12 +5466,33 @@ describe('Navigation', function () {
         it ('should throw error', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r1', transitions: [
-                        { key: 't', to: 's2' }
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's1', route: 'r1' }]}
                 ]);
-            assert.throws(() => stateController.navigateLink('/r2?crumb=%2Fr3'), /The Url is invalid/);
+            assert.throws(() => stateController.navigateLink('/r1?crumb=%2Fr2'), /The Url is invalid/);
+        });
+    });
+    
+    describe('Crumb Trail Encode', function() {
+        it ('should throw error', function() {
+            var stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            var state = stateController.dialogs['d'].states['s1'];
+            state.stateHandler.urlEncode = (state, key, val) => {
+                return encodeURIComponent(val).replace('%2F', '/');
+            }
+            stateController.navigate('d');
+            stateController.navigate('t');
+            assert.equal(stateController.stateContext.url, '/r1?crumb=/r0');
+            stateController.navigateBack(1);
+            assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s0']);
         });
     });
 });
