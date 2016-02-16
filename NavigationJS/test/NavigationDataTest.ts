@@ -860,6 +860,136 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Array Data Route Back', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['array_string'] = ['He-llo', 'World'];
+        data['array_boolean'] = ['', true, false];
+        data['array_number'] = [1, null, undefined, 2];
+        data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        data['array_blank'] = ['', null, undefined];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d', data);
+                stateController.navigate('t');
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d', data);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateController.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateController.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][1], true);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][2], false);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(stateController.stateContext.data['array_number'][0], 1);
+                assert.strictEqual(stateController.stateContext.data['array_number'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][3], 2);
+                assert.strictEqual(stateController.stateContext.data['array_number'].length, 4);
+                assert.strictEqual(+stateController.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateController.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateController.stateContext.data['array_date'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 5);
+            });
+        }
+    });
+
+    describe('Navigate Array Data Splat Back', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['array_string'] = ['He-llo', 'World'];
+        data['array_boolean'] = ['', true, false];
+        data['array_number'] = [1, null, undefined, 2];
+        data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        data['array_blank'] = ['', null, undefined];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d', data);
+                stateController.navigate('t');
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d', data);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateController.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateController.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][1], true);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][2], false);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(stateController.stateContext.data['array_number'][0], 1);
+                assert.strictEqual(stateController.stateContext.data['array_number'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][3], 2);
+                assert.strictEqual(stateController.stateContext.data['array_number'].length, 4);
+                assert.strictEqual(+stateController.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateController.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateController.stateContext.data['array_date'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 5);
+            });
+        }
+    });
+
     describe('Navigate Empty String Data Back', function() {
         var stateController: StateController;
         beforeEach(function() {
