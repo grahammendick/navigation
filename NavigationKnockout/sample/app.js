@@ -47,7 +47,7 @@ var stateController = new Navigation.StateController([
 	{ key: 'person', initial: 'list', states: [
 		{ key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search', transitions: [
 			{ key: 'select', to: 'details' }]},
-		{ key: 'details', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, title: 'Person Details' }]}
+		{ key: 'details', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }]}
 ]);
 //stateController.historyManager.replaceQueryIdentifier = true;
 ko.applyBindings(new PersonViewModel(stateController));
