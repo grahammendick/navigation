@@ -495,7 +495,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -576,7 +576,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -706,7 +706,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         
@@ -754,7 +754,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -803,7 +803,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -868,7 +868,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -933,7 +933,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -998,7 +998,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -1042,7 +1042,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -1086,7 +1086,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -1136,7 +1136,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -1585,10 +1585,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {
@@ -1639,10 +1639,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data1 = {};
@@ -1701,10 +1701,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data1: any = {};
@@ -1755,10 +1755,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data1 = {};
@@ -1825,7 +1825,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -2291,10 +2291,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         
@@ -2339,10 +2339,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         
@@ -2387,10 +2387,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = { s: 1, t: '2' };
@@ -2438,10 +2438,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = { s: 1, t: '2' };
@@ -2489,10 +2489,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = { emptyString: 'World', 'number': 1, char: 5 };
@@ -2538,10 +2538,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = { emptyString: 'World', 'number': 1, char: 5 };
@@ -2587,13 +2587,13 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's2', route: 'r2', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's3' }
                     ]},
-                    { key: 's3', route: 'r3' }]}
+                    { key: 's3', route: 'r3', trackCrumbTrail: true }]}
                 ]);
         });
         
@@ -2646,13 +2646,13 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's2', route: 'r2/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's3' }
                     ]},
-                    { key: 's3', route: 'r3' }]}
+                    { key: 's3', route: 'r3', trackCrumbTrail: true }]}
                 ]);
         });
         
@@ -2705,10 +2705,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = { s: 1, t: '2' };
@@ -2758,10 +2758,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = { s: 1, t: '2' };
@@ -2813,10 +2813,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -2864,10 +2864,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -2915,15 +2915,15 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', transitions: [
+                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r4' }]}
+                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -2978,15 +2978,15 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', transitions: [
+                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r4' }]}
+                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3041,12 +3041,12 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
+                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3110,12 +3110,12 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
+                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3179,15 +3179,15 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', transitions: [
+                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r4' }]}
+                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3255,15 +3255,15 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', transitions: [
+                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r4' }]}
+                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3331,15 +3331,15 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2', defaults: { emptyString: '', 'number': 4, char: 7 } }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 } }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', transitions: [
+                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r4' }]}
+                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3396,15 +3396,15 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 } }]},
+                    { key: 's2', route: 'r2/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 } }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', transitions: [
+                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r4' }]}
+                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3460,7 +3460,7 @@ describe('Navigation Data', function () {
                 { key: 'd0', initial: 's0', states: [
                     { key: 's0', route: 'r0' }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r1'}]}
+                    { key: 's0', route: 'r1', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3507,7 +3507,7 @@ describe('Navigation Data', function () {
                 { key: 'd0', initial: 's0', states: [
                     { key: 's0', route: 'r/{s}' }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r1'}]}
+                    { key: 's0', route: 'r1', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3555,12 +3555,12 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
+                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3614,12 +3614,12 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
+                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3673,12 +3673,12 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
+                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3730,12 +3730,12 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
+                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -3787,7 +3787,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
          });
         var data = {};
@@ -3877,7 +3877,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
          });
         var data = {};
@@ -3925,7 +3925,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
          });
         var data = {};
@@ -3973,10 +3973,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
          });
         var data1 = {};
@@ -4033,10 +4033,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
          });
         var data1 = {};
@@ -4093,10 +4093,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
          });
         var data1 = {};
@@ -4156,10 +4156,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
          });
         var data1 = {};
@@ -4219,9 +4219,9 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
+                    { key: 's0', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d1'].states['s0'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
@@ -4285,7 +4285,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
          });
         var data = {};
@@ -4381,10 +4381,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { x: 2 }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { x: 2 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
          });
         var data = {};
@@ -4434,10 +4434,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             var data = {};
             data['s'] = 'Hello';
@@ -4462,10 +4462,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             var data = {};
             data['s'] = 'Hello';
@@ -4490,10 +4490,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             var data1 = {};
             data1['s'] = 'Hello';
@@ -4524,7 +4524,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
                 ]);
             var data = {};
             data['_bool'] = null;
@@ -4546,7 +4546,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
                 ]);
             var data = {};
             data['_bool'] = null;
@@ -4568,7 +4568,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
                 ]);
             var data = {};
             data['_bool'] = null;
@@ -4590,10 +4590,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d');
             stateController.navigate('t');
@@ -4615,10 +4615,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r/{char}/{number?}', defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
+                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d');
             stateController.navigate('t');
@@ -4661,10 +4661,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d');
             stateController.navigate('t');
@@ -4687,10 +4687,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
+                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2' }]}
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d');
             stateController.navigate('t');
@@ -4713,7 +4713,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d');
             stateController.stateContext.data['_number'] = 1;
@@ -4924,13 +4924,13 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', defaults: { s: 'b', b: true, n: 0 }, defaultTypes: { s: 'string', b: 'boolean', n: 'number' }, transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { s: 'b', b: true, n: 0 }, defaultTypes: { s: 'string', b: 'boolean', n: 'number' }, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2', transitions: [
+                    { key: 's2', route: 'r2', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's3' }
                     ]},
-                    { key: 's3', route: 'r3' }]}
+                    { key: 's3', route: 'r3', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -5182,10 +5182,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 's0', trackTypes: false, trackCrumbTrail: false, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 's1', transitions: [
+                    { key: 's1', route: 's1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 's2' }]}
+                    { key: 's2', route: 's2', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d', { x: '0_1_2_' });
             stateController.navigate('t');
@@ -5204,10 +5204,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 's0', trackTypes: false, defaults: { x: 2 }, defaultTypes: { y: 'boolean' }, trackCrumbTrail: false, transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 's1', transitions: [
+                    { key: 's1', route: 's1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 's2' }]}
+                    { key: 's2', route: 's2', trackCrumbTrail: true }]}
                 ]);
             stateController.navigate('d', { x: '3', y: 'true' });
             stateController.navigate('t');
@@ -5281,7 +5281,7 @@ describe('Navigation Data', function () {
                 { key: 'd', initial: 's0', states: [
                     { key: 's0', route: 'a/{s}', transitions: [
                         { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'b' }]},
+                    { key: 's1', route: 'b', trackCrumbTrail: true }]},
                 ]);
             var dialog = stateController.dialogs['d'];
             for(var key in dialog.states) {
@@ -5384,14 +5384,14 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
             stateController1 = new Navigation.StateController([
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
         });
         var data0 = {};
@@ -5519,7 +5519,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1/{crumb?}' }]}
+                    { key: 's1', route: 'r1/{crumb?}', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -5568,10 +5568,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', transitions: [
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
                         { key: 't', to: 's2' }
                     ]},
-                    { key: 's2', route: 'r2/{*crumb?}' }]}
+                    { key: 's2', route: 'r2/{*crumb?}', trackCrumbTrail: true }]}
                 ]);
         });
         var data = {};
@@ -5623,7 +5623,7 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1' }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
             var state = stateController.dialogs['d'].states['s1'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
