@@ -17,7 +17,7 @@ class State implements IState<{ [index: string]: Transition }> {
     formattedArrayDefaults: { [index: string]: string[] } = {};
     title: string;
     route: string | string[];
-    trackCrumbTrail: boolean = true;
+    trackCrumbTrail: boolean = false;
     crumbTrailKey: string = 'crumb';
     trackTypes: boolean = true;
     stateHandler: IStateHandler = new StateHandler();

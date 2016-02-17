@@ -6,8 +6,8 @@ var NavigationBackLink = (stateController: Navigation.StateController, propertie
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];
-    var link = stateController.getNavigationBackLink(properties.distance)
     try {
+        var link = stateController.getNavigationBackLink(properties.distance)
         newProperties.href = stateController.historyManager.getHref(link);
     } catch(e) {
     }

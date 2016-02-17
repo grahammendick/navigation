@@ -16,8 +16,8 @@ var NavigationLink = (stateController: Navigation.StateController, properties: a
         active = active && LinkUtility.isActive(stateController, key, properties.toData[key]);
     }
     var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
-    var link = stateController.getNavigationLink(properties.action, properties.toData);
     try {
+        var link = stateController.getNavigationLink(properties.action, properties.toData);
         newProperties.href = stateController.historyManager.getHref(link);
     } catch(e) {
     }

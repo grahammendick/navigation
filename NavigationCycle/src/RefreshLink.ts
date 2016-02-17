@@ -11,8 +11,8 @@ var RefreshLink = (stateController: Navigation.StateController, properties: any,
         active = active && LinkUtility.isActive(stateController, key, properties.toData[key]);
     }
     var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
-    var link = stateController.getRefreshLink(toData);
     try {
+        var link = stateController.getRefreshLink(toData);
         newProperties.href = stateController.historyManager.getHref(link);
     } catch(e) {
     }
