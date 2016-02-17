@@ -140,7 +140,7 @@ describe('StateInfoTest', function () {
                     { key: 's1', route: 'r1', trackCrumbTrail: false },
                     { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
-            assert.equal(stateController._dialogs[0]._states[0].trackCrumbTrail, true);
+            assert.equal(stateController._dialogs[0]._states[0].trackCrumbTrail, false);
             assert.equal(stateController._dialogs[0]._states[1].trackCrumbTrail, false);
             assert.equal(stateController._dialogs[0]._states[2].trackCrumbTrail, true);
         })
