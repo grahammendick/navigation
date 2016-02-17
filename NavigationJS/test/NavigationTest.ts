@@ -1450,13 +1450,17 @@ describe('Navigation', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
                 stateController.navigate('d');
+                stateController.navigate('t');
                 stateController.navigate('t');
                 stateController.navigateBack(1);
                 stateController.refresh();
@@ -1470,6 +1474,8 @@ describe('Navigation', function () {
                 stateController.navigateLink(link);
                 link = stateController.getNavigationLink('t');
                 stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(1);
                 stateController.navigateLink(link);
                 link = stateController.getRefreshLink();
@@ -1479,20 +1485,20 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should go to previous State', function() {
-                assert.equal(stateController.stateContext.state, stateController._dialogs[0].states['s0']);
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController._dialogs[0].states['s1']);
                 assert.equal(stateController.stateContext.dialog, stateController._dialogs[0]);
             });
-            it('should populate old State with previous State', function() {
-                assert.equal(stateController.stateContext.oldState, stateController._dialogs[0].states['s0']);
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController._dialogs[0].states['s1']);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
-            it('should not populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, null);
-                assert.equal(stateController.stateContext.previousDialog, null);
+            it('should populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController._dialogs[0].states['s0']);
+                assert.equal(stateController.stateContext.previousDialog, stateController._dialogs[0]);
             });
-            it('should have no crumb trail', function() {
-                assert.equal(stateController.stateContext.crumbs.length, 0);
+            it('should have crumb trail of length 1', function() {
+                assert.equal(stateController.stateContext.crumbs.length, 1);
             });
         }
     });
@@ -1502,16 +1508,20 @@ describe('Navigation', function () {
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', trackCrumbTrail: false, transitions: [
+                    { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
+                    { key: 's1', route: 'r1', trackCrumbTrail: false, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
                 ]);
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
                 stateController.navigate('d');
+                stateController.navigate('t');
                 stateController.navigate('t');
                 stateController.navigateBack(1);
                 stateController.refresh();
@@ -1525,6 +1535,8 @@ describe('Navigation', function () {
                 stateController.navigateLink(link);
                 link = stateController.getNavigationLink('t');
                 stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(1);
                 stateController.navigateLink(link);
                 link = stateController.getRefreshLink();
@@ -1534,15 +1546,15 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should go to previous State', function() {
-                assert.equal(stateController.stateContext.state, stateController._dialogs[0].states['s0']);
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController._dialogs[0].states['s1']);
                 assert.equal(stateController.stateContext.dialog, stateController._dialogs[0]);
             });
-            it('should populate old State with previous State', function() {
-                assert.equal(stateController.stateContext.oldState, stateController._dialogs[0].states['s0']);
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController._dialogs[0].states['s1']);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
-            it('should note populate previous State', function() {
+            it('should not populate previous State', function() {
                 assert.equal(stateController.stateContext.previousState, null);
                 assert.equal(stateController.stateContext.previousDialog, null);
             });
