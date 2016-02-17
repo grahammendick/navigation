@@ -4317,6 +4317,10 @@ describe('Navigation Data', function () {
                     ]},
                     { key: 's1', route: 'r1', trackCrumbTrail: true }]}
                 ]);
+            var state = stateController.dialogs['d'].states['s1'];
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
          });
         var data = {};
         data['s'] = 'Hello';
@@ -4347,8 +4351,8 @@ describe('Navigation Data', function () {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['t'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
+                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t'], undefined);
             });
@@ -4365,6 +4369,10 @@ describe('Navigation Data', function () {
                     ]},
                     { key: 's1', route: 'r1', trackCrumbTrail: false }]}
                 ]);
+            var state = stateController.dialogs['d'].states['s1'];
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
          });
         var data = {};
         data['s'] = 'Hello';
