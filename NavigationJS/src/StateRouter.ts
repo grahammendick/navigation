@@ -8,7 +8,6 @@ type MatchInfo = { route: Route; data: any; routePath: string };
 
 class StateRouter implements IRouter {
     router: Router;
-    supportsDefaults: boolean = true;
 
     getData(route: string): { state: State; data: any, separableData: any } {
         var match = this.router.match(route, StateRouter.urlDecode);

@@ -5,7 +5,7 @@ interface IState<TTransitions> {
     defaultTypes?: any;
     title?: string;
     route: string | string[];
-    trackCrumbTrail?: boolean;
+    trackCrumbTrail?: boolean | string;
     trackTypes?: boolean;
     [extras: string]: any;
 }

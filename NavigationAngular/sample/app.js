@@ -3,9 +3,9 @@
 app.controller('PersonController', function ($scope) {
     var stateController = new Navigation.StateController([
         { key: 'person', initial: 'list', states: [
-            { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackCrumbTrail: false, title: 'Person Search', transitions: [
+            { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search', transitions: [
                 { key: 'select', to: 'details' }]},
-            { key: 'details', route: 'person', title: 'Person Details', }]}
+            { key: 'details', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, title: 'Person Details', }]}
     ]);
     $scope.stateController = stateController;
 	$scope.id;

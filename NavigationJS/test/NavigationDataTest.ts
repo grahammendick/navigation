@@ -860,6 +860,136 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Array Data Route Back', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['array_string'] = ['He-llo', 'World'];
+        data['array_boolean'] = ['', true, false];
+        data['array_number'] = [1, null, undefined, 2];
+        data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        data['array_blank'] = ['', null, undefined];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d', data);
+                stateController.navigate('t');
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d', data);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateController.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateController.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][1], true);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][2], false);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(stateController.stateContext.data['array_number'][0], 1);
+                assert.strictEqual(stateController.stateContext.data['array_number'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][3], 2);
+                assert.strictEqual(stateController.stateContext.data['array_number'].length, 4);
+                assert.strictEqual(+stateController.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateController.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateController.stateContext.data['array_date'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 5);
+            });
+        }
+    });
+
+    describe('Navigate Array Data Splat Back', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+        });
+        var data = {};
+        data['array_string'] = ['He-llo', 'World'];
+        data['array_boolean'] = ['', true, false];
+        data['array_number'] = [1, null, undefined, 2];
+        data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        data['array_blank'] = ['', null, undefined];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d', data);
+                stateController.navigate('t');
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d', data);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['array_string'][0], 'He-llo');
+                assert.strictEqual(stateController.stateContext.data['array_string'][1], 'World');
+                assert.strictEqual(stateController.stateContext.data['array_string'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][1], true);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'][2], false);
+                assert.strictEqual(stateController.stateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(stateController.stateContext.data['array_number'][0], 1);
+                assert.strictEqual(stateController.stateContext.data['array_number'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_number'][3], 2);
+                assert.strictEqual(stateController.stateContext.data['array_number'].length, 4);
+                assert.strictEqual(+stateController.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
+                assert.strictEqual(+stateController.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
+                assert.strictEqual(stateController.stateContext.data['array_date'].length, 2);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][0], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][1], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'][2], null);
+                assert.strictEqual(stateController.stateContext.data['array_blank'].length, 3);
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 5);
+            });
+        }
+    });
+
     describe('Navigate Empty String Data Back', function() {
         var stateController: StateController;
         beforeEach(function() {
@@ -2777,110 +2907,6 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Override Crumb Defaults', function() {
-        var stateController: StateController;
-        beforeEach(function() {
-            stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-        });
-        var data = {};
-        
-        describe('Navigate', function() {
-            beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t', data);
-                stateController.navigate('t');
-            });
-            test();
-        });
-
-        describe('Navigate Link', function() {
-            beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data);
-                stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
-                stateController.navigateLink(link);
-            });
-            test();
-        });
-
-        function test() {
-            it('should populate data', function () {
-                var crumb = stateController.stateContext.crumbs[1];
-                crumb.data['string'] = 'Hello';
-                crumb.data['number'] = 0;
-                assert.strictEqual(stateController.stateContext.previousData['string'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['_bool'], true);
-                assert.strictEqual(stateController.stateContext.previousData['number'], 1);
-                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
-            });
-        }
-    });
-
-    describe('Override Crumb Defaults Route', function() {
-        var stateController: StateController;
-        beforeEach(function() {
-            stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r/{string}/{number}', defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-        });
-        var data = {};
-        
-        describe('Navigate', function() {
-            beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t', data);
-                stateController.navigate('t');
-            });
-            test();
-        });
-
-        describe('Navigate Link', function() {
-            beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data);
-                stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
-                stateController.navigateLink(link);
-            });
-            test();
-        });
-
-        function test() {
-            it('should populate data', function () {
-                var crumb = stateController.stateContext.crumbs[1];
-                crumb.data['string'] = 'Hello';
-                crumb.data['number'] = 0;
-                assert.strictEqual(stateController.stateContext.previousData['string'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['_bool'], true);
-                assert.strictEqual(stateController.stateContext.previousData['number'], 1);
-                assert.strictEqual(stateController.stateContext.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateController.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateController.stateContext.crumbs[1].data['number'], 0);
-            });
-        }
-    });
-
     describe('Back Defaults Custom Trail', function() {
         var stateController: StateController;
         beforeEach(function() {
@@ -3883,8 +3909,8 @@ describe('Navigation Data', function () {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t'], undefined);
             });
@@ -3989,9 +4015,9 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'World');
                 assert.strictEqual(stateController.stateContext.oldData['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.oldData['t2'], 2);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'World');
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
                 assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['t2'], 2);
+                assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t2'], undefined);
@@ -4112,8 +4138,8 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t1'], 1);
                 assert.strictEqual(stateController.stateContext.oldData['t2'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t1'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t2'], undefined);
@@ -4241,8 +4267,8 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t1'], 1);
                 assert.strictEqual(stateController.stateContext.oldData['t2'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t1'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
                 assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t2'], undefined);
@@ -4291,8 +4317,8 @@ describe('Navigation Data', function () {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
                 assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
+                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateController.stateContext.previousData['t'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t'], undefined);
             });
@@ -4380,62 +4406,6 @@ describe('Navigation Data', function () {
                 stateController.navigateLink(link);
                 link = stateController.getNavigationLink('t', data);
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
-                stateController.navigateLink(link);
-            });
-            test();
-        });
-
-        function test() {
-            it('should populate old and previous data', function () {
-                assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.oldData['t'], 1);
-                assert.strictEqual(stateController.stateContext.oldData['x'], 2);
-                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.previousData['t'], 1);
-                assert.strictEqual(stateController.stateContext.previousData['x'], 2);
-                assert.strictEqual(stateController.stateContext.data['s'], undefined);
-                assert.strictEqual(stateController.stateContext.data['t'], undefined);
-                assert.strictEqual(stateController.stateContext.data['x'], undefined);
-            });
-        }
-    });
-
-    describe('Navigate Previous Data Clear Defaults', function() {
-        var stateController: StateController;
-        beforeEach(function() {
-            stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', defaults: { x: 2 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-         });
-        var data = {};
-        data['s'] = 'Hello';
-        data['t'] = 1;
-        
-        describe('Navigate', function() {
-            beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t', data);
-                stateController.stateContext.data.x = null;
-                stateController.navigate('t');
-            });
-            test();
-        });
-
-        describe('Navigate Link', function() {
-            beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
-                stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data);
-                stateController.navigateLink(link);
-                stateController.stateContext.data.x = null;
                 link = stateController.getNavigationLink('t');
                 stateController.navigateLink(link);
             });
@@ -4806,7 +4776,7 @@ describe('Navigation Data', function () {
             var data = { s1: 'hello', s2: 'world' };
             var url = stateController.getNavigationLink('d', data);
             assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world2_'), -1);
+            assert.notEqual(url.indexOf('s2=world1_'), -1);
         });
     });
 
@@ -4819,7 +4789,7 @@ describe('Navigation Data', function () {
             var data = { b1: true, b2: false };
             var url = stateController.getNavigationLink('d', data);
             assert.notEqual(url.indexOf('b1=true&'), -1);
-            assert.notEqual(url.indexOf('b2=false2_'), -1);
+            assert.notEqual(url.indexOf('b2=false1_'), -1);
         });
     });
 
@@ -4832,32 +4802,7 @@ describe('Navigation Data', function () {
             var data = { n1: 0, n2: 1 };
             var url = stateController.getNavigationLink('d', data);
             assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=12_'), -1);
-        });
-    });
-
-    describe('Link Default Types Back Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', defaultTypes: { s1: 'string', s2: 'number', n1: 'number' }, transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            var data = {
-                s2: 'world',
-                n1: 0,
-                n2: 1
-            };
-            data['s1'] = 'hello';
-            stateController.navigate('d', data);
-            stateController.navigate('t');
-            var url = stateController.getNavigationBackLink(1);
-            assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world2_'), -1);
-            assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=12_'), -1);
+            assert.notEqual(url.indexOf('n2=11_'), -1);
         });
     });
 
@@ -4876,32 +4821,9 @@ describe('Navigation Data', function () {
             stateController.navigate('d', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData(null));
             assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world2_'), -1);
+            assert.notEqual(url.indexOf('s2=world1_'), -1);
             assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=12_'), -1);
-        });
-    });
-
-    describe('Link Default Types Back Two Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', defaultTypes: { _bool: 'number' }, transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-            var data = {
-                _bool: 1
-            };
-            stateController.navigate('d', data);
-            stateController.navigate('t');
-            stateController.navigate('t');
-            var url = stateController.getNavigationBackLink(2);
-            assert.notEqual(url.indexOf('_bool=1&'), -1);
+            assert.notEqual(url.indexOf('n2=11_'), -1);
         });
     });
 
@@ -5069,7 +4991,7 @@ describe('Navigation Data', function () {
             stateController.navigate('d', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData({}));
             assert.notEqual(url.indexOf('=0&'), -1);
-            assert.notEqual(url.indexOf('=12_'), -1);
+            assert.notEqual(url.indexOf('=11_'), -1);
             assert.strictEqual(stateController.stateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
             assert.strictEqual(stateController.stateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
         });
@@ -5087,7 +5009,7 @@ describe('Navigation Data', function () {
             stateController.navigate('d', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData(null));
             assert.notEqual(url.indexOf('=10&'), -1);
-            assert.notEqual(url.indexOf('=202_'), -1);
+            assert.notEqual(url.indexOf('=201_'), -1);
             assert.strictEqual(stateController.stateContext.data['_0_1_2_3_4_5_'], 10);
             assert.strictEqual(stateController.stateContext.data['__0_1_2_3_4_5_'], 20);
         });
@@ -5585,6 +5507,166 @@ describe('Navigation Data', function () {
                 assert.strictEqual(+stateController1.stateContext.data['date'], +new Date(2010, 3, 7));
                 assert.strictEqual(Object.keys(stateController0.stateContext.data).length, 2);
                 assert.strictEqual(Object.keys(stateController1.stateContext.data).length, 2);
+            });
+        }
+    });
+    
+    describe('Crumb Trail Route Param', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1/{crumb?}' }]}
+                ]);
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d', data);
+                stateController.navigate('t');
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d', data);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.data['boolean'], true);
+                assert.strictEqual(stateController.stateContext.data['number'], 0);
+                assert.strictEqual(+stateController.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
+            });
+        }
+    });
+    
+    describe('Crumb Trail Route Splat Param', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1', transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2/{*crumb?}' }]}
+                ]);
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d');
+                stateController.navigate('t', data);
+                stateController.navigate('t');
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t', data);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.data['boolean'], true);
+                assert.strictEqual(stateController.stateContext.data['number'], 0);
+                assert.strictEqual(+stateController.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
+            });
+        }
+    });
+    
+    describe('Repeated States Data Back', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 'd', initial: 's0', states: [
+                    { key: 's0', route: 'r0', transitions: [
+                        { key: 't', to: 's1' }
+                    ]},
+                    { key: 's1', route: 'r1' }]}
+                ]);
+            var state = stateController.dialogs['d'].states['s1'];
+            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('d');
+                stateController.navigate('t', data);
+                stateController.refresh();
+                stateController.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('d');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('t', data);
+                stateController.navigateLink(link);
+                link = stateController.getRefreshLink();
+                stateController.navigateLink(link);
+                link = stateController.getNavigationBackLink(1);
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateController.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateController.stateContext.data['boolean'], true);
+                assert.strictEqual(stateController.stateContext.data['number'], 0);
+                assert.strictEqual(+stateController.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
             });
         }
     });
