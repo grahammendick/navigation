@@ -1089,11 +1089,11 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should go to previous previous State', function() {
+            it('should populate State', function() {
                 assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
                 assert.equal(stateController.stateContext.dialog, stateController._dialogs[0]);
             });
-            it('should populate old State with previous State', function() {
+            it('should populate old State', function() {
                 assert.equal(stateController.stateContext.oldState, stateController._dialogs[0]._states[2]);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
@@ -1101,7 +1101,7 @@ describe('Navigation', function () {
                 assert.equal(stateController.stateContext.previousState, stateController._dialogs[0]._states[0]);
                 assert.equal(stateController.stateContext.previousDialog, stateController._dialogs[0]);
             });
-            it('should have no crumb trail', function() {
+            it('should have crumb trail length 1', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 1);
             });
         }
@@ -1156,11 +1156,11 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should go to previous previous State', function() {
+            it('should populate State', function() {
                 assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
                 assert.equal(stateController.stateContext.dialog, stateController._dialogs[0]);
             });
-            it('should populate old State with previous State', function() {
+            it('should populate old State', function() {
                 assert.equal(stateController.stateContext.oldState, stateController._dialogs[0]._states[2]);
                 assert.equal(stateController.stateContext.oldDialog, stateController._dialogs[0]);
             });
