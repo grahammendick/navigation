@@ -4243,7 +4243,10 @@ describe('Navigation Data', function () {
                     { key: 's0', route: 'r0', transitions: [
                         { key: 't', to: 's1' }
                     ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true }]},
+                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
+                        { key: 't', to: 's2' }
+                    ]},
+                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
                 { key: 'd1', initial: 's0', states: [
                     { key: 's0', route: 'r2', trackCrumbTrail: true }]}
                 ]);
@@ -4261,9 +4264,10 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d0');
-                stateController.navigate('t', data1);
-                stateController.navigate('d1', data2);
+                stateController.navigate('d0', data1);
+                stateController.navigate('t');
+                stateController.navigate('t', data2);
+                stateController.navigate('d1');
                 stateController.navigateBack(1);
                 stateController.navigateBack(1);
             });
@@ -4272,11 +4276,13 @@ describe('Navigation Data', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d0');
+                var link = stateController.getNavigationLink('d0', data1);
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data1);
+                link = stateController.getNavigationLink('t');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('d1', data2);
+                link = stateController.getNavigationLink('t', data2);
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('d1');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(1);
                 stateController.navigateLink(link);
@@ -4288,15 +4294,15 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate old and previous data', function () {
-                assert.strictEqual(stateController.stateContext.oldData['s'], 'Hello');
-                assert.strictEqual(stateController.stateContext.oldData['t1'], 1);
-                assert.strictEqual(stateController.stateContext.oldData['t2'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['s'], undefined);
-                assert.strictEqual(stateController.stateContext.previousData['t1'], undefined);
+                assert.strictEqual(stateController.stateContext.oldData['s'], 'World');
+                assert.strictEqual(stateController.stateContext.oldData['t1'], undefined);
+                assert.strictEqual(stateController.stateContext.oldData['t2'], 2);
+                assert.strictEqual(stateController.stateContext.previousData['s'], 'Hello');
+                assert.strictEqual(stateController.stateContext.previousData['t1'], 1);
                 assert.strictEqual(stateController.stateContext.previousData['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['s'], undefined);
-                assert.strictEqual(stateController.stateContext.data['t2'], undefined);
                 assert.strictEqual(stateController.stateContext.data['t1'], undefined);
+                assert.strictEqual(stateController.stateContext.data['t2'], undefined);
             });
         }
     });
