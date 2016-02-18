@@ -34,13 +34,12 @@ describe('MatchTest', function () {
         });
     });
 
-    /*describe('No Param One Segment', function () {
+    describe('No Param One Segment', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'abc', trackCrumbTrail: false }]}
-                ]);
+                { key: 's', route: 'abc', trackCrumbTrail: false }
+            ]);
         });
 
         it('should match', function() {
@@ -64,8 +63,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/abc?x=ab');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/abc?x=ab');
         });
     });
 
@@ -73,8 +72,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/c', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/c', trackCrumbTrail: false }
                 ]);
         });
 
@@ -99,8 +98,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/ab/c');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab/c?x=ab');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/ab/c');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab/c?x=ab');
         });
     });
 
@@ -108,8 +107,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -131,12 +130,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abcd' }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: 'cd' }), '/ab?y=cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abcd' }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: 'cd' }), '/ab?y=cd');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -144,8 +143,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -171,13 +170,13 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'ef' }), '/ab/cd?y=ef');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'ef' }), '/ab/cd?y=ef');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'ef' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'ef' }), null);
         });
     });
 
@@ -185,8 +184,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -210,15 +209,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'cccc' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'cccc' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -226,8 +225,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}/{y}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}/{y}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -255,15 +254,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'efg' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'hi' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'efg' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'hi' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -271,8 +270,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -299,15 +298,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy', y: 'xyz' }), '/ab/yy/c/xyz');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy', y: 'xyz', z: 'xx' }), '/ab/yy/c/xyz?z=xx');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy', y: 'xyz' }), '/ab/yy/c/xyz');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy', y: 'xyz', z: 'xx' }), '/ab/yy/c/xyz?z=xx');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'xyz' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'zz' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'xyz' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'zz' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -315,8 +314,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -341,10 +340,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abcd' }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abcd', y: 'ef' }), '/abcd?y=ef');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'ef' }), '/?y=ef');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abcd' }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abcd', y: 'ef' }), '/abcd?y=ef');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'ef' }), '/?y=ef');
         });
     });
 
@@ -352,8 +351,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -383,10 +382,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'ef' }), '/ab/cd?y=ef');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'ef' }), '/ab?y=ef');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'ef' }), '/ab/cd?y=ef');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'ef' }), '/ab?y=ef');
         });
     });
 
@@ -394,8 +393,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -429,16 +428,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aab' }), '/aab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aab', z: 'cccc' }), '/aab?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'cccc' }), '/?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aab' }), '/aab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aab', z: 'cccc' }), '/aab?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'cccc' }), '/?z=cccc');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), null);
         });
     });
 
@@ -446,8 +445,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -484,16 +483,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/ab/cde?z=fg');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'cd' }), '/ab?z=cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde', z: 'fg' }), '/ab/cde?z=fg');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'cd' }), '/ab?z=cd');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'efg' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'efg' }), null);
         });
     });
 
@@ -501,8 +500,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -532,14 +531,14 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aab' }), '/aab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aab', z: 'ccd' }), '/aab?z=ccd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aab' }), '/aab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aab', z: 'ccd' }), '/aab?z=ccd');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), null);
         });
     });
 
@@ -547,8 +546,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -581,15 +580,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/ab/cde?z=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde', z: 'fg' }), '/ab/cde?z=fg');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'efg' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'efg' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -597,8 +596,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -631,15 +630,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy', y: 'xyz' }), '/ab/yy/c/xyz');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy', y: 'xyz', z: 'xx' }), '/ab/yy/c/xyz?z=xx');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy' }), '/ab/yy/c');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'yy', z: 'xx' }), '/ab/yy/c?z=xx');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy', y: 'xyz' }), '/ab/yy/c/xyz');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy', y: 'xyz', z: 'xx' }), '/ab/yy/c/xyz?z=xx');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy' }), '/ab/yy/c');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'yy', z: 'xx' }), '/ab/yy/c?z=xx');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'xyz' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'xyz' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -647,8 +646,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -670,12 +669,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde' }), '/abcde');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde', y: 'fg' }), '/abcde?y=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde' }), '/abcde');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/abcde?y=fg');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -683,8 +682,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -711,14 +710,14 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'fgh' }), '/abcdefgh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'fgh', z: 'i' }), '/abcdefgh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'fgh' }), '/abcdefgh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'fgh', z: 'i' }), '/abcdefgh?z=i');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'fghh' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'fghh' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -726,8 +725,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -759,15 +758,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', y: 'de' }), '/abcab/de');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', y: 'de', z: 'f' }), '/abcab/de?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc' }), '/abcab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', z: 'de' }), '/abcab?z=de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', y: 'de' }), '/abcab/de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', y: 'de', z: 'f' }), '/abcab/de?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc' }), '/abcab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', z: 'de' }), '/abcab?z=de');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'de' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'de' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -775,8 +774,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -803,12 +802,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', z: 'cd' }), '/ab?z=cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde', z: 'fg' }), '/?z=fg');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'fg' }), '/?z=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', z: 'cd' }), '/ab?z=cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde', z: 'fg' }), '/?z=fg');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'fg' }), '/?z=fg');
         });
     });
 
@@ -816,8 +815,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaults: { x: 345 }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaults: { x: 345 }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -847,12 +846,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 12 }), '/12');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 12, z: '34' }), '/12?z=34');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 345 }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 345, z: '67' }), '/?z=67');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: '67' }), '/?z=67');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 12 }), '/12');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 12, z: '34' }), '/12?z=34');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 345 }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 345, z: '67' }), '/?z=67');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: '67' }), '/?z=67');
         });
     });
 
@@ -860,8 +859,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaults: { x: true }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaults: { x: true }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -891,12 +890,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: false }), '/false');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: false, z: 'true' }), '/false?z=true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true, z: 'false' }), '/?z=false');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'false' }), '/?z=false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: false }), '/false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: false, z: 'true' }), '/false?z=true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true, z: 'false' }), '/?z=false');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'false' }), '/?z=false');
         });
     });
 
@@ -904,8 +903,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -944,13 +943,13 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2011, 7, 3) }), '/2011-08-03');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2011, 11, 31) }), '/2011-12-31');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2011, 7, 3), z: '2012-09-04' }), '/2011-08-03?z=2012-09-04');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7), z: '2012-09-04' }), '/?z=2012-09-04');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: '2012-09-04' }), '/?z=2012-09-04');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2011, 7, 3) }), '/2011-08-03');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2011, 11, 31) }), '/2011-12-31');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2011, 7, 3), z: '2012-09-04' }), '/2011-08-03?z=2012-09-04');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2010, 3, 7) }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2010, 3, 7), z: '2012-09-04' }), '/?z=2012-09-04');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: '2012-09-04' }), '/?z=2012-09-04');
         });
     });
 
@@ -958,8 +957,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'abc', defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'abc', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -987,8 +986,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 12 }), '/abc?x=12');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 12 }), '/abc?x=12');
         });
     });
 
@@ -996,8 +995,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'abc', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'abc', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1025,8 +1024,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/abc?x=true');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/abc?x=true');
         });
     });
 
@@ -1034,8 +1033,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'abc', defaultTypes: { x: 'date' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'abc', defaultTypes: { x: 'date' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1069,8 +1068,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2011, 7, 3) }), '/abc?x=2011-08-03');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2011, 7, 3) }), '/abc?x=2011-08-03');
         });
     });
 
@@ -1078,8 +1077,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1111,12 +1110,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde', y: 'fg' }), '/ab/cde?y=fg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ccdd' }), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ccdd', y: 'ee' }), '/ab?y=ee');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'ee' }), '/ab?y=ee');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/ab/cde?y=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ccdd' }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ccdd', y: 'ee' }), '/ab?y=ee');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'ee' }), '/ab?y=ee');
         });
     });
 
@@ -1124,8 +1123,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1165,22 +1164,22 @@ describe('MatchTest', function () {
         });
    
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'c' }), '/aa');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'c', z: 'd' }), '/aa?z=d');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), '/ab/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb', z: 'cccc' }), '/ab/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'c' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'c', z: 'd' }), '/?z=d');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa' }), '/aa');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', z: 'd' }), '/aa?z=d');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: 'c' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: 'c', z: 'd' }), '/?z=d');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', z: 'd' }), '/?z=d');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'd' }), '/?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'c' }), '/aa');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'c', z: 'd' }), '/aa?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), '/ab/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb', z: 'cccc' }), '/ab/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'c' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'c', z: 'd' }), '/?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa' }), '/aa');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', z: 'd' }), '/aa?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: 'c' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: 'c', z: 'd' }), '/?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', z: 'd' }), '/?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'd' }), '/?z=d');
         });
  });
 
@@ -1188,8 +1187,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1221,17 +1220,17 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'ab' }), '/aa');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'ab', z: 'bb' }), '/aa?z=bb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa' }), '/aa');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', z: 'bb' }), '/aa?z=bb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'ab' }), '/aa');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'ab', z: 'bb' }), '/aa?z=bb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa' }), '/aa');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', z: 'bb' }), '/aa?z=bb');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -1239,8 +1238,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1276,18 +1275,18 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', y: 'bbb' }), '/abc/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', y: 'bbb', z: 'cccc' }), '/abc/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), '/abc/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb', z: 'cccc' }), '/abc/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aab' }), '/aab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aab', z: 'ccd' }), '/aab?z=ccd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', z: 'de' }), '/?z=de');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'de' }), '/?z=de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', y: 'bbb' }), '/abc/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', y: 'bbb', z: 'cccc' }), '/abc/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), '/abc/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb', z: 'cccc' }), '/abc/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aab' }), '/aab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aab', z: 'ccd' }), '/aab?z=ccd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', z: 'de' }), '/?z=de');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'de' }), '/?z=de');
         });
     });
 
@@ -1295,8 +1294,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1365,66 +1364,66 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cd', x: 'ef', y: 'hi', z: 'jk' }), '/ab/cd/ef/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cd', x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/cd/ef/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cd', x: 'de', y: 'hi', z: 'jk' }), '/ab/cd/de/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cd', x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/cd/de/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/ef/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/ef/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'hi' }), '/ab/abc/de/hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'hi', a: 'lm' }), '/ab/abc/de/hi?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ef' }), '/ab/abc/ef');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ef', a: 'lm' }), '/ab/abc/ef?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de' }), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', a: 'lm' }), '/ab?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'hi' }), '/ab/abc/de/hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'hi', a: 'lm' }), '/ab/abc/de/hi?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', x: 'fg', y: 'h' }), '/ab/cde/fg/h');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', x: 'fg', y: 'h', a: 'i' }), '/ab/cde/fg/h?a=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'h' }), '/ab/abc/de/h');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de', y: 'h', a: 'i' }), '/ab/abc/de/h?a=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', y: 'h', z: 'jk' }), '/ab/cde/de/h/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', y: 'h', z: 'jk', a: 'lm' }), '/ab/cde/de/h/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', y: 'h', z: 'jk' }), '/ab/abc/de/h/jk');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', y: 'h', z: 'jk', a: 'lm' }), '/ab/abc/de/h/jk?a=lm');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', y: 'h' }), '/ab/cde/de/h');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', y: 'h', a: 'i' }), '/ab/cde/de/h?a=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', y: 'h' }), '/ab/abc/de/h');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', y: 'h', a: 'i' }), '/ab/abc/de/h?a=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cc', x: 'def' }), '/ab/cc/def');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cc', x: 'def', a: 'gg' }), '/ab/cc/def?a=gg');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cc', x: 'de' }), '/ab/cc');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cc', x: 'de', a: 'gg' }), '/ab/cc?a=gg');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de' }), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de', a: 'fg' }), '/ab?a=fg');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'def' }), '/ab/abc/def');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'def', a: 'gg' }), '/ab/abc/def?a=gg');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'ccdd' }), '/ab/ccdd');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'ccdd', a: 'gg' }), '/ab/ccdd?a=gg');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc' }), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', a: 'fg' }), '/ab?a=fg');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { a: 'fg' }), '/ab?a=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cd', x: 'ef', y: 'hi', z: 'jk' }), '/ab/cd/ef/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cd', x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/cd/ef/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cd', x: 'de', y: 'hi', z: 'jk' }), '/ab/cd/de/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cd', x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/cd/de/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/ef/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ef', y: 'hi', z: 'jk' }), '/ab/abc/ef/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ef', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/ef/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'hi' }), '/ab/abc/de/hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'hi', a: 'lm' }), '/ab/abc/de/hi?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ef' }), '/ab/abc/ef');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ef', a: 'lm' }), '/ab/abc/ef?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de' }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', a: 'lm' }), '/ab?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'hi', z: 'jk' }), '/ab/abc/de/hi/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'hi', z: 'jk', a: 'lm' }), '/ab/abc/de/hi/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'hi' }), '/ab/abc/de/hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'hi', a: 'lm' }), '/ab/abc/de/hi?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', x: 'fg', y: 'h' }), '/ab/cde/fg/h');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', x: 'fg', y: 'h', a: 'i' }), '/ab/cde/fg/h?a=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de', y: 'h' }), '/ab/abc/de/h');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de', y: 'h', a: 'i' }), '/ab/abc/de/h?a=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', y: 'h', z: 'jk' }), '/ab/cde/de/h/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', y: 'h', z: 'jk', a: 'lm' }), '/ab/cde/de/h/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', y: 'h', z: 'jk' }), '/ab/abc/de/h/jk');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', y: 'h', z: 'jk', a: 'lm' }), '/ab/abc/de/h/jk?a=lm');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', y: 'h' }), '/ab/cde/de/h');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', y: 'h', a: 'i' }), '/ab/cde/de/h?a=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', y: 'h' }), '/ab/abc/de/h');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', y: 'h', a: 'i' }), '/ab/abc/de/h?a=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cc', x: 'def' }), '/ab/cc/def');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cc', x: 'def', a: 'gg' }), '/ab/cc/def?a=gg');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cc', x: 'de' }), '/ab/cc');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cc', x: 'de', a: 'gg' }), '/ab/cc?a=gg');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de' }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de', a: 'fg' }), '/ab?a=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'def' }), '/ab/abc/def');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'def', a: 'gg' }), '/ab/abc/def?a=gg');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'ccdd' }), '/ab/ccdd');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'ccdd', a: 'gg' }), '/ab/ccdd?a=gg');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc' }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', a: 'fg' }), '/ab?a=fg');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { a: 'fg' }), '/ab?a=fg');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'fg', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'fg', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', x: 'de', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'cde', x: 'fg', z: 'jk' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { w: 'abc', x: 'de', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'fg', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'fg', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', x: 'de', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'cde', x: 'fg', z: 'jk' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { w: 'abc', x: 'de', z: 'jk' }), null);
         });
     });
 
@@ -1432,8 +1431,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
         });
         it('should match', function() {
@@ -1447,8 +1446,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '   a  ' }), '/%20%20%20a%20%20');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '   a  ', y: '   b  ' }), '/%20%20%20a%20%20?y=%20%20%20b%20%20');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '   a  ' }), '/%20%20%20a%20%20');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '   a  ', y: '   b  ' }), '/%20%20%20a%20%20?y=%20%20%20b%20%20');
         });
     });
 
@@ -1456,8 +1455,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }
                 ]);
         });
         it('should match', function() {
@@ -1471,16 +1470,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { someVar: 'someVal' }), '/a/someVal');
-            assert.strictEqual(stateController.getNavigationLink('d', { someVar: 'someVal', anotherVar: 'anotherVal' }), '/a/someVal?anotherVar=anotherVal');
+            assert.strictEqual(stateController.getNavigationLink('s', { someVar: 'someVal' }), '/a/someVal');
+            assert.strictEqual(stateController.getNavigationLink('s', { someVar: 'someVal', anotherVar: 'anotherVal' }), '/a/someVal?anotherVar=anotherVal');
         });
     });
 
     describe('Match Slash', function () {
         it('should match', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
             var { data } = stateController.parseLink('abc/');
             assert.strictEqual(Object.keys(data).length, 1);
@@ -1492,8 +1491,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'a/{=*"()\'-_+~@:?><.;[],!£$%^#&}', defaults: { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'a/{=*"()\'-_+~@:?><.;[],!£$%^#&}', defaults: { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -1515,12 +1514,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateController.getNavigationLink('d', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateController.getNavigationLink('d', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
-            assert.strictEqual(stateController.getNavigationLink('d', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateController.getNavigationLink('d'), '/a');
-            assert.strictEqual(stateController.getNavigationLink('d', { '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateController.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateController.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateController.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
+            assert.strictEqual(stateController.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/a');
+            assert.strictEqual(stateController.getNavigationLink('s', { '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
         });
     });
 
@@ -1528,8 +1527,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }
                 ]);
         });
         
@@ -1544,8 +1543,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc' }), '/.+*\^$\[\]()\'/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc', y: 'de' }), '/.+*\^$\[\]()\'/abc?y=de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc' }), '/.+*\^$\[\]()\'/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc', y: 'de' }), '/.+*\^$\[\]()\'/abc?y=de');
         });
     });
 
@@ -1553,8 +1552,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab{x?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab{x?}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -1576,12 +1575,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde' }), '/abcde');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cde', y: 'fg' }), '/abcde?y=fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde' }), '/abcde');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/abcde?y=fg');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -1589,8 +1588,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -1617,14 +1616,14 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg' }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg?z=hi');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'efg' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'efg' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -1632,8 +1631,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1657,15 +1656,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb' }), '/aa/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb' }), '/ab/bbb');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'bbb', z: 'cccc' }), '/ab/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb' }), '/ab/bbb');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'bbb', z: 'cccc' }), '/ab/bbb?z=cccc');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'aa' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'aa' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -1673,8 +1672,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -1704,23 +1703,23 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/ab/cd/efg/c');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg/c?z=hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), '/ab/cd/ee/c');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', z: 'ef' }), '/ab/cd/ee/c?z=ef');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg' }), '/ab/cd/efg/c');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg', z: 'hi' }), '/ab/cd/efg/c?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), '/ab/cd/ee/c');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', z: 'ef' }), '/ab/cd/ee/c?z=ef');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'efg' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'efg' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
     describe('Extra Defaults', function () {
         it('should match', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }
                 ]);
             var { data } = stateController.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 2);
@@ -1737,8 +1736,8 @@ describe('MatchTest', function () {
     describe('Case Insensitive', function () {
         it('should match', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'abc/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'abc/{x}', trackCrumbTrail: false }
                 ]);
             var { data } = stateController.parseLink('/AbC/aBc');
             assert.strictEqual(Object.keys(data).length, 1);
@@ -1754,9 +1753,9 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
+                
                     { key: 's', route: 'ab/{x}', trackCrumbTrail: false },
-                    { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }]}
+                    { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -1788,8 +1787,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['', 'abc/{x}'], trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['', 'abc/{x}'], trackCrumbTrail: false }
                 ]);
         });
 
@@ -1816,10 +1815,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'd' }), '/?y=d');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'f' }), '/abc/de?y=f');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'd' }), '/?y=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'f' }), '/abc/de?y=f');
         });
     });
 
@@ -1827,8 +1826,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }
                 ]);
         });
 
@@ -1870,17 +1869,17 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh' }), '/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de?y=gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'i' }), '/abc/de?y=gh&z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh' }), '/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh', z: 'i' }), '/def/gh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de?y=gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh', z: 'i' }), '/abc/de?y=gh&z=i');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'g' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'g' }), null);
         });
     });
 
@@ -1888,8 +1887,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }
                 ]);
         });
 
@@ -1924,15 +1923,15 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'g' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'g' }), null);
         });
     });
 
@@ -1940,18 +1939,18 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 'd' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 's' }, trackCrumbTrail: false }
                 ]);
         });
 
         it('should match', function() {
             var { data } = stateController.parseLink('/abc');
             assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.x, 's');
             var { data } = stateController.parseLink('/abc?z=e');
             assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.x, 's');
             assert.strictEqual(data.z, 'e');
             var { data } = stateController.parseLink('/abc/de');
             assert.strictEqual(Object.keys(data).length, 1);
@@ -1962,11 +1961,11 @@ describe('MatchTest', function () {
             assert.strictEqual(data.z, 'f');
             var { data } = stateController.parseLink('/def/gh');
             assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.x, 's');
             assert.strictEqual(data.y, 'gh');
             var { data } = stateController.parseLink('/def/gh?z=i');
             assert.strictEqual(Object.keys(data).length, 3);
-            assert.strictEqual(data.x, 'd');
+            assert.strictEqual(data.x, 's');
             assert.strictEqual(data.y, 'gh');
             assert.strictEqual(data.z, 'i');
             var { data } = stateController.parseLink('/abc/de?y=gh');
@@ -1991,16 +1990,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'e' }), '/abc?z=e');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh' }), '/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de?y=gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'i' }), '/abc/de?y=gh&z=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'd', y: 'gh' }), '/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'd', y: 'gh', z: 'i' }), '/def/gh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'e' }), '/abc?z=e');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh' }), '/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh', z: 'i' }), '/def/gh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de?y=gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh', z: 'i' }), '/abc/de?y=gh&z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 's', y: 'gh' }), '/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 's', y: 'gh', z: 'i' }), '/def/gh?z=i');
         });
     });
 
@@ -2008,8 +2007,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['abc/{x?}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['abc/{x?}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }
                 ]);
         });
 
@@ -2048,12 +2047,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'd' }), '/abc?z=d');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de' }), '/abc/de');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', z: 'f' }), '/abc/de?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'd' }), '/abc?z=d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
         });
     });
 
@@ -2061,8 +2060,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2102,16 +2101,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { z: 'e' }), '/abc?z=e');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/abc/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3, z: 'f' }), '/abc/3?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh' }), '/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3, y: 'gh' }), '/def/gh?x=3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3, y: 'gh', z: 'i' }), '/def/gh?x=3&z=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2, y: 'gh' }), '/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2, y: 'gh', z: 'i' }), '/def/gh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { z: 'e' }), '/abc?z=e');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/abc/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3, z: 'f' }), '/abc/3?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh' }), '/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh', z: 'i' }), '/def/gh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3, y: 'gh' }), '/def/gh?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3, y: 'gh', z: 'i' }), '/def/gh?x=3&z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2, y: 'gh' }), '/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2, y: 'gh', z: 'i' }), '/def/gh?z=i');
         });
     });
 
@@ -2119,8 +2118,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['def/{y}', 'abc/{x}'], defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['def/{y}', 'abc/{x}'], defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2151,12 +2150,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/abc/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3, z: 'f' }), '/abc/3?z=f');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh' }), '/def/gh');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 'gh', z: 'i' }), '/def/gh?z=i');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3, y: 'gh' }), '/def/gh?x=3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3, y: 'gh', z: 'i' }), '/def/gh?x=3&z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/abc/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3, z: 'f' }), '/abc/3?z=f');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh' }), '/def/gh');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 'gh', z: 'i' }), '/def/gh?z=i');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3, y: 'gh' }), '/def/gh?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3, y: 'gh', z: 'i' }), '/def/gh?x=3&z=i');
         });
     });
 
@@ -2164,8 +2163,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackTypes: false, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackTypes: false, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2181,10 +2180,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc' }), '/abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '0_1_2_' }), '/0_1_2_');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc' }), '/abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '0_1_2_' }), '/0_1_2_');
         });
     });
 
@@ -2192,8 +2191,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2210,11 +2209,11 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2 }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '2' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2 }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '2' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/3');
         });
     });
 
@@ -2222,8 +2221,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2240,8 +2239,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'false' }), '/false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'false' }), '/false');
         });
     });
 
@@ -2249,8 +2248,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2267,11 +2266,11 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2 }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '2' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2 }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '2' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/3');
         });
     });
 
@@ -2279,8 +2278,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
         it('should match', function() {
@@ -2295,10 +2294,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/3');
         });
     });
 
@@ -2306,8 +2305,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2323,10 +2322,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abc' }), '/?x=abc');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/?x=3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/?x=true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '0_1_2_' }), '/?x=0_1_2_');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abc' }), '/?x=abc');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/?x=true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '0_1_2_' }), '/?x=0_1_2_');
         });
     });
 
@@ -2334,8 +2333,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2352,11 +2351,11 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2 }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '2' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/?x=3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2 }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '2' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/?x=3');
         });
     });
 
@@ -2364,8 +2363,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2382,8 +2381,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/?x=true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'false' }), '/?x=false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/?x=true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'false' }), '/?x=false');
         });
     });
 
@@ -2391,8 +2390,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2409,11 +2408,11 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2 }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '2' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/?x=3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2 }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '2' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/?x=3');
         });
     });
 
@@ -2421,8 +2420,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2438,38 +2437,38 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/?x=3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/?x=3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/?x=3');
         });
     });
 
     describe('Empty String', function () {
         it('should build', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '' }), null);
         });
     });
 
     describe('Without Types Two Route Default', function () {
         it('should build', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }
                 ]);
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2, y: 1 }), '/a/1');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '2', y: 1 }), '/a/1');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 1 }), '/1');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '1' }), '/1');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 2 }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '2' }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { y: 1 }), '/a/1');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 1, y: 2 }), '/1?y=2');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2, y: 1 }), '/a/1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '2', y: 1 }), '/a/1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 1 }), '/1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '1' }), '/1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 2 }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '2' }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { y: 1 }), '/a/1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 1, y: 2 }), '/1?y=2');
         });
     });
 
@@ -2477,8 +2476,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2500,10 +2499,10 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/?x=H1-ello&x=W2-orld');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello'] }), '/?x=H1-ello');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H2-ello'] }), '/?x=H2-ello');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['H1-ello', 'W2-orld'] }), '/?x=H1-ello&x=W2-orld');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['H1-ello'] }), '/?x=H1-ello');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['H2-ello'] }), '/?x=H2-ello');
         });
     });
 
@@ -2511,8 +2510,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2534,10 +2533,10 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/Hello1-World');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello', 'W2-orld'] }), '/H10-ello1-W20-orld');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H1-ello'] }), '/H10-ello');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['H2-ello'] }), '/H20-ello');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['Hello', 'World'] }), '/Hello1-World');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['H1-ello', 'W2-orld'] }), '/H10-ello1-W20-orld');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['H1-ello'] }), '/H10-ello');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['H2-ello'] }), '/H20-ello');
         });
     });
 
@@ -2545,8 +2544,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2559,7 +2558,7 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
         });
     });
 
@@ -2567,8 +2566,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2580,7 +2579,7 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/?x=true&x=false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [true, false] }), '/?x=true&x=false');
         });
     });
 
@@ -2588,8 +2587,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2606,8 +2605,8 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['He_llo', 'Wor-ld'] }), '/?x=He_llo&x=Wor-ld');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['He_llo', 'Wor-ld'] }), '/?x=He_llo&x=Wor-ld');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [1, 2, 4] }), '/?x=1&x=2&x=4');
         });
     });
 
@@ -2615,8 +2614,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaults: { x: ['Hello', 'World'] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaults: { x: ['Hello', 'World'] }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2631,9 +2630,9 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['Hello'] }), '/?x=Hello');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['Hello', 'World'] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['World', 'Hello'] }), '/?x=World&x=Hello');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['Hello'] }), '/?x=Hello');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['Hello', 'World'] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['World', 'Hello'] }), '/?x=World&x=Hello');
         });
     });
 
@@ -2641,8 +2640,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaults: { x: [1, 2, 4] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaults: { x: [1, 2, 4] }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2658,9 +2657,9 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [1, 2] }), '/?x=1&x=2');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [1, 2, 4] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [1, 4, 2] }), '/?x=1&x=4&x=2');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [1, 2] }), '/?x=1&x=2');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [1, 2, 4] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [1, 4, 2] }), '/?x=1&x=4&x=2');
         });
     });
 
@@ -2668,8 +2667,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaults: { x: [true, false] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaults: { x: [true, false] }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2684,9 +2683,9 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [false] }), '/?x=false');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [false, true] }), '/?x=false&x=true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [false] }), '/?x=false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [true, false] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [false, true] }), '/?x=false&x=true');
         });
     });
 
@@ -2694,8 +2693,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -2710,9 +2709,9 @@ describe('MatchTest', function () {
         });
         
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/?x=2010-04-07');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/?x=2011-08-03&x=2010-04-07');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7)] }), '/?x=2010-04-07');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/?x=2011-08-03&x=2010-04-07');
         });
     });
 
@@ -2720,8 +2719,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2731,7 +2730,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/?x=ab1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/?x=ab1_0');
         });
     });
 
@@ -2739,8 +2738,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2750,7 +2749,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -2758,8 +2757,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2769,7 +2768,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 124 }), '/?x=1241_2');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 124 }), '/?x=1241_2');
         });
     });
 
@@ -2777,8 +2776,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2788,7 +2787,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 124 }), '/1241_2');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 124 }), '/1241_2');
         });
     });
 
@@ -2796,8 +2795,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'date' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'date' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2807,7 +2806,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/?x=true1_1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/?x=true1_1');
         });
     });
 
@@ -2815,8 +2814,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'date' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'date' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2826,7 +2825,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true1_1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/true1_1');
         });
     });
 
@@ -2834,8 +2833,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'string' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'string' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2845,7 +2844,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/?x=2010-04-071_3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2010, 3, 7) }), '/?x=2010-04-071_3');
         });
     });
 
@@ -2853,8 +2852,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'string' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'string' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2864,7 +2863,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: new Date(2010, 3, 7) }), '/2010-04-071_3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: new Date(2010, 3, 7) }), '/2010-04-071_3');
         });
     });
 
@@ -2872,8 +2871,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2885,7 +2884,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/?x=ab1_a0&x=cde');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cde'] }), '/?x=ab1_a0&x=cde');
         });
     });
 
@@ -2893,8 +2892,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2906,7 +2905,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'] }), '/ab1-cde1_a0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cde'] }), '/ab1-cde1_a0');
         });
     });
 
@@ -2914,8 +2913,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2927,7 +2926,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [124, 35] }), '/?x=1241_a2&x=35');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [124, 35] }), '/?x=1241_a2&x=35');
         });
     });
 
@@ -2935,8 +2934,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2948,7 +2947,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [124, 35] }), '/1241-351_a2');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [124, 35] }), '/1241-351_a2');
         });
     });
 
@@ -2956,8 +2955,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2969,7 +2968,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/?x=true1_a1&x=false');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [true, false] }), '/?x=true1_a1&x=false');
         });
     });
 
@@ -2977,8 +2976,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -2990,7 +2989,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false] }), '/true1-false1_a1');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [true, false] }), '/true1-false1_a1');
         });
     });
 
@@ -2998,8 +2997,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3011,7 +3010,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/?x=2010-04-071_a3&x=2011-08-03');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/?x=2010-04-071_a3&x=2011-08-03');
         });
     });
 
@@ -3019,8 +3018,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3032,7 +3031,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/20100-040-071-20110-080-031_a3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/20100-040-071-20110-080-031_a3');
         });
     });
 
@@ -3040,10 +3039,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'abc', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'abc', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')  
         });
@@ -3054,7 +3053,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b' }), '/abc?x=a+b');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b' }), '/abc?x=a+b');
         });
     });
 
@@ -3062,10 +3061,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')  
         });
@@ -3076,7 +3075,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b' }), '/a+b');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b' }), '/a+b');
         });
     });
 
@@ -3084,10 +3083,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val, queryString) =>  {
                 return queryString ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
@@ -3103,7 +3102,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a%20b?y=c+d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a%20b?y=c+d');
         });
     });
 
@@ -3111,10 +3110,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val, queryString) => {
                 return !queryString ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3130,7 +3129,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
         });
     });
 
@@ -3138,19 +3137,16 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's', states: [
-                    { key: 's', route: 'a', trackCrumbTrail: false }]},
-                { key: 'd1', initial: 's', states: [
-                    { key: 's', route: 'b', trackCrumbTrail: false }]}
-                ]);
-            var dialogs = stateController.dialogs;
-            for(var key in dialogs) {
-                var state = dialogs[key].states['s'];
+                { key: 's0', route: 'a', trackCrumbTrail: false },
+                { key: 's1', route: 'b', trackCrumbTrail: false }
+            ]);
+            for(var key in stateController.states) {
+                var state = stateController.states[key];
                 state.stateHandler.urlEncode = (state, key, val) => {
-                    return state.parent == dialogs['d0'] ? val.replace(' ', '+') : encodeURIComponent(val);
+                    return state.key == 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
                 state.stateHandler.urlDecode = (state, key, val) => {
-                    return state.parent == dialogs['d0'] ? val.replace('+', ' ') : decodeURIComponent(val);
+                    return state.key == 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }
         });
@@ -3163,8 +3159,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d0', { x: 'c d' }), '/a?x=c+d');
-            assert.strictEqual(stateController.getNavigationLink('d1', { x: 'c d' }), '/b?x=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s0', { x: 'c d' }), '/a?x=c+d');
+            assert.strictEqual(stateController.getNavigationLink('s1', { x: 'c d' }), '/b?x=c%20d');
         });
     });
 
@@ -3172,19 +3168,16 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's', states: [
-                    { key: 's', route: 'a/{x}', trackCrumbTrail: false }]},
-                { key: 'd1', initial: 's', states: [
-                    { key: 's', route: 'b/{x}', trackCrumbTrail: false }]}
-                ]);
-            var dialogs = stateController.dialogs;
-            for(var key in dialogs) {
-                var state = dialogs[key].states['s'];
+                { key: 's0', route: 'a/{x}', trackCrumbTrail: false },
+                { key: 's1', route: 'b/{x}', trackCrumbTrail: false }
+            ]);
+            for(var key in stateController.states) {
+                var state = stateController.states[key];
                 state.stateHandler.urlEncode = (state, key, val) => {
-                    return state.parent == dialogs['d0'] ? val.replace(' ', '+') : encodeURIComponent(val);
+                    return state.key == 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
                 state.stateHandler.urlDecode = (state, key, val) => {
-                    return state.parent == dialogs['d0'] ? val.replace('+', ' ') : decodeURIComponent(val);
+                    return state.key == 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }
         });
@@ -3197,43 +3190,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d0', { x: 'c d' }), '/a/c+d');
-            assert.strictEqual(stateController.getNavigationLink('d1', { x: 'c d' }), '/b/c%20d');
-        });
-    });
-
-    describe('One Param One Dialog State Encode', function () {
-        var stateController: StateController;
-        beforeEach(function () {
-            stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'a/{x}', trackCrumbTrail: false, transitions: [
-                        { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'b/{x}', trackCrumbTrail: false }]},
-                ]);
-            var dialog = stateController.dialogs['d'];
-            for(var key in dialog.states) {
-                var state = dialog.states[key];
-                state.stateHandler.urlEncode = (state, key, val) => {
-                    return state == dialog.states['s1'] ? val.replace(' ', '+') : encodeURIComponent(val);
-                }
-                state.stateHandler.urlDecode = (state, key, val) => {
-                    return state == dialog.states['s1'] ? val.replace('+', ' ') : decodeURIComponent(val);
-                }
-            }
-            stateController.navigate('d', { x: 'e'});
-        });
-
-        it('should match', function() {
-            var { data } = stateController.parseLink('/a/c%20d');
-            assert.strictEqual(data.x, 'c d');
-            var { data } = stateController.parseLink('/b/c+d');
-            assert.strictEqual(data.x, 'c d');
-        });
-
-        it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'c d' }), '/a/c%20d');
-            assert.strictEqual(stateController.getNavigationLink('t', { x: 'c d' }), '/b/c+d');
+            assert.strictEqual(stateController.getNavigationLink('s0', { x: 'c d' }), '/a/c+d');
+            assert.strictEqual(stateController.getNavigationLink('s1', { x: 'c d' }), '/b/c%20d');
         });
     });
 
@@ -3241,10 +3199,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
                 return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
@@ -3260,7 +3218,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a%20b?y=c+d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a%20b?y=c+d');
         });
     });
 
@@ -3268,10 +3226,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3287,7 +3245,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
         });
     });
 
@@ -3295,10 +3253,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{y}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{y}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3314,7 +3272,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b/c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a+b/c%20d');
         });
     });
 
@@ -3322,10 +3280,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x?}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3341,7 +3299,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a+b?y=c%20d');
         });
     });
 
@@ -3349,10 +3307,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3368,7 +3326,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/aba+b?y=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/aba+b?y=c%20d');
         });
     });
 
@@ -3376,10 +3334,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
                 return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
@@ -3395,7 +3353,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/?x=a%20b&y=c+d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/?x=a%20b&y=c+d');
         });
     });
 
@@ -3403,10 +3361,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
                 return !key ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
@@ -3421,7 +3379,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { 'a b': 'c d' }), '/?a+b=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { 'a b': 'c d' }), '/?a+b=c%20d');
         });
     });
 
@@ -3429,10 +3387,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
                 return (!key && val == 'a b') ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
@@ -3448,7 +3406,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { 'a b': 'c d', 'e f': 'g h' }), '/?a+b=c%20d&e%20f=g%20h');
+            assert.strictEqual(stateController.getNavigationLink('s', { 'a b': 'c d', 'e f': 'g h' }), '/?a+b=c%20d&e%20f=g%20h');
         });
     });
 
@@ -3456,10 +3414,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             delete state.stateHandler.urlEncode;
             delete state.stateHandler.urlDecode;
         });
@@ -3471,7 +3429,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'a b', y: 'c d' }), '/a%20b?y=c%20d');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'a b', y: 'c d' }), '/a%20b?y=c%20d');
         });
     });
 
@@ -3479,10 +3437,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
@@ -3495,7 +3453,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['a b', 'c de'] }), '/?x=a+b&x=c+de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['a b', 'c de'] }), '/?x=a+b&x=c+de');
         });
     });
 
@@ -3503,10 +3461,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val, queryString) => {
                 return queryString ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3523,7 +3481,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['a b', 'c de'] }), '/?x=a+b&x=c+de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['a b', 'c de'] }), '/?x=a+b&x=c+de');
         });
     });
 
@@ -3531,10 +3489,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
@@ -3553,7 +3511,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['a b', 'c de'], y: ['f g'] }), '/?x=a+b&x=c+de&y=f%20g');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['a b', 'c de'], y: ['f g'] }), '/?x=a+b&x=c+de&y=f%20g');
         });
     });
 
@@ -3561,19 +3519,16 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's', states: [
-                    { key: 's', route: 'a', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]},
-                { key: 'd1', initial: 's', states: [
-                    { key: 's', route: 'b', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
-                ]);
-            var dialogs = stateController.dialogs;
-            for(var key in dialogs) {
-                var state = dialogs[key].states['s'];
+                { key: 's0', route: 'a', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false },
+                { key: 's1', route: 'b', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+            ]);
+            for(var key in stateController.states) {
+                var state = stateController.states[key];
                 state.stateHandler.urlEncode = (state, key, val) => {
-                    return state.parent == dialogs['d0'] ? val.replace(' ', '+') : encodeURIComponent(val);
+                    return state.key == 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
                 state.stateHandler.urlDecode = (state, key, val) => {
-                    return state.parent == dialogs['d0'] ? val.replace('+', ' ') : decodeURIComponent(val);
+                    return state.key == 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }
         });
@@ -3590,8 +3545,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d0', { x: ['a b', 'c de'] }), '/a?x=a+b&x=c+de');
-            assert.strictEqual(stateController.getNavigationLink('d1', { x: ['a b', 'c de'] }), '/b?x=a%20b&x=c%20de');
+            assert.strictEqual(stateController.getNavigationLink('s0', { x: ['a b', 'c de'] }), '/a?x=a+b&x=c+de');
+            assert.strictEqual(stateController.getNavigationLink('s1', { x: ['a b', 'c de'] }), '/b?x=a%20b&x=c%20de');
         });
     });
 
@@ -3599,10 +3554,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x?}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x?}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
@@ -3613,7 +3568,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
         });
     });
 
@@ -3621,10 +3576,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
@@ -3634,7 +3589,7 @@ describe('MatchTest', function () {
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -3642,10 +3597,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
@@ -3655,7 +3610,7 @@ describe('MatchTest', function () {
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -3663,8 +3618,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3709,16 +3664,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['abcd'] }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd'], y: 'efg' }), '/ab/cd?y=efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', null, 'cd'] }), '/ab//cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [null, 'ab', 'cd'] }), '//ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd', null] }), '/ab/cd//');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd'], y: 'efg' }), '/ab/cd?y=efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', null, 'cd'] }), '/ab//cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [null, 'ab', 'cd'] }), '//ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd', null] }), '/ab/cd//');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -3726,8 +3681,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3749,11 +3704,11 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['abcd'] }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ef', 'ghi'] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ghi', 'ef'] }), '/ghi/ef');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ef', 'ghi'] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ghi', 'ef'] }), '/ghi/ef');
         });
     });
     
@@ -3761,8 +3716,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x?}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x?}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3805,14 +3760,14 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [''] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['abcd'] }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd'], y: 'efg' }), '/ab/cd?y=efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', null, 'cd'] }), '/ab//cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [null, 'ab', 'cd'] }), '//ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cd', null] }), '/ab/cd//');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [''] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd'], y: 'efg' }), '/ab/cd?y=efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', null, 'cd'] }), '/ab//cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [null, 'ab', 'cd'] }), '//ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cd', null] }), '/ab/cd//');
         });
     });
 
@@ -3820,8 +3775,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3867,16 +3822,16 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'], y: 'hi' }), '/ab/cd/efg?y=hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', null, 'efg'] }), '/ab/cd//efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [null, 'cd', 'efg'] }), '/ab//cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg', null] }), '/ab/cd/efg//');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'] }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'], y: 'hi' }), '/ab/cd/efg?y=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', null, 'efg'] }), '/ab/cd//efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [null, 'cd', 'efg'] }), '/ab//cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg', null] }), '/ab/cd/efg//');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -3884,8 +3839,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3911,10 +3866,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ef', 'ghi'] }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'] }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ef', 'ghi'] }), '/ab');
         });
     });
 
@@ -3922,8 +3877,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{*y}', defaultTypes: { y: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{*y}', defaultTypes: { y: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -3975,19 +3930,19 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', 'efg'] }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', 'efg'], z: 'hi' }), '/ab/cd/efg?z=hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', null, 'efg'] }), '/ab/cd//efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: [null, 'cd', 'efg'] }), '/ab//cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', 'efg', null] }), '/ab/cd/efg//');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', 'efg'] }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', 'efg'], z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', null, 'efg'] }), '/ab/cd//efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: [null, 'cd', 'efg'] }), '/ab//cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', 'efg', null] }), '/ab/cd/efg//');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: ['cd'] }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: ['cd', 'efg'] }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: ['cd'] }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: ['cd', 'efg'] }), null);
         });
     });
 
@@ -3995,8 +3950,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{x}/{*y?}', defaultTypes: { y: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{x}/{*y?}', defaultTypes: { y: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4050,19 +4005,19 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd'] }), '/ab/cd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', 'efg'] }), '/ab/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', 'efg'], z: 'hi' }), '/ab/cd/efg?z=hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', null, 'efg'] }), '/ab/cd//efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: [null, 'cd', 'efg'] }), '/ab//cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab', y: ['cd', 'efg', null] }), '/ab/cd/efg//');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd'] }), '/ab/cd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', 'efg'] }), '/ab/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', 'efg'], z: 'hi' }), '/ab/cd/efg?z=hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', null, 'efg'] }), '/ab/cd//efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: [null, 'cd', 'efg'] }), '/ab//cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab', y: ['cd', 'efg', null] }), '/ab/cd/efg//');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: ['cd'] }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: ['cd', 'efg'] }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: ['cd'] }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: ['cd', 'efg'] }), null);
         });
     });
 
@@ -4070,8 +4025,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}/ab/{*y}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}/ab/{*y}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4123,17 +4078,17 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'], y: ['efg'] }), '/cd/ab/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'], y: ['hi'] }), '/cd/efg/ab/hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'], y: ['efg', 'hi'] }), '/cd/ab/efg/hi');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'], y: ['hij', 'kl'] }), '/cd/efg/ab/hij/kl');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [null, 'cd'], y: ['efg', null] }), '//cd/ab/efg//');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'], y: ['efg'] }), '/cd/ab/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'], y: ['hi'] }), '/cd/efg/ab/hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'], y: ['efg', 'hi'] }), '/cd/ab/efg/hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'], y: ['hij', 'kl'] }), '/cd/efg/ab/hij/kl');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [null, 'cd'], y: ['efg', null] }), '//cd/ab/efg//');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'] }), null);
-            assert.strictEqual(stateController.getNavigationLink('d', { y: ['cd'] }), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'] }), null);
+            assert.strictEqual(stateController.getNavigationLink('s', { y: ['cd'] }), null);
         });
     });
     
@@ -4141,8 +4096,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
         
@@ -4168,10 +4123,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/a/cd/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd' }), '/a/cd1_0');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'cd', y: 'efg' }), '/b/cd1_0/efg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'], y: 'hi' }), '/b/cd1-efg/hi');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'] }), '/a/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd' }), '/a/cd1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'cd', y: 'efg' }), '/b/cd1_0/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'], y: 'hi' }), '/b/cd1-efg/hi');
         });
     })
 
@@ -4179,8 +4134,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}/ab', defaults: { x: ['cde', 'fg'] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}/ab', defaults: { x: ['cde', 'fg'] }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4215,12 +4170,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/cde/fg/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'] }), '/cd/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/cd/efg/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cde', 'fg'] }), '/cde/fg/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cde1-fg'] }), '/cde1-fg/ab');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: true }), '/true1_1/ab');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/cde/fg/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'] }), '/cd/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'] }), '/cd/efg/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cde', 'fg'] }), '/cde/fg/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cde1-fg'] }), '/cde1-fg/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: true }), '/true1_1/ab');
         });
     });
 
@@ -4228,8 +4183,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab{*x}', defaults: { x: ['cde', 'fg'] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab{*x}', defaults: { x: ['cde', 'fg'] }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4257,10 +4212,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/abcde/fg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cde', 'fg'] }), '/abcde/fg');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd'] }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['cd', 'efg'] }), '/abcd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/abcde/fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cde', 'fg'] }), '/abcde/fg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd'] }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['cd', 'efg'] }), '/abcd/efg');
         });
     });
 
@@ -4268,8 +4223,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
         it('should match', function() {
@@ -4290,10 +4245,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['a', 'bc'] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['a', 'bc'] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/3');
         });
     });
 
@@ -4301,8 +4256,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
         it('should match', function() {
@@ -4322,10 +4277,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['a'] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 3 }), '/3');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: '3' }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s'), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['a'] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 3 }), '/3');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: '3' }), '/3');
         });
     });
 
@@ -4333,8 +4288,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaults: { x: ['a', 'b'] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaults: { x: ['a', 'b'] }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4346,7 +4301,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab'] }), '/ab');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab'] }), '/ab');
         });
     });
 
@@ -4354,10 +4309,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
                 ]);
-            var state = stateController.dialogs['d'].states['s'];
+            var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
             state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
@@ -4370,7 +4325,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['a b', 'c de'] }), '/a+b/c+de');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['a b', 'c de'] }), '/a+b/c+de');
         });
     });
 
@@ -4378,8 +4333,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4397,9 +4352,9 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [123] }), '/123');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [12, 345, 67] }), '/12/345/67');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [123] }), '/123');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [12, 345, 67] }), '/12/345/67');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4407,8 +4362,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4426,9 +4381,9 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true] }), '/true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [true, false, true] }), '/true/false/true');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [true] }), '/true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [true, false, true] }), '/true/false/true');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4436,8 +4391,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4454,9 +4409,9 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4464,8 +4419,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4486,10 +4441,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'ab' }), '/ab1_0');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }), '/');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7)] }), '/2010-04-07');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }), '/2010-04-07/2011-08-03');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'ab' }), '/ab1_0');
         });
     });
 
@@ -4497,9 +4452,9 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
+                
                     { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false },
-                    { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }]}
+                    { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -4530,8 +4485,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -4548,12 +4503,12 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'abcd' }), '/abcd');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 123 }), '/1231_2');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'abcd' }), '/abcd');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 123 }), '/1231_2');
         });
 
         it('should not build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d'), null);
+            assert.strictEqual(stateController.getNavigationLink('s'), null);
         });
     });
 
@@ -4561,8 +4516,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4594,10 +4549,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'], y: ['fgh', 'ij'] }), '/ab/cde?y=fgh&y=ij');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab'], y: ['fgh', 'ij'] }), '/ab?y=fgh&y=ij');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab', 'cde'], y: ['fgh'] }), '/ab/cde?y=fgh');
-            assert.strictEqual(stateController.getNavigationLink('d', { x: ['ab'], y: ['fgh'] }), '/ab?y=fgh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cde'], y: ['fgh', 'ij'] }), '/ab/cde?y=fgh&y=ij');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab'], y: ['fgh', 'ij'] }), '/ab?y=fgh&y=ij');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab', 'cde'], y: ['fgh'] }), '/ab/cde?y=fgh');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: ['ab'], y: ['fgh'] }), '/ab?y=fgh');
         });
     });
 
@@ -4605,12 +4560,12 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
                 ]);
             stateController.configure([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'cd/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'cd/{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -4625,7 +4580,7 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController.getNavigationLink('d', { x: 'efg' }), '/cd/efg');
+            assert.strictEqual(stateController.getNavigationLink('s', { x: 'efg' }), '/cd/efg');
         });
     });
 
@@ -4634,12 +4589,12 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
                 ]);
             stateController1 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'cd/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'cd/{x}', trackCrumbTrail: false }
                 ]);
         });
 
@@ -4658,8 +4613,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController0.getNavigationLink('d', { x: 'cde' }), '/ab/cde');
-            assert.strictEqual(stateController1.getNavigationLink('d', { x: 'efg' }), '/cd/efg');
+            assert.strictEqual(stateController0.getNavigationLink('s', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateController1.getNavigationLink('s', { x: 'efg' }), '/cd/efg');
         });
     });
 
@@ -4668,12 +4623,12 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}', defaults: { x: 'cd' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}', defaults: { x: 'cd' }, trackCrumbTrail: false }
                 ]);
             stateController1 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'cd/{x}', defaults: { x: 12 }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'cd/{x}', defaults: { x: 12 }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4698,10 +4653,10 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController0.getNavigationLink('d', { x: 'cd' }), '/ab');
-            assert.strictEqual(stateController0.getNavigationLink('d', { x: '1' }), '/ab/1');
-            assert.strictEqual(stateController1.getNavigationLink('d', { x: 12 }), '/cd');
-            assert.strictEqual(stateController1.getNavigationLink('d', { x: 1 }), '/cd/1');
+            assert.strictEqual(stateController0.getNavigationLink('s', { x: 'cd' }), '/ab');
+            assert.strictEqual(stateController0.getNavigationLink('s', { x: '1' }), '/ab/1');
+            assert.strictEqual(stateController1.getNavigationLink('s', { x: 12 }), '/cd');
+            assert.strictEqual(stateController1.getNavigationLink('s', { x: 1 }), '/cd/1');
         });
     });
 
@@ -4710,12 +4665,12 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
                 ]);
             stateController1 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'cd/{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }]}
+                
+                    { key: 's', route: 'cd/{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
                 ]);
         });
 
@@ -4734,8 +4689,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController0.getNavigationLink('d', { x: '1' }), '/ab/1');
-            assert.strictEqual(stateController1.getNavigationLink('d', { x: 1 }), '/cd/1');
+            assert.strictEqual(stateController0.getNavigationLink('s', { x: '1' }), '/ab/1');
+            assert.strictEqual(stateController1.getNavigationLink('s', { x: 1 }), '/cd/1');
         });
     });
 
@@ -4744,17 +4699,17 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '0/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '0/{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController0.dialogs['d'].states['s'];
+            var state = stateController0.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '0')  
             state.stateHandler.urlDecode = (state, key, val) => val.replace('0', ' ')  
             stateController1 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: '1/{x}', trackCrumbTrail: false }]}
+                
+                    { key: 's', route: '1/{x}', trackCrumbTrail: false }
                 ]);
-            var state = stateController1.dialogs['d'].states['s'];
+            var state = stateController1.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '1')  
             state.stateHandler.urlDecode = (state, key, val) => val.replace('1', ' ')  
         });
@@ -4767,8 +4722,8 @@ describe('MatchTest', function () {
         });
 
         it('should build', function() {
-            assert.strictEqual(stateController0.getNavigationLink('d', { x: 'a b' }), '/0/a0b');
-            assert.strictEqual(stateController1.getNavigationLink('d', { x: 'a b' }), '/1/a1b');
+            assert.strictEqual(stateController0.getNavigationLink('s', { x: 'a b' }), '/0/a0b');
+            assert.strictEqual(stateController1.getNavigationLink('s', { x: 'a b' }), '/1/a1b');
         });
-    });*/
+    });
 });
