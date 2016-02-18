@@ -248,6 +248,7 @@ describe('StateInfoTest', function () {
             var state0 = stateController.states['s0'];
             var state1 = stateController.states['s1'];
             var state2 = stateController.states['s2'];
+            assert.equal(Object.keys(stateController.states).length, 3);
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
             assert.equal(state1.key, 's1');
@@ -270,6 +271,7 @@ describe('StateInfoTest', function () {
             var state0 = stateController.states['s0'];
             var state1 = stateController.states['s1'];
             var state2 = stateController.states['s2'];
+            assert.equal(Object.keys(stateController.states).length, 3);
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
             assert.equal(state1.key, 's1');

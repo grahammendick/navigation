@@ -35,6 +35,7 @@ class StateController {
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
         var builtStates = StateConfig.build(states, this.converterFactory);
+        this.states = {};
         for(var i = 0; i < builtStates.length; i++)
             this.states[builtStates[i].key] = builtStates[i];
         this.router.addRoutes(builtStates);
