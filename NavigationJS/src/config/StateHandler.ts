@@ -65,8 +65,6 @@ class StateHandler implements IStateHandler {
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
         var newCrumbs: Crumb[] = [];
-        if (state.parent.initial === state)
-            return newCrumbs;
         for (var i = 0; i < crumbs.length; i++) {
             if (crumbs[i].state === state)
                 break;

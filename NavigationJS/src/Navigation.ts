@@ -1,8 +1,6 @@
 ﻿import StateContext = require('./StateContext');
 import StateController = require('./StateController');
-import Dialog = require('./config/Dialog');
 import State = require('./config/State');
-import Transition = require('./config/Transition');
 import HistoryAction = require('./history/HistoryAction');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HTML5HistoryManager = require('./history/HTML5HistoryManager');
@@ -10,9 +8,7 @@ import Crumb = require('./config/Crumb');
 import StateHandler = require('./config/StateHandler');
 
 class Navigation {
-    static Dialog = Dialog;
     static State = State;
-    static Transition = Transition;
     static HistoryAction = HistoryAction;
     static HashHistoryManager = HashHistoryManager;
     static HTML5HistoryManager = HTML5HistoryManager;

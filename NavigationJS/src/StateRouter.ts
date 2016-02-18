@@ -1,5 +1,4 @@
-﻿import Dialog = require('./config/Dialog');
-import IRouter = require('./config/IRouter');
+﻿import IRouter = require('./config/IRouter');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');

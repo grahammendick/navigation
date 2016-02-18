@@ -1,5 +1,4 @@
-﻿import Dialog = require('./Dialog');
-import IState = require('./IState');
+﻿import IState = require('./IState');
 import IStateHandler = require('./IStateHandler');
 import StateHandler = require('./StateHandler');
 
