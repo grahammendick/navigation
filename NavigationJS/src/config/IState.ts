@@ -1,5 +1,4 @@
-interface IState<TTransitions> {
-    transitions?: TTransitions;
+interface IState {
     key: string;
     defaults?: any;
     defaultTypes?: any;
