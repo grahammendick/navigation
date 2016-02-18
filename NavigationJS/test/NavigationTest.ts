@@ -5,25 +5,24 @@ import Navigation = require('../src/Navigation');
 import StateController = require('../src/StateController');
 
 describe('Navigation', function () {
-    describe('Dialog', function() {
+    describe('State', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
         });
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
+                stateController.navigate('s');
             });
             test();
         });
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s');
                 stateController.navigateLink(link);
             });            
             test();
@@ -31,8 +30,7 @@ describe('Navigation', function () {
         
         function test(){
             it('should go to initial State', function() {
-                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].initial);
-                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+                assert.equal(stateController.stateContext.state, stateController.states['s']);
             });
             it('should have no crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 0);
@@ -40,7 +38,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Invalid Dialog', function() {
+    /*describe('Invalid Dialog', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -5518,5 +5516,5 @@ describe('Navigation', function () {
             stateController.navigateBack(1);
             assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s0']);
         });
-    });
+    });*/
 });
