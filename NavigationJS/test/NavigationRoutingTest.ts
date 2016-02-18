@@ -9,7 +9,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackCrumbTrail: false }
+                { key: 's', route: '' }
             ]);
         });
         
@@ -38,7 +38,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'abc', trackCrumbTrail: false }
+                { key: 's', route: 'abc' }
             ]);
         });
 
@@ -72,7 +72,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/c', trackCrumbTrail: false }
+                { key: 's', route: 'ab/c' }
             ]);
         });
 
@@ -106,7 +106,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
         });
 
@@ -141,7 +141,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}' }
             ]);
         });
 
@@ -181,7 +181,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y}', trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y}' }
             ]);
         });
 
@@ -221,7 +221,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}/{y}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}/{y}' }
             ]);
         });
 
@@ -265,7 +265,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}/c/{y}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}/c/{y}' }
             ]);
         });
 
@@ -308,7 +308,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x?}', trackCrumbTrail: false }
+                { key: 's', route: '{x?}' }
             ]);
         });
 
@@ -344,7 +344,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x?}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x?}' }
             ]);
         });
 
@@ -385,7 +385,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x?}/{y?}', trackCrumbTrail: false }
+                { key: 's', route: '{x?}/{y?}' }
             ]);
         });
 
@@ -436,7 +436,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x?}/{y?}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x?}/{y?}' }
             ]);
         });
 
@@ -490,7 +490,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y?}', trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y?}' }
             ]);
         });
 
@@ -535,7 +535,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}/{y?}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}/{y?}' }
             ]);
         });
 
@@ -584,7 +584,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}/c/{y?}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}/c/{y?}' }
             ]);
         });
 
@@ -633,7 +633,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab{x}' }
             ]);
         });
 
@@ -668,7 +668,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab{x}e{y}', trackCrumbTrail: false }
+                { key: 's', route: 'ab{x}e{y}' }
             ]);
         });
 
@@ -710,7 +710,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}ab/{y?}', trackCrumbTrail: false }
+                { key: 's', route: '{x}ab/{y?}' }
             ]);
         });
 
@@ -758,7 +758,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaults: { x: 'cde' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaults: { x: 'cde' } }
             ]);
         });
 
@@ -798,7 +798,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaults: { x: 345 }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaults: { x: 345 } }
             ]);
         });
 
@@ -841,7 +841,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaults: { x: true }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaults: { x: true } }
             ]);
         });
 
@@ -884,7 +884,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) } }
             ]);
         });
 
@@ -937,7 +937,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'abc', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: 'abc', defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -974,7 +974,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'abc', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
+                { key: 's', route: 'abc', defaultTypes: { x: 'boolean' } }
             ]);
         });
 
@@ -1011,7 +1011,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'abc', defaultTypes: { x: 'date' }, trackCrumbTrail: false }
+                { key: 's', route: 'abc', defaultTypes: { x: 'date' } }
             ]);
         });
 
@@ -1054,7 +1054,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' }, trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' } }
             ]);
         });
 
@@ -1099,7 +1099,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' } }
             ]);
         });
 
@@ -1162,7 +1162,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y}', defaults: { y: 'ab' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y}', defaults: { y: 'ab' } }
             ]);
         });
 
@@ -1212,7 +1212,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' } }
             ]);
         });
 
@@ -1267,7 +1267,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' }, trackCrumbTrail: false }
+                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
             ]);
         });
 
@@ -1403,7 +1403,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
         });
         it('should match', function() {
@@ -1426,7 +1426,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'a/{someVar}', trackCrumbTrail: false }
+                { key: 's', route: 'a/{someVar}' }
             ]);
         });
         it('should match', function() {
@@ -1448,7 +1448,7 @@ describe('MatchTest', function () {
     describe('Match Slash', function () {
         it('should match', function() {
             var stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var { data } = stateController.parseLink('abc/');
             assert.strictEqual(Object.keys(data).length, 1);
@@ -1460,7 +1460,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'a/{=*"()\'-_+~@:?><.;[],!£$%^#&}', defaults: { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }, trackCrumbTrail: false }
+                { key: 's', route: 'a/{=*"()\'-_+~@:?><.;[],!£$%^#&}', defaults: { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' } }
             ]);
         });
         
@@ -1495,7 +1495,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '.+*\^$\[\]()\'/{x}', trackCrumbTrail: false }
+                { key: 's', route: '.+*\^$\[\]()\'/{x}' }
             ]);
         });
         
@@ -1519,7 +1519,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab{x?}', trackCrumbTrail: false }
+                { key: 's', route: 'ab{x?}' }
             ]);
         });
 
@@ -1554,7 +1554,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x?}/{y}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x?}/{y}' }
             ]);
         });
 
@@ -1596,7 +1596,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y}', defaults: { x: 'ab' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y}', defaults: { x: 'ab' } }
             ]);
         });
 
@@ -1636,7 +1636,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' }, trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' } }
             ]);
         });
 
@@ -1681,7 +1681,7 @@ describe('MatchTest', function () {
     describe('Extra Defaults', function () {
         it('should match', function() {
             var stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' } }
             ]);
             var { data } = stateController.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 2);
@@ -1698,7 +1698,7 @@ describe('MatchTest', function () {
     describe('Case Insensitive', function () {
         it('should match', function() {
             var stateController = new Navigation.StateController([
-                { key: 's', route: 'abc/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'abc/{x}' }
             ]);
             var { data } = stateController.parseLink('/AbC/aBc');
             assert.strictEqual(Object.keys(data).length, 1);
@@ -1714,8 +1714,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', trackCrumbTrail: false },
-                { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}' },
+                { key: 's1', route: 'cd/{x}' }
             ]);
         });
 
@@ -1747,7 +1747,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['', 'abc/{x}'], trackCrumbTrail: false }
+                { key: 's', route: ['', 'abc/{x}'] }
             ]);
         });
 
@@ -1785,7 +1785,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }
+                { key: 's', route: ['abc/{x}', 'def/{y}'] }
             ]);
         });
 
@@ -1845,7 +1845,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }
+                { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'] }
             ]);
         });
 
@@ -1896,7 +1896,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 's' }, trackCrumbTrail: false }
+                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 's' } }
             ]);
         });
 
@@ -1963,7 +1963,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['abc/{x?}', 'abc/{x}/def/{y}'], trackCrumbTrail: false }
+                { key: 's', route: ['abc/{x?}', 'abc/{x}/def/{y}'] }
             ]);
         });
 
@@ -2015,7 +2015,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 }, trackCrumbTrail: false }
+                { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 } }
             ]);
         });
 
@@ -2072,7 +2072,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['def/{y}', 'abc/{x}'], defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: ['def/{y}', 'abc/{x}'], defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2116,7 +2116,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackTypes: false, trackCrumbTrail: false }
+                { key: 's', route: '{x}', trackTypes: false }
             ]);
         });
 
@@ -2143,7 +2143,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 } }
             ]);
         });
 
@@ -2172,7 +2172,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' } }
             ]);
         });
 
@@ -2198,7 +2198,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2227,7 +2227,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -2253,7 +2253,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackTypes: false, trackCrumbTrail: false }
+                { key: 's', route: '', trackTypes: false }
             ]);
         });
         
@@ -2280,7 +2280,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }
+                { key: 's', route: '', trackTypes: false, defaults: { x: 2 } }
             ]);
         });
 
@@ -2309,7 +2309,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
+                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' } }
             ]);
         });
 
@@ -2335,7 +2335,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2364,7 +2364,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
             ]);
         });
         
@@ -2390,7 +2390,7 @@ describe('MatchTest', function () {
     describe('Empty String', function () {
         it('should build', function() {
             var stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             assert.strictEqual(stateController.getNavigationLink('s', { x: '' }), null);
         });
@@ -2399,7 +2399,7 @@ describe('MatchTest', function () {
     describe('Without Types Two Route Default', function () {
         it('should build', function() {
             var stateController = new Navigation.StateController([
-                { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 }, trackCrumbTrail: false }
+                { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 } }
             ]);
             assert.strictEqual(stateController.getNavigationLink('s'), '/');
             assert.strictEqual(stateController.getNavigationLink('s', { x: 2, y: 1 }), '/a/1');
@@ -2417,7 +2417,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
         });
         
@@ -2450,7 +2450,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
         
@@ -2483,7 +2483,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'numberarray' } }
             ]);
         });
         
@@ -2504,7 +2504,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
         
@@ -2524,7 +2524,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' } }
             ]);
         });
         
@@ -2550,7 +2550,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaults: { x: ['Hello', 'World'] }, trackCrumbTrail: false }
+                { key: 's', route: '', defaults: { x: ['Hello', 'World'] } }
             ]);
         });
         
@@ -2575,7 +2575,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaults: { x: [1, 2, 4] }, trackCrumbTrail: false }
+                { key: 's', route: '', defaults: { x: [1, 2, 4] } }
             ]);
         });
         
@@ -2601,7 +2601,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaults: { x: [true, false] }, trackCrumbTrail: false }
+                { key: 's', route: '', defaults: { x: [true, false] } }
             ]);
         });
         
@@ -2626,7 +2626,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] }, trackCrumbTrail: false }
+                { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] } }
             ]);
         });
         
@@ -2651,7 +2651,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2669,7 +2669,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2687,7 +2687,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'boolean' } }
             ]);
         });
 
@@ -2705,7 +2705,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'boolean' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'boolean' } }
             ]);
         });
 
@@ -2723,7 +2723,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'date' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'date' } }
             ]);
         });
 
@@ -2741,7 +2741,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'date' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'date' } }
             ]);
         });
 
@@ -2759,7 +2759,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'string' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'string' } }
             ]);
         });
 
@@ -2777,7 +2777,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'string' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'string' } }
             ]);
         });
 
@@ -2795,7 +2795,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'numberarray' } }
             ]);
         });
 
@@ -2815,7 +2815,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' } }
             ]);
         });
 
@@ -2835,7 +2835,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
 
@@ -2855,7 +2855,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
 
@@ -2875,7 +2875,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'datearray' } }
             ]);
         });
 
@@ -2895,7 +2895,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'datearray' } }
             ]);
         });
 
@@ -2915,7 +2915,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
         });
 
@@ -2935,7 +2935,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
 
@@ -2955,7 +2955,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'abc', trackCrumbTrail: false }
+                { key: 's', route: 'abc' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
@@ -2976,7 +2976,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
@@ -2997,7 +2997,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val, queryString) =>  {
@@ -3023,7 +3023,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val, queryString) => {
@@ -3049,8 +3049,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's0', route: 'a', trackCrumbTrail: false },
-                { key: 's1', route: 'b', trackCrumbTrail: false }
+                { key: 's0', route: 'a' },
+                { key: 's1', route: 'b' }
             ]);
             for(var key in stateController.states) {
                 var state = stateController.states[key];
@@ -3080,8 +3080,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's0', route: 'a/{x}', trackCrumbTrail: false },
-                { key: 's1', route: 'b/{x}', trackCrumbTrail: false }
+                { key: 's0', route: 'a/{x}' },
+                { key: 's1', route: 'b/{x}' }
             ]);
             for(var key in stateController.states) {
                 var state = stateController.states[key];
@@ -3111,7 +3111,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
@@ -3137,7 +3137,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
@@ -3163,7 +3163,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{y}', trackCrumbTrail: false }
+                { key: 's', route: '{x}/{y}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
@@ -3189,7 +3189,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x?}', trackCrumbTrail: false }
+                { key: 's', route: '{x?}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
@@ -3215,7 +3215,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
@@ -3241,7 +3241,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackCrumbTrail: false }
+                { key: 's', route: '' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
@@ -3267,7 +3267,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackCrumbTrail: false }
+                { key: 's', route: '' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
@@ -3292,7 +3292,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', trackCrumbTrail: false }
+                { key: 's', route: '' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) =>  {
@@ -3318,7 +3318,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             delete state.stateHandler.urlEncode;
@@ -3340,7 +3340,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
@@ -3363,7 +3363,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val, queryString) => {
@@ -3390,7 +3390,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => {
@@ -3419,8 +3419,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's0', route: 'a', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false },
-                { key: 's1', route: 'b', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's0', route: 'a', defaultTypes: { x: 'stringarray' } },
+                { key: 's1', route: 'b', defaultTypes: { x: 'stringarray' } }
             ]);
             for(var key in stateController.states) {
                 var state = stateController.states[key];
@@ -3454,7 +3454,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x?}', trackCrumbTrail: false }
+                { key: 's', route: '{x?}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
@@ -3475,7 +3475,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}', trackCrumbTrail: false }
+                { key: 's', route: '{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
@@ -3495,7 +3495,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab{x}' }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
@@ -3515,7 +3515,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
 
@@ -3577,7 +3577,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
 
@@ -3611,7 +3611,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x?}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x?}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
 
@@ -3669,7 +3669,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
 
@@ -3732,7 +3732,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] }, trackCrumbTrail: false }
+                { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
 
@@ -3769,7 +3769,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{*y}', defaultTypes: { y: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}/{*y}', defaultTypes: { y: 'stringarray' } }
             ]);
         });
 
@@ -3841,7 +3841,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{x}/{*y?}', defaultTypes: { y: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{x}/{*y?}', defaultTypes: { y: 'stringarray' } }
             ]);
         });
 
@@ -3915,7 +3915,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}/ab/{*y}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}/ab/{*y}', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
         });
 
@@ -3985,7 +3985,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' } }
             ]);
         });
         
@@ -4022,7 +4022,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}/ab', defaults: { x: ['cde', 'fg'] }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}/ab', defaults: { x: ['cde', 'fg'] } }
             ]);
         });
 
@@ -4070,7 +4070,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab{*x}', defaults: { x: ['cde', 'fg'] }, trackCrumbTrail: false }
+                { key: 's', route: 'ab{*x}', defaults: { x: ['cde', 'fg'] } }
             ]);
         });
 
@@ -4109,7 +4109,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -4141,7 +4141,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -4172,7 +4172,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaults: { x: ['a', 'b'] }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaults: { x: ['a', 'b'] } }
             ]);
         });
 
@@ -4192,7 +4192,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateController.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
@@ -4215,7 +4215,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' } }
             ]);
         });
 
@@ -4243,7 +4243,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
 
@@ -4271,7 +4271,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' } }
             ]);
         });
 
@@ -4298,7 +4298,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
             ]);
         });
 
@@ -4330,8 +4330,8 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' }, trackCrumbTrail: false },
-                { key: 's1', route: 'cd/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' } },
+                { key: 's1', route: 'cd/{x}' }
             ]);
         });
 
@@ -4362,7 +4362,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', trackCrumbTrail: false }
+                { key: 's', route: '{*x}' }
             ]);
         });
 
@@ -4392,7 +4392,7 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' }, trackCrumbTrail: false }
+                { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
         });
 
@@ -4435,10 +4435,10 @@ describe('MatchTest', function () {
         var stateController: StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}' }
             ]);
             stateController.configure([
-                { key: 's', route: 'cd/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'cd/{x}' }
             ]);
         });
 
@@ -4462,10 +4462,10 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}' }
             ]);
             stateController1 = new Navigation.StateController([
-                { key: 's', route: 'cd/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'cd/{x}' }
             ]);
         });
 
@@ -4494,10 +4494,10 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', defaults: { x: 'cd' }, trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}', defaults: { x: 'cd' } }
             ]);
             stateController1 = new Navigation.StateController([
-                { key: 's', route: 'cd/{x}', defaults: { x: 12 }, trackCrumbTrail: false }
+                { key: 's', route: 'cd/{x}', defaults: { x: 12 } }
             ]);
         });
 
@@ -4534,10 +4534,10 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 's', route: 'ab/{x}', trackCrumbTrail: false }
+                { key: 's', route: 'ab/{x}' }
             ]);
             stateController1 = new Navigation.StateController([
-                { key: 's', route: 'cd/{x}', defaultTypes: { x: 'number' }, trackCrumbTrail: false }
+                { key: 's', route: 'cd/{x}', defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -4566,13 +4566,13 @@ describe('MatchTest', function () {
         var stateController1: StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
-                { key: 's', route: '0/{x}', trackCrumbTrail: false }
+                { key: 's', route: '0/{x}' }
             ]);
             var state = stateController0.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '0')  
             state.stateHandler.urlDecode = (state, key, val) => val.replace('0', ' ')  
             stateController1 = new Navigation.StateController([
-                { key: 's', route: '1/{x}', trackCrumbTrail: false }
+                { key: 's', route: '1/{x}' }
             ]);
             var state = stateController1.states['s'];
             state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '1')  
