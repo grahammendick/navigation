@@ -1724,55 +1724,7 @@ describe('Navigation', function () {
         })
     });
 
-    /*describe('Dialog Next', function() {
-        it ('should return initial State', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
-            assert.equal(stateController.getNextState('d'), stateController.dialogs['d'].initial);
-        })
-    });
-
-    describe('Transition Next', function() {
-        it ('should return to State', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            stateController.navigate('d');
-            assert.equal(stateController.getNextState('t'), stateController.dialogs['d'].states['s1']);
-        })
-    });
-
-    describe('Invalid Next', function() {
-        it ('should throw error', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
-            assert.throws(() => stateController.getNextState('d0'));
-        })
-    });
-
-    describe('Dialog and Transition Match Next', function() {
-        it ('should return to State', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 'd', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            stateController.navigate('d');
-            assert.equal(stateController.getNextState('d'), stateController.dialogs['d'].states['s1']);
-        })
-    });
-
-    describe('Cross Dialog Navigated', function () {
+    /*describe('Cross Dialog Navigated', function () {
         it('should call all lifecycle functions', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
