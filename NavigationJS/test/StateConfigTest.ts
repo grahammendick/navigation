@@ -3,7 +3,7 @@
 import assert = require('assert');
 import Navigation = require('../src/Navigation');
 
-describe('StateInfoTest', function () {
+describe('StateConfigTest', function () {
     describe('State', function () {
         it('should configure States', function() {
             var stateController = new Navigation.StateController([
