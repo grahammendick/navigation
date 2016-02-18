@@ -1571,10 +1571,10 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
             var state = stateController.states['s1'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
@@ -1622,10 +1622,10 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                    { key: 's0', route: 'r0' },
-                    { key: 's1', route: 'r1', trackCrumbTrail: true },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
             var state = stateController.states['s1'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
@@ -1672,79 +1672,59 @@ describe('Navigation', function () {
         }
     });
 
-    /*describe('Bookmarked Link Navigate', function() {
+    describe('Bookmarked Link With Trail Navigate', function() {
         it ('should populate old and previous States', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            stateController.navigate('d');
-            var link = stateController.getNavigationLink('t');
-            stateController.navigate('t');
-            stateController.navigate('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
+            stateController.navigate('s2');
             stateController.navigateLink(link);
-            assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s2']);
-            assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
+            assert.equal(stateController.stateContext.oldState, stateController.states['s2']);
+            assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         })
     });
 
-    describe('Bookmarked Link Without Trail Navigate', function() {
+    describe('Bookmarked Link Navigate', function() {
         it ('should populate old but not previous States', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: false, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: false }]}
-                ]);
-            stateController.navigate('d');
-            var link = stateController.getNavigationLink('t');
-            stateController.navigate('t');
-            stateController.navigate('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
+            stateController.navigate('s2');
             stateController.navigateLink(link);
-            assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s2']);
+            assert.equal(stateController.stateContext.oldState, stateController.states['s2']);
             assert.equal(stateController.stateContext.previousState, null);
-            assert.equal(stateController.stateContext.previousDialog, null);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         })
     });
 
     describe('Bookmarked Link Clear Navigate', function() {
         it ('should populate previous but not old States', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            stateController.navigate('d');
-            var link = stateController.getNavigationLink('t');
-            stateController.navigate('t');
-            stateController.navigate('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
+            stateController.navigate('s2');
             stateController.clearStateContext();
             stateController.navigateLink(link);
             assert.equal(stateController.stateContext.oldState, undefined);
-            assert.equal(stateController.stateContext.oldDialog, undefined);
-            assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
+            assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         })
     });
 
-    describe('Dialog Next', function() {
+    /*describe('Dialog Next', function() {
         it ('should return initial State', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
