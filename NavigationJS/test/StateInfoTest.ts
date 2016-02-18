@@ -4,202 +4,82 @@ import assert = require('assert');
 import Navigation = require('../src/Navigation');
 
 describe('StateInfoTest', function () {
-    describe('Dialog', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 't0', states: [
-                    { key: 's0', route: 'r0' }]},
-                { key: 'd1', initial: 's1', title: 't1', states: [
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            var dialog0 = stateController._dialogs[0];
-            var dialog1 = (<any> stateController.dialogs).d1;
-            assert.equal(stateController._dialogs.length, 2);
-            assert.equal(dialog0.key, 'd0');
-            assert.equal(dialog0.title, 't0');
-            assert.equal(dialog0.index, 0);
-            assert.equal(dialog0.initial.key, 's0');
-            assert.equal(dialog1.key, 'd1');
-            assert.equal(dialog1.title, 't1');
-            assert.equal(dialog1.index, 1);
-            assert.equal(dialog1.initial.key, 's1');
-        })
-    });
-
     describe('State', function () {
-        it('should configure State Info', function() {
+        it('should configure States', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', title: 't0', transitions: [
-                        { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'r1', title: 't1' }]}
-                ]);
-            var dialog = stateController._dialogs[0];
-            var state0 = dialog._states[0];
-            var state1 = (<any> dialog.states).s1; 
-            assert.equal(dialog._states.length, 2);
+                { key: 's0', route: 'r0', title: 't0' },
+                { key: 's1', route: 'r1', title: 't1' }
+            ]);
+            var state0 = stateController.states['s0'];
+            var state1 = stateController.states['s1'];
             assert.equal(state0.key, 's0');
             assert.equal(state0.title, 't0');
-            assert.equal(state0.index, 0);
             assert.equal(state1.key, 's1');
             assert.equal(state1.title, 't1');
-            assert.equal(state1.index, 1);
-        })
-    });
-
-    describe('Transition', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', title: 't0', transitions: [
-                        { key: 't0', to: 's1' },
-                        { key: 't1', to: 's2' }]},
-                    { key: 's1', route: 'r1', title: 't1' },
-                    { key: 's2', route: 'r2', title: 't2' }]}
-                ]);
-            var dialog = stateController._dialogs[0];
-            var state = dialog._states[0];
-            var transition0 = state._transitions[0];
-            var transition1 = (<any> state.transitions).t1;
-            assert.equal(state._transitions.length, 2);
-            assert.equal(transition0.key, 't0');
-            assert.equal(transition0.index, 0);
-            assert.equal(transition1.key, 't1');
-            assert.equal(transition1.index, 1);
-        })
-    });
-
-    describe('Dialog Initial', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
-            var dialog = stateController._dialogs[0];
-            assert.equal(dialog.initial, dialog._states[0]);
-        })
-    });
-
-    describe('Dialog Attributes', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', other: true, path: ' x', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
-            assert.equal(stateController._dialogs[0]['other'], true);
-            assert.equal(stateController._dialogs[0]['path'], ' x');
-        })
-    });
-
-    describe('State Parent', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', other: true, path: ' x', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
-            var dialog = stateController._dialogs[0];
-            assert.equal(dialog._states[0].parent, dialog);
-        })
-    });
-
-    describe('Transition Parent', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            var dialog = stateController._dialogs[0];
-            var state = dialog._states[0];
-            assert.equal(state._transitions[0].parent, state);
-        })
-    });
-
-    describe('Transition To', function () {
-        it('should configure State Info', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            var dialog = stateController._dialogs[0];
-            var state = dialog._states[0];
-            assert.equal(state._transitions[0].to, dialog.states['s1']);
         })
     });
 
     describe('Track Crumb Trail', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't0', to: 's1' },
-                        { key: 't1', to: 's2' }]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: false },
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            assert.equal(stateController._dialogs[0]._states[0].trackCrumbTrail, false);
-            assert.equal(stateController._dialogs[0]._states[1].trackCrumbTrail, false);
-            assert.equal(stateController._dialogs[0]._states[2].trackCrumbTrail, true);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: false },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            assert.equal(stateController.states['s0'].trackCrumbTrail, false);
+            assert.equal(stateController.states['s1'].trackCrumbTrail, false);
+            assert.equal(stateController.states['s2'].trackCrumbTrail, true);
         })
     });
 
     describe('Defaults', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
-                ]);
-            assert.strictEqual(stateController._dialogs[0]._states[0].defaults['string'], 'Hello');
-            assert.strictEqual(stateController._dialogs[0]._states[0].defaults['_bool'], true);
-            assert.strictEqual(stateController._dialogs[0]._states[0].defaults['number'], 1);
+                { key: 's', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+            ]);
+            assert.strictEqual(stateController.states['s'].defaults['string'], 'Hello');
+            assert.strictEqual(stateController.states['s'].defaults['_bool'], true);
+            assert.strictEqual(stateController.states['s'].defaults['number'], 1);
         })
     });
 
     describe('Default Types', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' } }]}
-                ]);
-            assert.strictEqual(stateController._dialogs[0]._states[0].defaultTypes['string'], 'string');
-            assert.strictEqual(stateController._dialogs[0]._states[0].defaultTypes['boolean'], 'boolean');
-            assert.strictEqual(stateController._dialogs[0]._states[0].defaultTypes['number'], 'number');
+                { key: 's', route: 'r', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' } }
+            ]);
+            assert.strictEqual(stateController.states['s'].defaultTypes['string'], 'string');
+            assert.strictEqual(stateController.states['s'].defaultTypes['boolean'], 'boolean');
+            assert.strictEqual(stateController.states['s'].defaultTypes['number'], 'number');
         })
     });
 
     describe('Attributes', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', handler: 'y' }]}
-                ]);
-            assert.equal(stateController._dialogs[0]._states[0]['handler'], 'y');
+                { key: 's', route: 'r', handler: 'y' }
+            ]);
+            assert.equal(stateController.states['s']['handler'], 'y');
         })
     });
 
     describe('Route', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }]},
-                    { key: 's1', route: 'r1/{string}/{number}' }]}
-                ]);
-            assert.equal(stateController._dialogs[0]._states[0].route, 'r0');
-            assert.equal(stateController._dialogs[0]._states[1].route, 'r1/{string}/{number}');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{string}/{number}' }
+            ]);
+            assert.equal(stateController.states['s0'].route, 'r0');
+            assert.equal(stateController.states['s1'].route, 'r1/{string}/{number}');
         })
     });
 
     describe('Default Types String', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd' }, defaultTypes: { s1: 'string', s2: 'boolean' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd' }, defaultTypes: { s1: 'string', s2: 'boolean' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(defaults[' &s0'], 'a');
             assert.strictEqual(defaults['s1'], 'b');
             assert.strictEqual(defaults['s2'], 'c');
@@ -210,10 +90,9 @@ describe('StateInfoTest', function () {
     describe('Default Types Bool', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { b1: true, b2: false, b3: true }, defaultTypes: { b1: 'boolean', b2: 'number' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { b1: true, b2: false, b3: true }, defaultTypes: { b1: 'boolean', b2: 'number' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(defaults['b1'], true);
             assert.strictEqual(defaults['b2'], false);
             assert.strictEqual(defaults['b3'], true);
@@ -223,10 +102,9 @@ describe('StateInfoTest', function () {
     describe('Default Types Number', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { n1: 0, n2: 1, n3: 2 }, defaultTypes: { n1: 'number', n2: 'date' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { n1: 0, n2: 1, n3: 2 }, defaultTypes: { n1: 'number', n2: 'date' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(defaults['n1'], 0);
             assert.strictEqual(defaults['n2'], 1);
             assert.strictEqual(defaults['n3'], 2);
@@ -236,10 +114,9 @@ describe('StateInfoTest', function () {
     describe('Default Types Date', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { d1: new Date(2010, 3, 7), d2: new Date(2011, 7, 3), d3: new Date(2012, 8, 4) }, defaultTypes: { d1: 'date', d2: 'string' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { d1: new Date(2010, 3, 7), d2: new Date(2011, 7, 3), d3: new Date(2012, 8, 4) }, defaultTypes: { d1: 'date', d2: 'string' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(+defaults['d1'], +new Date(2010, 3, 7));
             assert.strictEqual(+defaults['d2'], +new Date(2011, 7, 3));
             assert.strictEqual(+defaults['d3'], +new Date(2012, 8, 4));
@@ -249,10 +126,9 @@ describe('StateInfoTest', function () {
     describe('Default Types String Array', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { s0: ['a', 'b'], s1: ['c', 'd'], s2: ['e'] }, defaultTypes: { s1: 'stringarray', s2: 'boolean' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { s0: ['a', 'b'], s1: ['c', 'd'], s2: ['e'] }, defaultTypes: { s1: 'stringarray', s2: 'boolean' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(defaults['s0'][0], 'a');
             assert.strictEqual(defaults['s0'][1], 'b');
             assert.strictEqual(defaults['s1'][0], 'c');
@@ -264,10 +140,9 @@ describe('StateInfoTest', function () {
     describe('Default Types Bool Array', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { b0: [true, false], b1: [false, true], b2: [true] }, defaultTypes: { b1: 'booleanarray', b2: 'number' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { b0: [true, false], b1: [false, true], b2: [true] }, defaultTypes: { b1: 'booleanarray', b2: 'number' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(defaults['b0'][0], true);
             assert.strictEqual(defaults['b0'][1], false);
             assert.strictEqual(defaults['b1'][0], false);
@@ -279,10 +154,9 @@ describe('StateInfoTest', function () {
     describe('Default Types Number Array', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { n0: [0, 1], n1: [2, 3], n2: [4] }, defaultTypes: { n1: 'numberarray', n2: 'date' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { n0: [0, 1], n1: [2, 3], n2: [4] }, defaultTypes: { n1: 'numberarray', n2: 'date' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(defaults['n0'][0], 0);
             assert.strictEqual(defaults['n0'][1], 1);
             assert.strictEqual(defaults['n1'][0], 2);
@@ -294,10 +168,9 @@ describe('StateInfoTest', function () {
     describe('Default Types Date Array', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaults: { d0: [new Date(2010, 3, 7), new Date(2011, 7, 3)], d1: [new Date(2011, 7, 3), new Date(2010, 3, 7)], d2: [new Date(2012, 8, 4)] }, defaultTypes: { d1: 'datearray', d2: 'string' } }]}
-                ]);
-            var defaults = stateController._dialogs[0]._states[0].defaults;
+                { key: 's', route: 'r', defaults: { d0: [new Date(2010, 3, 7), new Date(2011, 7, 3)], d1: [new Date(2011, 7, 3), new Date(2010, 3, 7)], d2: [new Date(2012, 8, 4)] }, defaultTypes: { d1: 'datearray', d2: 'string' } }
+            ]);
+            var defaults = stateController.states['s'].defaults;
             assert.strictEqual(+defaults['d0'][0], +new Date(2010, 3, 7));
             assert.strictEqual(+defaults['d0'][1], +new Date(2011, 7, 3));
             assert.strictEqual(+defaults['d1'][0], +new Date(2011, 7, 3));
@@ -310,8 +183,7 @@ describe('StateInfoTest', function () {
         it('should throw error', function() {
             assert.throws(() => {
                 var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', defaults: { s: {} },  title: 's0'}]}
+                    { key: 's0', route: 'd0s0', defaults: { s: {} },  title: 's0'}
                 ]);
             });
         })
@@ -321,118 +193,20 @@ describe('StateInfoTest', function () {
         it('should throw error', function() {
             assert.throws(() => {
                 var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', defaultTypes: { s: 'x' },  title: 's0'}]}
+                    { key: 's0', route: 'd0s0', defaultTypes: { s: 'x' },  title: 's0'}
                 ]);
             });
         })
    });
-
-    describe('Invalid Transition To', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                        { key: 't0', to: 's1' }]}
-                    ]}
-                ])
-            });
-        })
-   });
-
-    describe('Invalid Initial', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's1', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]}
-                ]);
-            });
-        })
-    });
-
-    describe('Duplicate Dialog', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]},
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]}
-                ]);
-            });
-        })
-    });
 
     describe('Duplicate State', function () {
         it('should throw error', function() {
             assert.throws(() => {
                 var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
                     { key: 's0', route: 'd0s0', title: 's0'},
-                    { key: 's0', route: 'd0s0', title: 's0' }]}
+                    { key: 's0', route: 'd0s0', title: 's0' }
                 ]);
             });
-        })
-    });
-
-    describe('Duplicate Transition', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                        { key: 't0', to: 's1' },
-                        { key: 't0', to: 's2' }]},
-                    { key: 's1', route: 'd0s1', title: 's1' },
-                    { key: 's2', route: 'd0s2', title: 's2' }]}
-                ])
-            });
-        })
-    });
-
-    describe('Missing Dialog Key', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController(<any> [
-                { initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]}
-                ]);
-            });
-        })
-    });
-
-    describe('Empty Dialog Key', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: '', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]}
-                ]);
-            });
-        })
-    });
-
-    describe('Missing Dialog Initial', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController(<any> [
-                { key: 'd0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]}
-                ]);
-            }, /mandatory/, '');
-        })
-    });
-
-    describe('Empty Dialog Initial', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: '', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0'}]}
-                ]);
-            }, /mandatory/, '');
         })
     });
 
@@ -440,9 +214,8 @@ describe('StateInfoTest', function () {
         it('should throw error', function() {
             assert.throws(() => {
                 var stateController = new Navigation.StateController(<any> [
-                { key: 'd0', initial: 's0', title: 'd0', states: [
                     { key: 's0', route: 'd0s0', title: 's0'},
-                    { route: 'd0s1', title: 's1' }]}
+                    { route: 'd0s1', title: 's1' }
                 ]);
             });
         })
@@ -452,224 +225,82 @@ describe('StateInfoTest', function () {
         it('should throw error', function() {
             assert.throws(() => {
                 var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
                     { key: 's0', route: 'd0s0', title: 's0'},
-                    { key: '', route: 'd0s1', title: 's1' }]}
+                    { key: '', route: 'd0s1', title: 's1' }
                 ]);
             });
-        })
-    });
-
-    describe('Missing Transition Key', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController(<any> [
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                        { to: 's1' }]},
-                    { key: 's1', route: 'd0s1', title: 's1' }]}
-                ])
-            });
-        })
-    });
-
-    describe('Empty Transition Key', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                        { key: '', to: 's1' }]},
-                    { key: 's1', route: 'd0s1', title: 's1' }]}
-                ])
-            });
-        })
-    });
-
-    describe('Missing Transition To', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController(<any> [
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                        { key: 't0' }]},
-                    { key: 's1', route: 'd0s1', title: 's1' }]}
-                ])
-            }, /mandatory/, '');
-        })
-    });
-
-    describe('Empty Transition To', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', title: 'd0', states: [
-                    { key: 's0', route: 'd0s0', title: 's0', transitions: [
-                        { key: 't0', to: '' }]},
-                    { key: 's1', route: 'd0s1', title: 's1' }]}
-                ])
-            }, /mandatory/, '');
         })
     });
 
     describe('Reload Error', function () {
         it('should keep State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't0', to: 's1' },
-                        { key: 't1', to: 's2' }]},
-                    { key: 's1', route: 'r1' },
-                    { key: 's2', route: 'r2' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
             try {
-                var stateController = new Navigation.StateController([
-                    { key: 'd', initial: 's', states: [
-                        { key: 'xxx', route: 'r' }]}
-                    ]);
+                var stateController = new Navigation.StateController(<any> [
+                    { route: 'xxx' }
+                ]);
             } catch(e) {
             }
-            var dialog0 = stateController._dialogs[0];
-            var dialog1 = stateController._dialogs[1];
-            var state0 = dialog0._states[0];
-            var state1 = dialog0._states[1];
-            var state2 = dialog0._states[2];
-            assert.equal(dialog0._states.length, 3);
-            assert.equal(dialog0.initial, state0);
+            var state0 = stateController.states['s0'];
+            var state1 = stateController.states['s1'];
+            var state2 = stateController.states['s2'];
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
-            assert.equal(state0.index, 0);
             assert.equal(state1.key, 's1');
             assert.equal(state1.route, 'r1');
-            assert.equal(state1.index, 1);
             assert.equal(state2.key, 's2');
             assert.equal(state2.route, 'r2');
-            assert.equal(state2.index, 2);
-            var transition0 = state0._transitions[0];
-            var transition1 = state0._transitions[1];
-            assert.equal(state0._transitions.length, 2);
-            assert.equal(transition0.key, 't0');
-            assert.equal(transition0.index, 0);
-            assert.equal(transition0.to, state1);
-            assert.equal(transition1.key, 't1');
-            assert.equal(transition1.index, 1);
-            assert.equal(transition1.to, state2);
-            state0 = dialog1._states[0];
-            assert.equal(dialog1._states.length, 1);
-            assert.equal(dialog1.initial, state0);
-            assert.equal(state0.key, 's0');
-            assert.equal(state0.route, 'r3');
-            assert.equal(state0.index, 0);
         })
     });
 
     describe('Reload', function () {
         it('should configure State Info', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
             stateController.configure([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't0', to: 's1' },
-                        { key: 't1', to: 's2' }]},
-                    { key: 's1', route: 'r1' },
-                    { key: 's2', route: 'r2' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
-                ]);
-            var dialog0 = stateController._dialogs[0];
-            var dialog1 = stateController._dialogs[1];
-            var state0 = dialog0._states[0];
-            var state1 = dialog0._states[1];
-            var state2 = dialog0._states[2];
-            assert.equal(dialog0._states.length, 3);
-            assert.equal(dialog0.initial, state0);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var state0 = stateController.states['s0'];
+            var state1 = stateController.states['s1'];
+            var state2 = stateController.states['s2'];
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
-            assert.equal(state0.index, 0);
             assert.equal(state1.key, 's1');
             assert.equal(state1.route, 'r1');
-            assert.equal(state1.index, 1);
             assert.equal(state2.key, 's2');
             assert.equal(state2.route, 'r2');
-            assert.equal(state2.index, 2);
-            var transition0 = state0._transitions[0];
-            var transition1 = state0._transitions[1];
-            assert.equal(state0._transitions.length, 2);
-            assert.equal(transition0.key, 't0');
-            assert.equal(transition0.index, 0);
-            assert.equal(transition0.to, state1);
-            assert.equal(transition1.key, 't1');
-            assert.equal(transition1.index, 1);
-            assert.equal(transition1.to, state2);
-            state0 = dialog1._states[0];
-            assert.equal(dialog1._states.length, 1);
-            assert.equal(dialog1.initial, state0);
-            assert.equal(state0.key, 's0');
-            assert.equal(state0.route, 'r3');
-            assert.equal(state0.index, 0);
         })
     });
 
     describe('Two Controllers', function () {
         it('should configure State Info', function() {
             var stateController0 = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
             var stateController1 = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't0', to: 's1' },
-                        { key: 't1', to: 's2' }]},
-                    { key: 's1', route: 'r1' },
-                    { key: 's2', route: 'r2' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
-                ]);
-            var dialog = stateController0._dialogs[0];
-            var state = dialog._states[0];
-            assert.equal(dialog._states.length, 1);
-            assert.equal(dialog.initial, state);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var state = stateController0.states['s'];
             assert.equal(state.key, 's');
             assert.equal(state.route, 'r');
-            assert.equal(state.index, 0);
-            assert.equal(state._transitions.length, 0);            
-            var dialog0 = stateController1._dialogs[0];
-            var dialog1 = stateController1._dialogs[1];
-            var state0 = dialog0._states[0];
-            var state1 = dialog0._states[1];
-            var state2 = dialog0._states[2];
-            assert.equal(dialog0._states.length, 3);
-            assert.equal(dialog0.initial, state0);
+            var state0 = stateController1.states['s0'];
+            var state1 = stateController1.states['s1'];
+            var state2 = stateController1.states['s2'];
             assert.equal(state0.key, 's0');
             assert.equal(state0.route, 'r0');
-            assert.equal(state0.index, 0);
             assert.equal(state1.key, 's1');
             assert.equal(state1.route, 'r1');
-            assert.equal(state1.index, 1);
             assert.equal(state2.key, 's2');
             assert.equal(state2.route, 'r2');
-            assert.equal(state2.index, 2);
-            var transition0 = state0._transitions[0];
-            var transition1 = state0._transitions[1];
-            assert.equal(state0._transitions.length, 2);
-            assert.equal(transition0.key, 't0');
-            assert.equal(transition0.index, 0);
-            assert.equal(transition0.to, state1);
-            assert.equal(transition1.key, 't1');
-            assert.equal(transition1.index, 1);
-            assert.equal(transition1.to, state2);
-            state0 = dialog1._states[0];
-            assert.equal(dialog1._states.length, 1);
-            assert.equal(dialog1.initial, state0);
-            assert.equal(state0.key, 's0');
-            assert.equal(state0.route, 'r3');
-            assert.equal(state0.index, 0);
         })
     });
  });
