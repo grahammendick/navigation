@@ -6,6 +6,7 @@ import IState = require('./config/IState');
 class StateConfig {
     static build(states: IState[], converterFactory: ConverterFactory): State[] {
         var builtStates: State[] = [];
+        var stateKeys = {};
         for (var i = 0; i < states.length; i++) {
             var stateObject = states[i];
             var state = new State();
@@ -31,7 +32,9 @@ class StateConfig {
             }
             if (!state.key)
                 throw new Error('State key is mandatory');
-            //Validate A State with key ' + state.key + ' already exists
+            if (stateKeys[state.key])
+                throw new Error('A State with key ' + state.key + ' already exists');
+            stateKeys[state.key] = true;
             builtStates.push(state);
         }
         return builtStates;
