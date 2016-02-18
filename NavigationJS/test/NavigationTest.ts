@@ -230,7 +230,7 @@ describe('Navigation', function () {
     });
     
 
-    describe('Null Action', function() {
+    describe('Null State', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
