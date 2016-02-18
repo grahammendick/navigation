@@ -824,37 +824,32 @@ describe('Navigation', function () {
         }
     });
 
-    /*describe('Can Navigate Back', function() {
+    describe('Can Navigate Back With Trail', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t');
-                stateController.navigate('t');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
             });
             test();
@@ -876,37 +871,32 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Without Trail Can Navigate Back', function() {
+    describe('Can Navigate Back', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: false }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2' }
+            ]);
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t');
-                stateController.navigate('t');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
             });
             test();
@@ -922,7 +912,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Invalid Back', function() {
+    /*describe('Invalid Back', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
