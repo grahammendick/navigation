@@ -38,29 +38,28 @@ describe('Navigation', function () {
         }
     });
 
-    /*describe('Invalid Dialog', function() {
+    describe('Invalid State', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
         });
 
         describe('Navigate', function() {
             it('should throw error', function(){
-                assert.throws(() => stateController.navigate('d0'));
+                assert.throws(() => stateController.navigate('s0'), /is not a valid State/);
             });
         });
         
         describe('Navigate Link', function() {
             it('should throw error', function(){
-                assert.throws(() => stateController.getNavigationLink('d0'));
+                assert.throws(() => stateController.getNavigationLink('s0'), /is not a valid State/);
             });
         });
     });
 
-    describe('Cross Dialog', function() {
+    /*describe('Cross Dialog', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([

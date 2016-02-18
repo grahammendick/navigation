@@ -124,16 +124,17 @@ class StateController {
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    navigate(action: string, toData?: any, historyAction?: HistoryAction) {
-        var url = this.getNavigationLink(action, toData);
+    navigate(state: string, toData?: any, historyAction?: HistoryAction) {
+        var url = this.getNavigationLink(state, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getNavigationLink(action: string, toData?: any): string {
-        //validate 'action' is valid state
-        return this.getLink(this.states[action], toData);
+    getNavigationLink(state: string, toData?: any): string {
+        if (!this.states[state])
+            throw new Error(state + ' is not a valid State');
+        return this.getLink(this.states[state], toData);
     }
 
     private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
