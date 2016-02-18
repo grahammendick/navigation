@@ -2360,26 +2360,20 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('Unloading Navigate', function () {
+    describe('Unloading Navigate', function () {
         it('should go to to State instead of initial State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's2' },
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
-                ]);
-            stateController.navigate('d0');
-            var link = stateController.getNavigationLink('t');
-            stateController.navigate('t');
-            stateController.navigate('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3' }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
+            stateController.navigate('s1');
+            stateController.navigate('s2');
             var disposed = 0, unloading, navigated10, navigated01;
-            stateController.dialogs['d0'].states['s2'].unloading = (state, data, url, unload) => {
+            stateController.states['s2'].unloading = (state, data, url, unload) => {
                 if (!unloading) {
                     unloading = true;
                     stateController.navigateLink(link);
@@ -2387,58 +2381,52 @@ describe('Navigation', function () {
                     unload();
                 }
             }
-            stateController.dialogs['d0'].states['s2'].dispose = () => disposed++;
-            stateController.dialogs['d1'].states['s0'].navigated = () => navigated10 = true;
-            stateController.dialogs['d0'].states['s1'].navigated = () => navigated01 = true;
-            stateController.navigate('d1');
+            stateController.states['s2'].dispose = () => disposed++;
+            stateController.states['s3'].navigated = () => navigated10 = true;
+            stateController.states['s1'].navigated = () => navigated01 = true;
+            stateController.navigate('s3');
             assert.strictEqual(disposed, 1);
             assert.strictEqual(unloading, true);
             assert.strictEqual(navigated10, undefined);
             assert.strictEqual(navigated01, true);
-            assert.equal(stateController.stateContext.oldState, stateController.dialogs['d0'].states['s2']);
-            assert.equal(stateController.stateContext.previousState, stateController.dialogs['d0'].states['s0']);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d0'].states['s1']);
+            assert.equal(stateController.stateContext.oldState, stateController.states['s2']);
+            assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         });
     });
 
     describe('Navigating Navigate', function () {
         it('should go to to State instead of initial State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's2' },
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3' }]}
-                ]);
-            stateController.navigate('d0');
-            var link = stateController.getNavigationLink('t');
-            stateController.navigate('t');
-            stateController.navigate('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3' }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
+            stateController.navigate('s1');
+            stateController.navigate('s2');
             var disposed = 0, navigating, navigated10, navigated01;
-            stateController.dialogs['d0'].states['s2'].dispose = () => disposed++;
-            stateController.dialogs['d1'].states['s0'].navigating = (data, url, navigate) => {
+            stateController.states['s2'].dispose = () => disposed++;
+            stateController.states['s3'].navigating = (data, url, navigate) => {
                 navigating = true;
                 stateController.navigateLink(link);
             }
-            stateController.dialogs['d1'].states['s0'].navigated = () => navigated10 = true;
-            stateController.dialogs['d0'].states['s1'].navigated = () => navigated01 = true;
-            stateController.navigate('d1');
+            stateController.states['s3'].navigated = () => navigated10 = true;
+            stateController.states['s1'].navigated = () => navigated01 = true;
+            stateController.navigate('s3');
             assert.strictEqual(disposed, 1);
             assert.strictEqual(navigating, true);
             assert.strictEqual(navigated10, undefined);
             assert.strictEqual(navigated01, true);
-            assert.equal(stateController.stateContext.oldState, stateController.dialogs['d0'].states['s2']);
-            assert.equal(stateController.stateContext.previousState, stateController.dialogs['d0'].states['s0']);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d0'].states['s1']);
+            assert.equal(stateController.stateContext.oldState, stateController.states['s2']);
+            assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         });
     });
 
-    describe('On Navigate', function () {
+    /*describe('On Navigate', function () {
         it('should call onNavigate listener', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
