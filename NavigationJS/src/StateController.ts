@@ -9,7 +9,7 @@ import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
-import StateInfoConfig = require('./StateInfoConfig');
+import StateConfig = require('./StateConfig');
 import StateRouter = require('./StateRouter');
 import ITransition = require('./config/ITransition');
 
@@ -38,7 +38,7 @@ class StateController {
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var config = StateInfoConfig.build(dialogs, this.converterFactory);
+        var config = StateConfig.build(dialogs, this.converterFactory);
         this._dialogs = config._dialogs;
         this.dialogs = config.dialogs;
         this.router.addRoutes(this._dialogs);

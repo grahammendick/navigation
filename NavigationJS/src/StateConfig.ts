@@ -7,7 +7,7 @@ import IState = require('./config/IState');
 import Transition = require('./config/Transition');
 import ITransition = require('./config/ITransition');
 
-class StateInfoConfig {
+class StateConfig {
     static build(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], converterFactory: ConverterFactory): { dialogs: { [index: string]: Dialog }, _dialogs: Dialog[] } {
         var _builtDialogs = [];
         var builtDialogs: { [index: string]: Dialog } = {};
@@ -102,4 +102,4 @@ class StateInfoConfig {
         }
     }
 }
-export = StateInfoConfig;
+export = StateConfig;
