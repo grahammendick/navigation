@@ -4,7 +4,7 @@ import State = require('./config/State');
 import IState = require('./config/IState');
 
 class StateConfig {
-    private static build(states: IState[], converterFactory: ConverterFactory): State[] {
+    static build(states: IState[], converterFactory: ConverterFactory): State[] {
         var stateArray: State[] = [];
         for (var i = 0; i < states.length; i++) {
             var stateObject = states[i];
