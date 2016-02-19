@@ -2426,53 +2426,43 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('On Navigate', function () {
+    describe('On Navigate', function () {
         it('should call onNavigate listener', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
             var oldStates = [];
             var states = [];
-            stateController.navigate('d0');
+            stateController.navigate('s0');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
                 states.push(state);
             };
             stateController.onNavigate(navigatedHandler);
-            var link = stateController.getNavigationLink('t');
+            var link = stateController.getNavigationLink('s1');
             stateController.navigateLink(link);
-            stateController.navigate('d1');
+            stateController.navigate('s2');
             stateController.offNavigate(navigatedHandler);
-            assert.equal(oldStates[0], stateController.dialogs['d0'].states['s0']);
-            assert.equal(states[0], stateController.dialogs['d0'].states['s1']);
-            assert.equal(oldStates[1], stateController.dialogs['d0'].states['s1']);
-            assert.equal(states[1], stateController.dialogs['d1'].states['s0']);
+            assert.equal(oldStates[0], stateController.states['s0']);
+            assert.equal(states[0], stateController.states['s1']);
+            assert.equal(oldStates[1], stateController.states['s1']);
+            assert.equal(states[1], stateController.states['s2']);
             assert.equal(oldStates.length, 2);
             assert.equal(states.length, 2);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d1'].states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s2']);
         });
     });
 
     describe('Duplicate On Navigate', function () {
         it('should throw error', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
             var oldStates = [];
             var states = [];
-            stateController.navigate('d0');
+            stateController.navigate('s');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
                 states.push(state);
@@ -2485,17 +2475,13 @@ describe('Navigation', function () {
     describe('Duplicate On Off Navigate', function () {
         it('should call onNavigate listener', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
             var oldStates = [];
             var states = [];
-            stateController.navigate('d0');
+            stateController.navigate('s0');
             var navigatedHandler = (oldState, state, data) => {
                 oldStates.push(oldState);
                 states.push(state);
@@ -2503,34 +2489,30 @@ describe('Navigation', function () {
             stateController.onNavigate(navigatedHandler);
             stateController.offNavigate(navigatedHandler);
             stateController.onNavigate(navigatedHandler);
-            var link = stateController.getNavigationLink('t');
+            var link = stateController.getNavigationLink('s1');
             stateController.navigateLink(link);
-            stateController.navigate('d1');
+            stateController.navigate('s2');
             stateController.offNavigate(navigatedHandler);
-            assert.equal(oldStates[0], stateController.dialogs['d0'].states['s0']);
-            assert.equal(states[0], stateController.dialogs['d0'].states['s1']);
-            assert.equal(oldStates[1], stateController.dialogs['d0'].states['s1']);
-            assert.equal(states[1], stateController.dialogs['d1'].states['s0']);
+            assert.equal(oldStates[0], stateController.states['s0']);
+            assert.equal(states[0], stateController.states['s1']);
+            assert.equal(oldStates[1], stateController.states['s1']);
+            assert.equal(states[1], stateController.states['s2']);
             assert.equal(oldStates.length, 2);
             assert.equal(states.length, 2);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d1'].states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s2']);
         });
     });
 
     describe('Copy On Navigate', function () {
         it('should call both onNavigate listeners', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
             var oldStates = [];
             var states = [];
-            stateController.navigate('d0');
+            stateController.navigate('s0');
             var navigatedHandler1 = (oldState, state, data) => {
                 oldStates.push(oldState);
                 states.push(state);
@@ -2541,26 +2523,26 @@ describe('Navigation', function () {
             };
             stateController.onNavigate(navigatedHandler1);
             stateController.onNavigate(navigatedHandler2);
-            var link = stateController.getNavigationLink('t');
+            var link = stateController.getNavigationLink('s1');
             stateController.navigateLink(link);
-            stateController.navigate('d1');
+            stateController.navigate('s2');
             stateController.offNavigate(navigatedHandler1);
             stateController.offNavigate(navigatedHandler2);
-            assert.equal(oldStates[0], stateController.dialogs['d0'].states['s0']);
-            assert.equal(states[0], stateController.dialogs['d0'].states['s1']);
-            assert.equal(oldStates[1], stateController.dialogs['d0'].states['s0']);
-            assert.equal(states[1], stateController.dialogs['d0'].states['s1']);
-            assert.equal(oldStates[2], stateController.dialogs['d0'].states['s1']);
-            assert.equal(states[2], stateController.dialogs['d1'].states['s0']);
-            assert.equal(oldStates[3], stateController.dialogs['d0'].states['s1']);
-            assert.equal(states[3], stateController.dialogs['d1'].states['s0']);
+            assert.equal(oldStates[0], stateController.states['s0']);
+            assert.equal(states[0], stateController.states['s1']);
+            assert.equal(oldStates[1], stateController.states['s0']);
+            assert.equal(states[1], stateController.states['s1']);
+            assert.equal(oldStates[2], stateController.states['s1']);
+            assert.equal(states[2], stateController.states['s2']);
+            assert.equal(oldStates[3], stateController.states['s1']);
+            assert.equal(states[3], stateController.states['s2']);
             assert.equal(oldStates.length, 4);
             assert.equal(states.length, 4);
-            assert.equal(stateController.stateContext.state, stateController.dialogs['d1'].states['s0']);
+            assert.equal(stateController.stateContext.state, stateController.states['s2']);
         });
     });
 
-    describe('Multiple On Navigate', function () {
+    /*describe('Multiple On Navigate', function () {
         it('should call multiple onNavigate listeners', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
