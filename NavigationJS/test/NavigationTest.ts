@@ -4069,16 +4069,16 @@ describe('Navigation', function () {
     describe('Two Controllers History Navigate', function() {
         it('should add history', function() {
             var stateController0 = new Navigation.StateController([
-                { key: 's0', route: 'r0' }
+                { key: 's', route: 'r0' }
             ]);
             var stateController1 = new Navigation.StateController([
-                { key: 's1', route: 'r1' }
+                { key: 's', route: 'r1' }
             ]);
             var url0, url1;
             stateController0.historyManager.addHistory = (url) => url0 = url;
             stateController1.historyManager.addHistory = (url) => url1 = url;
-            stateController0.navigate('s0');
-            stateController1.navigate('s1');        
+            stateController0.navigate('s');
+            stateController1.navigate('s');        
             assert.strictEqual(url0, '/r0');
             assert.strictEqual(url1, '/r1');
         });
