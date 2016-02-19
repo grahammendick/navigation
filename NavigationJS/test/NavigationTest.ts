@@ -2914,21 +2914,18 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('Async Data Navigating Navigating', function () {
+    describe('Async Data Navigating Navigating', function () {
         it('should pass async data to navigated function once', function(done: MochaDone) {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            stateController.navigate('d');
-            stateController.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateController.navigate('s0');
+            stateController.states['s1'].navigated = (data, asyncData) => {
                 assert.equal(asyncData, 0);
             }
             var i = 0;
-            stateController.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+            stateController.states['s1'].navigating = (data, url, navigate) => {
                 ((count) => setTimeout(() => {
                     navigate(count);
                     if (count === 1)
@@ -2936,26 +2933,23 @@ describe('Navigation', function () {
                 }, 0))(i);
                 i++;
             }
-            stateController.navigate('t');
-            stateController.navigate('t');
+            stateController.navigate('s1');
+            stateController.navigate('s1');
         });
     });
 
     describe('Reversed Async Data Navigating Navigating', function () {
         it('should pass second async data to navigated function', function(done: MochaDone) {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            stateController.navigate('d');
-            stateController.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                { key: 's0', route: 'r0'},
+                { key: 's1', route: 'r1' }
+            ]);
+            stateController.navigate('s0');
+            stateController.states['s1'].navigated = (data, asyncData) => {
                 assert.equal(asyncData, 1);
             }
             var i = 0;
-            stateController.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+            stateController.states['s1'].navigating = (data, url, navigate) => {
                 ((count) => setTimeout(() => { 
                     navigate(count);
                     if (count === 0)
@@ -2963,95 +2957,86 @@ describe('Navigation', function () {
                 }, 5 - 5 * count))(i);
                 i++;
             }
-            stateController.navigate('t');
-            stateController.navigate('t');
+            stateController.navigate('s1');
+            stateController.navigate('s1');
         });
     });
 
     describe('No Async Data Navigating', function () {
         it('should not pass any async data', function(done: MochaDone) {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1', transitions: [
-                        { key: 't', to: 's2' },
-                    ]},
-                    { key: 's2', route: 'r2' }]}
-                ]);
-            stateController.navigate('d');
-            stateController.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
-                stateController.navigate('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateController.navigate('s0');
+            stateController.states['s1'].navigated = (data, asyncData) => {
+                stateController.navigate('s2');
             }
-            stateController.dialogs['d'].states['s2'].navigated = (data, asyncData) => {
+            stateController.states['s2'].navigated = (data, asyncData) => {
                 assert.equal(asyncData, undefined);
                 done();
             }
-            stateController.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+            stateController.states['s1'].navigating = (data, url, navigate) => {
                 setTimeout(() => navigate('hello'), 0);
             }
-            stateController.navigate('t');
+            stateController.navigate('s1');
         });
     });
 
     describe('Route Navigate', function () {
         it('should go to State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 's', trackCrumbTrail: false },
-                    { key: 's1', route: 'abc/{x}', trackCrumbTrail: false }]}
-                ]);
+                { key: 's0', route: 's' },
+                { key: 's1', route: 'abc/{x}' }
+            ]);
             stateController.navigateLink('/abc/de');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
             stateController.navigateLink('/s');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[0]);
+            assert.equal(stateController.stateContext.state, stateController.states['s0']);
         });
     });
 
     describe('Route Root Navigate', function () {
         it('should go to State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: '{y}', trackCrumbTrail: false },
-                    { key: 's1', route: 's', trackCrumbTrail: false }]}
-                ]);
+                { key: 's0', route: '{y}' },
+                { key: 's1', route: 's' }
+            ]);
             stateController.navigateLink('/sa');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[0]);
+            assert.equal(stateController.stateContext.state, stateController.states['s0']);
             stateController.navigateLink('/s');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         });
     });
 
     describe('Two Route Navigate', function () {
         it('should go to State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 's', trackCrumbTrail: false },
-                    { key: 's1', route: ['abc/{x}', 'def/{y}'], trackCrumbTrail: false }]}
-                ]);
+                { key: 's0', route: 's' },
+                { key: 's1', route: ['abc/{x}', 'def/{y}'] }
+            ]);
             stateController.navigateLink('/abc/de');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
             stateController.navigateLink('/def/gh');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
             stateController.navigateLink('/s');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[0]);
+            assert.equal(stateController.stateContext.state, stateController.states['s0']);
         });
     });
 
     describe('Two Route Root Navigate', function () {
         it('should go to State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: ['abc/{x}', '{y}'], trackCrumbTrail: false },
-                    { key: 's1', route: 's', trackCrumbTrail: false }]}
-                ]);
+                { key: 's0', route: ['abc/{x}', '{y}'] },
+                { key: 's1', route: 's' }
+            ]);
             stateController.navigateLink('/abc/de');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[0]);
+            assert.equal(stateController.stateContext.state, stateController.states['s0']);
             stateController.navigateLink('/sa');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[0]);
+            assert.equal(stateController.stateContext.state, stateController.states['s0']);
             stateController.navigateLink('/s');
-            assert.equal(stateController.stateContext.state, stateController._dialogs[0]._states[1]);
+            assert.equal(stateController.stateContext.state, stateController.states['s1']);
         });
     });
 
@@ -3059,14 +3044,13 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
         });
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
+                stateController.navigate('s');
                 stateController.refresh();
             });
             test();
@@ -3074,7 +3058,7 @@ describe('Navigation', function () {
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s');
                 stateController.navigateLink(link);
                 link = stateController.getRefreshLink();
                 stateController.navigateLink(link);
@@ -3086,11 +3070,8 @@ describe('Navigation', function () {
             it('should clear State context', function() {
                 stateController.clearStateContext();
                 assert.strictEqual(stateController.stateContext.oldState, null);
-                assert.strictEqual(stateController.stateContext.oldDialog, null);
                 assert.strictEqual(stateController.stateContext.previousState, null);
-                assert.strictEqual(stateController.stateContext.previousDialog, null);
                 assert.strictEqual(stateController.stateContext.state, null);
-                assert.strictEqual(stateController.stateContext.dialog, null);
                 assert.strictEqual(stateController.stateContext.url, null);
                 assert.strictEqual(stateController.stateContext.title, null);
                 assert.strictEqual(stateController.stateContext.crumbs.length, 0);
@@ -3110,8 +3091,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
+                    { key: 's', route: 'r' }
                 ],
                 historyManager
             );
@@ -3119,14 +3099,14 @@ describe('Navigation', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
+                stateController.navigate('s');
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s');
                 stateController.navigateLink(link);
             });
             test();
@@ -3139,7 +3119,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('History Add', function () {
+    /*describe('History Add', function () {
         var replaceHistory;
         var stateController: StateController;
         beforeEach(function() {
