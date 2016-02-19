@@ -42,23 +42,13 @@ class StateController {
     }
 
     private setStateContext(state: State, data: any, url: string) {
-        this.setOldStateContext();
+        this.stateContext.oldState = this.stateContext.state;
+        this.stateContext.oldData = this.stateContext.data;
         this.stateContext.state = state;
         this.stateContext.url = url;
         this.stateContext.title = state.title;
         this.stateContext.data = data;
         this.buildCrumbTrail(false);
-        this.setPreviousStateContext(false);
-    }
-    
-    private setOldStateContext() {
-        if (this.stateContext.state) {
-            this.stateContext.oldState = this.stateContext.state;
-            this.stateContext.oldData = this.stateContext.data;
-        }
-    }
-    
-    private setPreviousStateContext(uncombined: boolean) {
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
