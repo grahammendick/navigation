@@ -2850,25 +2850,20 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('History Navigate', function () {
+    describe('History Navigate', function () {
         it('should pass history flag to lifecycle functions', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
-                ]);
-            stateController.navigate('d0');
-            var link = stateController.getNavigationLink('t');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
             var unloadingHistory, navigatingHistory;
-            stateController.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
+            stateController.states['s0'].unloading = (state, data, url, unload, history) => {
                 unloadingHistory = history; 
                 unload();
             }
-            stateController.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
+            stateController.states['s1'].navigating = (data, url, navigate, history) => {
                 navigatingHistory = history;
                 navigate();
             }
@@ -2881,22 +2876,17 @@ describe('Navigation', function () {
     describe('Non History Navigate', function () {
         it('should not pass history flag to lifecycle functions', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r2' }]}
-                ]);
-            stateController.navigate('d0');
-            var link = stateController.getNavigationLink('t');
+                { key: 's0', route: 'r0'},
+                { key: 's1', route: 'r1' }
+            ]);
+            stateController.navigate('s0');
+            var link = stateController.getNavigationLink('s1');
             var unloadingHistory, navigatingHistory;
-            stateController.dialogs['d0'].states['s0'].unloading = (state, data, url, unload, history) => {
+            stateController.states['s0'].unloading = (state, data, url, unload, history) => {
                 unloadingHistory = history; 
                 unload();
             }
-            stateController.dialogs['d0'].states['s1'].navigating = (data, url, navigate, history) => {
+            stateController.states['s1'].navigating = (data, url, navigate, history) => {
                 navigatingHistory = history;
                 navigate();
             }
@@ -2909,25 +2899,22 @@ describe('Navigation', function () {
     describe('Async Data Navigating', function () {
         it('should pass async data to navigated function', function(done: MochaDone) {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            stateController.navigate('d');
-            stateController.dialogs['d'].states['s1'].navigated = (data, asyncData) => {
+                { key: 's0', route: 'r0'},
+                { key: 's1', route: 'r1' }
+            ]);
+            stateController.navigate('s0');
+            stateController.states['s1'].navigated = (data, asyncData) => {
                 assert.equal(asyncData, 'hello');
                 done();
             }
-            stateController.dialogs['d'].states['s1'].navigating = (data, url, navigate) => {
+            stateController.states['s1'].navigating = (data, url, navigate) => {
                 setTimeout(() => navigate('hello'), 0);
             }
-            stateController.navigate('t');
+            stateController.navigate('s1');
         });
     });
 
-    describe('Async Data Navigating Navigating', function () {
+    /*describe('Async Data Navigating Navigating', function () {
         it('should pass async data to navigated function once', function(done: MochaDone) {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
