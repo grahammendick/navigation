@@ -3546,32 +3546,26 @@ describe('Navigation', function () {
         }
     });
     
-    /*describe('Reload Back', function() {
+    describe('Reload Back', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r' }]}
-                ]);
-            stateController.navigate('d0');
+                { key: 's0', route: 'r' }
+            ]);
+            stateController.navigate('s0');
             stateController.clearStateContext();
             stateController.configure([
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't0', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't1', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d1');
-                stateController.navigate('t0');
-                stateController.navigate('t1');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
                 stateController.navigateBack(1);
             });
             test();
@@ -3579,11 +3573,11 @@ describe('Navigation', function () {
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d1');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t0');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t1');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(1);
                 stateController.navigateLink(link);
@@ -3592,21 +3586,18 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should go to previous State', function() {
-                assert.equal(stateController.stateContext.state, stateController.dialogs['d1'].states['s1']);
-                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d1']);
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s1']);
             });
-            it('should populate old State with current State', function() {
-                assert.equal(stateController.stateContext.oldState, stateController.dialogs['d1'].states['s2']);
-                assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d1']);
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController.states['s2']);
             });
             it('should populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d1'].states['s0']);
-                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d1']);
+                assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
             });
-            it('should reduce crumb trail by one', function() {
+            it('should populate crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 1);
-                assert.equal(stateController.stateContext.crumbs[0].state, stateController.dialogs['d1'].states['s0']);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.states['s0']);
                 assert.ok(stateController.stateContext.crumbs[0].last);
             });
         }
@@ -3616,39 +3607,36 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
             try {
-                stateController.configure([
-                    { key: '', initial: 's', states: [
-                        { key: 's', route: 'r' }]}
-                    ]);
+                stateController.configure([<any>
+                    { key: '' }
+                ]);
             } catch(e) {
             }
         });
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
+                stateController.navigate('s');
             });
             test();
         });
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s');
                 stateController.navigateLink(link);
             });            
             test();
         });
         
         function test(){
-            it('should go to initial State', function() {
-                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].initial);
-                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s']);
             });
-            it('should have no crumb trail', function() {
+            it('should not populate crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 0);
             });
         }
@@ -3658,55 +3646,48 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
             try {
-                stateController.configure([
-                    { key: '', initial: 's', states: [
-                        { key: 's', route: 'r' }]}
-                    ]);
+                stateController.configure([<any>
+                    { key: '' }
+                ]);
             } catch(e) {
             }
         });
 
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
             });
             test();
         });
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
             });
             test();
         });
         
         function test() {            
-            it('should go to to State', function() {
-                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
-                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s1']);
             });
             it('should populate old State', function() {
-                assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s0']);
-                assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
+                assert.equal(stateController.stateContext.oldState, stateController.states['s0']);
             });
             it('should populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
-                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
+                assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
             });
-            it('should have crumb trail of length 1', function() {
+            it('should populate crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 1);
-                assert.equal(stateController.stateContext.crumbs[0].state, stateController.stateContext.dialog.initial);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.states['s0']);
                 assert.ok(stateController.stateContext.crumbs[0].last);
             });
         }
@@ -3716,25 +3697,21 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
             try {
-                stateController.configure([
-                    { key: '', initial: 's', states: [
-                        { key: 's', route: 'r' }]}
-                    ]);
+                stateController.configure([<any>
+                    { key: '' }
+                ]);
             } catch(e) {
             }
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
                 stateController.refresh();
             });
             test();
@@ -3742,9 +3719,9 @@ describe('Navigation', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
                 link = stateController.getRefreshLink();
                 stateController.navigateLink(link);
@@ -3753,21 +3730,18 @@ describe('Navigation', function () {
         });
         
         function test() {            
-            it('should go to current State', function() {
-                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
-                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+            it('should populate current State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s1']);
             });
-            it('should populate old State with current State', function() {
-                assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s1']);
-                assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController.states['s1']);
             });
             it('should populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
-                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
+                assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
             });
-            it('should not change crumb trail', function() {
+            it('should not populate crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 1);
-                assert.equal(stateController.stateContext.crumbs[0].state, stateController.dialogs['d'].states['s0']);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.states['s0']);
                 assert.ok(stateController.stateContext.crumbs[0].last);
             });
         }
@@ -3777,29 +3751,23 @@ describe('Navigation', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't0', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, transitions: [
-                        { key: 't1', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
             try {
-                stateController.configure([
-                    { key: '', initial: 's', states: [
-                        { key: 's', route: 'r' }]}
-                    ]);
+                stateController.configure([<any>
+                    { key: '' }
+                ]);
             } catch(e) {
             }
         });
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d');
-                stateController.navigate('t0');
-                stateController.navigate('t1');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
                 stateController.navigateBack(1);
             });
             test();
@@ -3807,11 +3775,11 @@ describe('Navigation', function () {
         
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t0');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t1');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(1);
                 stateController.navigateLink(link);
@@ -3820,27 +3788,24 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should go to previous State', function() {
-                assert.equal(stateController.stateContext.state, stateController.dialogs['d'].states['s1']);
-                assert.equal(stateController.stateContext.dialog, stateController.dialogs['d']);
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s1']);
             });
-            it('should populate old State with current State', function() {
-                assert.equal(stateController.stateContext.oldState, stateController.dialogs['d'].states['s2']);
-                assert.equal(stateController.stateContext.oldDialog, stateController.dialogs['d']);
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController.states['s2']);
             });
             it('should populate previous State', function() {
-                assert.equal(stateController.stateContext.previousState, stateController.dialogs['d'].states['s0']);
-                assert.equal(stateController.stateContext.previousDialog, stateController.dialogs['d']);
+                assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
             });
-            it('should reduce crumb trail by one', function() {
+            it('should populate crumb trail', function() {
                 assert.equal(stateController.stateContext.crumbs.length, 1);
-                assert.equal(stateController.stateContext.crumbs[0].state, stateController.dialogs['d'].states['s0']);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.states['s0']);
                 assert.ok(stateController.stateContext.crumbs[0].last);
             });
         }
     });
 
-    describe('Two Controllers Dialog', function() {
+    /*describe('Two Controllers Dialog', function() {
         var stateController0: StateController;
         var stateController1: StateController;
         beforeEach(function() {
