@@ -3635,25 +3635,6 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Link Defaults Navigate', function() {
-        it('should not include defaults in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
-            ]);
-            var data = {};
-            data['_bool'] = null;
-            data['string'] = 'Hello';
-            data['number'] = 1;
-            stateController.navigate('s0');
-            var link = stateController.getNavigationLink('s1', data);
-            assert.equal(link.indexOf('string'), -1);
-            assert.equal(link.indexOf('_bool'), -1);
-            assert.equal(link.indexOf('number'), -1);
-            assert.notEqual(link.indexOf('r?'), -1);
-        });
-    });
-
     describe('Link Defaults Route Navigate', function() {
         it('should not include defaults in link', function() {
             var stateController = new Navigation.StateController([
@@ -3673,70 +3654,18 @@ describe('Navigation Data', function () {
         });
     });
 
-    /*describe('Link Context Defaults Navigate', function() {
-        it('should not include defaults in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            stateController.navigate('d');
-            stateController.navigate('t');
-            stateController.stateContext.data['emptyString'] = 1;
-            stateController.stateContext.data['number'] = 4;
-            stateController.stateContext.data['char'] = null;
-            stateController.refresh(stateController.stateContext.includeCurrentData({}))
-            var link = stateController.getNavigationLink('t');
-            assert.equal(link.indexOf('number'), -1);
-            assert.equal(link.indexOf('char'), -1);
-            assert.notEqual(link.indexOf('emptyString'), -1);
-        });
-    });
-
-    describe('Link Context Defaults Route Navigate', function() {
-        it('should not include defaults in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            stateController.navigate('d');
-            stateController.navigate('t');
-            stateController.stateContext.data['emptyString'] = 1;
-            stateController.stateContext.data['number'] = 4;
-            stateController.stateContext.data['char'] = null;
-            stateController.refresh(stateController.stateContext.includeCurrentData({}))
-            var link = stateController.getNavigationLink('t');
-            assert.equal(link.indexOf('number'), -1);
-            assert.equal(link.indexOf('char'), -1);
-            assert.notEqual(link.indexOf('emptyString'), -1);
-        });
-    });
-
     describe('Refresh Link Defaults Navigate', function() {
         it('should not include defaults in link', function() {
-            var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }]}
-                ]);
-            stateController.navigate('d');
-            stateController.navigate('t');
-            stateController.stateContext.data['_bool'] = null;
-            stateController.stateContext.data['string'] = 'Hello';
-            stateController.stateContext.data['number'] = 0;
+        var stateController = new Navigation.StateController([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+            ]);
+            var data = {};
+            data['_bool'] = null;
+            data['string'] = 'Hello';
+            data['number'] = 0;
+            stateController.navigate('s0');
+            stateController.navigate('s1', data);
             var link = stateController.getRefreshLink(stateController.stateContext.includeCurrentData({}));
             assert.equal(link.indexOf('string'), -1);
             assert.equal(link.indexOf('_bool'), -1);
@@ -3747,22 +3676,18 @@ describe('Navigation Data', function () {
     describe('Back Link Defaults Navigate', function() {
         it('should not include defaults in link', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            stateController.navigate('d');
-            stateController.navigate('t');
-            stateController.stateContext.data['_bool'] = null;
-            stateController.stateContext.data['string'] = 'Hello';
-            stateController.stateContext.data['number'] = 0;
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var data = {};
+            data['_bool'] = null;
+            data['string'] = 'Hello';
+            data['number'] = 0;
+            stateController.navigate('s0');
+            stateController.navigate('s1', data);
             stateController.refresh(stateController.stateContext.includeCurrentData({}))
-            stateController.navigate('t');
+            stateController.navigate('s2');
             var link = stateController.getNavigationBackLink(1);
             assert.equal(link.indexOf('string'), -1);
             assert.equal(link.indexOf('_bool'), -1);
@@ -3773,22 +3698,18 @@ describe('Navigation Data', function () {
     describe('Crumb Link Defaults Navigate', function() {
         it('should not include defaults in link', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]}
-                ]);
-            stateController.navigate('d');
-            stateController.navigate('t');
-            stateController.stateContext.data['number'] = 1;
-            stateController.stateContext.data['_bool'] = '';
-            stateController.stateContext.data['string'] = 4;
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var data = {};
+            data['number'] = 1;
+            data['_bool'] = '';
+            data['string'] = 4;
+            stateController.navigate('s0');
+            stateController.navigate('s1', data);
             stateController.refresh(stateController.stateContext.includeCurrentData({}))
-            stateController.navigate('t');
+            stateController.navigate('s2');
             var link = stateController.stateContext.crumbs[1].navigationLink;
             assert.equal(link.indexOf('_bool'), -1);
             assert.equal(link.indexOf('number'), -1);
@@ -3796,7 +3717,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Link Navigate', function() {
+    /*describe('Link Navigate', function() {
         it('should include data in link', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's0', states: [
