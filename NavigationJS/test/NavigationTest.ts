@@ -2763,20 +2763,19 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('Dialog Params Navigated', function () {
+    describe('State Params Navigated', function () {
         it('should pass State and Data but no old State', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
             var navigateLinkOldState, navigateLinkState, navigateLinkUrl, navigateLinkData,
                 navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
-            stateController.dialogs['d'].states['s'].navigating = (data, url, navigating) => {
+            stateController.states['s'].navigating = (data, url, navigating) => {
                 navigatingData = data;
                 navigatingUrl = url;
                 navigating();
             }
-            stateController.dialogs['d'].states['s'].stateHandler.navigateLink = (oldState, state, url) => {
+            stateController.states['s'].stateHandler.navigateLink = (oldState, state, url) => {
                 navigateLinkOldState = oldState;
                 navigateLinkState = state;
                 navigateLinkUrl = url;
@@ -2788,17 +2787,17 @@ describe('Navigation', function () {
                 navigatedData = data;
             };
             stateController.onNavigate(navigatedHandler);
-            var url = stateController.getNavigationLink('d', { s: 'Hello' });
-            stateController.navigate('d', { s: 'Hello' });
+            var url = stateController.getNavigationLink('s', { s: 'Hello' });
+            stateController.navigate('s', { s: 'Hello' });
             stateController.offNavigate(navigatedHandler);
             assert.strictEqual(navigatingData.s, 'Hello');
             assert.strictEqual(navigatingUrl, url);
             assert.strictEqual(navigateLinkOldState, null);
-            assert.strictEqual(navigateLinkState, stateController.dialogs['d'].states['s']);
+            assert.strictEqual(navigateLinkState, stateController.states['s']);
             assert.strictEqual(navigateLinkUrl, url);
             assert.strictEqual(navigateLinkData.s, undefined);
             assert.strictEqual(navigatedOldState, null);
-            assert.strictEqual(navigatedState, stateController.dialogs['d'].states['s']);
+            assert.strictEqual(navigatedState, stateController.states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
             assert.strictEqual(stateController.stateContext.data.s, 'Hello');
         });
@@ -2807,27 +2806,24 @@ describe('Navigation', function () {
     describe('Transition Params Navigated', function () {
         it('should pass old State, State and Data', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' },
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            var link = stateController.getNavigationLink('d');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var link = stateController.getNavigationLink('s0');
             stateController.navigateLink(link);
             var unloadingState, unloadingUrl, navigateLinkOldState, navigateLinkState, navigateLinkUrl, 
                 navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
-            stateController.dialogs['d'].states['s0'].unloading = (state, data, url, unload) => {
+            stateController.states['s0'].unloading = (state, data, url, unload) => {
                 unloadingState = state;
                 unloadingUrl = url;
                 unload();
             }
-            stateController.dialogs['d'].states['s1'].navigating = (data, url, navigating) => {
+            stateController.states['s1'].navigating = (data, url, navigating) => {
                 navigatingData = data;
                 navigatingUrl = url;
                 navigating();
             }
-            stateController.dialogs['d'].states['s1'].stateHandler.navigateLink = (oldState, state, url) => {
+            stateController.states['s1'].stateHandler.navigateLink = (oldState, state, url) => {
                 navigateLinkOldState = oldState;
                 navigateLinkState = state;
                 navigateLinkUrl = url;
@@ -2838,23 +2834,23 @@ describe('Navigation', function () {
                 navigatedData = data;
             };
             stateController.onNavigate(navigatedHandler);
-            var url = stateController.getNavigationLink('t', { s: 'Hello' });
-            stateController.navigate('t', { s: 'Hello' });
+            var url = stateController.getNavigationLink('s1', { s: 'Hello' });
+            stateController.navigate('s1', { s: 'Hello' });
             stateController.offNavigate(navigatedHandler);
-            assert.strictEqual(unloadingState, stateController.dialogs['d'].states['s1']);
+            assert.strictEqual(unloadingState, stateController.states['s1']);
             assert.strictEqual(unloadingUrl, url);
             assert.strictEqual(navigatingData.s, 'Hello');
             assert.strictEqual(navigatingUrl, url);
-            assert.strictEqual(navigateLinkOldState, stateController.dialogs['d'].states['s0']);
-            assert.strictEqual(navigateLinkState, stateController.dialogs['d'].states['s1']);
+            assert.strictEqual(navigateLinkOldState, stateController.states['s0']);
+            assert.strictEqual(navigateLinkState, stateController.states['s1']);
             assert.strictEqual(navigateLinkUrl, url);
-            assert.strictEqual(navigatedOldState, stateController.dialogs['d'].states['s0']);
-            assert.strictEqual(navigatedState, stateController.dialogs['d'].states['s1']);
+            assert.strictEqual(navigatedOldState, stateController.states['s0']);
+            assert.strictEqual(navigatedState, stateController.states['s1']);
             assert.strictEqual(navigatedData.s, 'Hello');
         });
     });
 
-    describe('History Navigate', function () {
+    /*describe('History Navigate', function () {
         it('should pass history flag to lifecycle functions', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd0', initial: 's0', states: [
