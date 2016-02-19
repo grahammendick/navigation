@@ -9,9 +9,8 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
         });
         var individualNavigationData = {};
         individualNavigationData['string'] = 'Hello';
@@ -21,14 +20,14 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d', individualNavigationData);
+                stateController.navigate('s', individualNavigationData);
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d', individualNavigationData);
+                var link = stateController.getNavigationLink('s', individualNavigationData);
                 stateController.navigateLink(link);
             });
             test();
@@ -49,9 +48,8 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r/{string}/{boolean}/{number}/{date}' }]}
-                ]);
+                { key: 's', route: 'r/{string}/{boolean}/{number}/{date}' }
+            ]);
         });
         var individualNavigationData = {};
         individualNavigationData['string'] = 'Hello';
@@ -61,14 +59,14 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d', individualNavigationData);
+                stateController.navigate('s', individualNavigationData);
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d', individualNavigationData);
+                var link = stateController.getNavigationLink('s', individualNavigationData);
                 stateController.navigateLink(link);
             });
             test();
@@ -89,9 +87,8 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', trackCrumbTrail: false }]}
-                ]);
+                { key: 's', route: 'r', trackCrumbTrail: false }
+            ]);
         });
         var individualNavigationData = {};
         individualNavigationData['string'] = 'Hello';
@@ -101,14 +98,14 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d', individualNavigationData);
+                stateController.navigate('s', individualNavigationData);
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d', individualNavigationData);
+                var link = stateController.getNavigationLink('s', individualNavigationData);
                 stateController.navigateLink(link);
             });
             test();
@@ -129,9 +126,8 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
         });
         var arrayNavigationData = {};
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
@@ -142,14 +138,14 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d', arrayNavigationData);
+                stateController.navigate('s', arrayNavigationData);
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d', arrayNavigationData);
+                var link = stateController.getNavigationLink('s', arrayNavigationData);
                 stateController.navigateLink(link);
             });
             test();
@@ -185,9 +181,8 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}' }]}
-                ]);
+                { key: 's', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}' }
+            ]);
         });
         var arrayNavigationData = {};
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
@@ -198,14 +193,14 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d', arrayNavigationData);
+                stateController.navigate('s', arrayNavigationData);
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d', arrayNavigationData);
+                var link = stateController.getNavigationLink('s', arrayNavigationData);
                 stateController.navigateLink(link);
             });
             test();
@@ -241,9 +236,8 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}' }]}
-                ]);
+                { key: 's', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}' }
+            ]);
         });
         var arrayNavigationData = {};
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
@@ -254,14 +248,14 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d', arrayNavigationData);
+                stateController.navigate('s', arrayNavigationData);
             });
             test();
         });
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d', arrayNavigationData);
+                var link = stateController.getNavigationLink('s', arrayNavigationData);
                 stateController.navigateLink(link);
             });
             test();
@@ -297,22 +291,21 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r' }]}
-                ]);
+                { key: 's', route: 'r' }
+            ]);
         });
         var data = {};
         data['item'] = {};
         
         describe('Navigate', function() {
             it('should throw error', function () {
-                assert.throws(() => stateController.navigate('d', data));
+                assert.throws(() => stateController.navigate('s', data));
             });
         });
 
         describe('Navigate Link', function() {
             it('should throw error', function () {
-                assert.throws(() => stateController.getNavigationLink('d', data));
+                assert.throws(() => stateController.getNavigationLink('s', data));
             });
         });
     });
@@ -320,20 +313,17 @@ describe('Navigation Data', function () {
     describe('Invalid Array Data', function () {
         it('should throw error', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1' }]}
-                ]);
-            stateController.navigate('d');
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateController.navigate('s0');
             var data = {}
             data['item'] = [{}];
-            assert.throws(() => stateController.navigate('t', data));
+            assert.throws(() => stateController.navigate('s1', data));
         });
     });
 
-    describe('Individual Data Refresh', function() {
+    /*describe('Individual Data Refresh', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -5015,18 +5005,17 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateController.stateContext.data['n'], 'hello');
             });
         }
-    });
+    });*/
 
     describe('Reserved Url Character Default Types', function () {
         it('should not include default types in link', function() {
             var stateController = new Navigation.StateController([
-                { key: 'd', initial: 's', states: [
-                    { key: 's', route: 'r', defaultTypes: { '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' } }]}
-                ]);
+                { key: 's', route: 'r', defaultTypes: { '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' } }
+            ]);
             var data = {};
             data['*/()-_+~@:?><.;[]{}!£$%^#&'] = 0;
             data['**=/()-_+~@:?><.;[]{}!£$%^#&&'] = 1;
-            stateController.navigate('d', data);
+            stateController.navigate('s', data);
             var url = stateController.getRefreshLink(stateController.stateContext.includeCurrentData({}));
             assert.notEqual(url.indexOf('=0&'), -1);
             assert.notEqual(url.indexOf('=11_'), -1);
@@ -5035,7 +5024,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Separator Url Character Default Types', function () {
+    /*describe('Separator Url Character Default Types', function () {
         it('should not include default types in link', function() {
             var stateController = new Navigation.StateController([
                 { key: 'd', initial: 's', states: [
@@ -5707,5 +5696,5 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Object.keys(stateController.stateContext.data).length, 4);
             });
         }
-    });
+    });*/
 });
