@@ -202,24 +202,6 @@ class StateController {
         }
     }
     
-    private isDefault(key: string, data: any, state: State, separable: boolean) {
-        var val = data[key]
-        var arrayDefaultVal = state.formattedArrayDefaults[key];
-        if (!separable || !arrayDefaultVal) {
-            return val === state.formattedDefaults[key];
-        } else {
-            if (typeof val === 'string')
-                val = [val];
-            if (val.length !== arrayDefaultVal.length) 
-                return false;
-            for(var i = 0; i < val.length; i++) {
-                if (val[i] !== arrayDefaultVal[i])
-                    return false;
-            }
-            return true;
-        }
-    }
-    
     start(url?: string) {
         this.navigateLink(url ? url : this.historyManager.getCurrentUrl());
     };
