@@ -2232,25 +2232,16 @@ describe('Navigation Data', function () {
         }
     });
 
-    /*describe('Back Defaults Custom Trail', function() {
+    describe('Back Defaults Custom Trail', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
-                ]);
-            var state = stateController.dialogs['d1'].states['s0'];
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+            var state = stateController.states['s2'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
@@ -2258,11 +2249,11 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d0');
-                stateController.navigate('t');
-                stateController.navigate('t');
-                stateController.navigate('d1');
-                stateController.navigate('t');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
+                stateController.navigate('s2');
+                stateController.navigate('s3');
                 stateController.navigateBack(3);
             });
             test();
@@ -2270,15 +2261,15 @@ describe('Navigation Data', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d0');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('d1');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s3');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(3);
                 stateController.navigateLink(link);
@@ -2299,21 +2290,12 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', trackCrumbTrail: true, transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r4', trackCrumbTrail: true }]}
+                    { key: 's0', route: 'r0' },
+                    { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
+                    { key: 's2', route: 'r2', trackCrumbTrail: true },
+                    { key: 's3', route: 'r3', trackCrumbTrail: true },
                 ]);
-            var state = stateController.dialogs['d1'].states['s0'];
+            var state = stateController.states['s2'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
@@ -2321,11 +2303,11 @@ describe('Navigation Data', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d0');
-                stateController.navigate('t');
-                stateController.navigate('t');
-                stateController.navigate('d1');
-                stateController.navigate('t');
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
+                stateController.navigate('s2');
+                stateController.navigate('s3');
                 stateController.navigateBack(3);
             });
             test();
@@ -2333,15 +2315,15 @@ describe('Navigation Data', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d0');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s1');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('d1');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s3');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(3);
                 stateController.navigateLink(link);
@@ -2362,37 +2344,23 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
-                ]);
-            var state = stateController.dialogs['d1'].states['s0'];
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 } },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var state = stateController.states['s2'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
-                var newCrumbs = [];
-                for (var i = 0; i < crumbs.length; i++) {
-                    if (crumbs[i].state === state)
-                        break;
-                    newCrumbs.push(crumbs[i]);
-                }
-                return newCrumbs;
+                return crumbs;
             };
         });
         var data = { s: 1, t: '2' };
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d0');
-                stateController.navigate('t', data);
-                stateController.navigate('t');
-                stateController.navigate('d1');
-                stateController.refresh();
+                stateController.navigate('s0');
+                stateController.navigate('s1', data);
+                stateController.navigate('s2');
+                stateController.navigate('s2');
                 stateController.navigateBack(2);
             });
             test();
@@ -2400,15 +2368,13 @@ describe('Navigation Data', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d0');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data);
+                link = stateController.getNavigationLink('s1', data);
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('d1');
-                stateController.navigateLink(link);
-                link = stateController.getRefreshLink();
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(2);
                 stateController.navigateLink(link);
@@ -2431,37 +2397,23 @@ describe('Navigation Data', function () {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
-                { key: 'd0', initial: 's0', states: [
-                    { key: 's0', route: 'r0', transitions: [
-                        { key: 't', to: 's1' }
-                    ]},
-                    { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 }, transitions: [
-                        { key: 't', to: 's2' }
-                    ]},
-                    { key: 's2', route: 'r2', trackCrumbTrail: true }]},
-                { key: 'd1', initial: 's0', states: [
-                    { key: 's0', route: 'r3', trackCrumbTrail: true }]}
-                ]);
-            var state = stateController.dialogs['d1'].states['s0'];
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 } },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var state = stateController.states['s2'];
             state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
-                var newCrumbs = [];
-                for (var i = 0; i < crumbs.length; i++) {
-                    if (crumbs[i].state === state)
-                        break;
-                    newCrumbs.push(crumbs[i]);
-                }
-                return newCrumbs;
+                return crumbs;
             };
         });
         var data = { s: 1, t: '2' };
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('d0');
-                stateController.navigate('t', data);
-                stateController.navigate('t');
-                stateController.navigate('d1');
-                stateController.refresh();
+                stateController.navigate('s0');
+                stateController.navigate('s1', data);
+                stateController.navigate('s2');
+                stateController.navigate('s2');
                 stateController.navigateBack(2);
             });
             test();
@@ -2469,15 +2421,13 @@ describe('Navigation Data', function () {
 
         describe('Navigate Link', function() {
             beforeEach(function() {
-                var link = stateController.getNavigationLink('d0');
+                var link = stateController.getNavigationLink('s0');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t', data);
+                link = stateController.getNavigationLink('s1', data);
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('t');
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
-                link = stateController.getNavigationLink('d1');
-                stateController.navigateLink(link);
-                link = stateController.getRefreshLink();
+                link = stateController.getNavigationLink('s2');
                 stateController.navigateLink(link);
                 link = stateController.getNavigationBackLink(2);
                 stateController.navigateLink(link);
@@ -2496,7 +2446,7 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Back Override Defaults Custom Trail', function() {
+    /*describe('Back Override Defaults Custom Trail', function() {
         var stateController: StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
