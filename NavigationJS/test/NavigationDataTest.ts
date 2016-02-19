@@ -4230,7 +4230,7 @@ describe('Navigation Data', function () {
         
         function test(){
             it('should clear State context', function() {
-                stateController.clearStateContext();
+                stateController.stateContext.clear();
                 assert.strictEqual(Object.keys(stateController.stateContext.oldData).length, 0);
                 assert.strictEqual(Object.keys(stateController.stateContext.previousData).length, 0);
                 assert.strictEqual(Object.keys(stateController.stateContext.data).length, 0);

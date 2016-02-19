@@ -14,6 +14,20 @@ class StateContext {
     crumbTrail: string[] = [];
     nextCrumb: Crumb = null;
 
+    clear() {
+        this.oldState = null;
+        this.oldData = {};
+        this.previousState = null;
+        this.previousData = {};
+        this.state = null;
+        this.data = {};
+        this.url = null;
+        this.title = null;
+        this.crumbs = [];
+        this.crumbTrail = [];
+        this.nextCrumb = null;
+    }
+
     includeCurrentData(data: any, keys?: string[]): any {
         if (!keys) {
             keys = [];

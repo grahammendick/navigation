@@ -50,20 +50,6 @@ class StateController {
         this.buildCrumbTrail(false);
         this.setPreviousStateContext(false);
     }
-
-    clearStateContext() {
-        this.stateContext.oldState = null;
-        this.stateContext.oldData = {};
-        this.stateContext.previousState = null;
-        this.stateContext.previousData = {};
-        this.stateContext.state = null;
-        this.stateContext.data = {};
-        this.stateContext.url = null;
-        this.stateContext.title = null;
-        this.stateContext.crumbs = [];
-        this.stateContext.crumbTrail = [];
-        this.stateContext.nextCrumb = null;
-    }
     
     private setOldStateContext() {
         if (this.stateContext.state) {

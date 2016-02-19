@@ -1716,7 +1716,7 @@ describe('Navigation', function () {
             stateController.navigate('s0');
             var link = stateController.getNavigationLink('s1');
             stateController.navigate('s2');
-            stateController.clearStateContext();
+            stateController.stateContext.clear();
             stateController.navigateLink(link);
             assert.equal(stateController.stateContext.oldState, undefined);
             assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
@@ -3068,7 +3068,7 @@ describe('Navigation', function () {
         
         function test(){
             it('should clear State context', function() {
-                stateController.clearStateContext();
+                stateController.stateContext.clear();
                 assert.strictEqual(stateController.stateContext.oldState, null);
                 assert.strictEqual(stateController.stateContext.previousState, null);
                 assert.strictEqual(stateController.stateContext.state, null);
@@ -3450,7 +3450,7 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r' }
             ]);
             stateController.navigate('s0');
-            stateController.clearStateContext();
+            stateController.stateContext.clear();
             stateController.configure([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
@@ -3500,7 +3500,7 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r' }
             ]);
             stateController.navigate('s0');
-            stateController.clearStateContext();
+            stateController.stateContext.clear();
             stateController.configure([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
@@ -3553,7 +3553,7 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r' }
             ]);
             stateController.navigate('s0');
-            stateController.clearStateContext();
+            stateController.stateContext.clear();
             stateController.configure([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
