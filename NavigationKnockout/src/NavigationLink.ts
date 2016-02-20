@@ -12,7 +12,7 @@ var NavigationLink = ko.bindingHandlers['navigationLink'] = {
 };
 
 function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
-    var action = ko.unwrap(valueAccessor());
+    var state = ko.unwrap(valueAccessor());
     var data = {};
     var toData = ko.unwrap(allBindings.get('toData'));
     var active = true;
@@ -22,15 +22,10 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
         data[key] = val;
         active = active && LinkUtility.isActive(stateController, key, val);
     }
-    LinkUtility.setLink(stateController, element, () => stateController.getNavigationLink(action,
+    LinkUtility.setLink(stateController, element, () => stateController.getNavigationLink(state,
         LinkUtility.getData(stateController, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    active = active && !!element.href && isActive(stateController, action);
+    active = active && !!element.href && stateController.stateContext.state.key === state;
     LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
-}
-
-function isActive(stateController: Navigation.StateController, action: string): boolean {
-    var nextState = stateController.getNextState(action);
-    return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
 }
 export = NavigationLink;
