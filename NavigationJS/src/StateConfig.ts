@@ -12,12 +12,10 @@ class StateConfig {
             var state = new State();
             for (var key in stateObject)
                 state[key] = stateObject[key];
-            if (state.key == null)
-                throw new Error('State key is mandatory');
             if (!state.key)
-                throw new Error('State key cannot be blank');
+                throw new Error('State key is mandatory');
             if (state.route == null)
-                throw new Error('State route is mandatory');
+                state.route = state.key;
             if (state.trackCrumbTrail) {
                 state.trackCrumbTrail = true;
                 var trackCrumbTrail = stateObject.trackCrumbTrail;

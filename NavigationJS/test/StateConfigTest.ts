@@ -8,16 +8,20 @@ describe('StateConfigTest', function () {
         it('should configure States', function() {
             var stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0', title: 't0' },
-                { key: 's1', route: '', title: 't1' }
+                { key: 's1', route: '', title: 't1' },
+                { key: 's2' }
             ]);
             var state0 = stateController.states['s0'];
             var state1 = stateController.states['s1'];
+            var state2 = stateController.states['s2'];
             assert.equal(state0.key, 's0');
             assert.equal(state0.title, 't0');
             assert.equal(state0.route, 'r0');
             assert.equal(state1.key, 's1');
             assert.equal(state1.title, 't1');
             assert.equal(state1.route, '');
+            assert.equal(state2.key, 's2');
+            assert.equal(state2.route, 's2');
         })
     });
 
@@ -229,17 +233,7 @@ describe('StateConfigTest', function () {
                 var stateController = new Navigation.StateController(<any> [
                     { key: '', route: 'r0', title: 's0'},
                 ]);
-            }, /key cannot be blank/);
-        })
-    });
-
-    describe('Missing State Route', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateController = new Navigation.StateController(<any> [
-                    { key: 's0', title: 's0'}
-                ]);
-            }, /route is mandatory/);
+            }, /key is mandatory/);
         })
     });
 

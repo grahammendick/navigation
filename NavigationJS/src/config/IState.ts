@@ -3,7 +3,7 @@ interface IState {
     defaults?: any;
     defaultTypes?: any;
     title?: string;
-    route: string | string[];
+    route?: string | string[];
     trackCrumbTrail?: boolean | string;
     trackTypes?: boolean;
     [extras: string]: any;
