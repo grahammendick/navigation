@@ -9,7 +9,7 @@ function navigate(e, stateController: Navigation.StateController) {
     var historyAction = LinkUtility.getHistoryAction(e);
     var toData = LinkUtility.getData(stateController, e.toData, e.includeCurrentData, e.currentDataKeys);
     if (e.action)
-        stateController.navigate(e.action, toData, historyAction);
+        stateController.navigate(e.state, toData, historyAction);
     if (!e.action && e.toData)
         stateController.refresh(toData, historyAction);
     if (e.distance)
