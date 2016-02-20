@@ -92,10 +92,10 @@ declare module Navigation {
          */
         trackTypes: boolean;
         /**
-         * Gets or sets the IStateHandler responsible for building and parsing
+         * Gets or sets the StateHandler responsible for building and parsing
          * navigation links to this State
          */
-        stateHandler: IStateHandler;
+        stateHandler: StateHandler;
         /**
          * Called on the old State before navigating to a different State
          * @param state The new State
@@ -283,60 +283,6 @@ declare module Navigation {
          * Removes a listener for the popstate event
          */
         stop(): void;
-    }
-
-    /**
-     * Defines a contract a class must implement in order to build and parse
-     * navigation links
-     */
-    interface IStateHandler {
-        /**
-         * Gets a link that navigates to the state passing the data
-         * @param router The builder and parser of State routes
-         * @param state The State to navigate to
-         * @param data The data to pass when navigating
-         * @param arrayData The query string and splat array data
-         * @returns The navigation link
-         */
-        getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[]; }): string;
-        /**
-         * Navigates to the url
-         * @param oldState The current State
-         * @param state The State to navigate to
-         * @param url The target location
-         */
-        navigateLink(oldState: State, state: State, url: string): void;
-        /**
-         * Gets the data parsed from the url
-         * @param router The builder and parser of State routes
-         * @param state The State navigated to
-         * @param url The current url
-         * @returns The navigation data and query string and splat keys
-         */
-        getNavigationData(router: IRouter, state: State, url: string): { data: any; separableData: any; };
-        /**
-         * Encodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Decodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Truncates the crumb trail
-         * @param The State navigated to
-         * @param The Crumb collection representing the crumb trail
-         * @returns Truncated crumb trail
-         */
-        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
     /**
@@ -655,9 +601,9 @@ declare module Navigation {
     }
 
     /**
-     * Implementation of IStateHandler that builds and parses navigation links
+     * Builds and parses navigation links
      */
-    class StateHandler implements IStateHandler {
+    class StateHandler {
         /**
          * Gets a link that navigates to the state passing the data
          * @param router The builder and parser of State routes

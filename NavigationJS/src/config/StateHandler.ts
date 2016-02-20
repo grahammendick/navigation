@@ -1,9 +1,8 @@
 ﻿import Crumb = require('./Crumb');
 import IRouter = require('./IRouter');
-import IStateHandler = require('./IStateHandler');
 import State = require('./State');
 
-class StateHandler implements IStateHandler {
+class StateHandler {
     getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
         var routeInfo = router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
