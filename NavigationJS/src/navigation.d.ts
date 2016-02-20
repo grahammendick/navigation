@@ -30,7 +30,7 @@ declare module Navigation {
         /**
          * Gets the route Url patterns
          */
-        route: string | string[];
+        route?: string | string[];
         /**
          * Gets a value that indicates whether to maintain the crumb trail 
          */
