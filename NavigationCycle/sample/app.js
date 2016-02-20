@@ -5,9 +5,8 @@ function createStateComponents(stateController) {
     var navigationLink = (properties, children) => NavigationCycle.navigationLink(stateController, properties, children);
     var refreshLink = (properties, children) => NavigationCycle.refreshLink(stateController, properties, children);
     var navigationBackLink = (properties, children) => NavigationCycle.navigationBackLink(stateController, properties, children);
-    var personDialog = stateController.dialogs.person;
-    var listState = personDialog.states.list;        
-    listState.intent = function(sources) {
+    var peopleState = stateController.states.people;        
+    peopleState.intent = function(sources) {
         return sources.Navigation.map(function(context) {
             return { 
                 people: personSearch.search(context.data.name, context.data.sortExpression),
@@ -18,7 +17,7 @@ function createStateComponents(stateController) {
             }
         })
     };
-    listState.model = function(data$) {
+    peopleState.model = function(data$) {
         return data$.map(function(data) {
             var totalRowCount = data.people.length;
             var remainder = totalRowCount % data.maximumRows;
@@ -40,7 +39,7 @@ function createStateComponents(stateController) {
             }
         })
     };
-    listState.view = function(data$) {
+    peopleState.view = function(data$) {
         return data$.map(function(data) { 
             return div([
                 div([
@@ -59,7 +58,7 @@ function createStateComponents(stateController) {
                     ])]
                     .concat(data.people.map(function(person) {
                         return tr([
-                            td([ navigationLink({ action: 'select', toData: { id: person.id }}, person.name) ]),
+                            td([ navigationLink({ state: 'person', toData: { id: person.id }}, person.name) ]),
                             td(person.dateOfBirth)
                         ])
                     }))
@@ -74,8 +73,8 @@ function createStateComponents(stateController) {
             ])
         })
     };
-    listState.component = function(sources) {
-        var vtree$ = listState.view(listState.model(listState.intent(sources)));
+    peopleState.component = function(sources) {
+        var vtree$ = peopleState.view(peopleState.model(peopleState.intent(sources)));
         var search$ = sources.DOM.select('input').events('blur')
             .map(function(e) {
                 return { 
@@ -93,16 +92,16 @@ function createStateComponents(stateController) {
         }
     };
     
-    var detailsState = personDialog.states.details;
-    detailsState.intent = function(sources) {
+    var personState = stateController.states.person;
+    personState.intent = function(sources) {
         return sources.Navigation.map(function(context) {
             return personSearch.getDetails(context.data.id)
         })
     };
-    detailsState.model = function(person$) {
+    personState.model = function(person$) {
         return person$;
     }   
-    detailsState.view = function(person$) {
+    personState.view = function(person$) {
         return person$.map(function(person) {
             return div([
                 navigationBackLink({ distance: 1 }, 'Person Search'),
@@ -113,8 +112,8 @@ function createStateComponents(stateController) {
             ])
         })
     };
-    detailsState.component = function(sources) {
-        var vtree$ = detailsState.view(detailsState.model(detailsState.intent(sources)));
+    personState.component = function(sources) {
+        var vtree$ = personState.view(personState.model(personState.intent(sources)));
         return {
             DOM: vtree$,
             Navigation: sources.DOM.select('a').events('click')
@@ -124,10 +123,8 @@ function createStateComponents(stateController) {
 
 function main(sources) {
     var stateController = new Navigation.StateController([
-        { key: 'person', initial: 'list', states: [
-            { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search', transitions: [
-                { key: 'select', to: 'details' }]},
-            { key: 'details', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details', }]}
+        { key: 'people', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
+        { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details', }
     ]);
     createStateComponents(stateController);
     var component$$ = sources.Navigation.map(function(context) {
