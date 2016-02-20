@@ -30,7 +30,7 @@
                 people = people.map(function (person) {
                     return (
                         <tr key={person.id}>
-                            <td><NavigationReact.NavigationLink stateController={stateController} action="select" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                            <td><NavigationReact.NavigationLink stateController={stateController} state="person" toData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
                     );
@@ -129,20 +129,18 @@
         });
 
         var stateController = new Navigation.StateController([
-            { key: 'person', initial: 'list', states: [
-                { key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search', transitions: [
-                    { key: 'select', to: 'details' }]},
-                { key: 'details', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }]}
+            { key: 'people', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
+            { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
         ]);
 
-        var personStates = stateController.dialogs.person.states;
-        personStates.list.navigated = function (data) {
+        var states = stateController.states;
+        states.people.navigated = function (data) {
             ReactDOM.render(
                 <List stateController={stateController} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
                 document.getElementById('content')
             );
         };
-        personStates.details.navigated = function (data) {
+        states.person.navigated = function (data) {
             ReactDOM.render(
                 <Details stateController={stateController} id={data.id} />,
                 document.getElementById('content')
