@@ -12,6 +12,12 @@ class StateConfig {
             var state = new State();
             for (var key in stateObject)
                 state[key] = stateObject[key];
+            if (state.key == null)
+                throw new Error('State key is mandatory');
+            if (!state.key)
+                throw new Error('State key cannot be blank');
+            if (state.route == null)
+                throw new Error('State route is mandatory');
             if (state.trackCrumbTrail) {
                 state.trackCrumbTrail = true;
                 var trackCrumbTrail = stateObject.trackCrumbTrail;
@@ -30,8 +36,6 @@ class StateConfig {
             for (var key in state.defaultTypes) {
                 converterFactory.getConverterFromName(state.defaultTypes[key]);
             }
-            if (!state.key)
-                throw new Error('State key is mandatory');
             if (stateKeys[state.key])
                 throw new Error('A State with key ' + state.key + ' already exists');
             stateKeys[state.key] = true;
