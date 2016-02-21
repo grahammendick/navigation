@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="person in people">
-                        <td><a state-controller="stateController" navigation-link="'select'" to-data="{ id: person.id }">{{person.name}}</a></td>
+                        <td><a state-controller="stateController" navigation-link="'person'" to-data="{ id: person.id }">{{person.name}}</a></td>
                         <td>{{person.dateOfBirth}}</td>
                     </tr>
                 </tbody>

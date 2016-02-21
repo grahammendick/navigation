@@ -1,22 +1,32 @@
 ﻿import Crumb = require('./config/Crumb');
-import Dialog = require('./config/Dialog');
 import State = require('./config/State');
 
 class StateContext {
     oldState: State = null;
-    oldDialog: Dialog = null;
     oldData: any = {};
     previousState: State = null;
-    previousDialog: Dialog = null;
     previousData: any = {};
     state: State = null;
-    dialog: Dialog = null;
     data: any = {};
     url: string = null;
     title: string = null;
     crumbs: Crumb[] = [];
     crumbTrail: string[] = [];
     nextCrumb: Crumb = null;
+
+    clear() {
+        this.oldState = null;
+        this.oldData = {};
+        this.previousState = null;
+        this.previousData = {};
+        this.state = null;
+        this.data = {};
+        this.url = null;
+        this.title = null;
+        this.crumbs = [];
+        this.crumbTrail = [];
+        this.nextCrumb = null;
+    }
 
     includeCurrentData(data: any, keys?: string[]): any {
         if (!keys) {

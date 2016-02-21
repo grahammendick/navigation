@@ -11,12 +11,7 @@ class NavigationLink extends React.Component<any, any> {
     
     private getNavigationLink(): string {
         var toData = LinkUtility.getData(this.getStateController(), this.props.toData, this.props.includeCurrentData, this.props.currentDataKeys);
-        return LinkUtility.getLink(this.getStateController(), () => this.getStateController().getNavigationLink(this.props.action, toData));
-    }
-    
-    private isActive(action: string): boolean {
-        var nextState = this.getStateController().getNextState(action);
-        return nextState === nextState.parent.initial && nextState.parent === this.getStateController().stateContext.dialog;
+        return LinkUtility.getLink(this.getStateController(), () => this.getStateController().getNavigationLink(this.props.state, toData));
     }
     
     componentDidMount() {
@@ -39,7 +34,7 @@ class NavigationLink extends React.Component<any, any> {
         }
         props.href = this.getNavigationLink();
         LinkUtility.addListeners(this, props, () => this.getNavigationLink());
-        active = active && !!props.href && this.isActive(this.props.action);
+        active = active && !!props.href && this.getStateController().stateContext.state.key === this.props.state;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
     }

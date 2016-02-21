@@ -1,5 +1,4 @@
-﻿import Dialog = require('./config/Dialog');
-import IRouter = require('./config/IRouter');
+﻿import IRouter = require('./config/IRouter');
 import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
@@ -102,12 +101,10 @@ class StateRouter implements IRouter {
             return decodeURIComponent(val);
     }
 
-    addRoutes(dialogs: Dialog[]) {
+    addRoutes(states: State[]) {
         this.router = new Router();
-        for (var i = 0; i < dialogs.length; i++) {
-            for (var j = 0; j < dialogs[i]._states.length; j++) {
-                this.addStateRoutes(dialogs[i]._states[j]);
-            }
+        for (var i = 0; i < states.length; i++) {
+            this.addStateRoutes(states[i]);
         }
         this.router.sort((routeA: Route, routeB: Route) => {
             var routeANumber = routeA.path.charAt(0) === '{' ? -1 : 0;

@@ -2,11 +2,6 @@ import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import CycleDOM = require('@cycle/dom');
 
-function isActive(stateController: Navigation.StateController, action: string): boolean {
-    var nextState = stateController.getNextState(action);
-    return nextState === nextState.parent.initial && nextState.parent === stateController.stateContext.dialog;
-}
-
 var NavigationLink = (stateController: Navigation.StateController, properties: any, children: any) => {
     var newProperties: any = {};
     for(var key in properties)
@@ -17,11 +12,11 @@ var NavigationLink = (stateController: Navigation.StateController, properties: a
     }
     var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
     try {
-        var link = stateController.getNavigationLink(properties.action, properties.toData);
+        var link = stateController.getNavigationLink(properties.state, properties.toData);
         newProperties.href = stateController.historyManager.getHref(link);
     } catch(e) {
     }
-    active = active && !!newProperties.href && isActive(stateController, properties.action);
+    active = active && !!newProperties.href && stateController.stateContext.state.key === properties.state;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);

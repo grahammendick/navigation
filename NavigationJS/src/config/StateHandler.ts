@@ -1,9 +1,8 @@
 ﻿import Crumb = require('./Crumb');
 import IRouter = require('./IRouter');
-import IStateHandler = require('./IStateHandler');
 import State = require('./State');
 
-class StateHandler implements IStateHandler {
+class StateHandler {
     getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
         var routeInfo = router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
@@ -65,8 +64,6 @@ class StateHandler implements IStateHandler {
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
         var newCrumbs: Crumb[] = [];
-        if (state.parent.initial === state)
-            return newCrumbs;
         for (var i = 0; i < crumbs.length; i++) {
             if (crumbs[i].state === state)
                 break;

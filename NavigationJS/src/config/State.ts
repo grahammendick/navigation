@@ -1,15 +1,7 @@
-﻿import Dialog = require('./Dialog');
-import IState = require('./IState');
-import IStateHandler = require('./IStateHandler');
+﻿import IState = require('./IState');
 import StateHandler = require('./StateHandler');
-import Transition = require('./Transition');
 
-class State implements IState<{ [index: string]: Transition }> {
-    _transitions: Transition[] = [];
-    transitions: { [index: string]: Transition } = {};
-    parent: Dialog;
-    index: number;
-    id: string;
+class State implements IState {
     key: string;
     defaults: any = {};
     defaultTypes: any = {};
@@ -20,7 +12,7 @@ class State implements IState<{ [index: string]: Transition }> {
     trackCrumbTrail: boolean = false;
     crumbTrailKey: string = 'crumb';
     trackTypes: boolean = true;
-    stateHandler: IStateHandler = new StateHandler();
+    stateHandler: StateHandler = new StateHandler();
     unloading: (state: State, data: any, url: string, unload: () => void, history: boolean) => void = function (state, data, url, unload) { unload(); };
     navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history: boolean) => void = function (data, url, navigate) { navigate(); };
     dispose: () => void = function () { };

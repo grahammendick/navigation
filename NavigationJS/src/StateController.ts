@@ -1,7 +1,5 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import Crumb = require('./config/Crumb');
-import Dialog = require('./config/Dialog');
-import IDialog = require('./config/IDialog');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HistoryAction = require('./history/HistoryAction');
 import IHistoryManager = require('./history/IHistoryManager');
@@ -9,9 +7,8 @@ import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
-import StateInfoConfig = require('./StateInfoConfig');
+import StateConfig = require('./StateConfig');
 import StateRouter = require('./StateRouter');
-import ITransition = require('./config/ITransition');
 
 class StateController {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
@@ -21,15 +18,14 @@ class StateController {
     private router: StateRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
     historyManager: IHistoryManager;
-    dialogs: { [index: string]: Dialog } = {};
-    _dialogs: Dialog[] = [];
+    states: { [index: string]: State } = {};
     
-    constructor(dialogs?: IDialog<string, IState<ITransition<string>[]>[]>[], historyManager?: IHistoryManager) {
-        if (dialogs)
-            this.configure(dialogs, historyManager);
+    constructor(states?: IState[], historyManager?: IHistoryManager) {
+        if (states)
+            this.configure(states, historyManager);
     }
     
-    configure(dialogs: IDialog<string, IState<ITransition<string>[]>[]>[], historyManager?: IHistoryManager) {
+    configure(states?: IState[], historyManager?: IHistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
@@ -38,56 +34,26 @@ class StateController {
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var config = StateInfoConfig.build(dialogs, this.converterFactory);
-        this._dialogs = config._dialogs;
-        this.dialogs = config.dialogs;
-        this.router.addRoutes(this._dialogs);
+        var builtStates = StateConfig.build(states, this.converterFactory);
+        this.states = {};
+        for(var i = 0; i < builtStates.length; i++)
+            this.states[builtStates[i].key] = builtStates[i];
+        this.router.addRoutes(builtStates);
     }
 
     private setStateContext(state: State, data: any, url: string) {
-        this.setOldStateContext();
+        this.stateContext.oldState = this.stateContext.state;
+        this.stateContext.oldData = this.stateContext.data;
         this.stateContext.state = state;
         this.stateContext.url = url;
-        this.stateContext.dialog = state.parent;
         this.stateContext.title = state.title;
         this.stateContext.data = data;
         this.buildCrumbTrail(false);
-        this.setPreviousStateContext(false);
-    }
-
-    clearStateContext() {
-        this.stateContext.oldState = null;
-        this.stateContext.oldDialog = null;
-        this.stateContext.oldData = {};
         this.stateContext.previousState = null;
-        this.stateContext.previousDialog = null;
-        this.stateContext.previousData = {};
-        this.stateContext.state = null;
-        this.stateContext.dialog = null;
-        this.stateContext.data = {};
-        this.stateContext.url = null;
-        this.stateContext.title = null;
-        this.stateContext.crumbs = [];
-        this.stateContext.crumbTrail = [];
-        this.stateContext.nextCrumb = null;
-    }
-    
-    private setOldStateContext() {
-        if (this.stateContext.state) {
-            this.stateContext.oldState = this.stateContext.state;
-            this.stateContext.oldDialog = this.stateContext.dialog;
-            this.stateContext.oldData = this.stateContext.data;
-        }
-    }
-    
-    private setPreviousStateContext(uncombined: boolean) {
-        this.stateContext.previousState = null;
-        this.stateContext.previousDialog = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
             var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
             this.stateContext.previousState = previousStateCrumb.state;
-            this.stateContext.previousDialog = this.stateContext.previousState.parent;
             this.stateContext.previousData = previousStateCrumb.data;
         }
     }
@@ -134,15 +100,17 @@ class StateController {
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    navigate(action: string, toData?: any, historyAction?: HistoryAction) {
-        var url = this.getNavigationLink(action, toData);
+    navigate(state: string, toData?: any, historyAction?: HistoryAction) {
+        var url = this.getNavigationLink(state, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getNavigationLink(action: string, toData?: any): string {
-        return this.getLink(this.getNextState(action), toData);
+    getNavigationLink(state: string, toData?: any): string {
+        if (!this.states[state])
+            throw new Error(state + ' is not a valid State');
+        return this.getLink(this.states[state], toData);
     }
 
     private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
@@ -232,35 +200,6 @@ class StateController {
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }
-    }
-    
-    private isDefault(key: string, data: any, state: State, separable: boolean) {
-        var val = data[key]
-        var arrayDefaultVal = state.formattedArrayDefaults[key];
-        if (!separable || !arrayDefaultVal) {
-            return val === state.formattedDefaults[key];
-        } else {
-            if (typeof val === 'string')
-                val = [val];
-            if (val.length !== arrayDefaultVal.length) 
-                return false;
-            for(var i = 0; i < val.length; i++) {
-                if (val[i] !== arrayDefaultVal[i])
-                    return false;
-            }
-            return true;
-        }
-    }
-
-    getNextState(action: string): State {
-        var nextState: State = null;
-        if (this.stateContext.state && this.stateContext.state.transitions[action])
-            nextState = this.stateContext.state.transitions[action].to;
-        if (!nextState && this.dialogs[action])
-            nextState = this.dialogs[action].initial;
-        if (!nextState)
-            throw new Error('The action parameter must be a Dialog key or a Transition key that is a child of the current State');
-        return nextState;
     }
     
     start(url?: string) {

@@ -11,44 +11,31 @@ module NavigationTests {
 	
 	// Configuration
 	var config = [
-		{ key: 'home', initial: 'page', help: 'home.htm', states: [
-			{ key: 'page', route: '', help: 'page.htm' }
-		]},
-		{ key: 'person', initial: 'list', states: [
-			{ key: 'list', route: ['people/{page}', 'people/{page}/sort/{sort}'], transitions: [
-				{ key: 'select', to: 'details' }
-			], defaults: { page: 1 }, trackCrumbTrail: false },
-			{ key: 'details', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' } }
-		]}
+        { key: 'home', route: '', help: 'home.htm' },
+        { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 } },
+        { key: 'person', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' }, trackCrumbTrail: true }
 	];
     var stateController = new Navigation.StateController(config, new LogHistoryManager());
 	
-	// StateInfo
-	var dialogs = stateController.dialogs;
-	var home = dialogs['home'];
-	var homePage = home.states['page'];
+	// States
+	var states = stateController.states;
+	var home = states['home'];
 	var homeKey = home.key;
-	var homePageKey = homePage.key;
-	homePage = home.initial;
-	var person = dialogs['person'];
-	var personList = person.states['list'];
-	var personDetails = person.states['details'];
-	var personListSelect = personList.transitions['select'];
-	personList = personListSelect.parent;
-	personDetails = personListSelect.to;
-	var pageDefault = personList.defaults.page;
-	var idDefaultType = personDetails.defaultTypes.id;
+	var people = states['people'];
+	var person = states['person'];
+	var pageDefault = people.defaults.page;
+	var idDefaultType = person.defaultTypes.id;
 	
 	// StateNavigator
-	personList.dispose = () => {};
-	personList.navigating = (data, url, navigate) => {
+	people.dispose = () => {};
+	people.navigating = (data, url, navigate) => {
 		navigate([]);
 	};
-	personList.navigated = (data, asyncData) => {};
-	personDetails.navigating = (data, url, navigate) => {
+	people.navigated = (data, asyncData) => {};
+	person.navigating = (data, url, navigate) => {
 		navigate();
 	};
-	personDetails.navigated = (data) => {};
+	person.navigated = (data) => {};
 	
 	// State Handler
 	class LogStateHandler extends Navigation.StateHandler {
@@ -67,9 +54,9 @@ module NavigationTests {
             return queryString ? val.replace(/\+/g, ' ') : super.urlDecode(state, key, val, queryString);
         }
 	}
-	homePage.stateHandler = new LogStateHandler();
-	personList.stateHandler = new LogStateHandler();
-	personDetails.stateHandler = new LogStateHandler();
+	home.stateHandler = new LogStateHandler();
+	people.stateHandler = new LogStateHandler();
+	person.stateHandler = new LogStateHandler();
 	
 	// Navigation Event
 	var navigationListener = 
@@ -88,7 +75,7 @@ module NavigationTests {
 	stateController.navigate('select', { id: 10 });
 	var canGoBack: boolean = stateController.canNavigateBack(1);
 	stateController.navigateBack(1);
-	stateController.clearStateContext();
+	stateController.stateContext.clear();
 	
 	// Navigation Link
 	var link = stateController.getNavigationLink('person');
@@ -96,8 +83,6 @@ module NavigationTests {
 	link = stateController.getRefreshLink({ page: 2 });
 	stateController.navigateLink(link);
 	link = stateController.getNavigationLink('select', { id: 10 });
-	var nextDialog = stateController.getNextState('select').parent;
-	person = nextDialog;
 	stateController.navigateLink(link, Navigation.HistoryAction.Replace);
 	link = stateController.getNavigationBackLink(1);
 	var crumb = stateController.stateContext.crumbs[0];
@@ -107,16 +92,13 @@ module NavigationTests {
 	// StateContext
 	stateController.navigate('home');
 	stateController.navigate('person');
-	home = stateController.stateContext.previousDialog;
-	homePage = stateController.stateContext.previousState;
-	person === stateController.stateContext.dialog;
-	personList === stateController.stateContext.state;
+	home = stateController.stateContext.previousState;
+	people === stateController.stateContext.state;
 	var url: string = stateController.stateContext.url;
 	var title: string = stateController.stateContext.title;
 	var page: number = stateController.stateContext.data.page;
 	stateController.refresh({ page: 2 });
-	person = stateController.stateContext.oldDialog;
-	personList = stateController.stateContext.oldState;
+	person = stateController.stateContext.oldState;
 	page = stateController.stateContext.oldData.page;
 	page = stateController.stateContext.previousData.page;
 	

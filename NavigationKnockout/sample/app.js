@@ -16,8 +16,8 @@
 		stateController.refresh(data);
 	};
 
-	var personStates = stateController.dialogs.person.states;
-	personStates.list.navigated = function (data) {
+	var states = stateController.states;
+	states.people.navigated = function (data) {
 		var people = personSearch.search(data.name, data.sortExpression);
 		var totalRowCount = people.length;
 		people = people.slice(data.startRowIndex, data.startRowIndex + data.maximumRows);
@@ -34,20 +34,18 @@
 		}
 		self.totalCount(totalRowCount);
 	};
-	personStates.details.navigated = function (data) {
+	states.person.navigated = function (data) {
 		self.id(data.id);
 		var person = personSearch.getDetails(data.id);
 		self.personName(person.name);
 		self.dateOfBirth(person.dateOfBirth);
 	};
-	personStates.details.dispose = function () { self.id(null); };
+	states.person.dispose = function () { self.id(null); };
 };
 
 var stateController = new Navigation.StateController([
-	{ key: 'person', initial: 'list', states: [
-		{ key: 'list', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search', transitions: [
-			{ key: 'select', to: 'details' }]},
-		{ key: 'details', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }]}
+    { key: 'people', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
+    { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
 ]);
 //stateController.historyManager.replaceQueryIdentifier = true;
 ko.applyBindings(new PersonViewModel(stateController));
