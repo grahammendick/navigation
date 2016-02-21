@@ -1,12 +1,12 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
+/// <reference path="../src/navigation.d.ts" />
 import assert = require('assert');
 import Navigation = require('../src/Navigation');
-import StateController = require('../src/StateController');
 
 describe('Navigation', function () {
     describe('State', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -39,7 +39,7 @@ describe('Navigation', function () {
     });
 
     describe('Second State', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -73,7 +73,7 @@ describe('Navigation', function () {
     });
 
     describe('State With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r', trackCrumbTrail: true }
@@ -106,7 +106,7 @@ describe('Navigation', function () {
     });
 
     describe('Invalid State', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -127,7 +127,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -170,7 +170,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -213,7 +213,7 @@ describe('Navigation', function () {
     });
 
     describe('State State', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -255,7 +255,7 @@ describe('Navigation', function () {
     });
 
     describe('State State With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r', trackCrumbTrail: true }
@@ -298,7 +298,7 @@ describe('Navigation', function () {
     
 
     describe('Null State', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -319,7 +319,7 @@ describe('Navigation', function () {
     });
     
     describe('Transition From Without Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0', trackCrumbTrail: false },
@@ -364,7 +364,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition With Trail Transition With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -414,7 +414,7 @@ describe('Navigation', function () {
     });
     
     describe('Transition Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -462,7 +462,7 @@ describe('Navigation', function () {
     
     
     describe('Refresh With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -510,7 +510,7 @@ describe('Navigation', function () {
     });
 
     describe('Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -556,7 +556,7 @@ describe('Navigation', function () {
     });
     
     describe('Back With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -608,7 +608,7 @@ describe('Navigation', function () {
     });
 
     describe('Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -658,7 +658,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Two With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -720,7 +720,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Two', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -778,7 +778,7 @@ describe('Navigation', function () {
     });
 
     describe('Back One By One With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -835,7 +835,7 @@ describe('Navigation', function () {
     });
 
     describe('Back One By One', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -892,7 +892,7 @@ describe('Navigation', function () {
     });
 
     describe('Can Navigate Back With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -939,7 +939,7 @@ describe('Navigation', function () {
     });
 
     describe('Can Navigate Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -980,7 +980,7 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Back With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1016,7 +1016,7 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1052,7 +1052,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Invalid Back With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1091,7 +1091,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Invalid Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1130,7 +1130,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1183,7 +1183,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1236,7 +1236,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh Transition With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1297,7 +1297,7 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1356,7 +1356,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition Transition With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1405,7 +1405,7 @@ describe('Navigation', function () {
     });
 
     describe('Crumb Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1464,7 +1464,7 @@ describe('Navigation', function () {
     });
 
     describe('State State Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                     { key: 's', route: 'r', trackCrumbTrail: true },
@@ -1502,7 +1502,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition State State Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1545,7 +1545,7 @@ describe('Navigation', function () {
     });
 
     describe('State State Back Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r', trackCrumbTrail: true }
@@ -1588,7 +1588,7 @@ describe('Navigation', function () {
     });
 
     describe('Transition State State Back Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1635,7 +1635,7 @@ describe('Navigation', function () {
     });
 
     describe('State State Back Two Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1686,7 +1686,7 @@ describe('Navigation', function () {
     });
 
     describe('State State Back One By One Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3108,7 +3108,7 @@ describe('Navigation', function () {
     });
 
     describe('Clear State Context', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -3150,7 +3150,7 @@ describe('Navigation', function () {
 
     describe('History Null', function () {
         var replaceHistory;
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -3188,7 +3188,7 @@ describe('Navigation', function () {
 
     describe('History Add', function () {
         var replaceHistory;
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -3226,7 +3226,7 @@ describe('Navigation', function () {
 
     describe('History Replace', function () {
         var replaceHistory;
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -3264,7 +3264,7 @@ describe('Navigation', function () {
 
     describe('History None', function () {
         var replaceHistory;
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             var historyManager = new Navigation.HashHistoryManager();
             replaceHistory = undefined;
@@ -3474,7 +3474,7 @@ describe('Navigation', function () {
     });
 
     describe('Reload Dialog', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r' }
@@ -3511,7 +3511,7 @@ describe('Navigation', function () {
     });
 
     describe('Reload Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r' }
@@ -3561,7 +3561,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r' }
@@ -3614,7 +3614,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r' }
@@ -3671,7 +3671,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Dialog', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -3710,7 +3710,7 @@ describe('Navigation', function () {
     });
 
     describe('Reload Error Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3761,7 +3761,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3815,7 +3815,7 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3873,8 +3873,8 @@ describe('Navigation', function () {
     });
 
     describe('Two Controllers Dialog', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r' }
@@ -3915,8 +3915,8 @@ describe('Navigation', function () {
     });
 
     describe('Two Controllers Transition', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3977,8 +3977,8 @@ describe('Navigation', function () {
     });
     
     describe('Two Controllers Refresh', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4045,8 +4045,8 @@ describe('Navigation', function () {
     });
     
     describe('Two Controllers Back', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4152,7 +4152,7 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Route Param', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         var s2Link: string; 
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -4212,7 +4212,7 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Route Splat Param', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         var s2Link: string; 
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -4272,7 +4272,7 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Mixed Param', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         var s2Link: string; 
         var s3Link: string; 
         beforeEach(function() {
@@ -4352,7 +4352,7 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Key', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         var s1Link: string, s2Link: string;
         beforeEach(function() {
             stateController = new Navigation.StateController([
@@ -4417,7 +4417,7 @@ describe('Navigation', function () {
     });
     
     describe('Refresh Back Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4513,7 +4513,7 @@ describe('Navigation', function () {
     });
     
     describe('Repeated States With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },

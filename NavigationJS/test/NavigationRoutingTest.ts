@@ -1,12 +1,12 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
+/// <reference path="../src/navigation.d.ts" />
 import assert = require('assert');
 import Navigation = require('../src/Navigation');
-import StateController = require('../src/StateController');
 
 describe('MatchTest', function () {
     describe('Root', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '' }
@@ -35,7 +35,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'abc' }
@@ -69,7 +69,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Two Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/c' }
@@ -103,7 +103,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -138,7 +138,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Two Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}' }
@@ -178,7 +178,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y}' }
@@ -218,7 +218,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Three Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}/{y}' }
@@ -262,7 +262,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Four Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}/c/{y}' }
@@ -305,7 +305,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param One Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x?}' }
@@ -341,7 +341,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param Two Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x?}' }
@@ -382,7 +382,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Optional Param Two Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x?}/{y?}' }
@@ -433,7 +433,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Optional Param Three Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x?}/{y?}' }
@@ -487,7 +487,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Two Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y?}' }
@@ -532,7 +532,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Three Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}/{y?}' }
@@ -581,7 +581,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Four Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}/c/{y?}' }
@@ -630,7 +630,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Mixed Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab{x}' }
@@ -665,7 +665,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Mixed Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab{x}e{y}' }
@@ -707,7 +707,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Two Segment One Mixed', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}ab/{y?}' }
@@ -755,7 +755,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaults: { x: 'cde' } }
@@ -795,7 +795,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment Default Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaults: { x: 345 } }
@@ -838,7 +838,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment Default Boolean', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaults: { x: true } }
@@ -881,7 +881,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment Default Date', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) } }
@@ -934,7 +934,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Default Type Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'abc', defaultTypes: { x: 'number' } }
@@ -971,7 +971,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Default Type Boolean', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'abc', defaultTypes: { x: 'boolean' } }
@@ -1008,7 +1008,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Default Type Date', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'abc', defaultTypes: { x: 'date' } }
@@ -1051,7 +1051,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Two Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' } }
@@ -1096,7 +1096,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment Two Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' } }
@@ -1159,7 +1159,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y}', defaults: { y: 'ab' } }
@@ -1209,7 +1209,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Two Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' } }
@@ -1264,7 +1264,7 @@ describe('MatchTest', function () {
     });
 
     describe('Four Param Two Optional Five Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
@@ -1400,7 +1400,7 @@ describe('MatchTest', function () {
     });
 
     describe('Spaces', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -1423,7 +1423,7 @@ describe('MatchTest', function () {
     });
 
     describe('Multi Char Param', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'a/{someVar}' }
@@ -1457,7 +1457,7 @@ describe('MatchTest', function () {
     });
 
     describe('Reserved Url Character', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'a/{=*"()\'-_+~@:?><.;[],!£$%^#&}', defaults: { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' } }
@@ -1492,7 +1492,7 @@ describe('MatchTest', function () {
     });
 
     describe('Reserved Regex Character', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '.+*\^$\[\]()\'/{x}' }
@@ -1516,7 +1516,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Optional Mandatory One Mixed Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab{x?}' }
@@ -1551,7 +1551,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Mandatory Three Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x?}/{y}' }
@@ -1593,7 +1593,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment Default Mandatory', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab' } }
@@ -1633,7 +1633,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Mandatory Four Segment Default Mandatory', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' } }
@@ -1711,7 +1711,7 @@ describe('MatchTest', function () {
     });
 
     describe('Multiple Routes', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}' },
@@ -1744,7 +1744,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route One With Param', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['', 'abc/{x}'] }
@@ -1782,7 +1782,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Param', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['abc/{x}', 'def/{y}'] }
@@ -1842,7 +1842,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Parent Child', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'] }
@@ -1893,7 +1893,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 's' } }
@@ -1960,7 +1960,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Optional', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['abc/{x?}', 'abc/{x}/def/{y}'] }
@@ -2012,7 +2012,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Default Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 } }
@@ -2069,7 +2069,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Default Type Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['def/{y}', 'abc/{x}'], defaultTypes: { x: 'number' } }
@@ -2113,7 +2113,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', trackTypes: false }
@@ -2140,7 +2140,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 } }
@@ -2169,7 +2169,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' } }
@@ -2195,7 +2195,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Default And Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
@@ -2224,7 +2224,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Conflicting Default And Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
@@ -2250,7 +2250,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', trackTypes: false }
@@ -2277,7 +2277,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', trackTypes: false, defaults: { x: 2 } }
@@ -2306,7 +2306,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' } }
@@ -2332,7 +2332,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Default And Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
@@ -2361,7 +2361,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Conflicting Default And Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
@@ -2414,7 +2414,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
@@ -2447,7 +2447,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Param Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' } }
@@ -2480,7 +2480,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Type Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'numberarray' } }
@@ -2501,7 +2501,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Type Boolean', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'booleanarray' } }
@@ -2521,7 +2521,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Array Query String Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' } }
@@ -2547,7 +2547,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaults: { x: ['Hello', 'World'] } }
@@ -2572,7 +2572,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaults: { x: [1, 2, 4] } }
@@ -2598,7 +2598,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Boolean', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaults: { x: [true, false] } }
@@ -2623,7 +2623,7 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Date', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] } }
@@ -2648,7 +2648,7 @@ describe('MatchTest', function () {
     });
 
     describe('String Query String Default Type Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'number' } }
@@ -2666,7 +2666,7 @@ describe('MatchTest', function () {
     });
 
     describe('String Param Default Type Number', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'number' } }
@@ -2684,7 +2684,7 @@ describe('MatchTest', function () {
     });
 
     describe('Number Query String Default Type Boolean', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'boolean' } }
@@ -2702,7 +2702,7 @@ describe('MatchTest', function () {
     });
 
     describe('Number Param Default Type Boolean', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'boolean' } }
@@ -2720,7 +2720,7 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Query String Default Type Date', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'date' } }
@@ -2738,7 +2738,7 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Param Default Type Date', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'date' } }
@@ -2756,7 +2756,7 @@ describe('MatchTest', function () {
     });
 
     describe('Date Query String Default Type String', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'string' } }
@@ -2774,7 +2774,7 @@ describe('MatchTest', function () {
     });
 
     describe('Date Param Default Type String', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'string' } }
@@ -2792,7 +2792,7 @@ describe('MatchTest', function () {
     });
 
     describe('String Array Query String Default Type Number Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'numberarray' } }
@@ -2812,7 +2812,7 @@ describe('MatchTest', function () {
     });
 
     describe('String Array Param Default Type Number Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' } }
@@ -2832,7 +2832,7 @@ describe('MatchTest', function () {
     });
 
     describe('Number Array Query String Default Type Boolean Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'booleanarray' } }
@@ -2852,7 +2852,7 @@ describe('MatchTest', function () {
     });
 
     describe('Number Array Param Default Type Boolean Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' } }
@@ -2872,7 +2872,7 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Array Query String Default Type Date Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'datearray' } }
@@ -2892,7 +2892,7 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Array Param Default Type Date Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'datearray' } }
@@ -2912,7 +2912,7 @@ describe('MatchTest', function () {
     });
 
     describe('Date Array Query String Default Type String Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
@@ -2932,7 +2932,7 @@ describe('MatchTest', function () {
     });
 
     describe('Date Array Param Default Type String Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' } }
@@ -2952,7 +2952,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'abc' }
@@ -2973,7 +2973,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -2994,7 +2994,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Query String Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -3020,7 +3020,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Route Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -3046,7 +3046,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment State Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'a' },
@@ -3077,7 +3077,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param State Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'a/{x}' },
@@ -3108,7 +3108,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Query String Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -3134,7 +3134,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Route Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -3160,7 +3160,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Route Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{y}' }
@@ -3186,7 +3186,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param Route Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x?}' }
@@ -3212,7 +3212,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Mixed Param Route Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab{x}' }
@@ -3238,7 +3238,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Two Query String Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '' }
@@ -3264,7 +3264,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '' }
@@ -3289,7 +3289,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Two Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '' }
@@ -3315,7 +3315,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Empty Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -3337,7 +3337,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Array Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
@@ -3360,7 +3360,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Array Query String Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
@@ -3387,7 +3387,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Array Key Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
@@ -3416,7 +3416,7 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Array State Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'a', defaultTypes: { x: 'stringarray' } },
@@ -3451,7 +3451,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Empty Param Route Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x?}' }
@@ -3472,7 +3472,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Empty Param Route Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}' }
@@ -3492,7 +3492,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Empty Mixed Param Route Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab{x}' }
@@ -3512,7 +3512,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
@@ -3574,7 +3574,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] } }
@@ -3608,7 +3608,7 @@ describe('MatchTest', function () {
     });
     
     describe('One Optional Splat Param One Segment Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x?}', defaultTypes: { x: 'stringarray' } }
@@ -3666,7 +3666,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param Two Segment Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' } }
@@ -3729,7 +3729,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param Two Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] } }
@@ -3766,7 +3766,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Splat Two Segment Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{*y}', defaultTypes: { y: 'stringarray' } }
@@ -3838,7 +3838,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Splat Two Segment Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{x}/{*y?}', defaultTypes: { y: 'stringarray' } }
@@ -3912,7 +3912,7 @@ describe('MatchTest', function () {
     });
 
     describe('Two Splat Param Three Segment Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}/ab/{*y}', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
@@ -3982,7 +3982,7 @@ describe('MatchTest', function () {
     });
     
     describe('Two Route Param Splat and Not Splat', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' } }
@@ -4019,7 +4019,7 @@ describe('MatchTest', function () {
     })
 
     describe('One Splat Param Two Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}/ab', defaults: { x: ['cde', 'fg'] } }
@@ -4067,7 +4067,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Mixed Segment Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab{*x}', defaults: { x: ['cde', 'fg'] } }
@@ -4106,7 +4106,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Splat Conflicting Default And Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
@@ -4138,7 +4138,7 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Splat Conflicting Single Array Default And Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
@@ -4169,7 +4169,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Single Match Array Default', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaults: { x: ['a', 'b'] } }
@@ -4189,7 +4189,7 @@ describe('MatchTest', function () {
     });
 
     describe('Splat Param Array Encode', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
@@ -4212,7 +4212,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type Number Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' } }
@@ -4240,7 +4240,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type Booelan Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' } }
@@ -4268,7 +4268,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type Date Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' } }
@@ -4295,7 +4295,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Date Array', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
@@ -4327,7 +4327,7 @@ describe('MatchTest', function () {
     });
 
     describe('Multiple Routes Splat and Not Splat', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' } },
@@ -4359,7 +4359,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}' }
@@ -4389,7 +4389,7 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Query String Default Type', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
@@ -4432,7 +4432,7 @@ describe('MatchTest', function () {
     });
 
     describe('Reload Param', function () {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function () {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}' }
@@ -4458,8 +4458,8 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param', function () {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}' }
@@ -4490,8 +4490,8 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param Default', function () {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}', defaults: { x: 'cd' } }
@@ -4530,8 +4530,8 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param Default Type', function () {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
                 { key: 's', route: 'ab/{x}' }
@@ -4562,8 +4562,8 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param Encode', function () {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function () {
             stateController0 = new Navigation.StateController([
                 { key: 's', route: '0/{x}' }

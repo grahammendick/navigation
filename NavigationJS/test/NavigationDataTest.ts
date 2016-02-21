@@ -1,12 +1,12 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
+/// <reference path="../src/navigation.d.ts" />
 import assert = require('assert');
 import Navigation = require('../src/Navigation');
-import StateController = require('../src/StateController');
 
 describe('Navigation Data', function () {
     describe('Individual Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -45,7 +45,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Individual Data Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r/{string}/{boolean}/{number}/{date}' }
@@ -84,7 +84,7 @@ describe('Navigation Data', function () {
     });
     
     describe('Individual Data Without Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r', trackCrumbTrail: false }
@@ -123,7 +123,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Array Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -178,7 +178,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Array Data Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}' }
@@ -233,7 +233,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Array Data Splat', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}' }
@@ -288,7 +288,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Invalid Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -324,7 +324,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Individual Data Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -347,7 +347,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Individual Refresh Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -369,7 +369,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Invalid Types Array Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -405,7 +405,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Invalid Data With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r', trackCrumbTrail: true }
@@ -428,7 +428,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Reserved Url Character Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -467,7 +467,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Reserved Url Character Route Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r/{string}/{number}' }
@@ -505,7 +505,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Separator Url Character Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -544,7 +544,7 @@ describe('Navigation Data', function () {
     });
     
     describe('Empty String Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -578,7 +578,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Empty Array Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -612,7 +612,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -658,7 +658,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Array Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -720,7 +720,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Array Data Route Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0/{array_string}/{array_boolean}/{array_number}/{array_date}/{array_blank}' },
@@ -782,7 +782,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Array Data Splat Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}' },
@@ -844,7 +844,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Empty String Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -885,7 +885,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Empty Array Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -926,7 +926,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Change Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -973,7 +973,7 @@ describe('Navigation Data', function () {
     });
     
     describe('Blank Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1020,7 +1020,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Data Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1059,7 +1059,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Refresh Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1105,7 +1105,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Refresh Array Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1167,7 +1167,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Refresh Data Override', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1208,7 +1208,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Refresh Data Blank', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1247,7 +1247,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Change Refresh Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1292,7 +1292,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Wizard Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1341,7 +1341,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Transition Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1398,7 +1398,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Dynamic Data Transition Transition', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1447,7 +1447,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1484,7 +1484,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1521,7 +1521,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Data And Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1560,7 +1560,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Data And Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1599,7 +1599,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1636,7 +1636,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1673,7 +1673,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1716,7 +1716,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1759,7 +1759,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Data And Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1805,7 +1805,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Data And Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1851,7 +1851,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Override Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1895,7 +1895,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Override Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1939,7 +1939,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -1991,7 +1991,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2043,7 +2043,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Data And Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2091,7 +2091,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Data And Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2141,7 +2141,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Data Override Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2187,7 +2187,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Data Override Defaults Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2233,7 +2233,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Defaults Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2287,7 +2287,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Defaults Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                     { key: 's0', route: 'r0' },
@@ -2341,7 +2341,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Data And Defaults Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2394,7 +2394,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Data And Defaults Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2447,7 +2447,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Override Defaults Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2501,7 +2501,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Override Defaults Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2555,7 +2555,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Defaults Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                     { key: 's0', route: 'r0' },
@@ -2611,7 +2611,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Defaults Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                     { key: 's0', route: 'r0' },
@@ -2667,7 +2667,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r', trackCrumbTrail: true }
@@ -2711,7 +2711,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Back Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r/{s?}', trackCrumbTrail: true }
@@ -2755,7 +2755,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Data And Defaults Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2807,7 +2807,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Data And Defaults Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -2859,7 +2859,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Crumb Defaults Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                     { key: 's0', route: 'r0' },
@@ -2909,7 +2909,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Crumb Defaults Custom Trail Route', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                     { key: 's0', route: 'r0' },
@@ -2959,7 +2959,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0'},
@@ -3001,7 +3001,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3043,7 +3043,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data Back With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3088,7 +3088,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data Back Two With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3147,7 +3147,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data Back Two', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3206,7 +3206,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data One By One With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3268,7 +3268,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data One By One', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3330,7 +3330,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data One By One Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3395,7 +3395,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data Refresh With Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0'},
@@ -3444,7 +3444,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3493,7 +3493,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Navigate Previous Data Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3829,7 +3829,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Default Types', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3869,7 +3869,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Default Types Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -3912,7 +3912,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Override Default Types Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4002,7 +4002,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Refresh Current Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4045,7 +4045,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Current Data Defaults', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4085,7 +4085,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Missing Route Data', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r/{s1}/{s2}' }
@@ -4106,7 +4106,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Missing Route Data Refresh', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r/{s1}/{s2}' }
@@ -4201,7 +4201,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Clear State Context', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's', route: 'r' }
@@ -4239,7 +4239,7 @@ describe('Navigation Data', function () {
     });
 
     describe('Url Encode Data Back', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'a/{s}' },
@@ -4287,8 +4287,8 @@ describe('Navigation Data', function () {
     });
 
     describe('Two Controllers Data', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r' }
@@ -4335,8 +4335,8 @@ describe('Navigation Data', function () {
     });
 
     describe('Two Controllers Data Back', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4397,8 +4397,8 @@ describe('Navigation Data', function () {
     });
 
     describe('Two Controllers Refresh Data', function() {
-        var stateController0: StateController;
-        var stateController1: StateController;
+        var stateController0: Navigation.StateController;
+        var stateController1: Navigation.StateController;
         beforeEach(function() {
             stateController0 = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4459,7 +4459,7 @@ describe('Navigation Data', function () {
     });
     
     describe('Crumb Trail Route Param', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4505,7 +4505,7 @@ describe('Navigation Data', function () {
     });
     
     describe('Crumb Trail Route Splat Param', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
@@ -4555,7 +4555,7 @@ describe('Navigation Data', function () {
     });
     
     describe('Refresh Data Back Custom Trail', function() {
-        var stateController: StateController;
+        var stateController: Navigation.StateController;
         beforeEach(function() {
             stateController = new Navigation.StateController([
                 { key: 's0', route: 'r0' },
