@@ -6,16 +6,15 @@ import RefreshLink = require('./RefreshLink');
 import Rx = require('rx');
 
 function navigate(e, stateController: Navigation.StateController) {
-    var historyAction = LinkUtility.getHistoryAction(e);
     var toData = LinkUtility.getData(stateController, e.toData, e.includeCurrentData, e.currentDataKeys);
     if (e.action)
-        stateController.navigate(e.state, toData, historyAction);
+        stateController.navigate(e.state, toData, e.historyAction);
     if (!e.action && e.toData)
-        stateController.refresh(toData, historyAction);
+        stateController.refresh(toData, e.historyAction);
     if (e.distance)
-        stateController.navigateBack(e.distance, historyAction);
+        stateController.navigateBack(e.distance, e.historyAction);
     if (e.url)
-        stateController.navigateLink(e.url, historyAction);
+        stateController.navigateLink(e.url, e.historyAction);
 }
 
 var NavigationDriver = function(url) {
@@ -40,7 +39,7 @@ var NavigationDriver = function(url) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
                     var link = stateController.historyManager.getUrl(e.target);
-                    stateController.navigateLink(link, LinkUtility.getHistoryAction(e.target));
+                    stateController.navigateLink(link, e.target.historyAction);
                 }
             } else {
                 navigate(e, stateController);

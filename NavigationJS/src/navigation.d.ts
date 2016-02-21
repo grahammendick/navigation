@@ -126,24 +126,6 @@ declare module Navigation {
     }
 
     /**
-     * Determines the effect on browser history after a successful navigation
-     */
-    enum HistoryAction {
-        /**
-         * Creates a new browser history entry
-         */
-        Add = 0,
-        /**
-         * Changes the current browser history entry
-         */
-        Replace = 1,
-        /**
-         * Leaves browser history unchanged
-         */
-        None = 2,
-    }    
-
-    /**
      * Defines a contract a class must implement in order to manage the browser
      * Url
      */
@@ -483,7 +465,7 @@ declare module Navigation {
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(state: string, toData: any, historyAction: HistoryAction): void;
+        navigate(state: string, toData: any, historyAction: string): void;
         /**
          * Gets a Url to navigate to a State passing no NavigationData
          * @param state The key of a State
@@ -523,7 +505,7 @@ declare module Navigation {
          * @throws canNavigateBack returns false for this distance
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigateBack(distance: number, historyAction: HistoryAction): void;
+        navigateBack(distance: number, historyAction: string): void;
         /**
          * Gets a Url to navigate to a Crumb contained in the crumb trail, 
          * represented by the Crumbs collection, as specified by the distance.
@@ -552,7 +534,7 @@ declare module Navigation {
          * @throws There is NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        refresh(toData: any, historyAction: HistoryAction): void;
+        refresh(toData: any, historyAction: string): void;
         /**
          * Gets a Url to navigate to the current State passing no 
          * NavigationData
@@ -576,14 +558,14 @@ declare module Navigation {
          * @param url The target location
          * @param A value determining the effect on browser history
          */
-        navigateLink(url: string, historyAction: HistoryAction): void;
+        navigateLink(url: string, historyAction: string): void;
         /**
          * Navigates to the url
          * @param url The target location
          * @param A value determining the effect on browser history
          * @param history A value indicating whether browser history was used
          */
-        navigateLink(url: string, historyAction: HistoryAction, history: boolean): void;
+        navigateLink(url: string, historyAction: string, history: boolean): void;
         /**
          * Parses the url out into State and Navigation Data
          * @param url The url to parse
