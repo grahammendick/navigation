@@ -4551,6 +4551,9 @@ describe('Navigation', function () {
         });
         
         function test() {
+            it('should match', function() {
+                assert.equal(stateController.stateContext.url.match(/crumb/g).length, 1);
+            });
             it('should populate State', function() {
                 assert.equal(stateController.stateContext.state, stateController.states['s1']);
             });
