@@ -1,7 +1,6 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import Crumb = require('./config/Crumb');
 import HashHistoryManager = require('./history/HashHistoryManager');
-import HistoryAction = require('./history/HistoryAction');
 import IHistoryManager = require('./history/IHistoryManager');
 import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
@@ -100,7 +99,7 @@ class StateController {
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    navigate(state: string, toData?: any, historyAction?: HistoryAction) {
+    navigate(state: string, toData?: any, historyAction?: string) {
         var url = this.getNavigationLink(state, toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
@@ -131,7 +130,7 @@ class StateController {
         return distance <= this.stateContext.crumbs.length && distance > 0;
     }
 
-    navigateBack(distance: number, historyAction?: HistoryAction) {
+    navigateBack(distance: number, historyAction?: string) {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
@@ -144,7 +143,7 @@ class StateController {
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].navigationLink;
     }
 
-    refresh(toData?: any, historyAction?: HistoryAction) {
+    refresh(toData?: any, historyAction?: string) {
         var url = this.getRefreshLink(toData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
@@ -155,7 +154,7 @@ class StateController {
         return this.getLink(this.stateContext.state, toData);
     }
 
-    navigateLink(url: string, historyAction = HistoryAction.Add, history = false) {
+    navigateLink(url: string, historyAction = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.parseLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
@@ -169,7 +168,7 @@ class StateController {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: HistoryAction): () => void {
+    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: string): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
                 state.stateHandler.navigateLink(this.stateContext.state, state, url);
@@ -182,8 +181,8 @@ class StateController {
                         this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data);
                 }
                 if (url === this.stateContext.url) {
-                    if (historyAction !== HistoryAction.None)
-                        this.historyManager.addHistory(url, historyAction === HistoryAction.Replace);
+                    if (historyAction !== 'none')
+                        this.historyManager.addHistory(url, historyAction === 'replace');
                     if (this.stateContext.title && (typeof document !== 'undefined'))
                         document.title = this.stateContext.title;
                 }

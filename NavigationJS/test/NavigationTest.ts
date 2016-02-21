@@ -3204,7 +3204,7 @@ describe('Navigation', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('s', null, Navigation.HistoryAction.Add);
+                stateController.navigate('s', null, 'add');
             });
             test();
         });
@@ -3212,7 +3212,7 @@ describe('Navigation', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateController.getNavigationLink('s');
-                stateController.navigateLink(link, Navigation.HistoryAction.Add);
+                stateController.navigateLink(link, 'add');
             });
             test();
         });
@@ -3242,7 +3242,7 @@ describe('Navigation', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('s', null, Navigation.HistoryAction.Replace);
+                stateController.navigate('s', null, 'replace');
             });
             test();
         });
@@ -3250,7 +3250,7 @@ describe('Navigation', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateController.getNavigationLink('s');
-                stateController.navigateLink(link, Navigation.HistoryAction.Replace);
+                stateController.navigateLink(link, 'replace');
             });
             test();
         });
@@ -3280,7 +3280,7 @@ describe('Navigation', function () {
         
         describe('Navigate', function() {
             beforeEach(function() {
-                stateController.navigate('s', null, Navigation.HistoryAction.None);
+                stateController.navigate('s', null, 'none');
             });
             test();
         });
@@ -3288,7 +3288,7 @@ describe('Navigation', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateController.getNavigationLink('s');
-                stateController.navigateLink(link, Navigation.HistoryAction.None);
+                stateController.navigateLink(link, 'none');
             });
             test();
         });
@@ -3331,7 +3331,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, historyManager);
-            stateController.refresh(null, Navigation.HistoryAction.Add);
+            stateController.refresh(null, 'add');
             assert.strictEqual(replaceHistory, false);
         });
     });
@@ -3349,7 +3349,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, historyManager);
-            stateController.refresh(null, Navigation.HistoryAction.Replace);
+            stateController.refresh(null, 'replace');
             assert.strictEqual(replaceHistory, true);
         });
     });
@@ -3367,7 +3367,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, historyManager);
-            stateController.refresh(null, Navigation.HistoryAction.None);
+            stateController.refresh(null, 'none');
             assert.strictEqual(replaceHistory, undefined);
         });
     });
@@ -3407,7 +3407,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, historyManager);
-            stateController.navigateBack(1, Navigation.HistoryAction.Add);
+            stateController.navigateBack(1, 'add');
             assert.strictEqual(replaceHistory, false);
         });
     });
@@ -3427,7 +3427,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, historyManager);
-            stateController.navigateBack(1, Navigation.HistoryAction.Replace);
+            stateController.navigateBack(1, 'replace');
             assert.strictEqual(replaceHistory, true);
         });
     });
@@ -3447,7 +3447,7 @@ describe('Navigation', function () {
                 replaceHistory = replace;
             }
             stateController.configure(dialogs, historyManager);
-            stateController.navigateBack(1, Navigation.HistoryAction.None);
+            stateController.navigateBack(1, 'none');
             assert.strictEqual(replaceHistory, undefined);
         });
     });
@@ -3466,7 +3466,7 @@ describe('Navigation', function () {
                 historyManager
             );
             stateController.states['s0'].navigated = () => {
-                stateController.navigate('s1', null, Navigation.HistoryAction.None);
+                stateController.navigate('s1', null, 'none');
             }
             stateController.navigate('s0');
             assert.ok(!called);
