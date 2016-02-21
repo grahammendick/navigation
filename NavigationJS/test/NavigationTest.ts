@@ -38,6 +38,73 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Second State', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 's0', route: 'r0' },
+                { key: 's', route: 'r' }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('s');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('s');
+                stateController.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s']);
+            });
+            it('should have not populate crumb trail', function() {
+                assert.equal(stateController.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
+    describe('State With Trail', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('s');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('s');
+                stateController.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s']);
+            });
+            it('should have not populate crumb trail', function() {
+                assert.equal(stateController.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
     describe('Invalid State', function() {
         var stateController: StateController;
         beforeEach(function() {
@@ -4443,5 +4510,61 @@ describe('Navigation', function () {
             stateController.navigateBack(1);
             assert.equal(stateController.stateContext.state, stateController.states['s0']);
         });
+    });
+    
+    describe('Repeated States With Trail', function() {
+        var stateController: StateController;
+        beforeEach(function() {
+            stateController = new Navigation.StateController([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+            ]);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateController.navigate('s0');
+                stateController.navigate('s1');
+                stateController.navigate('s2');
+                stateController.navigate('s3');
+                stateController.navigate('s1');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateController.getNavigationLink('s0');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('s1');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('s2');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('s3');
+                stateController.navigateLink(link);
+                link = stateController.getNavigationLink('s1');
+                stateController.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate State', function() {
+                assert.equal(stateController.stateContext.state, stateController.states['s1']);
+            });
+            it('should populate old State', function() {
+                assert.equal(stateController.stateContext.oldState, stateController.states['s3']);
+            });
+            it('should not populate previous State', function() {
+                assert.equal(stateController.stateContext.previousState, stateController.states['s0']);
+            });
+            it('should populate crumb trail', function() {
+                assert.equal(stateController.stateContext.crumbs.length, 1);
+                assert.equal(stateController.stateContext.crumbs[0].state, stateController.states['s0']);
+                assert.ok(stateController.stateContext.crumbs[0].last);
+            });
+        }
     });
 });
