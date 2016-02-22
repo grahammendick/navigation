@@ -34,7 +34,7 @@ class HashHistoryManager implements IHistoryManager {
     }
 
     getHref(url: string): string {
-        if (!url)
+        if (url == null)
             throw new Error('The Url is invalid');
         return '#' + this.encode(url);
     }
