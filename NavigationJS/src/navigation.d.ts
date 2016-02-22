@@ -439,25 +439,25 @@ declare module Navigation {
         offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
         /**
          * Navigates to a State passing no NavigationData
-         * @param state The key of a State
+         * @param stateKey The key of a State
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(state: string): void;
+        navigate(stateKey: string): void;
         /**
          * Navigates to a State
-         * @param state The key of a State
+         * @param stateKey The key of a State
          * @param navigationData The NavigationData to be passed to the next
          * State and stored in the StateContext
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(state: string, navigationData: any): void;
+        navigate(stateKey: string, navigationData: any): void;
         /**
          * Navigates to a State
-         * @param state The key of a State
+         * @param stateKey The key of a State
          * @param navigationData The NavigationData to be passed to the next
          * State and stored in the StateContext
          * @param A value determining the effect on browser history
@@ -465,25 +465,25 @@ declare module Navigation {
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(state: string, navigationData: any, historyAction: string): void;
+        navigate(stateKey: string, navigationData: any, historyAction: string): void;
         /**
          * Gets a Url to navigate to a State passing no NavigationData
-         * @param state The key of a State
+         * @param stateKey The key of a State
          * @returns Url that will navigate to State specified in the action
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          */
-        getNavigationLink(state: string): string;
+        getNavigationLink(stateKey: string): string;
         /**
          * Gets a Url to navigate to a State
-         * @param state The key of a State
+         * @param stateKey The key of a State
          * @param navigationData The NavigationData to be passed to the next
          * State and stored in the StateContext
          * @returns Url that will navigate to State specified in the action
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          */
-        getNavigationLink(state: string, navigationData: any): string;
+        getNavigationLink(stateKey: string, navigationData: any): string;
         /**
          * Determines if the distance specified is within the bounds of the
          * crumb trail represented by the Crumbs collection

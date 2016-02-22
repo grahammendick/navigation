@@ -99,17 +99,17 @@ class StateNavigator {
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    navigate(state: string, navigationData?: any, historyAction?: string) {
-        var url = this.getNavigationLink(state, navigationData);
+    navigate(stateKey: string, navigationData?: any, historyAction?: string) {
+        var url = this.getNavigationLink(stateKey, navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getNavigationLink(state: string, navigationData?: any): string {
-        if (!this.states[state])
-            throw new Error(state + ' is not a valid State');
-        return this.getLink(this.states[state], navigationData);
+    getNavigationLink(stateKey: string, navigationData?: any): string {
+        if (!this.states[stateKey])
+            throw new Error(stateKey + ' is not a valid State');
+        return this.getLink(this.states[stateKey], navigationData);
     }
 
     private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
