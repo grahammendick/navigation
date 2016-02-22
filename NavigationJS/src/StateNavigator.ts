@@ -64,22 +64,22 @@ class StateNavigator {
             this.stateContext.crumbTrail = crumbTrail;
         delete this.stateContext.data[this.stateContext.state.crumbTrailKey];
         this.stateContext.crumbs = this.getCrumbs();
-        var crumblessLink = this.getLink(this.stateContext.state, this.stateContext.data, []);
-        if (!crumblessLink)
+        var crumblessUrl = this.getLink(this.stateContext.state, this.stateContext.data, []);
+        if (!crumblessUrl)
             throw new Error(this.stateContext.state.crumbTrailKey + ' cannot be a mandatory route parameter')
-        this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, this.stateContext.url, crumblessLink, false);
+        this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, this.stateContext.url, crumblessUrl, false);
     }
 
     private getCrumbs(): Crumb[] {
         var crumbs: Crumb[] = [];
         var len = this.stateContext.crumbTrail.length;
         for(var i = 0; i < len; i++) {
-            var crumblessLink = this.stateContext.crumbTrail[i];
-            if (crumblessLink.substring(0, 1) !== '/')
-                throw new Error(crumblessLink + ' is not a valid crumb');
-            var { state, data } = this.parseLink(crumblessLink);
-            var link = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, link, crumblessLink, i + 1 == len));
+            var crumblessUrl = this.stateContext.crumbTrail[i];
+            if (crumblessUrl.substring(0, 1) !== '/')
+                throw new Error(crumblessUrl + ' is not a valid crumb');
+            var { state, data } = this.parseLink(crumblessUrl);
+            var url = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
+            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 == len));
         }
         return crumbs;
     }
@@ -120,7 +120,7 @@ class StateNavigator {
                 crumbs.push(this.stateContext.nextCrumb);
             crumbs = state.stateHandler.truncateCrumbTrail(state, crumbs);
             for(var i = 0; i < crumbs.length; i++)
-                crumbTrail.push(crumbs[i].crumblessLink)
+                crumbTrail.push(crumbs[i].crumblessUrl)
         }
         var { data, arrayData } = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail);
         return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
@@ -140,7 +140,7 @@ class StateNavigator {
     getNavigationBackLink(distance: number): string {
         if (!this.canNavigateBack(distance))
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
-        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].navigationLink;
+        return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
     }
 
     refresh(navigationData?: any, historyAction?: string) {

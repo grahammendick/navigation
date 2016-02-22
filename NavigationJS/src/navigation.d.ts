@@ -291,24 +291,24 @@ declare module Navigation {
          */
         title: string;
         /**
-         * Gets the hyperlink navigation to return to the State and pass the
+         * Gets the link navigation to return to the State and pass the
          * associated Data
          */
-        navigationLink: string;
+        url: string;
         /**
-         * Gets the hyperlink navigation without crumb trail to return to the
-         * State and pass the associated Data
+         * Gets the link navigation without crumb trail to return to the State
+         * and pass the associated Data
          */
-        crumblessLink: string;
+        crumblessUrl: string;
         /**
          * Initializes a new instance of the Crumb class
          * @param data The Context Data held at the time of navigating away
          * from this State
          * @param state The configuration information associated with this
          * navigation
-         * @param link The hyperlink navigation to return to the State and pass
-         * the associated Data
-         * @param crumblessLink The hyperlink navigation without crumb trail to
+         * @param link The link navigation to return to the State and pass the
+         * associated Data
+         * @param crumblessLink The link navigation without crumb trail to
          * return to the State and pass the associated Data
          * @param last A value indicating whether the Crumb is the last in the
          * crumb trail

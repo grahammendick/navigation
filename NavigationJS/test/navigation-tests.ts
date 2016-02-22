@@ -86,7 +86,7 @@ module NavigationTests {
 	stateNavigator.navigateLink(link, 'replace');
 	link = stateNavigator.getNavigationBackLink(1);
 	var crumb = stateNavigator.stateContext.crumbs[0];
-	link = crumb.navigationLink;
+	link = crumb.url;
 	stateNavigator.navigateLink(link, 'none', true);
 	
 	// StateContext

@@ -3710,7 +3710,7 @@ describe('Navigation Data', function () {
             stateNavigator.navigate('s1', data);
             stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({}))
             stateNavigator.navigate('s2');
-            var link = stateNavigator.stateContext.crumbs[1].navigationLink;
+            var link = stateNavigator.stateContext.crumbs[1].url;
             assert.equal(link.indexOf('_bool'), -1);
             assert.equal(link.indexOf('number'), -1);
             assert.notEqual(link.indexOf('string'), -1);
