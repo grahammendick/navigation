@@ -9,7 +9,7 @@ import StateContext = require('./StateContext');
 import StateConfig = require('./StateConfig');
 import StateRouter = require('./StateRouter');
 
-class StateController {
+class StateNavigator {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
     private navigateHandlerId: number = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
@@ -205,4 +205,4 @@ class StateController {
         this.navigateLink(url ? url : this.historyManager.getCurrentUrl());
     };
 }
-export = StateController;
+export = StateNavigator;

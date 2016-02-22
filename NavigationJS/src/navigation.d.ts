@@ -388,7 +388,7 @@ declare module Navigation {
      * Manages all navigation. These can be forward using an action parameter;
      * backward via a Crumb; or refreshing the current State
      */
-    class StateController {
+    class StateNavigator {
         /**
          * Provides access to context sensitive navigation information
          */
