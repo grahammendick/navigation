@@ -16,12 +16,12 @@ class HTML5HistoryManager implements IHistoryManager {
     }
 
     addHistory(url: string, replace: boolean) {
-        url = this.applicationPath + url;
-        if (!this.disabled && location.pathname + location.search !== url) {
+        var href = this.getHref(url);
+        if (!this.disabled && location.pathname + location.search !== href) {
             if (!replace)            
-                window.history.pushState(null, null, url);
+                window.history.pushState(null, null, href);
             else
-                window.history.replaceState(null, null, url);
+                window.history.replaceState(null, null, href);
         }
     }
 

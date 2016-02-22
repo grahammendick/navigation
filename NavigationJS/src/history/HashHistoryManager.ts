@@ -20,12 +20,12 @@ class HashHistoryManager implements IHistoryManager {
     }
 
     addHistory(url: string, replace: boolean) {
-        url = '#' + this.encode(url);
-        if (!this.disabled && location.hash !== url) {
+        var href = this.getHref(url);
+        if (!this.disabled && location.hash !== href) {
             if (!replace)            
-                location.hash = url;
+                location.hash = href;
             else
-                location.replace(url);
+                location.replace(href);
         }
     }
 
