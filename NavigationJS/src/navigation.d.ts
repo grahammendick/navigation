@@ -448,24 +448,24 @@ declare module Navigation {
         /**
          * Navigates to a State
          * @param state The key of a State
-         * @param toData The NavigationData to be passed to the next State and
-         * stored in the StateContext
+         * @param navigationData The NavigationData to be passed to the next
+         * State and stored in the StateContext
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(state: string, toData: any): void;
+        navigate(state: string, navigationData: any): void;
         /**
          * Navigates to a State
          * @param state The key of a State
-         * @param toData The NavigationData to be passed to the next State and
-         * stored in the StateContext
+         * @param navigationData The NavigationData to be passed to the next
+         * State and stored in the StateContext
          * @param A value determining the effect on browser history
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(state: string, toData: any, historyAction: string): void;
+        navigate(state: string, navigationData: any, historyAction: string): void;
         /**
          * Gets a Url to navigate to a State passing no NavigationData
          * @param state The key of a State
@@ -477,13 +477,13 @@ declare module Navigation {
         /**
          * Gets a Url to navigate to a State
          * @param state The key of a State
-         * @param toData The NavigationData to be passed to the next State and
-         * stored in the StateContext
+         * @param navigationData The NavigationData to be passed to the next
+         * State and stored in the StateContext
          * @returns Url that will navigate to State specified in the action
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
          */
-        getNavigationLink(state: string, toData: any): string;
+        getNavigationLink(state: string, navigationData: any): string;
         /**
          * Determines if the distance specified is within the bounds of the
          * crumb trail represented by the Crumbs collection
@@ -520,21 +520,21 @@ declare module Navigation {
         refresh(): void;
         /**
          * Navigates to the current State
-         * @param toData The NavigationData to be passed to the current State
-         * and stored in the StateContext
+         * @param navigationData The NavigationData to be passed to the current
+         * State and stored in the StateContext
          * @throws There is NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        refresh(toData: any): void;
+        refresh(navigationData: any): void;
         /**
          * Navigates to the current State
-         * @param toData The NavigationData to be passed to the current State
-         * and stored in the StateContext
+         * @param navigationData The NavigationData to be passed to the current
+         * State and stored in the StateContext
          * @param A value determining the effect on browser history
          * @throws There is NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        refresh(toData: any, historyAction: string): void;
+        refresh(navigationData: any, historyAction: string): void;
         /**
          * Gets a Url to navigate to the current State passing no 
          * NavigationData
@@ -542,12 +542,12 @@ declare module Navigation {
         getRefreshLink(): string;
         /**
          * Gets a Url to navigate to the current State
-         * @param toData The NavigationData to be passed to the current State
-         * and stored in the StateContext
+         * @param navigationData The NavigationData to be passed to the current
+         * State and stored in the StateContext
          * @returns Url that will navigate to the current State
          * @throws There is NavigationData that cannot be converted to a String
          */
-        getRefreshLink(toData: any): string;
+        getRefreshLink(navigationData: any): string;
         /**
          * Navigates to the url
          * @param url The target location

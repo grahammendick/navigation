@@ -99,17 +99,17 @@ class StateNavigator {
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    navigate(state: string, toData?: any, historyAction?: string) {
-        var url = this.getNavigationLink(state, toData);
+    navigate(state: string, navigationData?: any, historyAction?: string) {
+        var url = this.getNavigationLink(state, navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getNavigationLink(state: string, toData?: any): string {
+    getNavigationLink(state: string, navigationData?: any): string {
         if (!this.states[state])
             throw new Error(state + ' is not a valid State');
-        return this.getLink(this.states[state], toData);
+        return this.getLink(this.states[state], navigationData);
     }
 
     private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
@@ -143,15 +143,15 @@ class StateNavigator {
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].navigationLink;
     }
 
-    refresh(toData?: any, historyAction?: string) {
-        var url = this.getRefreshLink(toData);
+    refresh(navigationData?: any, historyAction?: string) {
+        var url = this.getRefreshLink(navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
-    getRefreshLink(toData?: any): string {
-        return this.getLink(this.stateContext.state, toData);
+    getRefreshLink(navigationData?: any): string {
+        return this.getLink(this.stateContext.state, navigationData);
     }
 
     navigateLink(url: string, historyAction = 'add', history = false) {
