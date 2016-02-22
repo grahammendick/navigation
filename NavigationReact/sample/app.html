@@ -27,6 +27,7 @@
                 var totalRowCount = people.length;
                 people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
+                var stateController = this.props.stateController;
                 people = people.map(function (person) {
                     return (
                         <tr key={person.id}>
