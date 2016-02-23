@@ -11,22 +11,20 @@ module NavigationTests {
 	
 	// Configuration
 	var config = [
-        { key: 'home', route: '', help: 'home.htm' },
-        { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 } },
+        { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 }, help: 'people.htm' },
         { key: 'person', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' }, trackCrumbTrail: true }
 	];
     var stateNavigator = new Navigation.StateNavigator(config, new LogHistoryManager());
 	
 	// States
 	var states = stateNavigator.states;
-	var home = states['home'];
-	var homeKey = home.key;
 	var people = states['people'];
 	var person = states['person'];
+    var help = people['help'];
 	var pageDefault = people.defaults.page;
 	var idDefaultType = person.defaultTypes.id;
 	
-	// StateNavigator
+	// State Controller
 	people.dispose = () => {};
 	people.navigating = (data, url, navigate) => {
 		navigate([]);
@@ -54,7 +52,6 @@ module NavigationTests {
             return queryString ? val.replace(/\+/g, ' ') : super.urlDecode(state, key, val, queryString);
         }
 	}
-	home.stateHandler = new LogStateHandler();
 	people.stateHandler = new LogStateHandler();
 	person.stateHandler = new LogStateHandler();
 	
@@ -66,40 +63,36 @@ module NavigationTests {
 	stateNavigator.onNavigate(navigationListener);
 	
 	// Navigation
-	stateNavigator.start('home');
-	stateNavigator.navigate('person');
-	stateNavigator.navigate('person', null, 'add');
+	stateNavigator.navigate('people');
+	stateNavigator.navigate('people', null, 'add');
 	stateNavigator.refresh();
 	stateNavigator.refresh({ page: 3 });
 	stateNavigator.refresh({ page: 2 }, 'replace');
-	stateNavigator.navigate('select', { id: 10 });
+	stateNavigator.navigate('person', { id: 10 });
 	var canGoBack: boolean = stateNavigator.canNavigateBack(1);
 	stateNavigator.navigateBack(1);
 	stateNavigator.stateContext.clear();
 	
 	// Navigation Link
-	var link = stateNavigator.getNavigationLink('person');
+	var link = stateNavigator.getNavigationLink('people');
 	link = stateNavigator.getRefreshLink();
 	link = stateNavigator.getRefreshLink({ page: 2 });
 	stateNavigator.navigateLink(link);
-	link = stateNavigator.getNavigationLink('select', { id: 10 });
+	link = stateNavigator.getNavigationLink('person', { id: 10 });
 	stateNavigator.navigateLink(link, 'replace');
 	link = stateNavigator.getNavigationBackLink(1);
 	var crumb = stateNavigator.stateContext.crumbs[0];
 	link = crumb.url;
 	stateNavigator.navigateLink(link, 'none', true);
 	
-	// StateContext
-	stateNavigator.navigate('home');
-	stateNavigator.navigate('person');
-	home = stateNavigator.stateContext.previousState;
-	people === stateNavigator.stateContext.state;
+	// State Context
+	var state: Navigation.State = stateNavigator.stateContext.state;
 	var url: string = stateNavigator.stateContext.url;
 	var title: string = stateNavigator.stateContext.title;
 	var page: number = stateNavigator.stateContext.data.page;
-	stateNavigator.refresh({ page: 2 });
-	person = stateNavigator.stateContext.oldState;
+	state = stateNavigator.stateContext.oldState;
 	page = stateNavigator.stateContext.oldData.page;
+	state = stateNavigator.stateContext.previousState;
 	page = stateNavigator.stateContext.previousData.page;
 	
 	// Navigation Data
