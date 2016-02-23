@@ -1,6 +1,6 @@
-﻿function PersonViewModel(stateController) {
+﻿function PersonViewModel(stateNavigator) {
 	var self = this;
-    self.stateController = stateController;
+    self.stateController = stateNavigator;
 	self.id = ko.observable();
 	self.name = ko.observable();
 	self.personName = ko.observable();
@@ -12,11 +12,11 @@
 	self.last = ko.observable();
 	self.totalCount = ko.observable();
 	self.nameChange = function () {
-		var data = stateController.stateContext.includeCurrentData({ name: self.name(), startRowIndex: null });
-		stateController.refresh(data);
+		var data = stateNavigator.stateContext.includeCurrentData({ name: self.name(), startRowIndex: null });
+		stateNavigator.refresh(data);
 	};
 
-	var states = stateController.states;
+	var states = stateNavigator.states;
 	states.people.navigated = function (data) {
 		var people = personSearch.search(data.name, data.sortExpression);
 		var totalRowCount = people.length;
@@ -43,10 +43,10 @@
 	states.person.dispose = function () { self.id(null); };
 };
 
-var stateController = new Navigation.StateController([
+var stateNavigator = new Navigation.StateNavigator([
     { key: 'people', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
     { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
 ]);
 //stateController.historyManager.replaceQueryIdentifier = true;
-ko.applyBindings(new PersonViewModel(stateController));
-stateController.start();
+ko.applyBindings(new PersonViewModel(stateNavigator));
+stateNavigator.start();
