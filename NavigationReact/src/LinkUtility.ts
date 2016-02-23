@@ -6,28 +6,28 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 
 class LinkUtility {
-    static getLink(stateController: Navigation.StateController, linkAccessor: () => string): string {
+    static getLink(stateNavigator: Navigation.StateNavigator, linkAccessor: () => string): string {
         try {
-            return stateController.historyManager.getHref(linkAccessor());
+            return stateNavigator.historyManager.getHref(linkAccessor());
         } catch (e) {
             return null;
         }
     }
 
-    static getData(stateController: Navigation.StateController, toData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateNavigator: Navigation.StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
-            toData = stateController.stateContext.includeCurrentData(toData, currentDataKeys.trim().split(/\s*,\s*/));
+            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
-            toData = stateController.stateContext.includeCurrentData(toData);
-        return toData;
+            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData);
+        return navigationData;
     }
 
-    static isActive(stateController: Navigation.StateController, key: string, val: any): boolean {
-        if (!stateController.stateContext.state)
+    static isActive(stateNavigator: Navigation.StateNavigator, key: string, val: any): boolean {
+        if (!stateNavigator.stateContext.state)
             return false;
         if (val != null) {
-            var trackTypes = stateController.stateContext.state.trackTypes;
-            var currentVal = stateController.stateContext.data[key];
+            var trackTypes = stateNavigator.stateContext.state.trackTypes;
+            var currentVal = stateNavigator.stateContext.data[key];
             if (currentVal != null)
                 return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
             else
@@ -56,12 +56,12 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var stateController: Navigation.StateController = props.stateController;
-                    var link = stateController.historyManager.getUrl(element);
+                    var stateNavigator: Navigation.StateNavigator = props.stateNavigator;
+                    var link = stateNavigator.historyManager.getUrl(element);
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {
                         e.preventDefault();
-                        stateController.navigateLink(link, props.historyAction);
+                        stateNavigator.navigateLink(link, props.historyAction);
                     }
                 }
             }

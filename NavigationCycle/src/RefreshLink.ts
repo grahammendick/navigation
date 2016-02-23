@@ -2,18 +2,18 @@ import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import CycleDOM = require('@cycle/dom');
 
-var RefreshLink = (stateController: Navigation.StateController, properties: any, children: any) => {
+var RefreshLink = (stateNavigator: Navigation.StateNavigator, properties: any, children: any) => {
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];
     var active = true;
-    for (var key in properties.toData) {
-        active = active && LinkUtility.isActive(stateController, key, properties.toData[key]);
+    for (var key in properties.navigationData) {
+        active = active && LinkUtility.isActive(stateNavigator, key, properties.navigationData[key]);
     }
-    var toData = LinkUtility.getData(stateController, properties.toData, properties.includeCurrentData, properties.currentDataKeys);
+    var navigationData = LinkUtility.getData(stateNavigator, properties.navigationData, properties.includeCurrentData, properties.currentDataKeys);
     try {
-        var link = stateController.getRefreshLink(toData);
-        newProperties.href = stateController.historyManager.getHref(link);
+        var link = stateNavigator.getRefreshLink(navigationData);
+        newProperties.href = stateNavigator.historyManager.getHref(link);
     } catch(e) {
     }
     active = active && !!newProperties.href;

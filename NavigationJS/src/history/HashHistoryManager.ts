@@ -20,12 +20,12 @@ class HashHistoryManager implements IHistoryManager {
     }
 
     addHistory(url: string, replace: boolean) {
-        url = '#' + this.encode(url);
-        if (!this.disabled && location.hash !== url) {
+        var href = this.getHref(url);
+        if (!this.disabled && location.hash !== href) {
             if (!replace)            
-                location.hash = url;
+                location.hash = href;
             else
-                location.replace(url);
+                location.replace(href);
         }
     }
 
@@ -34,7 +34,7 @@ class HashHistoryManager implements IHistoryManager {
     }
 
     getHref(url: string): string {
-        if (!url)
+        if (url == null)
             throw new Error('The Url is invalid');
         return '#' + this.encode(url);
     }

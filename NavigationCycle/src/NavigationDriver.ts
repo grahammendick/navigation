@@ -5,44 +5,44 @@ import NavigationLink = require('./NavigationLink');
 import RefreshLink = require('./RefreshLink');
 import Rx = require('rx');
 
-function navigate(e, stateController: Navigation.StateController) {
-    var toData = LinkUtility.getData(stateController, e.toData, e.includeCurrentData, e.currentDataKeys);
+function navigate(e, stateNavigator: Navigation.StateNavigator) {
+    var navigationData = LinkUtility.getData(stateNavigator, e.navigationData, e.includeCurrentData, e.currentDataKeys);
     if (e.action)
-        stateController.navigate(e.state, toData, e.historyAction);
-    if (!e.action && e.toData)
-        stateController.refresh(toData, e.historyAction);
+        stateNavigator.navigate(e.state, navigationData, e.historyAction);
+    if (!e.action && e.navigationData)
+        stateNavigator.refresh(navigationData, e.historyAction);
     if (e.distance)
-        stateController.navigateBack(e.distance, e.historyAction);
+        stateNavigator.navigateBack(e.distance, e.historyAction);
     if (e.url)
-        stateController.navigateLink(e.url, e.historyAction);
+        stateNavigator.navigateLink(e.url, e.historyAction);
 }
 
 var NavigationDriver = function(url) {
     return function(navigate$) {
-        var stateController: Navigation.StateController;
+        var stateNavigator: Navigation.StateNavigator;
         var navigated$ = new Rx.ReplaySubject(1);
         navigate$.subscribe(e => {
-            if (e.stateController) {
-                stateController = e.stateController;
-                stateController.onNavigate(() => navigated$.onNext({
-                    oldState: stateController.stateContext.oldState,
-                    oldData: stateController.stateContext.oldData,
-                    previousState: stateController.stateContext.previousState,
-                    previousData: stateController.stateContext.previousData,
-                    state: stateController.stateContext.state,
-                    data: stateController.stateContext.data,
-                    crumbs: stateController.stateContext.crumbs
+            if (e.stateNavigator) {
+                stateNavigator = e.stateNavigator;
+                stateNavigator.onNavigate(() => navigated$.onNext({
+                    oldState: stateNavigator.stateContext.oldState,
+                    oldData: stateNavigator.stateContext.oldData,
+                    previousState: stateNavigator.stateContext.previousState,
+                    previousData: stateNavigator.stateContext.previousData,
+                    state: stateNavigator.stateContext.state,
+                    data: stateNavigator.stateContext.data,
+                    crumbs: stateNavigator.stateContext.crumbs
                 }));
-                stateController.start(url);
+                stateNavigator.start(url);
             }
             if (e.target) {
                 if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                     e.preventDefault();
-                    var link = stateController.historyManager.getUrl(e.target);
-                    stateController.navigateLink(link, e.target.historyAction);
+                    var link = stateNavigator.historyManager.getUrl(e.target);
+                    stateNavigator.navigateLink(link, e.target.historyAction);
                 }
             } else {
-                navigate(e, stateController);
+                navigate(e, stateNavigator);
             }
         });
         return navigated$;

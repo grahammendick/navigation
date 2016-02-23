@@ -1,11 +1,11 @@
 ﻿var app = angular.module('app', ['NavigationAngular']);
 
 app.controller('PersonController', function ($scope) {
-    var stateController = new Navigation.StateController([
+    var stateNavigator = new Navigation.StateNavigator([
         { key: 'people', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
         { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details', }
     ]);
-    $scope.stateController = stateController;
+    $scope.stateNavigator = stateNavigator;
 	$scope.id;
 	$scope.name;
 	$scope.people;
@@ -17,11 +17,11 @@ app.controller('PersonController', function ($scope) {
 	$scope.last;
 	$scope.totalCount;
 	$scope.nameChange = function (e) {
-		var data = stateController.stateContext.includeCurrentData({ name: $scope.name, startRowIndex: null });
-		stateController.refresh(data);
+		var data = stateNavigator.stateContext.includeCurrentData({ name: $scope.name, startRowIndex: null });
+		stateNavigator.refresh(data);
 	};
 
-	var states = stateController.states;
+	var states = stateNavigator.states;
 	states.people.navigated = function (data) {
 		var people = personSearch.search(data.name, data.sortExpression);
 		var totalRowCount = people.length;
@@ -43,9 +43,9 @@ app.controller('PersonController', function ($scope) {
 		$scope.dateOfBirth = person.dateOfBirth;
 	};
 	states.person.dispose = function () { $scope.id = null };
-	stateController.onNavigate(function () {
+	stateNavigator.onNavigate(function () {
 		if (!$scope.$$phase)
 			$scope.$apply();
 	})
-	stateController.start();
+	stateNavigator.start();
 });

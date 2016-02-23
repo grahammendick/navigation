@@ -5,16 +5,16 @@ class Crumb {
     state: State;
     last: boolean;
     title: string;
-    navigationLink: string;
-    crumblessLink: string;
+    url: string;
+    crumblessUrl: string;
 
-    constructor(data: any, state: State, link: string, crumblessLink: string, last: boolean) {
+    constructor(data: any, state: State, url: string, crumblessUrl: string, last: boolean) {
         this.data = data ? data : {};
         this.state = state;
         this.last = last;
         this.title = state.title;
-        this.navigationLink = link;
-        this.crumblessLink = crumblessLink;
+        this.url = url;
+        this.crumblessUrl = crumblessUrl;
     }
 }
 export = Crumb;

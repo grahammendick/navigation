@@ -6,35 +6,35 @@ var NavigationLink = ($parse: ng.IParseService) => {
     return {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-            var state, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
-            var stateController: Navigation.StateController = scope.$eval(attrs['stateController']);
-            LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, stateController, state, toData,
+            var stateKey, navigationData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
+            var stateNavigator: Navigation.StateNavigator = scope.$eval(attrs['stateNavigator']);
+            LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, stateNavigator, stateKey, navigationData,
                 includeCurrentData, currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope)
-            var watchAttrs = [attrs['navigationLink'], attrs['toData'], attrs['includeCurrentData'], 
+            var watchAttrs = [attrs['navigationLink'], attrs['navigationData'], attrs['includeCurrentData'], 
                 attrs['currentDataKeys'], attrs['activeCssClass'], attrs['disableActive']];
             scope.$watchGroup(watchAttrs, function (values) {
-                state = values[0];
-                toData = values[1];
+                stateKey = values[0];
+                navigationData = values[1];
                 includeCurrentData = values[2];
                 currentDataKeys = values[3];
                 activeCssClass = values[4];
                 disableActive = values[5];
-                setNavigationLink(element, attrs, stateController, state, toData, includeCurrentData, currentDataKeys, activeCssClass, disableActive);
+                setNavigationLink(element, attrs, stateNavigator, stateKey, navigationData, includeCurrentData, currentDataKeys, activeCssClass, disableActive);
             });
         }
     }
 };
 
-function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateController: Navigation.StateController,
-    state: string, toData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
+function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator,
+    stateKey: string, navigationData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
     var active = true;
-    for (var key in toData) {
-        active = active && LinkUtility.isActive(stateController, key, toData[key]);
+    for (var key in navigationData) {
+        active = active && LinkUtility.isActive(stateNavigator, key, navigationData[key]);
     }
-    LinkUtility.setLink(stateController, element, attrs, () => stateController.getNavigationLink(state,
-        LinkUtility.getData(stateController, toData, includeCurrentData, currentDataKeys))
+    LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getNavigationLink(stateKey,
+        LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys))
     );
-    active = active && !!attrs['href'] && stateController.stateContext.state.key === state;
+    active = active && !!attrs['href'] && stateNavigator.stateContext.state.key === stateKey;
     LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
 }
 export = NavigationLink;

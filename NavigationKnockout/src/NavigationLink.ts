@@ -12,20 +12,20 @@ var NavigationLink = ko.bindingHandlers['navigationLink'] = {
 };
 
 function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
-    var state = ko.unwrap(valueAccessor());
+    var stateKey = ko.unwrap(valueAccessor());
     var data = {};
-    var toData = ko.unwrap(allBindings.get('toData'));
+    var navigationData = ko.unwrap(allBindings.get('navigationData'));
     var active = true;
-    var stateController: Navigation.StateController = allBindings.get('stateController');
-    for (var key in toData) {
-        var val = ko.unwrap(toData[key]);
+    var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
+    for (var key in navigationData) {
+        var val = ko.unwrap(navigationData[key]);
         data[key] = val;
-        active = active && LinkUtility.isActive(stateController, key, val);
+        active = active && LinkUtility.isActive(stateNavigator, key, val);
     }
-    LinkUtility.setLink(stateController, element, () => stateController.getNavigationLink(state,
-        LinkUtility.getData(stateController, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
+    LinkUtility.setLink(stateNavigator, element, () => stateNavigator.getNavigationLink(stateKey,
+        LinkUtility.getData(stateNavigator, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    active = active && !!element.href && stateController.stateContext.state.key === state;
+    active = active && !!element.href && stateNavigator.stateContext.state.key === stateKey;
     LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
 export = NavigationLink;
