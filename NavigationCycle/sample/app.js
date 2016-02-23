@@ -1,11 +1,11 @@
 var table = CycleDOM.table, tr = CycleDOM.tr, th = CycleDOM.th, td = CycleDOM.td, ul = CycleDOM.ul, li = CycleDOM.li,
     input = CycleDOM.input, div = CycleDOM.div, span = CycleDOM.span, br = CycleDOM.br, label = CycleDOM.label; 
 
-function createStateComponents(stateController) {
-    var navigationLink = (properties, children) => NavigationCycle.navigationLink(stateController, properties, children);
-    var refreshLink = (properties, children) => NavigationCycle.refreshLink(stateController, properties, children);
-    var navigationBackLink = (properties, children) => NavigationCycle.navigationBackLink(stateController, properties, children);
-    var peopleState = stateController.states.people;        
+function createStateComponents(stateNavigator) {
+    var navigationLink = (properties, children) => NavigationCycle.navigationLink(stateNavigator, properties, children);
+    var refreshLink = (properties, children) => NavigationCycle.refreshLink(stateNavigator, properties, children);
+    var navigationBackLink = (properties, children) => NavigationCycle.navigationBackLink(stateNavigator, properties, children);
+    var peopleState = stateNavigator.states.people;        
     peopleState.intent = function(sources) {
         return sources.Navigation.map(function(context) {
             return { 
@@ -48,26 +48,26 @@ function createStateComponents(stateController) {
                         input('#name', { value: data.name ? data.name : '' }) 
                     ]),
                     span('Page size '),
-                    refreshLink({ toData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
-                    refreshLink({ toData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
+                    refreshLink({ navigationData: { maximumRows: 5, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '5'), span(' '),
+                    refreshLink({ navigationData: { maximumRows: 10, startRowIndex: null }, includeCurrentData: true, activeCssClass: 'active' }, '10')
                 ]),
                 table([
                     tr([
-                        th([ refreshLink({ toData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
+                        th([ refreshLink({ navigationData: { sortExpression: data.sortExpression }, includeCurrentData: true }, 'Name') ]),
                         th('Date of Birth')                            
                     ])]
                     .concat(data.people.map(function(person) {
                         return tr([
-                            td([ navigationLink({ state: 'person', toData: { id: person.id }}, person.name) ]),
+                            td([ navigationLink({ stateKey: 'person', navigationData: { id: person.id }}, person.name) ]),
                             td(person.dateOfBirth)
                         ])
                     }))
                 ),
                 ul([
-                    li([ refreshLink({ toData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
-                    li([ refreshLink({ toData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
+                    li([ refreshLink({ navigationData: { startRowIndex: 0 }, includeCurrentData: true, disableActive: true }, 'First') ]),
+                    li([ refreshLink({ navigationData: { startRowIndex: data.previous }, includeCurrentData: true, disableActive: true }, 'Previous') ]),
+                    li([ refreshLink({ navigationData: { startRowIndex: data.next }, includeCurrentData: true, disableActive: true }, 'Next') ]),
+                    li([ refreshLink({ navigationData: { startRowIndex: data.last }, includeCurrentData: true, disableActive: true }, 'Last') ])
                 ]),
                 span('Total Count ' + data.totalRowCount)
             ])
@@ -78,7 +78,7 @@ function createStateComponents(stateController) {
         var search$ = sources.DOM.select('input').events('blur')
             .map(function(e) {
                 return { 
-                    toData: { 
+                    navigationData: { 
                         name: e.target.value,
                         startRowIndex: null
                     },
@@ -92,7 +92,7 @@ function createStateComponents(stateController) {
         }
     };
     
-    var personState = stateController.states.person;
+    var personState = stateNavigator.states.person;
     personState.intent = function(sources) {
         return sources.Navigation.map(function(context) {
             return personSearch.getDetails(context.data.id)
@@ -122,18 +122,18 @@ function createStateComponents(stateController) {
 }
 
 function main(sources) {
-    var stateController = new Navigation.StateController([
+    var stateNavigator = new Navigation.StateNavigator([
         { key: 'people', route: '{startRowIndex}/{maximumRows}/{sortExpression}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
         { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details', }
     ]);
-    createStateComponents(stateController);
+    createStateComponents(stateNavigator);
     var component$$ = sources.Navigation.map(function(context) {
         return context.state.component(sources);
     });
     return {
         DOM: component$$.map(function(component) { return component.DOM }).switch(),
         Navigation: component$$.map(function(component) { return component.Navigation }).switch()
-            .startWith({ stateController: stateController })
+            .startWith({ stateNavigator: stateNavigator })
     };
 }
 
