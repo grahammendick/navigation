@@ -51,9 +51,12 @@ img{
     <img alt="cursor hand" src="cursor.png" />
     <h2 style="margin:40px 0 0 0">Router first, Routes last!</h2>
     <p>You don't know your routes until the end</p>
-    <input style="position:relative; left: 100px; top: 50px; z-index: 1000; width:100px"/>
-    <div style="width:550px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1);">
+    <input style="position:relative; left: -380px; top: 35px; z-index: 1000; width:100px"/>
+    <div style="width:600px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1); float: left">
     <textarea id="example">
+var stateNavigator = new StateNavigator([
+  { key: 'libraries', route: ''             }
+]);
 var LibraryPicker = ({ libraries, pick, stateNavigator }) => (
   <ul>
     {libraries.map((library) => (
@@ -70,9 +73,15 @@ var LibraryPicker = ({ libraries, pick, stateNavigator }) => (
 );
     </textarea>
     </div>
+    <div id="app" style="padding-left:600px"/>
     </div>
+    <div style="clear:both"/>
     <script type="text/javascript" src="codemirror.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
+    <script type="text/javascript" src="example/react/react-0.14.3.min.js"></script>
+    <script type="text/javascript" src="example/react/react-dom-0.14.3.min.js"></script>
+    <script type="text/javascript" src="navigation.js"></script>
+    <script type="text/javascript" src="navigation.react.js"></script>
     <script type="text/javascript">
         CodeMirror.fromTextArea(document.getElementById('example'), {
             mode: 'javascript',
@@ -83,6 +92,72 @@ var LibraryPicker = ({ libraries, pick, stateNavigator }) => (
             theme: 'navigation',
             readOnly: true
         });
+        
+        var StateNavigator = Navigation.StateNavigator;
+        var NavigationLink = NavigationReact.NavigationLink;
+        var stateNavigator = new StateNavigator([{ key: 'libraries', route: '' }]);
+        var LibraryPicker = function LibraryPicker(props) {
+            var libraries = props.libraries;
+            var pick = props.pick;
+            var stateNavigator = props.stateNavigator;
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'div',
+                    null,
+                    'You Picked: ',
+                    pick
+                ),
+                React.createElement(
+                    'ul',
+                    null,
+                    libraries.map(function (library) {
+                        return React.createElement(
+                            'li',
+                            null,
+                            React.createElement(
+                                NavigationLink,
+                                {
+                                    stateKey: 'libraries',
+                                    navigationData: { pick: library },
+                                    stateNavigator: stateNavigator 
+                                },
+                                library
+                            )
+                        );
+                    })
+                )
+            );
+        };
+        var libraryList = ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember',
+        'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa'];
+        stateNavigator.states.libraries.navigated = function (data) {
+            ReactDOM.render(React.createElement(LibraryPicker, { 
+                libraries: libraryList, 
+                pick: data.pick,
+                stateNavigator: stateNavigator 
+            }), document.getElementById('app'));
+        };
+        stateNavigator.start('/');
+        
+        /*
+        <div>
+          <div>Your Pick: {pick}</div>
+          <ul>
+            {libraries.map((library) => (
+              <li>
+                <NavigationLink 
+                stateKey="libraries"
+                navigationData={{ pick: library }}
+                stateNavigator={stateNavigator}>
+                {library}
+                </NavigationLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+        */
     </script>
 </body>
 </html>
