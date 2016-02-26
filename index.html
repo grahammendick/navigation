@@ -15,7 +15,7 @@
 img{
     width:60px;
     position:absolute;
-    top:44px;
+    top:85px;
     margin-left:10px;
     display:block;
 }
@@ -62,14 +62,44 @@ img{
     textarea{
         display: none;
     }
+    #banner div{
+        background-color: #551a8b;
+        color: #fff;
+        height:22px;
+        padding:10px 50px;
+        margin-bottom: 4px;
+        font-size: larger;
+    }
+    #banner{
+        border-bottom: 5px solid #0000ee;
+    }
+    body{
+        padding: 0;
+        margin: 0;
+        font-family: Verdana;
+        font-size:14px;
+    }
+    h2{
+        font-weight: normal;
+    }
     </style>
 </head>
 <body>
+    <div id="banner"><div>Navigation</div></div>
     <div style="margin:0 auto; width:900px">
     <h1>Navigation</h1>
     <img alt="cursor hand" src="cursor.png" />
-    <h2 style="margin:40px 0 0 0">Router first, Routes last!</h2>
-    <p>You don't know your routes until the end</p>
+    <h2 style="margin:40px 0 0 0">Leave Your Routes to Last</h2>
+    <p>
+        You don't know your routes until the end. sdfsdiklfjs lfksdjlfk sjdlkfjsdkl fjsldkjf klsdjf skldjf d
+        sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
+        dsfjsdklf.
+    </p>
+    <p>
+        You don't know your routes until the end. sdfsdiklfjs lfksdjlfk sjdlkfjsdkl fjsldkjf klsdjf skldjf d
+        sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
+        dsfjsdklf.
+    </p>
     <input id="route" style="position:relative; display:block; left: 225px; top: 56px; z-index: 1000; width:100px"/>
     <div style="width:600px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1); float: left">
     <textarea id="example">
@@ -118,15 +148,15 @@ stateNavigator.start();
     <script type="text/javascript" src="navigation.js"></script>
     <script type="text/javascript" src="navigation.react.js"></script>
     <script type="text/javascript">
-        CodeMirror.fromTextArea(document.getElementById('example'), {
-            mode: 'javascript',
-            lineNumbers: false,
-            lineWrapping: true,
-            smartIndent: false,
-            matchBrackets: true,
-            theme: 'navigation',
-            readOnly: true
-        });
+CodeMirror.fromTextArea(document.getElementById('example'), {
+    mode: 'javascript',
+    lineNumbers: false,
+    lineWrapping: true,
+    smartIndent: false,
+    matchBrackets: true,
+    theme: 'navigation',
+    readOnly: true
+});
         
 var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibList', route: '' }]);
 
