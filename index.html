@@ -58,19 +58,19 @@ img{
     <img alt="cursor hand" src="cursor.png" />
     <h2 style="margin:40px 0 0 0">Router first, Routes last!</h2>
     <p>You don't know your routes until the end</p>
-    <input style="position:relative; left: -370px; top: 35px; z-index: 1000; width:100px"/>
+    <input style="position:relative; left: -376px; top: 35px; z-index: 1000; width:100px"/>
     <div style="width:600px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1); float: left">
     <textarea id="example">
 var stateNavigator = new Navigation.StateNavigator([
-  { key: 'jsLibList', route: '               ' }
+  {key: 'jsLibList', route: '               '}
 ]);
-var JsLibPicker = ({ jsLibs, pick, stateNavigator }) => (
+var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
   <ul>
     {jsLibs.map((jsLib) => (
       <li>
         <NavigationReact.NavigationLink 
           stateKey="jsLibList"
-          navigationData={{ pick: jsLib }}
+          navigationData={{pick: jsLib}}
           stateNavigator={stateNavigator}>
           {jsLib}
         </NavigationReact.NavigationLink>
@@ -109,7 +109,7 @@ stateNavigator.start();
         
 'use strict';
 
-var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibList', route: '' }]);
+var stateNavigator = new Navigation.StateNavigator([{key: 'jsLibList', route: ''}]);
 var JsLibPicker = function JsLibPicker(_ref) {
   var jsLibs = _ref.jsLibs;
   var pick = _ref.pick;
@@ -125,7 +125,7 @@ var JsLibPicker = function JsLibPicker(_ref) {
           NavigationReact.NavigationLink,
           {
             stateKey: 'jsLibList',
-            navigationData: { pick: jsLib },
+            navigationData: {pick: jsLib},
             stateNavigator: stateNavigator },
           jsLib
         )
