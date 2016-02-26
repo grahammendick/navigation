@@ -58,29 +58,29 @@ img{
     <img alt="cursor hand" src="cursor.png" />
     <h2 style="margin:40px 0 0 0">Router first, Routes last!</h2>
     <p>You don't know your routes until the end</p>
-    <input style="position:relative; left: -355px; top: 35px; z-index: 1000; width:100px"/>
+    <input style="position:relative; left: -385px; top: 35px; z-index: 1000; width:100px"/>
     <div style="width:600px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1); float: left">
     <textarea id="example">
 var stateNavigator = new Navigation.StateNavigator([
-  { key: 'libraryList', route: '               ' }
+  { key: 'jsLibList', route: '               ' }
 ]);
-var LibraryPicker = ({ libraries, pick, stateNavigator }) => (
+var JsLibPicker = ({ jsLibs, pick, stateNavigator }) => (
   <ul>
-    {libraries.map((library) => (
+    {jsLibs.map((jsLib) => (
       <li>
         <NavigationReact.NavigationLink 
-          stateKey="libraryList"
-          navigationData={{ pick: library }}
+          stateKey="jsLibList"
+          navigationData={{ pick: jsLib }}
           stateNavigator={stateNavigator}>
-          {library}
+          {jsLib}
         </NavigationReact.NavigationLink>
       </li>
      ))}
   </ul>
 );
-stateNavigator.states.libraryList.navigated = function(data) {
-  ReactDOM.render(<LibraryPicker 
-    libraries={['Backbone.js','AngularJS','jQuery','Prototype','React','Ember', 'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa']}
+stateNavigator.states.jsLibList.navigated = function(data) {
+  ReactDOM.render(<JsLibPicker 
+    jsLibs={['Backbone.js','AngularJS','jQuery','Prototype','React','Ember', 'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa']}
     pick={data.pick}
     stateNavigator={stateNavigator} />, document.getElementById('app'));
 };
@@ -109,33 +109,33 @@ stateNavigator.start();
         
 'use strict';
 
-var stateNavigator = new Navigation.StateNavigator([{ key: 'libraryList', route: '' }]);
-var LibraryPicker = function LibraryPicker(_ref) {
-  var libraries = _ref.libraries;
+var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibList', route: '' }]);
+var JsLibPicker = function JsLibPicker(_ref) {
+  var jsLibs = _ref.jsLibs;
   var pick = _ref.pick;
   var stateNavigator = _ref.stateNavigator;
   return React.createElement(
     'ul',
     null,
-    libraries.map(function (library) {
+    jsLibs.map(function (jsLib) {
       return React.createElement(
         'li',
         null,
         React.createElement(
           NavigationReact.NavigationLink,
           {
-            stateKey: 'libraryList',
-            navigationData: { pick: library },
+            stateKey: 'jsLibList',
+            navigationData: { pick: jsLib },
             stateNavigator: stateNavigator },
-          library
+          jsLib
         )
       );
     })
   );
 };
-stateNavigator.states.libraryList.navigated = function (data) {
-  ReactDOM.render(React.createElement(LibraryPicker, {
-    libraries: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
+stateNavigator.states.jsLibList.navigated = function (data) {
+  ReactDOM.render(React.createElement(JsLibPicker, {
+    jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
     pick: data.pick,
     stateNavigator: stateNavigator }), document.getElementById('app'));
 };
