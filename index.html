@@ -100,11 +100,11 @@ img{
         sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
         dsfjsdklf.
     </p>
-    <input id="route" style="position:relative; display:block; left: 225px; top: 56px; z-index: 1000; width:100px"/>
+    <input id="route" style="position:relative; display:block; left: 247px; top: 56px; z-index: 1000; width:100px"/>
     <div style="width:600px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1); float: left">
     <textarea id="example">
 var stateNavigator = new Navigation.StateNavigator([
-  {key: 'jsLibList', route: '               '}
+  {key: 'jsLibListing', route: '               '}
 ]);
 
 var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
@@ -114,7 +114,7 @@ var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
       {jsLibs.map((jsLib) => (
         <li>
           <NavigationReact.NavigationLink 
-            stateKey="jsLibList"
+            stateKey="jsLibListing"
             navigationData={{pick: jsLib}}
             stateNavigator={stateNavigator}>
             {jsLib}
@@ -125,10 +125,12 @@ var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
   </div>
 );
 
-var jsLibList = stateNavigator.states.jsLibList;
-jsLibList.navigated = function(data) {
+var jsLibs = ['Backbone.js','AngularJS','jQuery','Prototype','React','Ember', 'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa'];
+
+var jsLibListing = stateNavigator.states.jsLibListing;
+jsLibListing.navigated = function(data) {
   ReactDOM.render(<JsLibPicker 
-    jsLibs={['Backbone.js','AngularJS','jQuery','Prototype','React','Ember', 'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa']}
+    jsLibs={jsLibs}
     pick={data.pick}
     stateNavigator={stateNavigator} />, document.getElementById('app'));
 };
@@ -158,7 +160,7 @@ CodeMirror.fromTextArea(document.getElementById('example'), {
     readOnly: true
 });
         
-var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibList', route: '' }]);
+var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibListing', route: '' }]);
 
 var JsLibPicker = function JsLibPicker(_ref) {
   var jsLibs = _ref.jsLibs;
@@ -183,7 +185,7 @@ var JsLibPicker = function JsLibPicker(_ref) {
           React.createElement(
             NavigationReact.NavigationLink,
             {
-              stateKey: 'jsLibList',
+              stateKey: 'jsLibListing',
               navigationData: { pick: jsLib },
               stateNavigator: stateNavigator },
             jsLib
@@ -194,16 +196,16 @@ var JsLibPicker = function JsLibPicker(_ref) {
   );
 };
 
-stateNavigator.states.jsLibList.navigated = render;
+stateNavigator.states.jsLibListing.navigated = render;
 
 stateNavigator.start('/');
 
 document.getElementById('route').addEventListener('keyup', function(e){
     var navigationData = stateNavigator.stateContext.includeCurrentData({});
     try {
-        stateNavigator.configure([{key: 'jsLibList', route: e.target.value}]);
-        stateNavigator.states.jsLibList.navigated = render;
-        stateNavigator.navigate('jsLibList', navigationData);
+        stateNavigator.configure([{key: 'jsLibListing', route: e.target.value}]);
+        stateNavigator.states.jsLibListing.navigated = render;
+        stateNavigator.navigate('jsLibListing', navigationData);
     } catch(ex) {
         render({ pick: navigationData.pick });
     }
