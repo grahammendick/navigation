@@ -164,19 +164,10 @@ var JsLibPicker = function JsLibPicker(_ref) {
   );
 };
 
-var jsLibList = stateNavigator.states.jsLibList;
-function render(data) {
-  ReactDOM.render(React.createElement(JsLibPicker, {
-    jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
-    pick: data.pick,
-    stateNavigator: stateNavigator }), document.getElementById('app'));
-};
-jsLibList.navigated = render;
+stateNavigator.states.jsLibList.navigated = render;
 
 stateNavigator.start('/');
 
-
-var jsLibNavigated = stateNavigator.states.jsLibList.navigated;
 document.getElementById('route').addEventListener('keyup', function(e){
     var navigationData = stateNavigator.stateContext.includeCurrentData({});
     try {
@@ -187,6 +178,14 @@ document.getElementById('route').addEventListener('keyup', function(e){
         render({ pick: navigationData.pick });
     }
 });
+
+function render(data) {
+  ReactDOM.render(React.createElement(JsLibPicker, {
+    jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
+    pick: data.pick,
+    stateNavigator: stateNavigator }), document.getElementById('app'));
+};
+
     </script>
 </body>
 </html>
