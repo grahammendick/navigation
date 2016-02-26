@@ -174,10 +174,12 @@ jsLibList.navigated = function (data) {
 
 stateNavigator.start('/');
 
+var jsLibNavigated = stateNavigator.states.jsLibList.navigated;
 document.getElementById('route').addEventListener('keyup', function(e){
     var navigationData = stateNavigator.stateContext.includeCurrentData({});
     try {
         stateNavigator.configure([{key: 'jsLibList', route: e.target.value}]);
+        stateNavigator.states.jsLibList.navigated = jsLibNavigated;
         stateNavigator.navigate('jsLibList', navigationData);
     } catch(ex) {
         ReactDOM.render(React.createElement(JsLibPicker, {
