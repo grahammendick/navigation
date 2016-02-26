@@ -51,6 +51,12 @@ img{
     li{
         padding:2px;
     }
+    #app {
+        margin-left: 615px;
+        border: 1px solid rgba(16,16,16,0.1);
+        padding: 10px;
+        border-radius:3px;
+    }
     #app div div{
         font-size: larger;
     }
@@ -82,6 +88,13 @@ img{
     h2{
         font-weight: normal;
     }
+    div.example{
+         width:600px;
+         overflow:hidden;
+         border: 1px solid rgba(16,16,16,0.1);
+         float: left;
+         border-radius: 3px;
+    }
     </style>
 </head>
 <body>
@@ -101,7 +114,7 @@ img{
         dsfjsdklf.
     </p>
     <input id="route" style="position:relative; display:block; left: 247px; top: 56px; z-index: 1000; width:100px"/>
-    <div style="width:600px; overflow:hidden; border: 1px solid rgba(16,16,16,0.1); float: left">
+    <div class="example">
     <textarea id="example">
 var stateNavigator = new Navigation.StateNavigator([
   {key: 'jsLibListing', route: '               '}
@@ -138,7 +151,7 @@ jsLibListing.navigated = function(data) {
 stateNavigator.start();
     </textarea>
     </div>
-    <div id="app" style="padding-left:615px"/>
+    <div id="app"/>
     </div>
     <div id="footer">
         Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
