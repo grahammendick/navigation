@@ -46,14 +46,21 @@ img{
     ul{
         width: 180px;
         margin: 0 auto;
+        padding-top: 10px;
     }
     li{
         padding:2px;
+    }
+    #app span{
+        font-size: larger;
     }
     #footer{
         clear:both;
         font-style: italic;
         padding: 10px;
+    }
+    textarea{
+        display: none;
     }
     </style>
 </head>
@@ -71,18 +78,21 @@ var stateNavigator = new Navigation.StateNavigator([
 ]);
 
 var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
-  <ul>
-    {jsLibs.map((jsLib) => (
-      <li>
-        <NavigationReact.NavigationLink 
-          stateKey="jsLibList"
-          navigationData={{pick: jsLib}}
-          stateNavigator={stateNavigator}>
-          {jsLib}
-        </NavigationReact.NavigationLink>
-      </li>
-     ))}
-  </ul>
+  <div>
+    <div>You Picked {pick || '??'}</div>
+    <ul>
+      {jsLibs.map((jsLib) => (
+        <li>
+          <NavigationReact.NavigationLink 
+            stateKey="jsLibList"
+            navigationData={{pick: jsLib}}
+            stateNavigator={stateNavigator}>
+            {jsLib}
+          </NavigationReact.NavigationLink>
+        </li>
+       ))}
+    </ul>
+  </div>
 );
 
 var jsLibList = stateNavigator.states.jsLibList;
@@ -96,7 +106,7 @@ jsLibList.navigated = function(data) {
 stateNavigator.start();
     </textarea>
     </div>
-    <div id="app" style="padding-left:600px"/>
+    <div id="app" style="padding-left:615px"/>
     </div>
     <div id="footer">
         Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
@@ -118,36 +128,50 @@ stateNavigator.start();
             readOnly: true
         });
         
-var stateNavigator = new Navigation.StateNavigator([{key: 'jsLibList', route: ''}]);
+var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibList', route: '' }]);
+
 var JsLibPicker = function JsLibPicker(_ref) {
   var jsLibs = _ref.jsLibs;
   var pick = _ref.pick;
   var stateNavigator = _ref.stateNavigator;
   return React.createElement(
-    'ul',
+    'div',
     null,
-    jsLibs.map(function (jsLib) {
-      return React.createElement(
-        'li',
-        null,
-        React.createElement(
-          NavigationReact.NavigationLink,
-          {
-            stateKey: 'jsLibList',
-            navigationData: {pick: jsLib},
-            stateNavigator: stateNavigator },
-          jsLib
-        )
-      );
-    })
+    React.createElement(
+      'div',
+      null,
+      'You Picked ',
+      pick || '??'
+    ),
+    React.createElement(
+      'ul',
+      null,
+      jsLibs.map(function (jsLib) {
+        return React.createElement(
+          'li',
+          null,
+          React.createElement(
+            NavigationReact.NavigationLink,
+            {
+              stateKey: 'jsLibList',
+              navigationData: { pick: jsLib },
+              stateNavigator: stateNavigator },
+            jsLib
+          )
+        );
+      })
+    )
   );
 };
-stateNavigator.states.jsLibList.navigated = function (data) {
+
+var jsLibList = stateNavigator.states.jsLibList;
+jsLibList.navigated = function (data) {
   ReactDOM.render(React.createElement(JsLibPicker, {
     jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
     pick: data.pick,
     stateNavigator: stateNavigator }), document.getElementById('app'));
 };
+
 stateNavigator.start('/');
 
 document.getElementById('route').addEventListener('keyup', function(e){
