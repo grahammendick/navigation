@@ -4,6 +4,21 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="prism.css">
     <style>
+    #logo div{
+        padding:4px 8px;
+        box-shadow: 3px 3px 5px #888888;
+        color: rgba(145,87,117,1);
+        font-size: 12px; 
+        border: 2px solid rgba(118,118,118,1);
+        border-radius: 3px;
+        display: inline-block;
+        margin: -10px 0 0 60px;
+        background: linear-gradient(#fff, rgb(228, 229, 240));
+    }
+    #logo{
+        width: 275px;
+        margin: 0 auto;
+    }
     #logo h1{
         font-size:50px;
         margin:0 0 10px 0;
@@ -12,17 +27,17 @@
         text-decoration:underline;
         color:#0000ee;
     }        
-img{
-    width:60px;
-    position:absolute;
-    top:85px;
-    margin-left:10px;
-    display:block;
-}
-#content{
-    margin:0 auto;
-    width:900px;
-}
+    #logo img{
+        width:60px;
+        position:absolute;
+        top:85px;
+        margin-left:10px;
+        display:block;
+    }
+    #content{
+        margin:0 auto;
+        width:900px;
+    }
     code {
         font-family: 'source-code-pro', Menlo, Consolas, 'Courier New', monospace;
         font-size: .9em;
@@ -81,21 +96,6 @@ img{
         background-color: #fbecc5;;
         padding: .1% .3%;
     }
-    #tooltip{
-        padding:4px 8px;
-        box-shadow: 3px 3px 5px #888888;
-        color: rgba(145,87,117,1);
-        font-size: 12px; 
-        border: 2px solid rgba(118,118,118,1);
-        border-radius: 3px;
-        display: inline-block;
-        margin: -10px 0 0 60px;
-        background: linear-gradient(#fff, rgb(228, 229, 240));
-    }
-    #logo{
-        width: 275px;
-        margin: 0 auto;
-    }
     .example pre{
         margin:0;
         padding-top: 0;
@@ -113,7 +113,7 @@ img{
     <div id="logo">
         <h1>Navigation</h1>
         <img alt="cursor hand" src="cursor.png" />
-        <div id="tooltip">The data-first JavaScript router</div>
+        <div>The data-first JavaScript router</div>
     </div>
     <h2>Data First, Routes Last</h2>
     <p>
