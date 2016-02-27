@@ -2,7 +2,7 @@
 <head>
     <title>Navigation</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="codemirror.css">
+    <link rel="stylesheet" href="prism.css">
     <style>
     h1{
         font-size:50px;
@@ -19,29 +19,9 @@ img{
     margin-left:10px;
     display:block;
 }
-    div.CodeMirror pre, div.CodeMirror-linenumber, code {
+    code {
         font-family: 'source-code-pro', Menlo, Consolas, 'Courier New', monospace;
         font-size: 13px;
-        line-height: 1.5;
-    }
-    .cm-s-navigation span.cm-keyword {
-        color: #268bd2;
-    }
-    .cm-s-navigation span.cm-variable {
-        color: #637c84;
-    }
-    .cm-s-navigation span.cm-property {
-        color: #637c84;
-    }
-    .cm-s-navigation {
-        background-color: #f8f5ec;
-        color: #637c84;
-    }
-    .cm-s-navigation span.cm-comment{
-        color:#93a1a1
-    }
-    .CodeMirror-scroll{
-        height: inherit;
     }
     ul{
         width: 180px;
@@ -64,9 +44,6 @@ img{
         clear:both;
         font-style: italic;
         padding: 10px;
-    }
-    textarea{
-        display: none;
     }
     #banner div{
         background-color: #551a8b;
@@ -95,11 +72,8 @@ img{
          float: left;
          border-radius: 3px;
     }
-    em{
-        background-color: rgba(255,191,0,0.5);
-        font-style: normal;
-        font-family: 'source-code-pro', Menlo, Consolas, 'Courier New', monospace;
-        line-height: 1.5;
+    p code{
+        background-color: #fbecc5;;
         padding: 1px 3px;
     }
     #tooltip{
@@ -117,6 +91,15 @@ img{
         width: 275px;
         margin: 0 auto;
     }
+    .example pre{
+        margin:0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    #route{
+        width:100px;
+        margin: 0 2px 0 5px;
+    }
     </style>
 </head>
 <body>
@@ -130,7 +113,7 @@ img{
     <h2 style="margin:20px 0 0 0">Leave Your Routes to Last</h2>
     <p>
         You don't know your routes until the end. sdfsdiklfjs lfksdjlfk sjdlkfjsdkl fjsldkjf klsdjf skldjf d
-        sdfjlsdkfjsd <em>sld sdfj</em> lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
+        sdfjlsdkfjsd <code>sld sdfj</code> lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
         dsfjsdklf.
     </p>
     <p>
@@ -138,66 +121,56 @@ img{
         sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
         dsfjsdklf.
     </p>
-    <input id="route" style="position:relative; display:block; left: 234px; top: 56px; z-index: 1000; width:100px"/>
     <div class="example">
-    <textarea id="example">
+        <pre>
+            <code class="language-jsx">
 var stateNavigator = new Navigation.StateNavigator([
-  {key: 'jsLibListing', route:                }
+  {key: 'jsLibListing', </code><label for="route"><code class="language-jsx"> route:</code></label><input id="route"/><code class="language-jsx">}
 ]);
 
 var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
-  <div>
-    <div>You Picked {pick || '??'}</div>
-    <ul>
+  &lt;div>
+    &lt;div>You Picked {pick || '??'}&lt;/div>
+    &lt;ul>
       {jsLibs.map((jsLib) => (
-        <li>
-          <NavigationReact.NavigationLink 
+        &lt;li>
+          &lt;NavigationReact.NavigationLink 
             stateKey="jsLibListing"
             navigationData={{pick: jsLib}}
             stateNavigator={stateNavigator}>
             {jsLib}
-          </NavigationReact.NavigationLink>
-        </li>
+          &lt;/NavigationReact.NavigationLink>
+        &lt;/li>
        ))}
-    </ul>
-  </div>
+    &lt;/ul>
+  &lt;/div>
 );
 
-var jsLibs = ['Backbone.js','AngularJS','jQuery','Prototype','React','Ember', 'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa'];
+var jsLibs = ['Backbone.js','AngularJS','jQuery','Prototype','React','Ember',
+'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa'];
 
 var jsLibListing = stateNavigator.states.jsLibListing;
 jsLibListing.navigated = function(data) {
-  ReactDOM.render(<JsLibPicker 
+  ReactDOM.render(&lt;JsLibPicker 
     jsLibs={jsLibs}
     pick={data.pick}
     stateNavigator={stateNavigator} />, document.getElementById('app'));
 };
 
-stateNavigator.start();
-    </textarea>
+stateNavigator.start();</code>
+        </pre>
     </div>
     <div id="app"/>
     </div>
     <div id="footer">
         Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
     </div>
-    <script type="text/javascript" src="codemirror.js"></script>
-    <script type="text/javascript" src="javascript.js"></script>
+    <script type="text/javascript" src="prism.js"></script>
     <script type="text/javascript" src="example/react/react-0.14.3.min.js"></script>
     <script type="text/javascript" src="example/react/react-dom-0.14.3.min.js"></script>
     <script type="text/javascript" src="navigation.js"></script>
     <script type="text/javascript" src="navigation.react.js"></script>
     <script type="text/javascript">
-CodeMirror.fromTextArea(document.getElementById('example'), {
-    mode: 'javascript',
-    lineNumbers: false,
-    lineWrapping: true,
-    smartIndent: false,
-    matchBrackets: true,
-    theme: 'navigation',
-    readOnly: true
-});
-        
 var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibListing', route: '' }]);
 
 var JsLibPicker = function JsLibPicker(_ref) {
