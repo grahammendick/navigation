@@ -224,7 +224,8 @@ document.getElementById('route').addEventListener('keyup', function(e){
 
 function render(data) {
   ReactDOM.render(React.createElement(JsLibPicker, {
-    jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
+    jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 
+    'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
     pick: data.pick,
     stateNavigator: stateNavigator }), document.getElementById('app'));
 };
