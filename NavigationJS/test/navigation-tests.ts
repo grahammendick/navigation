@@ -34,26 +34,12 @@ module NavigationTests {
 		navigate();
 	};
 	person.navigated = (data) => {};
-	
-	// State Handler
-	class LogStateHandler extends Navigation.StateHandler {
-		getNavigationLink(router: Navigation.IRouter, state: Navigation.State): string {
-			console.log('get navigation link');
-			return super.getNavigationLink(router, state, data, { ids: [] });
-		}
-	    getNavigationData(router: Navigation.IRouter, state: Navigation.State, url: string): { data: any; separableData: any; } {
-			console.log('get navigation data');
-			return super.getNavigationData(router, state, url);
-	    }
-        urlEncode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
-            return queryString ? val.replace(/\s/g, '+') : super.urlEncode(state, key, val, queryString);
-        }
-        urlDecode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
-            return queryString ? val.replace(/\+/g, ' ') : super.urlDecode(state, key, val, queryString);
-        }
-	}
-	people.stateHandler = new LogStateHandler();
-	person.stateHandler = new LogStateHandler();
+    person.urlEncode = function urlEncode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
+        return queryString ? val.replace(/\s/g, '+') : encodeURIComponent(val);
+    }
+    person.urlDecode = function urlDecode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
+        return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
+    }
 	
 	// Navigation Event
 	var navigationListener = 
