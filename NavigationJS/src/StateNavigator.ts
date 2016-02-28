@@ -1,12 +1,13 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import Crumb = require('./config/Crumb');
 import HashHistoryManager = require('./history/HashHistoryManager');
-import IHistoryManager = require('./history/IHistoryManager');
+import HistoryManager = require('./history/HistoryManager');
 import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
-import IState = require('./config/IState');
+import StateInfo = require('./config/StateInfo');
 import StateContext = require('./StateContext');
 import StateConfig = require('./StateConfig');
+import StateHandler = require('./StateHandler');
 import StateRouter = require('./StateRouter');
 
 class StateNavigator {
@@ -16,15 +17,15 @@ class StateNavigator {
     private converterFactory: ConverterFactory = new ConverterFactory();
     private router: StateRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
-    historyManager: IHistoryManager;
+    historyManager: HistoryManager;
     states: { [index: string]: State } = {};
     
-    constructor(states?: IState[], historyManager?: IHistoryManager) {
+    constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
             this.configure(states, historyManager);
     }
     
-    configure(states?: IState[], historyManager?: IHistoryManager) {
+    configure(stateInfos?: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
@@ -33,11 +34,11 @@ class StateNavigator {
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var builtStates = StateConfig.build(states, this.converterFactory);
+        var states = StateConfig.build(stateInfos, this.converterFactory);
         this.states = {};
-        for(var i = 0; i < builtStates.length; i++)
-            this.states[builtStates[i].key] = builtStates[i];
-        this.router.addRoutes(builtStates);
+        for(var i = 0; i < states.length; i++)
+            this.states[states[i].key] = states[i];
+        this.router.addRoutes(states);
     }
 
     private setStateContext(state: State, data: any, url: string) {
@@ -118,12 +119,12 @@ class StateNavigator {
             var crumbs = this.stateContext.crumbs.slice();
             if (this.stateContext.nextCrumb)
                 crumbs.push(this.stateContext.nextCrumb);
-            crumbs = state.stateHandler.truncateCrumbTrail(state, crumbs);
+            crumbs = state.truncateCrumbTrail(state, crumbs);
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
         var { data, arrayData } = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail);
-        return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
+        return StateHandler.getNavigationLink(this.router, state, data, arrayData);
     }
 
     canNavigateBack(distance: number) {
@@ -171,7 +172,6 @@ class StateNavigator {
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: string): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                state.stateHandler.navigateLink(this.stateContext.state, state, url);
                 this.setStateContext(state, data, url);
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
@@ -193,7 +193,7 @@ class StateNavigator {
     parseLink(url: string): { state: State, data: any } {
         try {
             var state = this.router.getData(url.split('?')[0]).state;
-            var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
+            var { data, separableData } = StateHandler.getNavigationData(this.router, state, url);
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
             return { state: state, data: data };
         } catch (e) {

@@ -1,10 +1,10 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
-import IState = require('./config/IState');
+import StateInfo = require('./config/StateInfo');
 
 class StateConfig {
-    static build(states: IState[], converterFactory: ConverterFactory): State[] {
+    static build(states: StateInfo[], converterFactory: ConverterFactory): State[] {
         var builtStates: State[] = [];
         var stateKeys = {};
         for (var i = 0; i < states.length; i++) {

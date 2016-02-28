@@ -1,11 +1,10 @@
-﻿import IRouter = require('./config/IRouter');
-import Route = require('./routing/Route');
+﻿import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
 type RouteInfo = { routes: Route[]; params: { [index: string]: number }; matches: any };
 type MatchInfo = { route: Route; data: any; routePath: string };
 
-class StateRouter implements IRouter {
+class StateRouter {
     router: Router;
 
     getData(route: string): { state: State; data: any, separableData: any } {
@@ -87,16 +86,16 @@ class StateRouter implements IRouter {
 
     private static urlEncode(route: Route, name: string, val: string): string {
         var state: State = route['_state'];
-        if (state.stateHandler.urlEncode)
-            return state.stateHandler.urlEncode(state, name, val, false);
+        if (state.urlEncode)
+            return state.urlEncode(state, name, val, false);
         else
             return encodeURIComponent(val);
     }
 
     private static urlDecode(route: Route, name: string, val: string): string {
         var state: State = route['_state'];
-        if (state.stateHandler.urlDecode)
-            return state.stateHandler.urlDecode(state, name, val, false);
+        if (state.urlDecode)
+            return state.urlDecode(state, name, val, false);
         else
             return decodeURIComponent(val);
     }

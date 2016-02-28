@@ -1470,7 +1470,7 @@ describe('Navigation', function () {
                     { key: 's', route: 'r', trackCrumbTrail: true },
                 ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1509,7 +1509,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1551,7 +1551,7 @@ describe('Navigation', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1595,7 +1595,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1643,7 +1643,7 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -1694,7 +1694,7 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -2835,18 +2835,11 @@ describe('Navigation', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var navigateLinkOldState, navigateLinkState, navigateLinkUrl, navigateLinkData,
-                navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
+            var navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
             stateNavigator.states['s'].navigating = (data, url, navigating) => {
                 navigatingData = data;
                 navigatingUrl = url;
                 navigating();
-            }
-            stateNavigator.states['s'].stateHandler.navigateLink = (oldState, state, url) => {
-                navigateLinkOldState = oldState;
-                navigateLinkState = state;
-                navigateLinkUrl = url;
-                navigateLinkData = stateNavigator.stateContext.data;
             }
             var navigatedHandler = (oldState, state, data) => {
                 navigatedOldState = oldState;
@@ -2859,10 +2852,6 @@ describe('Navigation', function () {
             stateNavigator.offNavigate(navigatedHandler);
             assert.strictEqual(navigatingData.s, 'Hello');
             assert.strictEqual(navigatingUrl, url);
-            assert.strictEqual(navigateLinkOldState, null);
-            assert.strictEqual(navigateLinkState, stateNavigator.states['s']);
-            assert.strictEqual(navigateLinkUrl, url);
-            assert.strictEqual(navigateLinkData.s, undefined);
             assert.strictEqual(navigatedOldState, null);
             assert.strictEqual(navigatedState, stateNavigator.states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
@@ -2878,8 +2867,7 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            var unloadingState, unloadingUrl, navigateLinkOldState, navigateLinkState, navigateLinkUrl, 
-                navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
+            var unloadingState, unloadingUrl, navigatedOldState, navigatedState, navigatedData, navigatingData, navigatingUrl;
             stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
                 unloadingState = state;
                 unloadingUrl = url;
@@ -2889,11 +2877,6 @@ describe('Navigation', function () {
                 navigatingData = data;
                 navigatingUrl = url;
                 navigating();
-            }
-            stateNavigator.states['s1'].stateHandler.navigateLink = (oldState, state, url) => {
-                navigateLinkOldState = oldState;
-                navigateLinkState = state;
-                navigateLinkUrl = url;
             }
             var navigatedHandler = (oldState, state, data) => {
                 navigatedOldState = oldState;
@@ -2908,9 +2891,6 @@ describe('Navigation', function () {
             assert.strictEqual(unloadingUrl, url);
             assert.strictEqual(navigatingData.s, 'Hello');
             assert.strictEqual(navigatingUrl, url);
-            assert.strictEqual(navigateLinkOldState, stateNavigator.states['s0']);
-            assert.strictEqual(navigateLinkState, stateNavigator.states['s1']);
-            assert.strictEqual(navigateLinkUrl, url);
             assert.strictEqual(navigatedOldState, stateNavigator.states['s0']);
             assert.strictEqual(navigatedState, stateNavigator.states['s1']);
             assert.strictEqual(navigatedData.s, 'Hello');
@@ -4424,7 +4404,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, crumbs) => {
                 return crumbs;
             };
         });
@@ -4501,7 +4481,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return encodeURIComponent(val).replace('%2F', '/');
             }
             stateNavigator.navigate('s0');

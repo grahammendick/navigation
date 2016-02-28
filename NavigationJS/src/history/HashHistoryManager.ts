@@ -1,6 +1,6 @@
-﻿import IHistoryManager = require('./IHistoryManager');
+﻿import HistoryManager = require('./HistoryManager');
 
-class HashHistoryManager implements IHistoryManager {
+class HashHistoryManager implements HistoryManager {
     private navigateHistory: () => void;
     private replaceQueryIdentifier: boolean = false;
     disabled: boolean = (typeof window === 'undefined') || !('onhashchange' in window);

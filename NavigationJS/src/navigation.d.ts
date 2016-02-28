@@ -10,7 +10,7 @@ declare module Navigation {
     /**
      * Defines a contract a class must implement in order to configure a State
      */
-    interface IState {
+    interface StateInfo {
         /**
          * Gets the unique key
          */
@@ -49,7 +49,7 @@ declare module Navigation {
     /**
      * Represents the endpoint of a navigation
      */
-    class State implements IState {
+    class State implements StateInfo {
         /**
          * Gets the unique key
          */
@@ -92,11 +92,6 @@ declare module Navigation {
          */
         trackTypes: boolean;
         /**
-         * Gets or sets the StateHandler responsible for building and parsing
-         * navigation links to this State
-         */
-        stateHandler: StateHandler;
-        /**
          * Called on the old State before navigating to a different State
          * @param state The new State
          * @param data The new NavigationData
@@ -123,13 +118,37 @@ declare module Navigation {
          * @param history A value indicating whether browser history was used
          */
         navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history: boolean) => void;
+        /**
+         * Encodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Decodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Truncates the crumb trail whenever a repeated or initial State is
+         * encountered
+         * @param The State navigated to
+         * @param The Crumb collection representing the crumb trail
+         * @returns Truncated crumb trail
+         */
+        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
     /**
      * Defines a contract a class must implement in order to manage the browser
      * Url
      */
-    interface IHistoryManager {
+    interface HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history
          */
@@ -169,7 +188,7 @@ declare module Navigation {
      * without the hashchange event or outside of a browser environment, then
      * history is disabled
      */
-    class HashHistoryManager implements IHistoryManager {
+    class HashHistoryManager implements HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history.
          * Set to true if used in a browser without the hashchange event or 
@@ -221,7 +240,7 @@ declare module Navigation {
      * without the HTML5 history api or outside of a browser environment, then
      * history is disabled
      */
-    class HTML5HistoryManager implements IHistoryManager {
+    class HTML5HistoryManager implements HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history.
          * Set to true if used in a browser without the HTML5 history api or 
@@ -396,7 +415,7 @@ declare module Navigation {
         /**
          * Gets the browser Url manager
          */
-        historyManager: IHistoryManager;
+        historyManager: HistoryManager;
         /**
          * Gets a list of States
          */
@@ -409,24 +428,24 @@ declare module Navigation {
          * Initializes a new instance of the StateController class
          * @param states A collection of States
          */
-        constructor(states: IState[]);
+        constructor(states: StateInfo[]);
         /**
          * Initializes a new instance of the StateController class
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
-        constructor(states: IState[], historyManager: IHistoryManager);
+        constructor(states: StateInfo[], historyManager: HistoryManager);
         /**
          * Configures the StateController
-         * @param states A collection of States
+         * @param stateInfos A collection of State Infos
          */
-        configure(states: IState[]): void;
+        configure(stateInfos: StateInfo[]): void;
         /**
          * Configures the StateController
-         * @param states A collection of States
+         * @param stateInfos A collection of State Infos
          * @param historyManager The manager of the browser Url
          */
-        configure(states: IState[], historyManager: IHistoryManager): void;
+        configure(stateInfos: StateInfo[], historyManager: HistoryManager): void;
         /**
          * Registers a navigate event listener
          * @param handler The navigate event listener
@@ -580,85 +599,5 @@ declare module Navigation {
          * @param url The url to navigate to 
          */
         start(url: string): void;
-    }
-
-    /**
-     * Builds and parses navigation links
-     */
-    class StateHandler {
-        /**
-         * Gets a link that navigates to the state passing the data
-         * @param router The builder and parser of State routes
-         * @param state The State to navigate to
-         * @param data The data to pass when navigating
-         * @param arrayData The query string and splat array data
-         * @returns The navigation link
-         */
-        getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[]; }): string;
-        /**
-         * Navigates to the url
-         * @param oldState The current State
-         * @param state The State to navigate to
-         * @param url The target location
-         */
-        navigateLink(oldState: State, state: State, url: string): void;
-        /**
-         * Gets the data parsed from the url
-         * @param router The builder and parser of State routes
-         * @param state The State navigated to
-         * @param url The current url
-         * @returns The navigation data and query string and splat keys
-         */
-        getNavigationData(router: IRouter, state: State, url: string): { data: any; separableData: any; };
-        /**
-         * Encodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Decodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Truncates the crumb trail whenever a repeated or initial State is
-         * encountered
-         * @param The State navigated to
-         * @param The Crumb collection representing the crumb trail
-         * @returns Truncated crumb trail
-         */
-        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
-    }
-
-    /**
-     * Defines a contract a class must implement in order build and parse
-     * State routes
-     */
-    interface IRouter {
-        /**
-         * Gets the matching State and data for the route
-         * @param route The route to match
-         * @returns The matched State and data and splat keys
-         */
-        getData(route: string): { state: State; data: any; separableData: any; };
-        /**
-         * Gets the matching route and data for the state and data
-         * @param The state to match
-         * @param The data to match
-         * @param arrayData The splat array data
-         * @returns The matched route and data
-         */
-        getRoute(state: State, data: any, arrayData: { [index: string]: string[]; }): { route: string; data: any; };
-        /**
-         * Registers all route configuration information
-         * @param states Collection of States
-         */
-        addRoutes(states: State[]): void;
     }
 }
