@@ -4,7 +4,6 @@ import State = require('./config/State');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HTML5HistoryManager = require('./history/HTML5HistoryManager');
 import Crumb = require('./config/Crumb');
-import StateHandler = require('./config/StateHandler');
 
 class Navigation {
     static State = State;
@@ -13,6 +12,5 @@ class Navigation {
     static Crumb = Crumb;
     static StateContext = StateContext;
     static StateNavigator = StateNavigator;
-    static StateHandler = StateHandler;
 } 
 export = Navigation;

@@ -92,11 +92,6 @@ declare module Navigation {
          */
         trackTypes: boolean;
         /**
-         * Gets or sets the StateHandler responsible for building and parsing
-         * navigation links to this State
-         */
-        stateHandler: StateHandler;
-        /**
          * Called on the old State before navigating to a different State
          * @param state The new State
          * @param data The new NavigationData

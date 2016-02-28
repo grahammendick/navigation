@@ -1,6 +1,5 @@
 ﻿import Crumb = require('./Crumb');
 import IState = require('./IState');
-import StateHandler = require('./StateHandler');
 
 class State implements IState {
     key: string;
@@ -13,7 +12,6 @@ class State implements IState {
     trackCrumbTrail: boolean = false;
     crumbTrailKey: string = 'crumb';
     trackTypes: boolean = true;
-    stateHandler: StateHandler = new StateHandler();
     
     unloading(state: State, data: any, url: string, unload: () => void, history: boolean) { 
         unload()

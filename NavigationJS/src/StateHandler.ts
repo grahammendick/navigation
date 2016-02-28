@@ -1,9 +1,8 @@
-﻿import Crumb = require('./Crumb');
-import IRouter = require('./IRouter');
-import State = require('./State');
+﻿import StateRouter = require('./StateRouter');
+import State = require('./config/State');
 
 class StateHandler {
-    getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
+    static getNavigationLink(router: StateRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
         var routeInfo = router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
             return null;
@@ -25,10 +24,10 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    navigateLink(oldState: State, state: State, url: string) {
+    static navigateLink(oldState: State, state: State, url: string) {
     }
 
-    getNavigationData(router: IRouter, state: State, url: string): { data: any, separableData: any } {
+    static getNavigationData(router: StateRouter, state: State, url: string): { data: any, separableData: any } {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
         var { data, separableData } = router.getData(route);

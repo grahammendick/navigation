@@ -7,6 +7,7 @@ import State = require('./config/State');
 import IState = require('./config/IState');
 import StateContext = require('./StateContext');
 import StateConfig = require('./StateConfig');
+import StateHandler = require('./StateHandler');
 import StateRouter = require('./StateRouter');
 
 class StateNavigator {
@@ -123,7 +124,7 @@ class StateNavigator {
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
         var { data, arrayData } = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail);
-        return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
+        return StateHandler.getNavigationLink(this.router, state, data, arrayData);
     }
 
     canNavigateBack(distance: number) {
@@ -171,7 +172,7 @@ class StateNavigator {
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: string): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                state.stateHandler.navigateLink(this.stateContext.state, state, url);
+                StateHandler.navigateLink(this.stateContext.state, state, url);
                 this.setStateContext(state, data, url);
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
@@ -193,7 +194,7 @@ class StateNavigator {
     parseLink(url: string): { state: State, data: any } {
         try {
             var state = this.router.getData(url.split('?')[0]).state;
-            var { data, separableData } = state.stateHandler.getNavigationData(this.router, state, url);
+            var { data, separableData } = StateHandler.getNavigationData(this.router, state, url);
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
             return { state: state, data: data };
         } catch (e) {
