@@ -1,4 +1,5 @@
-﻿import IState = require('./IState');
+﻿import Crumb = require('./Crumb');
+import IState = require('./IState');
 import StateHandler = require('./StateHandler');
 
 class State implements IState {
@@ -34,6 +35,16 @@ class State implements IState {
     
     urlDecode(state: State, key: string, val: string, queryString: boolean): string {
         return decodeURIComponent(val);
+    }
+
+    truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
+        var newCrumbs: Crumb[] = [];
+        for (var i = 0; i < crumbs.length; i++) {
+            if (crumbs[i].state === state)
+                break;
+            newCrumbs.push(crumbs[i]);
+        }
+        return newCrumbs;
     }
 }
 export = State;

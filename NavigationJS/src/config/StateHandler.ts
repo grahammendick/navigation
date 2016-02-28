@@ -53,15 +53,5 @@ class StateHandler {
         }
         return { data: data, separableData: separableData };
     }
-
-    truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
-        var newCrumbs: Crumb[] = [];
-        for (var i = 0; i < crumbs.length; i++) {
-            if (crumbs[i].state === state)
-                break;
-            newCrumbs.push(crumbs[i]);
-        }
-        return newCrumbs;
-    }
 }
 export = StateHandler;

@@ -139,6 +139,14 @@ declare module Navigation {
          * @param queryString A value indicating the Url value's location
          */
         urlDecode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Truncates the crumb trail whenever a repeated or initial State is
+         * encountered
+         * @param The State navigated to
+         * @param The Crumb collection representing the crumb trail
+         * @returns Truncated crumb trail
+         */
+        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
     /**
@@ -626,14 +634,6 @@ declare module Navigation {
          * @returns The navigation data and query string and splat keys
          */
         getNavigationData(router: IRouter, state: State, url: string): { data: any; separableData: any; };
-        /**
-         * Truncates the crumb trail whenever a repeated or initial State is
-         * encountered
-         * @param The State navigated to
-         * @param The Crumb collection representing the crumb trail
-         * @returns Truncated crumb trail
-         */
-        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
     /**

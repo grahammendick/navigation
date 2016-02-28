@@ -118,7 +118,7 @@ class StateNavigator {
             var crumbs = this.stateContext.crumbs.slice();
             if (this.stateContext.nextCrumb)
                 crumbs.push(this.stateContext.nextCrumb);
-            crumbs = state.stateHandler.truncateCrumbTrail(state, crumbs);
+            crumbs = state.truncateCrumbTrail(state, crumbs);
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
