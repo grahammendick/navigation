@@ -1,11 +1,10 @@
-﻿import IRouter = require('./config/IRouter');
-import Route = require('./routing/Route');
+﻿import Route = require('./routing/Route');
 import Router = require('./routing/Router');
 import State = require('./config/State');
 type RouteInfo = { routes: Route[]; params: { [index: string]: number }; matches: any };
 type MatchInfo = { route: Route; data: any; routePath: string };
 
-class StateRouter implements IRouter {
+class StateRouter {
     router: Router;
 
     getData(route: string): { state: State; data: any, separableData: any } {
