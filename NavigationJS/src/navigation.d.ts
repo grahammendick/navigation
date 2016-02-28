@@ -10,7 +10,7 @@ declare module Navigation {
     /**
      * Defines a contract a class must implement in order to configure a State
      */
-    interface IState {
+    interface StateInfo {
         /**
          * Gets the unique key
          */
@@ -49,7 +49,7 @@ declare module Navigation {
     /**
      * Represents the endpoint of a navigation
      */
-    class State implements IState {
+    class State implements StateInfo {
         /**
          * Gets the unique key
          */
@@ -428,24 +428,24 @@ declare module Navigation {
          * Initializes a new instance of the StateController class
          * @param states A collection of States
          */
-        constructor(states: IState[]);
+        constructor(states: StateInfo[]);
         /**
          * Initializes a new instance of the StateController class
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
-        constructor(states: IState[], historyManager: HistoryManager);
+        constructor(states: StateInfo[], historyManager: HistoryManager);
         /**
          * Configures the StateController
          * @param states A collection of States
          */
-        configure(states: IState[]): void;
+        configure(states: StateInfo[]): void;
         /**
          * Configures the StateController
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
-        configure(states: IState[], historyManager: HistoryManager): void;
+        configure(states: StateInfo[], historyManager: HistoryManager): void;
         /**
          * Registers a navigate event listener
          * @param handler The navigate event listener

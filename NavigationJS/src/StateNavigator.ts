@@ -4,7 +4,7 @@ import HashHistoryManager = require('./history/HashHistoryManager');
 import HistoryManager = require('./history/HistoryManager');
 import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
-import IState = require('./config/IState');
+import StateInfo = require('./config/StateInfo');
 import StateContext = require('./StateContext');
 import StateConfig = require('./StateConfig');
 import StateHandler = require('./StateHandler');
@@ -20,12 +20,12 @@ class StateNavigator {
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
     
-    constructor(states?: IState[], historyManager?: HistoryManager) {
+    constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
             this.configure(states, historyManager);
     }
     
-    configure(states?: IState[], historyManager?: HistoryManager) {
+    configure(states?: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();

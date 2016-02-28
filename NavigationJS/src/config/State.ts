@@ -1,7 +1,7 @@
 ﻿import Crumb = require('./Crumb');
-import IState = require('./IState');
+import StateInfo = require('./StateInfo');
 
-class State implements IState {
+class State implements StateInfo {
     key: string;
     defaults: any = {};
     defaultTypes: any = {};

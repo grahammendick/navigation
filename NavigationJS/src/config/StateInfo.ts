@@ -1,4 +1,4 @@
-interface IState {
+interface StateInfo {
     key: string;
     defaults?: any;
     defaultTypes?: any;
@@ -8,4 +8,4 @@ interface IState {
     trackTypes?: boolean;
     [extras: string]: any;
 }
-export = IState;
+export = StateInfo;
