@@ -1,6 +1,6 @@
-﻿import IHistoryManager = require('./IHistoryManager');
+﻿import HistoryManager = require('./HistoryManager');
 
-class HTML5HistoryManager implements IHistoryManager {
+class HTML5HistoryManager implements HistoryManager {
     private navigateHistory: () => void;
     private applicationPath: string = '';
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);

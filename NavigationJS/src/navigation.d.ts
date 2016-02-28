@@ -148,7 +148,7 @@ declare module Navigation {
      * Defines a contract a class must implement in order to manage the browser
      * Url
      */
-    interface IHistoryManager {
+    interface HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history
          */
@@ -188,7 +188,7 @@ declare module Navigation {
      * without the hashchange event or outside of a browser environment, then
      * history is disabled
      */
-    class HashHistoryManager implements IHistoryManager {
+    class HashHistoryManager implements HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history.
          * Set to true if used in a browser without the hashchange event or 
@@ -240,7 +240,7 @@ declare module Navigation {
      * without the HTML5 history api or outside of a browser environment, then
      * history is disabled
      */
-    class HTML5HistoryManager implements IHistoryManager {
+    class HTML5HistoryManager implements HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history.
          * Set to true if used in a browser without the HTML5 history api or 
@@ -415,7 +415,7 @@ declare module Navigation {
         /**
          * Gets the browser Url manager
          */
-        historyManager: IHistoryManager;
+        historyManager: HistoryManager;
         /**
          * Gets a list of States
          */
@@ -434,7 +434,7 @@ declare module Navigation {
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
-        constructor(states: IState[], historyManager: IHistoryManager);
+        constructor(states: IState[], historyManager: HistoryManager);
         /**
          * Configures the StateController
          * @param states A collection of States
@@ -445,7 +445,7 @@ declare module Navigation {
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
-        configure(states: IState[], historyManager: IHistoryManager): void;
+        configure(states: IState[], historyManager: HistoryManager): void;
         /**
          * Registers a navigate event listener
          * @param handler The navigate event listener

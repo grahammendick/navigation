@@ -1,7 +1,7 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import Crumb = require('./config/Crumb');
 import HashHistoryManager = require('./history/HashHistoryManager');
-import IHistoryManager = require('./history/IHistoryManager');
+import HistoryManager = require('./history/HistoryManager');
 import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import IState = require('./config/IState');
@@ -17,15 +17,15 @@ class StateNavigator {
     private converterFactory: ConverterFactory = new ConverterFactory();
     private router: StateRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
-    historyManager: IHistoryManager;
+    historyManager: HistoryManager;
     states: { [index: string]: State } = {};
     
-    constructor(states?: IState[], historyManager?: IHistoryManager) {
+    constructor(states?: IState[], historyManager?: HistoryManager) {
         if (states)
             this.configure(states, historyManager);
     }
     
-    configure(states?: IState[], historyManager?: IHistoryManager) {
+    configure(states?: IState[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();

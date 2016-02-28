@@ -1,4 +1,4 @@
-﻿interface IHistoryManager {
+﻿interface HistoryManager {
     disabled: boolean;
     init(navigateHistory: () => void): void;
     addHistory(url: string, replace: boolean): void;
@@ -7,4 +7,4 @@
     getUrl(anchor: HTMLAnchorElement): string;
     stop(): void;
 }
-export = IHistoryManager;
+export = HistoryManager;
