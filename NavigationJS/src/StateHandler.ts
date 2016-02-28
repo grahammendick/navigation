@@ -24,9 +24,6 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    static navigateLink(oldState: State, state: State, url: string) {
-    }
-
     static getNavigationData(router: StateRouter, state: State, url: string): { data: any, separableData: any } {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
