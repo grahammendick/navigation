@@ -123,6 +123,22 @@ declare module Navigation {
          * @param history A value indicating whether browser history was used
          */
         navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history: boolean) => void;
+        /**
+         * Encodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Decodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
     }
 
     /**
@@ -610,22 +626,6 @@ declare module Navigation {
          * @returns The navigation data and query string and splat keys
          */
         getNavigationData(router: IRouter, state: State, url: string): { data: any; separableData: any; };
-        /**
-         * Encodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Decodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
         /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered

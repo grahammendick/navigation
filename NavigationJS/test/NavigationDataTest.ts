@@ -4247,10 +4247,10 @@ describe('Navigation Data', function () {
             ]);
             for(var key in stateNavigator.states) {
                 var state = stateNavigator.states[key];
-                state.stateHandler.urlEncode = (state, key, val) => {
+                state.urlEncode = (state, key, val) => {
                     return state.key === 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
-                state.stateHandler.urlDecode = (state, key, val) => {
+                state.urlDecode = (state, key, val) => {
                     return state.key === 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }

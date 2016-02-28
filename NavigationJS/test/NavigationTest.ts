@@ -4501,7 +4501,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return encodeURIComponent(val).replace('%2F', '/');
             }
             stateNavigator.navigate('s0');

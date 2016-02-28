@@ -11,12 +11,12 @@ class StateHandler {
         for (var key in data) {
             if (!routeInfo.data[key]) {
                 var arr = arrayData[key];
-                var encodedKey = this.urlEncode(state, null, key, true);
+                var encodedKey = state.urlEncode(state, null, key, true);
                 if (!arr) {
-                    query.push(encodedKey + '=' + this.urlEncode(state, key, data[key], true));
+                    query.push(encodedKey + '=' + state.urlEncode(state, key, data[key], true));
                 } else {
                     for(var i = 0; i < arr.length; i++)
-                        query.push(encodedKey + '=' + this.urlEncode(state, key, arr[i], true));
+                        query.push(encodedKey + '=' + state.urlEncode(state, key, arr[i], true));
                 }
             }
         }
@@ -38,8 +38,8 @@ class StateHandler {
             var params = query.split('&');
             for (var i = 0; i < params.length; i++) {
                 var param = params[i].split('=');
-                var key = this.urlDecode(state, null, param[0], true);
-                var val = this.urlDecode(state, key, param[1], true);
+                var key = state.urlDecode(state, null, param[0], true);
+                var val = state.urlDecode(state, key, param[1], true);
                 separableData[key] = true;
                 var arr = data[key];
                 if (!arr) {
@@ -52,14 +52,6 @@ class StateHandler {
             }
         }
         return { data: data, separableData: separableData };
-    }
-    
-    urlEncode(state: State, key: string, val: string, queryString: boolean): string {
-        return encodeURIComponent(val);
-    }
-    
-    urlDecode(state: State, key: string, val: string, queryString: boolean): string {
-        return decodeURIComponent(val);
     }
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {

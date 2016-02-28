@@ -87,16 +87,16 @@ class StateRouter implements IRouter {
 
     private static urlEncode(route: Route, name: string, val: string): string {
         var state: State = route['_state'];
-        if (state.stateHandler.urlEncode)
-            return state.stateHandler.urlEncode(state, name, val, false);
+        if (state.urlEncode)
+            return state.urlEncode(state, name, val, false);
         else
             return encodeURIComponent(val);
     }
 
     private static urlDecode(route: Route, name: string, val: string): string {
         var state: State = route['_state'];
-        if (state.stateHandler.urlDecode)
-            return state.stateHandler.urlDecode(state, name, val, false);
+        if (state.urlDecode)
+            return state.urlDecode(state, name, val, false);
         else
             return decodeURIComponent(val);
     }

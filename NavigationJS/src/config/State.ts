@@ -17,5 +17,13 @@ class State implements IState {
     navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history: boolean) => void = function (data, url, navigate) { navigate(); };
     dispose: () => void = function () { };
     navigated: (data: any, asyncData?: any) => void = function (data: any) { };
+    
+    urlEncode(state: State, key: string, val: string, queryString: boolean): string {
+        return encodeURIComponent(val);
+    }
+    
+    urlDecode(state: State, key: string, val: string, queryString: boolean): string {
+        return decodeURIComponent(val);
+    }
 }
 export = State;

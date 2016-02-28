@@ -2958,8 +2958,8 @@ describe('MatchTest', function () {
                 { key: 's', route: 'abc' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')  
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')  
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')  
         });
 
         it('should match', function() {
@@ -2979,8 +2979,8 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')  
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')  
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')  
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')  
         });
 
         it('should match', function() {
@@ -3000,10 +3000,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val, queryString) =>  {
+            state.urlEncode = (state, key, val, queryString) =>  {
                 return queryString ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
-            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+            state.urlDecode = (state, key, val, queryString) => {
                 return queryString ? val.replace('+', ' ') : decodeURIComponent(val);
             }  
         });
@@ -3026,10 +3026,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val, queryString) => {
+            state.urlEncode = (state, key, val, queryString) => {
                 return !queryString ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+            state.urlDecode = (state, key, val, queryString) => {
                 return !queryString ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3054,10 +3054,10 @@ describe('MatchTest', function () {
             ]);
             for(var key in stateNavigator.states) {
                 var state = stateNavigator.states[key];
-                state.stateHandler.urlEncode = (state, key, val) => {
+                state.urlEncode = (state, key, val) => {
                     return state.key == 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
-                state.stateHandler.urlDecode = (state, key, val) => {
+                state.urlDecode = (state, key, val) => {
                     return state.key == 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }
@@ -3085,10 +3085,10 @@ describe('MatchTest', function () {
             ]);
             for(var key in stateNavigator.states) {
                 var state = stateNavigator.states[key];
-                state.stateHandler.urlEncode = (state, key, val) => {
+                state.urlEncode = (state, key, val) => {
                     return state.key == 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
-                state.stateHandler.urlDecode = (state, key, val) => {
+                state.urlDecode = (state, key, val) => {
                     return state.key == 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }
@@ -3114,10 +3114,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) =>  {
+            state.urlEncode = (state, key, val) =>  {
                 return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'y' ? val.replace('+', ' ') : decodeURIComponent(val);
             }  
         });
@@ -3140,10 +3140,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3166,10 +3166,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}/{y}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3192,10 +3192,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x?}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3218,10 +3218,10 @@ describe('MatchTest', function () {
                 { key: 's', route: 'ab{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3244,10 +3244,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) =>  {
+            state.urlEncode = (state, key, val) =>  {
                 return key === 'y' ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'y' ? val.replace('+', ' ') : decodeURIComponent(val);
             }  
         });
@@ -3270,10 +3270,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) =>  {
+            state.urlEncode = (state, key, val) =>  {
                 return !key ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return !key ? val.replace('+', ' ') : decodeURIComponent(val);
             }  
         });
@@ -3295,10 +3295,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) =>  {
+            state.urlEncode = (state, key, val) =>  {
                 return (!key && val == 'a b') ? val.replace(' ', '+') : encodeURIComponent(val);
             }  
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return (!key && val == 'a+b') ? val.replace('+', ' ') : decodeURIComponent(val);
             }  
         });
@@ -3321,8 +3321,8 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            delete state.stateHandler.urlEncode;
-            delete state.stateHandler.urlDecode;
+            delete state.urlEncode;
+            delete state.urlDecode;
         });
 
         it('should match', function() {
@@ -3343,8 +3343,8 @@ describe('MatchTest', function () {
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
 
         it('should match', function() {
@@ -3366,10 +3366,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val, queryString) => {
+            state.urlEncode = (state, key, val, queryString) => {
                 return queryString ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val, queryString) => {
+            state.urlDecode = (state, key, val, queryString) => {
                 return queryString ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3393,10 +3393,10 @@ describe('MatchTest', function () {
                 { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => {
+            state.urlEncode = (state, key, val) => {
                 return key === 'x' ? val.replace(' ', '+') : encodeURIComponent(val);
             }
-            state.stateHandler.urlDecode = (state, key, val) => {
+            state.urlDecode = (state, key, val) => {
                 return key === 'x' ? val.replace('+', ' ') : decodeURIComponent(val);
             }
         });
@@ -3424,10 +3424,10 @@ describe('MatchTest', function () {
             ]);
             for(var key in stateNavigator.states) {
                 var state = stateNavigator.states[key];
-                state.stateHandler.urlEncode = (state, key, val) => {
+                state.urlEncode = (state, key, val) => {
                     return state.key == 's0' ? val.replace(' ', '+') : encodeURIComponent(val);
                 }
-                state.stateHandler.urlDecode = (state, key, val) => {
+                state.urlDecode = (state, key, val) => {
                     return state.key == 's0' ? val.replace('+', ' ') : decodeURIComponent(val);
                 }
             }
@@ -3457,8 +3457,8 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x?}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
         
         it('should match', function() {
@@ -3478,8 +3478,8 @@ describe('MatchTest', function () {
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
         
         it('should not match', function() {
@@ -3498,8 +3498,8 @@ describe('MatchTest', function () {
                 { key: 's', route: 'ab{x}' }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
         
         it('should not match', function() {
@@ -4195,8 +4195,8 @@ describe('MatchTest', function () {
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '+')
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('+', ' ')
+            state.urlEncode = (state, key, val) => val.replace(' ', '+')
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')
         });
 
         it('should match', function() {
@@ -4569,14 +4569,14 @@ describe('MatchTest', function () {
                 { key: 's', route: '0/{x}' }
             ]);
             var state = stateNavigator0.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '0')  
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('0', ' ')  
+            state.urlEncode = (state, key, val) => val.replace(' ', '0')  
+            state.urlDecode = (state, key, val) => val.replace('0', ' ')  
             stateNavigator1 = new Navigation.StateNavigator([
                 { key: 's', route: '1/{x}' }
             ]);
             var state = stateNavigator1.states['s'];
-            state.stateHandler.urlEncode = (state, key, val) => val.replace(' ', '1')  
-            state.stateHandler.urlDecode = (state, key, val) => val.replace('1', ' ')  
+            state.urlEncode = (state, key, val) => val.replace(' ', '1')  
+            state.urlDecode = (state, key, val) => val.replace('1', ' ')  
         });
 
         it('should match', function() {
