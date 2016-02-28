@@ -1,5 +1,5 @@
-﻿import StateRouter = require('./StateRouter');
-import State = require('./config/State');
+﻿import State = require('./config/State');
+import StateRouter = require('./StateRouter');
 
 class StateHandler {
     static getNavigationLink(router: StateRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
