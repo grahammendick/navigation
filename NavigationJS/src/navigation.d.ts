@@ -437,15 +437,15 @@ declare module Navigation {
         constructor(states: StateInfo[], historyManager: HistoryManager);
         /**
          * Configures the StateController
-         * @param states A collection of States
+         * @param stateInfos A collection of State Infos
          */
-        configure(states: StateInfo[]): void;
+        configure(stateInfos: StateInfo[]): void;
         /**
          * Configures the StateController
-         * @param states A collection of States
+         * @param stateInfos A collection of State Infos
          * @param historyManager The manager of the browser Url
          */
-        configure(states: StateInfo[], historyManager: HistoryManager): void;
+        configure(stateInfos: StateInfo[], historyManager: HistoryManager): void;
         /**
          * Registers a navigate event listener
          * @param handler The navigate event listener

@@ -25,7 +25,7 @@ class StateNavigator {
             this.configure(states, historyManager);
     }
     
-    configure(states?: StateInfo[], historyManager?: HistoryManager) {
+    configure(stateInfos?: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
@@ -34,11 +34,11 @@ class StateNavigator {
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var builtStates = StateConfig.build(states, this.converterFactory);
+        var states = StateConfig.build(stateInfos, this.converterFactory);
         this.states = {};
-        for(var i = 0; i < builtStates.length; i++)
-            this.states[builtStates[i].key] = builtStates[i];
-        this.router.addRoutes(builtStates);
+        for(var i = 0; i < states.length; i++)
+            this.states[states[i].key] = states[i];
+        this.router.addRoutes(states);
     }
 
     private setStateContext(state: State, data: any, url: string) {
