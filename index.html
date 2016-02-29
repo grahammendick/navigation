@@ -4,134 +4,136 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="prism.css">
     <style>
-    #logo div{
-        padding:4px 8px;
-        box-shadow: 3px 3px 5px #888888;
-        color: rgba(145,87,117,1);
-        font-size: 12px; 
-        border: 2px solid rgba(118,118,118,1);
-        border-radius: 3px;
-        display: inline-block;
-        position: relative;
-        left: 60px;
-        top: -10px;
-        background: linear-gradient(#fff, rgb(228, 229, 240));
-    }
-    #logo{
-        width: 275px;
-        margin: 0 auto;
-    }
-    #logo h1{
-        font-size:50px;
-        margin:0 0 10px 0;
-        font-weight:normal;
-        font-family:'Times New Roman';
-        text-decoration:underline;
-        color:#0000ee;
-    }        
-    #logo img{
-        width:60px;
-        position:absolute;
-        top:85px;
-        margin-left:10px;
-        display:block;
-    }
-    #content{
-        margin:0 auto;
-        max-width:900px;
-        padding:0 1%;
-    }
-    code {
-        font-family: Consolas;
-        font-size: .9em;
-    }
-    ul{
-        width: 63.15%;
-        margin: 0 auto;
-        padding-top: 3%;
-    }
-    li{
-        padding:1.3%;
+body{
+    padding:0;
+    margin:0;
+    font-family:Verdana;
+    font-size:.87em;
+}
+#banner div{
+    background-color:#551a8b;
+    color:#fff;
+    height:22px;
+    padding:10px 4.5%;
+    margin-bottom:4px;
+    font-size:larger;
+}
+#banner{
+    border-bottom:5px solid #0000ee;
+}
+h2{
+    font-weight:normal;
+    margin:0.8% 0;
+}
+#logo div{
+    padding:4px 8px;
+    box-shadow:3px 3px 5px #888888;
+    color:rgba(145,87,117,1);
+    font-size:12px; 
+    border:2px solid rgba(118,118,118,1);
+    border-radius:3px;
+    display:inline-block;
+    position:relative;
+    left:60px;
+    top:-10px;
+    background:linear-gradient(#fff, rgb(228, 229, 240));
+}
+#logo{
+    width:275px;
+    margin:0 auto;
+}
+#logo h1{
+    font-size:50px;
+    margin:0 0 10px 0;
+    font-weight:normal;
+    font-family:'Times New Roman';
+    text-decoration:underline;
+    color:#0000ee;
+}        
+#logo img{
+    width:60px;
+    position:absolute;
+    top:85px;
+    margin-left:10px;
+    display:block;
+}
+#content{
+    margin:0 auto;
+    max-width:900px;
+    padding:0 1%;
+}
+p code{
+    background-color:#fbecc5;;
+    padding:.1% .3%;
+}
+code {
+    font-family:Consolas;
+    font-size:.9em;
+}
+div.app{
+    overflow:hidden;
+    border:0.1em solid rgba(16,16,16,0.5);
+    border-radius:0.6%;
+    margin-bottom:1%;
+}
+#route{
+    width:17.5%;
+    margin:0 0.4% 0 1.4%;
+}
+#app ul{
+    width:63.15%;
+    margin:0 auto;
+    padding-top:3%;
+}
+#app li{
+    padding:1.3%;
+}
+#app {
+    border:0.1em solid rgba(16,16,16,0.5);
+    padding:1.11%;
+    border-radius:0.6%;
+}
+#app div div{
+    font-size:1.2em;
+}
+#footer{
+    clear:both;
+    font-style:italic;
+    padding-bottom:1%;
+    width:55%;
+    margin:0 auto;
+}
+@media (min-width:600px) {
+    div.app{
+        float:left;
+        width:66.66%;
     }
     #app {
-        border: 0.1em solid rgba(16,16,16,0.5);
-        padding: 1.11%;
-        border-radius:0.6%;
+        margin-left:68.33%;
     }
-    #app div div{
-        font-size: 1.2em;
-    }
-    #footer{
-        clear:both;
-        font-style: italic;
-        padding: 10px;
-    }
-    #banner div{
-        background-color: #551a8b;
-        color: #fff;
-        height:22px;
-        padding:10px 4.5%;
-        margin-bottom: 4px;
-        font-size: larger;
-    }
-    #banner{
-        border-bottom: 5px solid #0000ee;
-    }
-    body{
-        padding: 0;
-        margin: 0;
-        font-family: Verdana;
-        font-size:.87em;
-    }
-    h2{
-        font-weight: normal;
-        margin: 0.8% 0;
-    }
-    div.example{
-        overflow:hidden;
-        border: 0.1em solid rgba(16,16,16,0.5);
-        border-radius: 0.6%;
-        margin-bottom: 1%;
-    }
-    @media (min-width: 600px) {
-        div.example{
-            float: left;
-            width:66.66%;
-        }
-        #app {
-            margin-left: 68.33%;
-        }
-    }
-    p code{
-        background-color: #fbecc5;;
-        padding: .1% .3%;
-    }
-    #route{
-        width:17.5%;
-        margin: 0 0.4% 0 1.4%;
-    }
+}
     </style>
 </head>
 <body>
     <div id="banner"><div>Navigation</div></div>
-    <div id="content">
     <div id="logo">
         <h1>Navigation</h1>
         <img alt="cursor hand" src="cursor.png" />
         <div>The data-first JavaScript router</div>
     </div>
-    <h2>Data First, Routes Last</h2>
-    <p>
-        You don't know your routes until the end. Sort of hot loading for routing. Don't need to hot load,
-        just need to leave them til the end. 
-        sdfjlsdkfjsd <code>sld sdfj</code> lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
-        dsfjsdklf.
-        You don't know your routes until the end. sdfsdiklfjs lfksdjlfk sjdlkfjsdkl fjsldkjf klsdjf skldjf d
-        sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs.
-    </p>
-    <div class="example">
-        <pre>
-            <code class="language-jsx">
+    <div id="content">
+        <h2>Data First Example</h2>
+        <p>
+            You don't know your routes until the end. Sort of hot loading for routing. Don't need to hot load,
+            just need to leave them til the end. 
+            sdfjlsdkfjsd <code>sld sdfj</code> lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
+            dsfjsdklf.
+            You don't know your routes until the end. sdfsdiklfjs lfksdjlfk sjdlkfjsdkl fjsldkjf klsdjf skldjf d
+            sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs.
+        </p>
+        <div class="app">
+            <pre>
+                <code class="language-jsx">
 var stateNavigator = new Navigation.StateNavigator([
   {key: 'jsLibListing', </code><label for="route"><code class="language-jsx"> route:</code></label><input id="route"/><code class="language-jsx">}
 ]);
@@ -166,9 +168,9 @@ jsLibListing.navigated = function(data) {
 };
 
 stateNavigator.start();</code>
-        </pre>
-    </div>
-    <div id="app"/>
+            </pre>
+        </div>
+        <div id="app"/>
     </div>
     <div id="footer">
         Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
