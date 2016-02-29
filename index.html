@@ -12,11 +12,23 @@ body{
 }
 #banner div{
     background-color:#551a8b;
-    color:#fff;
     height:22px;
     padding:10px 4.5%;
     margin-bottom:4px;
-    font-size:larger;
+}
+#banner a{
+    color:#fff;
+    text-decoration:none;
+    display:inline-block;
+    font-size:12px;
+    height:30px;
+    padding:0 1%;
+}
+#banner a.selected{
+    border-bottom:4px solid #ffbf00;
+}
+#banner a:hover{
+    color:#ffbf00;
 }
 #banner{
     border-bottom:5px solid #0000ee;
@@ -75,7 +87,7 @@ p{
     margin:0 0 2% 0;
 }
 p code{
-    background-color:#fbecc5;;
+    background-color:#fbecc5;
     padding:.1% .3%;
 }
 code {
@@ -116,6 +128,10 @@ div.app{
     margin:0 auto;
 }
 @media (min-width:600px) {
+    #banner a{
+        font-size:16px;
+        height:32px;
+    }
     div.plug{
         float:left;
         width:33.33%;    
@@ -131,7 +147,14 @@ div.app{
     </style>
 </head>
 <body>
-    <div id="banner"><div>Navigation</div></div>
+    <div id="banner">
+        <div>
+            <a href="#" class="selected">Navigation</a>
+            <a href="#">Docs</a>
+            <a href="#">Tutorial</a>
+            <a href="#">Download</a>
+        </div>
+    </div>
     <div id="logo">
         <h1>Navigation</h1>
         <img alt="cursor hand" src="cursor.png" />
