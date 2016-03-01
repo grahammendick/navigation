@@ -133,6 +133,7 @@ div.app{
 #article h1{
     margin:0;
     padding:15px 0;
+    font-weight:bold;
     font-size:1.3em;
 }
 #menu a{
@@ -158,6 +159,7 @@ div.app{
         font-size:inherit;
     }
     #article h1{
-        font-size:2em;
+        font-weight:normal;
+        font-size:2.2em;
     }
 }
