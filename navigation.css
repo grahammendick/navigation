@@ -121,6 +121,24 @@ div.app{
     width:55%;
     margin:0 auto;
 }
+#menu{
+    width:20%;
+    float:left;
+    padding-top:55px;
+    font-size:0.9em;
+}
+#article{
+    margin:0 1% 0 24%;
+}
+#article h1{
+    margin:0;
+    padding:15px 0;
+    font-size:1.3em;
+}
+#menu a{
+    display:block;
+    padding:6px 0;
+}
 @media (min-width:600px) {
     #banner a{
         font-size:16px;
@@ -135,5 +153,11 @@ div.app{
     }
     #app {
         margin-left:68.33%;
+    }
+    #menu{
+        font-size:inherit;
+    }
+    #article h1{
+        font-size:2em;
     }
 }
