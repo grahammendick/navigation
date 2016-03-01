@@ -50,36 +50,21 @@
             <pre>
                 <code class="language-jsx">
 var stateNavigator = new Navigation.StateNavigator([
-  {key: 'jsLibListing', </code><label for="route"><code class="language-jsx"> route:</code></label><input id="route"/><code class="language-jsx">}
+  {key: 'example', </code><label for="route"><code class="language-jsx">route:</code></label><input id="route"/><code class="language-jsx">, defaultTypes: {</code><label for="defType"><code class="language-jsx">like:</code></label><select id="defType">
+      <option value="string"></string>
+      <option value="boolean">boolean</string>
+  </select><code class="language-jsx">}}
 ]);
 
-var JsLibPicker = ({jsLibs, pick, stateNavigator}) => (
-  &lt;div>
-    &lt;div>You Picked {pick || '??'}&lt;/div>
-    &lt;ul>
-      {jsLibs.map((jsLib) => (
-        &lt;li>
-          &lt;NavigationReact.NavigationLink 
-            stateKey="jsLibListing"
-            navigationData={{pick: jsLib}}
-            stateNavigator={stateNavigator}>
-            {jsLib}
-          &lt;/NavigationReact.NavigationLink>
-        &lt;/li>
-       ))}
-    &lt;/ul>
-  &lt;/div>
-);
-
-var jsLibs = ['Backbone.js','AngularJS','jQuery','Prototype','React','Ember',
-'Knockout.js','Dojo','Mootools','Underscore','Lodash','Moment','Express','Koa'];
-
-var jsLibListing = stateNavigator.states.jsLibListing;
-jsLibListing.navigated = function(data) {
-  ReactDOM.render(&lt;JsLibPicker 
-    jsLibs={jsLibs}
-    pick={data.pick}
-    stateNavigator={stateNavigator} />, document.getElementById('app'));
+var example = stateNavigator.states.example;
+example.navigated = function(data) {
+  var text = data.like ? 'like' : 'haven\'t liked';
+  ReactDOM.render(&lt;NavigationReact.NavigationLink 
+      stateKey="example"
+      navigationData={{like: !data.like}}
+      stateNavigator={stateNavigator}>
+      You {text} this. Click to toggle.
+    &lt;/NavigationReact.NavigationLink>, document.getElementById('app'));
 };
 
 stateNavigator.start();</code>
@@ -96,63 +81,45 @@ stateNavigator.start();</code>
     <script type="text/javascript" src="navigation.js"></script>
     <script type="text/javascript" src="navigation.react.js"></script>
     <script type="text/javascript">
-var stateNavigator = new Navigation.StateNavigator([{ key: 'jsLibListing', route: '' }]);
+'use strict';
 
-var JsLibPicker = function JsLibPicker(_ref) {
-  var jsLibs = _ref.jsLibs;
-  var pick = _ref.pick;
-  var stateNavigator = _ref.stateNavigator;
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'div',
-      null,
-      'You Picked ',
-      pick || '??'
-    ),
-    React.createElement(
-      'ul',
-      null,
-      jsLibs.map(function (jsLib) {
-        return React.createElement(
-          'li',
-          null,
-          React.createElement(
-            NavigationReact.NavigationLink,
-            {
-              stateKey: 'jsLibListing',
-              navigationData: { pick: jsLib },
-              stateNavigator: stateNavigator },
-            jsLib
-          )
-        );
-      })
-    )
-  );
+var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
+
+var example = stateNavigator.states.example;
+example.navigated = function (data) {
+    render(data);
 };
-
-stateNavigator.states.jsLibListing.navigated = render;
 
 stateNavigator.start('/');
 
-document.getElementById('route').addEventListener('keyup', function(e){
+document.getElementById('route').addEventListener('keyup', reconfigure);
+document.getElementById('defType').addEventListener('change', reconfigure);
+
+function reconfigure() {
     var navigationData = stateNavigator.stateContext.includeCurrentData({});
     try {
-        stateNavigator.configure([{key: 'jsLibListing', route: e.target.value}]);
-        stateNavigator.states.jsLibListing.navigated = render;
-        stateNavigator.navigate('jsLibListing', navigationData);
+        stateNavigator.configure([
+            {key: 'example', route: document.getElementById('route').value, defaultTypes: { 'like': document.getElementById('defType').value }}
+        ]);
+        stateNavigator.states.example.navigated = render;
+        stateNavigator.navigate('example', navigationData);
     } catch(ex) {
-        render({ pick: navigationData.pick });
-    }
-});
+        render(navigationData);
+    }    
+}
 
 function render(data) {
-  ReactDOM.render(React.createElement(JsLibPicker, {
-    jsLibs: ['Backbone.js', 'AngularJS', 'jQuery', 'Prototype', 'React', 'Ember', 
-    'Knockout.js', 'Dojo', 'Mootools', 'Underscore', 'Lodash', 'Moment', 'Express', 'Koa'],
-    pick: data.pick,
-    stateNavigator: stateNavigator }), document.getElementById('app'));
+    var text = data.like ? 'like' : 'haven\'t liked';
+    ReactDOM.render(React.createElement(
+        NavigationReact.NavigationLink,
+        {
+            stateKey: 'example',
+            navigationData: { like: !data.like },
+            stateNavigator: stateNavigator },
+        'You ',
+        text,
+        ' this. Click to toggle.'
+    ), document.getElementById('app'));
 };
     </script>
 </body>
