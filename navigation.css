@@ -30,10 +30,11 @@ body{
 #banner #github{
     position:absolute;
     right:3%;
-    background-image: url('github.png');
-    background-repeat: no-repeat;
-    background-size: 24px;
-    width: 24px;
+    background-image:url('github.png');
+    background-repeat:no-repeat;
+    background-size:24px;
+    width:24px;
+    color:transparent;
 }
 #banner #github:hover{
     background-image: url('github-on.png');
