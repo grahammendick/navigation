@@ -80,6 +80,7 @@ h2{
     margin:0 auto;
     max-width:900px;
     padding:0 1%;
+    margin-bottom:15px;
 }
 div.plug{
     box-sizing:border-box;
@@ -124,9 +125,8 @@ div.app{
 #footer{
     clear:both;
     font-style:italic;
-    padding-bottom:1%;
-    width:55%;
-    margin:0 auto;
+    padding-top:5px;
+    text-align:center;
 }
 #menu{
     width:24%;
