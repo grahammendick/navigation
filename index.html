@@ -58,7 +58,8 @@ var stateNavigator = new Navigation.StateNavigator([
 
 stateNavigator.states.example.navigated = function(data) {
   var text = data.like ? 'like' : 'haven\'t liked';
-  ReactDOM.render(&lt;NavigationReact.NavigationLink 
+  ReactDOM.render(
+    &lt;NavigationReact.NavigationLink 
       stateKey="example"
       navigationData={{like: !data.like}}
       stateNavigator={stateNavigator}>
