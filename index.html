@@ -56,8 +56,7 @@ var stateNavigator = new Navigation.StateNavigator([
   </select><code class="language-jsx">}}
 ]);
 
-var example = stateNavigator.states.example;
-example.navigated = function(data) {
+stateNavigator.states.example.navigated = function(data) {
   var text = data.like ? 'like' : 'haven\'t liked';
   ReactDOM.render(&lt;NavigationReact.NavigationLink 
       stateKey="example"
@@ -85,8 +84,7 @@ stateNavigator.start();</code>
 
 var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
 
-var example = stateNavigator.states.example;
-example.navigated = function (data) {
+stateNavigator.states.example.navigated = function (data) {
     render(data);
 };
 
