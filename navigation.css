@@ -108,7 +108,7 @@ code {
 div.app{
     overflow:hidden;
     border:0.1em solid rgba(16,16,16,0.5);
-    border-radius:0.6%;
+    border-radius:0.3em;
     margin-bottom:1%;
 }
 #route{
@@ -120,7 +120,7 @@ div.app{
 #app {
     border:0.1em solid rgba(16,16,16,0.5);
     padding:25px 1.11%;
-    border-radius:0.6%;
+    border-radius:0.3em;
     text-align:center;
 }
 #app div div{
@@ -153,6 +153,7 @@ div.app{
 #menu a{
     display:block;
     padding:6px 0 6px 2%;
+    border-radius:0.3em;
 }
 #menu a.selected{
     background-color: #ffedb9;
