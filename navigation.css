@@ -98,8 +98,9 @@ p code{
     background-color:#ffedb9;
     padding:.1% .3%;
 }
-pre {
+#content pre {
    border:0.1em solid rgba(16,16,16,0.5);
+   padding:1.5%;
 }
 code {
     font-family:Consolas;
