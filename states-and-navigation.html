@@ -30,7 +30,7 @@
                 Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
             </p>
             <p>
-                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. So, there'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route to ensure it's displayed when the page first loads.
+                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. So, there'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route so it's displayed when the page first loads.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
@@ -53,10 +53,7 @@
                 For the times when you want to navigate without a Hyperlink, you can pass the destination <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, for example, <code>stateNavigator.navigate('world');</code>
             </div>
             <p>
-                We'll create a similar function for the 'world' <code>State</code> to display a Hyperlink that takes us back to the 'home' view.
-            </p>
-            <p>
-                The last step is to call <code>start</code> on the <code>stateNavigator</code>. This will trigger an initial navigation to ensure the first <code>State</code> displayed matches the browser Url.
+                We'll create a similar function for the 'world' <code>State</code>, with the <code>NavigationLink</code> component pointing back to the hello <code>State</code>. Lastly, to get the example started we'll call <code>start</code> on the <code>stateNavigator</code>. This navigates to the <code>State</code> whose route matches the browser hash. So, the empty hash on initial load means we'll see the 'hello' view first.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
         </div>
