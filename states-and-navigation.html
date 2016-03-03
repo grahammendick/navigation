@@ -37,29 +37,9 @@
     {key: 'world'}
 ]);</code></pre>
             <p>
-                To get notified when the 'hello' <code>State</code> is navigated to we'll attach a function to its <code>navigated</code> property. Whenever that State is navigated to our function will be called and we can then render the Hyperlink that makes up our 'hello' view.
+                To get notified when the 'hello' <code>State</code> is navigated to we'll attach a function to its <code>navigated</code> property. Whenever that State is navigated to our function will be called and we can then render the Hyperlink to take us to the 'world' <code>State</code>. We'll use the <code>NavigationLink</code> component to build this Hyperlink. This component has a <code>stateKey</code> property that holds the destination <code>State</code> and another property that holds our <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
-  // Render the 'hello' view
-};</code></pre>
-            <p>
-                We'll use the <code>NavigationLink</code> component to build a Hyperlink that takes us to the 'world' <code>State</code>. This component has a <code>stateKey</code> property that holds the destination <code>State</code> and another property that holds our <code>stateNavigator</code>.
-            </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
-  stateKey="world"
-  stateNavigator={stateNavigator}>
-  Hello
-&lt;/NavigationReact.NavigationLink></code></pre>
-            <div class="note">
-                <h2>Note</h2>
-                For the times when we want to navigate without a Hyperlink, we can pass the destination <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, for example, <code>stateNavigator.navigate('world');</code>
-            </div>
-            <p>
-                sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
-                sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
-                dsfj sdkfj ldskjfl sdjf
-            </p>
-            <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
+            <pre><code class="language-jsx">stateNavigator.states.world.navigated = function() {
   ReactDOM.render(
     &lt;NavigationReact.NavigationLink 
       stateKey="world"
@@ -68,6 +48,10 @@
     &lt;/NavigationReact.NavigationLink>,
     document.getElementById('app'));
 };</code></pre>
+            <div class="note">
+                <h2>Note</h2>
+                For the times when we want to navigate without a Hyperlink, we can pass the destination <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, for example, <code>stateNavigator.navigate('world');</code>
+            </div>
             <p>
                 sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
                 sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
