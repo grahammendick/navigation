@@ -98,6 +98,9 @@ p code{
     background-color:#ffedb9;
     padding:.1% .3%;
 }
+pre {
+   border:0.1em solid rgba(16,16,16,0.5);
+}
 code {
     font-family:Consolas;
     font-size:.9em;
@@ -107,7 +110,6 @@ code {
 }
 div.app{
     overflow:hidden;
-    border:0.1em solid rgba(16,16,16,0.5);
     border-radius:0.3em;
     margin-bottom:1%;
 }
