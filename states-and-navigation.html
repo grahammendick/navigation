@@ -30,23 +30,20 @@
                 Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
             </p>
             <p>
-                We'll create a new <code>StateNavigator</code> passing in an array of States. Each <code>State</code> represents a view in our example. So, there's one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes, so we'll just indicate that the hello view is the first to display by assigning it the empty route.
+                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. So, there'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes, so we'll just indicate that the 'hello' view is the first to display by assigning it the empty route.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
     {key: 'world'}
 ]);</code></pre>
             <p>
-                sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
-                sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
-                dsfj sdkfj ldskjfl sdjf
+                To get notified when the 'hello' <code>State</code> is navigated to we'll attach a function to its <code>navigated</code> property. Whenever that State is navigated to our function will be called and we can then render the Hyperlink that makes up our 'hello' view.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
+  // Render the 'hello' view
 };</code></pre>
             <p>
-                sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
-                sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
-                dsfj sdkfj ldskjfl sdjf
+                We'll use the <code>NavigationLink</code> component to build a Hyperlink that takes us to the 'world' <code>State</code>. This component has a <code>stateKey</code> property that holds the target <code>State</code> and another property that holds our <code>stateNavigator</code>.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="world"
@@ -55,8 +52,7 @@
 &lt;/NavigationReact.NavigationLink></code></pre>
             <div class="note">
                 <h2>Note</h2>
-                Hyperinks aren't the only way to navigate, can also navigate programmatically sdfjlskdf sdlkfjsdk fskldfj dklfj sdf sd
-                <code>stateNavigator.navigate('world');</code>
+                For times when we want to navigate without a Hyperlink, we can pass the target <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, e.g., <code>stateNavigator.navigate('world');</code>
             </div>
             <p>
                 sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
@@ -97,7 +93,7 @@
                 sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
                 dsfj sdkfj ldskjfl sdjf
             </p>
-            <em style="text-align:center">[Insert JsFiddle]</em>
+            <em style="text-align:center">[Insert JsFiddle]'</em>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
