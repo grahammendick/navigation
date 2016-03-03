@@ -25,7 +25,7 @@
             <a href="history.html">History</a>
         </div>
         <div id="article">
-            <h1>States and Navigation</h1>
+            <h1>States and Navigation<a id="jsfiddle" title="jsFiddle" href="#"><img alt="jsFiddle" src="jsfiddle.png" /></a></h1>
             <p>
                 Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
             </p>
@@ -50,13 +50,12 @@
 };</code></pre>
             <div class="note">
                 <h2>Note</h2>
-                For the times when we want to navigate without a Hyperlink, we can pass the destination <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, for example, <code>stateNavigator.navigate('world');</code>
+                For the times when you want to navigate without a Hyperlink, you can pass the destination <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, for example, <code>stateNavigator.navigate('world');</code>
             </div>
             <p>
                 We'll create a similar function for the 'world' <code>State</code> to display a Hyperlink that takes us back to the 'home' view. The last step is to call <code>start</code> on the <code>stateNavigator</code>. This triggers an initial navigation to synch the <code>State</code> displayed to the browser Url.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
-            <em style="text-align:center">[Insert JsFiddle]</em>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
