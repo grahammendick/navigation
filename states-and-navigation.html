@@ -27,16 +27,10 @@
         <div id="article">
             <h1>States and Navigation</h1>
             <p>
-                sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
-                sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
-                dsfj sdkfj ldskjfl sdjf
+                Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
             </p>
             <p>
-                sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
-                sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
-                sdfskdjfksd fljkdsjf lsdjflks djfklsjd lfsjdlfksdj lfjsdlkfj sdklfj lskdjfklsd jflksd
-                sdfklsd jfsdjlkfjsdlk fjsdkljfksd ljflksdjf sdlkfjsdkfj skldfjsdkljf lsdkj fsdlf sdfsd
-                dsfj sdkfj ldskjfl sdjf
+                We'll create a new <code>StateNavigator</code> passing in an array of States. Each <code>State</code> represents a view in our example. So, there's one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes, so we'll just indicate that the hello view is the first to display by assigning it the empty route.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
