@@ -30,7 +30,7 @@
                 Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
             </p>
             <p>
-                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. So, there'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route to ensure it displays first.
+                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. So, there'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route to ensure it displays when the page first loads.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
