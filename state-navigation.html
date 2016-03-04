@@ -58,8 +58,10 @@
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
             <h2>Routes Last</h2>
             <p>
-                App's working. Now can go back and set the 'world' State's route. Don't have to change any code!!!
-                Leaving the Route til last will prove even more beneficial when we come to [passing data](link to next page)
+                Typically, it's not until the end of a project that you know what your routes should look like. But, with other routers, you have to decide on your routes upfront and subsequent changes can ripple through your code base. With the Navigation router, you can leave your route decisions until the end because route changes don't effect your code base.
+            </p>
+            <p>
+                Now that our 'Hello World' example's working, it's time to set the routes. We'll leave the 'hello' <code>State's</code> route empty, so that it's shown when the page first loads, and set the 'world' <code>State's</code> route to 'example'. The benefits of leaving routes to last will become clearer when we start passing <a href="navigation-data.html">Navigation Data</a>.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
