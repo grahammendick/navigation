@@ -30,7 +30,7 @@
                 Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
             </p>
             <p>
-                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. So, there'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route so it's displayed when the page first loads.
+                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. There'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route so it's displayed when the page first loads.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
@@ -53,15 +53,15 @@
                 For the times when you want to navigate without a Hyperlink, you can pass the destination <code>State</code> into the <code>navigate</code> function on the <code>StateNavigator</code>, for example, <code>stateNavigator.navigate('world');</code>
             </div>
             <p>
-                We'll create a similar function for the 'world' <code>State</code>, with the <code>NavigationLink</code> component pointing back to the hello <code>State</code>. To get the example going we'll call <code>start</code> on the <code>stateNavigator</code>. This navigates to the <code>State</code> whose route matches the browser hash. So, the empty hash on initial page load means we'll see the 'hello' view first.
+                We'll create a similar function for the 'world' <code>State</code>, with the <code>NavigationLink</code> component pointing back to the hello <code>State</code>. To get the example going we'll call <code>start</code> on the <code>stateNavigator</code>. This navigates to the <code>State</code> whose route matches the browser hash. The empty hash on initial page load means we'll see the 'hello' view first.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
             <h2>Routes Last</h2>
             <p>
-                Typically, it's not until the end of a project that you know what your routes look like. But, with other routers, you have to decide on your routes upfront and subsequent changes can ripple through your code base. With the Navigation router, you can leave your route decisions until the end because route changes don't affect your code base.
+                It's not until the end of a project that you know what your routes look like. But, with other routers, you have to decide on them upfront and subsequent route changes can ripple through your code base. With the Navigation router, you can leave your route decisions until the end because changes don't affect your code base.
             </p>
             <p>
-                Now that our 'Hello World' example's working, it's time to set the routes. We'll leave the 'hello' <code>State's</code> route empty, so that it's shown when the page first loads, and set the 'world' <code>State's</code> route to 'example'. The benefits of leaving routes to last will become clearer when we start passing <a href="navigation-data.html">Navigation Data</a>.
+                Now that our 'Hello World' example's working, it's time to set the routes. We'll leave the 'hello' <code>State's</code> route empty, otherwise it won't be shown when the page first loads, and set the 'world' <code>State's</code> route to 'example'. The benefits of leaving routes to last will become even clearer when we start passing <a href="navigation-data.html">Navigation Data</a>.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
     {key: 'hello', route: ''},
