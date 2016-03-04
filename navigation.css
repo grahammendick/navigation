@@ -156,7 +156,9 @@ div.app{
     position:relative;
     top:0.28em;
     left:1.5%;
-    display:none;
+}
+#jsfiddle img{
+    height:1.2em;
 }
 #menu a{
     display:block;
@@ -181,14 +183,6 @@ div.app{
 .note code{
     font-size:inherit;
     word-break:break-word;
-}
-@media (min-width:400px) {
-    #jsfiddle{
-        display:inline;
-    }
-    #jsfiddle img{
-        height:1.2em;
-    }
 }
 @media (min-width:600px) {
     #banner a{
