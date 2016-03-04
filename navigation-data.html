@@ -49,12 +49,16 @@
 };</code></pre>
             <h2>Routes Last</h2>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-    {key: 'hello', route: ''},
-    {key: 'world', route: 'example/{size}'}
+  {key: 'hello', route: ''},
+  {key: 'world', route: 'example/{size}'}
 ]);</code></pre>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-    {key: 'hello', route: ''},
-    {key: 'world', route: 'example/{size}', defaultTypes: {size: 'number'}}
+  {key: 'hello', route: ''},
+  {key: 'world', route: 'example/{size}', defaultTypes: {size: 'number'}}
+]);</code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'hello', route: ''},
+  {key: 'world', route: 'example/{size}', defaultTypes: {size: 'number'}, trackTypes: false}
 ]);</code></pre>
             <h2>Data Types</h2>
             arrays and splats,

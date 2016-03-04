@@ -33,8 +33,8 @@
                 We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. There'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route so it's displayed when the page first loads.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-    {key: 'hello', route: ''},
-    {key: 'world'}
+  {key: 'hello', route: ''},
+  {key: 'world'}
 ]);</code></pre>
             <p>
                 To get notified when the 'hello' <code>State</code> is navigated to we'll attach a function to its <code>navigated</code> property. Whenever that State is navigated to our function will be called and we can then render the Hyperlink to take us to the 'world' <code>State</code>. We'll use the <code>NavigationLink</code> component to build this Hyperlink. This component has a <code>stateKey</code> property that holds the destination <code>State</code> and another property that holds our <code>stateNavigator</code>.
@@ -64,8 +64,8 @@
                 Now that our 'Hello World' example's working, it's time to set the routes. We'll leave the 'hello' <code>State's</code> route empty, otherwise it won't be shown when the page first loads, and set the 'world' <code>State's</code> route to 'example'. The benefits of leaving routes to last will become even clearer when we start passing <a href="navigation-data.html">Navigation Data</a>.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-    {key: 'hello', route: ''},
-    {key: 'world', route: 'example'}
+  {key: 'hello', route: ''},
+  {key: 'world', route: 'example'}
 ]);</code></pre>
         </div>
     </div>
