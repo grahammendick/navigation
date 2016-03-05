@@ -152,14 +152,6 @@ div.app{
     font-weight:bold;
     font-size:1.3em;
 }
-#jsfiddle{
-    position:relative;
-    top:0.28em;
-    left:1.5%;
-}
-#jsfiddle img{
-    height:1.2em;
-}
 #menu a{
     display:block;
     padding:6px 0 6px 2%;
@@ -167,6 +159,10 @@ div.app{
 }
 #menu a.selected{
     background-color: #ffedb9;
+}
+.separator{
+    margin:15px 2em 15px 1em;
+    border-top:1px solid #551a8b;
 }
 .note{
     background-color:#ecdef9;
