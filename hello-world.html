@@ -30,17 +30,17 @@
         <div id="article">
             <h1>Hello World</h1>
             <p>
-                Let's stick with tradition and build a 'Hello World' example to start with. It will have two views that you can navigate between. The first view will display a Hyperlink that reads 'Hello' and the second will show a Hyperlink that says 'World'. Clicking the first Hyperlink takes you to second view and clicking the second Hyperlink takes you back to the first view.
+                We're going to build an example that'll get you familiar with the Navigation router's data-first approach. The example will have two views. One view will display a 'Hello' Hyperlink. Clicking this Hyperlink will navigate you to the second view and display a 'World' div. We'll pass across a number that we'll use to set the div's font-size.
             </p>
             <p>
-                We'll create a <code>StateNavigator</code> passing in an array of <code>States</code> that represent the views in our 'Hello World' example. There'll be one for the 'hello' view and another for the 'world' view. It's much too early to be thinking about routes - we'll just assign the 'hello' <code>State</code> the empty route so it's displayed when the page first loads.
+                To get things started, we'll create a new StateNavigator by passing in an array of States that represent the views in our example. There'll be one State for the 'hello' view and another for the 'world' view. With other routers, you'd have to configure your routes at this stage. With the Navigation router, you can leave your routes until the end. All routes apart from the empty route, that is, which we'll assign to the 'hello' State so that it's active when the page first loads.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'hello', route: ''},
   {key: 'world'}
 ]);</code></pre>
             <p>
-                To get notified when the 'hello' <code>State</code> is navigated to we'll attach a function to its <code>navigated</code> property. Whenever that State is navigated to our function will be called and we can then render the Hyperlink to take us to the 'world' <code>State</code>. We'll use the <code>NavigationLink</code> component to build this Hyperlink. This component has a <code>stateKey</code> property that holds the destination <code>State</code> and another property that holds our <code>stateNavigator</code>.
+                We can get notified when the 'hello' State is navigated to by attaching a function to its navigated property. Whenever that State is active this function will be called. Inside the function we'll use the NavigationLink component to render a Hyperlink that navigates to the 'world' State. This component has a stateKey prop that holds the destination State.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
   ReactDOM.render(
@@ -52,6 +52,7 @@
     document.getElementById('app'));
 };</code></pre>
             <p>
+                We'll also add a navigated function to the 'world' State so we can render the div after the Hyperlink is clicked. React will take care of unmounting the Hyperlink and mounting the div in its place.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.world.navigated = function() {
   ReactDOM.render(
@@ -59,11 +60,13 @@
     document.getElementById('app'));
 };</code></pre>
             <p>
-                To get the example going we'll call <code>start</code> on the <code>stateNavigator</code>. This navigates to the <code>State</code> whose route matches the browser hash. The empty hash on initial page load means we'll see the 'hello' view first.
+                To get the example going we'll call start on the stateNavigator. This navigates to the State whose route matches the browser Url. The empty route we assigned to the 'hello' State means we'll render the Hyperlink when the page first loads.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
-            [Link to JsFiddle]
             <h2>Data First</h2>
+            <p>
+                We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The NavigationLink component has a navigationData prop that holds the data to pass to the destination State. We'll pass the size, as the number 10, to the 'world' State.
+            </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
   ReactDOM.render(
     &lt;NavigationReact.NavigationLink 
@@ -74,21 +77,26 @@
     &lt;/NavigationReact.NavigationLink>,
     document.getElementById('app'));
 };</code></pre>
+            <p>
+                We'll change the 'world' State's navigated function to accept the data as a parameter and use the number passed in to set the div's font-size.
+            </p>
             <pre><code class="language-jsx">stateNavigator.states.world.navigated = function(data) {
   ReactDOM.render(
     &lt;div style={{fontSize: data.size}}>World&lt;/div>,
     document.getElementById('app'));
 };</code></pre>
-            [Link to JsFiddle]
             <h2>Routes Last</h2>
             <p>
-                It's not until the end of a project that you know what your routes look like. But, with other routers, you have to decide on them upfront and subsequent route changes can ripple through your code base. With the Navigation router, you can leave your route decisions until the end because changes don't affect your code base.
+                Our example's up and running. But, because we haven't set a route for the 'world' State, the Navigation router auto-generates the Url as 'world?size=10_12'. It defaults 'size' to a query string parameter and adds trailing digits to track the type of the 'size' parameter. We'll tidy up the Url to read '10' by making 'size' a route parameter and setting its default type to 'number'.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'hello', route: ''},
-  {key: 'world', route: 'world/{size}', defaultTypes: {size: 'number'}}
+  {key: 'world', route: '{size}', defaultTypes: {size: 'number'}}
 ]);</code></pre>
-            [Link to JsFiddle]
+            <h2>Ta-dah!</h2>
+            <p>
+                With other routers, your Urls are set in stone upfront and you have to fit your data in around them. With the Navigation router, Urls are a just string representation of your typed data. You can safely update routes or switch between query and route parameters without impacting your code. You can take a look at the <a href="#">'Hello World' example in action</a>.
+            </p>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
