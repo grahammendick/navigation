@@ -31,23 +31,23 @@
             <h1>State Navigation</h1>
             <p></p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'x', route: ''},
-  {key: 'y'}
+  {key: 'inbox', route: ''},
+  {key: 'compose'}
 ]);</code></pre>
             <p></p>
-            <pre><code class="language-jsx">stateNavigator.states.x.navigated = function() {
+            <pre><code class="language-jsx">stateNavigator.states.inbox.navigated = function() {
   ReactDOM.render(
-    &lt;App />,
+    &lt;Inbox />,
     document.getElementById('app'));
 };</code></pre>
             <p></p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
-    stateKey="y"
+    stateKey="compose"
     stateNavigator={stateNavigator}>
-    Y
+    Compose
 &lt;/NavigationReact.NavigationLink></code></pre>
             <p></p>
-            <pre><code class="language-jsx">stateNavigator.navigate('y');</code></pre>
+            <pre><code class="language-jsx">stateNavigator.navigate('compose');</code></pre>
             <p></p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
         </div>
