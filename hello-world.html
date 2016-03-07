@@ -30,7 +30,7 @@
         <div id="article">
             <h1>Hello World</h1>
             <p>
-                We're going to build an example that'll get you familiar with the Navigation router's data-first approach. The example will have two views. One view will display a 'Hello' Hyperlink. Clicking this Hyperlink will navigate you to the second view and display a 'World' div. We'll pass across a number that we'll use to set the div's font-size.
+                We're going to build an example that'll get you familiar with the Navigation router's data-first approach. The example will have two views. One view will display a Hyperlink that says 'Hello'. Clicking this Hyperlink will navigate you to the second view displaying the text 'World' inside a div. We'll pass across a number that we'll use to set the div's font-size.
             </p>
             <p>
                 To get things started, we'll create a new StateNavigator by passing in an array of States that represent the views in our example. There'll be one State for the 'hello' view and another for the 'world' view. With other routers, you'd have to configure your routes at this stage. With the Navigation router, you can leave your routes until the end. All routes apart from the empty route, that is, which we'll assign to the 'hello' State so that it's active when the page first loads.
@@ -65,7 +65,7 @@
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
             <h2>Data First</h2>
             <p>
-                We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The NavigationLink component has a navigationData prop that holds the data to pass to the destination State. We'll pass the size, as the number 10, to the 'world' State.
+                We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The NavigationLink component has a navigationData prop that holds the data to pass to the destination State. We'll pass the number 10 as the size to the 'world' State.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
   ReactDOM.render(
@@ -95,7 +95,7 @@
 ]);</code></pre>
             <h2>Ta-dah!</h2>
             <p>
-                With other routers, your Urls are set in stone upfront and you have to fit your data in around them. With the Navigation router, Urls are a just string representation of your typed data. You can safely update routes or switch between query and route parameters without impacting your code. You can take a look at the <a href="#">'Hello World' example in action</a>.
+                With other routers, your Urls are set upfront and changes can ripple throughout your codebase. With the Navigation router, Urls are a just string representation of your typed data. You can safely update routes or switch between query and route parameters without impacting your code. You can take a look at the <a href="#">'Hello World' example in action</a>.
             </p>
         </div>
     </div>
