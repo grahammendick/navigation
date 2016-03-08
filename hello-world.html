@@ -87,7 +87,7 @@
 };</code></pre>
             <h2>Routes Last</h2>
             <p>
-                Our example's up and running. But, because we haven't set a route for the 'world' State, the Navigation router auto-generates the Url as 'world?size=10_12'. It defaults 'size' to a query string parameter and adds trailing digits to track the type of the 'size' parameter. We'll tidy up the Url to read '10' by making 'size' a route parameter and setting its default type to 'number'.
+                Our example's up and running. But, because we haven't set a route for the 'world' State, the Navigation router auto-generates the Url. It turns 'size' into a query string parameter and adds trailing digits to track the type of the 'size' parameter. We'll tidy up the Url by making 'size' a route parameter and defaulting its type to 'number'. The rest of the code remains unchanged because the data we're passing around hasn't changed.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'hello', route: ''},

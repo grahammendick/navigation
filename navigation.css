@@ -45,6 +45,9 @@ h2{
     margin:0.8% 0 1.8% 0;
     clear:left;
 }
+#article h2{
+    clear:none;
+}
 #logo div{
     padding:4px 8px;
     box-shadow:3px 3px 5px #888888;

@@ -29,16 +29,36 @@
         </div>
         <div id="article">
             <h1>Data and Routes</h1>
+            <h2>Passing Data</h2>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
+  stateKey="mail"
+  navigationData={{ id: 12, expand: false }}
+  stateNavigator={stateNavigator}>
+  Compose
+&lt;/NavigationReact.NavigationLink></code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">stateNavigator.navigate('mail', { id: 12, expand: false });</code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">stateNavigator.states.mail.navigated = function(data) {
+  ReactDOM.render(
+    &lt;Mail id={data.id} expand={data.expand} />,
+    document.getElementById('app'));
+};</code></pre>
+            <h2>Setting Data Defaults</h2>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', defaults: {expand: false}},
+  {key: 'compose'}
+]);</code></pre>
+            <h2>Configuring Routes</h2>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: '{id}' defaults: {expand: false}, defaultTypes: {id: 'number'}},
+  {key: 'compose'}
+]);</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
