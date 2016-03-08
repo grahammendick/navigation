@@ -20,8 +20,8 @@
             <div class="separator"></div>
             <a href="state-navigation.html">State Navigation</a>
             <a href="data-and-routes.html" class="selected">Data and Routes</a>
-            <a href="back-navigation.html">Back Navigation</a>
-            <a href="refresh-navigation.html">Refresh Navigation</a>
+            <a href="breadcrumb-trail.html">Breadcrumb Trail</a>
+            <a href="current-data.html">Current Data</a>
             <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
             <a href="history.html">HTML5 History</a>
             <div class="separator"></div>
@@ -33,12 +33,12 @@
             <p></p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
-  navigationData={{ id: 12, expand: false }}
+  navigationData={{id: 12, expand: false}}
   stateNavigator={stateNavigator}>
   Open Mail
 &lt;/NavigationReact.NavigationLink></code></pre>
             <p></p>
-            <pre><code class="language-jsx">stateNavigator.navigate('mail', { id: 12, expand: false });</code></pre>
+            <pre><code class="language-jsx">stateNavigator.navigate('mail', {id: 12, expand: false});</code></pre>
             <p></p>
             <pre><code class="language-jsx">stateNavigator.states.mail.navigated = function(data) {
   ReactDOM.render(
