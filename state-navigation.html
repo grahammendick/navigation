@@ -29,27 +29,37 @@
         </div>
         <div id="article">
             <h1>State Navigation</h1>
-            <p></p>
+            <p>
+                The Navigation router helps you navigate between views in your application. To get started, create a new StateNavigator passing in an array of States that represent the views in your application. Assign the empty route to the State you want to show when the application first loads. You can delay assigning the other routes until you've settled on your <a href="data-and-routes.html">data passing strategy</a>. In an email application we might have States representing the inbox, email composition and list of contacts views.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'compose'},
   {key: 'contacts'}
 ]);</code></pre>
-            <p></p>
+            <p>
+                The Navigation router doesn't render views for you because React already provides an Api for doing that. Calling ReactDOM.render unmounts the old component and mounts the new component in its place. The Navigation router notifies you when a State becomes active and it's your job to render the relevant component for the active State. You receive the notification by attaching a function to the navigated property of the State. When that State's navigated to your function is called. In the email example, we render the Inbox component into the app placeholder when the inbox State is active.
+            </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.navigated = function() {
   ReactDOM.render(
-    &lt;Inbox stateNavigator={stateNavigator} />,
+    &lt;Inbox />,
     document.getElementById('app'));
 };</code></pre>
-            <p></p>
+            <p>
+                State's become active when you navigate to them. One way to navigate to a State is with a Hyperlink. The Navigation router encourages you to think about States rather than Urls. You can build Hyperlinks using the NavigationLink component, passing in the destination State via the stateKey prop. There's another prop for the stateNavigator, but you can pass it implicitly using the React context if you prefer.
+            </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
     stateKey="compose"
     stateNavigator={stateNavigator}>
     Compose
 &lt;/NavigationReact.NavigationLink></code></pre>
-            <p></p>
+            <p>
+                For when Hyperlinks aren't appropriate, you can navigate programmatically by passing the State key into the navigate function on the stateNavigator.
+            </p>
             <pre><code class="language-jsx">stateNavigator.navigate('compose');</code></pre>
-            <p></p>
+            <p>
+                Call start on the stateNavigator to activate a State when the page loads. It triggers a navigation to the State whose route matches with the browser Url and ensures the State assigned the empty route is displayed first.
+            </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
         </div>
     </div>
