@@ -38,7 +38,7 @@
   {key: 'contacts'}
 ]);</code></pre>
             <p>
-                The Navigation router doesn't render views for you because React already provides an Api for doing that. Calling ReactDOM.render unmounts the old component and mounts the new component in its place. The Navigation router notifies you when a State becomes active and it's your job to render the relevant component for the active State. You receive the notification by attaching a function to the navigated property of the State. When that State's navigated to your function is called. In the email example, we render the Inbox component into the app placeholder when the inbox State is active.
+                The Navigation router doesn't render views for you because React provides native support for it. Calling ReactDOM.render unmounts the old component and mounts the new component in its place. The Navigation router notifies you when a State becomes active and it's your job to render the relevant component for the active State. You receive the notification by attaching a function to the navigated property of the State. In the email example, we render the Inbox component into the app placeholder when the inbox State is active.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.navigated = function() {
   ReactDOM.render(
