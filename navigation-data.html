@@ -47,6 +47,7 @@
                 For navigating without Hyperlinks, you can pass data in the second parameter of the navigate function on the stateNavigator.
             </p>
             <pre><code class="language-jsx">stateNavigator.navigate('mail', {id: 12, expand: false});</code></pre>
+            <h2>Receiving Data</h2>
             <p>
                 You'll recall that the Navigation router notifies you when a State becomes active by calling the function you assigned to the navigated property of that State. When it calls this function it passes in a parameter holding the navigation data. In the email example, when the mail State is active we use the id and expand data items passed in to set the respective props on the Mail component.
             </p>
