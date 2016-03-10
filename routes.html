@@ -30,12 +30,38 @@
         </div>
         <div id="article">
             <h1>Routes</h1>
+            <h2>Tidying Up Urls</h2>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open'},
+  {key: 'compose'}
+]);</code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open', defaultTypes: {id: 'number'}},
+  {key: 'compose'}
+]);</code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: '', trackTypes: false},
+  {key: 'mail'},
+  {key: 'compose'}
+]);</code></pre>
+            <h2>Setting Route Parameters</h2>
+            <p></p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}},
+  {key: 'compose'}
+]);</code></pre>
+            <p></p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail'},
+  {key: 'compose', route: 'new/{*contacts}', defaultTypes: {contacts: 'numberarray'}}
+]);</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
