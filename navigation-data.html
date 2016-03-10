@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Navigation Data</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="index.html">Navigation</a>
+            <a href="hello-world.html" class="selected">Docs</a>
+            <a href="#">Download</a>
+            <a id="github" href="#">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="hello-world.html">Hello World</a>
+            <div class="separator"></div>
+            <a href="state-navigation.html">State Navigation</a>
+            <a href="navigation-data.html" class="selected">Navigation Data</a>
+            <a href="routes.html">Routes</a>
+            <a href="breadcrumb-trail.html">Breadcrumb Trail</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="history.html">HTML5 History</a>
+            <div class="separator"></div>
+            <a href="tutorial.html">Tutorial</a>
+        </div>
+        <div id="article">
+            <h1>Navigation Data</h1>
+            <h2>Passing Data</h2>
+            <p>
+                When it comes to passing data between views, the Navigation router isn't like other routers. Other routers make you define your routes and parameters up front. The Navigation router thinks in terms of States and data so you don't need to think about routes and parameters until your application's working.
+            </p>
+            <p>
+                You can use the NavigationLink component to build Hyperlinks that navigate between States. As well as stateKey prop that holds the destination State, the NavigationLink component has a navigationData prop that holds the data that's passed to this State. You don't have to convert data to strings because it accepts numbers, booleans and dates and even arrays of such values. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
+  stateKey="mail"
+  navigationData={{id: 12, expand: false}}
+  stateNavigator={stateNavigator}>
+  Open Mail
+&lt;/NavigationReact.NavigationLink></code></pre>
+            <p>
+                For navigating without Hyperlinks, you can pass data in the second parameter of the navigate function on the stateNavigator.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.navigate('mail', {id: 12, expand: false});</code></pre>
+            <p>
+                You'll recall that the Navigation router notifies you when a State becomes active by calling the function you assigned to the navigated property of that State. When it calls this function it passes in a parameter holding the navigation data. In the email example, when the mail State is active we use the id and expand data items passed in to set the respective props on the Mail component.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.mail.navigated = function(data) {
+  ReactDOM.render(
+    &lt;Mail id={data.id} expand={data.expand} />,
+    document.getElementById('app'));
+};</code></pre>
+            <p>
+                You don't have to convert the data from strings because the Navigation router remembers their original types. You could add prop type validation to the Mail component, for example, without causing an exception.
+            </p>
+            <pre><code class="language-jsx">var Mail = React.createClass({
+  propTypes: {
+    id: React.PropTypes.number,
+    expand: React.PropTypes.bool
+  },
+  /* ... */
+});</code></pre>
+            <h2>Setting Default Values</h2>
+            <p>
+                The Navigation router lets you define default navigation data values for each State. The data passed into a State's navigated function includes these default values for any item that you didn't supply with a value when navigating. If we give the expand item in the email example a default value of false then we don't have to pass it in navigation data when the mail's opened.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', defaults: {expand: false}},
+  {key: 'compose'}
+]);</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="prism.js"></script>
+</body>
+</html>
