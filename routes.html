@@ -60,7 +60,7 @@
             </div>
             <h2>2. Configuring Types</h2>
             <p>
-                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example the last three characters in the open mail Url track that the id is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the id a default type of 'number'.
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the id is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the id a default type of 'number'.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
