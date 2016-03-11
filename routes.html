@@ -35,7 +35,7 @@
                 The Navigation router sees Urls as clothes draped over the body of your code, while other routers tattoo them into the skin. Clothes you can change without impacting the body, but tattoos you can't. The Navigation router ships with a scruffy set of clothes for your code to wear throughout development. You can dress it in some smarter togs once your appliction's running smoothly.
             </p>
             <p>
-                Let's take the example of an email application. The scruffy Url the Navigation router generates for opening an email with an id of '12' is 'mail?id=121_0'. We'll smarten up the Url in three stages so that, by the end, it will read 'open/12'.
+                Let's take the example of an email application. The scruffy Url the Navigation router generates for opening an email with an id of '12' is '/mail?id=121_0'. We'll smarten up the Url in three stages so that, by the end, it will read '/open/12'.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
@@ -43,9 +43,9 @@
   stateNavigator={stateNavigator}>
   Open Mail
 &lt;/NavigationReact.NavigationLink></code></pre>
-            <h2>Configuring Routes</h2>
+            <h2>1. Configuring Routes</h2>
             <p>
-                Because we've not supplied a route for the 'mail' State, the Navigation router uses the State's key instead. We'll change the Url from 'mail?id=121_0' to 'open?id=121_0' by setting the State's route property.
+                Because we've not supplied a route for the 'mail' State, the Navigation router uses the State's key instead. We'll change the Url from '/mail?id=121_0' to '/open?id=121_0' by setting the State's route property.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -58,9 +58,9 @@
                     You can assign an array to a <code>State's route</code> property and the Navigation router will pick the best match based on the navigation data.
                 </p>
             </div>
-            <h2>Configuring Types</h2>
+            <h2>2. Configuring Types</h2>
             <p>
-                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. For example, The last three characters in the open mail Url track that the id is a number. We'll remove these trailing characters, so that the Url reads 'open?id=12' instead of 'open?id=121_0', by assigning the id a default type of 'number'.
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example the last three characters in the open mail Url track that the id is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the id a default type of 'number'.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -85,13 +85,13 @@
                     </li>
                 </ul>
             </div>
-            <h2>Configuring Route Parameters</h2>
+            <h2>3. Configuring Route Parameters</h2>
             <p>
-                By default the Navigation router passes data in the query string. We'll change the Url from 'open?id=12' to 'open/12' by specifying the id as a route parameter.
+                By default the Navigation router passes data in the query string. We'll change the Url from '/open?id=12' to '/open/12' by specifying the id as a route parameter.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
-  {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}},
+  {key: 'mail', route: '/open/{id}', defaultTypes: {id: 'number'}},
   {key: 'compose'}
 ]);</code></pre>
             <div class="Note">
