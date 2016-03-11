@@ -174,14 +174,19 @@ div.app{
     margin-bottom:2%;
     border-left: 5px solid #551a8b;
 }
-.note h2{
+.note h2,.note h3{
     margin:0 0 3px 0;
     font-size:1em;
     font-weight:bold;
 }
+.note ul{
+    padding-left:3%;
+    margin:0 0 2% 0;
+}
 .note code{
     font-size:inherit;
     word-break:break-word;
+    background-color:inherit;
 }
 @media (min-width:600px) {
     #banner a{

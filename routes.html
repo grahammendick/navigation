@@ -31,37 +31,80 @@
         <div id="article">
             <h1>Routes</h1>
             <h2>Tidying Up Urls</h2>
-            <p></p>
+            <p>
+                The Navigation router sees Urls as clothes draped over the body of your code, while other routers tattoo them into the skin. Clothes you can change without impacting the body, but tattoos you can't. The Navigation router ships with a scruffy set of clothes for your code to wear throughout development. You can dress it in some smarter togs once your appliction's running smoothly.
+            </p>
+            <p>
+                Let's take the example of an email application. The scruffy Url the Navigation router generates for opening an email with an id of '12' is 'mail?id=121_0'. We'll smarten up the Url in three stages so that, by the end, it will read 'open/12'.
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
+  stateKey="mail"
+  navigationData={{id: 12}}
+  stateNavigator={stateNavigator}>
+  Open Mail
+&lt;/NavigationReact.NavigationLink></code></pre>
+            <h2>Configuring Routes</h2>
+            <p>
+                Because we've not supplied a route for the 'mail' State, the Navigation router uses the State's key instead. We'll change the Url from 'mail?id=121_0' to 'open?id=121_0' by setting the State's route property.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', route: 'open'},
   {key: 'compose'}
 ]);</code></pre>
-            <p></p>
+            <div class="Note">
+                <h3>Note</h3>
+                <p>
+                    You can assign an array to a <code>State's route</code> property and the Navigation router will pick the best match based on the navigation data.
+                </p>
+            </div>
+            <h2>Configuring Types</h2>
+            <p>
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. For example, The last three characters in the open mail Url track that the id is a number. We'll remove these trailing characters, so that the Url reads 'open?id=12' instead of 'open?id=121_0', by assigning the id a default type of 'number'.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', route: 'open', defaultTypes: {id: 'number'}},
   {key: 'compose'}
 ]);</code></pre>
             <p></p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'inbox', route: '', trackTypes: false},
-  {key: 'mail'},
-  {key: 'compose'}
-]);</code></pre>
-            <h2>Setting Route Parameters</h2>
-            <p></p>
+            <div class="Note">
+                <h3>Note</h3>
+                <ul>
+                    <li>
+                        You don't have to specify a default type for string values
+                    </li>
+                    <li>
+                        You don't have to specify a default type if you've specified a default value
+                    </li>
+                    <li>
+                        The supported default types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'.
+                    </li>
+                    <li>
+                        If your string values can contain underscores then set <code>trackTypes</code> to false on your State, e.g., <code>{key: 'mail', trackTypes: false}</code>
+                    </li>
+                </ul>
+            </div>
+            <h2>Configuring Route Parameters</h2>
+            <p>
+                By default the Navigation router passes data in the query string. We'll change the Url from 'open?id=12' to 'open/12' by specifying the id as a route parameter.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}},
   {key: 'compose'}
 ]);</code></pre>
-            <p></p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'inbox', route: ''},
-  {key: 'mail'},
-  {key: 'compose', route: 'new/{*contacts}', defaultTypes: {contacts: 'numberarray'}}
-]);</code></pre>
+            <div class="Note">
+                <h3>Note</h3>
+                <ul>
+                    <li>
+                        You can indicate that a route parameter's optional with a '?' suffix, e.g., <code>{id?}</code>
+                    </li>
+                    <li>
+                        You can map array values to splat parameters, indicated with a '*' prefix, e.g., <code>{*ids}</code> or <code>{*ids?}</code>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
