@@ -35,7 +35,7 @@
                 When it comes to passing data between views, the Navigation router isn't like other routers. Other routers make you define your routes and parameters up front. The Navigation router thinks in terms of States and data so you don't need to think about routes and parameters until your application's working.
             </p>
             <p>
-                You can use the NavigationLink component to build Hyperlinks that navigate between States. As well as stateKey prop that holds the destination State, the NavigationLink component has a navigationData prop that holds the data that's passed to this State. You don't have to convert data to strings because it accepts numbers, booleans and dates and even arrays of such values. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
+                You can use the NavigationLink component to build Hyperlinks that navigate between States. As well as a stateKey prop that holds the destination State, the NavigationLink component has a navigationData prop that holds the data that's passed to this State. You don't have to convert data to strings because it accepts numbers, booleans and dates and even arrays of such values. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
