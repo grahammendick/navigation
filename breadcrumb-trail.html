@@ -30,14 +30,21 @@
         </div>
         <div id="article">
             <h1>Breadcrumb Trail</h1>
-            <h2></h2>
+            <h2>Dropping Breadcrumbs</h2>
             <p></p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', trackCrumbTrail: true},
   {key: 'compose'}
 ]);</code></pre>
+            <div class="note">
+                <h3>Note</h3>
+                <p>
+                    e.g., <code>{key: 'mail', trackCrumbTrail: 'breadcrumb'}</code>
+                </p>
+            </div>
             <p></p>
+            <h2>Navigating Back</h2>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink 
   distance={1}
   stateNavigator={stateNavigator}>
