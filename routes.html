@@ -52,12 +52,6 @@
   {key: 'mail', route: 'open'},
   {key: 'compose'}
 ]);</code></pre>
-            <div class="Note">
-                <h3>Note</h3>
-                <p>
-                    You can assign an array to a <code>State's route</code> property and the Navigation router will pick the best match based on the navigation data.
-                </p>
-            </div>
             <h2>2. Configuring Types</h2>
             <p>
                 You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the id is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the id a default type of 'number'.
@@ -68,9 +62,27 @@
   {key: 'compose'}
 ]);</code></pre>
             <p></p>
+            <h2>3. Configuring Route Parameters</h2>
+            <p>
+                By default the Navigation router passes data in the query string. We'll change the Url from '/open?id=12' to '/open/12' by specifying the id as a route parameter.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: '/open/{id}', defaultTypes: {id: 'number'}},
+  {key: 'compose'}
+]);</code></pre>
             <div class="Note">
-                <h3>Note</h3>
+                <h2>Note</h2>
                 <ul>
+                    <li>
+                        You can indicate that a route parameter's optional with a '?' suffix, e.g., <code>{id?}</code>
+                    </li>
+                    <li>
+                        You can assign an array to a <code>State's route</code> property and the Navigation router will pick the best match, e.g., <code>{key: 'mail', route: ['{filter?}','{filter}/page/{page}']}</code>
+                    </li>
+                    <li>
+                        You can map array values to splat parameters, indicated with a '*' prefix, e.g., <code>{*ids}</code>
+                    </li>
                     <li>
                         You don't have to specify a default type for string values
                     </li>
@@ -82,26 +94,6 @@
                     </li>
                     <li>
                         If your string values can contain underscores then set <code>trackTypes</code> to false on your State, e.g., <code>{key: 'mail', trackTypes: false}</code>
-                    </li>
-                </ul>
-            </div>
-            <h2>3. Configuring Route Parameters</h2>
-            <p>
-                By default the Navigation router passes data in the query string. We'll change the Url from '/open?id=12' to '/open/12' by specifying the id as a route parameter.
-            </p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'inbox', route: ''},
-  {key: 'mail', route: '/open/{id}', defaultTypes: {id: 'number'}},
-  {key: 'compose'}
-]);</code></pre>
-            <div class="Note">
-                <h3>Note</h3>
-                <ul>
-                    <li>
-                        You can indicate that a route parameter's optional with a '?' suffix, e.g., <code>{id?}</code>
-                    </li>
-                    <li>
-                        You can map array values to splat parameters, indicated with a '*' prefix, e.g., <code>{*ids}</code> or <code>{*ids?}</code>
                     </li>
                 </ul>
             </div>
