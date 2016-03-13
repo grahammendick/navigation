@@ -32,15 +32,26 @@
             <h1>Current Data</h1>
             <h2></h2>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
+  navigationData={{page: 2}}
+  stateNavigator={stateNavigator}>
+  Page Two
+&lt;/NavigationReact.RefreshLink></code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">stateNavigator.refresh({page: 2});</code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
+  navigationData={{page: 2, filter: stateNavigator.stateContext.filter}}
+  stateNavigator={stateNavigator}>
+  Page Two
+&lt;/NavigationReact.RefreshLink></code></pre>
             <p></p>
-            <pre><code class="language-jsx"></code></pre>
-            <p></p>
-            <pre><code class="language-jsx"></code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
+  navigationData={{page: 2}}
+  includeCurrentData={true}
+  stateNavigator={stateNavigator}>
+  Page Two
+&lt;/NavigationReact.RefreshLink></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
