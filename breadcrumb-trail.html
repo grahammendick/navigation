@@ -31,7 +31,12 @@
         <div id="article">
             <h1>Breadcrumb Trail</h1>
             <h2>Dropping Breadcrumbs</h2>
-            <p></p>
+            <p>
+                A breadcrumb trail is a list of Hyperlinks that plot a user's journey through your application, allowing them to navigate back to previously visited pages. The Navigation router builds a breadcrumb trail by keeping track of visited Urls every time you navigate to a new State. You enable this functionality on a State by State basis by setting trackCrumbTrail to true.
+            </p>
+            <p>
+                Let's look at the example of a email application. The user might filter their inbox to only show certain mails and then open one from the second page. After reading that email they want to return to the Inbox with their place restored so they can continue browsing where they left off. We can set trackCrumbTrail to true on the 'mail' State so that the Navigation router remembers the Url back to the filtered and paged inbox.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', trackCrumbTrail: true},
@@ -39,13 +44,24 @@
 ]);</code></pre>
             <p></p>
             <h2>Navigating Back</h2>
+            <p>
+                You can build a Hyperlink that navigates back along the breadcrumb trail using the NavigationBackLink component. It has a distance prop that holds how far back you want to travel. In the email example, a distance of 1 returns the user back to their inbox and restores thier place in the filtered list.
+            </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink 
   distance={1}
   stateNavigator={stateNavigator}>
   Back to Inbox
 &lt;/NavigationReact.NavigationBackLink></code></pre>
-            <p></p>
+            <p>
+                You can also navigate programmatically along the breadcrumb trail by passing the distance into the navigateBack function on the stateNavigator.
+            </p>
             <pre><code class="language-jsx">stateNavigator.navigateBack(1);</code></pre>
+            <div class="note">
+                <h2>Note</h2>
+                <div>
+                    The breadcrumb trail is stored in the Url. This isn't a security risk because absolute Urls aren't allowed in the trail. But a mischievous user can repoint the breadcrumb trail, for example, changing the Hyperlink back to the inbox to go to the 'compose' State instead.
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
