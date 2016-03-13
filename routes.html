@@ -78,7 +78,7 @@
                         You can indicate that a route parameter's optional with a '?' suffix, e.g., <code>{id?}</code>
                     </li>
                     <li>
-                        You can assign an array to a <code>State's route</code> property and the Navigation router will pick the best match, e.g., <code>{key: 'mail', route: ['{filter?}','{filter}/page/{page}']}</code>
+                        You can assign multiple routes to a State and the Navigation router will pick the best match, e.g., <code>{key: 'mail', route: ['','search/{filter}']}</code>
                     </li>
                     <li>
                         You can map array values to splat parameters, indicated with a '*' prefix, e.g., <code>{*ids}</code>
