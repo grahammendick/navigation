@@ -1618,22 +1618,20 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'cde');
             assert.strictEqual(data.y, 'fg');
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 0);
         });
 
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/ab/cde'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/abcd//'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/abcde');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/abcde?y=fg');
-        });
-
-        it('should not build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab');
         });
     });
 
