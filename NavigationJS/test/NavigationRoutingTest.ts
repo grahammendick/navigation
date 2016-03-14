@@ -1983,7 +1983,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 's' } }
+                { key: 's', route: ['abc/{x?}', 'def/{y}'], defaults: { x: 's' } }
             ]);
         });
 
@@ -2102,7 +2102,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 } }
+                { key: 's', route: ['def/{y}', 'abc/{x?}'], defaults: { x: 2 } }
             ]);
         });
 
@@ -2230,7 +2230,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 } }
+                { key: 's', route: '{x?}', trackTypes: false, defaults: { x: 2 } }
             ]);
         });
 
@@ -2285,7 +2285,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{x?}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2314,7 +2314,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{x?}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -2486,7 +2486,7 @@ describe('MatchTest', function () {
     describe('Without Types Two Route Default', function () {
         it('should build', function() {
             var stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 } }
+                { key: 's', route: ['{x?}', 'a/{y}'], trackTypes: false, defaults: { x: 2 } }
             ]);
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 2, y: 1 }), '/a/1');
@@ -4234,7 +4234,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{*x?}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -4266,7 +4266,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{*x?}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -4423,7 +4423,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
+                { key: 's', route: '{*x?}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
             ]);
         });
 
