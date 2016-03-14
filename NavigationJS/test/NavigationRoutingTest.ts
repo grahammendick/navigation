@@ -835,11 +835,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Default Number', function () {
+    describe('One Optional Param One Segment Default Number', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: 345 } }
+                { key: 's', route: '{x?}', defaults: { x: 345 } }
             ]);
         });
 
@@ -878,11 +878,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Default Boolean', function () {
+    describe('One Optional Param One Segment Default Boolean', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: true } }
+                { key: 's', route: '{x?}', defaults: { x: true } }
             ]);
         });
 
@@ -921,11 +921,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Default Date', function () {
+    describe('One Optional Param One Segment Default Date', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) } }
+                { key: 's', route: '{x?}', defaults: { x: new Date(2010, 3, 7) } }
             ]);
         });
 
@@ -1096,6 +1096,52 @@ describe('MatchTest', function () {
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/ab/cde?y=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'fg');
+            var { data } = stateNavigator.parseLink('/ab/ccdd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ccdd');
+            var { data } = stateNavigator.parseLink('/ab/ccdd?y=ee');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ccdd');
+            assert.strictEqual(data.y, 'ee');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/a/b/d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/cab/d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/ab/cde?y=fg');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ccdd' }), '/ab/ccdd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ccdd', y: 'ee' }), '/ab/ccdd?y=ee');
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab/ccdd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'ee' }), '/ab/ccdd?y=ee');
+        });
+    });
+
+    describe('One Optional Param Two Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab/{x?}', defaults: { x: 'ccdd' } }
             ]);
         });
 
