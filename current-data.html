@@ -31,22 +31,41 @@
         <div id="article">
             <h1>Current Data</h1>
             <h2>Refreshing</h2>
-            <p></p>
+            <p>
+                You've seen how the Navigation router helps you pass data between different States in your application, like passing the mail id when opening a mail in an email application. But you often want to pass data without changing State. Paging and sorting through the mails in the inbox changes the page number and sort order but doesn't change the State. 
+            </p>
+            <p>
+                You can build Hyperlinks that change data without changing State using the RefreshLink component. It's similar to the NavigationLink component except there's no stateKey prop because the destination State is always the current State. In the email example we can use the RefreshLink component to build a Hyperlink that changes to the second page of the inbox.
+            </p>
             <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
   navigationData={{page: 2}}
   stateNavigator={stateNavigator}>
   Page Two
 &lt;/NavigationReact.RefreshLink></code></pre>
-            <p></p>
+            <p>
+                Alternatively, you can programmatically pass the new data into the refresh function on the stateNavigator.
+            </p>
             <pre><code class="language-jsx">stateNavigator.refresh({page: 2});</code></pre>
+            <p>
+                The Navigation router passes the new data to the navigated function attached to the current State, allowing the Inbox component to rerender with the changed page number.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.inbox.navigated = function(data) {
+  ReactDOM.render(
+    &lt;Inbox page={data.page} />,
+    document.getElementById('app'));
+};</code></pre>
             <h2>Remembering Data</h2>
-            <p></p>
+            <p>
+                Remembering the current data is just as important as changing the current data. We mustn't forget about the current sort order when we navigate to the second page of the inbox. Rather than adding the current sort order to the React state of the Inbox component, we can access it from the stateNavigator. It's held in the data bag of the stateContext.                
+            </p>
             <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
   navigationData={{page: 2, sort: stateNavigator.stateContext.sort}}
   stateNavigator={stateNavigator}>
   Page Two
 &lt;/NavigationReact.RefreshLink></code></pre>
-            <p></p>
+            <p>
+                Instead of manually retaining the current sort order, we can let the RefreshLink component remember it for us. Setting the component's includeCurrentData prop to true asks it to automatically merge our new data with the current data in the stateContext.
+            </p>
             <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
   navigationData={{page: 2}}
   includeCurrentData={true}
