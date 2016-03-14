@@ -770,6 +770,47 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(data.z, 'cd');
+            var { data } = stateNavigator.parseLink('/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/cde?z=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.z, 'fg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab//'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab', z: 'cd' }), '/ab?z=cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/cde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', z: 'fg' }), '/cde?z=fg');
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/cde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'fg' }), '/cde?z=fg');
+        });
+    });
+
+    describe('One Optional Param One Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{x?}', defaults: { x: 'cde' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            var { data } = stateNavigator.parseLink('/ab?z=cd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.z, 'cd');
             var { data } = stateNavigator.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cde');
