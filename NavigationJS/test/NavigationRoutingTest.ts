@@ -3669,6 +3669,44 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ef/ghi');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ef');
+            assert.strictEqual(data.x[1], 'ghi');
+            var { data } = stateNavigator.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'abcd');
+            var { data } = stateNavigator.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ef/ghi');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ef', 'ghi'] }), '/ef/ghi');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ghi', 'ef'] }), '/ghi/ef');
+        });
+    });
+
+    describe('One Optional Splat Param One Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{*x?}', defaults: { x: ['ef', 'ghi'] } }
+            ]);
+        });
+
+        it('should match', function() {
             var { data } = stateNavigator.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x.length, 2);
@@ -4581,10 +4619,10 @@ describe('MatchTest', function () {
         var stateNavigator1: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator0 = new Navigation.StateNavigator([
-                { key: 's', route: 'ab/{x}', defaults: { x: 'cd' } }
+                { key: 's', route: 'ab/{x?}', defaults: { x: 'cd' } }
             ]);
             stateNavigator1 = new Navigation.StateNavigator([
-                { key: 's', route: 'cd/{x}', defaults: { x: 12 } }
+                { key: 's', route: 'cd/{x?}', defaults: { x: 12 } }
             ]);
         });
 
