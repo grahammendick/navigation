@@ -139,11 +139,22 @@ class StateRouter {
         var routes: string[] = [];
         var route = state.route;
         if (typeof route === 'string') {
-            routes.push(route);
+            routes = routes.concat(StateRouter.expandRoute(route));
         } else {
             for(var i = 0; i < route.length; i++) {
-                routes.push(route[i]);
+                routes = routes.concat(StateRouter.expandRoute(route[i]));
             }
+        }
+        return routes;
+    }
+    
+    private static expandRoute(route: string): string[] {
+        var routes: string[] = [];
+        var subRoutes = route.split('+');
+        var expandedRoute = '';
+        for(var i =0; i < subRoutes.length; i++) {
+            expandedRoute += subRoutes[i];
+            routes.push(expandedRoute);
         }
         return routes;
     }
