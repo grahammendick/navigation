@@ -3639,7 +3639,7 @@ describe('Navigation Data', function () {
         it('should not include defaults in link', function() {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+                { key: 's1', route: 'r/{string?}/{number?}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
             ]);
             var data = {};
             data['_bool'] = null;
