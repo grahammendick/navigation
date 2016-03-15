@@ -2042,6 +2042,44 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Expand Route One With Param', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '+abc/{x}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/?y=d');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'd');
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('//abc/de'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'd' }), '/?y=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'f' }), '/abc/de?y=f');
+        });
+    });
+
     describe('Two Route Param', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
