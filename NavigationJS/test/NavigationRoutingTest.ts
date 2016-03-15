@@ -1307,7 +1307,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}/{y}', defaults: { y: 'ab' } }
+                { key: 's', route: '{x}/{y?}', defaults: { y: 'ab' } }
             ]);
         });
 
@@ -1357,7 +1357,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' } }
+                { key: 's', route: '{x?}/{y?}', defaults: { x: 'abc' } }
             ]);
         });
 
@@ -3913,7 +3913,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] } }
+                { key: 's', route: 'ab/{*x?}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
 
