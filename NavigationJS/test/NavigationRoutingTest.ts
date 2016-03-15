@@ -2310,6 +2310,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
         });
 
@@ -2320,6 +2321,7 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
         });
     });
 
@@ -2362,6 +2364,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
         });
 
@@ -2372,6 +2375,7 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
         });
     });
 
