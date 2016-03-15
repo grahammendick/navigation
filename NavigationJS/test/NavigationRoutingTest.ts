@@ -1412,7 +1412,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
+                { key: 's', route: 'ab/{w?}/{x?}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
             ]);
         });
 
