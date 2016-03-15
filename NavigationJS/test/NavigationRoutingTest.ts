@@ -801,6 +801,77 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('One Param Two Segment One Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{x}/cd' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abcde/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/abcde/cd?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/abcde/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'f' }), '/abcde/cd?y=f');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'de' }), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+        });
+    });
+
+    describe('One Optional Param Two Segment One Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{x?}/cd' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/ab/cd?y=f');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'f');
+            var { data } = stateNavigator.parseLink('/abcde/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/abcde/cd?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'f' }), '/ab/cd?y=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/abcde/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'f' }), '/abcde/cd?y=f');
+        });
+    });
+
     describe('One Param One Segment Default', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
