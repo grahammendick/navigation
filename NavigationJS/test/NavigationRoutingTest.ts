@@ -4333,6 +4333,49 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('One Optional Splat Param One Mixed Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{*x?}', defaults: { x: ['cde', 'fg'] } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cde');
+            assert.strictEqual(data.x[1], 'fg');
+            var { data } = stateNavigator.parseLink('/abcde/fg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cde');
+            assert.strictEqual(data.x[1], 'fg');
+            var { data } = stateNavigator.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            var { data } = stateNavigator.parseLink('/abcd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/acd'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cde', 'fg'] }), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd'] }), '/abcd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd', 'efg'] }), '/abcd/efg');
+        });
+    });
+
     describe('Without Types Splat Conflicting Default And Default Type', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
