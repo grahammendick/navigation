@@ -1824,7 +1824,7 @@ describe('MatchTest', function () {
     describe('Extra Defaults', function () {
         it('should match', function() {
             var stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' } }
+                { key: 's', route: '{x?}', defaults: { x: 'a', y: 'b' } }
             ]);
             var { data } = stateNavigator.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 2);
