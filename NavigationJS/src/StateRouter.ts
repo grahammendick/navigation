@@ -47,6 +47,7 @@ class StateRouter {
     private static findBestMatch(routes: Route[], data: any, arrayData: { [index: string]: string[] }): MatchInfo {
         var bestMatch: MatchInfo;
         var bestMatchCount = -1;
+        var bestMatchParamCount = -1;
         for(var i = 0; i < routes.length; i++) {
             var route = routes[i];
             var combinedData = StateRouter.getCombinedData(route, data, arrayData);
@@ -60,9 +61,10 @@ class StateRouter {
                         count++;
                     }
                 }
-                if (count > bestMatchCount) {
+                if (count > bestMatchCount || (count == bestMatchCount && route.params.length < bestMatchParamCount)) {
                     bestMatch = { route: route, data: routeData, routePath: routePath };
                     bestMatchCount = count;
+                    bestMatchParamCount = route.params.length;
                 }
             }
         }

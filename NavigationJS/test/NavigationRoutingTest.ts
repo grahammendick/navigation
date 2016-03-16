@@ -2523,6 +2523,21 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Two Route Reverse Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['{x}/{y}', '{x}'], defaults: { y: 's' } }
+            ]);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'a' }), '/a');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'a', y: 'b' }), '/a/b');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'a', y: 's' }), '/a');
+        });
+    });
+
     describe('Two Route Optional Parent Child', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
