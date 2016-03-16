@@ -2191,7 +2191,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Parent Child', function () {
+    describe('Expand Route', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -2242,7 +2242,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Mixed Parent Child', function () {
+    describe('Expand Route Mixed', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -2296,7 +2296,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Optional Mixed Parent Child', function () {
+    describe('Expand Route Optional Mixed', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -2350,7 +2350,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Optional Mixed Grand Parent Child', function () {
+    describe('Expand Route Expand Optional Mixed', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -2523,7 +2523,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Optional Parent Child', function () {
+    describe('Expand Route Optional', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -2577,7 +2577,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Optional Grand Parent Child', function () {
+    describe('Expand Route Expand Optional', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
