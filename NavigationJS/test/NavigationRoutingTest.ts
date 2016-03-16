@@ -3206,15 +3206,21 @@ describe('MatchTest', function () {
     describe('Without Types Expand Route Default', function () {
         it('should build', function() {
             var stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '+a/{x}+/b/{y}', trackTypes: false, defaults: { y: 2 } }
+                { key: 's', route: '+a/{x}+/b/{y}', trackTypes: false, defaults: { x: '3', y: 2 } }
             ]);
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: 2 }), '/a/1');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: '2' }), '/a/1');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1 }), '/a/1');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '1' }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3 }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '3' }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: 2 }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: '2' }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, y: 2 }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '3', y: '2' }), '/');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: 3 }), '/a/1/b/3');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: '3' }), '/a/1/b/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, y: 3 }), '/a/3/b/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '3', y: '3' }), '/a/3/b/3');
         });
     });
 
