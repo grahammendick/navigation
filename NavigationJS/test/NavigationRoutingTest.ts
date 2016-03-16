@@ -5471,4 +5471,50 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/x}?x=ab');
         });
     });
+
+    describe('Leading and Trailing Slash', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '/a/{x}/' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/a/b');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'b');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'b' }), '/a/b');
+        });
+    });
+
+    describe('Expand Route Leading and Trailing Slash', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '/abc/+{x}/+def/{y}/' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+        });
+    });
 });
