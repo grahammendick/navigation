@@ -2406,7 +2406,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'abc/{x}+/def/{y?}', defaults: { y: 's' } }
+                { key: 's', route: 'abc/{x}+/def/{y}', defaults: { y: 's' } }
             ]);
         });
 
@@ -2429,10 +2429,6 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 'de');
             assert.strictEqual(data.y, 'gh');
             assert.strictEqual(data.z, 'i');
-            var { data } = stateNavigator.parseLink('/abc/de/def');
-            assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data.x, 'de');
-            assert.strictEqual(data.y, 's');
         });
 
         it('should not match', function() {
@@ -2441,6 +2437,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
         });
