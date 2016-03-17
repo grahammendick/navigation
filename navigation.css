@@ -158,6 +158,7 @@ div.app{
 #article table{
     font-size:inherit;
     width:100%;
+    margin:0 0 2% 0;
     border-collapse: collapse;
     word-break:break-word;
 }

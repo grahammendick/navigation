@@ -71,12 +71,20 @@
   {key: 'compose'}
 ]);</code></pre>
             <h2>Handling Optional Data</h2>
-            <p></p>
+            <p>
+                Introduce expand, remind of the default value so don't always pass. It's optional data.
+                Don't want to always pass a value, want the url to stay /open/12 when no expand passed.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}, defaults: {expand: false}},
   {key: 'compose'}
 ]);</code></pre>
+            <p>
+                Can't just set the route to 'open/{id}/{expand}' because then it won't match open/{id}
+                when expand isn't provided. You can have the Url look however you want - there are three
+                different ways for handling the optional data.
+            </p>
             <table>
                 <tr>
                     <th>Url</th>
@@ -95,7 +103,9 @@
                     <td>['open/{id}', '{expanded}/history/{id}']</td>
                 </tr>
             </table>
-            <p></p>
+            <p>
+                Don't need to add a default type of 'boolean' because it's worked out from the default value.
+            </p>
             <div class="Note">
                 <h2>Note</h2>
                 Add more text
