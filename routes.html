@@ -73,7 +73,8 @@
             <h2>Handling Optional Data</h2>
             <p>
                 Introduce expand, remind of the default value so don't always pass. It's optional data.
-                Don't want to always pass a value, want the url to stay /open/12 when no expand passed.
+                Don't want to always pass a value, want the url to stay /open/12 when no expand passed
+                or when passed as false, the default value. Only want a different Url when expand true.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -81,8 +82,9 @@
   {key: 'compose'}
 ]);</code></pre>
             <p>
-                Can't just set the route to 'open/{id}/{expand}' because then it won't match open/{id}
-                when expand isn't provided. You can have the Url look however you want - there are three
+                By default it's passed in query string, what if want it as a route parameter.
+                Can't just set the route to 'open/{id}/{expand}' because expand is mandatory so it won't match 
+                open/12 when expand isn't provided. You can have the Url look however you want - there are three
                 different ways for handling the optional data.
             </p>
             <table>
