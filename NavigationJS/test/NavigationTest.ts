@@ -3072,6 +3072,21 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Expand Route Navigate', function () {
+        it('should go to State', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 's' },
+                { key: 's1', route: 'abc/{x}+/def/{y}' }
+            ]);
+            stateNavigator.navigateLink('/abc/de');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('abc/de/def/gh');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('/s');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        });
+    });
+    
     describe('Two Route Root Navigate', function () {
         it('should go to State', function() {
             var stateNavigator = new Navigation.StateNavigator([
@@ -3084,6 +3099,38 @@ describe('Navigation', function () {
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
             stateNavigator.navigateLink('/s');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        });
+    });
+    
+    describe('Expand Route Root Navigate', function () {
+        it('should go to State', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '+abc/{x}' },
+                { key: 's1', route: 's' }
+            ]);
+            stateNavigator.navigateLink('/abc/de');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+            stateNavigator.navigateLink('/');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+            stateNavigator.navigateLink('/s');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        });
+    });
+
+    describe('Expand And Two Route Navigate', function () {
+        it('should go to State', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 's' },
+                { key: 's1', route: ['abc/{x}+/def/{y}', 'ghi/{y}'] }
+            ]);
+            stateNavigator.navigateLink('/abc/de');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('abc/de/def/gh');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('/ghi/jk');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('/s');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
         });
     });
 

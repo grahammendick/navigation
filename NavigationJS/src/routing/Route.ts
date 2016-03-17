@@ -18,7 +18,7 @@ class Route {
         var segment: Segment;
         var pattern: string = '';
         for (var i = 0; i < subPaths.length; i++) {
-            segment = new Segment(subPaths[i], segment ? segment.optional : true, this.defaults);
+            segment = new Segment(subPaths[i], segment ? segment.optional : true,this.defaults);
             this.segments.unshift(segment);
             pattern = segment.pattern + pattern;
             var params: { name: string; optional: boolean; splat: boolean }[] = [];

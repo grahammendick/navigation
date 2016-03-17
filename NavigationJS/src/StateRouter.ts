@@ -47,6 +47,7 @@ class StateRouter {
     private static findBestMatch(routes: Route[], data: any, arrayData: { [index: string]: string[] }): MatchInfo {
         var bestMatch: MatchInfo;
         var bestMatchCount = -1;
+        var bestMatchParamCount = -1;
         for(var i = 0; i < routes.length; i++) {
             var route = routes[i];
             var combinedData = StateRouter.getCombinedData(route, data, arrayData);
@@ -60,9 +61,10 @@ class StateRouter {
                         count++;
                     }
                 }
-                if (count > bestMatchCount) {
+                if (count > bestMatchCount || (count == bestMatchCount && route.params.length < bestMatchParamCount)) {
                     bestMatch = { route: route, data: routeData, routePath: routePath };
                     bestMatchCount = count;
+                    bestMatchParamCount = route.params.length;
                 }
             }
         }
@@ -139,11 +141,22 @@ class StateRouter {
         var routes: string[] = [];
         var route = state.route;
         if (typeof route === 'string') {
-            routes.push(route);
+            routes = routes.concat(StateRouter.expandRoute(route));
         } else {
             for(var i = 0; i < route.length; i++) {
-                routes.push(route[i]);
+                routes = routes.concat(StateRouter.expandRoute(route[i]));
             }
+        }
+        return routes;
+    }
+    
+    private static expandRoute(route: string): string[] {
+        var routes: string[] = [];
+        var subRoutes = route.split('+');
+        var expandedRoute = '';
+        for(var i =0; i < subRoutes.length; i++) {
+            expandedRoute += subRoutes[i];
+            routes.push(expandedRoute);
         }
         return routes;
     }

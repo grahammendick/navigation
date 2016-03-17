@@ -689,6 +689,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/ab/cdefgh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/abcdefgh//'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/abcde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abe'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
@@ -701,7 +702,53 @@ describe('MatchTest', function () {
 
         it('should not build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), null);
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'fghh' }), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'fgh' }), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+        });
+    });
+
+    describe('Two Param One Optional One Mixed Segment', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{x?}e{y}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abcdefgh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'fgh');
+            var { data } = stateNavigator.parseLink('/abcdefgh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'fgh');
+            assert.strictEqual(data.z, 'i');
+            var { data } = stateNavigator.parseLink('/abefgh');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'fgh');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ abcdefgh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/cdefgh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcdefgh//'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abe'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd', y: 'fgh' }), '/abcdefgh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd', y: 'fgh', z: 'i' }), '/abcdefgh?z=i');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'fgh' }), '/abefgh');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), null);
             assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
         });
     });
@@ -754,11 +801,123 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('One Param Two Segment One Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{x}/cd' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abcde/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/abcde/cd?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/abcde/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'f' }), '/abcde/cd?y=f');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'de' }), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+        });
+    });
+
+    describe('One Optional Param Two Segment One Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{x?}/cd' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/ab/cd?y=f');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'f');
+            var { data } = stateNavigator.parseLink('/abcde/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/abcde/cd?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'f' }), '/ab/cd?y=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/abcde/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'f' }), '/abcde/cd?y=f');
+        });
+    });
+
     describe('One Param One Segment Default', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: '{x}', defaults: { x: 'cde' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            var { data } = stateNavigator.parseLink('/ab?z=cd');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.z, 'cd');
+            var { data } = stateNavigator.parseLink('/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/cde?z=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.z, 'fg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab//'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab', z: 'cd' }), '/ab?z=cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/cde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', z: 'fg' }), '/cde?z=fg');
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/cde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'fg' }), '/cde?z=fg');
+        });
+    });
+
+    describe('One Optional Param One Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{x?}', defaults: { x: 'cde' } }
             ]);
         });
 
@@ -794,11 +953,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Default Number', function () {
+    describe('One Optional Param One Segment Default Number', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: 345 } }
+                { key: 's', route: '{x?}', defaults: { x: 345 } }
             ]);
         });
 
@@ -837,11 +996,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Default Boolean', function () {
+    describe('One Optional Param One Segment Default Boolean', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: true } }
+                { key: 's', route: '{x?}', defaults: { x: true } }
             ]);
         });
 
@@ -880,11 +1039,11 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Default Date', function () {
+    describe('One Optional Param One Segment Default Date', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: new Date(2010, 3, 7) } }
+                { key: 's', route: '{x?}', defaults: { x: new Date(2010, 3, 7) } }
             ]);
         });
 
@@ -1066,6 +1225,52 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'cde');
             assert.strictEqual(data.y, 'fg');
+            var { data } = stateNavigator.parseLink('/ab/ccdd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ccdd');
+            var { data } = stateNavigator.parseLink('/ab/ccdd?y=ee');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ccdd');
+            assert.strictEqual(data.y, 'ee');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ ab/cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/d/e'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/a/b/d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/cab/d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/ab/cde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/ab/cde?y=fg');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ccdd' }), '/ab/ccdd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ccdd', y: 'ee' }), '/ab/ccdd?y=ee');
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab/ccdd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'ee' }), '/ab/ccdd?y=ee');
+        });
+    });
+
+    describe('One Optional Param Two Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab/{x?}', defaults: { x: 'ccdd' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab/cde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cde');
+            var { data } = stateNavigator.parseLink('/ab/cde?y=fg');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cde');
+            assert.strictEqual(data.y, 'fg');
             var { data } = stateNavigator.parseLink('/ab');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ccdd');
@@ -1100,6 +1305,64 @@ describe('MatchTest', function () {
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/aa/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateNavigator.parseLink('/aa/bbb?z=cccc');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'bbb');
+            assert.strictEqual(data.z, 'cccc');
+            var { data } = stateNavigator.parseLink('/aa/c');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'aa');
+            assert.strictEqual(data.y, 'c');
+            var { data } = stateNavigator.parseLink('/ab/bbb');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'bbb');
+            var { data } = stateNavigator.parseLink('/ab/c');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'c');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/aa/bbb/e'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/aa'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+   
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'aa', y: 'bbb' }), '/aa/bbb');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'aa', y: 'bbb', z: 'cccc' }), '/aa/bbb?z=cccc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'aa', y: 'c' }), '/aa/c');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'aa', y: 'c', z: 'd' }), '/aa/c?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'bbb' }), '/ab/bbb');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'bbb', z: 'cccc' }), '/ab/bbb?z=cccc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'c' }), '/ab/c');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'c', z: 'd' }), '/ab/c?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'aa' }), '/aa/c');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'aa', z: 'd' }), '/aa/c?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab', y: 'c' }), '/ab/c');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab', y: 'c', z: 'd' }), '/ab/c?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/ab/c');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab', z: 'd' }), '/ab/c?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab/c');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'd' }), '/ab/c?z=d');
+        });
+    });
+
+    describe('Two Optional Param Two Segment Two Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{x?}/{y?}', defaults: { x: 'ab', y: 'c' } }
             ]);
         });
 
@@ -1162,7 +1425,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}/{y}', defaults: { y: 'ab' } }
+                { key: 's', route: '{x}/{y?}', defaults: { y: 'ab' } }
             ]);
         });
 
@@ -1212,7 +1475,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}/{y?}', defaults: { x: 'abc' } }
+                { key: 's', route: '{x?}/{y?}', defaults: { x: 'abc' } }
             ]);
         });
 
@@ -1267,7 +1530,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'ab/{w}/{x}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
+                { key: 's', route: 'ab/{w?}/{x?}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
             ]);
         });
 
@@ -1460,32 +1723,32 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'a/{=*"()\'-_+~@:?><.;[],!£$%^#&}', defaults: { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' } }
+                { key: 's', route: 'a/{=*"()\'-_~@:?><.;[],!£$%^#&?}', defaults: { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' } }
             ]);
         });
         
         it('should match', function() {
             var { data } = stateNavigator.parseLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
             var { data } = stateNavigator.parseLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
             assert.strictEqual(data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
             var { data } = stateNavigator.parseLink('/a');
             assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
             var { data } = stateNavigator.parseLink('/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data['=*"()\'-_+~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
             assert.strictEqual(data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
         });
 
         it('should build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_+~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/a');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
         });
@@ -1495,23 +1758,23 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '.+*\^$\[\]()\'/{x}' }
+                { key: 's', route: '.*\^$\[\]()\'/{x}' }
             ]);
         });
         
         it('should match', function() {
-            var { data } = stateNavigator.parseLink('/.+*\^$\[\]()\'/abc');
+            var { data } = stateNavigator.parseLink('/.*\^$\[\]()\'/abc');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'abc');
-            var { data } = stateNavigator.parseLink('/.+*\^$\[\]()\'/abc?y=de');
+            var { data } = stateNavigator.parseLink('/.*\^$\[\]()\'/abc?y=de');
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'abc');
             assert.strictEqual(data.y, 'de');
         });
 
         it('should build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'abc' }), '/.+*\^$\[\]()\'/abc');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'abc', y: 'de' }), '/.+*\^$\[\]()\'/abc?y=de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'abc' }), '/.*\^$\[\]()\'/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'abc', y: 'de' }), '/.*\^$\[\]()\'/abc?y=de');
         });
     });
 
@@ -1531,22 +1794,20 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 2);
             assert.strictEqual(data.x, 'cde');
             assert.strictEqual(data.y, 'fg');
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 0);
         });
 
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/ab/cde'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/abcd//'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator.parseLink('/ab'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
         });
 
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde' }), '/abcde');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cde', y: 'fg' }), '/abcde?y=fg');
-        });
-
-        it('should not build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab');
         });
     });
 
@@ -1681,7 +1942,7 @@ describe('MatchTest', function () {
     describe('Extra Defaults', function () {
         it('should match', function() {
             var stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', defaults: { x: 'a', y: 'b' } }
+                { key: 's', route: '{x?}', defaults: { x: 'a', y: 'b' } }
             ]);
             var { data } = stateNavigator.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 2);
@@ -1748,6 +2009,44 @@ describe('MatchTest', function () {
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: ['', 'abc/{x}'] }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/?y=d');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'd');
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de?y=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'f');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('//abc/de'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'd' }), '/?y=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'f' }), '/abc/de?y=f');
+        });
+    });
+
+    describe('Expand Route One With Param', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '+abc/{x}' }
             ]);
         });
 
@@ -1892,11 +2191,276 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Expand Route', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc/{x}+/def/{y}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'g' }), null);
+        });
+    });
+
+    describe('Expand Route Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc{x}+/def/{y}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abcde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abcde?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abcde/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abcde/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abdde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abcde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abcde/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abcde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abcde?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abcde/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abcde/def/gh?z=f');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'g' }), null);
+        });
+    });
+
+    describe('Expand Route Optional Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc{x?}+/def/{y}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abcde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/def/gh');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abcde?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abcde/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abcde/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abdde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abcde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abcde/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abcde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abcde?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abcde/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abcde/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'g' }), '/abc?z=g');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc/def/gh');
+        });
+    });
+
+    describe('Expand Route Expand Optional Mixed', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc+{x}+/def/{y}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abcde');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abcde?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abcde/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abcde/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abdde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abcde/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abcde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abcde/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abcde');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abcde?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abcde/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abcde/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'g' }), '/abc?z=g');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
+        });
+    });
+
+    describe('Expand Route Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc/{x}+/def/{y}', defaults: { y: 's' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 's');
+            var { data } = stateNavigator.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 's');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 's' }), '/abc/de');
+        });
+        
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), null);
+        });
+    });
+
     describe('Two Route Default', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: ['abc/{x}', 'def/{y}'], defaults: { x: 's' } }
+                { key: 's', route: ['abc/{x?}', 'def/{y}'], defaults: { x: 's' } }
             ]);
         });
 
@@ -1959,7 +2523,22 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Two Route Optional', function () {
+    describe('Two Route Reverse Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['{x}/{y}', '{x}'], defaults: { y: 's' } }
+            ]);
+        });
+        
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'a' }), '/a');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'a', y: 'b' }), '/a/b');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'a', y: 's' }), '/a');
+        });
+    });
+
+    describe('Two Route Optional Parent Child', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -1998,6 +2577,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
             assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
         });
 
@@ -2008,6 +2588,115 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
+        });
+    });
+
+    describe('Expand Route Optional', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['abc/{x?}+/def/{y}'] }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abc?z=d');
+            assert.strictEqual(data.z, 'd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'd' }), '/abc?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
+        });
+    });
+
+    describe('Expand Route Expand Optional', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['abc+/{x}+/def/{y}'] }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abc?z=d');
+            assert.strictEqual(data.z, 'd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'd' }), '/abc?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh', z: 'f' }), '/abc/de/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
         });
     });
 
@@ -2015,7 +2704,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: ['def/{y}', 'abc/{x}'], defaults: { x: 2 } }
+                { key: 's', route: ['def/{y}', 'abc/{x?}'], defaults: { x: 2 } }
             ]);
         });
 
@@ -2068,6 +2757,64 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Expand Route Default Number', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc/{x}+/def/{y?}', defaults: { y: 2 } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 2);
+            var { data } = stateNavigator.parseLink('/abc/de?z=f');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 2);
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abc/de/def/3');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 3);
+            var { data } = stateNavigator.parseLink('/abc/de/def/3?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 3);
+            assert.strictEqual(data.z, 'i');
+            var { data } = stateNavigator.parseLink('/abc/de/def');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 2);
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/3/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/deg/3'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de/def/3'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', z: 'f' }), '/abc/de?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 3 }), '/abc/de/def/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 3, z: 'f' }), '/abc/de/def/3?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 2 }), '/abc/de');
+        });
+        
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 3 }), null);
+        });
+    });
+
     describe('Two Route Default Type Number', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
@@ -2112,6 +2859,61 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Expand Route Default Type Number', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc+/{x}+/def/{y}', defaultTypes: { x: 'number' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abc?z=d');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.z, 'd');
+            var { data } = stateNavigator.parseLink('/abc/3');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 3);
+            var { data } = stateNavigator.parseLink('/abc/3?z=f');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.z, 'f');
+            var { data } = stateNavigator.parseLink('/abc/3/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.y, 'gh');
+            var { data } = stateNavigator.parseLink('/abc/3/def/gh?z=i');
+            assert.strictEqual(Object.keys(data).length, 3);
+            assert.strictEqual(data.x, 3);
+            assert.strictEqual(data.y, 'gh');
+            assert.strictEqual(data.z, 'i');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/def/gh/i'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abd/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/de/deg/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ abc/de/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def/gh'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { z: 'd' }), '/abc?z=d');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3 }), '/abc/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, z: 'f' }), '/abc/3?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, y: 'gh' }), '/abc/3/def/gh');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, y: 'gh', z: 'f' }), '/abc/3/def/gh?z=f');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/abc?y=gh');
+        });
+    });
+
     describe('Without Types', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
@@ -2143,7 +2945,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 2 } }
+                { key: 's', route: '{x?}', trackTypes: false, defaults: { x: 2 } }
             ]);
         });
 
@@ -2198,7 +3000,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{x?}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
             ]);
         });
 
@@ -2227,7 +3029,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{x?}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -2399,7 +3201,7 @@ describe('MatchTest', function () {
     describe('Without Types Two Route Default', function () {
         it('should build', function() {
             var stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: ['{x}', 'a/{y}'], trackTypes: false, defaults: { x: 2 } }
+                { key: 's', route: ['{x?}', 'a/{y}'], trackTypes: false, defaults: { x: 2 } }
             ]);
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 2, y: 1 }), '/a/1');
@@ -2410,6 +3212,27 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '2' }), '/');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 1 }), '/a/1');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: 2 }), '/1?y=2');
+        });
+    });
+
+    describe('Without Types Expand Route Default', function () {
+        it('should build', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '+a/{x}+/b/{y}', trackTypes: false, defaults: { x: '3', y: 2 } }
+            ]);
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1 }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '1' }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3 }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '3' }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: 2 }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: '2' }), '/a/1');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, y: 2 }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '3', y: '2' }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: 3 }), '/a/1/b/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 1, y: '3' }), '/a/1/b/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 3, y: 3 }), '/a/3/b/3');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '3', y: '3' }), '/a/3/b/3');
         });
     });
 
@@ -3582,6 +4405,44 @@ describe('MatchTest', function () {
         });
 
         it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ef/ghi');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ef');
+            assert.strictEqual(data.x[1], 'ghi');
+            var { data } = stateNavigator.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'abcd');
+            var { data } = stateNavigator.parseLink('/ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'ab');
+            assert.strictEqual(data.x[1], 'cd');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ef/ghi');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ef', 'ghi'] }), '/ef/ghi');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ghi', 'ef'] }), '/ghi/ef');
+        });
+    });
+
+    describe('One Optional Splat Param One Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{*x?}', defaults: { x: ['ef', 'ghi'] } }
+            ]);
+        });
+
+        it('should match', function() {
             var { data } = stateNavigator.parseLink('/');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x.length, 2);
@@ -3732,7 +4593,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'ab/{*x}', defaults: { x: ['ef', 'ghi'] } }
+                { key: 's', route: 'ab/{*x?}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
 
@@ -4017,6 +4878,44 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd', 'efg'], y: 'hi' }), '/b/cd1-efg/hi');
         });
     })
+    
+    describe('Expand Param Splat and Not Splat', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'a/{x}+/b/{*y}', defaultTypes: { y: 'stringarray' } }
+            ]);
+        });
+        
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/a/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            var { data } = stateNavigator.parseLink('/a/cd/b/ef');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'ef');
+            var { data } = stateNavigator.parseLink('/a/cd/b/ef/ghi');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'ef');
+            assert.strictEqual(data.y[1], 'ghi');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/a/cd/b'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), '/a/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd', y: ['ef'] }), '/a/cd/b/ef');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd', y: ['ef', 'ghi'] }), '/a/cd/b/ef/ghi');
+        });
+    })
 
     describe('One Splat Param Two Segment Default', function () {
         var stateNavigator: Navigation.StateNavigator;
@@ -4105,11 +5004,54 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('One Optional Splat Param One Mixed Segment Default', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'ab{*x?}', defaults: { x: ['cde', 'fg'] } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cde');
+            assert.strictEqual(data.x[1], 'fg');
+            var { data } = stateNavigator.parseLink('/abcde/fg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cde');
+            assert.strictEqual(data.x[1], 'fg');
+            var { data } = stateNavigator.parseLink('/abcd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 1);
+            assert.strictEqual(data.x[0], 'cd');
+            var { data } = stateNavigator.parseLink('/abcd/efg');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x.length, 2);
+            assert.strictEqual(data.x[0], 'cd');
+            assert.strictEqual(data.x[1], 'efg');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/acd'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cde', 'fg'] }), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd'] }), '/abcd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd', 'efg'] }), '/abcd/efg');
+        });
+    });
+
     describe('Without Types Splat Conflicting Default And Default Type', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{*x?}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -4141,7 +5083,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{*x}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
+                { key: 's', route: '{*x?}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
             ]);
         });
         it('should match', function() {
@@ -4298,7 +5240,7 @@ describe('MatchTest', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{*x}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
+                { key: 's', route: '{*x?}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
             ]);
         });
 
@@ -4494,10 +5436,10 @@ describe('MatchTest', function () {
         var stateNavigator1: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator0 = new Navigation.StateNavigator([
-                { key: 's', route: 'ab/{x}', defaults: { x: 'cd' } }
+                { key: 's', route: 'ab/{x?}', defaults: { x: 'cd' } }
             ]);
             stateNavigator1 = new Navigation.StateNavigator([
-                { key: 's', route: 'cd/{x}', defaults: { x: 12 } }
+                { key: 's', route: 'cd/{x?}', defaults: { x: 12 } }
             ]);
         });
 
@@ -4589,6 +5531,144 @@ describe('MatchTest', function () {
         it('should build', function() {
             assert.strictEqual(stateNavigator0.getNavigationLink('s', { x: 'a b' }), '/0/a0b');
             assert.strictEqual(stateNavigator1.getNavigationLink('s', { x: 'a b' }), '/1/a1b');
+        });
+    });
+
+    describe('First Half Param', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{x' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/{x');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/{x?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/{x');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/{x?x=ab');
+        });
+    });
+
+    describe('Last Half Param', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'x}' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/x}');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/x}?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/x}');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/x}?x=ab');
+        });
+    });
+
+    describe('Leading and Trailing Slash', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '/a/{x}/' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/a/b');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'b');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'b' }), '/a/b');
+        });
+    });
+
+    describe('Expand Route Leading and Trailing Slash', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '/abc/+{x}/+def/{y}/' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 0);
+            var { data } = stateNavigator.parseLink('/abc/de');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'de');
+            var { data } = stateNavigator.parseLink('/abc/de/def/gh');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'de');
+            assert.strictEqual(data.y, 'gh');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/abc');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de' }), '/abc/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'de', y: 'gh' }), '/abc/de/def/gh');
+        });
+    });
+
+    describe('Expand and Two Route', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['abc/{x}+/def/{y}', 'ghi/{y}'] }
+            ]);
+        });
+
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/abc/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            var { data } = stateNavigator.parseLink('/abc/ab/def/de');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(data.y, 'de');
+            var { data } = stateNavigator.parseLink('/ghi/gh');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'gh');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc/ab/def'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ghi'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/abc/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab', y: 'de' }), '/abc/ab/def/de');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { y: 'gh' }), '/ghi/gh');
+        });
+
+        it('should not build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
         });
     });
 });
