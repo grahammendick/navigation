@@ -3117,6 +3117,23 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Expand And Two Route Navigate', function () {
+        it('should go to State', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 's' },
+                { key: 's1', route: ['abc/{x}+/def/{y}', 'ghi/{y}'] }
+            ]);
+            stateNavigator.navigateLink('/abc/de');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('abc/de/def/gh');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('/ghi/jk');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.navigateLink('/s');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        });
+    });
+
     describe('Clear State Context', function() {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function() {
