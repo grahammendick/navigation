@@ -159,6 +159,7 @@ div.app{
     font-size:inherit;
     width:100%;
     border-collapse: collapse;
+    word-break:break-word;
 }
 #article th, #article td{
     border:0.1em solid #000;
@@ -167,9 +168,6 @@ div.app{
 #article th{
     background-color:#fff5d7;
     font-weight:normal;
-}
-#article td{
-    padding-left:5%;
 }
 #menu a{
     display:block;
@@ -221,6 +219,9 @@ div.app{
     #article h1{
         font-weight:normal;
         font-size:2.2em;
+    }
+    #article td{
+        padding-left:5%;
     }
 }
 
