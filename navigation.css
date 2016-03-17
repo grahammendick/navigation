@@ -40,7 +40,7 @@ body{
 #banner #github:hover{
     background-image: url('github-on.png');
 }
-h2{
+h2,h3{
     font-weight:normal;
     margin:0.8% 0 1.8% 0;
     clear:left;
@@ -178,10 +178,6 @@ div.app{
     margin:0 0 3px 0;
     font-size:1em;
     font-weight:bold;
-}
-.note ul{
-    padding-left:3%;
-    margin:0 0 2% 0;
 }
 .note code{
     font-size:inherit;
