@@ -4878,6 +4878,44 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd', 'efg'], y: 'hi' }), '/b/cd1-efg/hi');
         });
     })
+    
+    describe('Expand Param Splat and Not Splat', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'a/{x}+/b/{*y}', defaultTypes: { y: 'stringarray' } }
+            ]);
+        });
+        
+        it('should match', function() {
+            var { data } = stateNavigator.parseLink('/a/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            var { data } = stateNavigator.parseLink('/a/cd/b/ef');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y.length, 1);
+            assert.strictEqual(data.y[0], 'ef');
+            var { data } = stateNavigator.parseLink('/a/cd/b/ef/ghi');
+            assert.strictEqual(Object.keys(data).length, 2);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y.length, 2);
+            assert.strictEqual(data.y[0], 'ef');
+            assert.strictEqual(data.y[1], 'ghi');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/a/cd/b'), /Url is invalid/, '');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd' }), '/a/cd');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd', y: ['ef'] }), '/a/cd/b/ef');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'cd', y: ['ef', 'ghi'] }), '/a/cd/b/ef/ghi');
+        });
+    })
 
     describe('One Splat Param Two Segment Default', function () {
         var stateNavigator: Navigation.StateNavigator;
