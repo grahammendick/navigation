@@ -146,7 +146,7 @@ div.app{
     margin-right:2%;
 }
 #article{
-    margin-left:26%;
+    margin-left:25%;
     margin-right:1%;
 }
 #article h1{
@@ -154,6 +154,22 @@ div.app{
     padding:15px 0;
     font-weight:bold;
     font-size:1.3em;
+}
+#article table{
+    font-size:inherit;
+    width:100%;
+    border-collapse: collapse;
+}
+#article th, #article td{
+    border:0.1em solid #000;
+    padding:1% 0;
+}
+#article th{
+    background-color:#fff5d7;
+    font-weight:normal;
+}
+#article td{
+    padding-left:5%;
 }
 #menu a{
     display:block;

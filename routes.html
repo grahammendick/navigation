@@ -61,7 +61,6 @@
   {key: 'mail', route: 'open', defaultTypes: {id: 'number'}},
   {key: 'compose'}
 ]);</code></pre>
-            <p></p>
             <h3>3. Configuring Route Parameters</h3>
             <p>
                 By default the Navigation router passes data in the query string. We'll change the Url from '/open?id=12' to '/open/12' by specifying the id as a route parameter.
@@ -75,21 +74,28 @@
             <p></p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
-  {key: 'mail', route: 'open/{id}/{expanded?}', defaultTypes: {id: 'number'}},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}, defaults: {expand: false}},
   {key: 'compose'}
 ]);</code></pre>
+            <table>
+                <tr>
+                    <th>Url</th>
+                    <th>Route</th>
+                </tr>
+                <tr>
+                    <td>/open/12/true</td>
+                    <td>'open/{id}/{expanded?}'</td>
+                </tr>
+                <tr>
+                    <td>/open/12/history/true</td>
+                    <td>'open/{id}+/history/{expanded}'</td>
+                </tr>
+                <tr>
+                    <td>/open/true/12</td>
+                    <td>['open/{id}', 'open/{expanded}/{id}']</td>
+                </tr>
+            </table>
             <p></p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'inbox', route: ''},
-  {key: 'mail', route: 'open/{id}+/history/{expanded}', defaultTypes: {id: 'number'}},
-  {key: 'compose'}
-]);</code></pre>
-            <p></p>
-            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
-  {key: 'inbox', route: ''},
-  {key: 'mail', route: ['open/{id}', 'open/{expanded}/{id}'], defaultTypes: {id: 'number'}},
-  {key: 'compose'}
-]);</code></pre>
             <div class="Note">
                 <h2>Note</h2>
                 Add more text
