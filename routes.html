@@ -72,9 +72,7 @@
 ]);</code></pre>
             <h2>Handling Optional Data</h2>
             <p>
-                Introduce expand, remind of the default value so don't always pass. It's optional data.
-                Don't want to always pass a value, want the url to stay /open/12 when no expand passed
-                or when passed as false, the default value. Only want a different Url when expand true.
+                We'll pass an expand data item to the mail State to indicate whether to display the email's thread history expanded. We'll assign it a default value so that the history is collapsed by default. The Url that opens and expands an email with an id of 12 looks like 'open/12?expand=true'. We don't have to set expand's default type because it's automatically deduced from the default value.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -82,10 +80,7 @@
   {key: 'compose'}
 ]);</code></pre>
             <p>
-                By default it's passed in query string, what if want it as a route parameter.
-                Can't just set the route to 'open/{id}/{expand}' because expand is mandatory so it won't match 
-                open/12 when expand isn't provided. You can have the Url look however you want - there are three
-                different ways for handling the optional data.
+                We want expand to be a route parameter and the Url to look like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make expand mandatory and stop the '/open/12' Url from working. Instead we can set the route to 'open/{id}/{expand?}', using the '?' suffix to mark the parameter as optional. The following table summarises the different route patterns you can use for indicating optional route parameters. Which one(s) you use depend on what you want the Url to look like.
             </p>
             <table>
                 <tr>
@@ -105,14 +100,9 @@
                     <td>['open/{id}', '{expanded}/history/{id}']</td>
                 </tr>
             </table>
-            <p>
-                Don't need to add a default type of 'boolean' because it's worked out from the default value.
-            </p>
             <div class="Note">
                 <h2>Note</h2>
-                Add more text
-                Don't have to set a default type for strings
-                If your string values can contain underscores then set <code>trackTypes</code> to false on your State, e.g., <code>{key: 'mail', trackTypes: false}</code>
+                You don't need to configure a default type for a string value because it defaults to 'string'. Once you've finished configuring all the other default types, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', trackTypes: false}</code>
             </div>
         </div>
     </div>
