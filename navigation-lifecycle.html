@@ -37,7 +37,7 @@
             </p>
             <h2>Cancelling Navigation</h2>
             <p>
-                You can intercept a navigation by attaching a function to the originating State's unloading property. The navigation will only continue if you call the unload function passed in, giving you the chance to cancel the navigation. For example, we can attach an unloading function to the 'compose' State of an email application to prevent the user accidentally navigating away before sending their mail.
+                You can intercept a navigation by attaching a function to the originating State's unloading property. The navigation will only continue if you call the unload function passed in, giving you the chance to cancel the navigation. For example, we attach an unloading function to the 'compose' State of an email application to prevent the user accidentally navigating away before sending their mail.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
   if (history || confirm('You've not sent your email. Continue?')) {
@@ -46,7 +46,7 @@
 };</code></pre>
             <h2>Doing Async Work</h2>
             <p>
-                You can also intercept a navigation by attaching a function to the destination State's navigating property. This gives you a chance to suspend the navigation until an async operation completes. In the email example, when a user opens a mail we could fetch the mail data inside a navigating function to avoid displaying a blank screen while it loads. Once the data returns we pass it into the navigate continuation function.
+                You can also intercept a navigation by attaching a function to the destination State's navigating property. This gives you a chance to suspend the navigation until an async operation completes. In the email example, when a user opens a mail we fetch the mail data inside a navigating function to avoid displaying a blank screen while it loads. Once the data returns we pass it into the navigate continuation function.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.navigating = function(data, url, navigate, history) {
   $.getJSON('api/mail/' + data.id, function(resp) {
