@@ -51,20 +51,12 @@
             </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.navigated = function(data) {
   ReactDOM.render(
-    &lt;Inbox page={data.page} />,
+    &lt;Inbox page={data.page} sort={data.sort} />,
     document.getElementById('app'));
 };</code></pre>
             <h2>Remembering Data</h2>
             <p>
-                Remembering the current data is just as important as changing the current data. We mustn't forget about the current sort order when we navigate to the second page of the inbox. Rather than adding the current sort order to the React state of the Inbox component, we can access it from the stateNavigator. It's held in the data bag of the stateContext.                
-            </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
-  navigationData={{page: 2, sort: stateNavigator.stateContext.sort}}
-  stateNavigator={stateNavigator}>
-  Page Two
-&lt;/NavigationReact.RefreshLink></code></pre>
-            <p>
-                Instead of manually adding the current sort order to the navigation data, we can let the RefreshLink component remember it for us. Setting the component's includeCurrentData prop to true asks it to automatically merge our new data with the current data in the stateContext.
+                Remembering the current data is just as important as changing the current data. We mustn't forget the current sort order when we navigate to the second page of the inbox. Instead of manually adding the current sort order to the navigation data, we can let the RefreshLink component remember it for us. Setting the component's includeCurrentData prop to true asks it to automatically merge the new page number with the current data.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
   navigationData={{page: 2}}

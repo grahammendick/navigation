@@ -72,7 +72,7 @@
 ]);</code></pre>
             <h2>Handling Optional Data</h2>
             <p>
-                We'll pass an expand data item to the mail State to indicate whether to display the email's thread history expanded. We'll assign it a default value so that the history is collapsed by default. The Url that opens and expands an email with an id of 12 looks like 'open/12?expand=true'. We don't have to set expand's default type because it's automatically deduced from the default value.
+                We'll pass a boolean to the mail State that indicates whether to expand the mail thread's history. This expand data item is optional so we'll assign it a default value to avoid null checks. The Url that opens and expands an email with an id of 12 looks like 'open/12?expand=true'. We don't have to set expand's default type to 'boolean' because it's automatically deduced from the default value.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -80,7 +80,7 @@
   {key: 'compose'}
 ]);</code></pre>
             <p>
-                We want expand to be a route parameter and the Url to look like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make expand mandatory and stop the '/open/12' Url from working. Instead we can set the route to 'open/{id}/{expand?}', using the '?' suffix to mark the parameter as optional. The following table summarises the different route patterns you can use for indicating optional route parameters. Which one(s) you use depend on what you want the Url to look like.
+                We want expand to be a route parameter so that the Url looks like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make expand mandatory and stop the original Url of '/open/12' from working. Instead we can set the route to 'open/{id}/{expand?}'. The '?' suffix marks the parameter as optional. The following table summarises the different route patterns you can use for optional route parameters. Which one you choose depends on how you want the Url to look.
             </p>
             <table>
                 <tr>
