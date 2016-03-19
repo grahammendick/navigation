@@ -145,6 +145,15 @@ div.app{
     font-size:0.9em;
     margin-right:2%;
 }
+#menu h2{
+    font-size:inherit;
+    font-style:italic;
+    letter-spacing:1px;
+    padding-top:2%;
+}
+#menu h2:nth-of-type(2){
+    padding-top:8%;
+}
 #article{
     margin-left:25%;
     margin-right:1%;
