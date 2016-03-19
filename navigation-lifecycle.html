@@ -33,7 +33,7 @@
             <h2>Cancelling Navigation</h2>
             <p></p>
             <pre><code class="language-jsx">stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
-  if (history || confirm('Any unsaved changes will be lost. Continue?')) {
+  if (history || confirm('You have unsaved changes. Continue?')) {
     unload();
   }
 };</code></pre>

@@ -80,7 +80,10 @@
   {key: 'compose'}
 ]);</code></pre>
             <p>
-                We want expand to be a route parameter so that the Url looks like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make expand mandatory and stop the original Url of '/open/12' from working. Instead we can set the route to 'open/{id}/{expand?}'. The '?' suffix marks the parameter as optional. The following table summarises the different route patterns you can use for optional route parameters. Which one you choose depends on how you want the Url to look.
+                We want expand to be a route parameter so that the Url looks like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make expand mandatory and stop the original Url of '/open/12' from working. Instead we can set the route to 'open/{id}/{expand?}'. The '?' suffix marks the parameter as optional.
+            </p>
+            <p>
+                The following table summarises the different route patterns you can use for optional route parameters. Which one you choose depends on how you want the Url to look.
             </p>
             <table>
                 <tr>
