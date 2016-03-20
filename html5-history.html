@@ -31,7 +31,9 @@
         </div>
         <div id="article">
             <h1>HTML5 History</h1>
-            <p></p>
+            <p>
+                You change from Hash to HTML5 history by passing along a new HTML5HistoryManager when creating the StateNavigator. If your Url's look like 'http://domain/app/route' then pass the 'app' base path into the HTML5HistoryManager constructor.  You can take a look at the <a href="xxx">isomorphic example</a> to see HTML5 history in action.
+            </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail'},
