@@ -32,11 +32,11 @@
         <div id="article">
             <h1>Navigation Lifecycle</h1>
             <p>
-                You've seen how the Navigation router notifies you when a State becomes active by calling the function attached to the State's navigated property. This is how you render different components for different States. You can get notified at different points in the navigation lifecyle by attaching functions to different properties of the originating and destination States.
+                You've seen how the Navigation router notifies you when a <code>State</code> becomes active by calling the function attached to the <code>State's navigated</code> property. This is how you render different components for different <code>States</code>. You can get notified at different points in the navigation lifecyle by attaching functions to different properties of the originating and destination <code>States</code>.
             </p>
             <h2>Cancelling Navigation</h2>
             <p>
-                You can intercept a navigation by attaching a function to the originating State's unloading property. The navigation will only continue if you call the unload function passed in, giving you the chance to cancel the navigation. For example, we attach an unloading function to the 'compose' State of an email application to prevent the user accidentally navigating away before sending their mail.
+                You can intercept a navigation by attaching a function to the originating <code>State's unloading</code> property. The navigation will only continue if you call the <code>unload</code> function passed in, giving you the chance to cancel the navigation. For example, we attach an <code>unloading</code> function to the 'compose' <code>State</code> of an email application to prevent the user accidentally navigating away before sending their mail.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
   if (history || confirm('You've not sent your email. Continue?')) {
@@ -45,7 +45,7 @@
 };</code></pre>
             <h2>Doing Async Work</h2>
             <p>
-                You can also intercept a navigation by attaching a function to the destination State's navigating property. This gives you a chance to suspend the navigation until an async operation completes. In the email example, when a user opens a mail we fetch the mail data inside a navigating function to avoid displaying a blank screen while it loads. Once the data returns we pass it into the navigate continuation function.
+                You can also intercept a navigation by attaching a function to the destination <code>State's navigating</code> property. This gives you a chance to suspend the navigation until an async operation completes. In the email example, when a user opens a mail we fetch the mail data inside a <code>navigating</code> function to avoid displaying a blank screen while it loads. Once the data returns we pass it into the <code>navigate</code> continuation function.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.navigating = function(data, url, navigate, history) {
   $.getJSON('api/mail/' + data.id, function(resp) {
@@ -53,7 +53,7 @@
   });
 };</code></pre>
             <p>
-                The Navigation router passes this asynchrounus data along in the second parameter of the 'mail' State's navigated function.
+                The Navigation router passes this asynchronous data along in the second parameter of the 'mail' <code>State's navigated</code> function.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.navigated = function(data, asyncData) {
   ReactDOM.render(

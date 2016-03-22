@@ -46,7 +46,7 @@
 &lt;/NavigationReact.NavigationLink></code></pre>
             <h3>1. Configuring Routes</h3>
             <p>
-                Because we've not supplied a route for the 'mail' State, the Navigation router uses the State's key instead. We'll change the Url from '/mail?id=121_0' to '/open?id=121_0' by setting the State's route property.
+                Because we've not supplied a route for the 'mail' <code>State</code>, the Navigation router uses the <code>State's key</code> instead. We'll change the Url from '/mail?id=121_0' to '/open?id=121_0' by setting the <code>State's route</code> property.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -55,7 +55,7 @@
 ]);</code></pre>
             <h3>2. Configuring Types</h3>
             <p>
-                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the id is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the id a default type of 'number'. The supported default types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'. 
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the <code>id</code> a default type of 'number'. The supported default types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'. 
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -64,7 +64,7 @@
 ]);</code></pre>
             <h3>3. Configuring Route Parameters</h3>
             <p>
-                By default the Navigation router passes data in the query string. We'll iron out the final crease in the Url, changing it from '/open?id=12' to '/open/12', by specifying the id as a route parameter.
+                By default the Navigation router passes data in the query string. We'll iron out the final crease in the Url, changing it from '/open?id=12' to '/open/12', by specifying the <code>id</code> as a route parameter.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -73,7 +73,7 @@
 ]);</code></pre>
             <h2>Handling Optional Data</h2>
             <p>
-                We'll pass a boolean to the mail State that indicates whether to expand the mail thread's history. This expand data item is optional so we'll assign it a default value to avoid null checks. The Url that opens and expands an email with an id of 12 looks like 'open/12?expand=true'. We don't have to set expand's default type to 'boolean' because it's automatically deduced from the default value.
+                We'll pass a boolean to the mail State that indicates whether to expand the mail thread's history. This expand data item is optional so we'll assign it a default value to avoid null checks. The Url that opens and expands an email with an <code>id</code> of 12 looks like 'open/12?expand=true'. We don't have to set <code>expand's</code> default type to 'boolean' because it's automatically deduced from the default value.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -81,7 +81,7 @@
   {key: 'compose'}
 ]);</code></pre>
             <p>
-                We want expand to be a route parameter so that the Url looks like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make expand mandatory and stop the original Url of '/open/12' from working. Instead we can set the route to 'open/{id}/{expand?}'. The '?' suffix marks the parameter as optional.
+                We want <code>expand</code> to be a route parameter so that the Url looks like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make <code>expand</code> mandatory and stop the original Url of '/open/12' from working. Instead we can set the route to 'open/{id}/{expand?}'. The '?' suffix marks the parameter as optional.
             </p>
             <p>
                 The following table summarises the different route patterns you can use for optional route parameters. Which one you choose depends on how you want the Url to look.
