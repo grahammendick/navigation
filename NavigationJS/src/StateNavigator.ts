@@ -78,7 +78,7 @@ class StateNavigator {
             var crumblessUrl = this.stateContext.crumbTrail[i];
             var { state, data } = this.parseLink(crumblessUrl);
             var url = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 == len));
+            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
         }
         return crumbs;
     }

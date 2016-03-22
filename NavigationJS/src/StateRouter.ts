@@ -61,7 +61,7 @@ class StateRouter {
                         count++;
                     }
                 }
-                if (count > bestMatchCount || (count == bestMatchCount && route.params.length < bestMatchParamCount)) {
+                if (count > bestMatchCount || (count === bestMatchCount && route.params.length < bestMatchParamCount)) {
                     bestMatch = { route: route, data: routeData, routePath: routePath };
                     bestMatchCount = count;
                     bestMatchParamCount = route.params.length;
