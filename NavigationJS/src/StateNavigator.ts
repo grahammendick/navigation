@@ -76,8 +76,6 @@ class StateNavigator {
         var len = this.stateContext.crumbTrail.length;
         for(var i = 0; i < len; i++) {
             var crumblessUrl = this.stateContext.crumbTrail[i];
-            if (crumblessUrl.substring(0, 1) !== '/')
-                throw new Error(crumblessUrl + ' is not a valid crumb');
             var { state, data } = this.parseLink(crumblessUrl);
             var url = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 == len));
@@ -195,6 +193,14 @@ class StateNavigator {
             var state = this.router.getData(url.split('?')[0]).state;
             var { data, separableData } = StateHandler.getNavigationData(this.router, state, url);
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
+            var crumbTrail: string[] = data[state.crumbTrailKey];
+            if (crumbTrail) {
+                for(var i = 0; i < crumbTrail.length; i++) {
+                    var crumb = crumbTrail[i];
+                    if (crumb.substring(0, 1) !== '/')
+                        throw new Error(crumb + ' is not a valid crumb');
+                }
+            }
             return { state: state, data: data };
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);

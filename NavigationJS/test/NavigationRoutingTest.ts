@@ -5617,4 +5617,24 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
         });
     });
+    
+    describe('Crumb Trail Malicious', function() {
+        it ('should throw error', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: 'ab', trackCrumbTrail: true }
+            ]);
+            assert.throws(() => stateNavigator.parseLink('/ab?crumb=www.google.com'), /is not a valid crumb/);
+        });
+    });
+    
+    describe('Custom Crumb Trail Key Malicious', function() {
+        it ('should throw error', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: 'ab', trackCrumbTrail: 'xx' }
+            ]);
+            assert.throws(() => stateNavigator.parseLink('/ab?xx=www.google.com'), /is not a valid crumb/);
+        });
+    });
 });
