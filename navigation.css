@@ -104,11 +104,11 @@ p code{
     background-color:#fff5d7;
     padding:.1% .5%;
 }
-#content pre {
+#content pre{
    border:0.1em solid rgba(0,0,238,0.5);
    padding:1.5%;
 }
-code {
+code{
     font-family:Consolas;
     font-size:.9em;
 }
@@ -119,6 +119,9 @@ div.app{
     overflow:hidden;
     border-radius:0.3em;
     margin-bottom:1%;
+}
+div.app code{
+    font-size:inherit;
 }
 #route{
     width:17.5%;

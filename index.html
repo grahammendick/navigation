@@ -30,12 +30,14 @@
         </div>
         <h2>Try It Out</h2>
         <p>
-            You don't know your routes until the end. Sort of hot loading for routing. Don't need to hot load,
-            just need to leave them til the end. 
-            sdfjlsdkfjsd <code>sld sdfj</code> lsdkjf sdfs dlksdlfepowrtojmv djvlmv.,cm dfvds f dfs
-            dsfjsdklf.
-            You don't know your routes until the end. sdfsdiklfjs lfksdjlfk sjdlkfjsdkl fjsldkjf klsdjf skldjf d
-            sdfjlsdkfjsd kfjsdl kfdlkfj skldfj sld sdfj lsdkjf sdfs.
+            Take a look at this working application. It's a Hyperlink you can click to indicate whether you like something. It works even though we haven't configured a route yet. Click the toggle Hyperlink below then take a look at the browser Url. The Navigation router's generated a Url that looks like '/?like=true1_1'. We'll change the Url to '/example/true' in three steps and without changing any code!
+        </p>
+        <ol>
+            <li>We'll start by setting a route in the code below. Type the word 'example' in the route text box. As you type, watch the browser Url automatically update to '/example?like=true1_1'</li>
+            <li>We'll change the 'like' indicator from a query string to a route parameter. Update the route text box to 'example/{like}'. Keep your eye on the Url as it changes to '/example/true1_1'</li>
+            <li>The Navigation router passes around the 'like' indicator as a boolean. It uses the trailing characters of the Url to keep track of the type. We'll tidy up the Url by configuring the type instead. Pick 'boolean' from the drop down below and watch the Url become 'example/true'</li>
+        </ol>
+        <p>
         </p>
         <div class="app">
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
@@ -46,13 +48,12 @@
 ]);
 
 stateNavigator.states.example.navigated = function(data) {
-  var text = data.like ? 'like' : 'haven\'t liked';
   ReactDOM.render(
     &lt;NavigationReact.NavigationLink 
       stateKey="example"
       navigationData={{like: !data.like}}
       stateNavigator={stateNavigator}>
-      You {text} this. Click to toggle.
+      You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
     &lt;/NavigationReact.NavigationLink>,
     document.getElementById('app'));
 };
@@ -97,7 +98,6 @@ function reconfigure() {
 }
 
 function render(data) {
-    var text = data.like ? 'like' : 'haven\'t liked';
     ReactDOM.render(React.createElement(
         NavigationReact.NavigationLink,
         {
@@ -105,7 +105,7 @@ function render(data) {
             navigationData: { like: !data.like },
             stateNavigator: stateNavigator },
         'You ',
-        text,
+        data.like ? 'like' : 'haven\'t liked',
         ' this. Click to toggle.'
     ), document.getElementById('app'));
 };

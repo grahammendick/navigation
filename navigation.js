@@ -10,7 +10,6 @@ var State = _dereq_('./config/State');
 var HashHistoryManager = _dereq_('./history/HashHistoryManager');
 var HTML5HistoryManager = _dereq_('./history/HTML5HistoryManager');
 var Crumb = _dereq_('./config/Crumb');
-var StateHandler = _dereq_('./config/StateHandler');
 var Navigation = (function () {
     function Navigation() {
     }
@@ -20,11 +19,10 @@ var Navigation = (function () {
     Navigation.Crumb = Crumb;
     Navigation.StateContext = StateContext;
     Navigation.StateNavigator = StateNavigator;
-    Navigation.StateHandler = StateHandler;
     return Navigation;
 })();
 module.exports = Navigation;
-},{"./StateContext":4,"./StateNavigator":5,"./config/Crumb":7,"./config/State":8,"./config/StateHandler":9,"./history/HTML5HistoryManager":17,"./history/HashHistoryManager":18}],2:[function(_dereq_,module,exports){
+},{"./StateContext":4,"./StateNavigator":6,"./config/Crumb":8,"./config/State":9,"./history/HTML5HistoryManager":17,"./history/HashHistoryManager":18}],2:[function(_dereq_,module,exports){
 var NavigationDataManager = (function () {
     function NavigationDataManager() {
     }
@@ -175,7 +173,7 @@ var StateConfig = (function () {
     return StateConfig;
 })();
 module.exports = StateConfig;
-},{"./NavigationDataManager":2,"./config/State":8}],4:[function(_dereq_,module,exports){
+},{"./NavigationDataManager":2,"./config/State":9}],4:[function(_dereq_,module,exports){
 var StateContext = (function () {
     function StateContext() {
         this.oldState = null;
@@ -220,12 +218,69 @@ var StateContext = (function () {
 })();
 module.exports = StateContext;
 },{}],5:[function(_dereq_,module,exports){
+var StateHandler = (function () {
+    function StateHandler() {
+    }
+    StateHandler.getNavigationLink = function (router, state, data, arrayData) {
+        if (arrayData === void 0) { arrayData = {}; }
+        var routeInfo = router.getRoute(state, data, arrayData);
+        if (routeInfo.route == null)
+            return null;
+        var query = [];
+        for (var key in data) {
+            if (!routeInfo.data[key]) {
+                var arr = arrayData[key];
+                var encodedKey = state.urlEncode(state, null, key, true);
+                if (!arr) {
+                    query.push(encodedKey + '=' + state.urlEncode(state, key, data[key], true));
+                }
+                else {
+                    for (var i = 0; i < arr.length; i++)
+                        query.push(encodedKey + '=' + state.urlEncode(state, key, arr[i], true));
+                }
+            }
+        }
+        if (query.length > 0)
+            routeInfo.route += '?' + query.join('&');
+        return routeInfo.route;
+    };
+    StateHandler.getNavigationData = function (router, state, url) {
+        var queryIndex = url.indexOf('?');
+        var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
+        var _a = router.getData(route), data = _a.data, separableData = _a.separableData;
+        data = data ? data : {};
+        if (queryIndex >= 0) {
+            var query = url.substring(queryIndex + 1);
+            var params = query.split('&');
+            for (var i = 0; i < params.length; i++) {
+                var param = params[i].split('=');
+                var key = state.urlDecode(state, null, param[0], true);
+                var val = state.urlDecode(state, key, param[1], true);
+                separableData[key] = true;
+                var arr = data[key];
+                if (!arr) {
+                    data[key] = val;
+                }
+                else {
+                    if (typeof arr === 'string')
+                        data[key] = arr = [arr];
+                    arr.push(val);
+                }
+            }
+        }
+        return { data: data, separableData: separableData };
+    };
+    return StateHandler;
+})();
+module.exports = StateHandler;
+},{}],6:[function(_dereq_,module,exports){
 var ConverterFactory = _dereq_('./converter/ConverterFactory');
 var Crumb = _dereq_('./config/Crumb');
 var HashHistoryManager = _dereq_('./history/HashHistoryManager');
 var NavigationDataManager = _dereq_('./NavigationDataManager');
 var StateContext = _dereq_('./StateContext');
 var StateConfig = _dereq_('./StateConfig');
+var StateHandler = _dereq_('./StateHandler');
 var StateRouter = _dereq_('./StateRouter');
 var StateNavigator = (function () {
     function StateNavigator(states, historyManager) {
@@ -239,7 +294,7 @@ var StateNavigator = (function () {
         if (states)
             this.configure(states, historyManager);
     }
-    StateNavigator.prototype.configure = function (states, historyManager) {
+    StateNavigator.prototype.configure = function (stateInfos, historyManager) {
         var _this = this;
         if (this.historyManager)
             this.historyManager.stop();
@@ -249,11 +304,11 @@ var StateNavigator = (function () {
                 return;
             _this.navigateLink(_this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var builtStates = StateConfig.build(states, this.converterFactory);
+        var states = StateConfig.build(stateInfos, this.converterFactory);
         this.states = {};
-        for (var i = 0; i < builtStates.length; i++)
-            this.states[builtStates[i].key] = builtStates[i];
-        this.router.addRoutes(builtStates);
+        for (var i = 0; i < states.length; i++)
+            this.states[states[i].key] = states[i];
+        this.router.addRoutes(states);
     };
     StateNavigator.prototype.setStateContext = function (state, data, url) {
         this.stateContext.oldState = this.stateContext.state;
@@ -327,12 +382,12 @@ var StateNavigator = (function () {
             var crumbs = this.stateContext.crumbs.slice();
             if (this.stateContext.nextCrumb)
                 crumbs.push(this.stateContext.nextCrumb);
-            crumbs = state.stateHandler.truncateCrumbTrail(state, crumbs);
+            crumbs = state.truncateCrumbTrail(state, crumbs);
             for (var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl);
         }
         var _a = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail), data = _a.data, arrayData = _a.arrayData;
-        return state.stateHandler.getNavigationLink(this.router, state, data, arrayData);
+        return StateHandler.getNavigationLink(this.router, state, data, arrayData);
     };
     StateNavigator.prototype.canNavigateBack = function (distance) {
         return distance <= this.stateContext.crumbs.length && distance > 0;
@@ -377,7 +432,6 @@ var StateNavigator = (function () {
         var _this = this;
         return function (asyncData) {
             if (oldUrl === _this.stateContext.url) {
-                state.stateHandler.navigateLink(_this.stateContext.state, state, url);
                 _this.setStateContext(state, data, url);
                 if (_this.stateContext.oldState && _this.stateContext.oldState !== state)
                     _this.stateContext.oldState.dispose();
@@ -398,7 +452,7 @@ var StateNavigator = (function () {
     StateNavigator.prototype.parseLink = function (url) {
         try {
             var state = this.router.getData(url.split('?')[0]).state;
-            var _a = state.stateHandler.getNavigationData(this.router, state, url), data = _a.data, separableData = _a.separableData;
+            var _a = StateHandler.getNavigationData(this.router, state, url), data = _a.data, separableData = _a.separableData;
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
             return { state: state, data: data };
         }
@@ -413,7 +467,7 @@ var StateNavigator = (function () {
     return StateNavigator;
 })();
 module.exports = StateNavigator;
-},{"./NavigationDataManager":2,"./StateConfig":3,"./StateContext":4,"./StateRouter":6,"./config/Crumb":7,"./converter/ConverterFactory":12,"./history/HashHistoryManager":18}],6:[function(_dereq_,module,exports){
+},{"./NavigationDataManager":2,"./StateConfig":3,"./StateContext":4,"./StateHandler":5,"./StateRouter":7,"./config/Crumb":8,"./converter/ConverterFactory":12,"./history/HashHistoryManager":18}],7:[function(_dereq_,module,exports){
 var Router = _dereq_('./routing/Router');
 var StateRouter = (function () {
     function StateRouter() {
@@ -458,6 +512,7 @@ var StateRouter = (function () {
     StateRouter.findBestMatch = function (routes, data, arrayData) {
         var bestMatch;
         var bestMatchCount = -1;
+        var bestMatchParamCount = -1;
         for (var i = 0; i < routes.length; i++) {
             var route = routes[i];
             var combinedData = StateRouter.getCombinedData(route, data, arrayData);
@@ -471,9 +526,10 @@ var StateRouter = (function () {
                         count++;
                     }
                 }
-                if (count > bestMatchCount) {
+                if (count > bestMatchCount || (count == bestMatchCount && route.params.length < bestMatchParamCount)) {
                     bestMatch = { route: route, data: routeData, routePath: routePath };
                     bestMatchCount = count;
+                    bestMatchParamCount = route.params.length;
                 }
             }
         }
@@ -495,15 +551,15 @@ var StateRouter = (function () {
     };
     StateRouter.urlEncode = function (route, name, val) {
         var state = route['_state'];
-        if (state.stateHandler.urlEncode)
-            return state.stateHandler.urlEncode(state, name, val, false);
+        if (state.urlEncode)
+            return state.urlEncode(state, name, val, false);
         else
             return encodeURIComponent(val);
     };
     StateRouter.urlDecode = function (route, name, val) {
         var state = route['_state'];
-        if (state.stateHandler.urlDecode)
-            return state.stateHandler.urlDecode(state, name, val, false);
+        if (state.urlDecode)
+            return state.urlDecode(state, name, val, false);
         else
             return decodeURIComponent(val);
     };
@@ -544,19 +600,29 @@ var StateRouter = (function () {
         var routes = [];
         var route = state.route;
         if (typeof route === 'string') {
-            routes.push(route);
+            routes = routes.concat(StateRouter.expandRoute(route));
         }
         else {
             for (var i = 0; i < route.length; i++) {
-                routes.push(route[i]);
+                routes = routes.concat(StateRouter.expandRoute(route[i]));
             }
+        }
+        return routes;
+    };
+    StateRouter.expandRoute = function (route) {
+        var routes = [];
+        var subRoutes = route.split('+');
+        var expandedRoute = '';
+        for (var i = 0; i < subRoutes.length; i++) {
+            expandedRoute += subRoutes[i];
+            routes.push(expandedRoute);
         }
         return routes;
     };
     return StateRouter;
 })();
 module.exports = StateRouter;
-},{"./routing/Router":20}],7:[function(_dereq_,module,exports){
+},{"./routing/Router":20}],8:[function(_dereq_,module,exports){
 var Crumb = (function () {
     function Crumb(data, state, url, crumblessUrl, last) {
         this.data = data ? data : {};
@@ -569,8 +635,7 @@ var Crumb = (function () {
     return Crumb;
 })();
 module.exports = Crumb;
-},{}],8:[function(_dereq_,module,exports){
-var StateHandler = _dereq_('./StateHandler');
+},{}],9:[function(_dereq_,module,exports){
 var State = (function () {
     function State() {
         this.defaults = {};
@@ -580,77 +645,28 @@ var State = (function () {
         this.trackCrumbTrail = false;
         this.crumbTrailKey = 'crumb';
         this.trackTypes = true;
-        this.stateHandler = new StateHandler();
-        this.unloading = function (state, data, url, unload) { unload(); };
-        this.navigating = function (data, url, navigate) { navigate(); };
-        this.dispose = function () { };
-        this.navigated = function (data) { };
     }
-    return State;
-})();
-module.exports = State;
-},{"./StateHandler":9}],9:[function(_dereq_,module,exports){
-var StateHandler = (function () {
-    function StateHandler() {
-    }
-    StateHandler.prototype.getNavigationLink = function (router, state, data, arrayData) {
-        if (arrayData === void 0) { arrayData = {}; }
-        var routeInfo = router.getRoute(state, data, arrayData);
-        if (routeInfo.route == null)
-            return null;
-        var query = [];
-        for (var key in data) {
-            if (!routeInfo.data[key]) {
-                var arr = arrayData[key];
-                var encodedKey = this.urlEncode(state, null, key, true);
-                if (!arr) {
-                    query.push(encodedKey + '=' + this.urlEncode(state, key, data[key], true));
-                }
-                else {
-                    for (var i = 0; i < arr.length; i++)
-                        query.push(encodedKey + '=' + this.urlEncode(state, key, arr[i], true));
-                }
-            }
-        }
-        if (query.length > 0)
-            routeInfo.route += '?' + query.join('&');
-        return routeInfo.route;
+    State.prototype.unloading = function (state, data, url, unload, history) {
+        unload();
     };
-    StateHandler.prototype.navigateLink = function (oldState, state, url) {
+    ;
+    State.prototype.navigating = function (data, url, navigate, history) {
+        navigate();
     };
-    StateHandler.prototype.getNavigationData = function (router, state, url) {
-        var queryIndex = url.indexOf('?');
-        var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var _a = router.getData(route), data = _a.data, separableData = _a.separableData;
-        data = data ? data : {};
-        if (queryIndex >= 0) {
-            var query = url.substring(queryIndex + 1);
-            var params = query.split('&');
-            for (var i = 0; i < params.length; i++) {
-                var param = params[i].split('=');
-                var key = this.urlDecode(state, null, param[0], true);
-                var val = this.urlDecode(state, key, param[1], true);
-                separableData[key] = true;
-                var arr = data[key];
-                if (!arr) {
-                    data[key] = val;
-                }
-                else {
-                    if (typeof arr === 'string')
-                        data[key] = arr = [arr];
-                    arr.push(val);
-                }
-            }
-        }
-        return { data: data, separableData: separableData };
+    ;
+    State.prototype.dispose = function () {
     };
-    StateHandler.prototype.urlEncode = function (state, key, val, queryString) {
+    ;
+    State.prototype.navigated = function (data, asyncData) {
+    };
+    ;
+    State.prototype.urlEncode = function (state, key, val, queryString) {
         return encodeURIComponent(val);
     };
-    StateHandler.prototype.urlDecode = function (state, key, val, queryString) {
+    State.prototype.urlDecode = function (state, key, val, queryString) {
         return decodeURIComponent(val);
     };
-    StateHandler.prototype.truncateCrumbTrail = function (state, crumbs) {
+    State.prototype.truncateCrumbTrail = function (state, crumbs) {
         var newCrumbs = [];
         for (var i = 0; i < crumbs.length; i++) {
             if (crumbs[i].state === state)
@@ -659,9 +675,9 @@ var StateHandler = (function () {
         }
         return newCrumbs;
     };
-    return StateHandler;
+    return State;
 })();
-module.exports = StateHandler;
+module.exports = State;
 },{}],10:[function(_dereq_,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1114,22 +1130,24 @@ var Segment = (function () {
         var matches = this.path.match(this.subSegmentPattern);
         for (var i = 0; i < matches.length; i++) {
             var subSegment = matches[i];
-            if (subSegment.charAt(0) == '{') {
+            if (subSegment.slice(0, 1) === '{' && subSegment.slice(-1) === '}') {
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var optional = param.slice(-1) === '?';
                 var splat = param.slice(0, 1) === '*';
                 var name = optional ? param.slice(0, -1) : param;
                 name = splat ? name.slice(1) : name;
                 this.params.push({ name: name, splat: splat });
-                this.subSegments.push({ name: name, param: true, splat: splat });
-                var optionalOrDefault = optional || defaults[name];
-                this.optional = this.optional && this.path.length === subSegment.length && optionalOrDefault;
+                this.optional = this.optional && optional && this.path.length === subSegment.length;
+                if (this.path.length === subSegment.length)
+                    optional = this.optional;
+                this.subSegments.push({ name: name, param: true, splat: splat, optional: optional });
                 var subPattern = !splat ? '[^/]+' : '.+';
-                this.pattern += !this.optional ? "(" + subPattern + ")" : "(/" + subPattern + ")?";
+                this.pattern += !this.optional ? "(" + subPattern + ")" : "(/" + subPattern + ")";
+                this.pattern += optional ? '?' : '';
             }
             else {
                 this.optional = false;
-                this.subSegments.push({ name: subSegment, param: false, splat: false });
+                this.subSegments.push({ name: subSegment, param: false, splat: false, optional: false });
                 this.pattern += subSegment.replace(this.escapePattern, '\\$&');
             }
         }
@@ -1138,8 +1156,8 @@ var Segment = (function () {
     };
     Segment.prototype.build = function (data, defaults, urlEncode) {
         var routePath = '';
-        var optional = this.optional;
         var blank = false;
+        var optional = false;
         for (var i = 0; i < this.subSegments.length; i++) {
             var subSegment = this.subSegments[i];
             if (!subSegment.param) {
@@ -1148,25 +1166,27 @@ var Segment = (function () {
             else {
                 var val = data[subSegment.name];
                 var defaultVal = defaults[subSegment.name];
-                optional = optional && (!val || val === defaultVal);
-                val = val ? val : defaultVal;
-                blank = blank || !val;
-                if (val) {
-                    if (!subSegment.splat || typeof val === 'string') {
-                        routePath += urlEncode(subSegment.name, val);
-                    }
-                    else {
-                        var encodedVals = [];
-                        for (var i = 0; i < val.length; i++)
-                            encodedVals[i] = urlEncode(subSegment.name, val[i]);
-                        routePath += encodedVals.join('/');
-                        if (routePath.slice(-1) === '/')
-                            routePath += '/';
+                optional = subSegment.optional && (!val || val === defaultVal);
+                if (this.optional || !optional) {
+                    val = val ? val : defaultVal;
+                    blank = blank || !val;
+                    if (val) {
+                        if (!subSegment.splat || typeof val === 'string') {
+                            routePath += urlEncode(subSegment.name, val);
+                        }
+                        else {
+                            var encodedVals = [];
+                            for (var i = 0; i < val.length; i++)
+                                encodedVals[i] = urlEncode(subSegment.name, val[i]);
+                            routePath += encodedVals.join('/');
+                            if (routePath.slice(-1) === '/')
+                                routePath += '/';
+                        }
                     }
                 }
             }
         }
-        return { path: !blank ? routePath : null, optional: optional };
+        return { path: !blank ? routePath : null, optional: optional && this.optional };
     };
     return Segment;
 })();
