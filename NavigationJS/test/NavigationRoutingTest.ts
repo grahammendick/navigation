@@ -5534,60 +5534,6 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('First Half Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
-        beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x' }
-            ]);
-        });
-
-        it('should match', function() {
-            var { data } = stateNavigator.parseLink('/{x');
-            assert.strictEqual(Object.keys(data).length, 0);
-            var { data } = stateNavigator.parseLink('/{x?x=ab');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x, 'ab');
-        });
-
-        it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
-        });
-
-        it('should build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/{x');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/{x?x=ab');
-        });
-    });
-
-    describe('Last Half Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
-        beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: 'x}' }
-            ]);
-        });
-
-        it('should match', function() {
-            var { data } = stateNavigator.parseLink('/x}');
-            assert.strictEqual(Object.keys(data).length, 0);
-            var { data } = stateNavigator.parseLink('/x}?x=ab');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x, 'ab');
-        });
-
-        it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator.parseLink('/'), /Url is invalid/, '');
-        });
-
-        it('should build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s'), '/x}');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: 'ab' }), '/x}?x=ab');
-        });
-    });
-
     describe('Leading and Trailing Slash', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {

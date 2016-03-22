@@ -19,7 +19,7 @@
         var matches = this.path.match(this.subSegmentPattern);
         for (var i = 0; i < matches.length; i++) {
             var subSegment = matches[i];
-            if (subSegment.slice(0, 1) === '{' && subSegment.slice(-1) === '}') {
+            if (subSegment.slice(0, 1) === '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var optional = param.slice(-1) === '?';
                 var splat = param.slice(0, 1) === '*';
