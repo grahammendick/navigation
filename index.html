@@ -19,22 +19,14 @@
         <img alt="cursor hand" src="cursor.png" />
         <div>The data-first JavaScript router</div>
     </div>
-    <div id="content">
+    <div id="content" class="home">
         <div class="plug">
             <h2>Data First</h2>
-            You don't know your routes until the end. Don't configure until you know what data and
-            type of data you're passing. Routes at the end...
-        </div>
-        <div class="plug">
-            <h2>Typed Data</h2>
-            Never turn data to or from a string. Pass numbers, booleans, dates and arrays in your Urls.
-            Don't need any configuration to do this. Once you're happy with the data, add the configuration
-            to tidy up the Urls...
+            Other JavaScript routers have got it all back to front. They want you to configure your routes before you even know what data you're passing. With the Navigation router, you can delay your route configuration until after your application's up and running.
         </div>
         <div class="plug">
             <h2>Routes Last</h2>
-            Build any route you want, once you've got your data sorted. Any data can be turned into a route parameter
-            without changing your app. You can even turn arrays into splats...
+            How can your application run if you haven't set any routes? The Navigation router generates interim routes and passes all data in the query string. At any time, you can configure the real routes and introduce route parameters without changing any code.
         </div>
         <h2>Try It Out</h2>
         <p>
@@ -86,7 +78,7 @@ stateNavigator.states.example.navigated = function (data) {
     render(data);
 };
 
-stateNavigator.start('/');
+stateNavigator.start(location.hash ? '/' : '');
 
 document.getElementById('route').addEventListener('keyup', reconfigure);
 document.getElementById('defType').addEventListener('change', reconfigure);

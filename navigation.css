@@ -88,11 +88,14 @@ h2,h3{
 }
 div.plug{
     box-sizing:border-box;
-    padding:0.8% 2% 1% 0;
+    text-align:justify;
 }
 div.plug h2{
     text-transform:uppercase;
     font-size:1.4em;
+}
+.home h2{
+    text-align:center;
 }
 p{
     margin:0 0 2% 0;
@@ -214,7 +217,13 @@ div.app{
     }
     div.plug{
         float:left;
-        width:33.33%;    
+        width:50%;    
+    }
+    div.plug:nth-of-type(1){
+        padding:0.8% 2% 1% 0;
+    }
+    div.plug:nth-of-type(2){
+        padding:0.8% 0 1% 2%;
     }
     div.app{
         float:left;
