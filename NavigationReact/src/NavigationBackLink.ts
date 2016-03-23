@@ -28,7 +28,7 @@ class NavigationBackLink extends React.Component<any, any> {
         for(var key in this.props)
             props[key] = this.props[key];
         props.href = this.getNavigationBackLink();
-        LinkUtility.addListeners(this, props, () => this.getNavigationBackLink());
+        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationBackLink());
         return React.createElement(props.href ? 'a' : 'span', props);
     }
 };
