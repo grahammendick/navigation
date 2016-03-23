@@ -5,8 +5,12 @@ import React = require('react');
 class NavigationBackLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
+    static contextTypes = {
+        stateNavigator: React.PropTypes.object
+    }
+    
     private getStateNavigator(): Navigation.StateNavigator {
-        return this.props.stateNavigator;
+        return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
     private getNavigationBackLink(): string {
