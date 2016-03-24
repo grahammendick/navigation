@@ -52,8 +52,18 @@
         
         function getMails() {
             return [
-                {id: 1, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(1,1,2000), content: 'Blah blah blah'},
-                {id: 2, from: 'bernard@home.com', to: 'me', subject: 'Yo, can you do me a favour?', date: new Date(2,1,2000), content: 'Meh Meh Meh'}
+                {id: 1, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,1), content: 'Blah blah blah'},
+                {id: 2, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,2), content: 'Blah blah blah'},
+                {id: 3, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,3), content: 'Blah blah blah'},
+                {id: 4, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,4), content: 'Blah blah blah'},
+                {id: 5, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,5), content: 'Blah blah blah'},
+                {id: 6, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,6), content: 'Blah blah blah'},
+                {id: 7, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,7), content: 'Blah blah blah'},
+                {id: 8, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,8), content: 'Blah blah blah'},
+                {id: 9, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,9), content: 'Blah blah blah'},
+                {id: 10, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,10), content: 'Blah blah blah'},
+                {id: 11, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,11), content: 'Blah blah blah'},
+                {id: 12, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,12), content: 'Blah blah blah'},
             ];
         }
         
@@ -132,6 +142,7 @@
                         </NavigationBackLink>
                         <div>
                             <h1>{this.props.mail.subject}</h1>
+                            <div>{this.props.mail.date.toDateString()}</div>
                             <p>{this.props.mail.content}</p>
                         </div>
                     </div>
