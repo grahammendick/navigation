@@ -39,7 +39,7 @@
                 You can intercept a navigation by attaching a function to the originating <code>State's unloading</code> property. The navigation will only continue if you call the <code>unload</code> function passed in, giving you the chance to cancel the navigation. For example, we attach an <code>unloading</code> function to the 'compose' <code>State</code> of an email application to prevent the user accidentally navigating away before sending their mail.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
-  if (history || confirm('You've not sent your email. Continue?')) {
+  if (history || confirm('You\'ve not sent your email. Continue?')) {
     unload();
   }
 };</code></pre>

@@ -141,11 +141,28 @@
         });
         
         var Compose = React.createClass({
+            getInitialState: function() {
+                return {value: ''};
+            },
+            handleChange: function(event) {
+                this.setState({value: event.target.value});
+            },
+            componentDidMount: function() {
+                this.props.stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
+                    if (history || !this.state.value || confirm('You\'ve not sent your email. Continue?')) {
+                        unload();
+                    }
+                }.bind(this);
+            }, 
             render: function () {
                 return (
                     <div>
                         <h1>Compose</h1>
-                        <textarea rows="6" cols="60">
+                        <textarea 
+                            rows="6"
+                            cols="60"
+                            value={this.state.value}
+                            onChange={this.handleChange}>
                         </textarea>
                     </div>
                 );
