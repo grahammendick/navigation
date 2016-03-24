@@ -173,23 +173,21 @@ var Mail = React.createClass({
                     distance={1}>
                     Back to Inbox
                 </NavigationBackLink>
-                <div>
-                    <h1>{this.props.mail.subject}</h1>
-                    <RefreshLink
-                        navigationData={{expand: !this.props.expand}}
-                        includeCurrentData={true}
-                        activeCssClass="hide"
-                        stateNavigator={this.props.stateNavigator}>
-                        {!this.props.expand ? 'Expand' : 'Collapse'} Thread
-                    </RefreshLink>
-                    <ul>
-                        {thread}
-                        <li key={this.props.mail.thread.length}>
-                            <h2>{this.props.mail.from}</h2>
-                            <p>{this.props.mail.content}</p>
-                        </li>
-                    </ul>
-                </div>
+                <h1>{this.props.mail.subject}</h1>
+                <RefreshLink
+                    navigationData={{expand: !this.props.expand}}
+                    includeCurrentData={true}
+                    activeCssClass="hide"
+                    stateNavigator={this.props.stateNavigator}>
+                    {!this.props.expand ? 'Expand' : 'Collapse'} Thread
+                </RefreshLink>
+                <ul>
+                    {thread}
+                    <li key={this.props.mail.thread.length}>
+                        <h2>{this.props.mail.from}</h2>
+                        <p>{this.props.mail.content}</p>
+                    </li>
+                </ul>
             </div>
         );
     }
