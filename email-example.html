@@ -106,6 +106,7 @@
                 });
                 return (
                     <div>
+                        <h1>Inbox</h1>
                         <table>
                             <thead>
                                 <tr>
@@ -142,15 +143,19 @@
         var Compose = React.createClass({
             render: function () {
                 return (
-                    <div></div>
+                    <div>
+                        <h1>Compose</h1>
+                        <textarea rows="6" cols="60">
+                        </textarea>
+                    </div>
                 );
             }
         });
         
         var stateNavigator = new StateNavigator([
-            {key: 'inbox', route: ''},
+            {key: 'inbox', route: '', title: 'Inbox'},
             {key: 'mail', trackCrumbTrail: true},
-            {key: 'compose'}
+            {key: 'compose', title: 'Compose'}
         ]);
         
         stateNavigator.states.inbox.navigating = function(data, url, navigate) {
@@ -176,6 +181,7 @@
         };
         
         stateNavigator.states.mail.navigated = function(data, asyncData) {
+            stateNavigator.stateContext.title = asyncData.mail.subject;
             ReactDOM.render(
                 <Mail stateNavigator={stateNavigator} mail={asyncData.mail} />,
                 document.getElementById('view'));
