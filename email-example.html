@@ -135,14 +135,14 @@
                         </table>
                         Go to page
                         <RefreshLink
-                            navigationData={{page: 0}}
+                            navigationData={{page: 1}}
                             includeCurrentData={true}
                             disableActive={true}
                             stateNavigator={this.props.stateNavigator}>
                             1
                         </RefreshLink>
                         <RefreshLink
-                            navigationData={{page: 1}}
+                            navigationData={{page: 2}}
                             includeCurrentData={true}
                             disableActive={true}
                             stateNavigator={this.props.stateNavigator}>
@@ -232,9 +232,9 @@
         });
         
         var stateNavigator = new StateNavigator([
-            {key: 'inbox', route: '', title: 'Inbox', defaults: {page: 0, sort: 'newest'}},
-            {key: 'mail', defaults: {expand: false}, defaultTypes: {id: 'number'}, trackCrumbTrail: true},
-            {key: 'compose', title: 'Compose'}
+            {key: 'inbox', route: '+/page{page}+/sort/{sort}', title: 'Inbox', defaults: {page: 1, sort: 'newest'}},
+            {key: 'mail', route: 'open/{id}/{expand?}', defaults: {expand: false}, defaultTypes: {id: 'number'}, trackCrumbTrail: true},
+            {key: 'compose', route: 'new', title: 'Compose'}
         ]);
         
         stateNavigator.states.inbox.navigating = function(data, url, navigate) {
@@ -244,7 +244,7 @@
                     var mult = data.sort === 'newest' ? 1 : -1;
                     return mult * (fromMail.date < toMail.date ? 1 : -1);
                 });
-                var start = data.page * 10;
+                var start = (data.page - 1) * 10;
                 mails = mails.slice(start, start + 10);
                 navigate({mails: mails});
             }, 100);
