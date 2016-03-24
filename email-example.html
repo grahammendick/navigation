@@ -54,18 +54,14 @@
         
         function getMails() {
             return [
-                {id: 1, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,1), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 2, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,2), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 3, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,3), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 4, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,4), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 5, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,5), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 6, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,6), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 7, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,7), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 8, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,8), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 9, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,9), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 10, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,10), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 11, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,11), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
-                {id: 12, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,12), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 1, from: 'you@home.com', subject: 'Haven\'t seen you for ages', date: new Date(2016,3,1), content: 'Sure, be great to catch up', thread: [{from: 'me@work.com', content: 'Can I come and see you soon?'}]},
+                {id: 2, from: 'xxx@scam.com', subject: 'You could win $1,000!', date: new Date(2016,3,2), content: 'Don\'t you want the money?', thread: [{from: 'xxx@scam.com', content: 'We just need your bank details.'}, {from: 'me@work.com', content: 'Please leave me alone.'}]},
+                {id: 3, from: 'mum@home.com', subject: 'Happy Birthday To You', date: new Date(2016,3,3), content: 'Awww, I thought you\'d forgotten', thread: [{from: 'me@work.com', content: 'Many Happy Returns, Mother'}]},
+                {id: 4, from: 'agent@agency.com', subject: 'JavaScript Developers Needed', date: new Date(2016,3,4), content: 'Do you know anybody that might be interested?', thread: [{from: 'agent@agency.com', content: 'You looking for work?'},{from: 'me@work.com', content: 'Nope'}]},
+                {id: 5, from: 'you@home.com', subject: 'Great to see you the other day', date: new Date(2016,3,5), content: 'Thanks, I enjoyed it too!', thread: [{from: 'me@work.com', content: 'Really enjoyed meeting up the other day!'}]},
+                {id: 6, from: 'blah@blah.com', subject: 'Yadda yadda yadda', date: new Date(2016,3,6), content: 'Blah blah blah. Blah blah blah', thread: [{from: 'me@work.com', content: 'Yadda yadda yadda'}]},
+                {id: 7, from: 'you@home.com', subject: 'Did I leave me bag at yours?', date: new Date(2016,3,7), content: 'Found it. I\'ll bring it round tomorrow', thread: [{from: 'me@work.com', content: 'Can\'t find it anywere. Can you have a look around?'}]},
+                {id: 8, from: 'you@home.com', subject: 'Thanks for the bag', date: new Date(2016,3,8), content: 'No worries, pal', thread: [{from: 'me@work.com', content: 'Thanks, I owe you one'}]},
             ];
         }
         
@@ -188,7 +184,6 @@
                                 {thread}
                                 <li>
                                     <h2>{this.props.mail.from}</h2>
-                                    <div>{this.props.mail.date.toDateString()}</div>
                                     <p>{this.props.mail.content}</p>
                                 </li>
                             </ul>
@@ -246,8 +241,8 @@
                     var mult = data.sort === 'newest' ? 1 : -1;
                     return mult * (fromMail.date < toMail.date ? 1 : -1);
                 });
-                var start = (data.page - 1) * 10;
-                mails = mails.slice(start, start + 10);
+                var start = (data.page - 1) * 5;
+                mails = mails.slice(start, start + 5);
                 navigate({mails: mails});
             }, 100);
         };
