@@ -61,11 +61,24 @@
             render: function () {
                 return (
                     <div>
-                        <NavigationLink 
-                            stateNavigator={this.props.stateNavigator} 
-                            stateKey="inbox">
-                            Inbox
-                        </NavigationLink>
+                        <ul>
+                            <li>
+                                <NavigationLink 
+                                    stateNavigator={this.props.stateNavigator}
+                                    disableActive={true}
+                                    stateKey="inbox">
+                                    Inbox
+                                </NavigationLink>
+                            </li>
+                            <li>
+                                <NavigationLink 
+                                    stateNavigator={this.props.stateNavigator}
+                                    disableActive={true}
+                                    stateKey="compose">
+                                    Compose
+                                </NavigationLink>
+                            </li>
+                        </ul>
                         <div id="view"></div>
                     </div>
                 );
