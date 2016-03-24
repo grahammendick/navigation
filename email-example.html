@@ -126,6 +126,19 @@
                             </thead>
                             <tbody>{mails}</tbody>
                         </table>
+                        Go to page
+                        <RefreshLink
+                            navigationData={{page: 0}}
+                            disableActive={true}
+                            stateNavigator={this.props.stateNavigator} >
+                            1
+                        </RefreshLink>
+                        <RefreshLink
+                            navigationData={{page: 1}}
+                            disableActive={true}
+                            stateNavigator={this.props.stateNavigator} >
+                            2
+                        </RefreshLink>
                     </div>
                 );
             }
@@ -186,7 +199,7 @@
         });
         
         var stateNavigator = new StateNavigator([
-            {key: 'inbox', route: '', title: 'Inbox'},
+            {key: 'inbox', route: '', title: 'Inbox', defaults: {page: 0}},
             {key: 'mail', trackCrumbTrail: true},
             {key: 'compose', title: 'Compose'}
         ]);
@@ -194,6 +207,8 @@
         stateNavigator.states.inbox.navigating = function(data, url, navigate) {
             setTimeout(function() {
                 var mails = getMails();
+                var start = data.page * 10;
+                mails = mails.slice(start, start + 10);
                 navigate({mails: mails});
             }, 100);
         };
