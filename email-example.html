@@ -95,6 +95,7 @@
                             <td>
                                 <NavigationLink 
                                     stateNavigator={stateNavigator} 
+                                    navigationData={{id: mail.id}}
                                     stateKey="mail">
                                     {mail.subject}
                                 </NavigationLink>
@@ -123,7 +124,17 @@
         var Mail = React.createClass({
             render: function () {
                 return (
-                    <div></div>
+                    <div>
+                        <NavigationBackLink 
+                            stateNavigator={stateNavigator} 
+                            distance={1}>
+                            Back to Inbox
+                        </NavigationBackLink>
+                        <div>
+                            <h1>{this.props.mail.subject}</h1>
+                            <p>{this.props.mail.content}</p>
+                        </div>
+                    </div>
                 );
             }
         });
@@ -138,7 +149,7 @@
         
         var stateNavigator = new StateNavigator([
             {key: 'inbox', route: ''},
-            {key: 'mail'},
+            {key: 'mail', trackCrumbTrail: true},
             {key: 'compose'}
         ]);
         
@@ -149,9 +160,12 @@
                 document.getElementById('view'));
         };
         
-        stateNavigator.states.mail.navigated = function() {
+        stateNavigator.states.mail.navigated = function(data) {
+            var mail = getMails().filter(function(mail) {
+                return mail.id === data.id;
+            })[0];
             ReactDOM.render(
-                <Mail stateNavigator={stateNavigator} />,
+                <Mail stateNavigator={stateNavigator} mail={mail} />,
                 document.getElementById('view'));
         };
         
