@@ -57,6 +57,21 @@
             ];
         }
         
+        var App = React.createClass({
+            render: function () {
+                return (
+                    <div>
+                        <NavigationLink 
+                            stateNavigator={this.props.stateNavigator} 
+                            stateKey="inbox">
+                            Inbox
+                        </NavigationLink>
+                        <div id="view"></div>
+                    </div>
+                );
+            }
+        });
+        
         var Inbox = React.createClass({
             render: function() {
                 var stateNavigator = this.props.stateNavigator;
@@ -118,21 +133,24 @@
             var mails = getMails();
             ReactDOM.render(
                 <Inbox stateNavigator={stateNavigator} mails={mails} />,
-                document.getElementById('example'));
+                document.getElementById('view'));
         };
         
         stateNavigator.states.mail.navigated = function() {
             ReactDOM.render(
                 <Mail stateNavigator={stateNavigator} />,
-                document.getElementById('example'));
+                document.getElementById('view'));
         };
         
         stateNavigator.states.compose.navigated = function() {
             ReactDOM.render(
                 <Compose stateNavigator={stateNavigator} />,
-                document.getElementById('example'));
+                document.getElementById('view'));
         };
         
+        ReactDOM.render(
+            <App stateNavigator={stateNavigator} />,
+            document.getElementById('example'));
         stateNavigator.start();
     </script>
 </body>
