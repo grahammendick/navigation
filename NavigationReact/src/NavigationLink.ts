@@ -38,7 +38,7 @@ class NavigationLink extends React.Component<any, any> {
         }
         props.href = this.getNavigationLink();
         LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationLink());
-        active = active && !!props.href && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
+        active = active && !!props.href && this.getStateNavigator().stateContext.state && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
     }

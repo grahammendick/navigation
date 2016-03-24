@@ -25,7 +25,7 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
     LinkUtility.setLink(stateNavigator, element, () => stateNavigator.getNavigationLink(stateKey,
         LinkUtility.getData(stateNavigator, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    active = active && !!element.href && stateNavigator.stateContext.state.key === stateKey;
+    active = active && !!element.href && stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey;
     LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
 export = NavigationLink;

@@ -34,7 +34,7 @@ function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, 
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getNavigationLink(stateKey,
         LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys))
     );
-    active = active && !!attrs['href'] && stateNavigator.stateContext.state.key === stateKey;
+    active = active && !!attrs['href'] && stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey;
     LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
 }
 export = NavigationLink;
