@@ -49,246 +49,250 @@
     <script type="text/javascript" src="navigation.js"></script>
     <script type="text/javascript" src="navigation.react.js"></script>
     <script type="text/jsx">
-        var StateNavigator = Navigation.StateNavigator;
-        var NavigationBackLink = NavigationReact.NavigationBackLink;
-        var NavigationLink = NavigationReact.NavigationLink;
-        var RefreshLink = NavigationReact.RefreshLink;
-        
-        function getMails() {
-            return [
-                {id: 1, from: 'you@home.com', subject: 'Haven\'t seen you for ages', date: new Date(2016,3,1), content: 'Sure, be great to catch up', thread: [{from: 'me@work.com', content: 'Can I come and see you soon?'}]},
-                {id: 2, from: 'xxx@scam.com', subject: 'You could win $1,000!', date: new Date(2016,3,2), content: 'Don\'t you want the money?', thread: [{from: 'xxx@scam.com', content: 'We just need your bank details'}, {from: 'me@work.com', content: 'Please leave me alone'}]},
-                {id: 3, from: 'mum@home.com', subject: 'Happy Birthday To You', date: new Date(2016,3,3), content: 'Awww, I thought you\'d forgotten', thread: [{from: 'me@work.com', content: 'Many Happy Returns, Mother'}]},
-                {id: 4, from: 'agent@agency.com', subject: 'JavaScript Developers Needed', date: new Date(2016,3,4), content: 'Do you know anybody that might be interested?', thread: [{from: 'agent@agency.com', content: 'You looking for work?'},{from: 'me@work.com', content: 'Nope'}]},
-                {id: 5, from: 'you@home.com', subject: 'Great to see you the other day', date: new Date(2016,3,5), content: 'Thanks, I enjoyed it too!', thread: [{from: 'me@work.com', content: 'Really enjoyed meeting up the other day!'}]},
-                {id: 6, from: 'blah@blah.com', subject: 'Yadda yadda yadda', date: new Date(2016,3,6), content: 'Blah blah blah. Blah blah blah', thread: [{from: 'me@work.com', content: 'Yadda yadda yadda'}]},
-                {id: 7, from: 'you@home.com', subject: 'Did I leave my bag at yours?', date: new Date(2016,3,7), content: 'Found it. I\'ll bring it round tomorrow', thread: [{from: 'me@work.com', content: 'Can\'t find it anywere. Can you have a look around?'}]},
-                {id: 8, from: 'you@home.com', subject: 'Thanks for returning my bag', date: new Date(2016,3,8), content: 'No worries, pal', thread: [{from: 'me@work.com', content: 'Thanks, I owe you one'}]},
-            ];
-        }
-        
-        var App = React.createClass({
-            render: function () {
-                return (
-                    <div>
-                        <ul>
-                            <li>
-                                <NavigationLink 
-                                    stateNavigator={this.props.stateNavigator}
-                                    activeCssClass="selected"
-                                    stateKey="inbox">
-                                    Inbox
-                                </NavigationLink>
-                            </li>
-                            <li>
-                                <NavigationLink 
-                                    stateNavigator={this.props.stateNavigator}
-                                    activeCssClass="selected"
-                                    stateKey="compose">
-                                    Compose
-                                </NavigationLink>
-                            </li>
-                        </ul>
-                        <div id="view"></div>
-                    </div>
-                );
-            }
-        });
-        
-        var Inbox = React.createClass({
-            render: function() {
-                var mails = this.props.mails.map(function(mail) {
-                    return (
-                        <tr key={mail.id}>
-                            <td>{mail.from}</td>
-                            <td>
-                                <NavigationLink 
-                                    stateNavigator={this.props.stateNavigator} 
-                                    navigationData={{id: mail.id}}
-                                    stateKey="mail">
-                                    {mail.subject}
-                                </NavigationLink>
-                            </td>
-                            <td>{mail.date.toDateString()}</td>
+var StateNavigator = Navigation.StateNavigator;
+var NavigationBackLink = NavigationReact.NavigationBackLink;
+var NavigationLink = NavigationReact.NavigationLink;
+var RefreshLink = NavigationReact.RefreshLink;
+
+function getMails() {
+    return [
+        {id: 1, from: 'you@home.com', subject: 'Haven\'t seen you for ages', date: new Date(2016,3,1), content: 'Sure, be great to catch up', thread: [{from: 'me@work.com', content: 'Can I come and see you soon?'}]},
+        {id: 2, from: 'xxx@scam.com', subject: 'You could win $1,000!', date: new Date(2016,3,2), content: 'Don\'t you want the money?', thread: [{from: 'xxx@scam.com', content: 'We just need your bank details'}, {from: 'me@work.com', content: 'Please leave me alone'}]},
+        {id: 3, from: 'mum@home.com', subject: 'Happy Birthday To You', date: new Date(2016,3,3), content: 'Awww, I thought you\'d forgotten', thread: [{from: 'me@work.com', content: 'Many Happy Returns, Mother'}]},
+        {id: 4, from: 'agent@agency.com', subject: 'JavaScript Developers Needed', date: new Date(2016,3,4), content: 'Do you know anybody that might be interested?', thread: [{from: 'agent@agency.com', content: 'You looking for work?'},{from: 'me@work.com', content: 'Nope'}]},
+        {id: 5, from: 'you@home.com', subject: 'Great to see you the other day', date: new Date(2016,3,5), content: 'Thanks, I enjoyed it too!', thread: [{from: 'me@work.com', content: 'Really enjoyed meeting up the other day!'}]},
+        {id: 6, from: 'blah@blah.com', subject: 'Yadda yadda yadda', date: new Date(2016,3,6), content: 'Blah blah blah. Blah blah blah', thread: [{from: 'me@work.com', content: 'Yadda yadda yadda'}]},
+        {id: 7, from: 'you@home.com', subject: 'Did I leave my bag at yours?', date: new Date(2016,3,7), content: 'Found it. I\'ll bring it round tomorrow', thread: [{from: 'me@work.com', content: 'Can\'t find it anywere. Can you have a look around?'}]},
+        {id: 8, from: 'you@home.com', subject: 'Thanks for returning my bag', date: new Date(2016,3,8), content: 'No worries, pal', thread: [{from: 'me@work.com', content: 'Thanks, I owe you one'}]},
+    ];
+}
+
+var App = React.createClass({
+    render: function () {
+        return (
+            <div>
+                <ul>
+                    <li>
+                        <NavigationLink 
+                            stateNavigator={this.props.stateNavigator}
+                            activeCssClass="selected"
+                            stateKey="inbox">
+                            Inbox
+                        </NavigationLink>
+                    </li>
+                    <li>
+                        <NavigationLink 
+                            stateNavigator={this.props.stateNavigator}
+                            activeCssClass="selected"
+                            stateKey="compose">
+                            Compose
+                        </NavigationLink>
+                    </li>
+                </ul>
+                <div id="view"></div>
+            </div>
+        );
+    }
+});
+
+var Inbox = React.createClass({
+    render: function() {
+        var mails = this.props.mails.map(function(mail) {
+            return (
+                <tr key={mail.id}>
+                    <td>{mail.from}</td>
+                    <td>
+                        <NavigationLink 
+                            stateNavigator={this.props.stateNavigator} 
+                            navigationData={{id: mail.id}}
+                            stateKey="mail">
+                            {mail.subject}
+                        </NavigationLink>
+                    </td>
+                    <td>{mail.date.toDateString()}</td>
+                </tr>
+            );
+        }.bind(this));
+        return (
+            <div>
+                <h1>Inbox</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>Subject</th>
+                            <th>
+                                <RefreshLink
+                                    navigationData={{sort: this.props.sort}}
+                                    includeCurrentData={true}
+                                    stateNavigator={this.props.stateNavigator}>
+                                    Sent
+                                </RefreshLink>
+                            </th>
                         </tr>
-                    );
-                }.bind(this));
+                    </thead>
+                    <tbody>{mails}</tbody>
+                </table>
+                Go to page
+                <RefreshLink
+                    navigationData={{page: 1}}
+                    includeCurrentData={true}
+                    disableActive={true}
+                    stateNavigator={this.props.stateNavigator}>
+                    1
+                </RefreshLink>
+                <RefreshLink
+                    navigationData={{page: 2}}
+                    includeCurrentData={true}
+                    disableActive={true}
+                    stateNavigator={this.props.stateNavigator}>
+                    2
+                </RefreshLink>
+            </div>
+        );
+    }
+});
+
+var Mail = React.createClass({
+    render: function () {
+        var thread = null;
+        if (this.props.expand) {
+            var thread = this.props.mail.thread.map(function(mail, i) {
                 return (
-                    <div>
-                        <h1>Inbox</h1>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>From</th>
-                                    <th>Subject</th>
-                                    <th>
-                                        <RefreshLink
-                                            navigationData={{sort: this.props.sort === 'newest' ? 'oldest' : 'newest'}}
-                                            includeCurrentData={true}
-                                            stateNavigator={this.props.stateNavigator}>
-                                            Sent
-                                        </RefreshLink>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>{mails}</tbody>
-                        </table>
-                        Go to page
-                        <RefreshLink
-                            navigationData={{page: 1}}
-                            includeCurrentData={true}
-                            disableActive={true}
-                            stateNavigator={this.props.stateNavigator}>
-                            1
-                        </RefreshLink>
-                        <RefreshLink
-                            navigationData={{page: 2}}
-                            includeCurrentData={true}
-                            disableActive={true}
-                            stateNavigator={this.props.stateNavigator}>
-                            2
-                        </RefreshLink>
-                    </div>
+                    <li key={i}>
+                        <h2>{mail.from}</h2>
+                        <p>{mail.content}</p>
+                    </li>
                 );
-            }
+            }.bind(this));
+        }
+        return (
+            <div>
+                <NavigationBackLink 
+                    stateNavigator={stateNavigator} 
+                    distance={1}>
+                    Back to Inbox
+                </NavigationBackLink>
+                <div>
+                    <h1>{this.props.mail.subject}</h1>
+                    <RefreshLink
+                        navigationData={{expand: !this.props.expand}}
+                        includeCurrentData={true}
+                        activeCssClass="hide"
+                        stateNavigator={this.props.stateNavigator}>
+                        {!this.props.expand ? 'Expand' : 'Collapse'} Thread
+                    </RefreshLink>
+                    <ul>
+                        {thread}
+                        <li key={this.props.mail.thread.length}>
+                            <h2>{this.props.mail.from}</h2>
+                            <p>{this.props.mail.content}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        );
+    }
+});
+
+var Compose = React.createClass({
+    getInitialState: function() {
+        return {value: ''};
+    },
+    handleChange: function(event) {
+        this.setState({value: event.target.value});
+    },
+    handleSend: function(event) {
+        this.setState({value: ''}, function() {
+            this.props.stateNavigator.navigate('inbox');
         });
-        
-        var Mail = React.createClass({
-            render: function () {
-                var thread = null;
-                if (this.props.expand) {
-                    var thread = this.props.mail.thread.map(function(mail, i) {
-                        return (
-                            <li key={i}>
-                                <h2>{mail.from}</h2>
-                                <p>{mail.content}</p>
-                            </li>
-                        );
-                    }.bind(this));
+    },
+    componentDidMount: function() {
+        this.props.stateNavigator.states.compose.unloading = 
+            function(state, data, url, unload, history) {
+                if (history || state.key === 'compose' || !this.state.value 
+                    || confirm('You\'ve not sent your email. Continue?')) {
+                    unload();
                 }
-                return (
-                    <div>
-                        <NavigationBackLink 
-                            stateNavigator={stateNavigator} 
-                            distance={1}>
-                            Back to Inbox
-                        </NavigationBackLink>
-                        <div>
-                            <h1>{this.props.mail.subject}</h1>
-                            <RefreshLink
-                                navigationData={{expand: !this.props.expand}}
-                                includeCurrentData={true}
-                                activeCssClass="hide"
-                                stateNavigator={this.props.stateNavigator}>
-                                {!this.props.expand ? 'Expand' : 'Collapse'} Thread
-                            </RefreshLink>
-                            <ul>
-                                {thread}
-                                <li key={this.props.mail.thread.length}>
-                                    <h2>{this.props.mail.from}</h2>
-                                    <p>{this.props.mail.content}</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                );
-            }
+            }.bind(this);
+    }, 
+    render: function () {
+        return (
+            <div>
+                <h1>Compose</h1>
+                <textarea 
+                    rows="6"
+                    cols="60"
+                    value={this.state.value}
+                    onChange={this.handleChange}>
+                </textarea>
+                <button onClick={this.handleSend}>Send</button>
+            </div>
+        );
+    }
+});
+
+var stateNavigator = new StateNavigator([
+    {key: 'inbox', route: '+/page{page}+/sort/{sort}', title: 'Inbox', 
+        defaults: {page: 1, sort: 'newest'}},
+    {key: 'mail', route: 'open/{id}/{expand?}', trackCrumbTrail: true, 
+        defaults: {expand: false}, defaultTypes: {id: 'number'}},
+    {key: 'compose', route: 'new', title: 'Compose'}
+]);
+
+stateNavigator.states.inbox.navigating = function(data, url, navigate) {
+    setTimeout(function() {
+        var mails = getMails();
+        mails.sort(function(fromMail, toMail){
+            var mult = data.sort === 'newest' ? 1 : -1;
+            return mult * (fromMail.date < toMail.date ? 1 : -1);
         });
-        
-        var Compose = React.createClass({
-            getInitialState: function() {
-                return {value: ''};
-            },
-            handleChange: function(event) {
-                this.setState({value: event.target.value});
-            },
-            handleSend: function(event) {
-                this.setState({value: ''}, function() {
-                    this.props.stateNavigator.navigate('inbox');
-                });
-            },
-            componentDidMount: function() {
-                this.props.stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
-                    if (history || state.key === 'compose' || !this.state.value || confirm('You\'ve not sent your email. Continue?')) {
-                        unload();
-                    }
-                }.bind(this);
-            }, 
-            render: function () {
-                return (
-                    <div>
-                        <h1>Compose</h1>
-                        <textarea 
-                            rows="6"
-                            cols="60"
-                            value={this.state.value}
-                            onChange={this.handleChange}>
-                        </textarea>
-                        <button onClick={this.handleSend}>Send</button>
-                    </div>
-                );
-            }
-        });
-        
-        var stateNavigator = new StateNavigator([
-            {key: 'inbox', route: '+/page{page}+/sort/{sort}', title: 'Inbox', defaults: {page: 1, sort: 'newest'}},
-            {key: 'mail', route: 'open/{id}/{expand?}', defaults: {expand: false}, defaultTypes: {id: 'number'}, trackCrumbTrail: true},
-            {key: 'compose', route: 'new', title: 'Compose'}
-        ]);
-        
-        stateNavigator.states.inbox.navigating = function(data, url, navigate) {
-            setTimeout(function() {
-                var mails = getMails();
-                mails.sort(function(fromMail, toMail){
-                    var mult = data.sort === 'newest' ? 1 : -1;
-                    return mult * (fromMail.date < toMail.date ? 1 : -1);
-                });
-                var start = (data.page - 1) * 5;
-                mails = mails.slice(start, start + 5);
-                navigate({mails: mails});
-            }, 100);
-        };
-        
-        stateNavigator.states.inbox.navigated = function(data, asyncData) {
-            ReactDOM.render(
-                <Inbox
-                    stateNavigator={stateNavigator}
-                    mails={asyncData.mails}
-                    sort={data.sort}
-                />,
-                document.getElementById('view'));
-        };
-        
-        stateNavigator.states.mail.navigating = function(data, url, navigate) {
-            setTimeout(function() {
-                var mail = getMails().filter(function(mail) {
-                    return mail.id === data.id;
-                })[0];
-                navigate({mail: mail});
-            }, 100);
-        };
-        
-        stateNavigator.states.mail.navigated = function(data, asyncData) {
-            stateNavigator.stateContext.title = asyncData.mail.subject;
-            ReactDOM.render(
-                <Mail
-                    stateNavigator={stateNavigator}
-                    mail={asyncData.mail}
-                    expand={data.expand}
-                />,
-                document.getElementById('view'));
-        };
-        
-        stateNavigator.states.compose.navigated = function() {
-            ReactDOM.render(
-                <Compose stateNavigator={stateNavigator} />,
-                document.getElementById('view'));
-        };
-        
-        ReactDOM.render(
-            <App stateNavigator={stateNavigator} />,
-            document.getElementById('example'));
-        stateNavigator.start();
+        var start = (data.page - 1) * 5;
+        mails = mails.slice(start, start + 5);
+        navigate({mails: mails});
+    }, 100);
+};
+
+stateNavigator.states.inbox.navigated = function(data, asyncData) {
+    ReactDOM.render(
+        <Inbox
+            stateNavigator={stateNavigator}
+            mails={asyncData.mails}
+            sort={data.sort === 'newest' ? 'oldest' : 'newest'}
+        />,
+        document.getElementById('view'));
+};
+
+stateNavigator.states.mail.navigating = function(data, url, navigate) {
+    setTimeout(function() {
+        var mail = getMails().filter(function(mail) {
+            return mail.id === data.id;
+        })[0];
+        navigate({mail: mail});
+    }, 100);
+};
+
+stateNavigator.states.mail.navigated = function(data, asyncData) {
+    stateNavigator.stateContext.title = asyncData.mail.subject;
+    ReactDOM.render(
+        <Mail
+            stateNavigator={stateNavigator}
+            mail={asyncData.mail}
+            expand={data.expand}
+        />,
+        document.getElementById('view'));
+};
+
+stateNavigator.states.compose.navigated = function() {
+    ReactDOM.render(
+        <Compose stateNavigator={stateNavigator} />,
+        document.getElementById('view'));
+};
+
+ReactDOM.render(
+    <App stateNavigator={stateNavigator} />,
+    document.getElementById('example'));
+stateNavigator.start();
     </script>
 </body>
 </html>
