@@ -209,7 +209,7 @@
             },
             componentDidMount: function() {
                 this.props.stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
-                    if (history || !this.state.value || confirm('You\'ve not sent your email. Continue?')) {
+                    if (history || state.key === 'compose' || !this.state.value || confirm('You\'ve not sent your email. Continue?')) {
                         unload();
                     }
                 }.bind(this);
