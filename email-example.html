@@ -146,6 +146,11 @@
             handleChange: function(event) {
                 this.setState({value: event.target.value});
             },
+            handleSend: function(event) {
+                this.setState({value: ''}, function() {
+                    this.props.stateNavigator.navigate('inbox');
+                });
+            },
             componentDidMount: function() {
                 this.props.stateNavigator.states.compose.unloading = function(state, data, url, unload, history) {
                     if (history || !this.state.value || confirm('You\'ve not sent your email. Continue?')) {
@@ -163,6 +168,7 @@
                             value={this.state.value}
                             onChange={this.handleChange}>
                         </textarea>
+                        <button onClick={this.handleSend}>Send</button>
                     </div>
                 );
             }
