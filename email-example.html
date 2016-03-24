@@ -241,7 +241,7 @@ var stateNavigator = new StateNavigator([
 stateNavigator.states.inbox.navigating = function(data, url, navigate) {
   setTimeout(function() {
     var mails = getMails();
-    mails.sort(function(fromMail, toMail){
+    mails.sort(function(fromMail, toMail) {
       var mult = data.sort === 'newest' ? 1 : -1;
       return mult * (fromMail.date < toMail.date ? 1 : -1);
     });
