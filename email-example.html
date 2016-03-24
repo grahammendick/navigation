@@ -1,0 +1,139 @@
+<html>
+<head>
+    <title>Email Example</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="index.html">Navigation</a>
+            <a href="hello-world.html" class="selected">Docs</a>
+            <a href="download.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="hello-world.html">Hello World</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="state-navigation.html">A. State Navigation</a>
+            <a href="navigation-data.html">B. Navigation Data</a>
+            <a href="routes.html">C. Routes</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="breadcrumb-trail.html" class="selected">Breadcrumb Trail</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+        </div>
+        <div id="article">
+            <h1>Email Example</h1>
+            <p>
+                Example built in preceding documents. Async calls simulated with a setTimeout...
+            </p>
+            [Inline Js Fiddle]
+            <div id="example"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="prism.js"></script>
+    <script type="text/javascript" src="example/react/react-0.14.3.min.js"></script>
+    <script type="text/javascript" src="example/react/react-dom-0.14.3.min.js"></script>
+    <script type="text/javascript" src="example/react/JSXTransformer-0.13.3.js"></script>
+    <script type="text/javascript" src="navigation.js"></script>
+    <script type="text/javascript" src="navigation.react.js"></script>
+    <script type="text/jsx">
+        var StateNavigator = Navigation.StateNavigator;
+        var NavigationBackLink = NavigationReact.NavigationBackLink;
+        var NavigationLink = NavigationReact.NavigationLink;
+        var RefreshLink = NavigationReact.RefreshLink;
+        
+        function getMails() {
+            return [
+                {id: 1, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(1,1,2000), content: 'Blah blah blah'},
+                {id: 2, from: 'bernard@home.com', to: 'me', subject: 'Yo, can you do me a favour?', date: new Date(2,1,2000), content: 'Meh Meh Meh'}
+            ];
+        }
+        
+        var Inbox = React.createClass({
+            render: function() {
+                var stateNavigator = this.props.stateNavigator;
+                var mails = this.props.mails.map(function(mail) {
+                    return (
+                        <tr>
+                            <td>{mail.from}</td>
+                            <td>
+                                <NavigationLink 
+                                    stateNavigator={stateNavigator} 
+                                    stateKey="mail">
+                                    {mail.subject}
+                                </NavigationLink>
+                            </td>
+                            <td>{mail.date.toDateString()}</td>
+                        </tr>
+                    );
+                });
+                return (
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>Subject</th>
+                                    <th>Sent</th>
+                                </tr>
+                            </thead>
+                            <tbody>{mails}</tbody>
+                        </table>
+                    </div>
+                );
+            }
+        });
+        
+        var Mail = React.createClass({
+            render: function () {
+                return (
+                    <div></div>
+                );
+            }
+        });
+        
+        var Compose = React.createClass({
+            render: function () {
+                return (
+                    <div></div>
+                );
+            }
+        });
+        
+        var stateNavigator = new StateNavigator([
+            {key: 'inbox', route: ''},
+            {key: 'mail'},
+            {key: 'compose'}
+        ]);
+        
+        stateNavigator.states.inbox.navigated = function() {
+            var mails = getMails();
+            ReactDOM.render(
+                <Inbox stateNavigator={stateNavigator} mails={mails} />,
+                document.getElementById('example'));
+        };
+        
+        stateNavigator.states.mail.navigated = function() {
+            ReactDOM.render(
+                <Mail stateNavigator={stateNavigator} />,
+                document.getElementById('example'));
+        };
+        
+        stateNavigator.states.compose.navigated = function() {
+            ReactDOM.render(
+                <Compose stateNavigator={stateNavigator} />,
+                document.getElementById('example'));
+        };
+        
+        stateNavigator.start();
+    </script>
+</body>
+</html>
