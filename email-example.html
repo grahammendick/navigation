@@ -87,14 +87,13 @@
         
         var Inbox = React.createClass({
             render: function() {
-                var stateNavigator = this.props.stateNavigator;
                 var mails = this.props.mails.map(function(mail) {
                     return (
                         <tr>
                             <td>{mail.from}</td>
                             <td>
                                 <NavigationLink 
-                                    stateNavigator={stateNavigator} 
+                                    stateNavigator={this.props.stateNavigator} 
                                     navigationData={{id: mail.id}}
                                     stateKey="mail">
                                     {mail.subject}
@@ -103,7 +102,7 @@
                             <td>{mail.date.toDateString()}</td>
                         </tr>
                     );
-                });
+                }.bind(this));
                 return (
                     <div>
                         <h1>Inbox</h1>
