@@ -343,11 +343,9 @@ var StateNavigator = (function () {
         var len = this.stateContext.crumbTrail.length;
         for (var i = 0; i < len; i++) {
             var crumblessUrl = this.stateContext.crumbTrail[i];
-            if (crumblessUrl.substring(0, 1) !== '/')
-                throw new Error(crumblessUrl + ' is not a valid crumb');
             var _a = this.parseLink(crumblessUrl), state = _a.state, data = _a.data;
             var url = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 == len));
+            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
         }
         return crumbs;
     };
@@ -454,6 +452,14 @@ var StateNavigator = (function () {
             var state = this.router.getData(url.split('?')[0]).state;
             var _a = StateHandler.getNavigationData(this.router, state, url), data = _a.data, separableData = _a.separableData;
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
+            var crumbTrail = data[state.crumbTrailKey];
+            if (crumbTrail) {
+                for (var i = 0; i < crumbTrail.length; i++) {
+                    var crumb = crumbTrail[i];
+                    if (crumb.substring(0, 1) !== '/')
+                        throw new Error(crumb + ' is not a valid crumb');
+                }
+            }
             return { state: state, data: data };
         }
         catch (e) {
@@ -526,7 +532,7 @@ var StateRouter = (function () {
                         count++;
                     }
                 }
-                if (count > bestMatchCount || (count == bestMatchCount && route.params.length < bestMatchParamCount)) {
+                if (count > bestMatchCount || (count === bestMatchCount && route.params.length < bestMatchParamCount)) {
                     bestMatch = { route: route, data: routeData, routePath: routePath };
                     bestMatchCount = count;
                     bestMatchParamCount = route.params.length;
@@ -1130,7 +1136,7 @@ var Segment = (function () {
         var matches = this.path.match(this.subSegmentPattern);
         for (var i = 0; i < matches.length; i++) {
             var subSegment = matches[i];
-            if (subSegment.slice(0, 1) === '{' && subSegment.slice(-1) === '}') {
+            if (subSegment.slice(0, 1) === '{') {
                 var param = subSegment.substring(1, subSegment.length - 1);
                 var optional = param.slice(-1) === '?';
                 var splat = param.slice(0, 1) === '*';

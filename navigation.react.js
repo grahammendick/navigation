@@ -43,7 +43,7 @@ var LinkUtility = (function () {
         if (active && disableActive)
             props.href = null;
     };
-    LinkUtility.addListeners = function (component, props, getLink) {
+    LinkUtility.addListeners = function (component, stateNavigator, props, getLink) {
         var _this = this;
         var lazy = !!props.lazy;
         props.onClick = function (e, domId) {
@@ -57,7 +57,6 @@ var LinkUtility = (function () {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var stateNavigator = props.stateNavigator;
                     var link = stateNavigator.historyManager.getUrl(element);
                     var navigating = _this.getNavigating(props);
                     if (navigating(e, domId, link)) {
@@ -99,7 +98,7 @@ var NavigationBackLink = (function (_super) {
         this.onNavigate = function () { return _this.forceUpdate(); };
     }
     NavigationBackLink.prototype.getStateNavigator = function () {
-        return this.props.stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     };
     NavigationBackLink.prototype.getNavigationBackLink = function () {
         var _this = this;
@@ -119,8 +118,11 @@ var NavigationBackLink = (function (_super) {
         for (var key in this.props)
             props[key] = this.props[key];
         props.href = this.getNavigationBackLink();
-        LinkUtility.addListeners(this, props, function () { return _this.getNavigationBackLink(); });
+        LinkUtility.addListeners(this, this.getStateNavigator(), props, function () { return _this.getNavigationBackLink(); });
         return React.createElement(props.href ? 'a' : 'span', props);
+    };
+    NavigationBackLink.contextTypes = {
+        stateNavigator: React.PropTypes.object
     };
     return NavigationBackLink;
 })(React.Component);
@@ -144,7 +146,7 @@ var NavigationLink = (function (_super) {
         this.onNavigate = function () { return _this.forceUpdate(); };
     }
     NavigationLink.prototype.getStateNavigator = function () {
-        return this.props.stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     };
     NavigationLink.prototype.getNavigationLink = function () {
         var _this = this;
@@ -169,10 +171,13 @@ var NavigationLink = (function (_super) {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getNavigationLink();
-        LinkUtility.addListeners(this, props, function () { return _this.getNavigationLink(); });
-        active = active && !!props.href && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
+        LinkUtility.addListeners(this, this.getStateNavigator(), props, function () { return _this.getNavigationLink(); });
+        active = active && !!props.href && this.getStateNavigator().stateContext.state && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
+    };
+    NavigationLink.contextTypes = {
+        stateNavigator: React.PropTypes.object
     };
     return NavigationLink;
 })(React.Component);
@@ -209,7 +214,7 @@ var RefreshLink = (function (_super) {
         this.onNavigate = function () { return _this.forceUpdate(); };
     }
     RefreshLink.prototype.getStateNavigator = function () {
-        return this.props.stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     };
     RefreshLink.prototype.getRefreshLink = function () {
         var _this = this;
@@ -234,10 +239,13 @@ var RefreshLink = (function (_super) {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getRefreshLink();
-        LinkUtility.addListeners(this, props, function () { return _this.getRefreshLink(); });
+        LinkUtility.addListeners(this, this.getStateNavigator(), props, function () { return _this.getRefreshLink(); });
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
+    };
+    RefreshLink.contextTypes = {
+        stateNavigator: React.PropTypes.object
     };
     return RefreshLink;
 })(React.Component);
