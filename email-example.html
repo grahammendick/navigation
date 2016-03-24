@@ -153,19 +153,31 @@
             {key: 'compose'}
         ]);
         
-        stateNavigator.states.inbox.navigated = function() {
-            var mails = getMails();
+        stateNavigator.states.inbox.navigating = function(data, url, navigate) {
+            setTimeout(function() {
+                var mails = getMails();
+                navigate({mails: mails});
+            }, 100);
+        };
+        
+        stateNavigator.states.inbox.navigated = function(data, asyncData) {
             ReactDOM.render(
-                <Inbox stateNavigator={stateNavigator} mails={mails} />,
+                <Inbox stateNavigator={stateNavigator} mails={asyncData.mails} />,
                 document.getElementById('view'));
         };
         
-        stateNavigator.states.mail.navigated = function(data) {
-            var mail = getMails().filter(function(mail) {
-                return mail.id === data.id;
-            })[0];
+        stateNavigator.states.mail.navigating = function(data, url, navigate) {
+            setTimeout(function() {
+                var mail = getMails().filter(function(mail) {
+                    return mail.id === data.id;
+                })[0];
+                navigate({mail: mail});
+            }, 100);
+        };
+        
+        stateNavigator.states.mail.navigated = function(data, asyncData) {
             ReactDOM.render(
-                <Mail stateNavigator={stateNavigator} mail={mail} />,
+                <Mail stateNavigator={stateNavigator} mail={asyncData.mail} />,
                 document.getElementById('view'));
         };
         
