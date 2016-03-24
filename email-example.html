@@ -97,7 +97,7 @@
             render: function() {
                 var mails = this.props.mails.map(function(mail) {
                     return (
-                        <tr>
+                        <tr key={mail.id}>
                             <td>{mail.from}</td>
                             <td>
                                 <NavigationLink 
@@ -155,9 +155,9 @@
             render: function () {
                 var thread = null;
                 if (this.props.expand) {
-                    var thread = this.props.mail.thread.map(function(mail) {
+                    var thread = this.props.mail.thread.map(function(mail, i) {
                         return (
-                            <li>
+                            <li key={i}>
                                 <h2>{mail.from}</h2>
                                 <p>{mail.content}</p>
                             </li>
@@ -182,7 +182,7 @@
                             </RefreshLink>
                             <ul>
                                 {thread}
-                                <li>
+                                <li key={this.props.mail.thread.length}>
                                     <h2>{this.props.mail.from}</h2>
                                     <p>{this.props.mail.content}</p>
                                 </li>
