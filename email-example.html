@@ -52,18 +52,18 @@
         
         function getMails() {
             return [
-                {id: 1, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,1), content: 'Blah blah blah'},
-                {id: 2, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,2), content: 'Blah blah blah'},
-                {id: 3, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,3), content: 'Blah blah blah'},
-                {id: 4, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,4), content: 'Blah blah blah'},
-                {id: 5, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,5), content: 'Blah blah blah'},
-                {id: 6, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,6), content: 'Blah blah blah'},
-                {id: 7, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,7), content: 'Blah blah blah'},
-                {id: 8, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,8), content: 'Blah blah blah'},
-                {id: 9, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,9), content: 'Blah blah blah'},
-                {id: 10, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,10), content: 'Blah blah blah'},
-                {id: 11, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,11), content: 'Blah blah blah'},
-                {id: 12, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,12), content: 'Blah blah blah'},
+                {id: 1, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,1), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 2, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,2), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 3, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,3), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 4, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,4), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 5, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,5), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 6, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,6), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 7, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,7), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 8, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,8), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 9, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,9), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 10, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,10), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 11, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,11), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
+                {id: 12, from: 'brenda@home.com', to: 'me', subject: 'You\'ve gotta see this', date: new Date(2016,3,12), content: 'Blah blah blah', thread: [{from: 'me', content: 'Yadda yadda yadda'}]},
             ];
         }
         
@@ -125,7 +125,7 @@
                                         <RefreshLink
                                             navigationData={{sort: this.props.sort === 'newest' ? 'oldest' : 'newest'}}
                                             includeCurrentData={true}
-                                            stateNavigator={this.props.stateNavigator} >
+                                            stateNavigator={this.props.stateNavigator}>
                                             Sent
                                         </RefreshLink>
                                     </th>
@@ -138,14 +138,14 @@
                             navigationData={{page: 0}}
                             includeCurrentData={true}
                             disableActive={true}
-                            stateNavigator={this.props.stateNavigator} >
+                            stateNavigator={this.props.stateNavigator}>
                             1
                         </RefreshLink>
                         <RefreshLink
                             navigationData={{page: 1}}
                             includeCurrentData={true}
                             disableActive={true}
-                            stateNavigator={this.props.stateNavigator} >
+                            stateNavigator={this.props.stateNavigator}>
                             2
                         </RefreshLink>
                     </div>
@@ -155,6 +155,17 @@
         
         var Mail = React.createClass({
             render: function () {
+                var thread = null;
+                if (this.props.expand) {
+                    var thread = this.props.mail.thread.map(function(mail) {
+                        return (
+                            <li>
+                                <h2>{mail.from}</h2>
+                                <p>{mail.content}</p>
+                            </li>
+                        );
+                    }.bind(this));
+                }
                 return (
                     <div>
                         <NavigationBackLink 
@@ -164,8 +175,21 @@
                         </NavigationBackLink>
                         <div>
                             <h1>{this.props.mail.subject}</h1>
-                            <div>{this.props.mail.date.toDateString()}</div>
-                            <p>{this.props.mail.content}</p>
+                            <ul>
+                                {thread}
+                                <li>
+                                    <RefreshLink
+                                        navigationData={{expand: !this.props.expand}}
+                                        includeCurrentData={true}
+                                        activeCssClass="hide"
+                                        stateNavigator={this.props.stateNavigator}>
+                                        {!this.props.expand ? 'Expand' : 'Collapse'} Thread
+                                    </RefreshLink>
+                                    <h2>{this.props.mail.from}</h2>
+                                    <div>{this.props.mail.date.toDateString()}</div>
+                                    <p>{this.props.mail.content}</p>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 );
@@ -209,7 +233,7 @@
         
         var stateNavigator = new StateNavigator([
             {key: 'inbox', route: '', title: 'Inbox', defaults: {page: 0, sort: 'newest'}},
-            {key: 'mail', defaultTypes: {id: 'number'}, trackCrumbTrail: true},
+            {key: 'mail', defaults: {expand: false}, defaultTypes: {id: 'number'}, trackCrumbTrail: true},
             {key: 'compose', title: 'Compose'}
         ]);
         
@@ -228,7 +252,11 @@
         
         stateNavigator.states.inbox.navigated = function(data, asyncData) {
             ReactDOM.render(
-                <Inbox stateNavigator={stateNavigator} mails={asyncData.mails} sort={data.sort} />,
+                <Inbox
+                    stateNavigator={stateNavigator}
+                    mails={asyncData.mails}
+                    sort={data.sort}
+                />,
                 document.getElementById('view'));
         };
         
@@ -244,7 +272,11 @@
         stateNavigator.states.mail.navigated = function(data, asyncData) {
             stateNavigator.stateContext.title = asyncData.mail.subject;
             ReactDOM.render(
-                <Mail stateNavigator={stateNavigator} mail={asyncData.mail} />,
+                <Mail
+                    stateNavigator={stateNavigator}
+                    mail={asyncData.mail}
+                    expand={data.expand}
+                />,
                 document.getElementById('view'));
         };
         
