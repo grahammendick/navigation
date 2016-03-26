@@ -69,13 +69,13 @@
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
             <h2>Data First</h2>
             <p>
-                We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass to the destination <code>State</code>. We'll pass the number 10 as the <code>size</code> to the 'world' <code>State</code>.
+                We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass to the destination <code>State</code>. We'll pass the number 20 as the <code>size</code> to the 'world' <code>State</code>.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
   ReactDOM.render(
     &lt;NavigationReact.NavigationLink 
       stateKey="world"
-      navigationData={{size: 10}}
+      navigationData={{size: 20}}
       stateNavigator={stateNavigator}>
       Hello
     &lt;/NavigationReact.NavigationLink>,
@@ -105,5 +105,30 @@
         </div>
     </div>
     <script type="text/javascript" src="prism.js"></script>
+    <script type="text/jsx">
+var stateNavigator = new Navigation.StateNavigator([
+  {key: 'hello', route: ''},
+  {key: 'world', route: '{size}', defaultTypes: {size: 'number'}}
+]);
+
+stateNavigator.states.hello.navigated = function() {
+  ReactDOM.render(
+    <NavigationReact.NavigationLink 
+      stateKey="world"
+      navigationData={{size: 20}}
+      stateNavigator={stateNavigator}>
+      Hello
+    </NavigationReact.NavigationLink>,
+    document.getElementById('example'));
+};
+
+stateNavigator.states.world.navigated = function(data) {
+  ReactDOM.render(
+    <div style={{fontSize: data.size}}>World</div>,
+    document.getElementById('example'));
+};
+
+stateNavigator.start();
+  </script>
 </body>
 </html>
