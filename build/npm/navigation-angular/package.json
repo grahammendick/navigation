@@ -1,6 +1,6 @@
 {
   "name": "navigation-angular",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "A plugin for the Navigation routing library that lets you build Hyperlinks using Angular's binding syntax",
   "main": "navigation-angular.js",
   "repository": {
@@ -17,9 +17,9 @@
     "angular": "*"
   },
   "author": "Graham Mendick",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/grahammendick/navigation/issues"
   },
-  "homepage": "http://grahammendick.github.io/navigation/example/angular/navigation.html"
+  "homepage": "http://grahammendick.github.io/navigation/"
 }
