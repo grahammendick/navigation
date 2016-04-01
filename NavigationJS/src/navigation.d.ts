@@ -484,7 +484,7 @@ declare module Navigation {
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(stateKey: string, navigationData: any, historyAction: string): void;
+        navigate(stateKey: string, navigationData: any, historyAction: 'add' | 'replace' | 'none'): void;
         /**
          * Gets a Url to navigate to a State passing no NavigationData
          * @param stateKey The key of a State
@@ -524,7 +524,7 @@ declare module Navigation {
          * @throws canNavigateBack returns false for this distance
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigateBack(distance: number, historyAction: string): void;
+        navigateBack(distance: number, historyAction: 'add' | 'replace' | 'none'): void;
         /**
          * Gets a Url to navigate to a Crumb contained in the crumb trail, 
          * represented by the Crumbs collection, as specified by the distance.
@@ -553,7 +553,7 @@ declare module Navigation {
          * @throws There is NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        refresh(navigationData: any, historyAction: string): void;
+        refresh(navigationData: any, historyAction: 'add' | 'replace' | 'none'): void;
         /**
          * Gets a Url to navigate to the current State passing no 
          * NavigationData
@@ -577,14 +577,14 @@ declare module Navigation {
          * @param url The target location
          * @param A value determining the effect on browser history
          */
-        navigateLink(url: string, historyAction: string): void;
+        navigateLink(url: string, historyAction: 'add' | 'replace' | 'none'): void;
         /**
          * Navigates to the url
          * @param url The target location
          * @param A value determining the effect on browser history
          * @param history A value indicating whether browser history was used
          */
-        navigateLink(url: string, historyAction: string, history: boolean): void;
+        navigateLink(url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): void;
         /**
          * Parses the url out into State and Navigation Data
          * @param url The url to parse
