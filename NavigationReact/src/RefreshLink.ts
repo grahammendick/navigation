@@ -5,8 +5,12 @@ import React = require('react');
 class RefreshLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
+    static contextTypes = {
+        stateNavigator: React.PropTypes.object
+    }
+    
     private getStateNavigator(): Navigation.StateNavigator {
-        return this.props.stateNavigator;
+        return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
     getRefreshLink(): string {
@@ -33,7 +37,7 @@ class RefreshLink extends React.Component<any, any> {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getRefreshLink();
-        LinkUtility.addListeners(this, props, () => this.getRefreshLink());
+        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getRefreshLink());
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);

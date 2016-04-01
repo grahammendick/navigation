@@ -68,7 +68,7 @@
                 this.setState({name: event.target.value});
             },
             nameBlur(event) {
-                stateNavigator.refresh(this.props.stateNavigator.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
+                this.props.stateNavigator.refresh(this.props.stateNavigator.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
             },
             render() {
                 return (

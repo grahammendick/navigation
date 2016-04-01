@@ -5,8 +5,12 @@ import React = require('react');
 class NavigationLink extends React.Component<any, any> {
     private onNavigate = () => this.forceUpdate();
     
+    static contextTypes = {
+        stateNavigator: React.PropTypes.object
+    }
+    
     private getStateNavigator(): Navigation.StateNavigator {
-        return this.props.stateNavigator;
+        return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
     private getNavigationLink(): string {
@@ -33,8 +37,8 @@ class NavigationLink extends React.Component<any, any> {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getNavigationLink();
-        LinkUtility.addListeners(this, props, () => this.getNavigationLink());
-        active = active && !!props.href && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
+        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationLink());
+        active = active && !!props.href && this.getStateNavigator().stateContext.state && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
         return React.createElement(props.href ? 'a' : 'span', props);
     }

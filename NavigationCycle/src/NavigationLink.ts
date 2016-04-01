@@ -16,7 +16,7 @@ var NavigationLink = (stateNavigator: Navigation.StateNavigator, properties: any
         newProperties.href = stateNavigator.historyManager.getHref(link);
     } catch(e) {
     }
-    active = active && !!newProperties.href && stateNavigator.stateContext.state.key === properties.stateKey;
+    active = active && !!newProperties.href && stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === properties.stateKey;
     LinkUtility.setActive(newProperties, active, properties.activeCssClass, properties.disableActive);
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);

@@ -43,7 +43,7 @@ class LinkUtility {
             props.href = null;        
     }
     
-    static addListeners(component: React.Component<any, any>, props: any, getLink: () => string) {
+    static addListeners(component: React.Component<any, any>, stateNavigator: Navigation.StateNavigator, props: any, getLink: () => string) {
         var lazy = !!props.lazy;
         props.onClick = (e: MouseEvent, domId: string) => {
             var element = <HTMLAnchorElement> ReactDOM.findDOMNode(component);
@@ -56,7 +56,6 @@ class LinkUtility {
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var stateNavigator: Navigation.StateNavigator = props.stateNavigator;
                     var link = stateNavigator.historyManager.getUrl(element);
                     var navigating = this.getNavigating(props);
                     if (navigating(e, domId, link)) {
