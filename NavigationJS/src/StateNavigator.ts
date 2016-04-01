@@ -98,7 +98,7 @@ class StateNavigator {
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
-    navigate(stateKey: string, navigationData?: any, historyAction?: string) {
+    navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
         var url = this.getNavigationLink(stateKey, navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
@@ -129,7 +129,7 @@ class StateNavigator {
         return distance <= this.stateContext.crumbs.length && distance > 0;
     }
 
-    navigateBack(distance: number, historyAction?: string) {
+    navigateBack(distance: number, historyAction?: 'add' | 'replace' | 'none') {
         var url = this.getNavigationBackLink(distance);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
@@ -142,7 +142,7 @@ class StateNavigator {
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
     }
 
-    refresh(navigationData?: any, historyAction?: string) {
+    refresh(navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
         var url = this.getRefreshLink(navigationData);
         if (url == null)
             throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
@@ -153,7 +153,7 @@ class StateNavigator {
         return this.getLink(this.stateContext.state, navigationData);
     }
 
-    navigateLink(url: string, historyAction = 'add', history = false) {
+    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.parseLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
@@ -167,7 +167,7 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: string): () => void {
+    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none'): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
                 this.setStateContext(state, data, url);

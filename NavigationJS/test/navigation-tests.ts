@@ -14,7 +14,8 @@ module NavigationTests {
         { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 }, help: 'people.htm' },
         { key: 'person', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' }, trackCrumbTrail: true }
 	];
-    var stateNavigator = new Navigation.StateNavigator(config, new LogHistoryManager());
+    var stateNavigator = new Navigation.StateNavigator(config);
+    stateNavigator.configure(config, new LogHistoryManager());
 	
 	// States
 	var states = stateNavigator.states;
