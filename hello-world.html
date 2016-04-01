@@ -44,7 +44,7 @@
   {key: 'world'}
 ]);</code></pre>
             <p>
-                We can get notified when the 'hello' <code>State</code> is navigated to by attaching a function to its <code>navigated</code> property. Whenever that <code>State</code> is active this function will be called. Inside the function we'll use the <code>NavigationLink</code> component to render a Hyperlink that navigates to the 'world' <code>State</code>. This component has a <code>stateKey prop</code> that holds the destination <code>State</code>.
+                We can get notified when the 'hello' <code>State</code> is navigated to by attaching a function to its <code>navigated</code> property. Whenever that State becomes active this function is called. Inside the function we'll render a Hyperlink that navigates to the 'world' <code>State</code>. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. 
             </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
   ReactDOM.render(

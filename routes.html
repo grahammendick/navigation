@@ -57,7 +57,7 @@
 ]);</code></pre>
             <h3>2. Configuring Types</h3>
             <p>
-                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the <code>id</code> a default type of 'number'. The supported default types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'. 
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the <code>id</code> a type of 'number'. The supported types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'. 
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -75,7 +75,7 @@
 ]);</code></pre>
             <h2>Handling Optional Data</h2>
             <p>
-                We'll pass a boolean to the mail State that indicates whether to expand the mail thread's history. This expand data item is optional so we'll assign it a default value to avoid null checks. The Url that opens and expands an email with an <code>id</code> of 12 looks like 'open/12?expand=true'. We don't have to set <code>expand's</code> default type to 'boolean' because it's automatically deduced from the default value.
+                We'll pass a boolean to the mail State that indicates whether to expand the mail thread's history. This <code>expand</code> data item is optional so we'll assign it a default value to avoid falsy checks. The Url that opens and expands an email with an <code>id</code> of 12 looks like 'open/12?expand=true'. We don't have to set <code>expand's</code> type to 'boolean' because it's automatically deduced from the default value.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -108,7 +108,7 @@
             </table>
             <div class="Note">
                 <h2>Note</h2>
-                You don't need to configure a default type for a string value because it defaults to 'string'. Once you've finished configuring all the other default types, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', route: '', trackTypes: false}</code>
+                You don't need to configure a type for string values because 'string' is the default. Once you've finished configuring all the other types, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', route: '', trackTypes: false}</code>
             </div>
         </div>
     </div>

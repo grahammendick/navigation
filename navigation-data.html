@@ -38,7 +38,7 @@
                 When it comes to passing data between views, the Navigation router isn't like other routers. Other routers make you define your routes and parameters up front. The Navigation router thinks in terms of <code>States</code> and data so you don't need to think about routes and parameters until your application's working.
             </p>
             <p>
-                You can use the <code>NavigationLink</code> component to build Hyperlinks that navigate between <code>States</code>. As well as a <code>stateKey prop</code> that holds the destination <code>State</code>, the <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data that's passed to this <code>State</code>. You don't have to convert data to strings because it accepts numbers, booleans and dates and even arrays of such values. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
+                You can use the <code>NavigationLink</code> component to build Hyperlinks that navigate between <code>States</code>. As well as a <code>stateKey prop</code> that holds the destination <code>State</code>, the <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass. You don't have to convert data to strings because it accepts numbers, booleans and dates and even arrays of such values. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
@@ -60,7 +60,7 @@
     document.getElementById('app'));
 };</code></pre>
             <p>
-                You don't have to convert the data from strings because the Navigation router remembers their original types. We could add <code>prop type</code> validation to the <code>Mail</code> component, for example, without causing an exception.
+                You don't have to convert the data from strings because the Navigation router remembers their original types. Adding <code>prop type</code> validation to the <code>Mail</code> component, for example, wouldn't raise an exception.
             </p>
             <pre><code class="language-jsx">var Mail = React.createClass({
   propTypes: {
@@ -71,7 +71,7 @@
 });</code></pre>
             <h2>Setting Default Values</h2>
             <p>
-                The Navigation router lets you define default navigation data values for each <code>State</code>. The data passed into a <code>State's navigated</code> function includes these default values for any item that you didn't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to pass it in navigation data when the mail's opened.
+                The Navigation router lets you define default navigation data values for each <code>State</code>. The data passed into a <code>State's navigated</code> function includes these default values for any item that you don't supply with a value when navigating. If we give the <code>expand</code> item in the email example a default value of false then we don't have to explicitly pass it in navigation data when the mail's opened.
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
