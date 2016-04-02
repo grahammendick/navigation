@@ -30,7 +30,7 @@ body{
 #banner #github{
     position:absolute;
     right:3%;
-    background-image:url('github.png');
+    background-image:url('../img/github.png');
     background-repeat:no-repeat;
     background-size:24px;
     width:24px;
@@ -38,7 +38,7 @@ body{
     font-size: 1px;
 }
 #banner #github:hover{
-    background-image: url('github-on.png');
+    background-image: url('../img/github-on.png');
 }
 h2,h3{
     font-weight:normal;
