@@ -30,7 +30,7 @@ function testTask(file, to) {
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {
 		gulp.task('Test' + test.name, function () {
-			return testTask('./NavigationJS/test/' + test.name + 'Test.ts', test.to)
+			return testTask('./Navigation/test/' + test.name + 'Test.ts', test.to)
 		});
 	})(tests[i]);
 	testTasks.push('Test' + tests[i].name);
