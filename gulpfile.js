@@ -77,8 +77,7 @@ function packageTask(name, file) {
 for (var i = 0; i < items.length; i++) {
 	var upperName = items[i].name.replace(/\b./g, function(val){ return val.toUpperCase(); })
 	var name = upperName.replace('-', '');
-	var tsFromFolder = name + (name.length == 10 ? 'JS' : '');
-	var tsFrom = './' + tsFromFolder + '/src/' + name + '.ts';
+	var tsFrom = './' + name + '/src/' + name + '.ts';
 	var jsTo = items[i].name.replace('-', '.') + '.js';
 	items[i].name = upperName.replace('-', ' ');
 	(function (name, tsFrom, jsTo, item) {
