@@ -509,16 +509,14 @@ declare module Navigation {
          */
         canNavigateBack(distance: number): boolean;
         /**
-         * Navigates back to the Crumb contained in the crumb trail,
-         * represented by the Crumbs collection, as specified by the distance
+         * Navigates back along the crumb trail
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @throws canNavigateBack returns false for this distance
          * @throws A mandatory route parameter has not been supplied a value
          */
         navigateBack(distance: number): void;
         /**
-         * Navigates back to the Crumb contained in the crumb trail,
-         * represented by the Crumbs collection, as specified by the distance
+         * Navigates back along the crumb trail
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @param A value determining the effect on browser history
          * @throws canNavigateBack returns false for this distance
@@ -526,8 +524,7 @@ declare module Navigation {
          */
         navigateBack(distance: number, historyAction: 'add' | 'replace' | 'none'): void;
         /**
-         * Gets a Url to navigate to a Crumb contained in the crumb trail, 
-         * represented by the Crumbs collection, as specified by the distance
+         * Gets a Url to navigate back along the crumb trail
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @throws canNavigateBack returns false for this distance
          */
