@@ -421,27 +421,27 @@ declare module Navigation {
          */
         states: { [index: string]: State; };
         /**
-         * Initializes a new instance of the StateController class
+         * Initializes a new instance of the StateNavigator class
          */
         constructor();
         /**
-         * Initializes a new instance of the StateController class
+         * Initializes a new instance of the StateNavigator class
          * @param states A collection of States
          */
         constructor(states: StateInfo[]);
         /**
-         * Initializes a new instance of the StateController class
+         * Initializes a new instance of the StateNavigator class
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
         constructor(states: StateInfo[], historyManager: HistoryManager);
         /**
-         * Configures the StateController
+         * Configures the StateNavigator
          * @param stateInfos A collection of State Infos
          */
         configure(stateInfos: StateInfo[]): void;
         /**
-         * Configures the StateController
+         * Configures the StateNavigator
          * @param stateInfos A collection of State Infos
          * @param historyManager The manager of the browser Url
          */
