@@ -1,7 +1,7 @@
 {
   "name": "navigation-angular",
   "version": "2.0.0",
-  "description": "A plugin for the Navigation routing library that lets you build Hyperlinks using Angular's binding syntax",
+  "description": "Angular plugin for the Navigation router",
   "main": "navigation-angular.js",
   "repository": {
     "type": "git",

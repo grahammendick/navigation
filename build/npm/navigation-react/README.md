@@ -1,4 +1,4 @@
 ﻿# navigation-react
-[Navigation React](http://grahammendick.github.io/navigation/example/react/navigation.html) is a plugin for the Navigation routing library that lets you build Hyperlinks using React's binding syntax.
+[Navigation React](http://grahammendick.github.io/navigation/) is the React plugin for the Navigation router.
 
     var NavigationReact = require('navigation-react');

@@ -1,4 +1,4 @@
 ﻿# navigation
-[Navigation](http://grahammendick.github.io/navigation/) is a JavaScript library that adds a State machine layer on top of a Router. It associates a single source of data with the active State. Building Hyperlinks is as easy as changing the State and/or data.
+[Navigation](http://grahammendick.github.io/navigation/) is the data-first JavaScript router.
 
     var Navigation = require('navigation');

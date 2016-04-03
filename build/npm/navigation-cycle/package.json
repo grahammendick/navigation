@@ -1,7 +1,7 @@
 {
   "name": "navigation-cycle",
   "version": "1.0.0",
-  "description": "A plugin for the Navigation routing library that lets you build Hyperlinks and navigate using Cycle",
+  "description": "Cycle plugin for the Navigation router",
   "main": "navigation-cycle.js",
   "repository": {
     "type": "git",

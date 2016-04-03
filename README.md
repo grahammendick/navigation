@@ -1,5 +1,5 @@
 # [Navigation](http://grahammendick.github.io/navigation/)
-Navigation is the only data-first JavaScript router. [Try it out.](http://grahammendick.github.io/navigation/)
+Navigation is the data-first JavaScript router. [Try it out.](http://grahammendick.github.io/navigation/)
 * **Data First** Other JavaScript routers have got it all back to front. They want you to configure your routes before you even know what data you're passing. With the Navigation router, you can delay your route configuration until after your application's up and running.
 * **Routes Last** How can your application run if you haven't set any routes? The Navigation router generates interim routes and passes all data in the query string. At any time, you can configure the real routes and introduce route parameters without changing any code.
 

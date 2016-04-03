@@ -1,7 +1,7 @@
 {
   "name": "navigation-knockout",
   "version": "2.0.0",
-  "description": "A plugin for the Navigation routing library that lets you build Hyperlinks using Knockout's binding syntax",
+  "description": "Knockout plugin for the Navigation router",
   "main": "navigation-knockout.js",
   "repository": {
     "type": "git",
