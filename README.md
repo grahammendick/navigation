@@ -17,7 +17,7 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cros
 You'll find the Navigation router source code in the Navigation folder. It's written in TypeScript and is built on top of node.js. The NavigationReact folder contains the source code for the Hyperlink components.
 
 ## Example
-Here's the [Hello World example](http://grahammendick.github.io/navigation/documentation/hello-world.html) from the documentation.
+Here's the [Hello World example](http://grahammendick.github.io/navigation/documentation/hello-world.html) from the documentation. The example has two views. One view displays a Hyperlink that says 'Hello'. Clicking this Hyperlink navigates to the second view displaying the text 'World' inside a div. The Hyperlink passes across a number that sets the div's font-size.
 
 ```js
 var stateNavigator = new Navigation.StateNavigator([
