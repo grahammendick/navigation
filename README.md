@@ -22,7 +22,7 @@ Here's the [Hello World example](http://grahammendick.github.io/navigation/docum
 ```js
 var stateNavigator = new Navigation.StateNavigator([
   {key: 'hello', route: ''},
-  {key: 'world', route: '{size}', defaultTypes: {size: 'number'}}
+  {key: 'world'}
 ]);
 
 stateNavigator.states.hello.navigated = function() {
