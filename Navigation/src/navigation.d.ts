@@ -47,7 +47,7 @@ declare module Navigation {
     }
 
     /**
-     * Represents the endpoint of a navigation
+     * Represents a view and is the destination of a navigation
      */
     class State implements StateInfo {
         /**
