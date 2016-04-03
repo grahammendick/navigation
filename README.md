@@ -1,30 +1,49 @@
-# Navigation
-Navigation is a Web library that adds a State machine layer on top of a Router. It associates a single source of data with the active State. Building Hyperlinks is as easy as changing the State and/or data. Navigation is available for ASP.NET or JavaScript.
+# [Navigation](http://grahammendick.github.io/navigation/)
+Navigation is the only data-first JavaScript router. [Try it out.](http://grahammendick.github.io/navigation/)
+* **Data First** Other JavaScript routers have got it all back to front. They want you to configure your routes before you even know what data you're passing. With the Navigation router, you can delay your route configuration until after your application's up and running.
+* **Routes Last** How can your application run if you haven't set any routes? The Navigation router generates interim routes and passes all data in the query string. At any time, you can configure the real routes and introduce route parameters without changing any code.
 
-## [Navigation for JavaScript](http://grahammendick.github.io/navigation/)
-The best way to get started is with the [interactive tutorial](http://grahammendick.github.io/navigation/tutorial/configuringstates.html). It's a set of coding exercises that will turn you from Navigation zero to Navigation hero in next to no time.
-
-### Build
+## Build
 Once you've cloned the repository, you can install the dependencies and run the build:
 
     npm install
     npm run build
 
-Running `npm test` will execute the unit tests.
+Running `npm test` executes the unit tests.
 
 Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cross browser testing
 
-### Code
-You'll find the source code in the NavigationJS folder. It's written in TypeScript and is built on top of node.js. The NavigationAngular, NavigationKnockout and NavigationReact folders contain the source code for the plugins. 
+## Code
+You'll find the Navigation router source code in the Navigation folder. It's written in TypeScript and is built on top of node.js. The NavigationReact folder contains the source code for the Hyperlink components.
 
-### Examples
-There are some basic [live examples](http://grahammendick.github.io/navigation/example/angular/navigation.html) for Angular, Knockout and React to get you going. There are more sophisticated examples in the sample folder of each plugin.
+## Example
+Here's the [Hello World example](http://grahammendick.github.io/navigation/documentation/hello-world.html) from the documentation.
 
-## Navigation for ASP.NET
-Navigation started out as an ASP.NET project on CodePlex. The Navigation for ASP.NET [documentation](https://navigation.codeplex.com/documentation) still lives on CodePlex - for now.
+```js
+var stateNavigator = new Navigation.StateNavigator([
+  {key: 'hello', route: ''},
+  {key: 'world', route: '{size}', defaultTypes: {size: 'number'}}
+]);
 
-### Code
-After opening the Navigation solution, you'll find the source code in the Navigation project. This contains all the Web Forms, MVC and Web Api code. There are plans to restructure it so that the Navigation project contains just the core code, with separate projects for the NavigationWebForms, NavigationMVC and NavigationWebApi plugins.
+stateNavigator.states.hello.navigated = function() {
+  ReactDOM.render(
+    <NavigationReact.NavigationLink 
+      stateKey="world"
+      navigationData={{size: 20}}
+      stateNavigator={stateNavigator}>
+      Hello
+    </NavigationReact.NavigationLink>,
+    document.getElementById('app'));
+};
 
-### Examples
-You can see the code in action by downloading the basic [samples](https://navigation.codeplex.com/documentation) for Web Forms and MVC. Alternavitely, you can debug through the Navigation code by running the more sophisticated examples in the NavigationSample project.
+stateNavigator.states.world.navigated = function(data) {
+  ReactDOM.render(
+    <div style={{fontSize: data.size}}>World</div>,
+    document.getElementById('app'));
+};
+
+stateNavigator.start();
+```
+
+
+
