@@ -404,8 +404,8 @@ declare module Navigation {
     }
 
     /**
-     * Manages all navigation. These can be forward using an action parameter;
-     * backward via a Crumb; or refreshing the current State
+     * Manages all navigation. These can be forward, backward or refreshing the
+     * current State
      */
     class StateNavigator {
         /**
@@ -457,7 +457,7 @@ declare module Navigation {
          */
         offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
         /**
-         * Navigates to a State passing no NavigationData
+         * Navigates to a State
          * @param stateKey The key of a State
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
@@ -486,7 +486,7 @@ declare module Navigation {
          */
         navigate(stateKey: string, navigationData: any, historyAction: 'add' | 'replace' | 'none'): void;
         /**
-         * Gets a Url to navigate to a State passing no NavigationData
+         * Gets a Url to navigate to a State
          * @param stateKey The key of a State
          * @returns Url that will navigate to State specified in the action
          * @throws state does not match the key of a State or there is 
@@ -510,7 +510,7 @@ declare module Navigation {
         canNavigateBack(distance: number): boolean;
         /**
          * Navigates back to the Crumb contained in the crumb trail,
-         * represented by the Crumbs collection, as specified by the distance.
+         * represented by the Crumbs collection, as specified by the distance
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @throws canNavigateBack returns false for this distance
          * @throws A mandatory route parameter has not been supplied a value
@@ -518,7 +518,7 @@ declare module Navigation {
         navigateBack(distance: number): void;
         /**
          * Navigates back to the Crumb contained in the crumb trail,
-         * represented by the Crumbs collection, as specified by the distance.
+         * represented by the Crumbs collection, as specified by the distance
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @param A value determining the effect on browser history
          * @throws canNavigateBack returns false for this distance
@@ -527,7 +527,7 @@ declare module Navigation {
         navigateBack(distance: number, historyAction: 'add' | 'replace' | 'none'): void;
         /**
          * Gets a Url to navigate to a Crumb contained in the crumb trail, 
-         * represented by the Crumbs collection, as specified by the distance.
+         * represented by the Crumbs collection, as specified by the distance
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @throws canNavigateBack returns false for this distance
          */
@@ -555,8 +555,7 @@ declare module Navigation {
          */
         refresh(navigationData: any, historyAction: 'add' | 'replace' | 'none'): void;
         /**
-         * Gets a Url to navigate to the current State passing no 
-         * NavigationData
+         * Gets a Url to navigate to the current State
          */
         getRefreshLink(): string;
         /**
