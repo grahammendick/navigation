@@ -4,17 +4,19 @@ var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 
 exports.start = function(props) {
+    var stateNavigator = NavigationShared.getStateNavigator();
 	// Set the Navigation context
-	Navigation.start();
+	stateNavigator.start();
 	// Pass in the JSON props emitted from the server
-	render(props);
+	render(stateNavigator, props);
 	// Add State Navigators
-	registerNavigators();
+	registerNavigators(stateNavigator);
 }
 
-function render(props) {
+function render(stateNavigator, props) {
+    props.stateNavigator = stateNavigator;
 	// Create the Component for the active State
-	var component = React.createElement(NavigationShared.getComponent(), props);
+	var component = React.createElement(NavigationShared.getComponent(stateNavigator), props);
 	// Render the Component
 	ReactDOM.render(
 		component,
@@ -22,10 +24,9 @@ function render(props) {
 	);		
 }
 	
-function registerNavigators() {
-	var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-	for(var key in states) {
-		var state = states[key];
+function registerNavigators(stateNavigator) {
+	for(var key in stateNavigator.states) {
+		var state = stateNavigator.states[key];
 		state.navigating = function(data, url, navigate) {
 			var req = new XMLHttpRequest();
 			req.onreadystatechange = function() {
@@ -38,7 +39,7 @@ function registerNavigators() {
 			req.send(null);
 		}
 		state.navigated = function(data, asyncData) {
-			render(asyncData);
+			render(stateNavigator, asyncData);
 		}
 	}
 }

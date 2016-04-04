@@ -9,22 +9,24 @@ var Data = require('./Data');
 http.createServer(function(req, res) {
 	if (handleStatic(req, res))
 		return;
+    var stateNavigator = NavigationShared.getStateNavigator();
+    registerPropAccessors(stateNavigator);
 	// Set the Navigation context
-	Navigation.StateController.navigateLink(req.url);
+	stateNavigator.start(req.url);
 	// Get the props data for the active State
-	getProps(function(props) {
+	getProps(stateNavigator, function(props) {
 		res.setHeader('vary', 'content-type');
 		if (req.headers['content-type'] === 'application/json') {
 			res.write(JSON.stringify(props));
 		} else {
-			// Reset the Navigation context
-			Navigation.StateController.navigateLink(req.url);
 			res.write('<html><head><style>')
 			res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
 			res.write('.label{margin-left:50px;width: 100px;float:left;}')
 			res.write('</style></head><body><div id="content">')
 			// Create the Component for the active State
-			var component = React.createElement(NavigationShared.getComponent(), props);
+            props.stateNavigator = stateNavigator;
+			var component = React.createElement(NavigationShared.getComponent(stateNavigator), props);
+            delete props.stateNavigator;
 			// Render the Component to the response
 			res.write(ReactDOMServer.renderToString(component));
 			res.write('</div><script src="/app.js" ></script><script>')
@@ -37,21 +39,22 @@ http.createServer(function(req, res) {
 }).listen(8080);
 
 // Return the props data for the active State 
-function getProps(callback) {
-	return Navigation.StateContext.state.getProps(Navigation.StateContext.data, callback);
+function getProps(stateNavigator, callback) {
+	return stateNavigator.stateContext.state.getProps(stateNavigator.stateContext.data, callback);
 }
 
-var states = Navigation.StateInfoConfig.dialogs.masterDetails.states;
-states.listing.getProps = function(data, callback) {
-	Data.searchPeople(data.pageNumber, function(people){
-		callback({ people: people });
-	});
-}
+function registerPropAccessors(stateNavigator) {
+    stateNavigator.states.people.getProps = function(data, callback) {
+        Data.searchPeople(data.pageNumber, function(people){
+            callback({ people: people });
+        });
+    }
 
-states.details.getProps = function(data, callback) {
-	Data.getPerson(data.id, function(person){
-		callback({ person: person });
-	});
+    stateNavigator.states.person.getProps = function(data, callback) {
+        Data.getPerson(data.id, function(person){
+            callback({ person: person });
+        });
+    }
 }
 
 function handleStatic(req, res) {
