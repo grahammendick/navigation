@@ -43,14 +43,14 @@ function getProps(stateNavigator, callback) {
 
 function registerPropAccessors(stateNavigator) {
     stateNavigator.states.people.getProps = function(data, callback) {
-        Data.searchPeople(data.pageNumber, function(people){
-            callback({ people: people });
+        Data.searchPeople(data.pageNumber, function(people) {
+            callback({people: people});
         });
     }
 
     stateNavigator.states.person.getProps = function(data, callback) {
-        Data.getPerson(data.id, function(person){
-            callback({ person: person });
+        Data.getPerson(data.id, function(person) {
+            callback({person: person});
         });
     }
 }
@@ -62,7 +62,7 @@ function handleStatic(req, res) {
 		return true;
 	}
 	if (req.url === '/app.js') {
-		browserify('./NavigationClient.js', { standalone: 'NavigationClient' })
+		browserify('./NavigationClient.js', {standalone: 'NavigationClient'})
 			.bundle()
 			.pipe(res)
 		return true;
