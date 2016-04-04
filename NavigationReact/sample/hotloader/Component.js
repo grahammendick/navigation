@@ -9,7 +9,7 @@ exports.Listing = React.createClass({
         var stateNavigator = this.props.stateNavigator;
 		var people = this.props.people.map(function (person) {
 	        return (
-                React.createElement("tr", null, 
+                React.createElement("tr", {key: person.id}, 
                     React.createElement("td", null, React.createElement(NavigationLink, {stateKey: "person", navigationData: {id: person.id}, stateNavigator: stateNavigator}, person.name)), 
                     React.createElement("td", null, person.dateOfBirth)
                 )
