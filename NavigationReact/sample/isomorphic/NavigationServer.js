@@ -18,18 +18,18 @@ http.createServer(function(req, res) {
         if (req.headers['content-type'] === 'application/json') {
             res.write(JSON.stringify(props));
         } else {
-            res.write('<html><head><style>')
-            res.write('table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}')
-            res.write('.label{margin-left:50px;width: 100px;float:left;}')
-            res.write('</style></head><body><div id="content">')
             // Create the Component for the active State
-            var component = NavigationShared.createComponent(stateNavigator, props);
-            // Render the Component to the response
-            res.write(ReactDOMServer.renderToString(component));
-            res.write('</div><script src="/app.js" ></script><script>')
-            // Write the props as JSON to the response
-            res.write('NavigationClient.start(' + safeStringify(props) + ');');
-            res.write('</script></body></html>')
+            var component = NavigationShared.createComponent(stateNavigator, props)
+                <head>
+                    <style>
+                    table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
+                    .label{margin-left:50px;width: 100px;float:left;}
+                    </style>
+                </head>
+                <body>
+                    <div id="content">${ReactDOMServer.renderToString(component)}</div>
+                    <script src="/app.js" ></script>
+                </body>
         }
         res.end();
     });
