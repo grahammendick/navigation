@@ -20,6 +20,7 @@ http.createServer(function(req, res) {
         } else {
             // Create the Component for the active State
             var component = NavigationShared.createComponent(stateNavigator, props)
+            res.write(`<html>
                 <head>
                     <style>
                     table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
@@ -29,7 +30,9 @@ http.createServer(function(req, res) {
                 <body>
                     <div id="content">${ReactDOMServer.renderToString(component)}</div>
                     <script src="/app.js" ></script>
+                    <script>NavigationClient.start(${safeStringify(props)});</script>
                 </body>
+            </html>`);
         }
         res.end();
     });
