@@ -30,7 +30,7 @@ function testTask(file, to) {
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {
 		gulp.task('Test' + test.name, function () {
-			return testTask('./NavigationJS/test/' + test.name + 'Test.ts', test.to)
+			return testTask('./Navigation/test/' + test.name + 'Test.ts', test.to)
 		});
 	})(tests[i]);
 	testTasks.push('Test' + tests[i].name);
@@ -72,23 +72,23 @@ function buildTask(name, file, to, details) {
 function packageTask(name, file) {
 	return gulp.src(file)
 		.pipe(typescript())
-		.pipe(gulp.dest('./build/lib/' + name));
+		.pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
 for (var i = 0; i < items.length; i++) {
-	var upperName = items[i].name.replace(/\b./g, function(val){ return val.toUpperCase(); })
+	var packageName = items[i].name;
+	var upperName = packageName.replace(/\b./g, function(val){ return val.toUpperCase(); })
 	var name = upperName.replace('-', '');
-	var tsFromFolder = name + (name.length == 10 ? 'JS' : '');
-	var tsFrom = './' + tsFromFolder + '/src/' + name + '.ts';
-	var jsTo = items[i].name.replace('-', '.') + '.js';
+	var tsFrom = './' + name + '/src/' + name + '.ts';
+	var jsTo = packageName.replace('-', '.') + '.js';
 	items[i].name = upperName.replace('-', ' ');
-	(function (name, tsFrom, jsTo, item) {
+	(function (name, tsFrom, jsTo, item, packageName) {
 		gulp.task('Build' + name, function () {
 			return buildTask(name, tsFrom, jsTo, item);
 		});
 		gulp.task('Package' + name, function () {
-			return packageTask(name, tsFrom);
+			return packageTask(packageName, tsFrom);
 		});
-	})(name, tsFrom, jsTo, items[i]);
+	})(name, tsFrom, jsTo, items[i], packageName);
 	buildTasks.push('Build' + name);
 	packageTasks.push('Package' + name);
 }

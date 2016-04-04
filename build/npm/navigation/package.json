@@ -1,7 +1,7 @@
 {
   "name": "navigation",
   "version": "2.0.0",
-  "description": "A JavaScript library that adds a State machine layer on top of a Router",
+  "description": "The data-first JavaScript router",
   "main": "navigation.js",
   "repository": {
     "type": "git",

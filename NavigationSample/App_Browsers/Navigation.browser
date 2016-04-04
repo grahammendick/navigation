@@ -1,8 +1,0 @@
-﻿<browsers>
-    <browser refID="Default">
-        <controlAdapters>
-            <adapter controlType="System.Web.UI.Page" adapterType="Navigation.StateAdapter, Navigation" />
-            <adapter controlType="System.Web.UI.WebControls.HyperLink" adapterType="Navigation.RefreshHyperLinkAdapter, Navigation" />
-        </controlAdapters>
-    </browser>
-</browsers>

@@ -1,7 +1,7 @@
 {
   "name": "navigation-react",
   "version": "2.0.0",
-  "description": "A plugin for the Navigation routing library that lets you build Hyperlinks using React's binding syntax",
+  "description": "React plugin for the Navigation router",
   "main": "navigation-react.js",
   "repository": {
     "type": "git",
