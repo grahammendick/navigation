@@ -5,10 +5,10 @@ var RefreshLink = NavigationReact.RefreshLink;
 var NavigationBackLink = NavigationReact.NavigationBackLink;
 
 exports.Listing = React.createClass({
-	render: function() {
+    render: function() {
         var stateNavigator = this.props.stateNavigator;
-		var people = this.props.people.map(function (person) {
-	        return (
+        var people = this.props.people.map(function (person) {
+            return (
                 React.createElement("tr", {key: person.id}, 
                     React.createElement("td", null, React.createElement(NavigationLink, {stateKey: "person", navigationData: {id: person.id}, stateNavigator: stateNavigator}, person.name)), 
                     React.createElement("td", null, person.dateOfBirth)
@@ -33,7 +33,7 @@ exports.Listing = React.createClass({
                 )
             )
         );
-	}
+    }
 })
 
 exports.Details = React.createClass({
