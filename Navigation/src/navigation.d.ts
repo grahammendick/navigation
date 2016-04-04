@@ -6,7 +6,7 @@ declare module 'navigation' {
     export = Navigation;
 } 
 
-declare module Navigation {
+declare namespace Navigation {
     /**
      * Defines a contract a class must implement in order to configure a State
      */

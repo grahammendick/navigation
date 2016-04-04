@@ -1,6 +1,6 @@
 /// <reference path="../src/navigation.d.ts" />
 
-module NavigationTests {
+namespace NavigationTests {
 	// History Manager
 	class LogHistoryManager extends Navigation.HashHistoryManager  {
 	    addHistory(url: string) {
