@@ -23,8 +23,9 @@ http.createServer(function(req, res) {
             res.write(`<html>
                 <head>
                     <style>
-                    table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
-                    .label{margin-left:50px;width: 100px;float:left;}
+                        table{border-collapse:collapse;}
+                        table,td,th{border:1px #000 solid;}
+                        .label{margin-left:50px;width:100px;float:left;}
                     </style>
                 </head>
                 <body>
