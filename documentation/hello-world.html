@@ -101,33 +101,9 @@
             <p>
                 With other routers, your Urls are set upfront and changes can ripple throughout your codebase. With the Navigation router, Urls are a just string representation of your typed data. You can safely update routes or switch between query and route parameters without impacting your code.
             </p>
+            <iframe width="100%" height="600" src="//jsfiddle.net/navigation/fpkmfkm7/embedded/js,html,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
-    <script type="text/jsx">
-var stateNavigator = new Navigation.StateNavigator([
-  {key: 'hello', route: ''},
-  {key: 'world', route: '{size}', defaultTypes: {size: 'number'}}
-]);
-
-stateNavigator.states.hello.navigated = function() {
-  ReactDOM.render(
-    <NavigationReact.NavigationLink 
-      stateKey="world"
-      navigationData={{size: 20}}
-      stateNavigator={stateNavigator}>
-      Hello
-    </NavigationReact.NavigationLink>,
-    document.getElementById('example'));
-};
-
-stateNavigator.states.world.navigated = function(data) {
-  ReactDOM.render(
-    <div style={{fontSize: data.size}}>World</div>,
-    document.getElementById('example'));
-};
-
-stateNavigator.start();
-  </script>
 </body>
 </html>
