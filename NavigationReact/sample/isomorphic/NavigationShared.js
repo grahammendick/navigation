@@ -1,3 +1,4 @@
+var React = require('react');
 var Navigation = require('navigation');
 var Component = require('./Component');
 
@@ -9,6 +10,9 @@ exports.getStateNavigator = function() {
 }
 
 // Return the Component for the active State 
-exports.getComponent = function(stateNavigator) {
-	return stateNavigator.stateContext.state.component;
+exports.createComponent = function(stateNavigator, props) {
+    var clonedProps = {stateNavigator: stateNavigator};
+    for(var key in props)
+        clonedProps[key] = props[key];
+    return React.createElement(stateNavigator.stateContext.state.component, clonedProps);
 }

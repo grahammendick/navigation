@@ -14,9 +14,8 @@ exports.start = function(props) {
 }
 
 function render(stateNavigator, props) {
-    props.stateNavigator = stateNavigator;
 	// Create the Component for the active State
-	var component = React.createElement(NavigationShared.getComponent(stateNavigator), props);
+	var component = NavigationShared.createComponent(stateNavigator, props);
 	// Render the Component
 	ReactDOM.render(
 		component,

@@ -24,9 +24,7 @@ http.createServer(function(req, res) {
 			res.write('.label{margin-left:50px;width: 100px;float:left;}')
 			res.write('</style></head><body><div id="content">')
 			// Create the Component for the active State
-            props.stateNavigator = stateNavigator;
-			var component = React.createElement(NavigationShared.getComponent(stateNavigator), props);
-            delete props.stateNavigator;
+			var component = NavigationShared.createComponent(stateNavigator, props);
 			// Render the Component to the response
 			res.write(ReactDOMServer.renderToString(component));
 			res.write('</div><script src="/app.js" ></script><script>')
