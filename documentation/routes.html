@@ -1,0 +1,117 @@
+<html>
+<head>
+    <title>Routes</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../index.html">Navigation</a>
+            <a href="hello-world.html" class="selected">Docs</a>
+            <a href="../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="hello-world.html">Hello World</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="state-navigation.html">A. State Navigation</a>
+            <a href="navigation-data.html">B. Navigation Data</a>
+            <a href="routes.html" class="selected">C. Routes</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="breadcrumb-trail.html">Breadcrumb Trail</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <div class="separator"></div>
+            <a href="email-example.html">Email Example</a>
+        </div>
+        <div id="article">
+            <h1>Routes</h1>
+            <h2>Tidying Up Urls</h2>
+            <p>
+                The Navigation router sees Urls as clothes draped over the body of your data, while other routers tattoo them into the skin. You can change clothes without impacting the body, but tattoos you can't. The Navigation router ships with a wrinkled wardrobe to get you started. You can iron out the creases once your appliction's running smoothly.
+            </p>
+            <p>
+                Let's take the example of an email application. The scruffy Url the Navigation router generates for opening an email with an id of '12' is '/mail?id=121_0'. We'll smarten up the Url in three stages so that, by the end, it will read '/open/12'.
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
+  stateKey="mail"
+  navigationData={{id: 12}}
+  stateNavigator={stateNavigator}>
+  Open Mail
+&lt;/NavigationReact.NavigationLink></code></pre>
+            <h3>1. Configuring Routes</h3>
+            <p>
+                Because we've not supplied a route for the 'mail' <code>State</code>, the Navigation router uses the <code>State's key</code> instead. We'll change the Url from '/mail?id=121_0' to '/open?id=121_0' by setting the <code>State's route</code> property.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open'},
+  {key: 'compose'}
+]);</code></pre>
+            <h3>2. Configuring Types</h3>
+            <p>
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_0', by assigning the <code>id</code> a type of 'number'. The supported types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'. 
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open', defaultTypes: {id: 'number'}},
+  {key: 'compose'}
+]);</code></pre>
+            <h3>3. Configuring Route Parameters</h3>
+            <p>
+                By default the Navigation router passes data in the query string. We'll iron out the final crease in the Url, changing it from '/open?id=12' to '/open/12', by specifying the <code>id</code> as a route parameter.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}},
+  {key: 'compose'}
+]);</code></pre>
+            <h2>Handling Optional Data</h2>
+            <p>
+                We'll pass a boolean to the mail State that indicates whether to expand the mail thread's history. This <code>expand</code> data item is optional so we'll assign it a default value to avoid falsy checks. The Url that opens and expands an email with an <code>id</code> of 12 looks like 'open/12?expand=true'. We don't have to set <code>expand's</code> type to 'boolean' because it's automatically deduced from the default value.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {id: 'number'}, defaults: {expand: false}},
+  {key: 'compose'}
+]);</code></pre>
+            <p>
+                We want <code>expand</code> to be a route parameter so that the Url looks like 'open/12/true'. But setting the route to 'open/{id}/{expand}' would make <code>expand</code> mandatory and stop the original Url of '/open/12' from working. Instead we can set the route to 'open/{id}/{expand?}'. The '?' suffix marks the parameter as optional.
+            </p>
+            <p>
+                The following table summarises the different route patterns you can use for optional route parameters. Which one you choose depends on how you want the Url to look.
+            </p>
+            <table>
+                <tr>
+                    <th>The example Url</th>
+                    <th>The State's route</th>
+                </tr>
+                <tr>
+                    <td>'/open/12/true'</td>
+                    <td>'open/{id}/{expanded?}'</td>
+                </tr>
+                <tr>
+                    <td>'/open/12/history/true'</td>
+                    <td>'open/{id}+/history/{expanded}'</td>
+                </tr>
+                <tr>
+                    <td>'/true/history/12'</td>
+                    <td>['open/{id}', '{expanded}/history/{id}']</td>
+                </tr>
+            </table>
+            <div class="Note">
+                <h2>Note</h2>
+                You don't need to configure a type for string values because 'string' is the default. Once you've finished configuring all the other types, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', route: '', trackTypes: false}</code>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
+</body>
+</html>

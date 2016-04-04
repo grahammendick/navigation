@@ -1,324 +1,112 @@
 <html>
 <head>
     <title>Navigation</title>
-    <meta name="viewport" content="width=device-width">    
-    <link href="github.css" rel="stylesheet" />
-    <style>
-body{
-    margin:0;
-    background-color:#f8f8f8;
-    font-family:Calibri,Helvetica,Arial,sans-serif;
-}
-#header{
-	border-bottom:4px solid #de1b1b;
-	margin-bottom:7px;
-    max-width:100%;
-    min-width:800px;       
-}
-#banner{
-    background-color:#2b2b2b;
-    color:#fff;
-    padding:10px 40px;
-	margin-bottom:3px;
-}
-#banner a#home{
-    font-size:156%;
-	margin-right:60px;
-    text-decoration:none;
-}
-#banner a{
-    color:#fff;
-	font-size:113%;
-	margin-right:20px;
-}
-#banner a.active{
-	color:#e9e581;
-}
-#content{
-    width:800px;
-    margin:10px auto;
-}
-a{
-    color:#000;
-}
-img{
-    width:60px;
-    position:absolute;
-    top:100px;
-    margin-left:10px;
-    clear:left;
-    display:block;
-}
-p{
-    margin-top:0;
-    margin-bottom:8px;
-}
-h1{
-    font-size:50px;
-    margin:0 0 10px 0;
-    font-weight:normal;
-    font-family:'Times New Roman';
-    text-decoration:underline;
-    float:left;
-    color:#0000ee;
-}
-#description{
-    clear:left;
-    margin:15px 10px 20px 100px;
-}
-pre{
-    float:left;
-    margin:0px;
-}
-pre#javascript{
-    float:right;
-}
-code.html.hljs{
-    width:310px;
-}
-code.hljs{
-    width:400px;
-    background-color:#fff;
-    padding-left:30px;
-    border:2px solid #de1b1b;
-    font-size:92%;
-}
-a.button{
-    padding:10px 20px;
-    font-size:113%;
-    text-decoration:none;
-    margin-right:20px;
-	background-color:#e9e581;
-	color:#000;
-    display:block;
-    float:left;
-    width:150px;
-    text-align:center;
-}
-.holder{
-    width:420px;
-    margin:auto;
-    height:60px;
-}
-#example{
-    float:left; 
-    width:350px;
-}
-#question, #answer{
-    width:306px;
-    padding:20px;
-    background-color:#fff;
-    border:2px solid #de1b1b;
-    margin-bottom:5px;
-}
-div.panel{
-    width:250px;
-    float:left;
-    padding:0 7px;
-    height:145px;
-}
-h2{
-    text-align:center;
-    margin:0;
-    font-weight:normal;
-}
-h3{
-    text-align:center;
-    font-weight:normal;
-    font-size:150%;
-    margin:0 0 10px 0;
-    clear:both;
-}
-#example p{
-    padding:4px;
-}
-#footer{
-    padding-top:10px;
-    width:500px;
-    margin:0 auto;
-    font-style:italic;
-}
-    </style>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/prism.css">
+    <link rel="stylesheet" href="css/navigation.css">
 </head>
 <body>
-    <div id="header">
-        <div id="banner">
-            <a class="active" id="home" href="index.html">Navigation</a>
-            <a href="tutorial/configuringstates.html">Tutorial</a>
-            <a href="example/angular/navigation.html">Examples</a>
+    <div id="banner">
+        <div>
+            <a href="index.html" class="selected">Navigation</a>
+            <a href="documentation/hello-world.html">Docs</a>
             <a href="download/index.html">Download</a>
-            <a href="documentation/configuring.html">Documentation</a>
-            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
         </div>
     </div>
-    <div id="content">
+    <div id="logo">
         <h1>Navigation</h1>
-        <img alt="cursor hand" src="cursor.png" />
-        <p id="description">
-            A NEW KIND OF ROUTER THAT WORKS IN ALL BROWSERS AND WITH ALL WEB LIBRARIES
+        <img alt="cursor hand" src="img/cursor.png" />
+        <div>The data-first JavaScript router</div>
+    </div>
+    <div id="content" class="home">
+        <div class="plug">
+            <h2>Data First</h2>
+            Other JavaScript routers have got it all back to front. They want you to configure your routes before you even know what data you're passing. With the Navigation router, you can delay your route configuration until after your application's up and running.
+        </div>
+        <div class="plug">
+            <h2>Routes Last</h2>
+            How can your application run if you haven't set any routes? The Navigation router generates interim routes and passes all data in the query string. At any time, you can configure the real routes and introduce route parameters without changing any code.
+        </div>
+        <h2>Try It Out</h2>
+        <p>
+            Take a look at this working application. It's a Hyperlink you can click to indicate whether you like something. It works even though there's no route configured yet. Click the toggle Hyperlink below then take a look at the browser Url. The Navigation router's generated an interim Url of '/?like=true1_1', but you can change it to '/example/true' without touching the code:
         </p>
-        <div class="holder">
-            <a class="button" href="tutorial/configuringstates.html">Interactive Tutorial</a>
-            <a class="button" href="example/angular/navigation.html">Live Examples</a>
-        </div>
-        <div class="panel">
-            <h2>Hyperlinks</h2>
-            <p>
-                Navigation works with all web libraries. Navigation plugins allow you to build Hyperlinks using your library's
-                UI binding syntax. There are plugins for Angular, Knockout and React.
-            </p>
-        </div>
-        <div class="panel">
-            <h2>Breadcrumbs</h2>
-            <p>
-                Navigation tracks the journey a user takes, building a dynamic breadcrumb trail. Returning to one of these 
-                breadcrumbs recreates the page as the user last saw it.
-            </p>
-        </div>
-        <div class="panel">
-            <h2>Isomorphic</h2>
-            <p>
-                Navigation works just as well on the server as it does on the client. Use it with React and Node to write 
-                SEO-friendly apps with fast initial load times.
+        <ol>
+            <li>Start by setting a route in the configuration below. Type the word 'example' in the route text box. As you type, watch the browser Url automatically update to '/example?like=true1_1'</li>
+            <li>Next, change the 'like' indicator from a query string to a route parameter. Update the route text box to 'example/{like}'. Keep your eye on the Url as it changes to '/example/true1_1'</li>
+            <li>The Navigation router passes around the 'like' indicator as a boolean. It uses the trailing characters of the Url to keep track of the type. Tidy up the Url by configuring the type instead. Pick 'boolean' from the drop down below and watch the Url become 'example/true'</li>
+        </ol>
+        <p>
+        </p>
+        <div class="app">
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'example', </code><label for="route"><code class="language-jsx">route:</code></label><input id="route"/><code class="language-jsx">, </code><label for="defType"><code class="language-jsx">defaultTypes: {like:</code></label><select id="defType">
+      <option value="string"></string>
+      <option value="boolean">boolean</string>
+  </select><code class="language-jsx">}}
+]);
 
-            </p>
+stateNavigator.states.example.navigated = function(data) {
+  ReactDOM.render(
+    &lt;NavigationReact.NavigationLink 
+      stateKey="example"
+      navigationData={{like: !data.like}}
+      stateNavigator={stateNavigator}>
+      You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
+    &lt;/NavigationReact.NavigationLink>,
+    document.getElementById('app'));
+};
+
+stateNavigator.start();</code></pre>
         </div>
-        <h3>Navigating Forward and Back</h3>
-        <div id="example">
-            <div>
-                <div id="question" style="display:none">
-                    <label>
-                        How many things do you have?
-                        <select id="things">
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
-                    </label>
-                    <button id="next">Next</button>
-                </div>
-                <div id="answer" style="display:none">
-                    Thanks! I'm glad you have
-                    <span id="count"></span> things.
-                    <button id="goBack">Back</button>
-                </div>
-            </div>
-            <p>
-                Try out navigating by running the example above. Press the 'Next' button to navigate forward, then press 
-                the 'Back' button to navigate back. Have a look at the JavaScript and HTML for this example.
-            </p>
-            <p>
-                Navigation is a State machine. You configure States and the movement between them. Each State represents 
-                a route. You attach methods to States that get called when that State is entered or exited.
-            </p>
-            <p>
-                Navigation keeps the Url in step as you navigate and pass data between States. Navigation builds a 
-                breadcrumb trail by tracking visited States. You can navigate back along this trail.
-            </p>
-            <p>
-                Learn more by completing the <a href="tutorial/configuringstates.html">interactive tutorial</a>.
-            </p>
-        </div>
-        <pre id="javascript"><code class="javascript">
-// Configure the the question and answer States. 
-// Map each State to a route. Configure a Transition 
-// so you can move from question to answer.
-Navigation.StateInfoConfig.build([{
-    key: 'quiz', initial: 'question', states: [
-        { key: 'question', route: '', transitions: [
-            { key: 'next', to: 'answer' }
-        ]},
-        { key: 'answer', route: 'thanks/{count}' }
-    ]
-}]);
-// Navigate forward from question to answer, passing
-// the number selected.
-next.onclick = function (e) {
-    var data = { count: things.value };
-    Navigation.StateController.navigate('next', data);
+        <div id="app"/>
+    </div>
+    <div id="footer">
+        Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
+    </div>
+    <script src="js/prism.js"></script>
+    <script src="https://fb.me/react-0.14.8.min.js"></script>
+    <script src="https://fb.me/react-dom-0.14.8.min.js"></script>
+    <script src="download/navigation-2.0.0.js"></script>
+    <script src="download/navigation.react-2.0.0.js"></script>
+    <script>
+var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
+
+stateNavigator.states.example.navigated = function (data) {
+    render(data);
+};
+
+stateNavigator.start(location.hash ? '/' : '');
+
+document.getElementById('route').addEventListener('keyup', reconfigure);
+document.getElementById('defType').addEventListener('change', reconfigure);
+
+function reconfigure() {
+    var navigationData = stateNavigator.stateContext.includeCurrentData({});
+    try {
+        stateNavigator.configure([
+            {key: 'example', route: document.getElementById('route').value, defaultTypes: { 'like': document.getElementById('defType').value }}
+        ]);
+        stateNavigator.states.example.navigated = render;
+        stateNavigator.navigate('example', navigationData);
+    } catch(ex) {
+        render(navigationData);
+    }    
 }
-// Navigate back from answer to question.
-goBack.onclick = function (e) {
-    Navigation.StateController.navigateBack(1);
-}
-var dialogs = Navigation.StateInfoConfig.dialogs;
-var quiz = dialogs.quiz;
-// When in the question State, show the question.
-quiz.states.question.navigated = function () {
-    question.style.display = 'block';
-}
-// When not in the question State, hide the question.
-quiz.states.question.dispose = function () {
-    question.style.display = 'none';
-}
-// When in the answer State, show the answer.
-quiz.states.answer.navigated = function (data) {
-    answer.style.display = 'block';
-    count.textContent = data.count;
-}
-// When not in the answer State, hide the answer.
-quiz.states.answer.dispose = function () {
-    answer.style.display = 'none';
-}
-// Tell Navigation you're ready to go.
-Navigation.start();
-        </code></pre>
-        <pre><code class="html">
-&lt;div id="question" style="display:none"&gt;
-&lt;label&gt;
-    How many things do you have?
-    &lt;select id="things"&gt;
-        &lt;option&gt;2&lt;/option&gt;
-        &lt;option&gt;3&lt;/option&gt;
-        &lt;option&gt;4&lt;/option&gt;
-    &lt;/select&gt;
-&lt;/label&gt;
-&lt;button id="next"&gt;Next&lt;/button&gt;
-&lt;/div&gt;
-&lt;div id="answer" style="display:none"&gt;
-    Thanks! I'm glad you have 
-    &lt;span id="count"&gt;&lt;/span&gt; things.
-    &lt;button id="goBack"&gt;Back&lt;/button&gt;
-&lt;/div&gt;
-        </code></pre>
-        <div style="clear:both;"/>
-        <div id="footer">Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing</div>
-        <script src="navigation.js"></script>
-        <script src="highlight.pack.js"></script>
-        <script>
-            Navigation.StateInfoConfig.build([{
-	            key: 'quiz', initial: 'question', states: [
-                    { key: 'question', route: '', transitions: [
-                        { key: 'next', to: 'answer' }
-                    ]},
-                    { key: 'answer', route: 'thanks/{count}' }
-                ]
-            }]);
-            next.onclick = function (e) {
-                var data = { count: things.value };
-                Navigation.StateController.navigate('next', data);
-            }
-            goBack.onclick = function (e) {
-                Navigation.StateController.navigateBack(1);
-            }
-            var dialogs = Navigation.StateInfoConfig.dialogs;
-            var quiz = dialogs.quiz;
-            quiz.states.question.navigated = function () {
-                question.style.display = 'block';
-            }
-            quiz.states.question.dispose = function () {
-                question.style.display = 'none';
-            }
-            quiz.states.answer.navigated = function (data) {
-                answer.style.display = 'block';
-                count.textContent = data.count;
-            }
-            quiz.states.answer.dispose = function () {
-                answer.style.display = 'none';
-            }
-            Navigation.start();
-            hljs.initHighlightingOnLoad();
-        </script>
-</div>
+
+function render(data) {
+    ReactDOM.render(React.createElement(
+        NavigationReact.NavigationLink,
+        {
+            stateKey: 'example',
+            navigationData: { like: !data.like },
+            stateNavigator: stateNavigator },
+        'You ',
+        data.like ? 'like' : 'haven\'t liked',
+        ' this. Click to toggle.'
+    ), document.getElementById('app'));
+};
+    </script>
 </body>
 </html>

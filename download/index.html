@@ -1,49 +1,44 @@
 <html>
 <head>
-    <title>Navigation Download</title>
+    <title>Download</title>
     <meta name="viewport" content="width=device-width">
-    <link href="download.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
 </head>
 <body>
-    <div id="header">
-        <div id="banner">
-            <a id="home" href="../index.html">Navigation</a>
-            <a href="../tutorial/configuringstates.html">Tutorial</a>
-            <a href="../example/angular/navigation.html">Examples</a>
-            <a class="active" href="index.html">Download</a>
-            <a href="../documentation/configuring.html">Documentation</a>
-            <a href="https://github.com/grahammendick/navigation">GitHub Source</a>
+    <div id="banner">
+        <div>
+            <a href="../index.html">Navigation</a>
+            <a href="../documentation/hello-world.html">Docs</a>
+            <a href="index.html" class="selected">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
         </div>
     </div>
     <div id="content">
-        <div id="download">
-            <h3>Downloads</h3>
-            <ul>
-                <li class="active"><a href="index.html">Navigation</a></li>
-                <li><a href="angular.html">Navigation Angular</a></li>
-                <li><a href="knockout.html">Navigation Knockout</a></li>
-                <li><a href="react.html">Navigation React</a></li>
-            </ul>
-        </div>
-        <div id="guide">
-            <h1>Navigation</h1>
+        <div id="article" class="main">
+            <h1>Download</h1>
             <p>
-                This is the page to download Navigation without any plugins. If you're using Navigation with
-                Angular, Knockout or  React then you should download <a href="angular.html">Navigation Angular</a>,
-                <a href="knockout.html">Navigation Knockout</a> or <a href="react.html">Navigation React</a> instead.
+                The Navigation router download is made up of two files or packages: <code>Navigation</code>, for the core router, and <code>Navigation React</code>, for the Hyperlink components.
             </p>
             <h2>File</h2>
-            <a class="download" href="navigation-1.3.0.min.js">Navigation 1.3.0</a>
-            <pre><code>&lt;script src="navigation-1.3.0.min.js"&gt;&lt;/script&gt;</code></pre>
+            <p>
+                <a class="download" href="navigation-2.0.0.min.js">Navigation 2.0.0</a><br/>
+                <a class="download" href="navigation.react-2.0.0.min.js">Navigation React 2.0.0</a>
+            </p>
+            <pre><code class="language-js">&lt;script src="navigation-2.0.0.min.js"&gt;&lt;/script&gt;
+&lt;script src="navigation.react-2.0.0.min.js"&gt;&lt;/script&gt;</code></pre>
             <em>
-                The non-minified version of <a href="navigation-1.3.0.js">Navigation</a> is also available.
+                The non-minified versions of <a href="navigation-2.0.0.js">Navigation</a> and 
+                <a href="navigation.react-2.0.0.js">Navigation React</a> are also available.
             </em>
             <h2>npm</h2>
-            <pre><code>npm install navigation</code></pre>
-            <pre><code>var Navigation = require('navigation');</code></pre>
+            <pre><code class="language-js">npm install navigation navigation-react</code></pre>
+            <pre><code class="language-js">var Navigation = require('navigation');
+var NavigationReact = require('navigation-react');</code></pre>
             <h2>Bower</h2>
-            <pre><code>bower install navigationjs</code></pre>
+            <pre><code class="language-js">bower install navigation-react</code></pre>
         </div>
     </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
 </body>
 </html>
