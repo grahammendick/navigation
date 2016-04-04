@@ -4,7 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 declare module 'navigation' {
     export = Navigation;
-} 
+}
 
 declare namespace Navigation {
     /**
