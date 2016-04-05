@@ -6,7 +6,7 @@ var ReactDOM = require('react-dom');
 
 var stateNavigator = new Navigation.StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
-    {key: 'person', route: 'person/{id}', defaults: {id: 0 }}
+    {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);
 
 stateNavigator.states.people.navigating = function(data, url, navigate) {
@@ -24,3 +24,5 @@ stateNavigator.states.person.navigating = function(data, url, navigate) {
         navigate();
     }, 'Person');
 }
+
+stateNavigator.start();
