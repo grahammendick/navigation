@@ -1,4 +1,4 @@
-# [Isomorphic Navigation](http://grahammendick.github.io/navigation/documentation/navigatingisomorphically.html)
+# Isomorphic Navigation
 Navigation works just as well on the server as it does on the client. Use it with React and Node to write SEO-friendly apps with fast initial load times.
 
 ## Run
