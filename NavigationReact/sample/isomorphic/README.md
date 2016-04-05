@@ -7,4 +7,4 @@ Once you've cloned the repository, you can install the dependencies and start th
     npm install
     node NavigationServer.js
 	
-Then, visit http://localhost:8080/ in your browser to see isomorphic Navigation in action. If you click a Hyperlink before the JavaScript loads, the navigation happens on the server. If you click a Hyperlink after the JavaScript loads, the navigation happens on the client. 
+Then visit http://localhost:8080/ in your browser to see isomorphic Navigation in action. If you click a Hyperlink before the JavaScript loads, the navigation happens on the server. If you click a Hyperlink after the JavaScript loads, the navigation happens on the client. 
