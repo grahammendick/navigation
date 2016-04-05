@@ -7,4 +7,4 @@ Once you've cloned the repository, you can install the dependencies and start th
     npm install
     npm run build
 	
-Then open app.html to see code splitting Navigation in action. Open up the Network tab in your browser's dev tools and watch as a JavaScript file request appears when you navigate between views.
+Then open app.html to see code splitting Navigation in action. Open up the Network tab in your browser's dev tools and watch as a JavaScript file request appears when you first navigate between views.
