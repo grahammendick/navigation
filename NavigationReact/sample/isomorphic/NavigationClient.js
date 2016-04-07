@@ -24,22 +24,21 @@ function render(stateNavigator, props) {
 }
     
 function registerControllers(stateNavigator) {
-    for(var key in stateNavigator.states) {
-        var state = stateNavigator.states[key];
-        state.navigating = function(data, url, navigate) {
-            var req = new XMLHttpRequest();
-            req.onreadystatechange = function() {
-                if (req.readyState === 4){
-                    navigate(JSON.parse(req.responseText));
-                }
-            };
-            req.open('get', url);
-            req.setRequestHeader('Content-Type', 'application/json');
-            req.send(null);
-        }
-        state.navigated = function(data, asyncData) {
-            render(stateNavigator, asyncData);
-        }
+    stateNavigator.states.people.navigating = 
+    stateNavigator.states.person.navigating = function(data, url, navigate) {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (req.readyState === 4){
+                navigate(JSON.parse(req.responseText));
+            }
+        };
+        req.open('get', url);
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.send(null);
+    }
+    stateNavigator.states.people.navigated = 
+    stateNavigator.states.person.navigated = function(data, asyncData) {
+        render(stateNavigator, asyncData);
     }
 }
     
