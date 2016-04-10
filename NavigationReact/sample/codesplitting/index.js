@@ -18,8 +18,8 @@ var stateNavigator = new Navigation.StateNavigator([
 
 /**
  * Attaches the navigating hooks to the two States. Fired just before the State
- * becomes acitve, it uses webpack's code splitting to load the respective
- * component on demand. When the component returns it creates up the navigated
+ * becomes active, it uses webpack's code splitting to load the respective
+ * component on demand. When the component returns it creates the navigated
  * hooks and then continues with the navigation.
  */
 stateNavigator.states.people.navigating = function(data, url, navigate) {
