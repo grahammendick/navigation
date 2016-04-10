@@ -28,6 +28,7 @@ http.createServer(function(req, res) {
             var component = NavigationShared.createComponent(stateNavigator, props)
             res.write(`<html>
                 <head>
+                    <title>Isomorphic Navigation</title>
                     <style>
                         table{border-collapse:collapse;}
                         table,td,th{border:1px #000 solid;}
