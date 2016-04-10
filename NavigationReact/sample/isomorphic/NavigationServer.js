@@ -12,7 +12,7 @@ var Data = require('./Data');
  * whether to return HTML or JSON.
  * Creates a State Navigator, passes it the current Url and then retrieves
  * the props for the current State. If it's an AJAX request it returns the
- * props as JSON. It it's an HTML request it creates the component for the
+ * props as JSON. If it's an HTML request it creates the component for the
  * current State and returns the rendered HTML with the JSON props inlined.
  */
 http.createServer(function(req, res) {
