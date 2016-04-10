@@ -5,7 +5,7 @@ var NavigationShared = require('./NavigationShared');
 
 /**
  * Creates and starts a State Navigator. Before registering the controllers
- * for handling navigation, does an initial render for the current State
+ * that handling navigation, does an initial render for the current State
  * using the props returned from the server. 
  */
 exports.start = function(props) {
@@ -28,8 +28,8 @@ function render(stateNavigator, props) {
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
- * just before the State becomes active, issues an AJAX request for the data.
- * The same Urls are used for HTML and AJAX requests. The navigated hook, fired
+ * just before the State becomes active, issues an AJAX request for the data -
+ * the same Urls are used for HTML and AJAX requests. The navigated hook, fired
  * when the State is active, renders the data returned.
  */
 function registerControllers(stateNavigator) {
