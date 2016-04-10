@@ -6,19 +6,25 @@ var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 var Data = require('./Data');
 
+/**
+ * A single set of routes handles both the HTML and AJAX requests. Uses
+ * content negotiation, based on the content-type header, to decide 
+ * whether to return HTML or JSON.
+ * Creates a State Navigator, passes it the current Url and then retrieves
+ * the props for the current State. If it's an AJAX request it returns the
+ * props as JSON. It it's an HTML request it creates the component for the
+ * current State and returns the rendered HTML with the JSON props inlined.
+ */
 http.createServer(function(req, res) {
     if (handleStatic(req, res))
         return;
     var stateNavigator = NavigationShared.getStateNavigator();
-    // Set the Navigation context
     stateNavigator.start(req.url);
-    // Get the props data for the active State
     getProps(stateNavigator, function(props) {
         res.setHeader('vary', 'content-type');
         if (req.headers['content-type'] === 'application/json') {
             res.write(JSON.stringify(props));
         } else {
-            // Create the Component for the active State
             var component = NavigationShared.createComponent(stateNavigator, props)
             res.write(`<html>
                 <head>
@@ -39,6 +45,11 @@ http.createServer(function(req, res) {
     });
 }).listen(8080);
 
+/**
+ * Attaches props accessors to each of the States and then calls the one
+ * for the current State. It calls into the data layer to retrieve the 
+ * person data.
+ */
 function getProps(stateNavigator, callback) {
     stateNavigator.states.people.getProps = function(data, callback) {
         Data.searchPeople(data.pageNumber, function(people) {
@@ -50,7 +61,6 @@ function getProps(stateNavigator, callback) {
             callback({person: person});
         });
     }
-    // Return the props data for the active State 
     return stateNavigator.stateContext.state.getProps(stateNavigator.stateContext.data, callback);
 }
 

@@ -2,6 +2,13 @@ var React = require('react');
 var Navigation = require('navigation');
 var Component = require('./Component');
 
+/**
+ * Configures the states for the two views. The component is included for
+ * convenience only, it is NOT needed by the Navigation router. It simplifies
+ * the state to component lookup in the createComponent function below. If you
+ * were doing code splitting you could set the component on the state on demand
+ * instead, e.g., stateNavigator.states.people.state = Component.Listing
+ */
 exports.getStateNavigator = function() {
     return new Navigation.StateNavigator([
         {key: 'people', route: '{pageNumber?}', component: Component.Listing, defaults: {pageNumber: 1}},
@@ -9,7 +16,11 @@ exports.getStateNavigator = function() {
     ], new Navigation.HTML5HistoryManager());
 }
 
-// Return the Component for the active State 
+/**
+ * Creates the component for the current State passing in the props. The
+ * stateNavigator's included in the props because it's needed by the Hyperlink
+ * components.
+ */
 exports.createComponent = function(stateNavigator, props) {
     var clonedProps = {stateNavigator: stateNavigator};
     for(var key in props)
