@@ -1,5 +1,6 @@
 var http = require('http');
-var browserify = require('browserify');
+var fs = require('fs');
+var webpack = require('webpack');
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var Navigation = require('navigation');
@@ -72,9 +73,16 @@ function handleStatic(req, res) {
         return true;
     }
     if (req.url === '/app.js') {
-        browserify('./NavigationClient.js')
-            .bundle()
-            .pipe(res)
+        webpack({
+            entry: "./NavigationClient.js",
+            output: {
+                path: __dirname,
+                filename: "app.js"
+            }
+        }, function(err, stats) {
+            fs.createReadStream('./app.js')
+                .pipe(res);
+        })
         return true;
     }
     return false;

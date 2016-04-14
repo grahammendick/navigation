@@ -2,10 +2,10 @@
   "name": "navigation-isomorphic",
   "description": "Navigation React isomorphic example",
   "dependencies": {
-    "browserify": "^11.0.1",
     "navigation": "^2.0.0",
     "navigation-react": "^2.0.0",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "webpack": "^1.12.10"
   }
 }
