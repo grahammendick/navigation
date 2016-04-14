@@ -37,8 +37,8 @@ http.createServer(function(req, res) {
                 </head>
                 <body>
                     <div id="content">${ReactDOMServer.renderToString(component)}</div>
+                    <script>var serverProps = ${safeStringify(props)};</script>
                     <script src="/app.js" ></script>
-                    <script>NavigationClient.start(${safeStringify(props)});</script>
                 </body>
             </html>`);
         }
@@ -72,7 +72,7 @@ function handleStatic(req, res) {
         return true;
     }
     if (req.url === '/app.js') {
-        browserify('./NavigationClient.js', {standalone: 'NavigationClient'})
+        browserify('./NavigationClient.js')
             .bundle()
             .pipe(res)
         return true;

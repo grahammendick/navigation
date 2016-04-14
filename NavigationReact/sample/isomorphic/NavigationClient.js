@@ -8,12 +8,10 @@ var NavigationShared = require('./NavigationShared');
  * that handling navigation, does an initial render for the current State
  * using the props returned from the server. 
  */
-exports.start = function(props) {
-    var stateNavigator = NavigationShared.getStateNavigator();
-    stateNavigator.start();
-    render(stateNavigator, props);
-    registerControllers(stateNavigator);
-}
+var stateNavigator = NavigationShared.getStateNavigator();
+stateNavigator.start();
+render(stateNavigator, serverProps);
+registerControllers(stateNavigator);
 
 /**
  * Renders the component for the current State and props into the content div.
