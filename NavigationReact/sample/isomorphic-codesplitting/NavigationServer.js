@@ -50,9 +50,8 @@ http.createServer(function(req, res) {
 }).listen(8080);
 
 /**
- * Attaches props accessors to each of the States and then calls the one
- * for the current State. It calls into the data layer to retrieve the 
- * person data.
+ * Assigns the components and props accessors to each of the States. Calls the
+ * current State's props accessor to retrieve the person data.
  */
 function getProps(stateNavigator, callback) {
     stateNavigator.states.people.component = People.Listing;

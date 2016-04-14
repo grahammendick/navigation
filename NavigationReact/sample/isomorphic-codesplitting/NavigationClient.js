@@ -13,7 +13,8 @@ stateNavigator.start();
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
- * just before the State becomes active, issues an AJAX request for the data -
+ * just before the State becomes active, uses webpack's code splitting to load
+ * the respective component on demand and issues an AJAX request for the data -
  * the same Urls are used for HTML and AJAX requests. The navigated hook, fired
  * when the State is active, renders the data returned.
  */

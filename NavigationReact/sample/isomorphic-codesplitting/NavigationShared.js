@@ -2,11 +2,7 @@ var React = require('react');
 var Navigation = require('navigation');
 
 /**
- * Configures the states for the two views. The component is included for
- * convenience only, it is NOT needed by the Navigation router. It simplifies
- * the state to component lookup in the createComponent function below. If you
- * were doing code splitting you could set the component on the state on demand
- * instead, e.g., stateNavigator.states.people.state = Component.Listing
+ * Configures the states for the two views.
  */
 exports.getStateNavigator = function() {
     return new Navigation.StateNavigator([
