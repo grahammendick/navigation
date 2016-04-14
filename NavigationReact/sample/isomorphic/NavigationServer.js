@@ -66,6 +66,11 @@ function getProps(stateNavigator, callback) {
     return stateNavigator.stateContext.state.getProps(stateNavigator.stateContext.data, callback);
 }
 
+/**
+ * Dynamically runs webpack to slow down the JavaScript and make the isomorphic
+ * functionality clearly visible. Don't copy this, webpack should be part of
+ * the build step. 
+ */
 function handleStatic(req, res) {
     if (req.url === '/favicon.ico') {
         res.statusCode = 404;
