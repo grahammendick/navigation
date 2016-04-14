@@ -35,6 +35,7 @@ function registerControllers(stateNavigator) {
     
     stateNavigator.states.people.navigated = 
     stateNavigator.states.person.navigated = function(data, asyncData) {
+        var component = NavigationShared.createComponent(stateNavigator, asyncData);
         ReactDOM.render(
             component,
             document.getElementById('content')
