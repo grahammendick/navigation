@@ -8,5 +8,5 @@ Once you've cloned the repository, you can install the dependencies and start th
     node NavigationServer.js
 	
 Then visit http://localhost:8080/ in your browser to see isomorphic Navigation code splitting in action.
-* If you click a Hyperlink before the JavaScript loads, the navigation happens on the server. If you click a Hyperlink after the JavaScript loads, the navigation happens on the client. 
+* Click a Hyperlink before the JavaScript loads and the navigation happens on the server. Click a Hyperlink after the JavaScript loads and the navigation happens on the client. 
 * Open up the Network tab in your browser's dev tools and watch as a JavaScript file request appears when you first navigate between views.
