@@ -4,9 +4,8 @@ var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 
 /**
- * Creates and starts a State Navigator. Before registering the controllers
- * that handling navigation, does an initial render for the current State
- * using the props returned from the server. 
+ * Creates a State Navigator and, after registering the controllers, triggers
+ * an initial render for the current State and props returned from the server. 
  */
 var stateNavigator = NavigationShared.getStateNavigator();
 registerControllers(stateNavigator);
