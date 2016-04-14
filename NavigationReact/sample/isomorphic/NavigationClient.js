@@ -9,20 +9,8 @@ var NavigationShared = require('./NavigationShared');
  * using the props returned from the server. 
  */
 var stateNavigator = NavigationShared.getStateNavigator();
-stateNavigator.start();
-render(stateNavigator, serverProps);
 registerControllers(stateNavigator);
-
-/**
- * Renders the component for the current State and props into the content div.
- */
-function render(stateNavigator, props) {
-    var component = NavigationShared.createComponent(stateNavigator, props);
-    ReactDOM.render(
-        component,
-        document.getElementById('content')
-    );        
-}
+stateNavigator.start();
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
@@ -33,20 +21,32 @@ function render(stateNavigator, props) {
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = 
     stateNavigator.states.person.navigating = function(data, url, navigate) {
-        var req = new XMLHttpRequest();
-        req.onreadystatechange = function() {
-            if (req.readyState === 4){
-                navigate(JSON.parse(req.responseText));
-            }
-        };
-        req.open('get', url);
-        req.setRequestHeader('Content-Type', 'application/json');
-        req.send(null);
+        getProps(url, navigate);
     }
     stateNavigator.states.people.navigated = 
     stateNavigator.states.person.navigated = function(data, asyncData) {
-        render(stateNavigator, asyncData);
+        var component = NavigationShared.createComponent(stateNavigator, asyncData);
+        ReactDOM.render(
+            component,
+            document.getElementById('content')
+        );
     }
 }
-    
+
+function getProps(url, navigate) {
+    if (serverProps) {
+        navigate(serverProps);
+        serverProps = null;
+        return;
+    }
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        if (req.readyState === 4){
+            navigate(JSON.parse(req.responseText));
+        }
+    };
+    req.open('get', url);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(null);
+}    
 

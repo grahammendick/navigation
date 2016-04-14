@@ -22,14 +22,14 @@ function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
         require.ensure(['./People'], function(require) {
             stateNavigator.states.people.component = require('./People').Listing;
-            getProps(url, navigate)
+            getProps(url, navigate);
         });
     }
     
     stateNavigator.states.person.navigating = function(data, url, navigate) {
         require.ensure(['./Person'], function(require) {
             stateNavigator.states.person.component = require('./Person').Details;
-            getProps(url, navigate)
+            getProps(url, navigate);
         });
     }
     
