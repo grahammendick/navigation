@@ -13,17 +13,6 @@ registerControllers(stateNavigator);
 stateNavigator.start();
 
 /**
- * Renders the component for the current State and props into the content div.
- */
-function render(stateNavigator, props) {
-    var component = NavigationShared.createComponent(stateNavigator, props);
-    ReactDOM.render(
-        component,
-        document.getElementById('content')
-    );        
-}
-
-/**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
  * just before the State becomes active, issues an AJAX request for the data -
  * the same Urls are used for HTML and AJAX requests. The navigated hook, fired
@@ -46,7 +35,10 @@ function registerControllers(stateNavigator) {
     
     stateNavigator.states.people.navigated = 
     stateNavigator.states.person.navigated = function(data, asyncData) {
-        render(stateNavigator, asyncData);
+        ReactDOM.render(
+            component,
+            document.getElementById('content')
+        );
     }
 }
 
