@@ -1,24 +1,8 @@
-var Data = require('./Data');
 var React = require('react');
-var ReactDOM = require('react-dom');
 var NavigationReact = require('navigation-react');
 var NavigationBackLink = NavigationReact.NavigationBackLink;
 
-/**
- * Attaches the navigated hook to the Person State. Fired when the State is
- * active, it renders the Details Component into the content div.
- */
-exports.createController = function(stateNavigator) {
-    stateNavigator.states.person.navigated = function(data) {
-        var person = Data.getPerson(data.id);
-        ReactDOM.render(
-            React.createElement(Details, {person: person, stateNavigator: stateNavigator}),
-            document.getElementById('content')
-        );		
-    }
-}
-
-var Details = React.createClass({
+exports.Details = React.createClass({
     render: function() {
         var person = this.props.person;
         return (
@@ -37,3 +21,4 @@ var Details = React.createClass({
         );
     }
 })
+

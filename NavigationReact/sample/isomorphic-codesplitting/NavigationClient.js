@@ -13,15 +13,26 @@ stateNavigator.start();
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
- * just before the State becomes active, issues an AJAX request for the data -
+ * just before the State becomes active, uses webpack's code splitting to load
+ * the respective component on demand and issues an AJAX request for the data -
  * the same Urls are used for HTML and AJAX requests. The navigated hook, fired
  * when the State is active, renders the data returned.
  */
 function registerControllers(stateNavigator) {
-    stateNavigator.states.people.navigating = 
-    stateNavigator.states.person.navigating = function(data, url, navigate) {
-        getProps(url, navigate);
+    stateNavigator.states.people.navigating = function(data, url, navigate) {
+        require.ensure(['./People'], function(require) {
+            stateNavigator.states.people.component = require('./People').Listing;
+            getProps(url, navigate);
+        });
     }
+    
+    stateNavigator.states.person.navigating = function(data, url, navigate) {
+        require.ensure(['./Person'], function(require) {
+            stateNavigator.states.person.component = require('./Person').Details;
+            getProps(url, navigate);
+        });
+    }
+    
     stateNavigator.states.people.navigated = 
     stateNavigator.states.person.navigated = function(data, asyncData) {
         var component = NavigationShared.createComponent(stateNavigator, asyncData);
@@ -47,5 +58,6 @@ function getProps(url, navigate) {
     req.open('get', url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(null);
-}    
+}
+
 

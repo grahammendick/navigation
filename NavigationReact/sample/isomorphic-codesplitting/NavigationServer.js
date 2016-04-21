@@ -6,6 +6,8 @@ var ReactDOMServer = require('react-dom/server');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 var Data = require('./Data');
+var People = require('./People');
+var Person = require('./Person');
 
 /**
  * A single set of routes handles both the HTML and AJAX requests. Uses
@@ -29,7 +31,7 @@ http.createServer(function(req, res) {
             var component = NavigationShared.createComponent(stateNavigator, props)
             res.write(`<html>
                 <head>
-                    <title>Isomorphic Navigation</title>
+                    <title>Isomorphic Navigation Code Splitting</title>
                     <style>
                         table{border-collapse:collapse;}
                         table,td,th{border:1px #000 solid;}
@@ -48,11 +50,13 @@ http.createServer(function(req, res) {
 }).listen(8080);
 
 /**
- * Attaches props accessors to each of the States and then calls the one
- * for the current State. It calls into the data layer to retrieve the 
- * person data.
+ * Assigns the components and props accessors to each of the States. Calls the
+ * current State's props accessor to retrieve the person data.
  */
 function getProps(stateNavigator, callback) {
+    stateNavigator.states.people.component = People.Listing;
+    stateNavigator.states.person.component = Person.Details;
+    
     stateNavigator.states.people.getProps = function(data, callback) {
         Data.searchPeople(data.pageNumber, function(people) {
             callback({people: people});
@@ -88,6 +92,12 @@ function handleStatic(req, res) {
             fs.createReadStream('./app.js')
                 .pipe(res);
         })
+        return true;
+    }
+    var matches = req.url.match(/(\d+)\.app\.js$/);
+    if (matches) {
+        fs.createReadStream('./' + matches[1] + '.app.js')
+            .pipe(res);
         return true;
     }
     return false;
