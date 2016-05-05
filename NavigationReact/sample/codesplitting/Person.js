@@ -5,7 +5,7 @@ var NavigationReact = require('navigation-react');
 var NavigationBackLink = NavigationReact.NavigationBackLink;
 
 /**
- * Registers the component creators for the Details State.
+ * Registers the component creator for the Details State.
  */
 exports.registerComponent = function(stateNavigator) {
     stateNavigator.states.person.createComponent = function(data) {

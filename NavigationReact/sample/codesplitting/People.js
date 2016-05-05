@@ -6,7 +6,7 @@ var NavigationLink = NavigationReact.NavigationLink;
 var RefreshLink = NavigationReact.RefreshLink;
 
 /**
- * Registers the component creators for the Listing State.
+ * Registers the component creator for the Listing State.
  */
 exports.registerComponent = function(stateNavigator) {
     stateNavigator.states.people.createComponent = function(data) {
