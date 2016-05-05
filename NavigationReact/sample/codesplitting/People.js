@@ -6,16 +6,12 @@ var NavigationLink = NavigationReact.NavigationLink;
 var RefreshLink = NavigationReact.RefreshLink;
 
 /**
- * Attaches the navigated hook to the People State. Fired when the State is
- * active, it renders the Listing Component into the content div.
+ * Registers the component creators for the Listing State.
  */
-exports.createController = function(stateNavigator) {
-    stateNavigator.states.people.navigated = function(data) {
+exports.registerComponent = function(stateNavigator) {
+    stateNavigator.states.people.createComponent = function(data) {
         var people = Data.searchPeople(data.pageNumber);
-        ReactDOM.render(
-            React.createElement(Listing, {people: people, stateNavigator: stateNavigator}),
-            document.getElementById('content')
-        );		
+        return React.createElement(Listing, {people: people, stateNavigator: stateNavigator});
     }
 }
 

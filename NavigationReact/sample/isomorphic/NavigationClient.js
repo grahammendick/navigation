@@ -9,6 +9,7 @@ var NavigationShared = require('./NavigationShared');
  */
 var stateNavigator = NavigationShared.getStateNavigator();
 registerControllers(stateNavigator);
+NavigationShared.registerComponents(stateNavigator);
 stateNavigator.start();
 
 /**
@@ -20,19 +21,19 @@ stateNavigator.start();
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = 
     stateNavigator.states.person.navigating = function(data, url, navigate) {
-        getProps(url, navigate);
+        fetchData(url, navigate);
     }
     stateNavigator.states.people.navigated = 
     stateNavigator.states.person.navigated = function(data, asyncData) {
-        var component = NavigationShared.createComponent(stateNavigator, asyncData);
+        asyncData.stateNavigator = stateNavigator;
         ReactDOM.render(
-            component,
+            stateNavigator.stateContext.state.createComponent(asyncData),
             document.getElementById('content')
         );
     }
 }
 
-function getProps(url, navigate) {
+function fetchData(url, navigate) {
     if (serverProps) {
         navigate(serverProps);
         serverProps = null;
@@ -47,5 +48,4 @@ function getProps(url, navigate) {
     req.open('get', url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(null);
-}    
-
+}

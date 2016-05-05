@@ -20,13 +20,16 @@ http.createServer(function(req, res) {
     if (handleStatic(req, res))
         return;
     var stateNavigator = NavigationShared.getStateNavigator();
-    stateNavigator.start(req.url);
-    getProps(stateNavigator, function(props) {
+    registerControllers(stateNavigator);
+    NavigationShared.registerComponents(stateNavigator);
+    stateNavigator.onNavigate(function(oldState, state) {
         res.setHeader('vary', 'content-type');
         if (req.headers['content-type'] === 'application/json') {
-            res.write(JSON.stringify(props));
+            res.write(JSON.stringify(state.props));
         } else {
-            var component = NavigationShared.createComponent(stateNavigator, props)
+            var props = safeStringify(state.props);
+            state.props.stateNavigator = stateNavigator;
+            var component = state.createComponent(state.props);
             res.write(`<html>
                 <head>
                     <title>Isomorphic Navigation</title>
@@ -38,32 +41,34 @@ http.createServer(function(req, res) {
                 </head>
                 <body>
                     <div id="content">${ReactDOMServer.renderToString(component)}</div>
-                    <script>var serverProps = ${safeStringify(props)};</script>
+                    <script>var serverProps = ${props};</script>
                     <script src="/app.js" ></script>
                 </body>
             </html>`);
         }
         res.end();
     });
+    stateNavigator.start(req.url);
 }).listen(8080);
 
 /**
- * Attaches props accessors to each of the States and then calls the one
- * for the current State. It calls into the data layer to retrieve the 
- * person data.
+ * Attaches the navigation hooks to the two States. The navigating hook, fired
+ * just before the State becomes active, calls into the data layer and adds the 
+ * retrieved person data onto the state 
  */
-function getProps(stateNavigator, callback) {
-    stateNavigator.states.people.getProps = function(data, callback) {
+function registerControllers(stateNavigator) {
+    stateNavigator.states.people.navigating = function(data, url, navigate) {
         Data.searchPeople(data.pageNumber, function(people) {
-            callback({people: people});
+            stateNavigator.states.people.props = {people: people};
+            navigate();
         });
     }
-    stateNavigator.states.person.getProps = function(data, callback) {
+    stateNavigator.states.person.navigating = function(data, url, navigate) {
         Data.getPerson(data.id, function(person) {
-            callback({person: person});
+            stateNavigator.states.person.props = {person: person};
+            navigate();
         });
     }
-    return stateNavigator.stateContext.state.getProps(stateNavigator.stateContext.data, callback);
 }
 
 /**

@@ -2,7 +2,16 @@ var React = require('react');
 var NavigationReact = require('navigation-react');
 var NavigationBackLink = NavigationReact.NavigationBackLink;
 
-exports.Details = React.createClass({
+/**
+ * Registers the component creator for the Details State.
+ */
+exports.registerComponent = function(stateNavigator) {
+    stateNavigator.states.person.createComponent = function(data) {
+        return React.createElement(Details, data);
+    }
+}
+
+var Details = React.createClass({
     render: function() {
         var person = this.props.person;
         return (

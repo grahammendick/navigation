@@ -5,16 +5,12 @@ var NavigationReact = require('navigation-react');
 var NavigationBackLink = NavigationReact.NavigationBackLink;
 
 /**
- * Attaches the navigated hook to the Person State. Fired when the State is
- * active, it renders the Details Component into the content div.
+ * Registers the component creators for the Details State.
  */
-exports.createController = function(stateNavigator) {
-    stateNavigator.states.person.navigated = function(data) {
+exports.registerComponent = function(stateNavigator) {
+    stateNavigator.states.person.createComponent = function(data) {
         var person = Data.getPerson(data.id);
-        ReactDOM.render(
-            React.createElement(Details, {person: person, stateNavigator: stateNavigator}),
-            document.getElementById('content')
-        );		
+        return React.createElement(Details, {person: person, stateNavigator: stateNavigator});
     }
 }
 

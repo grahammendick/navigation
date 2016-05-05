@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Navigation = require('navigation');
+var NavigationReact = require('navigation-react');
 var NavigationShared = require('./NavigationShared');
 
 /**
@@ -21,29 +22,27 @@ stateNavigator.start();
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
         require.ensure(['./People'], function(require) {
-            stateNavigator.states.people.component = require('./People').Listing;
-            getProps(url, navigate);
+            require('./People').registerComponent(stateNavigator);
+            fetchData(url, navigate);
         });
     }
-    
     stateNavigator.states.person.navigating = function(data, url, navigate) {
         require.ensure(['./Person'], function(require) {
-            stateNavigator.states.person.component = require('./Person').Details;
-            getProps(url, navigate);
+            require('./Person').registerComponent(stateNavigator);
+            fetchData(url, navigate);
         });
     }
-    
     stateNavigator.states.people.navigated = 
     stateNavigator.states.person.navigated = function(data, asyncData) {
-        var component = NavigationShared.createComponent(stateNavigator, asyncData);
+        asyncData.stateNavigator = stateNavigator;
         ReactDOM.render(
-            component,
+            stateNavigator.stateContext.state.createComponent(asyncData),
             document.getElementById('content')
         );
     }
 }
 
-function getProps(url, navigate) {
+function fetchData(url, navigate) {
     if (serverProps) {
         navigate(serverProps);
         serverProps = null;
@@ -59,5 +58,3 @@ function getProps(url, navigate) {
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(null);
 }
-
-

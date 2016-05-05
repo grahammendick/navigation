@@ -3,7 +3,16 @@ var NavigationReact = require('navigation-react');
 var NavigationLink = NavigationReact.NavigationLink;
 var RefreshLink = NavigationReact.RefreshLink;
 
-exports.Listing = React.createClass({
+/**
+ * Registers the component creator for the Listing State.
+ */
+exports.registerComponent = function(stateNavigator) {
+    stateNavigator.states.people.createComponent = function(data) {
+        return React.createElement(Listing, data);
+    }
+}
+
+var Listing = React.createClass({
     render: function() {
         var stateNavigator = this.props.stateNavigator;
         var people = this.props.people.map(function (person) {

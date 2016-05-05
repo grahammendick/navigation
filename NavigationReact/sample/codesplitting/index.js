@@ -19,22 +19,27 @@ var stateNavigator = new Navigation.StateNavigator([
 /**
  * Attaches the navigating hooks to the two States. Fired just before the State
  * becomes active, it uses webpack's code splitting to load the respective
- * component on demand. When the component returns it creates the navigated
- * hooks and then continues with the navigation.
+ * component on demand. When the component returns it registers the components
+ * and then continues with the navigation.
  */
 stateNavigator.states.people.navigating = function(data, url, navigate) {
     require.ensure(['./People'], function(require) {
-        var People = require('./People');
-        People.createController(stateNavigator);
+        require('./People').registerComponent(stateNavigator);
         navigate();
     });
 }
 stateNavigator.states.person.navigating = function(data, url, navigate) {
     require.ensure(['./Person'], function(require) {
-        var Person = require('./Person');
-        Person.createController(stateNavigator);
+        require('./Person').registerComponent(stateNavigator);
         navigate();
     });
+}
+stateNavigator.states.people.navigated = 
+stateNavigator.states.person.navigated = function(data) {
+    ReactDOM.render(
+        stateNavigator.stateContext.state.createComponent(data),
+        document.getElementById('content')
+    );
 }
 
 stateNavigator.start();
