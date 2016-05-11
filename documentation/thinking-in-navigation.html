@@ -1,0 +1,95 @@
+<html>
+<head>
+    <title>Thinking in Navigation</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../index.html">Navigation</a>
+            <a href="hello-world.html" class="selected">Docs</a>
+            <a href="../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="hello-world.html">Hello World</a>
+            <a href="thinking-in-navigation.html" class="selected">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="state-navigation.html">A. State Navigation</a>
+            <a href="navigation-data.html">B. Navigation Data</a>
+            <a href="routes.html">C. Routes</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="breadcrumb-trail.html">Breadcrumb Trail</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <div class="separator"></div>
+            <a href="email-example.html">Email Example</a>
+        </div>
+        <div id="article">
+            <h1>Thinking in Navigation</h1>
+            <p>
+                <a href="http://facebook.github.io/react/docs/thinking-in-react.html">Thinking in React</a> is a featured post on Facebook's React website. Step by step, it takes you through the thought process of building a searchable product data table in React. It's a great post but the thought process is flawed. I'll explain the flaw and how you can use the Navigation router to correct it.
+            </p>
+            <p>
+                The flaw appears in step 3 when the author identifies what data belongs in React state. To make the identification he asks three questions of each piece of data:
+            </p>
+            <ol>
+                <li>Is it passed in from a parent via props? If so, it probably isn't state.</li>
+                <li>Does it change over time? If not, it probably isn't state.</li>
+                <li>Can you compute it based on any other state or props in your component? If so, it's not state.</li>
+            </ol>
+            <p>
+                From these questions he concludes that the search text and the checkbox make up the React state. It might seem like a harmless conclusion but the problem is that there's one question missing. The author forgot to ask:
+            </p>
+            <ol start="4">
+                <li><strong>Is it part of the URL? If so, it's not state.</strong></li>
+            </ol>
+            <p>
+                The addition of that one question results in quite a different conclusion to step 3:
+            </p>
+            <p>
+                The search text the user has entered and the value of the checkbox should appear in the URL. Otherwise the filtered product data table isn't bookmarkable and can't be linked to. <strong>Data that's part of the URL lives with the router, not in React state.</strong>
+            </p>
+            <p>
+                The author, in the subsequent two steps, identifies which component owns the data and inversely flows the data up the hierarchy to this common owner. But these steps no longer make sense now we know that the data's owned by the Navigation router and not a React component. I'll rewrite steps 4 and 5 in light of the new conclusion to step 3.
+            </p>
+            <h2>Step 4: Add Navigation to the one-way data flow</h2>
+            <iframe width="100%" height="600" src="//jsfiddle.net/navigation/v45484L2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            <p>
+                So far, we've built an app that renders correctly as a function of props flowing down the hierarchy. Now it's time to add the Navigation router into this one-way data flow.
+            </p>
+            <p>
+                If you try to type or check the box in the current version of the example, you'll see that React ignores your input. This is intentional, as we've set the <code>value</code> prop of the <code>input</code> to always be equal to the prop passed in from <code>FilterableProductTable</code>.
+            </p>
+            <p>
+                Let's think about what we want to happen. We want to make sure that whenever the user changes the form, we update the props to reflect the user input. Since components shouldn't update their own props, we need to re-render <code>FilterableProductTable</code> passing in the new form values. We can use the <code>onChange</code> event on the inputs to pass the form values into the Navigation router whenever either one changes. Navigation will update the URL and call into our <code>navigated</code> handler. Inside the handler we can re-render the <code>FilterableProductTable</code> passing in the new prop values, and the app will be updated.
+            </p>
+            <p>
+                Though this sounds complex, it's really just a few lines of code. And it keeps the data flowing one way down the component hierarchy.
+            </p>
+            <h2>Step 5: Clean up the browser history</h2>
+            <iframe width="100%" height="600" src="//jsfiddle.net/navigation/Lzssw51o/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            <p>
+                Ok, we've made the filtered product table bookmarkable. The problem is that now every time the user updates the search text box the URL also updates: type in <code>"ball"</code> and you have to press the browser back button four times to clear the text.
+            </p>
+            <p>
+                We still want to filter the product data table as the user types but we don't want to add a history record until there's a pause in the typing.
+            </p>
+            <p>
+                To stop the Navigation router creating a history record we can pass it a <code>historyAction</code> of <code>"none"</code> along with the form data. Then in the <code>navigated</code> handler, we can create a <code>timeout</code> function to delay the addition of the history record. By clearing the previous <code>timeout</code> at the top of the <code>navigated</code> handler, a history record is only created if there's a long enough pause in the user activity.
+            </p>
+            <p>
+                The finished app is very similar to the static version of the app from step 2. The components still only have render methods and the data still only flows in one direction. The difference is that now it's bookmarkable and works with the browser back button. :)
+            </p>
+            <p>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
