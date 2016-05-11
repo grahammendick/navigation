@@ -54,7 +54,7 @@
                 The addition of that one question results in quite a different conclusion to step 3:
             </p>
             <p>
-                The search text the user has entered and the value of the checkbox should appear in the URL. Otherwise the filtered product data table isn't bookmarkable and can't be linked to. <strong>Data that's part of the URL lives with the Navigation router, not in React state.</strong>
+                The search text the user has entered and the value of the checkbox should appear in the URL. Otherwise the filtered product data table isn't bookmarkable and can't be linked to. <strong>Data that's part of the URL lives with the router, not in React state.</strong>
             </p>
             <p>
                 The author, in the subsequent two steps, identifies which component owns the data and inversely flows the data up the hierarchy to this common owner. But these steps no longer make sense now we know that the data's owned by the Navigation router and not a React component. I'll rewrite steps 4 and 5 in light of the new conclusion to step 3.
@@ -62,9 +62,31 @@
             <h2>Step 4: Add Navigation to the one-way data flow</h2>
             <iframe width="100%" height="600" src="//jsfiddle.net/navigation/v45484L2/embedded/js,html,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
             <p>
+                So far, we've built an app that renders correctly as a function of props flowing down the hierarchy. Now it's time to add the Navigation router into this one-way data flow.
+            </p>
+            <p>
+                If you try to type or check the box in the current version of the example, you'll see that React ignores your input. This is intentional, as we've set the <code>value</code> prop of the <code>input</code> to always be equal to the prop passed in from <code>FilterableProductTable</code>.
+            </p>
+            <p>
+                Let's think about what we want to happen. We want to make sure that whenever the user changes the form, we update the props to reflect the user input. Since components shouldn't update their own props, we need to re-render the <code>FilterableProductTable</code> passing in the new form values. We can use the <code>onChange</code> event on the inputs to pass the form values into the Navigation router whenever either one changes. Navigation will update the URL and call into our <code>navigated</code> handler. Inside the handler we can re-render the <code>FilterableProductTable</code> passing in the new prop values, and the app will be updated.
+            </p>
+            <p>
+                Though this sounds complex, it's really just a few lines of code. And it keeps the data flowing one way down the component hierarchy.
             </p>
             <h2>Step 5: Clean up the browser history</h2>
             <iframe width="100%" height="600" src="//jsfiddle.net/navigation/Lzssw51o/embedded/js,html,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            <p>
+                By adding the Navigation router into the one-way data flow, we've made the filtered product table bookmarkable. The problem is that now every time the user updates the search text box the URL also updates: type in <code>"ball"</code> and you have to press the browser back button four times to clear the text.
+            </p>
+            <p>
+                We still want to filter the product data table as the user types but not add a history record until there's a pause in the typing.
+            </p>
+            <p>
+                To stop the Navigation router creating a history record we can pass it a <code>historyAction</code> of <code>"none"</code> along with the form data. Then in the <code>navigated</code> handler, we can create a <code>timeout</code> function to delay the addition of the history record. By clearing the previous <code>timeout</code> at the top of the <code>navigated</code> handler, a history record is only created if there's a long enough pause in the user activity.
+            </p>
+            <p>
+                The finished app is very similar to the static version of the app from step 2. The components still only have render methods and the data still only flows in one direction. The difference is that now it's bookmarkable and works with the browser back button. :)
+            </p>
             <p>
             </p>
         </div>
