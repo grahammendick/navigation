@@ -79,7 +79,7 @@
                 Ok, we've made the filtered product table bookmarkable. The problem is that now every time the user updates the search text box the URL also updates: type in <code>"ball"</code> and you have to press the browser back button four times to clear the text.
             </p>
             <p>
-                We still want to filter the product data table as the user types but not add a history record until there's a pause in the typing.
+                We still want to filter the product data table as the user types but we don't want to add a history record until there's a pause in the typing.
             </p>
             <p>
                 To stop the Navigation router creating a history record we can pass it a <code>historyAction</code> of <code>"none"</code> along with the form data. Then in the <code>navigated</code> handler, we can create a <code>timeout</code> function to delay the addition of the history record. By clearing the previous <code>timeout</code> at the top of the <code>navigated</code> handler, a history record is only created if there's a long enough pause in the user activity.
