@@ -96,7 +96,7 @@ div.plug h2{
 .home h2{
     text-align:center;
 }
-p{
+p, iframe{
     margin:0 0 2% 0;
 }
 p code{
