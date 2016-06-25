@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>Reusable Components</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../index.html">Navigation</a>
+            <a href="hello-world.html" class="selected">Docs</a>
+            <a href="../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="hello-world.html">Hello World</a>
+            <a href="thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="state-navigation.html">A. State Navigation</a>
+            <a href="navigation-data.html">B. Navigation Data</a>
+            <a href="routes.html">C. Routes</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="breadcrumb-trail.html">Breadcrumb Trail</a>
+            <a href="current-data.html">Current Data</a>
+            <a href="html5-history.html">HTML5 History</a>
+            <a href="navigation-lifecycle.html">Navigation Lifecycle</a>
+            <div class="separator"></div>
+            <a href="email-example.html">Email Example</a>
+            <a href="reusable-components.html" class="selected">Reusable Components</a>
+        </div>
+        <div id="article">
+            <h1>Reusable Components</h1>
+            <p>
+                The React website says that, when designing your interface, you should "break down the common design elements into reusable components...That way, the next time you need to build some UI, you can write much less code." This idea works for elements like buttons and layout components, but falls down when it comes to routing components like a data Sorter or Pager.
+            </p>
+            <p>
+                Routing components contain Hyperlinks and Hyperlinks aren't reusable because their href attributes tie them down to a particular UI. The Navigation router's data-first approach sets Hyperlinks free so you can reuse them across UIs. I'll show how by building reusable Sorter and Pager components.
+            </p>
+            <h2>Making a Reusable Sorter Component</h2>
+            <p>
+                A reusable Sorter component consists of a Hyperlink that toggles the sort order. Remember that it's just the UI we're reusing and not the sorting logic itself. With the Navigation router we think in terms of typed data rather than URLs. We'll model the sort order as a boolean called 'up'. A value of true represents a sort direction of ascending. We can then use the Navigation router's RefreshLink component to build a Sorter component that toggles this 'up' value:
+            </p>
+            <pre><code class="language-jsx">var Sorter = ({up, children, stateNavigator}) => (
+  &lt;RefreshLink 
+    navigationData={{up: !up}}
+    stateNavigator={stateNavigator}>
+    {children}
+  &lt;/RefreshLink>
+);
+</code></pre>
+            <p>
+                This Sorter component isn't tied to a particular UI because there's no mention of any URL. It's reusable because we only operate on the 'up' data instead of hard-coding the Hyperlink's href. Where the component's used in the UI determines the value of the href. For example, on one page the 'up' data might appear in the query string and on another it could be a route parameter. You can see what I mean below where this Sorter component brings order to a list of fruit and vegetables:
+            </p>
+            <iframe width="100%" height="600" src="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            </p>
+            <h2>Making a Reusable Pager Component</h2>
+            <p>
+                You've seen how the RefreshLink component lets us focus on the data instead of worrying about URLs. That means we can avoid hard-coding href attributes and create reusable routing components. Let's use this technique to create a reusable Pager component. It will have 'First', 'Previous', 'Next' and 'Last' Hyperlinks that each change the current page number. For example, the 'First' Hyperlink sets the page number to 1 and the 'Previous' Hyperlink decrements the page number:
+            </p>
+            <pre><code class="language-jsx">var Pager = ({page, size, total, stateNavigator}) => {
+  var pages = [
+    {text: 'First', page: 1},
+    {text: 'Previous', page: Math.max(page - 1, 1)},
+    {text: 'Next', page: Math.min(page + 1, Math.ceil(total / size))},
+    {text: 'Last', page: Math.ceil(total / size)}
+  ];
+  return (
+    &lt;div>
+      {pages.map(pageInfo =>
+        &lt;RefreshLink 
+          navigationData={{page: pageInfo.page}}
+          disableActive={true}
+          key={pageInfo.text}
+          stateNavigator={stateNavigator}>
+          {pageInfo.text}
+        &lt;/RefreshLink>
+      )}
+    &lt;/div>
+  );
+};
+</code></pre>
+            <p>
+                Let's return to the fruit and veg example above and replace the Sorter with the Pager. Instead of using the 'up' data to sort the list, we'll use the 'page' data to split it across three pages:
+            </p>
+            <iframe width="100%" height="600" src="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            </p>
+            <h2>Using the Sorter and Pager together</h2>
+            <p>
+                So far we've added our Sorter and Pager components separately to our fruit and veg example. If we were to use them both together, so that the list can be both sorted and paged, then we'd run into a problem. We'd find that when we toggle the sort order we lose the current page number. That's because the Sorter only manages the 'up' data and doesn't know anything about the 'page' data. But if we pass the page number into the Sorter component then it won't be reusable anymore.
+            </p>
+            <p>
+                The Navigation router comes to our rescue. It keeps track of the current 'page' data so that the Sorter doesn't have to. To ensure that the sorting Hyperlink includes the current page number we set the RefreshLink's includeCurrentData prop to true.
+            </p>
+            <pre><code class="language-jsx">var Sorter = ({up, children, stateNavigator}) => (
+  &lt;RefreshLink 
+    navigationData={{up: !up}}
+    includeCurrentData={true}
+    stateNavigator={stateNavigator}>
+    {children}
+  &lt;/RefreshLink>
+);</code></pre>
+            <p>
+                We'll make the same change to the RefreshLinks of the Pager so we don't lose the sort order when changing the page number. We can now drop the Sorter and Pager into the fruit and veg list. They work together to maintain the 'up' and 'page' values without either component being aware of the other:
+            </p>
+            <iframe width="100%" height="600" src="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
+</body>
+</html>
