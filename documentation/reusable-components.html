@@ -91,6 +91,7 @@
             </p>
             <h2>Using the Sorter and Pager together</h2>
             <p>
+                So far we've added our Sorter and Pager components separately to our fruit and veg example. If we tried to use them both together, so that the list can be sorted and paged, then we'd run into a problem. We'd find that when we toggle the sort order we lose the current page number. That's because the Sorter only manages the 'up' data and doesn't know anything about the 'page' data. But we can't pass the page number into the Sorter component because it won't be reusable anymore.
             </p>
             <p>
                 The Navigation router comes to our rescue. It keeps track of the current 'page' data so that the Sorter doesn't have to. To ensure that the sorting Hyperlink includes the current page number we set the <code>RefreshLink's includeCurrentData prop</code> to true.
@@ -104,6 +105,7 @@
   &lt;/RefreshLink>
 );</code></pre>
             <p>
+                We'll make the same change to the <code>RefreshLinks</code> of the Pager so we don't lose the sort order when changing the page number. We can now use the Sorter and Pager together in the fruit and veg list:
             </p>
             <iframe width="100%" height="600" src="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
             </p>
