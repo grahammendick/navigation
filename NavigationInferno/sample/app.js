@@ -58,8 +58,13 @@ class List extends InfernoComponent {
 };
 
 class Filter extends InfernoComponent {
-    getInitialState() {
-        return {name: this.props.initialName};
+    constructor(props){
+        super(props);
+        this.nameChange = this.nameChange.bind(this);
+        this.nameBlur = this.nameBlur.bind(this);
+        this.state = {
+            name: this.props.initialName
+        }
     }
     componentWillReceiveProps(nextProps) {
         //this.setState({ name: nextProps.initialName });
@@ -78,13 +83,14 @@ class Filter extends InfernoComponent {
             createElement('div', null, [
                 createElement('div', null, [
                     createElement('label', {
-                        htmlFor: 'name'
+                        for: 'name'
                     }, 'Name'),
                     createElement('input', {
                         id: "name",
+                        value: this.state.name ? this.state.name: null,
                         onChange: this.nameChange,
                         onBlur: this.nameBlur
-                    }, this.state.name)
+                    })
                 ]),
                 createElement('span', null, 'Page Size'),
                 createElement(NavigationInferno.RefreshLink, {
