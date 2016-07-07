@@ -1,7 +1,7 @@
 import LinkUtility = require('./LinkUtility');
 import Navigation = require('navigation');
 import InfernoComponent = require('inferno-component');
-import InfernoCreateElement = require('inferno-create-element');
+import createElement = require('inferno-create-element');
 
 class NavigationLink extends InfernoComponent {
     private onNavigate = () => this.forceUpdate();
@@ -37,7 +37,7 @@ class NavigationLink extends InfernoComponent {
         LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationLink());
         active = active && !!props.href && this.getStateNavigator().stateContext.state && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
-        return InfernoCreateElement(props.href ? 'a' : 'span', props);
+        return createElement(props.href ? 'a' : 'span', props);
     }
 };
 export = NavigationLink;
