@@ -29,7 +29,7 @@
     "rx": "global:Rx",
     "inferno-component": "global:InfernoComponent",
     "inferno-create-element": "global:InfernoCreateElement",
-    "inferno-dom": "global:InfernoDom"
+    "inferno-dom": "global:InfernoDOM"
   },
   "scripts": {
     "test": "gulp test",

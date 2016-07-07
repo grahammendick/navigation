@@ -30,7 +30,7 @@ class NavigationBackLink extends InfernoComponent {
             props[key] = this.props[key];
         props.href = this.getNavigationBackLink();
         LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationBackLink());
-        return createElement(props.href ? 'a' : 'span', props);
+        return createElement(props.href ? 'a' : 'span', props, props.children);
     }
 };
 export = NavigationBackLink;
