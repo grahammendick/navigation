@@ -27,17 +27,19 @@ class NavigationLink extends InfernoComponent {
     
     render() {
         var props: any = {};
-        for(var key in this.props)
-            props[key] = this.props[key];
+        for(var key in this.props) {
+            if (LinkUtility.isValidAttribute(key))
+                props[key] = this.props[key];
+        }
         var active = true;
         for (var key in this.props.navigationData) {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getNavigationLink();
-        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationLink());
+        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getNavigationLink());
         active = active && !!props.href && this.getStateNavigator().stateContext.state && this.getStateNavigator().stateContext.state.key === this.props.stateKey;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
-        return createElement(props.href ? 'a' : 'span', props, props.children);
+        return createElement(props.href ? 'a' : 'span', props, this.props.children);
     }
 };
 export = NavigationLink;

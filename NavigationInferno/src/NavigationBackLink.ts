@@ -26,11 +26,13 @@ class NavigationBackLink extends InfernoComponent {
     
     render() {
         var props: any = {};
-        for(var key in this.props)
-            props[key] = this.props[key];
+        for(var key in this.props) {
+            if (LinkUtility.isValidAttribute(key))
+                props[key] = this.props[key];
+        }
         props.href = this.getNavigationBackLink();
-        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationBackLink());
-        return createElement(props.href ? 'a' : 'span', props, props.children);
+        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getNavigationBackLink());
+        return createElement(props.href ? 'a' : 'span', props, this.props.children);
     }
 };
 export = NavigationBackLink;

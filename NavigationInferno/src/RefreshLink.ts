@@ -27,17 +27,19 @@ class RefreshLink extends InfernoComponent {
     
     render() {
         var props: any = {};
-        for(var key in this.props)
-            props[key] = this.props[key];
+        for(var key in this.props) {
+            if (LinkUtility.isValidAttribute(key))
+                props[key] = this.props[key];
+        }
         var active = true;
         for (var key in this.props.navigationData) {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getRefreshLink();
-        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getRefreshLink());
+        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getRefreshLink());
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
-        return createElement(props.href ? 'a' : 'span', props, props.children);
+        return createElement(props.href ? 'a' : 'span', props, this.props.children);
     }
 };
 export = RefreshLink;

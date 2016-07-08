@@ -43,10 +43,16 @@ class LinkUtility {
         if (active && disableActive)
             props.href = null;        
     }
+
+    static isValidAttribute(attr: string): boolean {
+        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData' && attr !== 'includeCurrentData'
+            && attr !== 'currentDataKeys' && attr !== 'activeCssClass' && attr !== 'disableActive' && attr !== 'distance'
+            && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
+    }
     
-    static addListeners(component: InfernoComponent, stateNavigator: Navigation.StateNavigator, props: any, getLink: () => string) {
+    static addListeners(component: InfernoComponent, stateNavigator: Navigation.StateNavigator, props: any, toProps: any, getLink: () => string) {
         var lazy = !!props.lazy;
-        props.onClick = (e: MouseEvent, domId: string) => {
+        toProps.onClick = (e: MouseEvent, domId: string) => {
             var element = <HTMLAnchorElement> InfernoDOM.findDOMNode(component);
             var href = element.href;
             if (lazy) {
@@ -67,7 +73,7 @@ class LinkUtility {
             }
         };
         if (lazy)
-            props.onContextMenu = (e: MouseEvent) => component.forceUpdate();
+            toProps.onContextMenu = (e: MouseEvent) => component.forceUpdate();
     }
 
     static getNavigating(props: any): (e: MouseEvent, domId: string, link: string) => boolean {
