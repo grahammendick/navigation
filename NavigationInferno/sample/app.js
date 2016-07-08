@@ -67,7 +67,7 @@ class Filter extends InfernoComponent {
         }
     }
     componentWillReceiveProps(nextProps) {
-        //this.setState({ name: nextProps.initialName });
+        this.setState({ name: nextProps.initialName });
     }
     shouldComponentUpdate(nextProps, nextState) {
         return nextState.name !== this.state.name;
