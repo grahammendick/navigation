@@ -92,13 +92,14 @@ class Filter extends InfernoComponent {
                         onBlur: this.nameBlur
                     })
                 ]),
-                createElement('span', null, 'Page Size'),
+                'Page Size ',
                 createElement(NavigationInferno.RefreshLink, {
                     stateNavigator: this.props.stateNavigator,
                     navigationData: { maximumRows: 5, startRowIndex: null },
                     includeCurrentData: true,
                     activeCssClass: 'active'
                 }, '5'),
+                ' ',
                 createElement(NavigationInferno.RefreshLink, {
                     stateNavigator: this.props.stateNavigator,
                     navigationData: { maximumRows: 10, startRowIndex: null },
@@ -158,7 +159,7 @@ class Pager extends InfernoComponent {
                         }, 'Last')
                     )
                 ]),
-                createElement('span', null, 'Total Count ' + this.props.totalRowCount)
+                'Total Count ' + this.props.totalRowCount
             ])
         );
     }
@@ -177,9 +178,9 @@ class Details extends InfernoComponent {
                     distance: 1
                 }, 'Person Search'),
                 createElement('div', null, [
-                    createElement('span', null, 'Name: ' + person.name),
+                    'Name: ' + person.name,
                     createElement('br'),
-                    createElement('span', null, 'Date of Birth: ' + person.dateOfBirth)
+                    'Date of Birth: ' + person.dateOfBirth
                 ])
             ])
         );
