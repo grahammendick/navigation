@@ -1,0 +1,28 @@
+{
+  "name": "navigation-inferno",
+  "version": "1.0.0",
+  "description": "Inferno plugin for the Navigation router",
+  "main": "navigation-inferno.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grahammendick/navigation"
+  },
+  "keywords": [
+    "router",
+    "navigation",
+    "inferno"
+  ],
+  "peerDependencies": {
+    "navigation": "*",
+    "inferno": "*",
+    "inferno-component": "*",
+    "inferno-create-element": "*",
+    "inferno-dom": "*"
+  },
+  "author": "Graham Mendick",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/grahammendick/navigation/issues"
+  },
+  "homepage": "http://grahammendick.github.io/navigation/"
+}

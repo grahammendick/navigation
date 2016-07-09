@@ -42,7 +42,8 @@ var items = [
 	require('./build/npm/navigation-react/package.json'),
 	require('./build/npm/navigation-knockout/package.json'),
 	require('./build/npm/navigation-angular/package.json'),
-	require('./build/npm/navigation-cycle/package.json')
+	require('./build/npm/navigation-cycle/package.json'),
+	require('./build/npm/navigation-inferno/package.json')
 ];
 var buildTasks = [];
 var packageTasks = [];

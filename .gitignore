@@ -10,6 +10,7 @@ Navigation*/test/**/*.js
 !react-dom.d.ts
 !cycle-dom.d.ts
 !rx.d.ts
+!inferno-*.d.ts
 !assert.d.ts
 !mocha.d.ts
 build/dist

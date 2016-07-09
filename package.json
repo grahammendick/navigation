@@ -26,7 +26,10 @@
     "react": "global:React",
     "react-dom": "global:ReactDOM",
     "@cycle/dom": "global:CycleDOM",
-    "rx": "global:Rx"
+    "rx": "global:Rx",
+    "inferno-component": "global:InfernoComponent",
+    "inferno-create-element": "global:InfernoCreateElement",
+    "inferno-dom": "global:InfernoDOM"
   },
   "scripts": {
     "test": "gulp test",
