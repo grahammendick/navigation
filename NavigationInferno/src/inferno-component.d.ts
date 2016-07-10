@@ -5,5 +5,6 @@ declare module 'inferno-component' {
 declare class InfernoComponent {
     props: any;
     context: any;
+    refs: any;
     forceUpdate();
 }

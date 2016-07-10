@@ -26,7 +26,7 @@ class NavigationLink extends InfernoComponent {
     }
     
     render() {
-        var props: any = {};
+        var props: any = { ref: 'el' };
         for(var key in this.props) {
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];

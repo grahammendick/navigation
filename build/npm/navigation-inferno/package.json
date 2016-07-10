@@ -16,8 +16,7 @@
     "navigation": "*",
     "inferno": "*",
     "inferno-component": "*",
-    "inferno-create-element": "*",
-    "inferno-dom": "*"
+    "inferno-create-element": "*"
   },
   "author": "Graham Mendick",
   "license": "Apache-2.0",

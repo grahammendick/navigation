@@ -28,8 +28,7 @@
     "@cycle/dom": "global:CycleDOM",
     "rx": "global:Rx",
     "inferno-component": "global:InfernoComponent",
-    "inferno-create-element": "global:InfernoCreateElement",
-    "inferno-dom": "global:InfernoDOM"
+    "inferno-create-element": "global:InfernoCreateElement"
   },
   "scripts": {
     "test": "gulp test",

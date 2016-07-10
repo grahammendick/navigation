@@ -1,10 +1,8 @@
 /// <reference path="navigation.d.ts" />
 /// <reference path="inferno-component.d.ts" />
 /// <reference path="inferno-create-element.d.ts" />
-/// <reference path="inferno-dom.d.ts" />
 import Navigation = require('navigation');
 import InfernoComponent = require('inferno-component');
-import InfernoDOM = require('inferno-dom');
 
 class LinkUtility {
     static getLink(stateNavigator: Navigation.StateNavigator, linkAccessor: () => string): string {
@@ -53,7 +51,7 @@ class LinkUtility {
     static addListeners(component: InfernoComponent, stateNavigator: Navigation.StateNavigator, props: any, toProps: any, getLink: () => string) {
         var lazy = !!props.lazy;
         toProps.onClick = (e: MouseEvent, domId: string) => {
-            var element = <HTMLAnchorElement> InfernoDOM.findDOMNode(component);
+            var element = <HTMLAnchorElement> component.refs.el;
             var href = element.href;
             if (lazy) {
                 component.forceUpdate();
