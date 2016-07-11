@@ -29,7 +29,7 @@ class NavigationLink extends React.Component<any, any> {
     }
     
     render() {
-        var props: any = {ref: (el) => this['el'] = el };
+        var props: any = { ref: (el) => this['el'] = el };
         for(var key in this.props)
             props[key] = this.props[key];
         var active = true;
