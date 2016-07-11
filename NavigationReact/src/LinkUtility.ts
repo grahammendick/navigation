@@ -1,6 +1,5 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="react.d.ts" />
-/// <reference path="react-dom.d.ts" />
 import Navigation = require('navigation');
 import React = require('react');
 
