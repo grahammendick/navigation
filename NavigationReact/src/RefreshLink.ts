@@ -40,7 +40,7 @@ class RefreshLink extends React.Component<any, any> {
         LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getRefreshLink());
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
-        return React.createElement(props.href ? 'a' : 'span', props);
+        return React.createElement('a', props);
     }
 };
 export = RefreshLink;
