@@ -24,7 +24,6 @@
     "angular": "global:angular",
     "knockout": "global:ko",
     "react": "global:React",
-    "react-dom": "global:ReactDOM",
     "@cycle/dom": "global:CycleDOM",
     "rx": "global:Rx",
     "inferno-component": "global:InfernoComponent",
