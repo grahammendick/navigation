@@ -30,8 +30,10 @@ class RefreshLink extends React.Component<any, any> {
     
     render() {
         var props: any = { ref: (el) => this['el'] = el };
-        for(var key in this.props)
-            props[key] = this.props[key];
+        for(var key in this.props) {
+            if (LinkUtility.isValidAttribute(key))
+                props[key] = this.props[key];
+        }
         var active = true;
         for (var key in this.props.navigationData) {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);

@@ -40,6 +40,12 @@ class LinkUtility {
         if (active && disableActive)
             props.href = null;        
     }
+
+    static isValidAttribute(attr: string): boolean {
+        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData' && attr !== 'includeCurrentData'
+            && attr !== 'currentDataKeys' && attr !== 'activeCssClass' && attr !== 'disableActive' && attr !== 'distance'
+            && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating';
+    }
     
     static addListeners(component: React.Component<any, any>, stateNavigator: Navigation.StateNavigator, props: any, getLink: () => string) {
         var lazy = !!props.lazy;

@@ -29,8 +29,10 @@ class NavigationBackLink extends React.Component<any, any> {
     
     render() {
         var props: any = { ref: (el) => this['el'] = el };
-        for(var key in this.props)
-            props[key] = this.props[key];
+        for(var key in this.props) {
+            if (LinkUtility.isValidAttribute(key))
+                props[key] = this.props[key];
+        }
         props.href = this.getNavigationBackLink();
         LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getNavigationBackLink());
         return React.createElement('a', props);
