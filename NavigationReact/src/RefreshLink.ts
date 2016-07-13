@@ -39,10 +39,10 @@ class RefreshLink extends React.Component<any, any> {
             active = active && LinkUtility.isActive(this.getStateNavigator(), key, this.props.navigationData[key]);
         }
         props.href = this.getRefreshLink();
-        LinkUtility.addListeners(this, this.getStateNavigator(), props, () => this.getRefreshLink());
+        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getRefreshLink());
         active = active && !!props.href;
         LinkUtility.setActive(props, active, this.props.activeCssClass, this.props.disableActive);
-        return React.createElement('a', props);
+        return React.createElement('a', props, this.props.children);
     }
 };
 export = RefreshLink;
