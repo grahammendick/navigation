@@ -454,7 +454,7 @@ declare namespace Navigation {
          * Registers a navigate event listener
          * @param handler The navigate event listener
          */
-        onNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void): void;
         /**
          * Unregisters a navigate event listener
          * @param handler The navigate event listener
