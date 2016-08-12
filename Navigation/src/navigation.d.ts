@@ -113,7 +113,7 @@ declare namespace Navigation {
          * @param data The current NavigationData
          * @param asyncData The data passed asynchronously while navigating
          */
-        navigated: (data: any, asyncData?: any) => void;
+        navigated: (data: any, asyncData: any) => void;
         /**
          * Called on the new State before navigating to it
          * @param data The new NavigationData
