@@ -459,7 +459,7 @@ declare namespace Navigation {
          * Unregisters a navigate event listener
          * @param handler The navigate event listener
          */
-        offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void): void;
         /**
          * Navigates to a State
          * @param stateKey The key of a State
