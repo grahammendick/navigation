@@ -2901,6 +2901,36 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Navigating Navigate Params Navigated', function () {
+        it('should pass State and Data', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData;
+            stateNavigator.states['s0'].navigating = (data, url, navigating) => {
+                stateNavigator.navigate('s1', { s: 'Hello' });
+                navigating();
+            }
+            stateNavigator.states['s1'].navigating = (data, url, navigating) => {
+                navigating('World');
+            }
+            var navigatedHandler = (oldState, state, data, asyncData) => {
+                stateNavigator.offNavigate(navigatedHandler);
+                navigatedOldState = oldState;
+                navigatedState = state;
+                navigatedData = data;
+                navigatedAsyncData = asyncData;
+            };
+            stateNavigator.onNavigate(navigatedHandler);
+            stateNavigator.navigate('s0');
+            assert.equal(navigatedOldState, null);
+            assert.strictEqual(navigatedState, stateNavigator.states['s1']);
+            assert.strictEqual(navigatedData.s, 'Hello');
+            assert.strictEqual(navigatedAsyncData, 'World');
+        });
+    });
+
     describe('History Navigate', function () {
         it('should pass history flag to lifecycle functions', function() {
             var stateNavigator = new Navigation.StateNavigator([
