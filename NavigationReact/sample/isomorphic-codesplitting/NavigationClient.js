@@ -32,14 +32,13 @@ function registerControllers(stateNavigator) {
             fetchData(url, navigate);
         });
     }
-    stateNavigator.states.people.navigated = 
-    stateNavigator.states.person.navigated = function(data, asyncData) {
+    stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
         asyncData.stateNavigator = stateNavigator;
         ReactDOM.render(
             stateNavigator.stateContext.state.createComponent(asyncData),
             document.getElementById('content')
         );
-    }
+    });
 }
 
 function fetchData(url, navigate) {
