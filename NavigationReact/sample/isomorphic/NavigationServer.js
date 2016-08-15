@@ -22,14 +22,14 @@ http.createServer(function(req, res) {
     var stateNavigator = NavigationShared.getStateNavigator();
     registerControllers(stateNavigator);
     NavigationShared.registerComponents(stateNavigator);
-    stateNavigator.onNavigate(function(oldState, state) {
+    stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
         res.setHeader('vary', 'content-type');
         if (req.headers['content-type'] === 'application/json') {
-            res.write(JSON.stringify(state.props));
+            res.write(JSON.stringify(asyncData));
         } else {
-            var props = safeStringify(state.props);
-            state.props.stateNavigator = stateNavigator;
-            var component = state.createComponent(state.props);
+            var props = safeStringify(asyncData);
+            asyncData.stateNavigator = stateNavigator;
+            var component = state.createComponent(asyncData);
             res.write(`<html>
                 <head>
                     <title>Isomorphic Navigation</title>
@@ -59,14 +59,12 @@ http.createServer(function(req, res) {
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
         Data.searchPeople(data.pageNumber, function(people) {
-            stateNavigator.states.people.props = {people: people};
-            navigate();
+            navigate({people: people});
         });
     }
     stateNavigator.states.person.navigating = function(data, url, navigate) {
         Data.getPerson(data.id, function(person) {
-            stateNavigator.states.person.props = {person: person};
-            navigate();
+            navigate({person: person});
         });
     }
 }
