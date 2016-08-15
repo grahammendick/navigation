@@ -53,8 +53,8 @@ http.createServer(function(req, res) {
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
- * just before the State becomes active, calls into the data layer and adds the 
- * retrieved person data onto the state 
+ * just before the State becomes active, calls into the data layer and passes 
+ * on the retrieved person data onto the state 
  */
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {

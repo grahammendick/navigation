@@ -15,22 +15,21 @@ stateNavigator.start();
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
  * just before the State becomes active, issues an AJAX request for the data -
- * the same Urls are used for HTML and AJAX requests. The navigated hook, fired
- * when the State is active, renders the data returned.
+ * the same Urls are used for HTML and AJAX requests. The onNavigation handler,
+ * fired when the State is active, renders the data returned.
  */
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = 
     stateNavigator.states.person.navigating = function(data, url, navigate) {
         fetchData(url, navigate);
     }
-    stateNavigator.states.people.navigated = 
-    stateNavigator.states.person.navigated = function(data, asyncData) {
+    stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
         asyncData.stateNavigator = stateNavigator;
         ReactDOM.render(
             stateNavigator.stateContext.state.createComponent(asyncData),
             document.getElementById('content')
         );
-    }
+    });
 }
 
 function fetchData(url, navigate) {
