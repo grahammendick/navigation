@@ -34,12 +34,11 @@ stateNavigator.states.person.navigating = function(data, url, navigate) {
         navigate();
     });
 }
-stateNavigator.states.people.navigated = 
-stateNavigator.states.person.navigated = function(data) {
+stateNavigator.onNavigate(function(oldState, state, data) {
     ReactDOM.render(
         stateNavigator.stateContext.state.createComponent(data),
         document.getElementById('content')
     );
-}
+});
 
 stateNavigator.start();
