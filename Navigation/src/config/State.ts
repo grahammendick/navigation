@@ -24,7 +24,7 @@ class State implements StateInfo {
     dispose() { 
     };
     
-    navigated(data: any, asyncData?: any) {
+    navigated(data: any, asyncData: any) {
     };
     
     urlEncode(state: State, key: string, val: string, queryString: boolean): string {

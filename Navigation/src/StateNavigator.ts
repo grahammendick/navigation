@@ -13,7 +13,7 @@ import StateRouter = require('./StateRouter');
 class StateNavigator {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
     private navigateHandlerId: number = 1;
-    private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any) => void } = {};
+    private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any, asyncData: any) => void } = {};
     private converterFactory: ConverterFactory = new ConverterFactory();
     private router: StateRouter = new StateRouter();
     stateContext: StateContext = new StateContext();
@@ -83,7 +83,7 @@ class StateNavigator {
         return crumbs;
     }
     
-    onNavigate(handler: (oldState: State, state: State, data: any) => void) {
+    onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
         if (!handler[this.NAVIGATE_HANDLER_ID]) {
             var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
             handler[this.NAVIGATE_HANDLER_ID] = id;
@@ -93,7 +93,7 @@ class StateNavigator {
         }
     }
 
-    offNavigate(handler: (oldState: State, state: State, data: any) => void) {
+    offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
         delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
         delete handler[this.NAVIGATE_HANDLER_ID];
     }
@@ -176,7 +176,7 @@ class StateNavigator {
                 state.navigated(this.stateContext.data, asyncData);
                 for (var id in this.navigateHandlers) {
                     if (url === this.stateContext.url)
-                        this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data);
+                        this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
                 }
                 if (url === this.stateContext.url) {
                     if (historyAction !== 'none')
