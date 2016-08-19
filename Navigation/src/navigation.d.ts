@@ -138,6 +138,8 @@ declare namespace Navigation {
          * @param queryString A value indicating the Url value's location
          */
         urlDecode(state: State, key: string, val: string, queryString: boolean): string;
+        
+        validate(data): boolean;
         /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered

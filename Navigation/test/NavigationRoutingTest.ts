@@ -5637,4 +5637,31 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/ab?xx=www.google.com'), /is not a valid crumb/);
         });
     });
+
+    describe('One Param One Segment Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: '{x}' }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+
+        it('should build', function() {
+            assert.strictEqual(stateNavigator.getNavigationLink('s0', { x: 'ab' }), '/ab');
+            assert.strictEqual(stateNavigator.getNavigationLink('s1', { x: 'cd' }), '/cd');
+        });
+    });
 });
