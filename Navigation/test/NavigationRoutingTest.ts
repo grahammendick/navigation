@@ -5655,14 +5655,42 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('/cd');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x, 'cd');
-            assert.strictEqual(state.key, 's1');
             var { state, data } = stateNavigator.parseLink('/ef');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ef');
             assert.strictEqual(state.key, 's2');
+            var { state, data } = stateNavigator.parseLink('/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('No Param One Segment Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc' },
+                { key: 's1', route: 'abc' },
+                { key: 's2', route: 'abc' }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x == 'cd';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/abc?x=ef');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ef');
+            assert.strictEqual(state.key, 's2');
+            var { state, data } = stateNavigator.parseLink('/abc?x=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
         });
     });
 });
