@@ -190,17 +190,7 @@ class StateNavigator {
     
     parseLink(url: string): { state: State, data: any } {
         try {
-            var { state, data, separableData } = StateHandler.getNavigationData(this.router, url);
-            data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
-            var crumbTrail: string[] = data[state.crumbTrailKey];
-            if (crumbTrail) {
-                for(var i = 0; i < crumbTrail.length; i++) {
-                    var crumb = crumbTrail[i];
-                    if (crumb.substring(0, 1) !== '/')
-                        throw new Error(crumb + ' is not a valid crumb');
-                }
-            }
-            return { state: state, data: data };
+            return StateHandler.getNavigationData(this.router, this.converterFactory, url);
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }

@@ -1,4 +1,6 @@
-﻿import State = require('./config/State');
+﻿import ConverterFactory = require('./converter/ConverterFactory');
+import NavigationDataManager = require('./NavigationDataManager');
+import State = require('./config/State');
 import StateRouter = require('./StateRouter');
 
 class StateHandler {
@@ -24,7 +26,7 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    static getNavigationData(router: StateRouter, url: string): { state: State, data: any, separableData: any } {
+    static getNavigationData(router: StateRouter, converterFactory: ConverterFactory, url: string): { state: State, data: any } {
         var queryIndex = url.indexOf('?');
         var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
         var { state, data, separableData, route } = router.getData(path);
@@ -47,7 +49,20 @@ class StateHandler {
                 }
             }
         }
-        return { state: state, data: data, separableData: separableData };
+        data = NavigationDataManager.parseData(converterFactory, data, state, separableData);
+        this.validateCrumb(state, data);
+        return { state: state, data: data };
+    }
+
+    private static validateCrumb(state: State, data: any) {
+        var crumbTrail: string[] = data[state.crumbTrailKey];
+        if (crumbTrail) {
+            for(var i = 0; i < crumbTrail.length; i++) {
+                var crumb = crumbTrail[i];
+                if (crumb.substring(0, 1) !== '/')
+                    throw new Error(crumb + ' is not a valid crumb');
+            }
+        }
     }
 }
 export = StateHandler;

@@ -56,7 +56,7 @@ class NavigationDataManager {
     }
 
 
-    static parseData(converterFactory, data: any, state: State, separableData: any): any {
+    static parseData(converterFactory: ConverterFactory, data: any, state: State, separableData: any): any {
         var newData = {};
         for (var key in data) {
             if (!this.isDefault(key, data, state, !!separableData[key]))
