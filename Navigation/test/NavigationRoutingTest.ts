@@ -5643,6 +5643,50 @@ describe('MatchTest', function () {
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: '{x}' },
+                { key: 's1', route: '{x}' }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('No Param One Segment Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc' },
+                { key: 's1', route: 'abc' }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/abc?x=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('One Param One Segment Constraint Order', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}' },
                 { key: 's1', route: '{x}' },
                 { key: 's2', route: '{x}' }
             ]);
@@ -5666,31 +5710,26 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('No Param One Segment Constraint', function () {
+    describe('One Param One Segment Constraint Gap', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
-                { key: 's0', route: 'abc' },
-                { key: 's1', route: 'abc' },
-                { key: 's2', route: 'abc' }
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: 'a/{x}' },
+                { key: 's2', route: '{x}' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
-            stateNavigator.states['s1'].validate = (data) => data.x == 'cd';
         });
 
         it('should match', function() {
-            var { state, data } = stateNavigator.parseLink('/abc?x=ab');
+            var { state, data } = stateNavigator.parseLink('/ab');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('/abc?x=ef');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x, 'ef');
-            assert.strictEqual(state.key, 's2');
-            var { state, data } = stateNavigator.parseLink('/abc?x=cd');
+            var { state, data } = stateNavigator.parseLink('/cd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
-            assert.strictEqual(state.key, 's1');
+            assert.strictEqual(state.key, 's2');
         });
     });
 });
