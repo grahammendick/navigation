@@ -26,8 +26,8 @@ class StateHandler {
 
     static getNavigationData(router: StateRouter, url: string): { state: State, data: any, separableData: any } {
         var queryIndex = url.indexOf('?');
-        var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var { state, data, separableData } = router.getData(route);
+        var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
+        var { state, data, separableData, route } = router.getData(path);
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);

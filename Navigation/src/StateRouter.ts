@@ -7,7 +7,7 @@ type MatchInfo = { route: Route; data: any; routePath: string };
 class StateRouter {
     router: Router;
 
-    getData(route: string): { state: State; data: any, separableData: any } {
+    getData(route: string): { state: State; data: any, separableData: any, route: Route } {
         var match = this.router.match(route, StateRouter.urlDecode);
         var separableData = {};
         if (match.route['_splat']) {
@@ -17,7 +17,7 @@ class StateRouter {
                     separableData[param.name] = true;
             }
         }
-        return { state: match.route['_state'], data: match.data, separableData: separableData };
+        return { state: match.route['_state'], data: match.data, separableData: separableData, route: match.route };
     }
 
     getRoute(state: State, data: any, arrayData: { [index: string]: string[] } = {}): { route: string; data: any } {
