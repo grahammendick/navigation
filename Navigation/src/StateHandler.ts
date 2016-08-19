@@ -1,5 +1,6 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
 import NavigationDataManager = require('./NavigationDataManager');
+import Route = require('./routing/Route');
 import State = require('./config/State');
 import StateRouter = require('./StateRouter');
 
@@ -26,10 +27,10 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    static getNavigationData(router: StateRouter, converterFactory: ConverterFactory, url: string): { state: State, data: any } {
+    static getNavigationData(router: StateRouter, converterFactory: ConverterFactory, url: string, fromRoute?: Route): { state: State, data: any } {
         var queryIndex = url.indexOf('?');
         var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var { state, data, separableData, route } = router.getData(path);
+        var { state, data, separableData, route } = router.getData(path, fromRoute);
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
@@ -51,7 +52,10 @@ class StateHandler {
         }
         data = NavigationDataManager.parseData(converterFactory, data, state, separableData);
         this.validateCrumbTrail(state, data);
-        return { state: state, data: data };
+        if (state.validate(data))
+            return { state: state, data: data };
+        else
+            return this.getNavigationData(router, converterFactory, url, route);
     }
 
     private static validateCrumbTrail(state: State, data: any) {

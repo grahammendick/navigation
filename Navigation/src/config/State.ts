@@ -35,6 +35,10 @@ class State implements StateInfo {
         return decodeURIComponent(val);
     }
 
+    validate(data: any): boolean {
+        return true;
+    }
+
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {
         var newCrumbs: Crumb[] = [];
         for (var i = 0; i < crumbs.length; i++) {
