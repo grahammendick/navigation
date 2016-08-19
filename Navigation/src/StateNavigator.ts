@@ -190,8 +190,7 @@ class StateNavigator {
     
     parseLink(url: string): { state: State, data: any } {
         try {
-            var state = this.router.getData(url.split('?')[0]).state;
-            var { data, separableData } = StateHandler.getNavigationData(this.router, state, url);
+            var { state, data, separableData } = StateHandler.getNavigationData(this.router, url);
             data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
             var crumbTrail: string[] = data[state.crumbTrailKey];
             if (crumbTrail) {

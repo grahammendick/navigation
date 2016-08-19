@@ -24,10 +24,10 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    static getNavigationData(router: StateRouter, state: State, url: string): { data: any, separableData: any } {
+    static getNavigationData(router: StateRouter, url: string): { state: State, data: any, separableData: any } {
         var queryIndex = url.indexOf('?');
         var route = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var { data, separableData } = router.getData(route);
+        var { state, data, separableData } = router.getData(route);
         data = data ? data : {};
         if (queryIndex >= 0) {
             var query = url.substring(queryIndex + 1);
@@ -47,7 +47,7 @@ class StateHandler {
                 }
             }
         }
-        return { data: data, separableData: separableData };
+        return { state: state, data: data, separableData: separableData };
     }
 }
 export = StateHandler;
