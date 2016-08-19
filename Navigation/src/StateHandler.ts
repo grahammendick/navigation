@@ -50,11 +50,11 @@ class StateHandler {
             }
         }
         data = NavigationDataManager.parseData(converterFactory, data, state, separableData);
-        this.validateCrumb(state, data);
+        this.validateCrumbTrail(state, data);
         return { state: state, data: data };
     }
 
-    private static validateCrumb(state: State, data: any) {
+    private static validateCrumbTrail(state: State, data: any) {
         var crumbTrail: string[] = data[state.crumbTrailKey];
         if (crumbTrail) {
             for(var i = 0; i < crumbTrail.length; i++) {
