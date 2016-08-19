@@ -5658,10 +5658,5 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
         });
-
-        it('should build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s0', { x: 'ab' }), '/ab');
-            assert.strictEqual(stateNavigator.getNavigationLink('s1', { x: 'cd' }), '/cd');
-        });
     });
 });
