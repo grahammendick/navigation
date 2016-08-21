@@ -5966,4 +5966,62 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Two Route Query String Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: ['ab', 'ab/cd'] },
+                { key: 's1', route: ['ab', 'ab/cd'] }
+            ]);
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('ab?x=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/ab/cd?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('ab/cd?x=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('Two Route Param and Query String Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: ['{x}', 'ab/cd'] },
+                { key: 's1', route: ['{x}', 'ab/cd'] }
+            ]);
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/ab/cd?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('ab/cd?x=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
 });
