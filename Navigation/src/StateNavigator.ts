@@ -59,28 +59,12 @@ class StateNavigator {
     }
     
     private buildCrumbTrail() {
-        this.stateContext.crumbTrail = [];
-        var crumbTrail = this.stateContext.data[this.stateContext.state.crumbTrailKey];
-        if (crumbTrail)
-            this.stateContext.crumbTrail = crumbTrail;
+        this.stateContext.crumbs = this.stateContext.data[this.stateContext.state.crumbTrailKey];
         delete this.stateContext.data[this.stateContext.state.crumbTrailKey];
-        this.stateContext.crumbs = this.getCrumbs();
         var crumblessUrl = this.getLink(this.stateContext.state, this.stateContext.data, []);
         if (!crumblessUrl)
             throw new Error(this.stateContext.state.crumbTrailKey + ' cannot be a mandatory route parameter')
         this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, this.stateContext.url, crumblessUrl, false);
-    }
-
-    private getCrumbs(): Crumb[] {
-        var crumbs: Crumb[] = [];
-        var len = this.stateContext.crumbTrail.length;
-        for(var i = 0; i < len; i++) {
-            var crumblessUrl = this.stateContext.crumbTrail[i];
-            var { state, data } = this.parseLink(crumblessUrl);
-            var url = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
-        }
-        return crumbs;
     }
     
     onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
@@ -121,8 +105,7 @@ class StateNavigator {
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
-        var { data, arrayData } = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail);
-        return StateHandler.getNavigationLink(this.router, state, data, arrayData);
+        return StateHandler.getNavigationLink(this.router, this.converterFactory, state, navigationData, crumbTrail);
     }
 
     canNavigateBack(distance: number) {
@@ -155,7 +138,7 @@ class StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        var { state, data } = this.parseLink(url);
+        var { state, data } = StateHandler.getNavigationData(this.router, this.converterFactory, url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -190,7 +173,9 @@ class StateNavigator {
     
     parseLink(url: string): { state: State, data: any } {
         try {
-            return StateHandler.getNavigationData(this.router, this.converterFactory, url);
+            var { state, data } = StateHandler.getNavigationData(this.router, this.converterFactory, url);
+            delete data[state.crumbTrailKey];
+            return { state, data };
         } catch (e) {
             throw new Error('The Url is invalid\n' + e.message);
         }

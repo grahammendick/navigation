@@ -11,7 +11,6 @@ class StateContext {
     url: string = null;
     title: string = null;
     crumbs: Crumb[] = [];
-    crumbTrail: string[] = [];
     nextCrumb: Crumb = null;
 
     clear() {
@@ -24,7 +23,6 @@ class StateContext {
         this.url = null;
         this.title = null;
         this.crumbs = [];
-        this.crumbTrail = [];
         this.nextCrumb = null;
     }
 

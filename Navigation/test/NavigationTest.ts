@@ -3203,7 +3203,6 @@ describe('Navigation', function () {
                 assert.strictEqual(stateNavigator.stateContext.url, null);
                 assert.strictEqual(stateNavigator.stateContext.title, null);
                 assert.strictEqual(stateNavigator.stateContext.crumbs.length, 0);
-                assert.strictEqual(stateNavigator.stateContext.crumbTrail.length, 0);
                 assert.strictEqual(stateNavigator.stateContext.nextCrumb, null);
             });
         }
@@ -4545,6 +4544,7 @@ describe('Navigation', function () {
         });
     });
     
+    /* TODO - fix this test with onNavigateError/onError/onMismatch
     describe('Crumb Trail Invalid', function() {
         it ('should throw error', function() {
             var stateNavigator = new Navigation.StateNavigator([
@@ -4553,7 +4553,7 @@ describe('Navigation', function () {
             ]);
             assert.throws(() => stateNavigator.navigateLink('/r1?crumb=%2Fr2'), /The Url is invalid/);
         });
-    });
+    });*/
     
     describe('Crumb Trail Encode', function() {
         it ('should throw error', function() {

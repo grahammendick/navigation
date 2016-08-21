@@ -384,10 +384,6 @@ declare namespace Navigation {
          */
         crumbs: Crumb[];
         /**
-         * Gets the crumb trail
-         */
-        crumbTrail: string[];
-        /**
          * Gets the next crumb
          */
         nextCrumb: Crumb;

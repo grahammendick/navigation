@@ -1,11 +1,13 @@
 ﻿import ConverterFactory = require('./converter/ConverterFactory');
+import Crumb = require('./config/Crumb');
 import NavigationDataManager = require('./NavigationDataManager');
 import Route = require('./routing/Route');
 import State = require('./config/State');
 import StateRouter = require('./StateRouter');
 
 class StateHandler {
-    static getNavigationLink(router: StateRouter, state: State, data: any, arrayData: { [index: string]: string[] } = {}): string {
+    static getNavigationLink(router: StateRouter, converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail: string[]): string {
+        var { data, arrayData } = NavigationDataManager.formatData(converterFactory, state, navigationData, crumbTrail);
         var routeInfo = router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)
             return null;
@@ -51,22 +53,25 @@ class StateHandler {
             }
         }
         data = NavigationDataManager.parseData(converterFactory, data, state, separableData);
-        this.validateCrumbTrail(state, data);
+        data[state.crumbTrailKey] = this.getCrumbs(router, converterFactory, data[state.crumbTrailKey])
         if (state.validate(data))
             return { state: state, data: data };
         else
             return this.getNavigationData(router, converterFactory, url, route);
     }
 
-    private static validateCrumbTrail(state: State, data: any) {
-        var crumbTrail: string[] = data[state.crumbTrailKey];
-        if (crumbTrail) {
-            for(var i = 0; i < crumbTrail.length; i++) {
-                var crumb = crumbTrail[i];
-                if (crumb.substring(0, 1) !== '/')
-                    throw new Error(crumb + ' is not a valid crumb');
-            }
+    private static getCrumbs(router: StateRouter, converterFactory: ConverterFactory, crumbTrail: string[]): Crumb[] {
+        var crumbs: Crumb[] = [];
+        var len = crumbTrail ? crumbTrail.length : 0;
+        for(var i = 0; i < len; i++) {
+            var crumblessUrl = crumbTrail[i];
+            if (crumblessUrl.substring(0, 1) !== '/')
+                throw new Error(crumblessUrl + ' is not a valid crumb');
+            var { state, data } = this.getNavigationData(router, converterFactory, crumblessUrl);
+            var url = this.getNavigationLink(router, converterFactory, state, data, crumbTrail.slice(0, i));
+            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
         }
+        return crumbs;
     }
 }
 export = StateHandler;
