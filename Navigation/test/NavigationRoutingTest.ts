@@ -5974,6 +5974,7 @@ describe('MatchTest', function () {
                 { key: 's0', route: ['ab', 'ab/cd'] },
                 { key: 's1', route: ['ab', 'ab/cd'] }
             ]);
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
         });
 
         it('should match', function() {
@@ -6003,6 +6004,7 @@ describe('MatchTest', function () {
                 { key: 's0', route: ['{x}', 'ab/cd'] },
                 { key: 's1', route: ['{x}', 'ab/cd'] }
             ]);
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
         });
 
         it('should match', function() {
