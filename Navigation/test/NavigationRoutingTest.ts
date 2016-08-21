@@ -5798,4 +5798,52 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's0');
         });
     });
+
+    describe('Splat Param Default Type Array Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{*x}', defaultTypes: { x: 'numberarray' } },
+                { key: 's1', route: '{*x}', defaultTypes: { x: 'numberarray' } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x[0] === 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/12/34');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 12);
+            assert.strictEqual(data.x[1], 34);
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/34/12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 34);
+            assert.strictEqual(data.x[1], 12);
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('Query String Default Type Array Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc', defaultTypes: { x: 'numberarray' } },
+                { key: 's1', route: 'abc', defaultTypes: { x: 'numberarray' } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x[0] === 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc?x=12&x=34');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 12);
+            assert.strictEqual(data.x[1], 34);
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/abc?x=34&x=12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 34);
+            assert.strictEqual(data.x[1], 12);
+            assert.strictEqual(state.key, 's1');
+        });
+    });
 });
