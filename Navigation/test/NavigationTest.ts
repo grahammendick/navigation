@@ -4544,7 +4544,6 @@ describe('Navigation', function () {
         });
     });
     
-    /* TODO - fix this test with onNavigateError/onError/onMismatch
     describe('Crumb Trail Invalid', function() {
         it ('should throw error', function() {
             var stateNavigator = new Navigation.StateNavigator([
@@ -4553,7 +4552,7 @@ describe('Navigation', function () {
             ]);
             assert.throws(() => stateNavigator.navigateLink('/r1?crumb=%2Fr2'), /The Url is invalid/);
         });
-    });*/
+    });
     
     describe('Crumb Trail Encode', function() {
         it ('should throw error', function() {

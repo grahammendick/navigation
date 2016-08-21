@@ -138,7 +138,11 @@ class StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        var { state, data } = StateHandler.getNavigationData(this.router, this.converterFactory, url);
+        try {
+            var { state, data } = StateHandler.getNavigationData(this.router, this.converterFactory, url);
+        } catch (e) {
+            throw new Error('The Url is invalid\n' + e.message);
+        }
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
