@@ -6121,4 +6121,52 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Param Encode Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: '{x}' }
+            ]);
+            var state = stateNavigator.states['s0'];
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')  
+            stateNavigator.states['s0'].validate = (data) => data.x === 'a b';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/a+b');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/c+d');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'c+d');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('Query String Encode Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc' },
+                { key: 's1', route: 'abc' }
+            ]);
+            var state = stateNavigator.states['s0'];
+            state.urlDecode = (state, key, val) => val.replace('+', ' ')  
+            stateNavigator.states['s0'].validate = (data) => data.x === 'a b';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc?x=a+b');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'a b');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/abc?x=c+d');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'c+d');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
 });
