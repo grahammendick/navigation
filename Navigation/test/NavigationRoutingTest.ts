@@ -5733,7 +5733,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Param Default Type Number Constraint', function () {
+    describe('Param Default Type Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -5755,7 +5755,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Query String Default Type Number Constraint', function () {
+    describe('Query String Default Type Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -5774,6 +5774,28 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 34);
             assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('Param Default Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x?}', defaults: { x: 12 } },
+                { key: 's1', route: '{x?}', defaults: { x: 34 } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x !== 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 34);
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/56');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 56);
+            assert.strictEqual(state.key, 's0');
         });
     });
 });
