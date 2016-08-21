@@ -48,7 +48,7 @@ class StateNavigator {
         this.stateContext.url = url;
         this.stateContext.title = state.title;
         this.stateContext.data = data;
-        this.buildCrumbTrail(false);
+        this.buildCrumbTrail();
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
@@ -58,7 +58,7 @@ class StateNavigator {
         }
     }
     
-    private buildCrumbTrail(uncombined: boolean) {
+    private buildCrumbTrail() {
         this.stateContext.crumbTrail = [];
         var crumbTrail = this.stateContext.data[this.stateContext.state.crumbTrailKey];
         if (crumbTrail)
