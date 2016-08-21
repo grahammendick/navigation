@@ -5638,14 +5638,14 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Constraint', function () {
+    describe('Param Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: '{x}' }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
         });
 
         it('should match', function() {
@@ -5660,14 +5660,14 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('No Param One Segment Constraint', function () {
+    describe('Query String Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: 'abc' },
                 { key: 's1', route: 'abc' }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
         });
 
         it('should match', function() {
@@ -5682,7 +5682,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Constraint Order', function () {
+    describe('Order Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -5690,8 +5690,8 @@ describe('MatchTest', function () {
                 { key: 's1', route: '{x}' },
                 { key: 's2', route: '{x}' }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
-            stateNavigator.states['s1'].validate = (data) => data.x == 'cd';
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -5710,7 +5710,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('One Param One Segment Constraint Gap', function () {
+    describe('Split Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
@@ -5718,7 +5718,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: 'a/{x}' },
                 { key: 's2', route: '{x}' }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x == 'ab';
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
         });
 
         it('should match', function() {
@@ -5730,6 +5730,50 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's2');
+        });
+    });
+
+    describe('Param Default Type Number Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}', defaultTypes: { x: 'number' } },
+                { key: 's1', route: '{x}', defaultTypes: { x: 'number' } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x === 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 12);
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/34');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 34);
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
+    describe('Query String Default Type Number Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc', defaultTypes: { x: 'number' } },
+                { key: 's1', route: 'abc', defaultTypes: { x: 'number' } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x === 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc?x=12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 12);
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('/abc?x=34');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 34);
+            assert.strictEqual(state.key, 's1');
         });
     });
 });
