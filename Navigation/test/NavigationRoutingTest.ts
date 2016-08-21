@@ -5846,4 +5846,27 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Splat Param Default Array Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{*x?}', defaults: { x: [12, 34] } },
+                { key: 's1', route: '{*x?}', defaults: { x: [34, 12] } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x[0] !== 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 34);
+            assert.strictEqual(data.x[1], 12);
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/56');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 56);
+            assert.strictEqual(state.key, 's0');
+        });
+    });
 });
