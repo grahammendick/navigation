@@ -5937,6 +5937,39 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Expand Route Param Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'ab+/{x}' },
+                { key: 's1', route: 'ab+/{x}' }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 0);
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('ab/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('ab/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('ab?x=ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's0');
+            var { state, data } = stateNavigator.parseLink('ab?x=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
+
     describe('Two Route Param Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
