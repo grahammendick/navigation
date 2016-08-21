@@ -5937,7 +5937,7 @@ describe('MatchTest', function () {
         });
     });
 
-    describe('Expand Route Param Constraint', function () {
+    describe('Expand Route Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
             stateNavigator = new Navigation.StateNavigator([
