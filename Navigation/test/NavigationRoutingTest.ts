@@ -5799,6 +5799,28 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Query String Default Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc', defaults: { x: 12 } },
+                { key: 's1', route: 'abc', defaults: { x: 34 } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x !== 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 34);
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('abc?x=56');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 56);
+            assert.strictEqual(state.key, 's0');
+        });
+    });
+
     describe('Splat Param Default Type Array Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function () {
@@ -5864,6 +5886,29 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x[1], 12);
             assert.strictEqual(state.key, 's1');
             var { state, data } = stateNavigator.parseLink('/56');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 56);
+            assert.strictEqual(state.key, 's0');
+        });
+    });
+
+    describe('Splat Query String Default Array Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'abc', defaults: { x: [12, 34] } },
+                { key: 's1', route: 'abc', defaults: { x: [34, 12] } }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => data.x[0] !== 12;
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/abc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x[0], 34);
+            assert.strictEqual(data.x[1], 12);
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/abc?x=56');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x[0], 56);
             assert.strictEqual(state.key, 's0');
