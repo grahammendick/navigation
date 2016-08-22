@@ -138,11 +138,10 @@ class StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        try {
-            var { state, data } = StateHandler.getNavigationData(this.router, this.converterFactory, url);
-        } catch (e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
+        var parsedLink = StateHandler.parseNavigationLink(this.router, this.converterFactory, url);
+        if (!parsedLink)
+            throw new Error('The Url is invalid');
+        var { state, data } = parsedLink;
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -176,13 +175,11 @@ class StateNavigator {
     }
     
     parseLink(url: string): { state: State, data: any } {
-        try {
-            var { state, data } = StateHandler.getNavigationData(this.router, this.converterFactory, url);
-            delete data[state.crumbTrailKey];
-            return { state, data };
-        } catch (e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
+        var parsedLink = StateHandler.parseNavigationLink(this.router, this.converterFactory, url);
+        if (!parsedLink)
+            throw new Error('The Url is invalid');
+        delete parsedLink.data[parsedLink.state.crumbTrailKey];
+        return parsedLink;
     }
     
     start(url?: string) {

@@ -2957,8 +2957,8 @@ describe('MatchTest', function () {
         });
 
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/a'), /not a valid number/, '');
-            assert.throws(() => stateNavigator.parseLink('/true'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/true'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -2986,8 +2986,8 @@ describe('MatchTest', function () {
         });
 
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/a'), /not a valid boolean/, '');
-            assert.throws(() => stateNavigator.parseLink('/2'), /not a valid boolean/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/2'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3012,8 +3012,8 @@ describe('MatchTest', function () {
         });
 
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/a'), /not a valid number/, '');
-            assert.throws(() => stateNavigator.parseLink('/true'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/true'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3040,7 +3040,7 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/b'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3094,8 +3094,8 @@ describe('MatchTest', function () {
         });
 
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/?x=a'), /not a valid number/, '');
-            assert.throws(() => stateNavigator.parseLink('/?x=true'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=true'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3123,8 +3123,8 @@ describe('MatchTest', function () {
         });
 
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/?x=a'), /not a valid boolean/, '');
-            assert.throws(() => stateNavigator.parseLink('/?x=2'), /not a valid boolean/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=2'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3149,8 +3149,8 @@ describe('MatchTest', function () {
         });
 
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/?x=a'), /not a valid number/, '');
-            assert.throws(() => stateNavigator.parseLink('/?x=true'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=a'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=true'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -3178,7 +3178,7 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/?x=b'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/?x=b'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -5068,7 +5068,7 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/1/2'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/1/2'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -5098,8 +5098,8 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/b'), /not a valid number/, '');
-            assert.throws(() => stateNavigator.parseLink('/1/2'), /not a valid number/, '');
+            assert.throws(() => stateNavigator.parseLink('/b'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/1/2'), /Url is invalid/, '');
         });
 
         it('should build', function() {
@@ -5621,9 +5621,9 @@ describe('MatchTest', function () {
         it ('should throw error', function() {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: '{x}' },
-                { key: 's1', route: 'ab', trackCrumbTrail: true }
+                { key: 's1', route: 'ab/c', trackCrumbTrail: true }
             ]);
-            assert.throws(() => stateNavigator.parseLink('/ab?crumb=www.google.com'), /is not a valid crumb/);
+            assert.throws(() => stateNavigator.parseLink('/ab/c?crumb=www.google.com'), /Url is invalid/);
         });
     });
     
@@ -5631,9 +5631,9 @@ describe('MatchTest', function () {
         it ('should throw error', function() {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: '{x}' },
-                { key: 's1', route: 'ab', trackCrumbTrail: 'xx' }
+                { key: 's1', route: 'ab/c', trackCrumbTrail: 'xx' }
             ]);
-            assert.throws(() => stateNavigator.parseLink('/ab?xx=www.google.com'), /is not a valid crumb/);
+            assert.throws(() => stateNavigator.parseLink('/ab/c?xx=www.google.com'), /Url is invalid/);
         });
     });
 

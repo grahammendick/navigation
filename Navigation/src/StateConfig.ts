@@ -18,6 +18,7 @@ class StateConfig {
                 state.route = state.key;
             if (state.trackCrumbTrail) {
                 state.trackCrumbTrail = true;
+                state.crumbTrailKey = 'crumb';
                 var trackCrumbTrail = stateObject.trackCrumbTrail;
                 if (typeof trackCrumbTrail === 'string')
                     state.crumbTrailKey = trackCrumbTrail;

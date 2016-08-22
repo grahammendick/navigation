@@ -4535,12 +4535,12 @@ describe('Navigation', function () {
         it ('should throw error', function() {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: '{x}' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
+                { key: 's1', route: 'r/1', trackCrumbTrail: true }
             ]);
-            stateNavigator.navigateLink('/r1?crumb=%2Fwww.google.com');
+            stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
             stateNavigator.navigateBack(1);
             assert(stateNavigator.stateContext.data.x, 'www.google.com');
-            assert.throws(() => stateNavigator.navigateLink('/r1?crumb=www.google.com'), /is not a valid crumb/);
+            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url is invalid/);
         });
     });
     

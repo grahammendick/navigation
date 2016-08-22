@@ -9,6 +9,8 @@ class StateRouter {
 
     getData(route: string, fromRoute?: Route): { state: State; data: any, separableData: any, route: Route } {
         var match = this.router.match(route, fromRoute, StateRouter.urlDecode);
+        if (!match)
+            return null;
         var separableData = {};
         if (match.route['_splat']) {
             for (var i = 0; i < match.route.params.length; i++) {

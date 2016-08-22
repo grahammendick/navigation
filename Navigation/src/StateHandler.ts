@@ -29,13 +29,23 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    static getNavigationData(router: StateRouter, converterFactory: ConverterFactory, url: string, fromRoute?: Route): { state: State, data: any } {
+    static parseNavigationLink(router: StateRouter, converterFactory: ConverterFactory, url: string, fromRoute?: Route): { state: State, data: any } {
         var queryIndex = url.indexOf('?');
         var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
-        var { state, data, separableData, route } = router.getData(path, fromRoute);
-        data = data ? data : {};
-        if (queryIndex >= 0) {
-            var query = url.substring(queryIndex + 1);
+        var query = queryIndex >= 0 ? url.substring(queryIndex + 1) : null;
+        var match = router.getData(path, fromRoute);
+        if (!match)
+            return null;
+        try{
+            var { state, data, separableData, route } = match;
+            var navigationData = this.getNavigationData(router, converterFactory, query, state, data || {}, separableData);
+        } catch(e) {
+        }
+        return navigationData || this.parseNavigationLink(router, converterFactory, url, route);        
+    }
+
+    private static getNavigationData(router: StateRouter, converterFactory: ConverterFactory, query: string, state: State, data: any, separableData: any): { state: State, data: any } {
+        if (query) {
             var params = query.split('&');
             for (var i = 0; i < params.length; i++) {
                 var param = params[i].split('=');
@@ -56,8 +66,7 @@ class StateHandler {
         data[state.crumbTrailKey] = this.getCrumbs(router, converterFactory, data[state.crumbTrailKey])
         if (state.validate(data))
             return { state: state, data: data };
-        else
-            return this.getNavigationData(router, converterFactory, url, route);
+        return null;
     }
 
     private static getCrumbs(router: StateRouter, converterFactory: ConverterFactory, crumbTrail: string[]): Crumb[] {
@@ -67,7 +76,7 @@ class StateHandler {
             var crumblessUrl = crumbTrail[i];
             if (crumblessUrl.substring(0, 1) !== '/')
                 throw new Error(crumblessUrl + ' is not a valid crumb');
-            var { state, data } = this.getNavigationData(router, converterFactory, crumblessUrl);
+            var { state, data } = this.parseNavigationLink(router, converterFactory, crumblessUrl);
             var url = this.getNavigationLink(router, converterFactory, state, data, crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
         }
