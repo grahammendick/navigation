@@ -5868,6 +5868,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: '{*x}', defaultTypes: { x: 'numberarray' } }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x[0] === 12;
+            stateNavigator.states['s1'].validate = (data) => data.x[0] === 34;
         });
 
         it('should match', function() {
@@ -5882,6 +5883,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x[1], 12);
             assert.strictEqual(state.key, 's1');
         });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/56'), /Url is invalid/, '');
+        });
     });
 
     describe('Query String Default Type Array Constraint', function () {
@@ -5892,6 +5897,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: 'abc', defaultTypes: { x: 'numberarray' } }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x[0] === 12;
+            stateNavigator.states['s1'].validate = (data) => data.x[0] === 34;
         });
 
         it('should match', function() {
@@ -5905,6 +5911,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x[0], 34);
             assert.strictEqual(data.x[1], 12);
             assert.strictEqual(state.key, 's1');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc?x=56'), /Url is invalid/, '');
         });
     });
 
