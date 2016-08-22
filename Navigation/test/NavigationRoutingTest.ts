@@ -5813,7 +5813,8 @@ describe('MatchTest', function () {
                 { key: 's0', route: '{x?}', defaults: { x: 12 } },
                 { key: 's1', route: '{x?}', defaults: { x: 34 } }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x !== 12;
+            stateNavigator.states['s0'].validate = (data) => data.x === 56;
+            stateNavigator.states['s1'].validate = (data) => data.x === 34;
         });
 
         it('should match', function() {
@@ -5826,6 +5827,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 56);
             assert.strictEqual(state.key, 's0');
         });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/12'), /Url is invalid/, '');
+        });
     });
 
     describe('Query String Default Constraint', function () {
@@ -5835,7 +5840,8 @@ describe('MatchTest', function () {
                 { key: 's0', route: 'abc', defaults: { x: 12 } },
                 { key: 's1', route: 'abc', defaults: { x: 34 } }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x !== 12;
+            stateNavigator.states['s0'].validate = (data) => data.x === 56;
+            stateNavigator.states['s1'].validate = (data) => data.x === 34;
         });
 
         it('should match', function() {
@@ -5843,10 +5849,14 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 34);
             assert.strictEqual(state.key, 's1');
-            var { state, data } = stateNavigator.parseLink('abc?x=56');
+            var { state, data } = stateNavigator.parseLink('/abc?x=56');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 56);
             assert.strictEqual(state.key, 's0');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc?x=12'), /Url is invalid/, '');
         });
     });
 
