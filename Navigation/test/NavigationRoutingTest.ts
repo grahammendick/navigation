@@ -5925,7 +5925,8 @@ describe('MatchTest', function () {
                 { key: 's0', route: '{*x?}', defaults: { x: [12, 34] } },
                 { key: 's1', route: '{*x?}', defaults: { x: [34, 12] } }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x[0] !== 12;
+            stateNavigator.states['s0'].validate = (data) => data.x[0] === 56;
+            stateNavigator.states['s1'].validate = (data) => data.x[0] === 34;
         });
 
         it('should match', function() {
@@ -5939,6 +5940,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x[0], 56);
             assert.strictEqual(state.key, 's0');
         });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/12'), /Url is invalid/, '');
+        });
     });
 
     describe('Splat Query String Default Array Constraint', function () {
@@ -5948,7 +5953,8 @@ describe('MatchTest', function () {
                 { key: 's0', route: 'abc', defaults: { x: [12, 34] } },
                 { key: 's1', route: 'abc', defaults: { x: [34, 12] } }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x[0] !== 12;
+            stateNavigator.states['s0'].validate = (data) => data.x[0] === 56;
+            stateNavigator.states['s1'].validate = (data) => data.x[0] === 34;
         });
 
         it('should match', function() {
@@ -5961,6 +5967,10 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x[0], 56);
             assert.strictEqual(state.key, 's0');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc?x=12'), /Url is invalid/, '');
         });
     });
 
