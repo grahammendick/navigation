@@ -6192,6 +6192,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: 'abc' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab' && data.y === 'cd';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'ab' || data.y === 'cd';
         });
 
         it('should match', function() {
@@ -6215,6 +6216,12 @@ describe('MatchTest', function () {
             assert.strictEqual(data.y, 'cd');
             assert.strictEqual(state.key, 's1');
         });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('abc?x=cd'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('abc?x=cd&y=ef'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('abc?y=ab'), /Url is invalid/, '');
+        });
     });
 
     describe('Param Encode Constraint', function () {
@@ -6227,6 +6234,7 @@ describe('MatchTest', function () {
             var state = stateNavigator.states['s0'];
             state.urlDecode = (state, key, val) => val.replace('+', ' ')  
             stateNavigator.states['s0'].validate = (data) => data.x === 'a b';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'c+d';
         });
 
         it('should match', function() {
@@ -6238,6 +6246,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'c+d');
             assert.strictEqual(state.key, 's1');
+        });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/c d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ef'), /Url is invalid/, '');
         });
     });
 
