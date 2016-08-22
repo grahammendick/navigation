@@ -12,6 +12,7 @@ class State implements StateInfo {
     trackCrumbTrail: boolean = false;
     crumbTrailKey: string;
     trackTypes: boolean = true;
+    [extras: string]: any;
     
     unloading(state: State, data: any, url: string, unload: () => void, history: boolean) { 
         unload()
