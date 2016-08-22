@@ -6264,6 +6264,7 @@ describe('MatchTest', function () {
             var state = stateNavigator.states['s0'];
             state.urlDecode = (state, key, val) => val.replace('+', ' ')  
             stateNavigator.states['s0'].validate = (data) => data.x === 'a b';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'c+d';
         });
 
         it('should match', function() {
@@ -6275,6 +6276,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'c+d');
             assert.strictEqual(state.key, 's1');
+        });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc?x=c d'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc?x=ef'), /Url is invalid/, '');
         });
     });
 
@@ -6299,6 +6305,10 @@ describe('MatchTest', function () {
             var { state, data } = stateNavigator.parseLink(link);
             assert.strictEqual(Object.keys(data).length, 0);
             assert.strictEqual(state.key, 's0');
+        });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/cd?x=ab'), /Url is invalid/, '');
         });
     });
 });
