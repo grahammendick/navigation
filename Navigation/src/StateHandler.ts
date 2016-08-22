@@ -36,8 +36,8 @@ class StateHandler {
         var match = router.getData(path, fromRoute);
         if (!match)
             return null;
+        var { state, data, separableData, route } = match;
         try{
-            var { state, data, separableData, route } = match;
             var navigationData = this.getNavigationData(router, converterFactory, query, state, data || {}, separableData);
         } catch(e) {
         }
