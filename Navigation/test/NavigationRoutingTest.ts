@@ -6049,6 +6049,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: ['{x}', 'ab/{x}'] }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -6069,7 +6070,12 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
         });
-    });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ef'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/ef'), /Url is invalid/, '');
+        });
+   });
 
     describe('Two Route Query String Constraint', function () {
         var stateNavigator: Navigation.StateNavigator;
@@ -6079,6 +6085,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: ['ab', 'ab/cd'] }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -6098,6 +6105,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
+        });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab?x=ef'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/cd?x=ef'), /Url is invalid/, '');
         });
     });
 
