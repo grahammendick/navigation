@@ -6192,4 +6192,32 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's0');
         });
     });
+
+    describe('Param Constraint Mismatch', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: '{x}' }
+            ]);
+            stateNavigator.states['s'].validate = (data) => data.x === 'ab';
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/cd'), /Url is invalid/, '');
+        });
+    });
+
+    describe('Query String Constraint Mismatch', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'abc' }
+            ]);
+            stateNavigator.states['s'].validate = (data) => data.x === 'ab';
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc?x=cd'), /Url is invalid/, '');
+        });
+    });
 });
