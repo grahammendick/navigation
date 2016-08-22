@@ -6168,4 +6168,28 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Crumb Trail Excluded Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'ab' },
+                { key: 's1', route: 'cd', trackCrumbTrail: true }
+            ]);
+            stateNavigator.states['s1'].validate = (data) => Object.keys(data).length === 0;
+        });
+
+        it('should match', function() {
+            stateNavigator.navigate('s0');
+            var link = stateNavigator.getNavigationLink('s1');
+            var { state, data } = stateNavigator.parseLink(link);
+            assert.strictEqual(Object.keys(data).length, 0);
+            assert.strictEqual(state.key, 's1');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationBackLink(1);
+            var { state, data } = stateNavigator.parseLink(link);
+            assert.strictEqual(Object.keys(data).length, 0);
+            assert.strictEqual(state.key, 's0');
+        });
+    });
 });

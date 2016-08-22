@@ -63,9 +63,13 @@ class StateHandler {
             }
         }
         data = NavigationDataManager.parseData(converterFactory, data, state, separableData);
-        data[state.crumbTrailKey] = this.getCrumbs(router, converterFactory, data[state.crumbTrailKey])
-        if (state.validate(data))
+        var crumbTrail = data[state.crumbTrailKey];
+        delete data[state.crumbTrailKey];
+        var valid = state.validate(data);
+        if (valid) {
+            data[state.crumbTrailKey] = this.getCrumbs(router, converterFactory, crumbTrail)
             return { state: state, data: data };
+        }
         return null;
     }
 
