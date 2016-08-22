@@ -5701,6 +5701,7 @@ describe('MatchTest', function () {
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
             stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
+            stateNavigator.states['s2'].validate = (data) => data.x === 'ef';
         });
 
         it('should match', function() {
@@ -5717,6 +5718,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
         });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/gh'), /Url is invalid/, '');
+        });
     });
 
     describe('Split Constraint', function () {
@@ -5728,6 +5733,7 @@ describe('MatchTest', function () {
                 { key: 's2', route: '{x}' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s2'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -5739,6 +5745,10 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's2');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ef'), /Url is invalid/, '');
         });
     });
 
