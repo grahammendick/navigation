@@ -5645,6 +5645,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: '{x}' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -5657,6 +5658,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
         });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ef'), /Url is invalid/, '');
+        });
     });
 
     describe('Query String Constraint', function () {
@@ -5667,6 +5672,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: 'abc' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -5678,6 +5684,10 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/abc?x=ef'), /Url is invalid/, '');
         });
     });
 
@@ -6190,20 +6200,6 @@ describe('MatchTest', function () {
             var { state, data } = stateNavigator.parseLink(link);
             assert.strictEqual(Object.keys(data).length, 0);
             assert.strictEqual(state.key, 's0');
-        });
-    });
-
-    describe('Mismatch Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
-        beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '{x}' }
-            ]);
-            stateNavigator.states['s'].validate = (data) => data.x === 'ab';
-        });
-
-        it('should not match', function() {
-            assert.throws(() => stateNavigator.parseLink('/cd'), /Url is invalid/, '');
         });
     });
 });
