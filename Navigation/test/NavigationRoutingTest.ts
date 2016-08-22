@@ -5981,7 +5981,8 @@ describe('MatchTest', function () {
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'ab' }
             ]);
-            stateNavigator.states['s0'].validate = (data) => data.x !== 'ab';
+            stateNavigator.states['s0'].validate = (data) => data.x === 'cd';
+            stateNavigator.states['s1'].validate = (data) => data.y === 'cd';
         });
 
         it('should match', function() {
@@ -5989,10 +5990,15 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('/ab?x=cd');
+            var { state, data } = stateNavigator.parseLink('/ab?y=cd');
             assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(data.y, 'cd');
             assert.strictEqual(state.key, 's1');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ef'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab?y=ef'), /Url is invalid/, '');
         });
     });
 
@@ -6004,6 +6010,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: 'ab+/{x}' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => !data.x || data.x === 'cd';
         });
 
         it('should match', function() {
@@ -6026,6 +6033,11 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab?x=ef'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/ef'), /Url is invalid/, '');
         });
     });
 
