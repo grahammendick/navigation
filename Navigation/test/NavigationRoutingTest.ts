@@ -6017,19 +6017,19 @@ describe('MatchTest', function () {
             var { state, data } = stateNavigator.parseLink('/ab');
             assert.strictEqual(Object.keys(data).length, 0);
             assert.strictEqual(state.key, 's1');
-            var { state, data } = stateNavigator.parseLink('ab/ab');
+            var { state, data } = stateNavigator.parseLink('/ab/ab');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('ab/cd');
+            var { state, data } = stateNavigator.parseLink('/ab/cd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
-            var { state, data } = stateNavigator.parseLink('ab?x=ab');
+            var { state, data } = stateNavigator.parseLink('/ab?x=ab');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('ab?x=cd');
+            var { state, data } = stateNavigator.parseLink('/ab?x=cd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
@@ -6065,7 +6065,7 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('ab/cd');
+            var { state, data } = stateNavigator.parseLink('/ab/cd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
@@ -6101,7 +6101,7 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('ab/cd?x=cd');
+            var { state, data } = stateNavigator.parseLink('/ab/cd?x=cd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
@@ -6121,6 +6121,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: ['{x}', 'ab/cd'] }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'cd';
         });
 
         it('should match', function() {
@@ -6136,10 +6137,15 @@ describe('MatchTest', function () {
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'ab');
             assert.strictEqual(state.key, 's0');
-            var { state, data } = stateNavigator.parseLink('ab/cd?x=cd');
+            var { state, data } = stateNavigator.parseLink('/ab/cd?x=cd');
             assert.strictEqual(Object.keys(data).length, 1);
             assert.strictEqual(data.x, 'cd');
             assert.strictEqual(state.key, 's1');
+        });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ef'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('/ab/cd?x=ef'), /Url is invalid/, '');
         });
     });
 
@@ -6151,6 +6157,7 @@ describe('MatchTest', function () {
                 { key: 's1', route: '{x}/{y}' }
             ]);
             stateNavigator.states['s0'].validate = (data) => data.x === 'ab' && data.y === 'cd';
+            stateNavigator.states['s1'].validate = (data) => data.x === 'ab' || data.y === 'cd';
         });
 
         it('should match', function() {
@@ -6169,6 +6176,11 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x, 'ef');
             assert.strictEqual(data.y, 'cd');
             assert.strictEqual(state.key, 's1');
+        });
+ 
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('cd/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator.parseLink('ef/ab'), /Url is invalid/, '');
         });
     });
 
