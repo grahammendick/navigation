@@ -6361,4 +6361,30 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Error Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: '{x}' }
+            ]);
+            stateNavigator.states['s0'].validate = (data) => { 
+                if (data.x === 'ab')
+                    throw new Error();
+                return true;
+            };
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'ab');
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's0');
+        });
+    });
 });
