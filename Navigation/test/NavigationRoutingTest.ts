@@ -6414,4 +6414,28 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abef'), /Url is invalid/, '');
         });
     });
+
+    describe('Crumb Trail Error Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'ab', trackCrumbTrail: true },
+                { key: 's1', route: 'ab' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab?crumb=www.google.com');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.crumb, 'www.google.com');
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/ab?crumb=/abc');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.crumb, '/abc');
+            assert.strictEqual(state.key, 's1');
+            var { state, data } = stateNavigator.parseLink('/ab?crumb=/ab');
+            assert.strictEqual(Object.keys(data).length, 0);
+            assert.strictEqual(state.key, 's0');
+        });
+    });
 });
