@@ -4136,7 +4136,7 @@ describe('Navigation Data', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s', { 'number': 35 });
             link = link.replace('number=35', 'number=invalid');
-            assert.throws(() => stateNavigator.navigateLink(link), /Url is invalid/);
+            assert.throws(() => stateNavigator.navigateLink(link), /Url .*is invalid/);
         });
     });
 
@@ -4147,7 +4147,7 @@ describe('Navigation Data', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s', { '_bool': false });
             link = link.replace('_bool=false', '_bool=invalid');
-            assert.throws(() => stateNavigator.navigateLink(link), /Url is invalid/);
+            assert.throws(() => stateNavigator.navigateLink(link), /Url .*is invalid/);
         });
     });
 

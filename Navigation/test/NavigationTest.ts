@@ -4540,7 +4540,7 @@ describe('Navigation', function () {
             stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
             stateNavigator.navigateBack(1);
             assert(stateNavigator.stateContext.data.x, 'www.google.com');
-            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url is invalid/);
+            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url .*is invalid/);
         });
     });
     
@@ -4550,7 +4550,7 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            assert.throws(() => stateNavigator.navigateLink('/r1?crumb=%2Fr2'), /The Url is invalid/);
+            assert.throws(() => stateNavigator.navigateLink('/r1?crumb=%2Fr2'), /The Url .*is invalid/);
         });
     });
     

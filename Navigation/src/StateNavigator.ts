@@ -139,18 +139,20 @@ class StateNavigator {
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var parsedLink = StateHandler.parseNavigationLink(this.router, this.converterFactory, url);
-        if (!parsedLink)
-            throw new Error('The Url is invalid');
-        var { state, data } = parsedLink;
-        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
-        var unloadContinuation = () => {
-            if (oldUrl === this.stateContext.url)
+        if (parsedLink) {
+            var { state, data } = parsedLink;
+            var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
+            var unloadContinuation = () => {
+                if (oldUrl === this.stateContext.url)
+                    state.navigating(data, url, navigateContinuation, history);
+            };
+            if (this.stateContext.state)
+                this.stateContext.state.unloading(state, data, url, unloadContinuation, history);
+            else
                 state.navigating(data, url, navigateContinuation, history);
-        };
-        if (this.stateContext.state)
-            this.stateContext.state.unloading(state, data, url, unloadContinuation, history);
-        else
-            state.navigating(data, url, navigateContinuation, history);
+        } else {
+            this.historyManager.handleInvalidUrl(url);
+        }
     }
     
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none'): () => void {

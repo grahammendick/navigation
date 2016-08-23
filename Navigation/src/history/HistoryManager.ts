@@ -5,6 +5,7 @@
     getCurrentUrl(): string;
     getHref(url: string): string;
     getUrl(anchor: HTMLAnchorElement): string;
+    handleInvalidUrl(url: string): void;
     stop(): void;
 }
 export = HistoryManager;

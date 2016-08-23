@@ -183,6 +183,8 @@ declare namespace Navigation {
          * Gets a Url from the anchor 
          */
         getUrl(anchor: HTMLAnchorElement): string;
+
+        handleInvalidUrl(url: string): void;
         /**
          * Removes browser history event listeners
          */
@@ -235,6 +237,8 @@ declare namespace Navigation {
          * Gets a Url from the anchor 
          */
         getUrl(anchor: HTMLAnchorElement): string;
+
+        handleInvalidUrl(url: string): void;
         /**
          * Removes a listener for the hashchange event
          */
@@ -286,6 +290,8 @@ declare namespace Navigation {
          * Gets a Url from the anchor 
          */
         getUrl(anchor: HTMLAnchorElement): string;
+
+        handleInvalidUrl(url: string): void;
         /**
          * Removes a listener for the popstate event
          */

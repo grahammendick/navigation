@@ -5420,8 +5420,8 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator1.stateContext.data.x, 'efg');        });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator0.navigateLink('/cd/efg'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator1.navigateLink('/ab/cde'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator0.navigateLink('/cd/efg'), /Url .*is invalid/, '');
+            assert.throws(() => stateNavigator1.navigateLink('/ab/cde'), /Url .*is invalid/, '');
         });
 
         it('should build', function() {
@@ -5458,8 +5458,8 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator0.navigateLink('/cd'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator1.navigateLink('/ab'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator0.navigateLink('/cd'), /Url .*is invalid/, '');
+            assert.throws(() => stateNavigator1.navigateLink('/ab'), /Url .*is invalid/, '');
         });
 
         it('should build', function() {
@@ -5492,8 +5492,8 @@ describe('MatchTest', function () {
         });
         
         it('should not match', function() {
-            assert.throws(() => stateNavigator0.navigateLink('/cd/1'), /Url is invalid/, '');
-            assert.throws(() => stateNavigator1.navigateLink('/ab/1'), /Url is invalid/, '');
+            assert.throws(() => stateNavigator0.navigateLink('/cd/1'), /Url .*is invalid/, '');
+            assert.throws(() => stateNavigator1.navigateLink('/ab/1'), /Url .*is invalid/, '');
         });
 
         it('should build', function() {
