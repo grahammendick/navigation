@@ -110,11 +110,6 @@ class StateRouter {
         for (var i = 0; i < states.length; i++) {
             this.addStateRoutes(states[i]);
         }
-        this.router.sort((routeA: Route, routeB: Route) => {
-            var routeANumber = routeA.path.charAt(0) === '{' ? -1 : 0;
-            var routeBNumber = routeB.path.charAt(0) === '{' ? -1 : 0;
-            return routeBNumber - routeANumber;
-        });
     }
     
     private addStateRoutes(state: State) {
