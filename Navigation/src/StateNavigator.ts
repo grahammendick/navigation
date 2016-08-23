@@ -2,7 +2,6 @@
 import Crumb = require('./config/Crumb');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HistoryManager = require('./history/HistoryManager');
-import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import StateInfo = require('./config/StateInfo');
 import StateContext = require('./StateContext');
