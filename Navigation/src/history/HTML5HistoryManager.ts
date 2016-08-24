@@ -38,10 +38,6 @@ class HTML5HistoryManager implements HistoryManager {
     getUrl(anchor: HTMLAnchorElement) {
         return anchor.pathname.substring(this.applicationPath.length) + anchor.search;
     }
-
-    handleInvalidUrl(url: string) {
-        throw new Error('The Url ' + url + ' is invalid');
-    }
     
     stop() {
         if (!this.disabled)

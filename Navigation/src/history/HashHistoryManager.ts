@@ -42,10 +42,6 @@ class HashHistoryManager implements HistoryManager {
     getUrl(anchor: HTMLAnchorElement) {
         return this.decode(anchor.hash.substring(1));
     }
-
-    handleInvalidUrl(url: string) {
-        throw new Error('The Url ' + url + ' is invalid');
-    }
     
     stop() {
         if (!this.disabled) {

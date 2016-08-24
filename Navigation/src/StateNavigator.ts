@@ -132,21 +132,16 @@ class StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        var parsedLink = this.stateHandler.parseNavigationLink(url);
-        if (parsedLink) {
-            var { state, data } = parsedLink;
-            var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
-            var unloadContinuation = () => {
-                if (oldUrl === this.stateContext.url)
-                    state.navigating(data, url, navigateContinuation, history);
-            };
-            if (this.stateContext.state)
-                this.stateContext.state.unloading(state, data, url, unloadContinuation, history);
-            else
+        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
+        var unloadContinuation = () => {
+            if (oldUrl === this.stateContext.url)
                 state.navigating(data, url, navigateContinuation, history);
-        } else {
-            this.historyManager.handleInvalidUrl(url);
-        }
+        };
+        if (this.stateContext.state)
+            this.stateContext.state.unloading(state, data, url, unloadContinuation, history);
+        else
+            state.navigating(data, url, navigateContinuation, history);
     }
     
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none'): () => void {
@@ -171,11 +166,13 @@ class StateNavigator {
     }
     
     parseLink(url: string): { state: State, data: any } {
-        var parsedLink = this.stateHandler.parseNavigationLink(url);
-        if (!parsedLink)
-            throw new Error('The Url is invalid');
-        delete parsedLink.data[parsedLink.state.crumbTrailKey];
-        return parsedLink;
+        try {
+            var { state, data } = this.stateHandler.parseNavigationLink(url);
+            delete data[state.crumbTrailKey];
+            return { state, data };
+        } catch(e) {
+            throw new Error('The Url is invalid\n' + e.message);
+        }
     }
     
     start(url?: string) {

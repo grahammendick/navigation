@@ -69,19 +69,20 @@ class StateHandler {
         return routeInfo.route;
     }
 
-    parseNavigationLink(url: string, fromRoute?: Route): { state: State, data: any } {
+    parseNavigationLink(url: string, fromRoute?: Route, err?: string): { state: State, data: any } {
         var queryIndex = url.indexOf('?');
         var path = queryIndex < 0 ? url : url.substring(0, queryIndex);
         var query = queryIndex >= 0 ? url.substring(queryIndex + 1) : null;
         var match = this.router.getData(path, fromRoute);
         if (!match)
-            return null;
+            throw new Error('The Url ' + url + ' is invalid\n' + (err || 'No match found'));
         var { state, data, separableData, route } = match;
         try{
             var navigationData = this.getNavigationData(query, state, data || {}, separableData);
         } catch(e) {
+            err = e.message;
         }
-        return navigationData || this.parseNavigationLink(url, route);        
+        return navigationData || this.parseNavigationLink(url, route, err);        
     }
 
     private getNavigationData(query: string, state: State, data: any, separableData: any): { state: State, data: any } {

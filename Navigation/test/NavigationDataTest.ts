@@ -4612,7 +4612,7 @@ describe('Navigation Data', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { x: 'xxx' } }
             ]);
-            assert.throws(() => stateNavigator.navigate('s', { x: 'ab' }), /Url .*is invalid/);
+            assert.throws(() => stateNavigator.navigate('s', { x: 'ab' }), /No TypeConverter found/);
         });
     });
 });
