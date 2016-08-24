@@ -4606,4 +4606,13 @@ describe('Navigation Data', function () {
             });
         }
     });
+
+    describe('Invalid Default Type', function() {
+        it('should throw error', function () {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: { x: 'xxx' } }
+            ]);
+            assert.throws(() => stateNavigator.navigate('s', { x: 'ab' }), /Url .*is invalid/);
+        });
+    });
 });

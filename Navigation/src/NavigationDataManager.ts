@@ -4,22 +4,23 @@ import State = require('./config/State');
 class NavigationDataManager {
     private static SEPARATOR = '_';
     private static SEPARATOR1 = '1_';
+    private converterFactory: ConverterFactory = new ConverterFactory();
 
-    static formatData(converterFactory: ConverterFactory, state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
+    formatData(state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
         var data = {};
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
             var val = navigationData[key]; 
             if (val != null && val.toString())
-                this.formatDataItem(converterFactory, state, key, val, data, arrayData);
+                this.formatDataItem(state, key, val, data, arrayData);
         }
         if (state.trackCrumbTrail && crumbTrail.length > 0)
-            this.formatDataItem(converterFactory, state, state.crumbTrailKey, crumbTrail, data, arrayData);
+            this.formatDataItem(state, state.crumbTrailKey, crumbTrail, data, arrayData);
         return { data: data, arrayData: arrayData };
     }
     
-    private static formatDataItem(converterFactory: ConverterFactory, state: State, key: string, val: any, data: any, arrayData: any) {
-        var formattedData = this.formatURLObject(converterFactory, key, val, state);
+    private formatDataItem(state: State, key: string, val: any, data: any, arrayData: any) {
+        var formattedData = this.formatURLObject(key, val, state);
         val = formattedData.val;
         if (val !== state.formattedDefaults[key]) {
             data[key] = val;
@@ -35,32 +36,32 @@ class NavigationDataManager {
         return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
     }
 
-    static formatURLObject(converterFactory: ConverterFactory, key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
+    formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
         encode = encode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
-        var converter = converterFactory.getConverter(urlObject);
+        var converter = this.getConverter(urlObject);
         var convertedValue = converter.convertTo(urlObject);
         var formattedValue = convertedValue.val;
         var formattedArray = convertedValue.arrayVal;
         if (encode) {
-            formattedValue = this.encodeUrlValue(formattedValue);
+            formattedValue = NavigationDataManager.encodeUrlValue(formattedValue);
             if (formattedArray)
-                formattedArray[0] = this.encodeUrlValue(formattedArray[0]);
+                formattedArray[0] = NavigationDataManager.encodeUrlValue(formattedArray[0]);
         }
         if (state.trackTypes && converter.name !== defaultType) {
-            formattedValue += this.SEPARATOR1 + converter.key;
+            formattedValue += NavigationDataManager.SEPARATOR1 + converter.key;
             if (formattedArray)
-                formattedArray[0] = formattedArray[0] + this.SEPARATOR1 + converter.key;
+                formattedArray[0] = formattedArray[0] + NavigationDataManager.SEPARATOR1 + converter.key;
         }
         return { val: formattedValue, arrayVal: formattedArray };
     }
 
 
-    static parseData(converterFactory: ConverterFactory, data: any, state: State, separableData: any): any {
+    parseData(data: any, state: State, separableData: any): any {
         var newData = {};
         for (var key in data) {
-            if (!this.isDefault(key, data, state, !!separableData[key]))
-                newData[key] = this.parseURLString(converterFactory, key, data[key], state, false, !!separableData[key]);
+            if (!NavigationDataManager.isDefault(key, data, state, !!separableData[key]))
+                newData[key] = this.parseURLString(key, data[key], state, false, !!separableData[key]);
         }
         for (var key in state.defaults) {
             if (newData[key] == null || !newData[key].toString())
@@ -87,23 +88,48 @@ class NavigationDataManager {
         }
     }
 
-    private static parseURLString(converterFactory: ConverterFactory, key: string, val: string | string[], state: State, decode = false, separable = false): any {
+    private parseURLString(key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
         var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
-        var converterKey = converterFactory.getConverterFromName(defaultType).key;
-        if (state.trackTypes && urlValue.indexOf(this.SEPARATOR1) > -1) {
-            var arr = urlValue.split(this.SEPARATOR1);
+        var converterKey = this.converterFactory.getConverterFromName(defaultType).key;
+        if (state.trackTypes && urlValue.indexOf(NavigationDataManager.SEPARATOR1) > -1) {
+            var arr = urlValue.split(NavigationDataManager.SEPARATOR1);
             urlValue = arr[0];
             converterKey = arr[1];
         }
         if (decode)
-            urlValue = this.decodeUrlValue(urlValue);
+            urlValue = NavigationDataManager.decodeUrlValue(urlValue);
         if (typeof val === 'string')
             val =  urlValue;
         else
             val[0] = urlValue;
-        return converterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
+        return this.converterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
+    }
+
+    getConverter(obj: any) {
+        return this.converterFactory.getConverterFromName(NavigationDataManager.getName(obj));
+    }
+    
+    private static getTypeName(obj: any): string {
+        var typeName: string = Object.prototype.toString.call(obj);
+        return typeName.substring(8, typeName.length - 1).toLowerCase();
+    }
+    
+    private static getName(obj: any) {
+        var fullName = this.getTypeName(obj);
+        if (fullName === 'array') {
+            var arr: any[] = obj;
+            var subName = 'string';
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] != null && arr[i].toString()) {
+                    subName = this.getTypeName(arr[i]);
+                    break;
+                }
+            }
+            fullName = subName + fullName;
+        }
+        return fullName;
     }
 }
 export = NavigationDataManager;
