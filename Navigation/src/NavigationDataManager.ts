@@ -108,28 +108,24 @@ class NavigationDataManager {
     }
 
     getConverter(obj: any) {
-        return this.converterFactory.getConverterFromName(NavigationDataManager.getName(obj));
-    }
-    
-    private static getTypeName(obj: any): string {
-        var typeName: string = Object.prototype.toString.call(obj);
-        return typeName.substring(8, typeName.length - 1).toLowerCase();
-    }
-    
-    private static getName(obj: any) {
-        var fullName = this.getTypeName(obj);
+        var fullName = NavigationDataManager.getTypeName(obj);
         if (fullName === 'array') {
             var arr: any[] = obj;
             var subName = 'string';
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] != null && arr[i].toString()) {
-                    subName = this.getTypeName(arr[i]);
+                    subName = NavigationDataManager.getTypeName(arr[i]);
                     break;
                 }
             }
             fullName = subName + fullName;
         }
-        return fullName;
+        return this.converterFactory.getConverterFromName(fullName);
+    }
+    
+    private static getTypeName(obj: any): string {
+        var typeName: string = Object.prototype.toString.call(obj);
+        return typeName.substring(8, typeName.length - 1).toLowerCase();
     }
 }
 export = NavigationDataManager;
