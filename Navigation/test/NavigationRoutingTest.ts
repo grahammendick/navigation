@@ -6438,4 +6438,25 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's0');
         });
     });
+
+    describe('Error Message', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '{x?}', defaults: { x: 12 } },
+                { key: 's1', route: 'ab{x?}', defaults: { x: true } }
+            ]);
+        });
+
+        it('should match', function() {
+            assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url \/ab\/cd is invalid\nNo match found$/, '');
+            assert.throws(() => stateNavigator.parseLink('ab/cd'), /The Url ab\/cd is invalid\nNo match found$/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /The Url \/a is invalid\na is not a valid number$/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc'), /The Url \/abc is invalid\nabc is not a valid number\nc is not a valid boolean$/, '');
+            assert.throws(() => stateNavigator.start('/ab/cd'), /The Url \/ab\/cd is invalid\nNo match found$/, '');
+            assert.throws(() => stateNavigator.start('ab/cd'), /The Url ab\/cd is invalid\nNo match found$/, '');
+            assert.throws(() => stateNavigator.start('/a'), /The Url \/a is invalid\na is not a valid number$/, '');
+            assert.throws(() => stateNavigator.start('/abc'), /The Url \/abc is invalid\nabc is not a valid number\nc is not a valid boolean$/, '');
+        });
+    });
 });
