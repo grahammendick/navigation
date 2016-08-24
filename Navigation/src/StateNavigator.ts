@@ -166,13 +166,9 @@ class StateNavigator {
     }
     
     parseLink(url: string): { state: State, data: any } {
-        try {
-            var { state, data } = this.stateHandler.parseNavigationLink(url);
-            delete data[state.crumbTrailKey];
-            return { state, data };
-        } catch(e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
+        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        delete data[state.crumbTrailKey];
+        return { state, data };
     }
     
     start(url?: string) {
