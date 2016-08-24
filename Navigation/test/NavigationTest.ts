@@ -4660,4 +4660,25 @@ describe('Navigation', function () {
             });
         }
     });
+
+    describe('HTML5 History Invalid Url', function() {
+        it ('should throw error', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' }
+            ]);
+            assert.throws(() => stateNavigator.navigateLink('/r1'), /Url .*is invalid/);
+        });
+    });
+
+    describe('Custom History Invalid Url', function() {
+        it ('should throw error', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' }
+            ]);
+            var invalidUrl;
+            stateNavigator.historyManager.handleInvalidUrl = (url) => invalidUrl = url;
+            stateNavigator.navigateLink('/r1');  
+            assert.equal(invalidUrl, '/r1');
+        });
+    });
 });
