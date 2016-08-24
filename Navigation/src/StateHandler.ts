@@ -6,8 +6,8 @@ import StateInfo = require('./config/StateInfo');
 import StateRouter = require('./StateRouter');
 
 class StateHandler {
-    private navigationDataManager: NavigationDataManager = new NavigationDataManager();
-    private router: StateRouter = new StateRouter();
+    private navigationDataManager = new NavigationDataManager();
+    private router = new StateRouter();
 
     buildStates(states: StateInfo[]): State[] {
         var builtStates: State[] = [];

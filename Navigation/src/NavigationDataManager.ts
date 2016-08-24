@@ -4,7 +4,7 @@ import State = require('./config/State');
 class NavigationDataManager {
     private static SEPARATOR = '_';
     private static SEPARATOR1 = '1_';
-    private converterFactory: ConverterFactory = new ConverterFactory();
+    private converterFactory = new ConverterFactory();
 
     formatData(state: State, navigationData: any, crumbTrail: string[]): { data: any, arrayData: { [index: string]: string[] }} {
         var data = {};

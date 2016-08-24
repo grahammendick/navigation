@@ -8,10 +8,10 @@ import StateHandler = require('./StateHandler');
 
 class StateNavigator {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
-    private navigateHandlerId: number = 1;
+    private navigateHandlerId = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any, asyncData: any) => void } = {};
-    private stateHandler: StateHandler = new StateHandler();
-    stateContext: StateContext = new StateContext();
+    private stateHandler = new StateHandler();
+    stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
     
