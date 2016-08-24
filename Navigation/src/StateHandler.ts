@@ -80,7 +80,7 @@ class StateHandler {
         try{
             var navigationData = this.getNavigationData(query, state, data || {}, separableData);
         } catch(e) {
-            err += '\n' + e.message;
+            err += '\n' + e.message + ' for State ' + state.key;
         }
         return navigationData || this.parseNavigationLink(url, route, err);        
     }

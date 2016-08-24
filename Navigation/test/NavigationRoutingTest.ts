@@ -6451,12 +6451,12 @@ describe('MatchTest', function () {
         it('should match', function() {
             assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url \/ab\/cd is invalid\nNo match found$/, '');
             assert.throws(() => stateNavigator.parseLink('ab/cd'), /The Url ab\/cd is invalid\nNo match found$/, '');
-            assert.throws(() => stateNavigator.parseLink('/a'), /The Url \/a is invalid\na is not a valid number$/, '');
-            assert.throws(() => stateNavigator.parseLink('/abc'), /The Url \/abc is invalid\nabc is not a valid number\nc is not a valid boolean$/, '');
+            assert.throws(() => stateNavigator.parseLink('/a'), /The Url \/a is invalid\na is not a valid number for State s0$/, '');
+            assert.throws(() => stateNavigator.parseLink('/abc'), /The Url \/abc is invalid\nabc is not a valid number for State s0\nc is not a valid boolean for State s1$/, '');
             assert.throws(() => stateNavigator.start('/ab/cd'), /The Url \/ab\/cd is invalid\nNo match found$/, '');
             assert.throws(() => stateNavigator.start('ab/cd'), /The Url ab\/cd is invalid\nNo match found$/, '');
-            assert.throws(() => stateNavigator.start('/a'), /The Url \/a is invalid\na is not a valid number$/, '');
-            assert.throws(() => stateNavigator.start('/abc'), /The Url \/abc is invalid\nabc is not a valid number\nc is not a valid boolean$/, '');
+            assert.throws(() => stateNavigator.start('/a'), /The Url \/a is invalid\na is not a valid number for State s0$/, '');
+            assert.throws(() => stateNavigator.start('/abc'), /The Url \/abc is invalid\nabc is not a valid number for State s0\nc is not a valid boolean for State s1$/, '');
         });
     });
 });
