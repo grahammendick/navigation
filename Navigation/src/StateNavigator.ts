@@ -20,7 +20,7 @@ class StateNavigator {
             this.configure(states, historyManager);
     }
     
-    configure(stateInfos?: StateInfo[], historyManager?: HistoryManager) {
+    configure(stateInfos: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
