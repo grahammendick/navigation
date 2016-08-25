@@ -657,6 +657,52 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Data Back Crumb Trail Key', function() {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: 'xx' }
+            ]);
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', data);
+                stateNavigator.navigate('s1');
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+    });
+
     describe('Navigate Array Data Back', function() {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function() {
@@ -1371,8 +1417,6 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s0', data1);
                 stateNavigator.navigateLink(link);
-                assert.strictEqual(stateNavigator.stateContext.data['s'], 1);
-                assert.strictEqual(stateNavigator.stateContext.data['t'], undefined);
                 link = stateNavigator.getNavigationLink('s1', data2);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s2', data3);
@@ -1389,8 +1433,67 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.previousData['t'], '2');
                 assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], undefined);
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[0].data).length, 1);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 2);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[1].data).length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 3);
+                assert.strictEqual(stateNavigator.stateContext.data['t'], '3');
+            });
+        }
+    });
+
+    describe('Transition Transition Crumb Trail Key', function() {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: 'xx' },
+                { key: 's2', route: 'r2', trackCrumbTrail: 'yy' }
+            ]);
+        });
+        var data1 = {};
+        data1['s'] = 1;
+        var data2 = {};
+        data2['s'] = 2;
+        data2['t'] = '2';
+        var data3 = {};
+        data3['s'] = 3;
+        data3['t'] = '3';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', data1);
+                stateNavigator.navigate('s1', data2);
+                stateNavigator.navigate('s2', data3);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data1);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data2);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2', data3);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.oldData['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.oldData['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.previousData['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.previousData['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], undefined);
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[0].data).length, 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[1].data).length, 2);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], 3);
                 assert.strictEqual(stateNavigator.stateContext.data['t'], '3');
             });

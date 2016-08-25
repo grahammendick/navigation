@@ -122,6 +122,7 @@ class StateHandler {
             if (!crumblessUrl || crumblessUrl.substring(0, 1) !== '/')
                 throw new Error(crumblessUrl + ' is not a valid crumb');
             var { state, data } = this.parseNavigationLink(crumblessUrl);
+            delete data[state.crumbTrailKey];
             var url = this.getNavigationLink(state, data, crumbTrail.slice(0, i));
             crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
         }
