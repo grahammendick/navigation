@@ -41,24 +41,18 @@ class StateNavigator {
         this.stateContext.state = state;
         this.stateContext.url = url;
         this.stateContext.title = state.title;
+        this.stateContext.crumbs = data[state.crumbTrailKey];
+        delete data[state.crumbTrailKey];
         this.stateContext.data = data;
-        this.buildCrumbTrail();
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
+        var crumblessUrl = this.getLink(state, data, []);
+        this.stateContext.nextCrumb = new Crumb(data, state, url, crumblessUrl, false);
         if (this.stateContext.crumbs.length > 0) {
             var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
             this.stateContext.previousState = previousStateCrumb.state;
             this.stateContext.previousData = previousStateCrumb.data;
         }
-    }
-    
-    private buildCrumbTrail() {
-        this.stateContext.crumbs = this.stateContext.data[this.stateContext.state.crumbTrailKey];
-        delete this.stateContext.data[this.stateContext.state.crumbTrailKey];
-        var crumblessUrl = this.getLink(this.stateContext.state, this.stateContext.data, []);
-        if (!crumblessUrl)
-            throw new Error(this.stateContext.state.crumbTrailKey + ' cannot be a mandatory route parameter')
-        this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, this.stateContext.url, crumblessUrl, false);
     }
     
     onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {

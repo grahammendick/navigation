@@ -80,7 +80,7 @@ class StateHandler {
         try{
             var navigationData = this.getNavigationData(query, state, data || {}, separableData);
         } catch(e) {
-            err += '\n' + e.message + ' for State ' + state.key;
+            err += '\n' + e.message;
         }
         return navigationData || this.parseNavigationLink(url, route, err);        
     }
@@ -119,7 +119,7 @@ class StateHandler {
         var len = crumbTrail ? crumbTrail.length : 0;
         for(var i = 0; i < len; i++) {
             var crumblessUrl = crumbTrail[i];
-            if (crumblessUrl.substring(0, 1) !== '/')
+            if (!crumblessUrl || crumblessUrl.substring(0, 1) !== '/')
                 throw new Error(crumblessUrl + ' is not a valid crumb');
             var { state, data } = this.parseNavigationLink(crumblessUrl);
             var url = this.getNavigationLink(state, data, crumbTrail.slice(0, i));

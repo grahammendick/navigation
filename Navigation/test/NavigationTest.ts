@@ -4434,10 +4434,12 @@ describe('Navigation', function () {
         it ('should throw error', function() {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1/{crumb}', trackCrumbTrail: true }
+                { key: 's1', route: 'r1/{crumb}', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0');
-            assert.throws(() => stateNavigator.navigate('s1'), /cannot be a mandatory route parameter/);
+            stateNavigator.navigate('s1');
+            assert.throws(() => stateNavigator.navigate('s2'), /is not a valid crumb/);
         });
     });
     
