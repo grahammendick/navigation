@@ -44,10 +44,9 @@ class StateNavigator {
         this.stateContext.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
         this.stateContext.data = data;
+        this.stateContext.nextCrumb = new Crumb(data, state, url, this.getLink(state, data, []), false);
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
-        var crumblessUrl = this.getLink(state, data, []);
-        this.stateContext.nextCrumb = new Crumb(data, state, url, crumblessUrl, false);
         if (this.stateContext.crumbs.length > 0) {
             var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
             this.stateContext.previousState = previousStateCrumb.state;
