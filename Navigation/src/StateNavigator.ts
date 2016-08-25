@@ -101,8 +101,6 @@ class StateNavigator {
 
     navigateBack(distance: number, historyAction?: 'add' | 'replace' | 'none') {
         var url = this.getNavigationBackLink(distance);
-        if (url == null)
-            throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
