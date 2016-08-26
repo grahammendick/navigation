@@ -1798,7 +1798,8 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s'].validate = () => { validate = true; return true; }
             stateNavigator.states['s'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -1810,6 +1811,7 @@ describe('Navigation', function () {
             }
             stateNavigator.states['s'].navigated = () => navigated = true;
             stateNavigator.navigate('s');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, true);
@@ -1825,12 +1827,14 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s'].validate = () => { validate = true; return true; }
             stateNavigator.states['s'].unloading = (state, data, url, unload) => unloading = true;
             stateNavigator.states['s'].dispose = () => disposed = true;
             stateNavigator.states['s'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s'].navigated = () => navigated = true;
             stateNavigator.navigate('s');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, undefined);
@@ -1846,7 +1850,8 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s'].validate = () => { validate = true; return true; }
             stateNavigator.states['s'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -1855,9 +1860,36 @@ describe('Navigation', function () {
             stateNavigator.states['s'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s'].navigated = () => navigated = true;
             stateNavigator.navigate('s');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, true);
+            assert.strictEqual(navigated, undefined);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+        });
+    });
+
+    describe('State State Validate', function () {
+        it('should only call validate function', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s');
+            stateNavigator.navigateLink(link);
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s'].validate = () => { validate = true; return false; }
+            stateNavigator.states['s'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s'].dispose = () => disposed = true;
+            stateNavigator.states['s'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s'].navigated = () => navigated = true;
+            try {
+                stateNavigator.navigate('s');
+            } catch(e) {
+            }
+            assert.strictEqual(validate, true);
+            assert.strictEqual(unloading, undefined);
+            assert.strictEqual(disposed, undefined);
+            assert.strictEqual(navigating, undefined);
             assert.strictEqual(navigated, undefined);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         });
@@ -1871,7 +1903,8 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s1'].validate = () => { validate = true; return true; }
             stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -1883,6 +1916,7 @@ describe('Navigation', function () {
             }
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigate('s1');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, true);
             assert.strictEqual(navigating, true);
@@ -1899,12 +1933,14 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s1'].validate = () => { validate = true; return true; }
             stateNavigator.states['s0'].unloading = (state, data, url, unload) => unloading = true;
             stateNavigator.states['s0'].dispose = () => disposed = true;
             stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigate('s1');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, undefined);
@@ -1921,7 +1957,8 @@ describe('Navigation', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s0');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s1'].validate = () => { validate = true; return true; }
             stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -1930,9 +1967,37 @@ describe('Navigation', function () {
             stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s1'].navigated = () => navigated = true;
             stateNavigator.navigate('s1');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, true);
+            assert.strictEqual(navigated, undefined);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        });
+    });
+
+    describe('Transition Validate', function () {
+        it('should only call validate function', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s0');
+            stateNavigator.navigateLink(link);
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s1'].validate = () => { validate = true; return false; }
+            stateNavigator.states['s0'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s0'].dispose = () => disposed = true;
+            stateNavigator.states['s1'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s1'].navigated = () => navigated = true;
+            try {
+                stateNavigator.navigate('s1');
+            } catch(e) {
+            }
+            assert.strictEqual(validate, true);
+            assert.strictEqual(unloading, undefined);
+            assert.strictEqual(disposed, undefined);
+            assert.strictEqual(navigating, undefined);
             assert.strictEqual(navigated, undefined);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
         });
@@ -1965,7 +2030,8 @@ describe('Navigation', function () {
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return true; }
             stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -1977,6 +2043,7 @@ describe('Navigation', function () {
             }
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigate('s2');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, true);
             assert.strictEqual(navigating, true);
@@ -1995,12 +2062,14 @@ describe('Navigation', function () {
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return true; }
             stateNavigator.states['s1'].unloading = (state, data, url, unload) => unloading = true;
             stateNavigator.states['s1'].dispose = () => disposed = true;
             stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigate('s2');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, undefined);
@@ -2019,7 +2088,8 @@ describe('Navigation', function () {
             stateNavigator.navigate('s0');
             var link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return true; }
             stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -2028,9 +2098,39 @@ describe('Navigation', function () {
             stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.navigate('s2');
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, true);
+            assert.strictEqual(navigated, undefined);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        });
+    });
+
+    describe('Transition Transition Validate', function () {
+        it('should only call validate function', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            stateNavigator.navigate('s0');
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return false; }
+            stateNavigator.states['s1'].unloading = (state, data, url, unload) =>  unloading = true;
+            stateNavigator.states['s1'].dispose = () => disposed = true;
+            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigated = () => navigated = true;
+            try {
+                stateNavigator.navigate('s2');
+            } catch(e) {
+            }
+            assert.strictEqual(validate, true);
+            assert.strictEqual(unloading, undefined);
+            assert.strictEqual(disposed, undefined);
+            assert.strictEqual(navigating, undefined);
             assert.strictEqual(navigated, undefined);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
         });
@@ -2048,7 +2148,8 @@ describe('Navigation', function () {
             link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
             stateNavigator.navigate('s2');
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return true; }
             stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -2060,6 +2161,7 @@ describe('Navigation', function () {
             }
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.refresh();
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, true);
@@ -2080,12 +2182,14 @@ describe('Navigation', function () {
             link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
             stateNavigator.navigate('s2');
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return true; }
             stateNavigator.states['s2'].unloading = (state, data, url, unload) => unloading = true;
             stateNavigator.states['s2'].dispose = () => disposed = true;
             stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.refresh();
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, undefined);
@@ -2106,7 +2210,8 @@ describe('Navigation', function () {
             link = stateNavigator.getNavigationLink('s1');
             stateNavigator.navigateLink(link);
             stateNavigator.navigate('s2');
-            var unloading, disposed, navigating, navigated;
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return true; }
             stateNavigator.states['s2'].unloading = (state, data, url, unload) => {
                 unloading = true;
                 unload();
@@ -2115,9 +2220,41 @@ describe('Navigation', function () {
             stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
             stateNavigator.states['s2'].navigated = () => navigated = true;
             stateNavigator.refresh();
+            assert.strictEqual(validate, true);
             assert.strictEqual(unloading, true);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, true);
+            assert.strictEqual(navigated, undefined);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
+    describe('Refresh Validate', function () {
+        it('should only call validate function', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var link = stateNavigator.getNavigationLink('s0');
+            stateNavigator.navigateLink(link);
+            link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.navigate('s2');
+            var validate, unloading, disposed, navigating, navigated;
+            stateNavigator.states['s2'].validate = () => { validate = true; return false; }
+            stateNavigator.states['s2'].unloading = (state, data, url, unload) => unloading = true;
+            stateNavigator.states['s2'].dispose = () => disposed = true;
+            stateNavigator.states['s2'].navigating = (data, url, navigate) => navigating = true;
+            stateNavigator.states['s2'].navigated = () => navigated = true;
+            try {
+                stateNavigator.refresh();
+            } catch(e) {
+            }
+            assert.strictEqual(validate, true);
+            assert.strictEqual(unloading, undefined);
+            assert.strictEqual(disposed, undefined);
+            assert.strictEqual(navigating, undefined);
             assert.strictEqual(navigated, undefined);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
         });
