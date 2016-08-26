@@ -143,7 +143,7 @@ declare namespace Navigation {
          * @param data The new NavigationData
          * @returns Validation success indicator
          */
-        validate(data): boolean;
+        validate(data: any): boolean;
         /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered
