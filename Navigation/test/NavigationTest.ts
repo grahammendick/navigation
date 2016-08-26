@@ -2690,6 +2690,7 @@ describe('Navigation', function () {
             } catch(e) {
             }
             assert.strictEqual(validate, true);
+            assert.strictEqual(unloading, undefined);
             assert.strictEqual(disposed, undefined);
             assert.strictEqual(navigating, undefined);
             assert.strictEqual(navigated, undefined);
