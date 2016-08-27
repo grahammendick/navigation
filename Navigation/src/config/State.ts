@@ -10,8 +10,9 @@ class State implements StateInfo {
     title: string;
     route: string | string[];
     trackCrumbTrail: boolean = false;
-    crumbTrailKey: string = 'crumb';
+    crumbTrailKey: string;
     trackTypes: boolean = true;
+    [extras: string]: any;
     
     unloading(state: State, data: any, url: string, unload: () => void, history: boolean) { 
         unload()
@@ -33,6 +34,10 @@ class State implements StateInfo {
     
     urlDecode(state: State, key: string, val: string, queryString: boolean): string {
         return decodeURIComponent(val);
+    }
+
+    validate(data: any): boolean {
+        return true;
     }
 
     truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[] {

@@ -1,22 +1,17 @@
-﻿import ConverterFactory = require('./converter/ConverterFactory');
-import Crumb = require('./config/Crumb');
+﻿import Crumb = require('./config/Crumb');
 import HashHistoryManager = require('./history/HashHistoryManager');
 import HistoryManager = require('./history/HistoryManager');
-import NavigationDataManager = require('./NavigationDataManager');
 import State = require('./config/State');
 import StateInfo = require('./config/StateInfo');
 import StateContext = require('./StateContext');
-import StateConfig = require('./StateConfig');
 import StateHandler = require('./StateHandler');
-import StateRouter = require('./StateRouter');
 
 class StateNavigator {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
-    private navigateHandlerId: number = 1;
+    private navigateHandlerId = 1;
     private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any, asyncData: any) => void } = {};
-    private converterFactory: ConverterFactory = new ConverterFactory();
-    private router: StateRouter = new StateRouter();
-    stateContext: StateContext = new StateContext();
+    private stateHandler = new StateHandler();
+    stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
     
@@ -25,7 +20,7 @@ class StateNavigator {
             this.configure(states, historyManager);
     }
     
-    configure(stateInfos?: StateInfo[], historyManager?: HistoryManager) {
+    configure(stateInfos: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
@@ -34,11 +29,10 @@ class StateNavigator {
                 return;
             this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
         });
-        var states = StateConfig.build(stateInfos, this.converterFactory);
+        var states = this.stateHandler.buildStates(stateInfos);
         this.states = {};
         for(var i = 0; i < states.length; i++)
             this.states[states[i].key] = states[i];
-        this.router.addRoutes(states);
     }
 
     private setStateContext(state: State, data: any, url: string) {
@@ -47,8 +41,10 @@ class StateNavigator {
         this.stateContext.state = state;
         this.stateContext.url = url;
         this.stateContext.title = state.title;
+        this.stateContext.crumbs = data[state.crumbTrailKey];
+        delete data[state.crumbTrailKey];
         this.stateContext.data = data;
-        this.buildCrumbTrail(false);
+        this.stateContext.nextCrumb = new Crumb(data, state, url, this.getLink(state, data, []), false);
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
@@ -56,31 +52,6 @@ class StateNavigator {
             this.stateContext.previousState = previousStateCrumb.state;
             this.stateContext.previousData = previousStateCrumb.data;
         }
-    }
-    
-    private buildCrumbTrail(uncombined: boolean) {
-        this.stateContext.crumbTrail = [];
-        var crumbTrail = this.stateContext.data[this.stateContext.state.crumbTrailKey];
-        if (crumbTrail)
-            this.stateContext.crumbTrail = crumbTrail;
-        delete this.stateContext.data[this.stateContext.state.crumbTrailKey];
-        this.stateContext.crumbs = this.getCrumbs();
-        var crumblessUrl = this.getLink(this.stateContext.state, this.stateContext.data, []);
-        if (!crumblessUrl)
-            throw new Error(this.stateContext.state.crumbTrailKey + ' cannot be a mandatory route parameter')
-        this.stateContext.nextCrumb = new Crumb(this.stateContext.data, this.stateContext.state, this.stateContext.url, crumblessUrl, false);
-    }
-
-    private getCrumbs(): Crumb[] {
-        var crumbs: Crumb[] = [];
-        var len = this.stateContext.crumbTrail.length;
-        for(var i = 0; i < len; i++) {
-            var crumblessUrl = this.stateContext.crumbTrail[i];
-            var { state, data } = this.parseLink(crumblessUrl);
-            var url = this.getLink(state, data, this.stateContext.crumbTrail.slice(0, i));
-            crumbs.push(new Crumb(data, state, url, crumblessUrl, i + 1 === len));
-        }
-        return crumbs;
     }
     
     onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
@@ -121,8 +92,7 @@ class StateNavigator {
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
         }
-        var { data, arrayData } = NavigationDataManager.formatData(this.converterFactory, state, navigationData, crumbTrail);
-        return StateHandler.getNavigationLink(this.router, state, data, arrayData);
+        return this.stateHandler.getNavigationLink(state, navigationData, crumbTrail);
     }
 
     canNavigateBack(distance: number) {
@@ -131,8 +101,6 @@ class StateNavigator {
 
     navigateBack(distance: number, historyAction?: 'add' | 'replace' | 'none') {
         var url = this.getNavigationBackLink(distance);
-        if (url == null)
-            throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
         this.navigateLink(url, historyAction);
     }
 
@@ -155,7 +123,7 @@ class StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        var { state, data } = this.parseLink(url);
+        var { state, data } = this.stateHandler.parseNavigationLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -189,22 +157,9 @@ class StateNavigator {
     }
     
     parseLink(url: string): { state: State, data: any } {
-        try {
-            var state = this.router.getData(url.split('?')[0]).state;
-            var { data, separableData } = StateHandler.getNavigationData(this.router, state, url);
-            data = NavigationDataManager.parseData(this.converterFactory, data, state, separableData);
-            var crumbTrail: string[] = data[state.crumbTrailKey];
-            if (crumbTrail) {
-                for(var i = 0; i < crumbTrail.length; i++) {
-                    var crumb = crumbTrail[i];
-                    if (crumb.substring(0, 1) !== '/')
-                        throw new Error(crumb + ' is not a valid crumb');
-                }
-            }
-            return { state: state, data: data };
-        } catch (e) {
-            throw new Error('The Url is invalid\n' + e.message);
-        }
+        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        delete data[state.crumbTrailKey];
+        return { state, data };
     }
     
     start(url?: string) {

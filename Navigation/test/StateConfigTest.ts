@@ -195,16 +195,6 @@ describe('StateConfigTest', function () {
         })
    });
 
-    describe('Invalid Default Type', function () {
-        it('should throw error', function() {
-            assert.throws(() => {
-                var stateNavigator = new Navigation.StateNavigator([
-                    { key: 's0', route: 'd0s0', defaultTypes: { s: 'x' },  title: 's0'}
-                ]);
-            });
-        })
-   });
-
     describe('Duplicate State', function () {
         it('should throw error', function() {
             assert.throws(() => {

@@ -139,6 +139,12 @@ declare namespace Navigation {
          */
         urlDecode(state: State, key: string, val: string, queryString: boolean): string;
         /**
+         * Validates the NavigationData before navigating to the new State
+         * @param data The new NavigationData
+         * @returns Validation success indicator
+         */
+        validate(data: any): boolean;
+        /**
          * Truncates the crumb trail whenever a repeated or initial State is
          * encountered
          * @param The State navigated to
@@ -381,10 +387,6 @@ declare namespace Navigation {
          * Crumb first
          */
         crumbs: Crumb[];
-        /**
-         * Gets the crumb trail
-         */
-        crumbTrail: string[];
         /**
          * Gets the next crumb
          */

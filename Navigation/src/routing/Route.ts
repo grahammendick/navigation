@@ -6,6 +6,7 @@ class Route {
     private segments: Segment[] = [];
     private pattern: RegExp;
     params: { name: string; optional: boolean; splat: boolean }[] = [];
+    [index: string]: any;
 
     constructor(path: string, defaults?: any) {
         this.path = path;

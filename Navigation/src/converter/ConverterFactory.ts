@@ -22,10 +22,6 @@ class ConverterFactory {
         }
     }
     
-    getConverter(obj: any) {
-        return this.getConverterFromName(TypeConverter.getName(obj));
-    }
-
     getConverterFromKey(key: string): TypeConverter {
         return this.keyToConverterList[key];
     }

@@ -7,17 +7,20 @@ type MatchInfo = { route: Route; data: any; routePath: string };
 class StateRouter {
     router: Router;
 
-    getData(route: string): { state: State; data: any, separableData: any } {
-        var match = this.router.match(route, StateRouter.urlDecode);
+    getData(path: string, fromRoute?: Route): { state: State; data: any, separableData: any, route: Route } {
+        var match = this.router.match(path, fromRoute, StateRouter.urlDecode);
+        if (!match)
+            return null;
         var separableData = {};
-        if (match.route['_splat']) {
-            for (var i = 0; i < match.route.params.length; i++) {
-                var param = match.route.params[i];
+        var { route, route: { _splat: splat, _state: state, params }, data} = match;
+        if (splat) {
+            for (var i = 0; i < params.length; i++) {
+                var param = params[i];
                 if (param.splat)
                     separableData[param.name] = true;
             }
         }
-        return { state: match.route['_state'], data: match.data, separableData: separableData };
+        return { state: state, data: data, separableData: separableData, route: route };
     }
 
     getRoute(state: State, data: any, arrayData: { [index: string]: string[] } = {}): { route: string; data: any } {
@@ -107,11 +110,6 @@ class StateRouter {
         for (var i = 0; i < states.length; i++) {
             this.addStateRoutes(states[i]);
         }
-        this.router.sort((routeA: Route, routeB: Route) => {
-            var routeANumber = routeA.path.charAt(0) === '{' ? -1 : 0;
-            var routeBNumber = routeB.path.charAt(0) === '{' ? -1 : 0;
-            return routeBNumber - routeANumber;
-        });
     }
     
     private addStateRoutes(state: State) {

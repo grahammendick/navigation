@@ -657,6 +657,52 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Navigate Data Back Crumb Trail Key', function() {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: 'xx' }
+            ]);
+        });
+        var data = {};
+        data['string'] = 'Hello';
+        data['boolean'] = true;
+        data['number'] = 0;
+        data['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', data);
+                stateNavigator.navigate('s1');
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
+                assert.strictEqual(+stateNavigator.stateContext.data['date'], +new Date(2010, 3, 7));
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
+            });
+        }
+    });
+
     describe('Navigate Array Data Back', function() {
         var stateNavigator: Navigation.StateNavigator;
         beforeEach(function() {
@@ -1371,8 +1417,6 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s0', data1);
                 stateNavigator.navigateLink(link);
-                assert.strictEqual(stateNavigator.stateContext.data['s'], 1);
-                assert.strictEqual(stateNavigator.stateContext.data['t'], undefined);
                 link = stateNavigator.getNavigationLink('s1', data2);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s2', data3);
@@ -1389,8 +1433,67 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.previousData['t'], '2');
                 assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], undefined);
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[0].data).length, 1);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 2);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[1].data).length, 2);
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 3);
+                assert.strictEqual(stateNavigator.stateContext.data['t'], '3');
+            });
+        }
+    });
+
+    describe('Transition Transition Crumb Trail Key', function() {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: 'xx' },
+                { key: 's2', route: 'r2', trackCrumbTrail: 'yy' }
+            ]);
+        });
+        var data1 = {};
+        data1['s'] = 1;
+        var data2 = {};
+        data2['s'] = 2;
+        data2['t'] = '2';
+        var data3 = {};
+        data3['s'] = 3;
+        data3['t'] = '3';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0', data1);
+                stateNavigator.navigate('s1', data2);
+                stateNavigator.navigate('s2', data3);
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0', data1);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data2);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2', data3);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.oldData['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.oldData['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.previousData['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.previousData['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], undefined);
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[0].data).length, 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 2);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.equal(Object.keys(stateNavigator.stateContext.crumbs[1].data).length, 2);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], 3);
                 assert.strictEqual(stateNavigator.stateContext.data['t'], '3');
             });
@@ -4136,7 +4239,7 @@ describe('Navigation Data', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s', { 'number': 35 });
             link = link.replace('number=35', 'number=invalid');
-            assert.throws(() => stateNavigator.navigateLink(link), /not a valid number/);
+            assert.throws(() => stateNavigator.navigateLink(link), /Url .*is invalid/);
         });
     });
 
@@ -4147,7 +4250,7 @@ describe('Navigation Data', function () {
             ]);
             var link = stateNavigator.getNavigationLink('s', { '_bool': false });
             link = link.replace('_bool=false', '_bool=invalid');
-            assert.throws(() => stateNavigator.navigateLink(link), /not a valid boolean/);
+            assert.throws(() => stateNavigator.navigateLink(link), /Url .*is invalid/);
         });
     });
 
@@ -4605,5 +4708,82 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
             });
         }
+    });
+
+    describe('Invalid Default Type', function() {
+        it('should throw error', function () {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: { x: 'xxx' } }
+            ]);
+            assert.throws(() => stateNavigator.navigate('s', { x: 'ab' }), /No TypeConverter found/);
+        });
+    });
+
+    describe('Individual Data Constraint', function() {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.states['s'].validate = (data) => (
+                data['string'] !== 'Hello' || data['boolean'] !== true
+                || data['number'] !== 0 || +data['date'] !== +new Date(2010, 3, 7)
+                || Object.keys(data).length !== 4
+            );
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            it('should throw error', function() {
+                assert.throws(() => stateNavigator.navigate('s', individualNavigationData), /The Url .+ is invalid/);
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function() {
+                var link = stateNavigator.getNavigationLink('s', individualNavigationData);
+                assert.throws(() => stateNavigator.navigateLink(link), /The Url .+ is invalid/);
+            });
+        });
+    });
+
+    describe('Array Data Constraint', function() {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.states['s'].validate = (data) => (
+                data['array_string'].length !== 2 || data['array_string'][0] !== 'He-llo' || data['array_string'][1] !== 'World'
+                || data['array_boolean'].length !== 3 || data['array_boolean'][0] !== null || data['array_boolean'][1] !== true || data['array_boolean'][2] !== false
+                || data['array_number'].length !== 4 || data['array_number'][0] !== 1 || data['array_number'][1] !== null || data['array_number'][2] !== null || data['array_number'][3] !== 2
+                || data['array_date'].length !== 2 || +data['array_date'][0] !== +new Date(2010, 3, 7) || +data['array_date'][1] !== +new Date(2011, 7, 3)
+                || data['array_blank'].length !== 3 || data['array_blank'][0] !== null || data['array_blank'][1] !== null || data['array_blank'][2] !== null
+                || Object.keys(data).length !== 5
+            );
+        });
+        var arrayNavigationData = {};
+        arrayNavigationData['array_string'] = ['He-llo', 'World'];
+        arrayNavigationData['array_boolean'] = ['', true, false];
+        arrayNavigationData['array_number'] = [1, null, undefined, 2];
+        arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        arrayNavigationData['array_blank'] = ['', null, undefined];
+        
+        describe('Navigate', function() {
+            it('should throw error', function() {
+                assert.throws(() => stateNavigator.navigate('s', arrayNavigationData), /The Url .+ is invalid/);
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function() {
+                var link = stateNavigator.getNavigationLink('s', arrayNavigationData);
+                assert.throws(() => stateNavigator.navigateLink(link), /The Url .+ is invalid/);
+            });
+        });
     });
 });
