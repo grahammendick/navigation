@@ -20,10 +20,18 @@ class LinkUtility {
         return navigationData;
     }
 
-    static isActive(stateNavigator: Navigation.StateNavigator, key: string, val: any): boolean {
-        if (!stateNavigator.stateContext.state)
-            return false;
-        return val == null || this.areEqual(val, stateNavigator.stateContext.data[key]);
+    static setActive(stateNavigator: Navigation.StateNavigator, props: any, toProps: any) {
+        if (!props.activeCssClass && !props.disableActive)
+            return;
+        var active = !!toProps.href && !!stateNavigator.stateContext.state;
+        for (var key in props.navigationData) {
+            var val = props.navigationData[key];
+            active = active && (val == null || this.areEqual(val, stateNavigator.stateContext.data[key]));
+        }
+        if (active && props.activeCssClass)
+            toProps.className = !toProps.className ? props.activeCssClass : toProps.className + ' ' + props.activeCssClass;
+        if (active && props.disableActive)
+            toProps.href = null;        
     }
 
     private static areEqual(val: any, currentVal: any): boolean {
@@ -41,13 +49,6 @@ class LinkUtility {
         } else {
             return isNaN(val) ? val === currentVal : +val === +currentVal;
         }
-    }
-
-    static setActive(props: any, active: boolean, activeCssClass: string, disableActive: boolean) {
-        if (active && activeCssClass)
-            props.className = !props.className ? activeCssClass : props.className + ' ' + activeCssClass;
-        if (active && disableActive)
-            props.href = null;        
     }
 
     static isValidAttribute(attr: string): boolean {
