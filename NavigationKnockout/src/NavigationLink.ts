@@ -15,17 +15,14 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
     var stateKey = ko.unwrap(valueAccessor());
     var data = {};
     var navigationData = ko.unwrap(allBindings.get('navigationData'));
-    var active = true;
     var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
     for (var key in navigationData) {
-        var val = ko.unwrap(navigationData[key]);
-        data[key] = val;
-        active = active && LinkUtility.isActive(stateNavigator, key, val);
+        data[key] = ko.unwrap(navigationData[key]);
     }
     LinkUtility.setLink(stateNavigator, element, () => stateNavigator.getNavigationLink(stateKey,
         LinkUtility.getData(stateNavigator, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    active = active && !!element.href && stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey;
-    LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
+    if (stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey)
+        LinkUtility.setActive(element, stateNavigator, data, allBindings);
 }
 export = NavigationLink;

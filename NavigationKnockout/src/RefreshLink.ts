@@ -14,17 +14,13 @@ var RefreshLink = ko.bindingHandlers['refreshLink'] = {
 function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
     var data = {};
     var navigationData = ko.unwrap(valueAccessor());
-    var active = true;
     var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
     for (var key in navigationData) {
-        var val = ko.unwrap(navigationData[key]);
-        data[key] = val;
-        active = active && LinkUtility.isActive(stateNavigator, key, val);
+        data[key] = ko.unwrap(navigationData[key]);
     }
     LinkUtility.setLink(stateNavigator, element, () => stateNavigator.getRefreshLink(
         LinkUtility.getData(stateNavigator, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    active = active && !!element.href;
-    LinkUtility.setActive(element, active, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
+    LinkUtility.setActive(element, stateNavigator, data, allBindings);
 }
 export = RefreshLink;
