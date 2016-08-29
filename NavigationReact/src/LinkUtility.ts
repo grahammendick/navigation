@@ -41,7 +41,7 @@ class LinkUtility {
         if (valType !== Object.prototype.toString.call(currentVal))
             return false;
         if (valType === '[object Array]') {
-            var active = val.length !== currentVal.length;
+            var active = val.length === currentVal.length;
             for(var i = 0; active && i < val.length; i++) {
                 active = this.areEqual(val[i], currentVal[i]);
             }
