@@ -3,8 +3,13 @@ import Navigation = require('navigation');
 import React = require('react');
 
 class NavigationBackLink extends React.Component<any, any> {
-    private onNavigate = () => this.forceUpdate();
-    
+    private onNavigate = () => this.setState({ stateContext: this.getStateNavigator().stateContext.url });
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { stateContext: this.getStateNavigator().stateContext.url };
+    }
+
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
