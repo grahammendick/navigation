@@ -23,7 +23,7 @@ class LinkUtility {
     static setActive(stateNavigator: Navigation.StateNavigator, props: any, toProps: any) {
         if (!props.activeCssClass && !props.disableActive)
             return;
-        var active = !!toProps.href && !!stateNavigator.stateContext.state;
+        var active = !!toProps.href;
         for (var key in props.navigationData) {
             var val = props.navigationData[key];
             active = active && (val == null || this.areEqual(val, stateNavigator.stateContext.data[key]));
