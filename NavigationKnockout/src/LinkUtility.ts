@@ -20,7 +20,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static setActive(element: HTMLAnchorElement, stateNavigator: Navigation.StateNavigator, navigationData: any, activeCssClass, disableActive) {
+    static setActive(element: HTMLAnchorElement, stateNavigator: Navigation.StateNavigator, navigationData, activeCssClass, disableActive) {
         if (!activeCssClass && !disableActive)
             return;
         var active = !!element.href;
