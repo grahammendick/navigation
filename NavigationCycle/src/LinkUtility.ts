@@ -24,25 +24,36 @@ class LinkUtility {
         return navigationData;
     }
     
-    static isActive(stateNavigator: Navigation.StateNavigator, key: string, val: any): boolean {
-        if (!stateNavigator.stateContext.state)
-            return false;
-        if (val != null) {
-            var trackTypes = stateNavigator.stateContext.state.trackTypes;
-            var currentVal = stateNavigator.stateContext.data[key];
-            if (currentVal != null)
-                return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
-            else
-                return val === '';
+
+    static setActive(stateNavigator: Navigation.StateNavigator, properties: any, newProperties: any) {
+        if (!properties.activeCssClass && !properties.disableActive)
+            return;
+        var active = !!newProperties.href;
+        for (var key in properties.navigationData) {
+            var val = properties.navigationData[key];
+            active = active && (val == null || this.areEqual(val, stateNavigator.stateContext.data[key]));
         }
-        return true;
+        if (active && properties.activeCssClass)
+            newProperties.className = !newProperties.className ? properties.activeCssClass : newProperties.className + ' ' + properties.activeCssClass;
+        if (active && properties.disableActive)
+            newProperties.href = null;
     }
 
-    static setActive(properties: any, active: boolean, activeCssClass: string, disableActive: boolean) {
-        if (active && activeCssClass)
-            properties.className = !properties.className ? activeCssClass : properties.className + ' ' + activeCssClass;
-        if (active && disableActive)
-            properties.href = null;        
+    private static areEqual(val: any, currentVal: any): boolean {
+        if (currentVal == null)
+            return val == null || val === '';
+        var valType = Object.prototype.toString.call(val);
+        if (valType !== Object.prototype.toString.call(currentVal))
+            return false;
+        if (valType === '[object Array]') {
+            var active = val.length === currentVal.length;
+            for(var i = 0; active && i < val.length; i++) {
+                active = this.areEqual(val[i], currentVal[i]);
+            }
+            return active;
+        } else {
+            return isNaN(val) ? val === currentVal : +val === +currentVal;
+        }
     }
     
     static setHistoryAction(properties: any, historyAction) {
