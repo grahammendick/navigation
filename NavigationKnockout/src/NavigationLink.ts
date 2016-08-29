@@ -23,6 +23,6 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
         LinkUtility.getData(stateNavigator, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
     if (stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey)
-        LinkUtility.setActive(element, stateNavigator, data, allBindings);
+        LinkUtility.setActive(element, stateNavigator, data, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
 export = NavigationLink;

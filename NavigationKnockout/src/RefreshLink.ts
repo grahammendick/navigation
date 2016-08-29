@@ -21,6 +21,6 @@ function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, al
     LinkUtility.setLink(stateNavigator, element, () => stateNavigator.getRefreshLink(
         LinkUtility.getData(stateNavigator, data, ko.unwrap(allBindings.get('includeCurrentData')), ko.unwrap(allBindings.get('currentDataKeys'))))
     );
-    LinkUtility.setActive(element, stateNavigator, data, allBindings);
+    LinkUtility.setActive(element, stateNavigator, data, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
 export = RefreshLink;

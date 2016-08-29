@@ -20,9 +20,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static setActive(element: HTMLAnchorElement, stateNavigator: Navigation.StateNavigator, navigationData: any, allBindings: KnockoutAllBindingsAccessor) {
-        var activeCssClass = ko.unwrap(allBindings.get('activeCssClass'));
-        var disableActive = ko.unwrap(allBindings.get('disableActive'));
+    static setActive(element: HTMLAnchorElement, stateNavigator: Navigation.StateNavigator, navigationData: any, activeCssClass, disableActive) {
         if (!activeCssClass && !disableActive)
             return;
         var active = !!element.href;
