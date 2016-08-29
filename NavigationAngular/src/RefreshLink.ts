@@ -26,14 +26,9 @@ var RefreshLink = ($parse: ng.IParseService) => {
 
 function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator,
     navigationData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
-    var active = true;
-    for (var key in navigationData) {
-        active = active && LinkUtility.isActive(stateNavigator, key, navigationData[key]);
-    }
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getRefreshLink(
         LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys))
     );
-    active = active && !!attrs['href'];
-    LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
+    LinkUtility.setActive(element, stateNavigator, attrs, navigationData, activeCssClass, disableActive);
 }
 export = RefreshLink;

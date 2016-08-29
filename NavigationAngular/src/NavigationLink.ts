@@ -27,14 +27,10 @@ var NavigationLink = ($parse: ng.IParseService) => {
 
 function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator,
     stateKey: string, navigationData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
-    var active = true;
-    for (var key in navigationData) {
-        active = active && LinkUtility.isActive(stateNavigator, key, navigationData[key]);
-    }
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getNavigationLink(stateKey,
         LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys))
     );
-    active = active && !!attrs['href'] && stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey;
-    LinkUtility.setActive(element, attrs, active, activeCssClass, disableActive);
+    if (stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey)
+        LinkUtility.setActive(element, stateNavigator, attrs, navigationData, activeCssClass, disableActive);
 }
 export = NavigationLink;

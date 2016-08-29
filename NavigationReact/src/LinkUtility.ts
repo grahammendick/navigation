@@ -20,25 +20,35 @@ class LinkUtility {
         return navigationData;
     }
 
-    static isActive(stateNavigator: Navigation.StateNavigator, key: string, val: any): boolean {
-        if (!stateNavigator.stateContext.state)
-            return false;
-        if (val != null) {
-            var trackTypes = stateNavigator.stateContext.state.trackTypes;
-            var currentVal = stateNavigator.stateContext.data[key];
-            if (currentVal != null)
-                return trackTypes ? val === currentVal : val.toString() == currentVal.toString();
-            else
-                return val === '';
+    static setActive(stateNavigator: Navigation.StateNavigator, props: any, toProps: any) {
+        if (!props.activeCssClass && !props.disableActive)
+            return;
+        var active = !!toProps.href;
+        for (var key in props.navigationData) {
+            var val = props.navigationData[key];
+            active = active && (val == null || this.areEqual(val, stateNavigator.stateContext.data[key]));
         }
-        return true;
+        if (active && props.activeCssClass)
+            toProps.className = !toProps.className ? props.activeCssClass : toProps.className + ' ' + props.activeCssClass;
+        if (active && props.disableActive)
+            toProps.href = null;        
     }
 
-    static setActive(props: any, active: boolean, activeCssClass: string, disableActive: boolean) {
-        if (active && activeCssClass)
-            props.className = !props.className ? activeCssClass : props.className + ' ' + activeCssClass;
-        if (active && disableActive)
-            props.href = null;        
+    private static areEqual(val: any, currentVal: any): boolean {
+        if (currentVal == null)
+            return val == null || val === '';
+        var valType = Object.prototype.toString.call(val);
+        if (valType !== Object.prototype.toString.call(currentVal))
+            return false;
+        if (valType === '[object Array]') {
+            var active = val.length === currentVal.length;
+            for(var i = 0; active && i < val.length; i++) {
+                active = this.areEqual(val[i], currentVal[i]);
+            }
+            return active;
+        } else {
+            return isNaN(val) ? val === currentVal : +val === +currentVal;
+        }
     }
 
     static isValidAttribute(attr: string): boolean {
