@@ -3,8 +3,17 @@ import Navigation = require('navigation');
 import React = require('react');
 
 class NavigationBackLink extends React.Component<any, any> {
-    private onNavigate = () => this.forceUpdate();
-    
+    private onNavigate = () => {
+        if (this.state.stateContext !== this.getStateNavigator().stateContext.url
+            || this.state.crumb !== this.getNavigationBackLink())
+            this.setState(this.getNextState());
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = this.getNextState();
+    }
+
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
@@ -16,12 +25,22 @@ class NavigationBackLink extends React.Component<any, any> {
     private getNavigationBackLink(): string {
         return LinkUtility.getLink(this.getStateNavigator(), () => this.getStateNavigator().getNavigationBackLink(this.props.distance));
     }
-    
+
+    private getNextState() {
+        return { 
+            stateContext: this.getStateNavigator().stateContext.url,
+            crumb: this.getNavigationBackLink()
+        };
+    }
+
     componentDidMount() {
         if (!this.props.lazy)
             this.getStateNavigator().onNavigate(this.onNavigate);
     }
     
+    componentWillReceiveProps() {
+        this.setState(this.getNextState());
+    }
     componentWillUnmount() {
         if (!this.props.lazy)
             this.getStateNavigator().offNavigate(this.onNavigate);
