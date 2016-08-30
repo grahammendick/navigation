@@ -63,7 +63,7 @@ class LinkUtility {
             var element = <HTMLAnchorElement> component['el'];
             var href = element.href;
             if (lazy) {
-                component.setState({ stateContext: stateNavigator.stateContext.url });
+                component.forceUpdate();
                 href = getLink();
                 if (href)
                     element.href = href;
@@ -80,7 +80,7 @@ class LinkUtility {
             }
         };
         if (lazy)
-            toProps.onContextMenu = (e: MouseEvent) => component.setState({ stateContext: stateNavigator.stateContext.url });
+            toProps.onContextMenu = (e: MouseEvent) => component.forceUpdate();
     }
 
     static getNavigating(props: any): (e: MouseEvent, domId: string, link: string) => boolean {
