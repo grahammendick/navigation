@@ -5,12 +5,12 @@ import React = require('react');
 class RefreshLink extends React.Component<any, any> {
     private onNavigate = () => {
         if (this.state.stateContext !== this.getStateNavigator().stateContext.url)
-            this.setState({ stateContext: this.getStateNavigator().stateContext.url });
+            this.setState(this.getNextState());
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { stateContext: this.getStateNavigator().stateContext.url };
+        this.state = this.getNextState();
     }
 
     static contextTypes = {
@@ -21,18 +21,22 @@ class RefreshLink extends React.Component<any, any> {
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
-    getRefreshLink(): string {
+    private getRefreshLink(): string {
         var navigationData = LinkUtility.getData(this.getStateNavigator(), this.props.navigationData, this.props.includeCurrentData, this.props.currentDataKeys);
         return LinkUtility.getLink(this.getStateNavigator(), () => this.getStateNavigator().getRefreshLink(navigationData));
     }
     
+    private getNextState() {
+        return { stateContext: this.getStateNavigator().stateContext.url };
+    }
+
     componentDidMount() {
         if (!this.props.lazy)
             this.getStateNavigator().onNavigate(this.onNavigate);
     }
 
     componentWillReceiveProps() {
-        this.setState({ stateContext: this.getStateNavigator().stateContext.url });
+        this.setState(this.getNextState());
     }
 
     componentWillUnmount() {

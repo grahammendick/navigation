@@ -32,7 +32,7 @@ class NavigationBackLink extends React.Component<any, any> {
             crumb: this.getNavigationBackLink()
         };
     }
-    
+
     componentDidMount() {
         if (!this.props.lazy)
             this.getStateNavigator().onNavigate(this.onNavigate);
