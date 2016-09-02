@@ -6459,4 +6459,45 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.start('/abc'), /The Url \/abc is invalid\nabc is not a valid number\nc is not a valid boolean$/, '');
         });
     });
+
+    describe('Two Route Type Conflict', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['{x}', '{y}'], defaultTypes: { x: 'number' } }
+            ]);
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'ab');
+            assert.strictEqual(state.key, 's');
+            var { state, data } = stateNavigator.parseLink('/12');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 12);
+            assert.strictEqual(state.key, 's');
+        });
+    });
+
+    describe('Two Route Constraint', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: ['{x}', '{y}'] }
+            ]);
+            stateNavigator.states['s'].validate = (data) => data.x !== 'ab';
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.y, 'ab');
+            assert.strictEqual(state.key, 's');
+            var { state, data } = stateNavigator.parseLink('/cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.x, 'cd');
+            assert.strictEqual(state.key, 's');
+        });
+    });
 });
