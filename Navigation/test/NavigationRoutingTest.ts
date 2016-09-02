@@ -6500,4 +6500,21 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's');
         });
     });
+
+    describe('Crumb Key Type Conflict', function () {
+        var stateNavigator: Navigation.StateNavigator;
+        beforeEach(function () {
+            stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'ab', trackCrumbTrail: true },
+                { key: 's1', route: 'ab' }
+            ]);
+        });
+
+        it('should match', function() {
+            var { state, data } = stateNavigator.parseLink('/ab?crumb=cd');
+            assert.strictEqual(Object.keys(data).length, 1);
+            assert.strictEqual(data.crumb, 'cd');
+            assert.strictEqual(state.key, 's1');
+        });
+    });
 });
