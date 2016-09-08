@@ -13,6 +13,7 @@ Navigation*/test/**/*.js
 !inferno-*.d.ts
 !assert.d.ts
 !mocha.d.ts
+!react-addons-test-utils.d.ts
 build/dist
 build/**/lib
 npm-debug.log
