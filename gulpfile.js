@@ -15,12 +15,13 @@ var tests = [
 	{ name: 'NavigationRouting', to: 'navigationRouting.test.js' },
 	{ name: 'StateConfig', to: 'stateConfig.test.js' },
 	{ name: 'Navigation', to: 'navigation.test.js' },
-	{ name: 'NavigationData', to: 'navigationData.test.js' }
+	{ name: 'NavigationData', to: 'navigationData.test.js' },
+	{ name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' }
 ];
 var testTasks = [];
 function testTask(file, to) {
 	return browserify(file)
-		.plugin('tsify')
+		.plugin('tsify', { jsx: 'react' })
 		.bundle()
 		.pipe(source(to))
 		.pipe(rename(to))
@@ -30,7 +31,8 @@ function testTask(file, to) {
 for (var i = 0; i < tests.length; i++) {
 	(function (test) {
 		gulp.task('Test' + test.name, function () {
-			return testTask('./Navigation/test/' + test.name + 'Test.ts', test.to)
+			var folder = './Navigation' + (test.folder || '') + '/test/';
+			return testTask(folder + test.name + 'Test.' + (test.ext || 'ts'), test.to)
 		});
 	})(tests[i]);
 	testTasks.push('Test' + tests[i].name);
