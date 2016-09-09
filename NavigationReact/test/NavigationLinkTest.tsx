@@ -20,7 +20,11 @@ describe('NavigationLinkTest', function () {
                     stateNavigator={stateNavigator} />
             );
             var link = renderer.getRenderOutput();
+            stateNavigator.historyManager.getUrl = () => link.props['href'].substring(1);
+            link['ref']({ href: 'xxx' });
+            link.props['onClick']({ preventDefault: () => {} });
             assert.equal(link.props['href'], '#/');
+            assert.equal(stateNavigator.stateContext.state.key, 's');
         })
     });  
 });
