@@ -68,6 +68,40 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Attributes Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a'}}
+                    includeCurrentData={true}
+                    currentDataKeys="y"
+                    activeCssClass="active"
+                    disableActive={true}
+                    lazy={false}
+                    historyAction='replace'
+                    navigating={() => false}
+                    aria-another="z"
+                    target="_blank"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a');
+            assert.equal(link.props['children'], 'link text');
+            assert.notEqual(link.props['onClick'], null);
+            assert.equal(link.props['aria-another'], 'z');
+            assert.equal(link.props['target'], '_blank');
+            assert.equal(Object.keys(link.props).length, 5);
+        })
+    });
+
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
