@@ -850,6 +850,54 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Active Number Array Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [1, 2]}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=1&x=2');
+            assert.equal(link.props['className'], 'active');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Inactive Number Array Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [1, 3]}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=1&x=3');
+            assert.equal(link.props['className'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
