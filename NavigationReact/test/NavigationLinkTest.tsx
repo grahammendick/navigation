@@ -1179,7 +1179,54 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.props['children'], 'link text');
         })
     });
-    
+
+    describe('Inactive Array Length Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: ['a', 'b', 'c']}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a&x=b&x=c');
+            assert.equal(link.props['className'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Array Length Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: ['a', 'b', 'c']}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a&x=b&x=c');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
