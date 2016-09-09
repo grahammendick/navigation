@@ -128,7 +128,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {y: 'b', z: 'c'})
+            stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -151,7 +151,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {y: 'b', z: 'c'})
+            stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -174,7 +174,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {y: 'b', z: 'c'})
+            stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -197,7 +197,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'})
+            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -220,7 +220,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'})
+            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -237,6 +237,54 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.props['children'], 'link text');
         })
     });
+
+    describe('Active Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a'}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a');
+            assert.equal(link.props['className'], 'active');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Active Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a'}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
