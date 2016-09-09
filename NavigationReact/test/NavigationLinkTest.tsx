@@ -28,6 +28,26 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Context Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s">
+                    link text
+                </NavigationReact.NavigationLink>,
+                { stateNavigator: stateNavigator }
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('Invalid Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new Navigation.StateNavigator([
