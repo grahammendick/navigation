@@ -755,6 +755,53 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Inactive Type Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'number'} }
+            ]);
+            stateNavigator.navigate('s', {x: '1', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 1}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=1');
+            assert.equal(link.props['className'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Type Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'number'} }
+            ]);
+            stateNavigator.navigate('s', {x: '1', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 1}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=1');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
