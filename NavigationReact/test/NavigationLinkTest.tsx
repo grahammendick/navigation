@@ -243,7 +243,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {x: 'a'});
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -262,12 +262,36 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Inactive Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'b'}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=b');
+            assert.equal(link.props['className'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('Disable Active Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.navigate('s', {x: 'a'});
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
@@ -281,6 +305,170 @@ describe('NavigationLinkTest', function () {
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
             assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'b'}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=b');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Null Active Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a', y: null}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a');
+            assert.equal(link.props['className'], 'active');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Undefined Active Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a', y: undefined}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a');
+            assert.equal(link.props['className'], 'active');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Empty String Inactive Css Class Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a', y: ''}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a');
+            assert.equal(link.props['className'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Null Disable Active Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a', y: null}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Undefined Disable Active Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a', y: undefined}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Empty String Disable Inactive Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {x: 'a', y: 'b'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a', y: ''}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a');
             assert.equal(link.props['children'], 'link text');
         })
     });
