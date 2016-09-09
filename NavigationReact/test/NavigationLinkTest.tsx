@@ -994,6 +994,192 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.props['children'], 'link text');
         })
     });
+
+    describe('Disable Active Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: ['a', 'b']}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: ['a', 'd']}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=a&x=d');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Active Number Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [1, 2]}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Number Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [1, 3]}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=1&x=3');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Active Boolean Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [true, false], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [true, false]}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Boolean Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [true, false], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [true, true]}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=true&x=true');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+
+    describe('Disable Active Date Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], null);
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
+    describe('Disable Inactive Date Array Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
+            ]);
+            stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?x=2011-02-03&x=2010-03-04');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+    
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
