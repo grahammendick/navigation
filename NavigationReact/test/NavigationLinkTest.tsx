@@ -146,6 +146,29 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Include Current Data Override Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {y: 'b', z: 'c'})
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{y: 'a'}}
+                    includeCurrentData={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?y=a&z=c');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
+
     describe('Current Data Key Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new Navigation.StateNavigator([
@@ -192,6 +215,28 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Current Data Keys Override Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'})
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigationData={{y: 'a'}}
+                    currentDataKeys="y,z"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r?y=a&z=c');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
     describe('<>', function () {
         it('should work', function(){
             var stateNavigator = new Navigation.StateNavigator([
