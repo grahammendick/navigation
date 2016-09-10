@@ -1438,4 +1438,109 @@ describe('NavigationLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
+
+    describe('Ctrl + Click Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            link.props['onClick']({ ctrlKey: true, preventDefault: () => {} });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Shift + Click Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            link.props['onClick']({ shiftKey: true, preventDefault: () => {} });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Meta + Click Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            link.props['onClick']({ metaKey: true, preventDefault: () => {} });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Alt + Click Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            link.props['onClick']({ altKey: true, preventDefault: () => {} });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
+
+    describe('Button + Click Navigation Link', function () {
+        it('should not navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            link.props['onClick']({ button: true, preventDefault: () => {} });
+            assert.equal(stateNavigator.stateContext.state, null);
+        })
+    });
 });
