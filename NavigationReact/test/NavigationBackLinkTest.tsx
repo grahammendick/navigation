@@ -76,4 +76,36 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(link.props['children'], 'link text');
         })
     });
+
+    describe('Attributes Navigation Back Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationBackLink
+                    distance={1}
+                    lazy={false}
+                    historyAction='replace'
+                    navigating={() => false}
+                    aria-another="z"
+                    target="_blank"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationBackLink>
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r0');
+            assert.equal(link.props['children'], 'link text');
+            assert.notEqual(link.props['onClick'], null);
+            assert.equal(link.props['aria-another'], 'z');
+            assert.equal(link.props['target'], '_blank');
+            assert.equal(Object.keys(link.props).length, 5);
+        })
+    });
 });
