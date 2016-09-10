@@ -1418,23 +1418,24 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('<>', function () {
-        it('should work', function(){
+    describe('Click Navigation Link', function () {
+        it('should navigate', function(){
             var stateNavigator = new Navigation.StateNavigator([
-                { key: 's', route: '' }
+                { key: 's', route: 'r' }
             ]);
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
                 <NavigationReact.NavigationLink
                     stateKey="s"
-                    stateNavigator={stateNavigator} />
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = () => link.props['href'].substring(1);
-            link['ref']({ href: 'xxx' });
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             link.props['onClick']({ preventDefault: () => {} });
-            assert.equal(link.props['href'], '#/');
-            assert.equal(stateNavigator.stateContext.state.key, 's');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
-    });  
+    });
 });
