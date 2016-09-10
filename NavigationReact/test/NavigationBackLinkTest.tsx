@@ -30,4 +30,27 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(link.props['children'], 'link text');
         })
     });
+
+    describe('Context Navigation Back Link', function () {
+        it('should render', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationBackLink
+                    distance={1}>
+                    link text
+                </NavigationReact.NavigationBackLink>,
+                { stateNavigator: stateNavigator }
+            );
+            var link = renderer.getRenderOutput();
+            assert.equal(link.type, 'a');
+            assert.equal(link.props['href'], '#/r0');
+            assert.equal(link.props['children'], 'link text');
+        })
+    });
 });
