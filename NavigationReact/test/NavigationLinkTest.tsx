@@ -1617,7 +1617,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Lazy Click Navigation Link', function () {
-        it('should update href', function(){
+        it('should navigate', function(){
             var stateNavigator = new Navigation.StateNavigator([
                 { key: 's', route: 'r' }
             ]);
@@ -1635,8 +1635,11 @@ describe('NavigationLinkTest', function () {
             var el = { href: null };
             link['ref'](el);
             stateNavigator.navigate('s', { x: 'a' });
-            link.props['onClick']({ ctrlKey: true });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            link.props['onClick']({ preventDefault: () => {} });
             assert.equal(el.href, '#/r?x=a');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
         })
     });
 });
