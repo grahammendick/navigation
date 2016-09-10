@@ -15,6 +15,8 @@
     "gulp-rename": "^1.2.0",
     "gulp-tsc": "^1.1.4",
     "gulp-uglify": "^1.1.0",
+    "react": "^15.3.1",
+    "react-addons-test-utils": "^15.3.1",
     "tsify": "^0.14.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
