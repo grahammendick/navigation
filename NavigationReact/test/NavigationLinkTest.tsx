@@ -1615,4 +1615,28 @@ describe('NavigationLinkTest', function () {
             assert.equal(navigatingLink, '/r');
         })
     });
+
+    describe('Lazy Click Navigation Link', function () {
+        it('should update href', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    includeCurrentData={true}
+                    lazy={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            var el = { href: null };
+            link['ref'](el);
+            stateNavigator.navigate('s', { x: 'a' });
+            link.props['onClick']({ ctrlKey: true });
+            assert.equal(el.href, '#/r?x=a');
+        })
+    });
 });
