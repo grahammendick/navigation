@@ -1587,4 +1587,32 @@ describe('NavigationLinkTest', function () {
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
+
+    describe('Navigating Params Click Navigation Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            var navigatingEvt, navigatingLink;
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    navigating={(e, domId, link) => {
+                        navigatingEvt = e;
+                        navigatingLink = link;
+                    }}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var evt = { preventDefault: () => {} };
+            link.props['onClick'](evt);
+            assert.strictEqual(navigatingEvt, evt);
+            assert.equal(navigatingLink, '/r');
+        })
+    });
 });
