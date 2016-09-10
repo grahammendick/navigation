@@ -1642,4 +1642,75 @@ describe('NavigationLinkTest', function () {
             assert.equal(stateNavigator.stateContext.data.x, 'a');
         })
     });
+
+    describe('History Click Navigation Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var addHistory;
+            stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
+            link.props['onClick']({ preventDefault: () => {} });
+            assert.strictEqual(addHistory, true);
+        })
+    });
+
+    describe('Replace History Click Navigation Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    historyAction="replace"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var replaceHistory;
+            stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
+            link.props['onClick']({ preventDefault: () => {} });
+            assert.strictEqual(replaceHistory, true);
+        })
+    });
+
+    describe('None History Click Navigation Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var renderer = ReactTestUtils.createRenderer();
+            renderer.render(
+                <NavigationReact.NavigationLink
+                    stateKey="s"
+                    historyAction="none"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationReact.NavigationLink>
+            );
+            var link = renderer.getRenderOutput();
+            link['ref']({ href: link.props['href'] });
+            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var noneHistory = true;
+            stateNavigator.historyManager.addHistory = () => { noneHistory = false };
+            link.props['onClick']({ preventDefault: () => {} });
+            assert.strictEqual(noneHistory, true);
+        })
+    });
 });
