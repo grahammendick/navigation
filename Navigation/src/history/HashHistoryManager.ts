@@ -30,7 +30,7 @@ class HashHistoryManager implements HistoryManager {
     }
 
     getCurrentUrl(): string {
-        return this.decode(location.hash.substring(1));
+        return this.getUrl(location);
     }
 
     getHref(url: string): string {
@@ -39,8 +39,8 @@ class HashHistoryManager implements HistoryManager {
         return '#' + this.encode(url);
     }
 
-    getUrl(anchor: HTMLAnchorElement) {
-        return this.decode(anchor.hash.substring(1));
+    getUrl(hrefElement: HTMLAnchorElement | Location) {
+        return this.decode(hrefElement.hash.substring(1));
     }
     
     stop() {

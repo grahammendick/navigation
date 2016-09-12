@@ -26,7 +26,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     getCurrentUrl(): string {
-        return location.pathname.substring(this.applicationPath.length) + location.search;
+        return this.getUrl(location);
     }
 
     getHref(url: string): string {
@@ -35,8 +35,8 @@ class HTML5HistoryManager implements HistoryManager {
         return this.applicationPath + url;
     }
 
-    getUrl(anchor: HTMLAnchorElement) {
-        return anchor.pathname.substring(this.applicationPath.length) + anchor.search;
+    getUrl(hrefElement: HTMLAnchorElement | Location) {
+        return hrefElement.pathname.substring(this.applicationPath.length) + hrefElement.search;
     }
     
     stop() {
