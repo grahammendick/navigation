@@ -45,7 +45,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     private static prependSlash(url: string): string {
-        return url && url.substring(0, 1) !== '/' ? '/' + url : url;
+        return (url && url.substring(0, 1) !== '/') ? '/' + url : url;
     }
 }
 export = HTML5HistoryManager;
