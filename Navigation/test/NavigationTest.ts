@@ -4933,4 +4933,26 @@ describe('Navigation', function () {
             });
         }
     });
+
+    describe('Start Route', function () {
+        it('should navigate', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '' },
+                { key: 's1', route: 'ab' }
+            ]);
+            stateNavigator.start('/ab');
+            assert.strictEqual(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        });
+    });
+
+    describe('Start Empty Route', function () {
+        it('should navigate', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '' },
+                { key: 's1', route: 'ab' }
+            ]);
+            stateNavigator.start('');
+            assert.strictEqual(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        });
+    });
 });
