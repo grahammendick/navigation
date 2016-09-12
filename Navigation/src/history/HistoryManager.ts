@@ -4,7 +4,7 @@
     addHistory(url: string, replace: boolean): void;
     getCurrentUrl(): string;
     getHref(url: string): string;
-    getUrl(anchor: HTMLAnchorElement): string;
+    getUrl(hrefElement: HTMLAnchorElement | Location): string;
     stop(): void;
 }
 export = HistoryManager;

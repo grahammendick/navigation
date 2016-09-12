@@ -6,7 +6,7 @@ class HTML5HistoryManager implements HistoryManager {
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
     
     constructor(applicationPath: string = '') {
-        this.applicationPath = applicationPath;
+        this.applicationPath = HTML5HistoryManager.prependSlash(applicationPath);
     }
 
     init(navigateHistory: () => void) {
@@ -26,22 +26,26 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     getCurrentUrl(): string {
-        return location.pathname.substring(this.applicationPath.length) + location.search;
+        return this.getUrl(location);
     }
 
     getHref(url: string): string {
         if (url == null)
             throw new Error('The Url is invalid');
-        return this.applicationPath + url;
+        return this.applicationPath + HTML5HistoryManager.prependSlash(url);
     }
 
-    getUrl(anchor: HTMLAnchorElement) {
-        return anchor.pathname.substring(this.applicationPath.length) + anchor.search;
+    getUrl(hrefElement: HTMLAnchorElement | Location) {
+        return hrefElement.pathname.substring(this.applicationPath.length) + hrefElement.search;
     }
     
     stop() {
         if (!this.disabled)
             window.removeEventListener('popstate', this.navigateHistory);
+    }
+
+    private static prependSlash(url: string): string {
+        return (url && url.substring(0, 1) !== '/') ? '/' + url : url;
     }
 }
 export = HTML5HistoryManager;

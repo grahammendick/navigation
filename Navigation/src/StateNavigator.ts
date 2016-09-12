@@ -163,7 +163,7 @@ class StateNavigator {
     }
     
     start(url?: string) {
-        this.navigateLink(url ? url : this.historyManager.getCurrentUrl());
+        this.navigateLink(url != null ? url : this.historyManager.getCurrentUrl());
     };
 }
 export = StateNavigator;

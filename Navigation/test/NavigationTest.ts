@@ -4933,4 +4933,40 @@ describe('Navigation', function () {
             });
         }
     });
+
+    describe('Start Route', function () {
+        it('should navigate', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '' },
+                { key: 's1', route: 'ab' }
+            ]);
+            stateNavigator.start('/ab');
+            assert.strictEqual(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+        });
+    });
+
+    describe('Start Empty Route', function () {
+        it('should navigate', function() {
+            var stateNavigator = new Navigation.StateNavigator([
+                { key: 's0', route: '' },
+                { key: 's1', route: 'ab' }
+            ]);
+            stateNavigator.start('');
+            assert.strictEqual(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        });
+    });
+
+    describe('HTML5 History', function () {
+        it('should prepend slash', function() {
+            var history = new Navigation.HTML5HistoryManager();
+            assert.strictEqual(history.getHref('a'), '/a');
+            assert.strictEqual(history.getHref('/a'), '/a');
+            history = new Navigation.HTML5HistoryManager('a');
+            assert.strictEqual(history.getHref('b'), '/a/b');
+            assert.strictEqual(history.getHref('/b'), '/a/b');
+            history = new Navigation.HTML5HistoryManager('/a');
+            assert.strictEqual(history.getHref('b'), '/a/b');
+            assert.strictEqual(history.getHref('/b'), '/a/b');
+        });
+    });
 });
