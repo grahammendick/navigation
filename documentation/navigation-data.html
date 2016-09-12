@@ -80,6 +80,13 @@
   {key: 'mail', defaults: {expand: false}},
   {key: 'compose'}
 ]);</code></pre>
+            <h2>Setting Constraints</h2>
+            <p>
+                Like the navigated function, you can attach a validate function to the State
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.mail.validate = function(data) {
+  return data.id > 0;
+};</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
