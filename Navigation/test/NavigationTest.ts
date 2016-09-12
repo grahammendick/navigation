@@ -4955,4 +4955,18 @@ describe('Navigation', function () {
             assert.strictEqual(stateNavigator.stateContext.state, stateNavigator.states['s0']);
         });
     });
+
+    describe('HTML5 History', function () {
+        it('should prepend slash', function() {
+            var history = new Navigation.HTML5HistoryManager();
+            assert.strictEqual(history.getHref('a'), '/a');
+            assert.strictEqual(history.getHref('/a'), '/a');
+            history = new Navigation.HTML5HistoryManager('a');
+            assert.strictEqual(history.getHref('b'), '/a/b');
+            assert.strictEqual(history.getHref('/b'), '/a/b');
+            history = new Navigation.HTML5HistoryManager('/a');
+            assert.strictEqual(history.getHref('b'), '/a/b');
+            assert.strictEqual(history.getHref('/b'), '/a/b');
+        });
+    });
 });
