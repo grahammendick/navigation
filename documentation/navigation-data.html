@@ -80,6 +80,13 @@
   {key: 'mail', defaults: {expand: false}},
   {key: 'compose'}
 ]);</code></pre>
+            <h2>Setting Constraints</h2>
+            <p>
+                You can also define navigation data constraints in a function attached to the <code>validate</code> property of the <code>State</code>. This function receives the navigation data as a parameter and you return true only if the data meets your constraints. The Navigation router will only navigate to a <code>State</code> if the constraints are met. For example, we could create a constraint to ensure that the mail id is greater than zero.  
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.mail.validate = function(data) {
+  return data.id > 0;
+};</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
