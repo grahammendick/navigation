@@ -110,13 +110,18 @@
             </table>
             <h2>Handling Array Data</h2>
             <p>
-                SPLATS!!!
+                Can also set default types for arrays
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
-  {key: 'mail', route: 'open/{id}/{*expandIds?}', defaultTypes: {expandIds: 'numberarray'}},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {expandIds: 'numberarray'}},
   {key: 'compose'}
 ]);</code></pre>
+            <p>
+                Url looks like 'open/12?expandIds=1&expandIds=3'
+                'open/{id}/{*expandIds?}'
+                Url looks like 'open/12/1/3'
+            </p>
             <div class="Note">
                 <h2>Note</h2>
                 Once you've configured all the types for a <code>State</code>, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', route: '', trackTypes: false}</code>
