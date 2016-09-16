@@ -40,7 +40,7 @@
                 When it comes to passing data between views, the Navigation router isn't like other routers. Other routers make you define your routes and parameters up front. The Navigation router thinks in terms of <code>States</code> and data so you don't need to think about routes and parameters until your application's working.
             </p>
             <p>
-                You can use the <code>NavigationLink</code> component to build Hyperlinks that navigate between <code>States</code>. As well as a <code>stateKey prop</code> that holds the destination <code>State</code>, the <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass. You don't have to convert data to strings because it accepts numbers, booleans and dates and even arrays of such values. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
+                You can use the <code>NavigationLink</code> component to build Hyperlinks that navigate between <code>States</code>. As well as a <code>stateKey prop</code> that holds the destination <code>State</code>, the <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass. You don't have to convert data to strings because it accepts numbers, booleans and dates. In an email application, for example, a Hyperlink that opens an email might pass along the email id together with a flag that indicates the thread's history should be initially collapsed.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
@@ -52,6 +52,9 @@
                 For navigating without Hyperlinks, you can pass data in the second parameter of the <code>navigate</code> function on the <code>stateNavigator</code>.
             </p>
             <pre><code class="language-jsx">stateNavigator.navigate('mail', {id: 12, expand: false});</code></pre>
+            <p>
+                YOU CAN EVEN PASS ARRAYS!!
+            </p>
             <h2>Receiving Data</h2>
             <p>
                 You'll recall that the Navigation router notifies you when a <code>State</code> becomes active by calling the function you assigned to the <code>navigated</code> property of that <code>State</code>. When it calls this function it passes in a parameter holding the navigation data. In the email example, when the mail <code>State</code> is active we use the <code>id</code> and <code>expand</code> data items passed in to set the respective <code>props</code> on our <code>Mail</code> component.
