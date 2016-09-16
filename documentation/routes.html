@@ -59,7 +59,7 @@
 ]);</code></pre>
             <h3>2. Configuring Types</h3>
             <p>
-                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_2', by assigning the <code>id</code> a type of 'number'. The supported types are 'string', 'number, 'boolean', 'date', 'stringarray', 'numberarray', booleanarray' and 'datearray'. 
+                You'll recall that the Navigation router passes around typed data. By default it uses the Url to keep track of this type information. In the example Url the last three characters track that the <code>id</code> is a number. We'll remove these trailing characters, so that the Url reads '/open?id=12' instead of '/open?id=121_2', by assigning the <code>id</code> a type of 'number'. The other supported types are 'boolean' and 'date' ('string' is the default). 
             </p>
             <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
@@ -108,9 +108,21 @@
                     <td>['open/{id}', '{expanded}/history/{id}']</td>
                 </tr>
             </table>
+            <h2>Handling Array Data</h2>
+            <p>
+                If we want to allow individual mails in the thread to be expanded and collapsed, we can pass <code>expand</code> as an array of ids rather than a boolean. We keep the Url tidy by setting <code>expand's</code> type to 'numberarray'. The other supported array types are 'stringarray', 'booleanarray' and 'datearray'.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', route: 'open/{id}', defaultTypes: {expand: 'numberarray'}},
+  {key: 'compose'}
+]);</code></pre>
+            <p>
+                The Navigation router generates a Url with the array values held in separate query string parameters, each with the key 'expand'. If we expand the first and third mails in the thread the Url generated is 'open/12?expand=1&expand=3'. We can store the array as route parameters instead by configuring <code>expand</code> as a splat parameter using the '*' prefix. A route of 'open/{id}/{*expand?}' generates a Url of 'open/12/1/3'.
+            </p>
             <div class="Note">
                 <h2>Note</h2>
-                You don't need to configure a type for string values because 'string' is the default. Once you've finished configuring all the other types, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', route: '', trackTypes: false}</code>
+                Once you've configured all the types for a <code>State</code>, if any string value can contain underscores then you must set <code>trackTypes</code> to false for that <code>State</code> to prevent the Navigation router escaping them, e.g., <code>{key: 'inbox', route: '', trackTypes: false}</code>
             </div>
         </div>
     </div>
