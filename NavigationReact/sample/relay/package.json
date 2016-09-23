@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "webpack",
+    "start": "babel-node ./server.js",
     "updateSchema": "babel-node ./updateSchema.js"
   }
 }

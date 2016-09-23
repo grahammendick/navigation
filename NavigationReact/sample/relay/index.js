@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
-import Schema from './schema.js';
 
 class Score extends React.Component {
   render() {
