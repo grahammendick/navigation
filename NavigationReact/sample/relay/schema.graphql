@@ -1,0 +1,12 @@
+type Game {
+  scores(numToShow: Int, sortDirection: String): [Score]
+}
+
+type Query {
+  game: Game
+}
+
+type Score {
+  initials: String
+  score: Int
+}

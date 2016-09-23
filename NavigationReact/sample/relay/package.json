@@ -1,0 +1,25 @@
+{
+  "name": "navigation-relay",
+  "description": "Navigation React Relay example",
+  "dependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-relay-plugin": "^0.9.3",
+    "graphql": "^0.7.0",
+    "navigation": "*",
+    "navigation-react": "*",
+    "react": "^15.3.2",
+    "react-dom": "*",
+    "react-relay": "^0.9.3",
+    "webpack": "^1.12.10"
+  },
+  "scripts": {
+    "build": "webpack",
+    "updateSchema": "babel-node ./updateSchema.js"
+  }
+}
