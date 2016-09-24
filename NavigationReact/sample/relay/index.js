@@ -101,7 +101,8 @@ var Person = Relay.createContainer(Details, {
       fragment on Person {
         name,
         dateOfBirth,
-        email
+        email,
+        phone
       }
     `,
   },
@@ -147,6 +148,20 @@ class PeopleRoute extends Relay.Route {
   };
 }
 
+class PersonRoute extends Relay.Route {
+  static routeName = 'Person';
+  static queries = {
+    person: (Component) => Relay.QL`
+      query PersonQuery {
+        person(id: $id) { ${Component.getFragment('person')} },
+      }
+    `,
+  };
+  static paramDefinitions = {
+    id: {required: true},
+  };
+}
+
 stateNavigator.states.people.navigated = (data) => {
   var peopleRoute = new PeopleRoute({ pageNumber: data.pageNumber });
   ReactDOM.render(
@@ -156,6 +171,20 @@ stateNavigator.states.people.navigated = (data) => {
         }
       Component={People}
       route={peopleRoute}
+    />,
+    document.getElementById('content')
+  );
+}
+
+stateNavigator.states.person.navigated = (data) => {
+  var personRoute = new PersonRoute({ id: data.id });
+  ReactDOM.render(
+    <Relay.RootContainer
+      renderFetched={data =>
+          <Person {...data} stateNavigator={stateNavigator} />
+        }
+      Component={Person}
+      route={personRoute}
     />,
     document.getElementById('content')
   );

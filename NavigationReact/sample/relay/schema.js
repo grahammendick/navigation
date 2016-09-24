@@ -112,10 +112,19 @@ export default new GraphQLSchema({
         args: {
           pageNumber: {type: GraphQLInt},
         },
-        resolve: (blank, { pageNumber }) => {
+        resolve: (root, { pageNumber }) => {
           var start = (pageNumber - 1) * 10;
           return { persons: PEOPLE.slice(start, start + 10) };
         }
+      },
+      person: {
+        type: PersonType,
+        args: {
+          id: {type: GraphQLInt},
+        },
+        resolve: (root, { id }) => (
+          PEOPLE.filter(person => person.id === id)[0]
+        )
       },
     }),
   }),
