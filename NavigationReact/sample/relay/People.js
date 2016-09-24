@@ -50,17 +50,17 @@ var People = ({ people, stateNavigator }) => {
 };
 
 export default Relay.createContainer(People, {
-  fragments: {
-    people: () => Relay.QL`
-      fragment on People {
-        persons {
-          id,
-          name,
-          dateOfBirth
-        }
-      }
-    `,
-  },
+    fragments: {
+        people: () => Relay.QL`
+            fragment on People {
+                persons {
+                    id,
+                    name,
+                    dateOfBirth
+                }
+            }
+        `,
+    },
 });
 
 

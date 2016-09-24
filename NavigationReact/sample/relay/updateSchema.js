@@ -5,8 +5,8 @@ import { graphql } from 'graphql'
 import { introspectionQuery } from 'graphql/utilities'
 
 graphql(schema, introspectionQuery).then(result => {
-  fs.writeFileSync(
-    path.join(__dirname, './schema.json'),
-    JSON.stringify(result, null, 2)
-  );
+    fs.writeFileSync(
+        path.join(__dirname, './schema.json'),
+        JSON.stringify(result, null, 2)
+    );
 });

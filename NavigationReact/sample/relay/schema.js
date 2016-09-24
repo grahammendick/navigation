@@ -1,9 +1,9 @@
 import {
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLSchema,
-  GraphQLString,
+    GraphQLInt,
+    GraphQLList,
+    GraphQLObjectType,
+    GraphQLSchema,
+    GraphQLString,
 } from 'graphql';
 
 var PEOPLE = [
@@ -22,46 +22,46 @@ var PEOPLE = [
 ];
 
 var PersonType = new GraphQLObjectType({
-  name: 'Person',
-  fields: () => ({
-    id: {type: GraphQLString},
-    name: {type: GraphQLString},
-    dateOfBirth: {type: GraphQLString},
-    email: {type: GraphQLString},
-    phone: {type: GraphQLString},
-  }),
+    name: 'Person',
+    fields: () => ({
+        id: {type: GraphQLString},
+        name: {type: GraphQLString},
+        dateOfBirth: {type: GraphQLString},
+        email: {type: GraphQLString},
+        phone: {type: GraphQLString},
+    }),
 });
 
 var PeopleType = new GraphQLObjectType({
-  name: 'People',
-  fields: () => ({
-    persons: {type: new GraphQLList(PersonType)},
-  }),
+    name: 'People',
+    fields: () => ({
+        persons: {type: new GraphQLList(PersonType)},
+    }),
 });
 
 export default new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'Query',
-    fields: () => ({
-      people: {
-        type: PeopleType,
-        args: {
-          pageNumber: {type: GraphQLInt},
-        },
-        resolve: (root, { pageNumber }) => {
-          var start = (pageNumber - 1) * 10;
-          return { persons: PEOPLE.slice(start, start + 10) };
-        }
-      },
-      person: {
-        type: PersonType,
-        args: {
-          id: {type: GraphQLInt},
-        },
-        resolve: (root, { id }) => (
-          PEOPLE.filter(person => person.id === id)[0]
-        )
-      },
+    query: new GraphQLObjectType({
+        name: 'Query',
+        fields: () => ({
+            people: {
+                type: PeopleType,
+                args: {
+                    pageNumber: {type: GraphQLInt},
+                },
+                resolve: (root, { pageNumber }) => {
+                    var start = (pageNumber - 1) * 10;
+                    return { persons: PEOPLE.slice(start, start + 10) };
+                }
+            },
+            person: {
+                type: PersonType,
+                args: {
+                    id: {type: GraphQLInt},
+                },
+                resolve: (root, { id }) => (
+                    PEOPLE.filter(person => person.id === id)[0]
+                )
+            },
+        }),
     }),
-  }),
 });
