@@ -5,7 +5,6 @@ import { graphql } from 'graphql';
 import schema from './schema';
 import webpack from 'webpack';
 
-
 const app = express();
 
 app.use('/graphql', graphqlHTTP({
