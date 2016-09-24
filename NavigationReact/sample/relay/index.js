@@ -21,19 +21,8 @@ class PeopleRoute extends Relay.Route {
     };
 }
 
-class PersonRoute extends Relay.Route {
-    static routeName = 'Person';
-    static queries = {
-        person: (Component) => Relay.QL`
-            query PersonQuery {
-                person(id: $id) { ${Component.getFragment('person')} },
-            }
-        `,
-    };
-}
-
 stateNavigator.states.people.navigated = (data) => {
-    var peopleRoute = new PeopleRoute({ pageNumber: data.pageNumber });
+    var peopleRoute = new PeopleRoute(data);
     ReactDOM.render(
         <Relay.RootContainer
             renderFetched={data =>
@@ -46,8 +35,19 @@ stateNavigator.states.people.navigated = (data) => {
     );
 }
 
+class PersonRoute extends Relay.Route {
+    static routeName = 'Person';
+    static queries = {
+        person: (Component) => Relay.QL`
+            query PersonQuery {
+                person(id: $id) { ${Component.getFragment('person')} },
+            }
+        `,
+    };
+}
+
 stateNavigator.states.person.navigated = (data) => {
-    var personRoute = new PersonRoute({ id: data.id });
+    var personRoute = new PersonRoute(data);
     ReactDOM.render(
         <Relay.RootContainer
             renderFetched={data =>
