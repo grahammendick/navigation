@@ -21,7 +21,6 @@
     "webpack": "^1.12.10"
   },
   "scripts": {
-    "build": "webpack",
     "start": "babel-node ./server.js",
     "updateSchema": "babel-node ./updateSchema.js"
   }
