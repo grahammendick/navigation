@@ -1,7 +1,8 @@
 import React from 'react';
+import Relay from 'react-relay';
 import { NavigationBackLink } from 'navigation-react';
 
-export default ({ person, stateNavigator }) => (
+var Person = ({ person, stateNavigator }) => (
     <div>
         <NavigationBackLink
             distance={1}
@@ -20,3 +21,15 @@ export default ({ person, stateNavigator }) => (
     </div>
 );
 
+export default Relay.createContainer(Person, {
+  fragments: {
+    person: () => Relay.QL`
+      fragment on Person {
+        name,
+        dateOfBirth,
+        email,
+        phone
+      }
+    `,
+  },
+});

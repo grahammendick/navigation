@@ -1,10 +1,11 @@
 import React from 'react';
+import Relay from 'react-relay';
 import {
     NavigationLink,
     RefreshLink
 } from 'navigation-react';
 
-export default ({ people, stateNavigator }) => {
+var People = ({ people, stateNavigator }) => {
     var rows = people.persons.map((person) => (
         <tr key={person.id}>
             <td>
@@ -47,3 +48,19 @@ export default ({ people, stateNavigator }) => {
         </div>
     );
 };
+
+export default Relay.createContainer(People, {
+  fragments: {
+    people: () => Relay.QL`
+      fragment on People {
+        persons {
+          id,
+          name,
+          dateOfBirth
+        }
+      }
+    `,
+  },
+});
+
+

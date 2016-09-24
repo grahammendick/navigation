@@ -1,41 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
-import Listing from './People.js';
-import Details from './Person.js';
+import People from './People.js';
+import Person from './Person.js';
 import { StateNavigator } from 'Navigation';
 
 var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
     {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
 ]);
-
-var Person = Relay.createContainer(Details, {
-  fragments: {
-    person: () => Relay.QL`
-      fragment on Person {
-        name,
-        dateOfBirth,
-        email,
-        phone
-      }
-    `,
-  },
-});
-
-var People = Relay.createContainer(Listing, {
-  fragments: {
-    people: () => Relay.QL`
-      fragment on People {
-        persons {
-          id,
-          name,
-          dateOfBirth
-        }
-      }
-    `,
-  },
-});
 
 class PeopleRoute extends Relay.Route {
   static routeName = 'People';
