@@ -1,5 +1,5 @@
 # Navigation Relay
-Navigation doesn't own your components so it integrates well with other libraries like Relay.  
+Navigation doesn't own your components so it integrates well with other libraries, like Relay.  
 
 ## Run
 Once you've cloned the repository, you can install the dependencies and start the Relay example:
