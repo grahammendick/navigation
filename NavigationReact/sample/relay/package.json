@@ -10,6 +10,8 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-relay-plugin": "^0.9.3",
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.4",
     "graphql": "^0.7.0",
     "navigation": "*",
     "navigation-react": "*",
