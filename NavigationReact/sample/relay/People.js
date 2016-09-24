@@ -4,19 +4,13 @@ import {
     RefreshLink
 } from 'navigation-react';
 
-export default class Test extends React.Component {
-    render() {
-        console.log(this.props.people.persons[0].name);
-        return <div>TEst</div>;
-    }
-}
-/*export default ({ people, stateNavigator }) => {
-    var rows = people.map((person) => (
+export default ({ people, stateNavigator }) => {
+    var rows = people.persons.map((person) => (
         <tr key={person.id}>
             <td>
                 <NavigationLink
                     stateKey="person"
-                    navigationData={{ id: person.id }}
+                    navigationData={{ id: +person.id }}
                     stateNavigator={stateNavigator}>
                     {person.name}
                 </NavigationLink>
@@ -52,4 +46,4 @@ export default class Test extends React.Component {
             </div>
         </div>
     );
-};*/
+};

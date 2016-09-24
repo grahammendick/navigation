@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 import Listing from './People.js';
 import Details from './Person.js';
+import { StateNavigator } from 'Navigation';
 
 /*class Score extends React.Component {
   render() {
@@ -88,6 +89,12 @@ Game = Relay.createContainer(Game, {
   },
 });*/
 
+var stateNavigator = new StateNavigator([
+    {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
+    {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
+]);
+
+
 var Person = Relay.createContainer(Details, {
   fragments: {
     person: () => Relay.QL`
@@ -106,6 +113,7 @@ var People = Relay.createContainer(Listing, {
     people: () => Relay.QL`
       fragment on People {
         persons {
+          id,
           name,
           dateOfBirth
         }
@@ -136,11 +144,18 @@ class PeopleRoute extends Relay.Route {
   };
 }
 
-ReactDOM.render(
-  <Relay.RootContainer
-    Component={People}
-    route={new PeopleRoute()}
-  />,
-  document.getElementById('content')
-);
+stateNavigator.states.people.navigated = (data) => {
+  ReactDOM.render(
+    <Relay.RootContainer
+      renderFetched={data =>
+          <People {...data} stateNavigator={stateNavigator} />
+        }
+      Component={People}
+      route={new PeopleRoute()}
+    />,
+    document.getElementById('content')
+  );
+}
+
+stateNavigator.start();
 
