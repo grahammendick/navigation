@@ -138,20 +138,24 @@ class PeopleRoute extends Relay.Route {
   static queries = {
     people: (Component) => Relay.QL`
       query PeopleQuery {
-        people { ${Component.getFragment('people')} },
+        people(pageNumber: $pageNumber) { ${Component.getFragment('people')} },
       }
     `,
+  };
+  static paramDefinitions = {
+    pageNumber: {required: true},
   };
 }
 
 stateNavigator.states.people.navigated = (data) => {
+  var peopleRoute = new PeopleRoute({ pageNumber: data.pageNumber });
   ReactDOM.render(
     <Relay.RootContainer
       renderFetched={data =>
           <People {...data} stateNavigator={stateNavigator} />
         }
       Component={People}
-      route={new PeopleRoute()}
+      route={peopleRoute}
     />,
     document.getElementById('content')
   );
