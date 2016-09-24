@@ -19,9 +19,6 @@ class PeopleRoute extends Relay.Route {
       }
     `,
   };
-  static paramDefinitions = {
-    pageNumber: {required: true},
-  };
 }
 
 class PersonRoute extends Relay.Route {
@@ -32,9 +29,6 @@ class PersonRoute extends Relay.Route {
         person(id: $id) { ${Component.getFragment('person')} },
       }
     `,
-  };
-  static paramDefinitions = {
-    id: {required: true},
   };
 }
 
