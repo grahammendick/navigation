@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
+import Listing from './People.js';
+import Details from './Person.js';
 
-class Score extends React.Component {
+/*class Score extends React.Component {
   render() {
     var {initials, score} = this.props.score;
     return (
@@ -84,9 +86,35 @@ Game = Relay.createContainer(Game, {
       }
     `,
   },
+});*/
+
+var Person = Relay.createContainer(Details, {
+  fragments: {
+    person: () => Relay.QL`
+      fragment on Person {
+        name,
+        dateOfBirth,
+        email
+      }
+    `,
+  },
 });
 
-class GameHomeRoute extends Relay.Route {
+
+var People = Relay.createContainer(Listing, {
+  fragments: {
+    people: () => Relay.QL`
+      fragment on People {
+        persons {
+          name,
+          dateOfBirth
+        }
+      }
+    `,
+  },
+});
+
+/*class GameHomeRoute extends Relay.Route {
   static routeName = 'Home';
   static queries = {
     game: (Component) => Relay.QL`
@@ -95,12 +123,23 @@ class GameHomeRoute extends Relay.Route {
       }
     `,
   };
+}*/
+
+class PeopleRoute extends Relay.Route {
+  static routeName = 'People';
+  static queries = {
+    people: (Component) => Relay.QL`
+      query PeopleQuery {
+        people { ${Component.getFragment('people')} },
+      }
+    `,
+  };
 }
 
 ReactDOM.render(
   <Relay.RootContainer
-    Component={Game}
-    route={new GameHomeRoute()}
+    Component={People}
+    route={new PeopleRoute()}
   />,
   document.getElementById('content')
 );
