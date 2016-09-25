@@ -6,8 +6,10 @@ import Person from './Person.js';
 import { StateNavigator } from 'Navigation';
 
 var stateNavigator = new StateNavigator([
-    { key: 'people', route: '{pageNumber?}', defaults: { pageNumber: 1 } },
-    { key: 'person', route: 'person/{id}', defaults: { id: 0 }, trackCrumbTrail: true }
+    { key: 'people', route: '{pageNumber?}', defaults: { pageNumber: 1 },
+        component: People, relayRoute: (data) => new PeopleRoute(data) },
+    { key: 'person', route: 'person/{id}', defaults: { id: 0 }, trackCrumbTrail: true,
+        component: Person, relayRoute: (data) => new PersonRoute(data) }
 ]);
 
 class PeopleRoute extends Relay.Route {
@@ -21,20 +23,6 @@ class PeopleRoute extends Relay.Route {
     };
 }
 
-stateNavigator.states.people.navigated = (data) => {
-    var peopleRoute = new PeopleRoute(data);
-    ReactDOM.render(
-        <Relay.RootContainer
-            renderFetched={data =>
-                <People {...data} stateNavigator={stateNavigator} />
-            }
-            Component={People}
-            route={peopleRoute}
-            />,
-        document.getElementById('content')
-    );
-}
-
 class PersonRoute extends Relay.Route {
     static routeName = 'Person';
     static queries = {
@@ -46,19 +34,21 @@ class PersonRoute extends Relay.Route {
     };
 }
 
-stateNavigator.states.person.navigated = (data) => {
-    var personRoute = new PersonRoute(data);
+stateNavigator.onNavigate((oldState, state, data) => {
+    var route = state.relayRoute(data);
+    var Component = state.component;
     ReactDOM.render(
         <Relay.RootContainer
             renderFetched={data =>
-                <Person {...data} stateNavigator={stateNavigator} />
+                <Component {...data} stateNavigator={stateNavigator} />
             }
-            Component={Person}
-            route={personRoute}
+            Component={Component}
+            route={route}
             />,
         document.getElementById('content')
     );
-}
+
+})
 
 stateNavigator.start();
 
