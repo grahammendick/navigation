@@ -47,8 +47,7 @@ stateNavigator.onNavigate((oldState, state, data) => {
             />,
         document.getElementById('content')
     );
-
-})
+});
 
 stateNavigator.start();
 
