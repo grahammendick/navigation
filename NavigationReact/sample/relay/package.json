@@ -15,7 +15,7 @@
     "graphql": "^0.7.0",
     "navigation": "*",
     "navigation-react": "*",
-    "react": "^15.3.2",
+    "react": "*",
     "react-dom": "*",
     "react-relay": "^0.9.3",
     "webpack": "^1.12.10"
