@@ -5,6 +5,10 @@ import People from './People.js';
 import Person from './Person.js';
 import { StateNavigator } from 'Navigation';
 
+/**
+ * Configures the states for the two views. Adds the Relay Route and Component
+ * to each state so that a generic function can render the Relay RootContainer.
+ */
 var stateNavigator = new StateNavigator([
     { key: 'people', route: '{pageNumber?}', defaults: { pageNumber: 1 },
         component: People, relayRoute: (data) => new PeopleRoute(data) },
@@ -12,6 +16,9 @@ var stateNavigator = new StateNavigator([
         component: Person, relayRoute: (data) => new PersonRoute(data) }
 ]);
 
+/**
+ * The Relay Route for the people state.
+ */
 class PeopleRoute extends Relay.Route {
     static routeName = 'People';
     static queries = {
@@ -23,6 +30,9 @@ class PeopleRoute extends Relay.Route {
     };
 }
 
+/**
+ * The Relay Route for the person state.
+ */
 class PersonRoute extends Relay.Route {
     static routeName = 'Person';
     static queries = {
@@ -34,6 +44,10 @@ class PersonRoute extends Relay.Route {
     };
 }
 
+/**
+ * Listens for navigation events and renders the Relay RootContainer, passing
+ * in the Relay Route and Component retrieved from the state.
+ */
 stateNavigator.onNavigate((oldState, state, data) => {
     var route = state.relayRoute(data);
     var Component = state.component;
