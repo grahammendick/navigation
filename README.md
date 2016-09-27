@@ -16,6 +16,13 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cros
 ## Code
 You'll find the Navigation router source code in the Navigation folder. It's written in TypeScript and is built on top of node.js. The NavigationReact folder contains the source code for the Hyperlink components.
 
+## Download
+The Navigation router is made up of two npm packages: `navigation`, for the core router, and `navigation-react`, for the Hyperlink components.
+```
+var Navigation = require('navigation');
+var NavigationReact = require('navigation-react');
+```
+
 ## Example
 Here's the [Hello World example](http://grahammendick.github.io/navigation/documentation/hello-world.html) from the documentation. The example has two views. One view displays a Hyperlink that says 'Hello'. Clicking this Hyperlink navigates to the second view displaying the text 'World' inside a div. The Hyperlink passes across a number that sets the div's font-size.
 
@@ -42,7 +49,8 @@ stateNavigator.states.world.navigated = function(data) {
     document.getElementById('app'));
 };
 
-stateNavigator.start();
+stateNavigator.start();
+
 ```
 
 
