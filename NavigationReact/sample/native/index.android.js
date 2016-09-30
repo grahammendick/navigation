@@ -11,20 +11,15 @@ import {
   Text,
   View
 } from 'react-native';
+import People from './People.js';
 
 class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <People people={[{name: 'Bob', dateOfBirth: '01/02/1980'}, {name: 'Brenda', dateOfBirth: '02/03/1981'}]} />
         <Text style={styles.welcome}>
           Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
         </Text>
       </View>
     );
