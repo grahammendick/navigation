@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, View } from 'react-native';
+import { AppRegistry, BackAndroid, View } from 'react-native';
 import People from './People.js';
 import Person from './Person.js';
 import SceneNavigator from './SceneNavigator.js';
@@ -18,14 +18,14 @@ const PEOPLE = [
 
 const stateNavigator = new StateNavigator([
   { key: 'people' },
-  { key: 'person' }
+  { key: 'person', trackCrumbTrail: true }
 ]);
 
-stateNavigator.states.people.getScene = () => (
+stateNavigator.states.people.renderScene = () => (
   <People people={PEOPLE} stateNavigator={stateNavigator} />
 )
 
-stateNavigator.states.person.getScene = (data) => {
+stateNavigator.states.person.renderScene = (data) => {
   const person = PEOPLE.filter((person) => person.id === data.id)[0]; 
   return <Person person={person} />;
 }
@@ -33,3 +33,10 @@ stateNavigator.states.person.getScene = (data) => {
 stateNavigator.start('people');
 
 AppRegistry.registerComponent('App', () => App);
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  var canNavigateBack = stateNavigator.canNavigateBack(1);
+  if (canNavigateBack)
+    stateNavigator.navigateBack(1);
+  return canNavigateBack;
+});
