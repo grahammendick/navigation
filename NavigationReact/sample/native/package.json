@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "navigation": "^3.0.0",
-    "navigation-react": "^2.0.3",
     "react": "15.3.2",
     "react-native": "0.34.1"
   }
