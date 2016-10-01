@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 12,
     fontSize: 16,
+    backgroundColor: '#FFFFFF',
   },
   separator: {
     flex: 1,

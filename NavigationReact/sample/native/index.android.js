@@ -1,10 +1,10 @@
 import React from 'react';
-import { AppRegistry, BackAndroid, StyleSheet, View } from 'react-native';
+import { AppRegistry, BackAndroid, View } from 'react-native';
 import createStateNavigator from './createStateNavigator.js';
 import SceneNavigator from './SceneNavigator.js';
 
 const App = () => (
-  <View style={styles.container}>
+  <View>
     <SceneNavigator stateNavigator={stateNavigator} />
   </View>
 );
@@ -17,12 +17,6 @@ BackAndroid.addEventListener('hardwareBackPress', () => {
   if (canNavigateBack)
     stateNavigator.navigateBack(1);
   return canNavigateBack;
-});
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-  },
 });
 
 AppRegistry.registerComponent('App', () => App);
