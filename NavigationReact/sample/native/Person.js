@@ -5,6 +5,8 @@ export default ({ person }) => (
   <View style={styles.container}>
     <Text style={styles.text}>Name: {person.name}</Text>
     <Text style={styles.text}>Date of Birth: {person.dateOfBirth}</Text>
+    <Text style={styles.text}>Email: {person.email}</Text>
+    <Text style={styles.text}>Phone: {person.phone}</Text>
   </View>
 );
 
