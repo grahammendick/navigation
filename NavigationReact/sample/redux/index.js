@@ -38,8 +38,8 @@ stateNavigator.onNavigate((oldState, state, data) => {
  */
 stateNavigator.states.people.render = function(data, store) {
     var people = store.getState();
-	var start = (data.pageNumber - 1) * 10;
-	people = people.slice(start, start + 10);
+    var start = (data.pageNumber - 1) * 10;
+    people = people.slice(start, start + 10);
     ReactDOM.render(
         <Listing
             people={people}
