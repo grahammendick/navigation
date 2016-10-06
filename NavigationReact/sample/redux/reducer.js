@@ -15,7 +15,7 @@ var people = [
 
 export default (state = people, action) => {
     switch (action.type) {
-        case 'edit':
+        case 'EDIT':
             return state.map((person) => {
                 if (person.id === action.id) {
                     return Object.assign({}, person, {

@@ -28,7 +28,6 @@ stateNavigator.states.people.render = function(data, store) {
     ReactDOM.render(
         <Listing
             people={people}
-            store={store}
             stateNavigator={stateNavigator} />,
         document.getElementById('content')
     );		
