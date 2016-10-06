@@ -30,7 +30,7 @@ stateNavigator.states.people.render = function(data, store) {
             people={people}
             stateNavigator={stateNavigator} />,
         document.getElementById('content')
-    );		
+    );
 }
 
 stateNavigator.states.person.navigated = function(data, store) {
@@ -42,5 +42,5 @@ stateNavigator.states.person.navigated = function(data, store) {
             store={store}
             stateNavigator={stateNavigator} />,
         document.getElementById('content')
-    );		
+    );
 }
