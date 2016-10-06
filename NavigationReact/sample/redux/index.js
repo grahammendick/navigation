@@ -1,4 +1,4 @@
-import { Listing, Detail } from './Component';
+import { Listing, Details } from './Component';
 import { StateNavigator } from 'navigation';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,7 +7,7 @@ import reducer from './reducer';
 
 var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
-    {key: 'person', route: 'person/{id}', defaults: {id: 0 }}
+    {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);
 
 var store = createStore(reducer);
@@ -31,9 +31,9 @@ stateNavigator.states.people.render = function(data, store) {
             stateNavigator={stateNavigator} />,
         document.getElementById('content')
     );
-}
+};
 
-stateNavigator.states.person.navigated = function(data, store) {
+stateNavigator.states.person.render = function(data, store) {
     var people = store.getState();
     var person = people.filter((person) => person.id === data.id)[0];
     ReactDOM.render(
@@ -43,4 +43,6 @@ stateNavigator.states.person.navigated = function(data, store) {
             stateNavigator={stateNavigator} />,
         document.getElementById('content')
     );
-}
+};
+
+stateNavigator.start();

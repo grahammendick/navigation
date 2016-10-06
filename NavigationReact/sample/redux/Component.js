@@ -1,8 +1,8 @@
 import React from 'react';
-import { NavigationLink, RefreshLink } from 'navigation-react';
+import { NavigationLink, RefreshLink, NavigationBackLink } from 'navigation-react';
 
-var People = ({ people, stateNavigator }) => {
-    var rows = people.persons.map((person) => (
+var Listing = ({ people, stateNavigator }) => {
+    var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
                 <NavigationLink
@@ -45,11 +45,12 @@ var People = ({ people, stateNavigator }) => {
     );
 };
 
-var Person = ({ person, store, stateNavigator }) => {
+var Details = ({ person, store, stateNavigator }) => {
     var handleChange = (event) => {
         store.dispatch({
             type: 'EDIT',
-            name: event.target.value 
+            id: person.id,
+            name: event.target.value
         });
     };
     return (
@@ -72,4 +73,4 @@ var Person = ({ person, store, stateNavigator }) => {
     );
 };
 
-export default { Listing: People, Details: Person };
+export { Listing, Details };
