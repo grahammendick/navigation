@@ -72,4 +72,4 @@ var Person = ({ person, store, stateNavigator }) => {
     );
 };
 
-export { People, Person };
+export default { Listing: People, Details: Person };
