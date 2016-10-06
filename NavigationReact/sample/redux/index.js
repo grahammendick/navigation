@@ -3,13 +3,14 @@ import { StateNavigator } from 'navigation';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
+import reducer from './reducer';
 
 var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
     {key: 'person', route: 'person/{id}', defaults: {id: 0 }}
 ]);
 
-var store = createStore();
+var store = createStore(reducer);
 
 store.subscribe(() => {
     var { stateContext: { state, data} } = stateNavigator;
@@ -33,7 +34,7 @@ stateNavigator.states.people.render = function(data, store) {
     );		
 }
 
-stateNavigator.states.person.navigated = function(data, state) {
+stateNavigator.states.person.navigated = function(data, store) {
     var people = store.getState();
     var person = people.filter((person) => person.id === data.id)[0];
     ReactDOM.render(
