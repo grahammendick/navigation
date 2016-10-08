@@ -2,7 +2,7 @@
 
 class ArrayConverter extends TypeConverter {
     private converter: TypeConverter;
-    private static SEPARATOR1 = '1-';
+    private static SEPARATOR = '1-';
 
     constructor(converter: TypeConverter, key: string) {
         super(key, converter.name + 'array');
@@ -13,7 +13,7 @@ class ArrayConverter extends TypeConverter {
         var arr = [];
         if (typeof val === 'string') {
             if (!separable) {
-                var vals = val.split(ArrayConverter.SEPARATOR1);
+                var vals = val.split(ArrayConverter.SEPARATOR);
                 for (var i = 0; i < vals.length; i++) {
                     if (vals[i].length !== 0)
                         arr.push(this.converter.convertFrom(vals[i].replace(/0-/g, '-')));
@@ -47,7 +47,7 @@ class ArrayConverter extends TypeConverter {
                 vals.push('');
             }
         }
-        return { val: vals.join(ArrayConverter.SEPARATOR1), arrayVal: arr };
+        return { val: vals.join(ArrayConverter.SEPARATOR), arrayVal: arr };
     }
 }
 export = ArrayConverter;
