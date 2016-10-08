@@ -2,7 +2,6 @@
 import State = require('./config/State');
 
 class NavigationDataManager {
-    private static SEPARATOR = '_';
     private static SEPARATOR1 = '1_';
     private converterFactory = new ConverterFactory();
 
@@ -29,11 +28,11 @@ class NavigationDataManager {
     }
 
     private static decodeUrlValue(urlValue: string): string {
-        return urlValue.replace(new RegExp('0' + this.SEPARATOR, 'g'), this.SEPARATOR);
+        return urlValue.replace(/0_/g, '_');
     }
 
     private static encodeUrlValue(urlValue: string): string {
-        return urlValue.replace(new RegExp(this.SEPARATOR, 'g'), '0' + this.SEPARATOR);
+        return urlValue.replace(/_/g, '0_');
     }
 
     formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
