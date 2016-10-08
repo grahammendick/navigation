@@ -123,8 +123,12 @@ class NavigationDataManager {
     }
     
     private static getTypeName(obj: any): string {
-        var typeName: string = Object.prototype.toString.call(obj);
-        return typeName.substring(8, typeName.length - 1).toLowerCase();
+        var typeName: string = typeof obj;
+        if (typeName === 'object') {
+            typeName = Object.prototype.toString.call(obj);
+            typeName = typeName.substring(8, typeName.length - 1).toLowerCase();
+        }
+        return typeName;
     }
 }
 export = NavigationDataManager;
