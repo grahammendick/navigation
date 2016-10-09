@@ -58,7 +58,7 @@ class Route {
     }
 
     build(data: any, urlEncode: (route: Route, name: string, val: string) => string): string {
-        data = data != null ? data : {};
+        data = data || {};
         var route = '';
         var optional = true;
         for (var i = this.segments.length - 1; i >= 0; i--) {

@@ -89,7 +89,7 @@ class NavigationDataManager {
 
     private parseURLString(key: string, val: string | string[], state: State, decode = false, separable = false): any {
         decode = decode || state.trackTypes;
-        var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
+        var defaultType: string = state.defaultTypes[key] || 'string';
         var urlValue = typeof val === 'string' ? val : val[0];
         var converterKey = this.converterFactory.getConverterFromName(defaultType).key;
         if (state.trackTypes && urlValue.indexOf(NavigationDataManager.SEPARATOR) > -1) {
