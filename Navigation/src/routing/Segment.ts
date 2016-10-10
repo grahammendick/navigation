@@ -56,7 +56,7 @@
                 var defaultVal = defaults[subSegment.name];
                 optional = subSegment.optional && (!val || val === defaultVal);
                 if (this.optional || !optional) {
-                    val = val ? val : defaultVal;
+                    val = val || defaultVal;
                     blank = blank || !val;
                     if (val) {
                         if (!subSegment.splat || typeof val === 'string' ) {

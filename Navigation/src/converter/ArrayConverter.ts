@@ -2,8 +2,7 @@
 
 class ArrayConverter extends TypeConverter {
     private converter: TypeConverter;
-    private static SEPARATOR = '-';
-    private static SEPARATOR1 = '1-';
+    private static SEPARATOR = '1-';
 
     constructor(converter: TypeConverter, key: string) {
         super(key, converter.name + 'array');
@@ -14,10 +13,10 @@ class ArrayConverter extends TypeConverter {
         var arr = [];
         if (typeof val === 'string') {
             if (!separable) {
-                var vals = val.split(ArrayConverter.SEPARATOR1);
+                var vals = val.split(ArrayConverter.SEPARATOR);
                 for (var i = 0; i < vals.length; i++) {
                     if (vals[i].length !== 0)
-                        arr.push(this.converter.convertFrom(vals[i].replace(new RegExp('0' + ArrayConverter.SEPARATOR, 'g'), ArrayConverter.SEPARATOR)));
+                        arr.push(this.converter.convertFrom(vals[i].replace(/0-/g, '-')));
                     else
                         arr.push(null);
                 }
@@ -42,13 +41,13 @@ class ArrayConverter extends TypeConverter {
             if (val[i] != null && val[i].toString()) {
                 var convertedValue = this.converter.convertTo(val[i]).val;
                 arr.push(convertedValue);
-                vals.push(convertedValue.replace(new RegExp(ArrayConverter.SEPARATOR, 'g'), '0' + ArrayConverter.SEPARATOR));
+                vals.push(convertedValue.replace(/-/g, '0-'));
             } else {
                 arr.push('');
                 vals.push('');
             }
         }
-        return { val: vals.join(ArrayConverter.SEPARATOR1), arrayVal: arr };
+        return { val: vals.join(ArrayConverter.SEPARATOR), arrayVal: arr };
     }
 }
 export = ArrayConverter;

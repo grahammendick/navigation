@@ -91,18 +91,12 @@ class StateRouter {
 
     private static urlEncode(route: Route, name: string, val: string): string {
         var state: State = route['_state'];
-        if (state.urlEncode)
-            return state.urlEncode(state, name, val, false);
-        else
-            return encodeURIComponent(val);
+        return state.urlEncode(state, name, val, false);
     }
 
     private static urlDecode(route: Route, name: string, val: string): string {
         var state: State = route['_state'];
-        if (state.urlDecode)
-            return state.urlDecode(state, name, val, false);
-        else
-            return decodeURIComponent(val);
+        return state.urlDecode(state, name, val, false);
     }
 
     addRoutes(states: State[]) {
