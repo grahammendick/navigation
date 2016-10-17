@@ -1,4 +1,4 @@
-﻿import TypeConverter = require('./TypeConverter');
+﻿import TypeConverter from './TypeConverter';
 
 class BooleanConverter extends TypeConverter {
     constructor(key: string) {
@@ -15,4 +15,4 @@ class BooleanConverter extends TypeConverter {
         return { val: val.toString() };
     }
 }
-export = BooleanConverter;
+export default BooleanConverter;

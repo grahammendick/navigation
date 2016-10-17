@@ -76,4 +76,4 @@
         return { path: !blank ? routePath : null, optional: optional && this.optional };
     }
 }
-export = Segment;
+export default Segment;

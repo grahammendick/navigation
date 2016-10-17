@@ -1,7 +1,7 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import assert = require('assert');
-import Navigation = require('../src/Navigation');
+import Navigation from '../src/Navigation';
 
 describe('StateConfigTest', function () {
     describe('State', function () {

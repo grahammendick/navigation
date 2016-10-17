@@ -8,4 +8,4 @@ interface StateInfo {
     trackTypes?: boolean;
     [extras: string]: any;
 }
-export = StateInfo;
+export default StateInfo;

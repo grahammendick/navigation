@@ -1,4 +1,4 @@
-﻿import Route = require('./Route');
+﻿import Route from './Route';
 
 class Router {
     private routes: Route[] = [];
@@ -32,4 +32,4 @@ class Router {
         this.routes.sort(compare);
     }
 }
-export = Router;
+export default Router;

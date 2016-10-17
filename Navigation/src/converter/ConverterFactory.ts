@@ -1,9 +1,9 @@
-﻿import ArrayConverter = require('./ArrayConverter');
-import BooleanConverter = require('./BooleanConverter');
-import DateConverter = require('./DateConverter');
-import NumberConverter = require('./NumberConverter');
-import StringConverter = require('./StringConverter');
-import TypeConverter = require('./TypeConverter');
+﻿import ArrayConverter from './ArrayConverter';
+import BooleanConverter from './BooleanConverter';
+import DateConverter from './DateConverter';
+import NumberConverter from './NumberConverter';
+import StringConverter from './StringConverter';
+import TypeConverter from './TypeConverter';
 
 class ConverterFactory {
     private keyToConverterList: { [index: string]: TypeConverter } = {};
@@ -33,4 +33,4 @@ class ConverterFactory {
         return this.getConverterFromKey(key);
     }
 }
-export = ConverterFactory;
+export default ConverterFactory;

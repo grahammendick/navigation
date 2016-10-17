@@ -1,4 +1,4 @@
-import TypeConverter = require('./TypeConverter');
+import TypeConverter from './TypeConverter';
 
 class DateConverter extends TypeConverter {
     constructor(key: string) {
@@ -22,4 +22,4 @@ class DateConverter extends TypeConverter {
         return { val: year + '-' + month + '-' + day };
     }
 }
-export = DateConverter;
+export default DateConverter;

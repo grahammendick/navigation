@@ -1,4 +1,4 @@
-﻿import HistoryManager = require('./HistoryManager');
+﻿import HistoryManager from './HistoryManager';
 
 class HashHistoryManager implements HistoryManager {
     private navigateHistory: () => void;
@@ -64,4 +64,4 @@ class HashHistoryManager implements HistoryManager {
         return hash.replace('#', '?');
     }
 }
-export = HashHistoryManager;
+export default HashHistoryManager;

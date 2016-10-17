@@ -1,4 +1,4 @@
-﻿import State = require('./State');
+﻿import State from './State';
 
 class Crumb {
     data: any;
@@ -17,4 +17,4 @@ class Crumb {
         this.crumblessUrl = crumblessUrl;
     }
 }
-export = Crumb;
+export default Crumb;

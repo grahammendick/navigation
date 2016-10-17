@@ -1,4 +1,4 @@
-﻿import TypeConverter = require('./TypeConverter');
+﻿import TypeConverter from './TypeConverter';
 
 class StringConverter extends TypeConverter {
     constructor(key: string) {
@@ -15,4 +15,4 @@ class StringConverter extends TypeConverter {
         return { val: val.toString() };
     }
 }
-export = StringConverter;
+export default StringConverter;

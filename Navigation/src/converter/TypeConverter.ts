@@ -15,4 +15,4 @@
         return null;
     }
 }
-export = TypeConverter;
+export default TypeConverter;

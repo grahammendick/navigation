@@ -1,5 +1,5 @@
-﻿import Crumb = require('./Crumb');
-import StateInfo = require('./StateInfo');
+﻿import Crumb from './Crumb';
+import StateInfo from './StateInfo';
 
 class State implements StateInfo {
     key: string;
@@ -50,4 +50,4 @@ class State implements StateInfo {
         return newCrumbs;
     }
 }
-export = State;
+export default State;

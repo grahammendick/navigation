@@ -1,5 +1,5 @@
-﻿import ConverterFactory = require('./converter/ConverterFactory');
-import State = require('./config/State');
+﻿import ConverterFactory from './converter/ConverterFactory';
+import State from './config/State';
 
 class NavigationDataManager {
     private static SEPARATOR = '1_';
@@ -131,4 +131,4 @@ class NavigationDataManager {
         return typeName;
     }
 }
-export = NavigationDataManager;
+export default NavigationDataManager;
