@@ -1,7 +1,7 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 /// <reference path="../src/navigation.d.ts" />
-import assert = require('assert');
+import * as assert from 'assert';
 import Navigation from '../src/Navigation';
 
 describe('Navigation', function () {
