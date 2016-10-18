@@ -59,7 +59,7 @@ var info = ['/**',
   ' * License: <%= details.license %>',
   ' */',
   ''].join('\r\n');
-function rollupTask(name, file, to, details) {
+function rollupTask(name, file, to) {
     return rollup.rollup({
         entry: file,
         plugins: [
@@ -87,12 +87,12 @@ function rollupTask(name, file, to, details) {
         });
     });        
 }
-function buildTask(name, file, to, details) {
-    return gulp.src('./build/dist/' + to)
+function buildTask(file, details) {
+    return gulp.src('./build/dist/' + file)
         .pipe(buffer())
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'))
-        .pipe(rename(to.replace(/js$/, 'min.js')))
+        .pipe(rename(file.replace(/js$/, 'min.js')))
         .pipe(uglify())
         .pipe(buffer())
         .pipe(header(info, { details : details } ))
@@ -111,8 +111,8 @@ for (var i = 0; i < items.length; i++) {
     var jsTo = packageName.replace('-', '.') + '.js';
     items[i].name = upperName.replace('-', ' ');
     (function (name, tsFrom, jsTo, item, packageName) {
-        gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item));
-        gulp.task('Build' + name, ['Rollup' + name], () => buildTask(name, tsFrom, jsTo, item));
+        gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo));
+        gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
         gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
     })(name, tsFrom, jsTo, items[i], packageName);
     buildTasks.push('Build' + name);
