@@ -2,13 +2,13 @@
 /// <reference path="mocha.d.ts" />
 /// <reference path="../src/navigation.d.ts" />
 import * as assert from 'assert';
-import * as Navigation from '../src/Navigation';
+import { StateNavigator } from '../src/Navigation';
 
 describe('MatchTest', function () {
     describe('Root', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '' }
             ]);
         });
@@ -35,9 +35,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc' }
             ]);
         });
@@ -69,9 +69,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Two Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/c' }
             ]);
         });
@@ -103,9 +103,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
         });
@@ -138,9 +138,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Two Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}' }
             ]);
         });
@@ -178,9 +178,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{y}' }
             ]);
         });
@@ -218,9 +218,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Three Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}/{y}' }
             ]);
         });
@@ -262,9 +262,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Four Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}/c/{y}' }
             ]);
         });
@@ -305,9 +305,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param One Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}' }
             ]);
         });
@@ -341,9 +341,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param Two Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x?}' }
             ]);
         });
@@ -382,9 +382,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Optional Param Two Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}/{y?}' }
             ]);
         });
@@ -433,9 +433,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Optional Param Three Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x?}/{y?}' }
             ]);
         });
@@ -487,9 +487,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Two Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{y?}' }
             ]);
         });
@@ -532,9 +532,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Three Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}/{y?}' }
             ]);
         });
@@ -581,9 +581,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Four Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}/c/{y?}' }
             ]);
         });
@@ -630,9 +630,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Mixed Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x}' }
             ]);
         });
@@ -665,9 +665,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Mixed Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x}e{y}' }
             ]);
         });
@@ -708,9 +708,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional One Mixed Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x?}e{y}' }
             ]);
         });
@@ -754,9 +754,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Two Segment One Mixed', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}ab/{y?}' }
             ]);
         });
@@ -802,9 +802,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Two Segment One Mixed', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x}/cd' }
             ]);
         });
@@ -837,9 +837,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param Two Segment One Mixed', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x?}/cd' }
             ]);
         });
@@ -873,9 +873,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param One Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaults: { x: 'cde' } }
             ]);
         });
@@ -914,9 +914,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param One Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', defaults: { x: 'cde' } }
             ]);
         });
@@ -954,9 +954,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param One Segment Default Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', defaults: { x: 345 } }
             ]);
         });
@@ -997,9 +997,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param One Segment Default Boolean', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', defaults: { x: true } }
             ]);
         });
@@ -1040,9 +1040,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param One Segment Default Date', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', defaults: { x: new Date(2010, 3, 7) } }
             ]);
         });
@@ -1093,9 +1093,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Default Type Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc', defaultTypes: { x: 'number' } }
             ]);
         });
@@ -1130,9 +1130,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Default Type Boolean', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc', defaultTypes: { x: 'boolean' } }
             ]);
         });
@@ -1167,9 +1167,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Default Type Date', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc', defaultTypes: { x: 'date' } }
             ]);
         });
@@ -1210,9 +1210,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Two Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}', defaults: { x: 'ccdd' } }
             ]);
         });
@@ -1256,9 +1256,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param Two Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x?}', defaults: { x: 'ccdd' } }
             ]);
         });
@@ -1301,9 +1301,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment Two Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab', y: 'c' } }
             ]);
         });
@@ -1359,9 +1359,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Optional Param Two Segment Two Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}/{y?}', defaults: { x: 'ab', y: 'c' } }
             ]);
         });
@@ -1422,9 +1422,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{y?}', defaults: { y: 'ab' } }
             ]);
         });
@@ -1472,9 +1472,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Two Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}/{y?}', defaults: { x: 'abc' } }
             ]);
         });
@@ -1527,9 +1527,9 @@ describe('MatchTest', function () {
     });
 
     describe('Four Param Two Optional Five Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{w?}/{x?}/{y?}/{z?}', defaults: { w: 'abc', x: 'de' } }
             ]);
         });
@@ -1663,9 +1663,9 @@ describe('MatchTest', function () {
     });
 
     describe('Spaces', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
         });
@@ -1686,9 +1686,9 @@ describe('MatchTest', function () {
     });
 
     describe('Multi Char Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'a/{someVar}' }
             ]);
         });
@@ -1710,7 +1710,7 @@ describe('MatchTest', function () {
 
     describe('Match Slash', function () {
         it('should match', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var { data } = stateNavigator.parseLink('abc/');
@@ -1720,9 +1720,9 @@ describe('MatchTest', function () {
     });
 
     describe('Reserved Url Character', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'a/{=*"()\'-_~@:?><.;[],!£$%^#&?}', defaults: { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' } }
             ]);
         });
@@ -1755,9 +1755,9 @@ describe('MatchTest', function () {
     });
 
     describe('Reserved Regex Character', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '.*\^$\[\]()\'/{x}' }
             ]);
         });
@@ -1779,9 +1779,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Optional Mandatory One Mixed Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x?}' }
             ]);
         });
@@ -1812,9 +1812,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Mandatory Three Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x?}/{y}' }
             ]);
         });
@@ -1854,9 +1854,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Two Segment Default Mandatory', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{y}', defaults: { x: 'ab' } }
             ]);
         });
@@ -1894,9 +1894,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Mandatory Four Segment Default Mandatory', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x?}/{y}/c', defaults: { y: 'ee' } }
             ]);
         });
@@ -1941,7 +1941,7 @@ describe('MatchTest', function () {
 
     describe('Extra Defaults', function () {
         it('should match', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', defaults: { x: 'a', y: 'b' } }
             ]);
             var { data } = stateNavigator.parseLink('/');
@@ -1958,7 +1958,7 @@ describe('MatchTest', function () {
 
     describe('Case Insensitive', function () {
         it('should match', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc/{x}' }
             ]);
             var { data } = stateNavigator.parseLink('/AbC/aBc');
@@ -1972,9 +1972,9 @@ describe('MatchTest', function () {
     });
 
     describe('Multiple Routes', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}' },
                 { key: 's1', route: 'cd/{x}' }
             ]);
@@ -2005,9 +2005,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route One With Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['', 'abc/{x}'] }
             ]);
         });
@@ -2043,9 +2043,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route One With Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '+abc/{x}' }
             ]);
         });
@@ -2081,9 +2081,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc/{x}', 'def/{y}'] }
             ]);
         });
@@ -2141,9 +2141,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Parent Child', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc/{x}', 'abc/{x}/def/{y}'] }
             ]);
         });
@@ -2192,9 +2192,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc/{x}+/def/{y}' }
             ]);
         });
@@ -2243,9 +2243,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Mixed', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc{x}+/def/{y}' }
             ]);
         });
@@ -2297,9 +2297,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Optional Mixed', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc{x?}+/def/{y}' }
             ]);
         });
@@ -2351,9 +2351,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Expand Optional Mixed', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc+{x}+/def/{y}' }
             ]);
         });
@@ -2403,9 +2403,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc/{x}+/def/{y}', defaults: { y: 's' } }
             ]);
         });
@@ -2457,9 +2457,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc/{x?}', 'def/{y}'], defaults: { x: 's' } }
             ]);
         });
@@ -2524,9 +2524,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Reverse Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['{x}/{y}', '{x}'], defaults: { y: 's' } }
             ]);
         });
@@ -2539,9 +2539,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Optional Parent Child', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc/{x?}', 'abc/{x}/def/{y}'] }
             ]);
         });
@@ -2593,9 +2593,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Optional', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc/{x?}+/def/{y}'] }
             ]);
         });
@@ -2647,9 +2647,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Expand Optional', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc+/{x}+/def/{y}'] }
             ]);
         });
@@ -2701,9 +2701,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Default Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['def/{y}', 'abc/{x?}'], defaults: { x: 2 } }
             ]);
         });
@@ -2758,9 +2758,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Default Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc/{x}+/def/{y?}', defaults: { y: 2 } }
             ]);
         });
@@ -2816,9 +2816,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Default Type Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['def/{y}', 'abc/{x}'], defaultTypes: { x: 'number' } }
             ]);
         });
@@ -2860,9 +2860,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Default Type Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc+/{x}+/def/{y}', defaultTypes: { x: 'number' } }
             ]);
         });
@@ -2915,9 +2915,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', trackTypes: false }
             ]);
         });
@@ -2942,9 +2942,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', trackTypes: false, defaults: { x: 2 } }
             ]);
         });
@@ -2971,9 +2971,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', trackTypes: false, defaultTypes: { x: 'boolean' } }
             ]);
         });
@@ -2997,9 +2997,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Default And Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
             ]);
         });
@@ -3026,9 +3026,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Conflicting Default And Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
             ]);
         });
@@ -3052,9 +3052,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', trackTypes: false }
             ]);
         });
@@ -3079,9 +3079,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', trackTypes: false, defaults: { x: 2 } }
             ]);
         });
@@ -3108,9 +3108,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'boolean' } }
             ]);
         });
@@ -3134,9 +3134,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Default And Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', trackTypes: false, defaults: { x: '2' }, defaultTypes: { x: 'number' } }
             ]);
         });
@@ -3163,9 +3163,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Query String Conflicting Default And Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', trackTypes: false, defaults: { x: 'a' }, defaultTypes: { x: 'number' } }
             ]);
         });
@@ -3191,7 +3191,7 @@ describe('MatchTest', function () {
 
     describe('Empty String', function () {
         it('should build', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: '' }), null);
@@ -3200,7 +3200,7 @@ describe('MatchTest', function () {
 
     describe('Without Types Two Route Default', function () {
         it('should build', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: ['{x?}', 'a/{y}'], trackTypes: false, defaults: { x: 2 } }
             ]);
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
@@ -3217,7 +3217,7 @@ describe('MatchTest', function () {
 
     describe('Without Types Expand Route Default', function () {
         it('should build', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: '+a/{x}+/b/{y}', trackTypes: false, defaults: { x: '3', y: 2 } }
             ]);
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
@@ -3237,9 +3237,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -3270,9 +3270,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Param Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -3303,9 +3303,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Type Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'numberarray' } }
             ]);
         });
@@ -3324,9 +3324,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Type Boolean', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
@@ -3344,9 +3344,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Array Query String Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', trackTypes: false, defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -3370,9 +3370,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaults: { x: ['Hello', 'World'] } }
             ]);
         });
@@ -3395,9 +3395,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaults: { x: [1, 2, 4] } }
             ]);
         });
@@ -3421,9 +3421,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Boolean', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaults: { x: [true, false] } }
             ]);
         });
@@ -3446,9 +3446,9 @@ describe('MatchTest', function () {
     });
 
     describe('Array Query String Default Date', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaults: { x: [new Date(2010, 3, 7), new Date(2011, 7, 3)] } }
             ]);
         });
@@ -3471,9 +3471,9 @@ describe('MatchTest', function () {
     });
 
     describe('String Query String Default Type Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'number' } }
             ]);
         });
@@ -3489,9 +3489,9 @@ describe('MatchTest', function () {
     });
 
     describe('String Param Default Type Number', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'number' } }
             ]);
         });
@@ -3507,9 +3507,9 @@ describe('MatchTest', function () {
     });
 
     describe('Number Query String Default Type Boolean', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'boolean' } }
             ]);
         });
@@ -3525,9 +3525,9 @@ describe('MatchTest', function () {
     });
 
     describe('Number Param Default Type Boolean', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'boolean' } }
             ]);
         });
@@ -3543,9 +3543,9 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Query String Default Type Date', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'date' } }
             ]);
         });
@@ -3561,9 +3561,9 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Param Default Type Date', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'date' } }
             ]);
         });
@@ -3579,9 +3579,9 @@ describe('MatchTest', function () {
     });
 
     describe('Date Query String Default Type String', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'string' } }
             ]);
         });
@@ -3597,9 +3597,9 @@ describe('MatchTest', function () {
     });
 
     describe('Date Param Default Type String', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'string' } }
             ]);
         });
@@ -3615,9 +3615,9 @@ describe('MatchTest', function () {
     });
 
     describe('String Array Query String Default Type Number Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'numberarray' } }
             ]);
         });
@@ -3635,9 +3635,9 @@ describe('MatchTest', function () {
     });
 
     describe('String Array Param Default Type Number Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'numberarray' } }
             ]);
         });
@@ -3655,9 +3655,9 @@ describe('MatchTest', function () {
     });
 
     describe('Number Array Query String Default Type Boolean Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
@@ -3675,9 +3675,9 @@ describe('MatchTest', function () {
     });
 
     describe('Number Array Param Default Type Boolean Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
@@ -3695,9 +3695,9 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Array Query String Default Type Date Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'datearray' } }
             ]);
         });
@@ -3715,9 +3715,9 @@ describe('MatchTest', function () {
     });
 
     describe('Boolean Array Param Default Type Date Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'datearray' } }
             ]);
         });
@@ -3735,9 +3735,9 @@ describe('MatchTest', function () {
     });
 
     describe('Date Array Query String Default Type String Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -3755,9 +3755,9 @@ describe('MatchTest', function () {
     });
 
     describe('Date Array Param Default Type String Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -3775,9 +3775,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'abc' }
             ]);
             var state = stateNavigator.states['s'];
@@ -3796,9 +3796,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -3817,9 +3817,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Query String Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -3843,9 +3843,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Route Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -3869,9 +3869,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment State Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'a' },
                 { key: 's1', route: 'b' }
             ]);
@@ -3900,9 +3900,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param State Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'a/{x}' },
                 { key: 's1', route: 'b/{x}' }
             ]);
@@ -3931,9 +3931,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Query String Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -3957,9 +3957,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Route Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -3983,9 +3983,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Route Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{y}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4009,9 +4009,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Param Route Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4035,9 +4035,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Mixed Param Route Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4061,9 +4061,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Two Query String Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4087,9 +4087,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4112,9 +4112,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Two Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4138,9 +4138,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Param Empty Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4160,9 +4160,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Array Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
@@ -4183,9 +4183,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Array Query String Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
@@ -4210,9 +4210,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param Array Key Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
@@ -4239,9 +4239,9 @@ describe('MatchTest', function () {
     });
 
     describe('No Param One Segment Array State Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'a', defaultTypes: { x: 'stringarray' } },
                 { key: 's1', route: 'b', defaultTypes: { x: 'stringarray' } }
             ]);
@@ -4274,9 +4274,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Empty Param Route Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x?}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4295,9 +4295,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Empty Param Route Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4315,9 +4315,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Empty Mixed Param Route Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{x}' }
             ]);
             var state = stateNavigator.states['s'];
@@ -4335,9 +4335,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -4397,9 +4397,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
@@ -4435,9 +4435,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Splat Param One Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x?}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
@@ -4469,9 +4469,9 @@ describe('MatchTest', function () {
     });
     
     describe('One Optional Splat Param One Segment Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x?}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -4527,9 +4527,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param Two Segment Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -4590,9 +4590,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param Two Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{*x?}', defaults: { x: ['ef', 'ghi'] } }
             ]);
         });
@@ -4627,9 +4627,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Splat Two Segment Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{*y}', defaultTypes: { y: 'stringarray' } }
             ]);
         });
@@ -4699,9 +4699,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param One Optional Splat Two Segment Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{x}/{*y?}', defaultTypes: { y: 'stringarray' } }
             ]);
         });
@@ -4773,9 +4773,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Splat Param Three Segment Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}/ab/{*y}', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
         });
@@ -4843,9 +4843,9 @@ describe('MatchTest', function () {
     });
     
     describe('Two Route Param Splat and Not Splat', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['a/{*x}', 'b/{x}/{y}'], defaultTypes: { x: 'stringarray' } }
             ]);
         });
@@ -4880,9 +4880,9 @@ describe('MatchTest', function () {
     })
     
     describe('Expand Param Splat and Not Splat', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'a/{x}+/b/{*y}', defaultTypes: { y: 'stringarray' } }
             ]);
         });
@@ -4918,9 +4918,9 @@ describe('MatchTest', function () {
     })
 
     describe('One Splat Param Two Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}/ab', defaults: { x: ['cde', 'fg'] } }
             ]);
         });
@@ -4966,9 +4966,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Mixed Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{*x}', defaults: { x: ['cde', 'fg'] } }
             ]);
         });
@@ -5005,9 +5005,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Optional Splat Param One Mixed Segment Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab{*x?}', defaults: { x: ['cde', 'fg'] } }
             ]);
         });
@@ -5048,9 +5048,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Splat Conflicting Default And Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x?}', trackTypes: false, defaults: { x: ['a', 'bc'] }, defaultTypes: { x: 'number' } }
             ]);
         });
@@ -5080,9 +5080,9 @@ describe('MatchTest', function () {
     });
 
     describe('Without Types Splat Conflicting Single Array Default And Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x?}', trackTypes: false, defaults: { x: ['a'] }, defaultTypes: { x: 'number' } }
             ]);
         });
@@ -5111,9 +5111,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Single Match Array Default', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaults: { x: ['a', 'b'] } }
             ]);
         });
@@ -5131,9 +5131,9 @@ describe('MatchTest', function () {
     });
 
     describe('Splat Param Array Encode', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray' } }
             ]);
             var state = stateNavigator.states['s'];
@@ -5154,9 +5154,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type Number Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'numberarray' } }
             ]);
         });
@@ -5182,9 +5182,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type Booelan Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'booleanarray' } }
             ]);
         });
@@ -5210,9 +5210,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Type Date Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'datearray' } }
             ]);
         });
@@ -5237,9 +5237,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment Default Date Array', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x?}', defaults: { x: [new Date(2011, 7, 3), new Date(2010, 3, 7)] } }
             ]);
         });
@@ -5269,9 +5269,9 @@ describe('MatchTest', function () {
     });
 
     describe('Multiple Routes Splat and Not Splat', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{*x}', defaultTypes: { x: 'stringarray' } },
                 { key: 's1', route: 'cd/{x}' }
             ]);
@@ -5301,9 +5301,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Segment', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}' }
             ]);
         });
@@ -5331,9 +5331,9 @@ describe('MatchTest', function () {
     });
 
     describe('One Splat Param One Query String Default Type', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '{*x}', defaultTypes: { x: 'stringarray', y: 'stringarray' } }
             ]);
         });
@@ -5374,9 +5374,9 @@ describe('MatchTest', function () {
     });
 
     describe('Reload Param', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'ab/{x}' }
             ]);
             stateNavigator.configure([
@@ -5400,13 +5400,13 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param', function () {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function () {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's', route: 'ab/{x}' }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's', route: 'cd/{x}' }
             ]);
         });
@@ -5431,13 +5431,13 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param Default', function () {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function () {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's', route: 'ab/{x?}', defaults: { x: 'cd' } }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's', route: 'cd/{x?}', defaults: { x: 12 } }
             ]);
         });
@@ -5471,13 +5471,13 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param Default Type', function () {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function () {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's', route: 'ab/{x}' }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's', route: 'cd/{x}', defaultTypes: { x: 'number' } }
             ]);
         });
@@ -5503,16 +5503,16 @@ describe('MatchTest', function () {
     });
 
     describe('Two Controllers Param Encode', function () {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function () {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's', route: '0/{x}' }
             ]);
             var state = stateNavigator0.states['s'];
             state.urlEncode = (state, key, val) => val.replace(' ', '0')  
             state.urlDecode = (state, key, val) => val.replace('0', ' ')  
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's', route: '1/{x}' }
             ]);
             var state = stateNavigator1.states['s'];
@@ -5534,9 +5534,9 @@ describe('MatchTest', function () {
     });
 
     describe('Leading and Trailing Slash', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '/a/{x}/' }
             ]);
         });
@@ -5553,9 +5553,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Leading and Trailing Slash', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: '/abc/+{x}/+def/{y}/' }
             ]);
         });
@@ -5580,9 +5580,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand and Two Route', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['abc/{x}+/def/{y}', 'ghi/{y}'] }
             ]);
         });
@@ -5619,7 +5619,7 @@ describe('MatchTest', function () {
     
     describe('Crumb Trail Malicious', function() {
         it ('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'ab/c', trackCrumbTrail: true }
             ]);
@@ -5629,7 +5629,7 @@ describe('MatchTest', function () {
     
     describe('Custom Crumb Trail Key Malicious', function() {
         it ('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'ab/c', trackCrumbTrail: 'xx' }
             ]);
@@ -5638,9 +5638,9 @@ describe('MatchTest', function () {
     });
 
     describe('Param Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: '{x}' }
             ]);
@@ -5665,9 +5665,9 @@ describe('MatchTest', function () {
     });
 
     describe('Query String Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc' },
                 { key: 's1', route: 'abc' }
             ]);
@@ -5692,9 +5692,9 @@ describe('MatchTest', function () {
     });
 
     describe('Order Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: '{x}' },
                 { key: 's2', route: '{x}' }
@@ -5725,9 +5725,9 @@ describe('MatchTest', function () {
     });
 
     describe('Split Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'a/{x}' },
                 { key: 's2', route: '{x}' }
@@ -5753,9 +5753,9 @@ describe('MatchTest', function () {
     });
 
     describe('Param Default Type Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}', defaultTypes: { x: 'number' } },
                 { key: 's1', route: '{x}', defaultTypes: { x: 'number' } }
             ]);
@@ -5780,9 +5780,9 @@ describe('MatchTest', function () {
     });
 
     describe('Query String Default Type Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc', defaultTypes: { x: 'number' } },
                 { key: 's1', route: 'abc', defaultTypes: { x: 'number' } }
             ]);
@@ -5807,9 +5807,9 @@ describe('MatchTest', function () {
     });
 
     describe('Param Default Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x?}', defaults: { x: 12 } },
                 { key: 's1', route: '{x?}', defaults: { x: 34 } }
             ]);
@@ -5834,9 +5834,9 @@ describe('MatchTest', function () {
     });
 
     describe('Query String Default Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc', defaults: { x: 12 } },
                 { key: 's1', route: 'abc', defaults: { x: 34 } }
             ]);
@@ -5861,9 +5861,9 @@ describe('MatchTest', function () {
     });
 
     describe('Splat Param Default Type Array Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{*x}', defaultTypes: { x: 'numberarray' } },
                 { key: 's1', route: '{*x}', defaultTypes: { x: 'numberarray' } }
             ]);
@@ -5890,9 +5890,9 @@ describe('MatchTest', function () {
     });
 
     describe('Query String Default Type Array Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc', defaultTypes: { x: 'numberarray' } },
                 { key: 's1', route: 'abc', defaultTypes: { x: 'numberarray' } }
             ]);
@@ -5919,9 +5919,9 @@ describe('MatchTest', function () {
     });
 
     describe('Splat Param Default Array Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{*x?}', defaults: { x: [12, 34] } },
                 { key: 's1', route: '{*x?}', defaults: { x: [34, 12] } }
             ]);
@@ -5947,9 +5947,9 @@ describe('MatchTest', function () {
     });
 
     describe('Splat Query String Default Array Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc', defaults: { x: [12, 34] } },
                 { key: 's1', route: 'abc', defaults: { x: [34, 12] } }
             ]);
@@ -5975,9 +5975,9 @@ describe('MatchTest', function () {
     });
 
     describe('Param and Query String Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'ab' }
             ]);
@@ -6003,9 +6003,9 @@ describe('MatchTest', function () {
     });
 
     describe('Expand Route Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'ab+/{x}' },
                 { key: 's1', route: 'ab+/{x}' }
             ]);
@@ -6042,9 +6042,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Param Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: ['{x}', 'ab/{x}'] },
                 { key: 's1', route: ['{x}', 'ab/{x}'] }
             ]);
@@ -6078,9 +6078,9 @@ describe('MatchTest', function () {
    });
 
     describe('Two Route Query String Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: ['ab', 'ab/cd'] },
                 { key: 's1', route: ['ab', 'ab/cd'] }
             ]);
@@ -6114,9 +6114,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Param and Query String Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: ['{x}', 'ab/cd'] },
                 { key: 's1', route: ['{x}', 'ab/cd'] }
             ]);
@@ -6150,9 +6150,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Param Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}/{y}' },
                 { key: 's1', route: '{x}/{y}' }
             ]);
@@ -6185,9 +6185,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Query String Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc' },
                 { key: 's1', route: 'abc' }
             ]);
@@ -6225,9 +6225,9 @@ describe('MatchTest', function () {
     });
 
     describe('Param Encode Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: '{x}' }
             ]);
@@ -6255,9 +6255,9 @@ describe('MatchTest', function () {
     });
 
     describe('Query String Encode Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'abc' },
                 { key: 's1', route: 'abc' }
             ]);
@@ -6285,9 +6285,9 @@ describe('MatchTest', function () {
     });
 
     describe('Crumb Trail Excluded Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'ab' },
                 { key: 's1', route: 'cd', trackCrumbTrail: true }
             ]);
@@ -6313,9 +6313,9 @@ describe('MatchTest', function () {
     });
 
     describe('Same Route Different Param Defaults', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x?}', defaults: { x: 1 } },
                 { key: 's1', route: '{x?}' }
             ]);
@@ -6338,9 +6338,9 @@ describe('MatchTest', function () {
     });
 
     describe('Same Route Different Query String Defaults', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'ab', defaults: { x: 1 } },
                 { key: 's1', route: 'ab' }
             ]);
@@ -6363,9 +6363,9 @@ describe('MatchTest', function () {
     });
 
     describe('Error Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: '{x}' }
             ]);
@@ -6389,9 +6389,9 @@ describe('MatchTest', function () {
     });
 
     describe('Mixed Param Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'ab{x}' },
                 { key: 's1', route: 'ab{x}' }
             ]);
@@ -6416,9 +6416,9 @@ describe('MatchTest', function () {
     });
 
     describe('Crumb Trail Error Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'ab', trackCrumbTrail: true },
                 { key: 's1', route: 'ab' }
             ]);
@@ -6440,9 +6440,9 @@ describe('MatchTest', function () {
     });
 
     describe('Error Message', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x?}', defaults: { x: 12 } },
                 { key: 's1', route: 'ab{x?}', defaults: { x: true } }
             ]);
@@ -6461,9 +6461,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Type Conflict', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['{x}', '{y}'], defaultTypes: { x: 'number' } }
             ]);
         });
@@ -6481,9 +6481,9 @@ describe('MatchTest', function () {
     });
 
     describe('Two Route Constraint', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: ['{x}', '{y}'] }
             ]);
             stateNavigator.states['s'].validate = (data) => data.x !== 'ab';
@@ -6502,9 +6502,9 @@ describe('MatchTest', function () {
     });
 
     describe('Crumb Key Type Conflict', function () {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function () {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'ab', trackCrumbTrail: true },
                 { key: 's1', route: 'ab' }
             ]);

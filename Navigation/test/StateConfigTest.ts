@@ -1,12 +1,12 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 import * as assert from 'assert';
-import * as Navigation from '../src/Navigation';
+import { StateNavigator } from '../src/Navigation';
 
 describe('StateConfigTest', function () {
     describe('State', function () {
         it('should configure States', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0', title: 't0' },
                 { key: 's1', route: '', title: 't1' },
                 { key: 's2' }
@@ -27,7 +27,7 @@ describe('StateConfigTest', function () {
 
     describe('Track Crumb Trail', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: false },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -40,7 +40,7 @@ describe('StateConfigTest', function () {
 
     describe('Defaults', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
             ]);
             assert.strictEqual(stateNavigator.states['s'].defaults['string'], 'Hello');
@@ -51,7 +51,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { 'string': 'string', 'number': 'number', 'boolean': 'boolean' } }
             ]);
             assert.strictEqual(stateNavigator.states['s'].defaultTypes['string'], 'string');
@@ -62,7 +62,7 @@ describe('StateConfigTest', function () {
 
     describe('Attributes', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', handler: 'y' }
             ]);
             assert.equal(stateNavigator.states['s']['handler'], 'y');
@@ -71,7 +71,7 @@ describe('StateConfigTest', function () {
 
     describe('Route', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1/{string}/{number}' }
             ]);
@@ -82,7 +82,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types String', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { ' &s0': 'a', s1: 'b', s2: 'c', s3: 'd' }, defaultTypes: { s1: 'string', s2: 'boolean' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -95,7 +95,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types Bool', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { b1: true, b2: false, b3: true }, defaultTypes: { b1: 'boolean', b2: 'number' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -107,7 +107,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types Number', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { n1: 0, n2: 1, n3: 2 }, defaultTypes: { n1: 'number', n2: 'date' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -119,7 +119,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types Date', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { d1: new Date(2010, 3, 7), d2: new Date(2011, 7, 3), d3: new Date(2012, 8, 4) }, defaultTypes: { d1: 'date', d2: 'string' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -131,7 +131,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types String Array', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { s0: ['a', 'b'], s1: ['c', 'd'], s2: ['e'] }, defaultTypes: { s1: 'stringarray', s2: 'boolean' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -145,7 +145,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types Bool Array', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { b0: [true, false], b1: [false, true], b2: [true] }, defaultTypes: { b1: 'booleanarray', b2: 'number' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -159,7 +159,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types Number Array', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { n0: [0, 1], n1: [2, 3], n2: [4] }, defaultTypes: { n1: 'numberarray', n2: 'date' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -173,7 +173,7 @@ describe('StateConfigTest', function () {
 
     describe('Default Types Date Array', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaults: { d0: [new Date(2010, 3, 7), new Date(2011, 7, 3)], d1: [new Date(2011, 7, 3), new Date(2010, 3, 7)], d2: [new Date(2012, 8, 4)] }, defaultTypes: { d1: 'datearray', d2: 'string' } }
             ]);
             var defaults = stateNavigator.states['s'].defaults;
@@ -188,7 +188,7 @@ describe('StateConfigTest', function () {
     describe('Invalid Default', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new Navigation.StateNavigator([
+                var stateNavigator = new StateNavigator([
                     { key: 's0', route: 'd0s0', defaults: { s: {} },  title: 's0'}
                 ]);
             });
@@ -198,7 +198,7 @@ describe('StateConfigTest', function () {
     describe('Duplicate State', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new Navigation.StateNavigator([
+                var stateNavigator = new StateNavigator([
                     { key: 's0', route: 'd0s0', title: 's0'},
                     { key: 's0', route: 'd0s0', title: 's0' }
                 ]);
@@ -209,7 +209,7 @@ describe('StateConfigTest', function () {
     describe('Missing State Key', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new Navigation.StateNavigator(<any> [
+                var stateNavigator = new StateNavigator(<any> [
                     { key: 's0', route: 'd0s0', title: 's0'},
                     { route: 'd0s1', title: 's1' }
                 ]);
@@ -220,7 +220,7 @@ describe('StateConfigTest', function () {
     describe('Blank State Key', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new Navigation.StateNavigator(<any> [
+                var stateNavigator = new StateNavigator(<any> [
                     { key: '', route: 'r0', title: 's0'},
                 ]);
             }, /key is mandatory/);
@@ -230,7 +230,7 @@ describe('StateConfigTest', function () {
     describe('Empty State Key', function () {
         it('should throw error', function() {
             assert.throws(() => {
-                var stateNavigator = new Navigation.StateNavigator([
+                var stateNavigator = new StateNavigator([
                     { key: 's0', route: 'd0s0', title: 's0'},
                     { key: '', route: 'd0s1', title: 's1' }
                 ]);
@@ -240,13 +240,13 @@ describe('StateConfigTest', function () {
 
     describe('Reload Error', function () {
         it('should keep State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
             ]);
             try {
-                var stateNavigator = new Navigation.StateNavigator(<any> [
+                var stateNavigator = new StateNavigator(<any> [
                     { route: 'xxx' }
                 ]);
             } catch(e) {
@@ -266,7 +266,7 @@ describe('StateConfigTest', function () {
 
     describe('Reload', function () {
         it('should configure State Info', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.configure([
@@ -289,10 +289,10 @@ describe('StateConfigTest', function () {
 
     describe('Two Controllers', function () {
         it('should configure State Info', function() {
-            var stateNavigator0 = new Navigation.StateNavigator([
+            var stateNavigator0 = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var stateNavigator1 = new Navigation.StateNavigator([
+            var stateNavigator1 = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
