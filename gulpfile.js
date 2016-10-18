@@ -10,6 +10,8 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
+var rollup = require('rollup');
+var rollup_typescript = require('rollup-plugin-typescript');
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
@@ -57,6 +59,32 @@ var info = ['/**',
   ' * License: <%= details.license %>',
   ' */',
   ''].join('\r\n');
+function rollupTask(name, file, to, details) {
+    return rollup.rollup({
+        entry: file,
+        plugins: [
+            rollup_typescript({
+                typescript: require('typescript')
+            })
+        ]
+    }).then((bundle) => {
+        bundle.write({
+            format: 'iife',
+            moduleName: name,
+            globals: {
+                navigation: 'Navigation',
+                angular: 'angular',
+                knockout: 'ko',
+                react: 'React',
+                '@cycle/dom': 'CycleDOM',
+                rx: 'Rx',
+                'inferno-component': 'InfernoComponent',
+                'inferno-create-element': 'InfernoCreateElement'
+            },
+            dest: './build/dist/' + to
+        });
+    });        
+}
 function buildTask(name, file, to, details) {
     return browserify(file, { standalone: name })
         .plugin('tsify')
