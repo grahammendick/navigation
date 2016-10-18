@@ -3,10 +3,10 @@ var gulp = require('gulp');
 var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
-var typescript = require('gulp-tsc');
-var uglify = require('gulp-uglify');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
+var typescript = require('gulp-tsc');
+var uglify = require('gulp-uglify');
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
