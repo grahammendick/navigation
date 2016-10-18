@@ -91,12 +91,12 @@ function rollupTask(name, file, to) {
                 'inferno-component': 'InfernoComponent',
                 'inferno-create-element': 'InfernoCreateElement'
             },
-            dest: to
+            dest: './build/dist/' + to
         });
     });        
 }
 function buildTask(file, details) {
-    return gulp.src(file)
+    return gulp.src('./build/dist/' + file)
         .pipe(buffer())
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'))
@@ -117,7 +117,7 @@ for (var i = 0; i < items.length; i++) {
     let upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
     let name = upperName.replace('-', '');
     let tsFrom = './' + name + '/src/' + name + '.ts';
-    let jsTo = './build/dist/' + packageName.replace('-', '.') + '.js';
+    let jsTo = packageName.replace('-', '.') + '.js';
     item.name = upperName.replace('-', ' ');
     gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
