@@ -3,7 +3,6 @@
   "version": "3.0.0",
   "description": "The data-first JavaScript router",
   "devDependencies": {
-    "browserify": "^13.0.0",
     "gulp": "^3.8.11",
     "gulp-header": "^1.2.2",
     "gulp-mocha": "^2.0.0",

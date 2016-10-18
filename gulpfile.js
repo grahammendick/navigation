@@ -1,5 +1,4 @@
 ﻿'use strict'
-var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
 var header = require('gulp-header');
