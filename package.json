@@ -6,7 +6,6 @@
     "browserify": "^13.0.0",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
-    "gulp-derequire": "^2.1.0",
     "gulp-header": "^1.2.2",
     "gulp-mocha": "^2.0.0",
     "gulp-rename": "^1.2.0",

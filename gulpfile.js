@@ -3,7 +3,6 @@ var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var derequire = require('gulp-derequire');
 var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
