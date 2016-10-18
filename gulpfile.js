@@ -15,27 +15,40 @@ var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
     { name: 'StateConfig', to: 'stateConfig.test.js' },
     { name: 'Navigation', to: 'navigation.test.js' },
-    { name: 'NavigationData', to: 'navigationData.test.js' },
+    { name: 'NavigationData', to: 'navigationData.test.js' }/*,
     { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
+    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }*/
 ];
 var testTasks = [];
-function testTask(file, to) {
-    return browserify(file)
-        .plugin('tsify', { jsx: 'react' })
-        .bundle()
-        .pipe(source(to))
-        .pipe(rename(to))
-        .pipe(gulp.dest('./build/dist'))
+function rollupTestTask(name, file, to) {
+    return rollup.rollup({
+        entry: file,
+        external: ['assert'],
+        plugins: [
+            rollupTypescript({
+                typescript: require('typescript'),
+                jsx: 'react'
+            })
+        ]
+    }).then((bundle) => {
+        bundle.write({
+            format: 'cjs',
+            dest: to
+        });
+    });
+}
+function testTask(file) {
+    return gulp.src(file)
         .pipe(mocha({ reporter: 'progress' }));
 }
 for (var i = 0; i < tests.length; i++) {
     let test = tests[i]; 
-    gulp.task('Test' + test.name, () => {
-        var folder = './Navigation' + (test.folder || '') + '/test/';
-        return testTask(folder + test.name + 'Test.' + (test.ext || 'ts'), test.to)
-    });
+    let folder = './Navigation' + (test.folder || '') + '/test/';
+    let file = folder + test.name + 'Test.' + (test.ext || 'ts');
+    let to = './build/dist/' + test.to;
+    gulp.task('RollupTest' + test.name, () => rollupTestTask(test.name, file, to));
+    gulp.task('Test' + test.name, ['RollupTest' + test.name], () => testTask(to));
     testTasks.push('Test' + test.name);
 }
 gulp.task('test', testTasks);

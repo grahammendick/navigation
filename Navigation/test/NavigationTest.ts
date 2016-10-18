@@ -1,6 +1,5 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
-/// <reference path="../src/navigation.d.ts" />
 import * as assert from 'assert';
 import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from '../src/Navigation';
 
@@ -4842,7 +4841,7 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
             stateNavigator.navigateBack(1);
-            assert(stateNavigator.stateContext.data.x, 'www.google.com');
+            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
             assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url .*is invalid/);
         });
     });
