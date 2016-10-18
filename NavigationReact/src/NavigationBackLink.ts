@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import React = require('react');
+﻿import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import * as React from 'react';
 
 class NavigationBackLink extends React.Component<any, any> {
     private onNavigate = () => {
@@ -57,4 +57,4 @@ class NavigationBackLink extends React.Component<any, any> {
         return React.createElement('a', props, this.props.children);
     }
 };
-export = NavigationBackLink;
+export default NavigationBackLink;

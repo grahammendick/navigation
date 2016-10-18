@@ -1,11 +1,11 @@
 /// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
 /// <reference path="react-addons-test-utils.d.ts" />
-import assert = require('assert');
+import * as assert from 'assert';
 import * as Navigation from '../../Navigation/src/Navigation';
-import NavigationReact = require('../src/NavigationReact');
-import React = require('react');
-import ReactTestUtils = require('react-addons-test-utils');
+import * as NavigationReact from '../src/NavigationReact';
+import * as React from 'react';
+import * as ReactTestUtils from 'react-addons-test-utils';
 
 describe('RefreshLinkTest', function () {
     describe('Refresh Link', function () {

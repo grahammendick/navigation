@@ -1,7 +1,7 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="react.d.ts" />
-import Navigation = require('navigation');
-import React = require('react');
+import * as Navigation from 'navigation';
+import * as React from 'react';
 
 class LinkUtility {
     static getLink(stateNavigator: Navigation.StateNavigator, linkAccessor: () => string): string {
@@ -92,4 +92,4 @@ class LinkUtility {
         }
     }
 }
-export = LinkUtility;
+export default LinkUtility;
