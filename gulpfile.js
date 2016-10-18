@@ -88,13 +88,7 @@ function rollupTask(name, file, to, details) {
     });        
 }
 function buildTask(name, file, to, details) {
-    return browserify(file, { standalone: name })
-        .plugin('tsify')
-        .transform(shim)
-        .bundle()
-        .pipe(source(to))
-        .pipe(rename(to))
-        .pipe(derequire())
+    return gulp.src('./build/dist/' + to)
         .pipe(buffer())
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'))
