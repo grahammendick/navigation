@@ -1,5 +1,4 @@
 ﻿'use strict'
-var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
 var header = require('gulp-header');
 var mocha = require('gulp-mocha');
@@ -97,12 +96,10 @@ function rollupTask(name, file, to) {
 }
 function buildTask(file, details) {
     return gulp.src('./build/dist/' + file)
-        .pipe(buffer())
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'))
         .pipe(rename(file.replace(/js$/, 'min.js')))
         .pipe(uglify())
-        .pipe(buffer())
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'));
 }
