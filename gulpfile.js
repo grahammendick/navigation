@@ -111,12 +111,9 @@ for (var i = 0; i < items.length; i++) {
     var jsTo = packageName.replace('-', '.') + '.js';
     items[i].name = upperName.replace('-', ' ');
     (function (name, tsFrom, jsTo, item, packageName) {
-        gulp.task('Build' + name, function () {
-            return buildTask(name, tsFrom, jsTo, item);
-        });
-        gulp.task('Package' + name, function () {
-            return packageTask(packageName, tsFrom);
-        });
+        gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item));
+        gulp.task('Build' + name, ['Rollup' + name], () => buildTask(name, tsFrom, jsTo, item));
+        gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
     })(name, tsFrom, jsTo, items[i], packageName);
     buildTasks.push('Build' + name);
     packageTasks.push('Package' + name);
