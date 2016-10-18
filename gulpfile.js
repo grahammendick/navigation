@@ -116,7 +116,7 @@ function packageTask(name, file) {
 for (var i = 0; i < items.length; i++) {
     let item = items[i];
     let packageName = item.name;
-    let upperName = packageName.replace(/\b./g, function(val){ return val.toUpperCase(); })
+    let upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
     let name = upperName.replace('-', '');
     let tsFrom = './' + name + '/src/' + name + '.ts';
     let jsTo = './build/dist/' + packageName.replace('-', '.') + '.js';
