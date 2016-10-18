@@ -9,7 +9,7 @@ var source = require('vinyl-source-stream');
 var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 var rollup = require('rollup');
-var rollup_typescript = require('rollup-plugin-typescript');
+var rollupTypescript = require('rollup-plugin-typescript');
 
 var tests = [
     { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
@@ -60,7 +60,7 @@ function rollupTask(name, file, to) {
     return rollup.rollup({
         entry: file,
         plugins: [
-            rollup_typescript({
+            rollupTypescript({
                 typescript: require('typescript'),
                 target: 'es3',
                 module: 'es6'
