@@ -1,4 +1,5 @@
-﻿var browserify = require('browserify');
+﻿'use strict'
+var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var shim = require('browserify-shim');
 var gulp = require('gulp');
@@ -33,13 +34,12 @@ function testTask(file, to) {
         .pipe(mocha({ reporter: 'progress' }));
 }
 for (var i = 0; i < tests.length; i++) {
-    (function (test) {
-        gulp.task('Test' + test.name, function () {
-            var folder = './Navigation' + (test.folder || '') + '/test/';
-            return testTask(folder + test.name + 'Test.' + (test.ext || 'ts'), test.to)
-        });
-    })(tests[i]);
-    testTasks.push('Test' + tests[i].name);
+    let test = tests[i]; 
+    gulp.task('Test' + test.name, () => {
+        var folder = './Navigation' + (test.folder || '') + '/test/';
+        return testTask(folder + test.name + 'Test.' + (test.ext || 'ts'), test.to)
+    });
+    testTasks.push('Test' + test.name);
 }
 gulp.task('test', testTasks);
 
@@ -104,17 +104,16 @@ function packageTask(name, file) {
         .pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
 for (var i = 0; i < items.length; i++) {
-    var packageName = items[i].name;
-    var upperName = packageName.replace(/\b./g, function(val){ return val.toUpperCase(); })
-    var name = upperName.replace('-', '');
-    var tsFrom = './' + name + '/src/' + name + '.ts';
-    var jsTo = './build/dist/' + packageName.replace('-', '.') + '.js';
-    items[i].name = upperName.replace('-', ' ');
-    (function (name, tsFrom, jsTo, item, packageName) {
-        gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo));
-        gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
-        gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
-    })(name, tsFrom, jsTo, items[i], packageName);
+    let item = items[i];
+    let packageName = item.name;
+    let upperName = packageName.replace(/\b./g, function(val){ return val.toUpperCase(); })
+    let name = upperName.replace('-', '');
+    let tsFrom = './' + name + '/src/' + name + '.ts';
+    let jsTo = './build/dist/' + packageName.replace('-', '.') + '.js';
+    item.name = upperName.replace('-', ' ');
+    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo));
+    gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
+    gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
     buildTasks.push('Build' + name);
     packageTasks.push('Package' + name);
 }
