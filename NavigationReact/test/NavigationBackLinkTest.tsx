@@ -2,15 +2,15 @@
 /// <reference path="mocha.d.ts" />
 /// <reference path="react-addons-test-utils.d.ts" />
 import * as assert from 'assert';
-import * as Navigation from '../../Navigation/src/Navigation';
-import * as NavigationReact from '../src/NavigationReact';
+import { StateNavigator } from '../../Navigation/src/Navigation';
+import { NavigationBackLink } from '../src/NavigationReact';
 import * as React from 'react';
 import * as ReactTestUtils from 'react-addons-test-utils';
 
 describe('NavigationBackLinkTest', function () {
     describe('Navigation Back Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -18,11 +18,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -33,7 +33,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Context Navigation Back Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -41,10 +41,10 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}>
                     link text
-                </NavigationReact.NavigationBackLink>,
+                </NavigationBackLink>,
                 { stateNavigator: stateNavigator }
             );
             var link = renderer.getRenderOutput();
@@ -56,7 +56,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Invalid Navigation Back Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -64,11 +64,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={2}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -79,7 +79,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Attributes Navigation Back Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -87,7 +87,7 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     lazy={false}
                     historyAction='replace'
@@ -96,7 +96,7 @@ describe('NavigationBackLinkTest', function () {
                     target="_blank"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -111,7 +111,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -119,11 +119,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -135,7 +135,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Ctrl + Click Navigation Back Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -143,11 +143,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -159,7 +159,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Shift + Click Navigation Back Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -167,11 +167,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -183,7 +183,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Meta + Click Navigation Back Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -191,11 +191,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -207,7 +207,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Alt + Click Navigation Back Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -215,11 +215,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -231,7 +231,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Button + Click Navigation Back Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -239,11 +239,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -255,7 +255,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Navigating Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -263,12 +263,12 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     navigating={() => true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -280,7 +280,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Not Navigating Click Navigation Back Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -288,12 +288,12 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     navigating={() => false}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -305,7 +305,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Navigating Params Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -314,7 +314,7 @@ describe('NavigationBackLinkTest', function () {
             var renderer = ReactTestUtils.createRenderer();
             var navigatingEvt, navigatingLink;
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     navigating={(e, domId, link) => {
                         navigatingEvt = e;
@@ -322,7 +322,7 @@ describe('NavigationBackLinkTest', function () {
                     }}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -336,20 +336,20 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Lazy Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     includeCurrentData={true}
                     lazy={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             var el = { href: null };
@@ -364,7 +364,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('History Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -372,11 +372,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -390,7 +390,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('Replace History Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -398,12 +398,12 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     historyAction="replace"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -417,7 +417,7 @@ describe('NavigationBackLinkTest', function () {
 
     describe('None History Click Navigation Back Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -425,12 +425,12 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.NavigationBackLink
+                <NavigationBackLink
                     distance={1}
                     historyAction="none"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.NavigationBackLink>
+                </NavigationBackLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });

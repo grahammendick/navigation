@@ -2,25 +2,25 @@
 /// <reference path="mocha.d.ts" />
 /// <reference path="react-addons-test-utils.d.ts" />
 import * as assert from 'assert';
-import * as Navigation from '../../Navigation/src/Navigation';
-import * as NavigationReact from '../src/NavigationReact';
+import { StateNavigator } from '../../Navigation/src/Navigation';
+import { RefreshLink } from '../src/NavigationReact';
 import * as React from 'react';
 import * as ReactTestUtils from 'react-addons-test-utils';
 
 describe('RefreshLinkTest', function () {
     describe('Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -31,15 +31,15 @@ describe('RefreshLinkTest', function () {
 
     describe('Context Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink>
+                <RefreshLink>
                     link text
-                </NavigationReact.RefreshLink>,
+                </RefreshLink>,
                 { stateNavigator: stateNavigator }
             );
             var link = renderer.getRenderOutput();
@@ -51,15 +51,15 @@ describe('RefreshLinkTest', function () {
 
     describe('Invalid Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -70,13 +70,13 @@ describe('RefreshLinkTest', function () {
 
     describe('Attributes Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a'}}
                     includeCurrentData={true}
                     currentDataKeys="y"
@@ -89,7 +89,7 @@ describe('RefreshLinkTest', function () {
                     target="_blank"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -104,17 +104,17 @@ describe('RefreshLinkTest', function () {
 
     describe('Navigation Data Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a'}}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -125,18 +125,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Include Current Data Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a'}}
                     includeCurrentData={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -147,18 +147,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Include Current Data Override Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{y: 'a'}}
                     includeCurrentData={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -169,18 +169,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Current Data Key Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a'}}
                     currentDataKeys="y"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -191,18 +191,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Current Data Keys Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a'}}
                     currentDataKeys="y,z"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -213,18 +213,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Current Data Keys Override Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{y: 'a'}}
                     currentDataKeys="y,z"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -235,18 +235,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', z: 'c'}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -258,18 +258,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'b'}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -281,18 +281,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', z: 'c'}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -303,18 +303,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'b'}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -325,18 +325,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Null Active Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', y: null}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -348,18 +348,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Undefined Active Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', y: undefined}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -371,18 +371,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Empty String Inactive Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', y: ''}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -394,18 +394,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Null Disable Active Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', y: null}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -416,18 +416,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Undefined Disable Active Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', y: undefined}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -438,18 +438,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Empty String Disable Inactive Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a', y: ''}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -460,18 +460,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Number Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 1}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -483,18 +483,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Number Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 2}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -506,18 +506,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Boolean Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: true}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -529,18 +529,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Boolean Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: false}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -552,18 +552,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Date Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: new Date(2011, 1, 3)}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -575,18 +575,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Date Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: new Date(2010, 1, 3)}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -598,18 +598,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Number Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 1}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -620,18 +620,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Number Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 2}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -642,18 +642,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Boolean Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: true}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -664,18 +664,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Boolean Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: false}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -686,18 +686,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Date Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: new Date(2011, 1, 3)}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -708,18 +708,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Date Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: new Date(2010, 1, 3)}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -730,18 +730,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Type Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 1}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -753,18 +753,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Type Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 1}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -775,18 +775,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', 'b']}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -798,18 +798,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', 'd']}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -821,18 +821,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Number Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [1, 2]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -844,18 +844,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Number Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [1, 3]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -867,18 +867,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Boolean Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [true, false]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -890,18 +890,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Boolean Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [true, true]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -914,18 +914,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Date Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -937,18 +937,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Date Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -960,18 +960,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', 'b']}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -982,18 +982,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', 'd']}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1004,18 +1004,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Number Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [1, 2]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1026,18 +1026,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Number Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [1, 3]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1048,18 +1048,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Boolean Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [true, false]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1070,18 +1070,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Boolean Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [true, true]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1093,18 +1093,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Date Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1115,18 +1115,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Date Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1137,18 +1137,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Array Length Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', 'b', 'c']}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1160,18 +1160,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Inactive Array Length Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', 'b', 'c']}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1182,19 +1182,19 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Add Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'a'}}
                     activeCssClass="active"
                     className="link"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1206,19 +1206,19 @@ describe('RefreshLinkTest', function () {
 
     describe('Inactive Add Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: 'c'}}
                     activeCssClass="active"
                     className="link"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1230,18 +1230,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Empty String Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', '', null, undefined], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', '', '', '']}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1253,18 +1253,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Null Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', '', null, undefined], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', null, null, null]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1276,18 +1276,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Active Undefined Array Css Class Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', '', null, undefined], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', undefined, undefined, undefined]}}
                     activeCssClass="active"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1299,18 +1299,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Empty String Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', '', null, undefined], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', '', '', '']}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1321,18 +1321,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Null Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', '', null, undefined], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', null, null, null]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1343,18 +1343,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Disable Active Undefined Array Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', '', null, undefined], y: 'c'});
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigationData={{x: ['a', undefined, undefined, undefined]}}
                     disableActive={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             assert.equal(link.type, 'a');
@@ -1365,16 +1365,16 @@ describe('RefreshLinkTest', function () {
 
     describe('Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1386,16 +1386,16 @@ describe('RefreshLinkTest', function () {
 
     describe('Ctrl + Click Refresh Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1407,16 +1407,16 @@ describe('RefreshLinkTest', function () {
 
     describe('Shift + Click Refresh Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1428,16 +1428,16 @@ describe('RefreshLinkTest', function () {
 
     describe('Meta + Click Refresh Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1449,16 +1449,16 @@ describe('RefreshLinkTest', function () {
 
     describe('Alt + Click Refresh Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1470,16 +1470,16 @@ describe('RefreshLinkTest', function () {
 
     describe('Button + Click Refresh Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1491,17 +1491,17 @@ describe('RefreshLinkTest', function () {
 
     describe('Navigating Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigating={() => true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1513,17 +1513,17 @@ describe('RefreshLinkTest', function () {
 
     describe('Not Navigating Click Refresh Link', function () {
         it('should not navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigating={() => false}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1535,21 +1535,21 @@ describe('RefreshLinkTest', function () {
 
     describe('Navigating Params Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             var navigatingEvt, navigatingLink;
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     navigating={(e, domId, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
                     }}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1563,18 +1563,18 @@ describe('RefreshLinkTest', function () {
 
     describe('Lazy Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     includeCurrentData={true}
                     lazy={true}
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             var el = { href: null };
@@ -1590,16 +1590,16 @@ describe('RefreshLinkTest', function () {
 
     describe('History Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1613,17 +1613,17 @@ describe('RefreshLinkTest', function () {
 
     describe('Replace History Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     historyAction="replace"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
@@ -1637,17 +1637,17 @@ describe('RefreshLinkTest', function () {
 
     describe('None History Click Refresh Link', function () {
         it('should navigate', function(){
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var renderer = ReactTestUtils.createRenderer();
             renderer.render(
-                <NavigationReact.RefreshLink
+                <RefreshLink
                     historyAction="none"
                     stateNavigator={stateNavigator}>
                     link text
-                </NavigationReact.RefreshLink>
+                </RefreshLink>
             );
             var link = renderer.getRenderOutput();
             link['ref']({ href: link.props['href'] });
