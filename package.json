@@ -15,8 +15,7 @@
     "rollup-plugin-typescript": "^0.8.1",
     "tsify": "^0.14.1",
     "typescript": "^2.0.3",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-buffer": "^1.0.0"
   },
   "scripts": {
     "test": "gulp test",

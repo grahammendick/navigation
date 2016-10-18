@@ -4,7 +4,6 @@ var gulp = require('gulp');
 var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
-var source = require('vinyl-source-stream');
 var typescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 var rollup = require('rollup');
