@@ -1,7 +1,6 @@
 ﻿'use strict'
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
-var shim = require('browserify-shim');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var derequire = require('gulp-derequire');

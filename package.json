@@ -4,7 +4,6 @@
   "description": "The data-first JavaScript router",
   "devDependencies": {
     "browserify": "^13.0.0",
-    "browserify-shim": "^3.8.3",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-derequire": "^2.1.0",
@@ -21,16 +20,6 @@
     "typescript": "^2.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
-  },
-  "browserify-shim": {
-    "navigation": "global:Navigation",
-    "angular": "global:angular",
-    "knockout": "global:ko",
-    "react": "global:React",
-    "@cycle/dom": "global:CycleDOM",
-    "rx": "global:Rx",
-    "inferno-component": "global:InfernoComponent",
-    "inferno-create-element": "global:InfernoCreateElement"
   },
   "scripts": {
     "test": "gulp test",
