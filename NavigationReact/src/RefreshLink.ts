@@ -1,5 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import * as React from 'react';
 
 class RefreshLink extends React.Component<any, any> {
@@ -17,7 +17,7 @@ class RefreshLink extends React.Component<any, any> {
         stateNavigator: React.PropTypes.object
     }
     
-    private getStateNavigator(): Navigation.StateNavigator {
+    private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
