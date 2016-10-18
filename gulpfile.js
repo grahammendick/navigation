@@ -64,7 +64,9 @@ function rollupTask(name, file, to, details) {
         entry: file,
         plugins: [
             rollup_typescript({
-                typescript: require('typescript')
+                typescript: require('typescript'),
+                target: 'es3',
+                module: 'es6'
             })
         ]
     }).then((bundle) => {
