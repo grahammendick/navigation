@@ -2,7 +2,7 @@
 /// <reference path="mocha.d.ts" />
 /// <reference path="../src/navigation.d.ts" />
 import * as assert from 'assert';
-import Navigation from '../src/Navigation';
+import * as Navigation from '../src/Navigation';
 
 describe('MatchTest', function () {
     describe('Root', function () {
