@@ -5,7 +5,7 @@ var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
-var typescript = require('gulp-tsc');
+var gulpTypescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
 var tests = [
@@ -106,7 +106,7 @@ function buildTask(file, details) {
 }
 function packageTask(name, file) {
     return gulp.src(file)
-        .pipe(typescript())
+        .pipe(gulpTypescript())
         .pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
 for (var i = 0; i < items.length; i++) {
