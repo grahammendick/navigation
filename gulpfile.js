@@ -66,7 +66,7 @@ var info = ['/**',
 function rollupTask(name, file, to) {
     return rollup.rollup({
         entry: file,
-        external: ['angular', 'knockout', 'react', '@cycle/dom', 'rx'],
+        external: ['angular', 'knockout', 'react', '@cycle/dom', 'rx', 'inferno-component', 'inferno-create-element'],
         plugins: [
             rollupTypescript({
                 typescript: require('typescript'),
