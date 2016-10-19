@@ -51,11 +51,17 @@ gulp.task('test', testTasks);
 
 var items = [
     require('./build/npm/navigation/package.json'),
-    Object.assign(require('./build/npm/navigation-react/package.json'), { globals: { react: 'React' } }),
-    Object.assign(require('./build/npm/navigation-knockout/package.json'), { globals: { knockout: 'ko' } }),
-    Object.assign(require('./build/npm/navigation-angular/package.json'), { globals: { angular: 'angular' } }),
-    Object.assign(require('./build/npm/navigation-cycle/package.json'), { globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } }),
-    Object.assign(require('./build/npm/navigation-inferno/package.json'), { globals: { 'inferno-component': 'InfernoComponent', 'inferno-create-element': 'InfernoCreateElement' } })
+    Object.assign({ globals: { react: 'React' } }, 
+        require('./build/npm/navigation-react/package.json')),
+    Object.assign({ globals: { knockout: 'ko' } },
+        require('./build/npm/navigation-knockout/package.json')),
+    Object.assign({ globals: { angular: 'angular' } },
+        require('./build/npm/navigation-angular/package.json')),
+    Object.assign({ globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } },
+        require('./build/npm/navigation-cycle/package.json')),
+    Object.assign({ globals: { 'inferno-component': 'InfernoComponent',
+            'inferno-create-element': 'InfernoCreateElement' } },
+        require('./build/npm/navigation-inferno/package.json'))
 ];
 var info = ['/**',
   ' * <%= details.name %> v<%= details.version %>',
