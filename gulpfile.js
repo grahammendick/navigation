@@ -66,7 +66,6 @@ var info = ['/**',
 function rollupTask(name, file, to) {
     return rollup.rollup({
         entry: file,
-        external: ['knockout', 'react'],
         plugins: [
             rollupTypescript({
                 typescript: require('typescript'),
