@@ -1,7 +1,7 @@
 /// <reference path="navigation.d.ts" />
 /// <reference path="cycle-dom.d.ts" />
 /// <reference path="rx.d.ts" />
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 
 class HistoryActionHook {
     private historyAction;
@@ -16,7 +16,7 @@ class HistoryActionHook {
 }
 
 class LinkUtility {
-    static getData(stateNavigator: Navigation.StateNavigator, navigationData, includeCurrentData, currentDataKeys) {
+    static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
@@ -25,7 +25,7 @@ class LinkUtility {
     }
     
 
-    static setActive(stateNavigator: Navigation.StateNavigator, properties: any, newProperties: any) {
+    static setActive(stateNavigator: StateNavigator, properties: any, newProperties: any) {
         if (!properties.activeCssClass && !properties.disableActive)
             return;
         var active = !!newProperties.href;

@@ -1,11 +1,11 @@
 import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import NavigationBackLink from './NavigationBackLink';
 import NavigationLink from './NavigationLink';
 import RefreshLink from './RefreshLink';
 import * as Rx from 'rx';
 
-function navigate(e, stateNavigator: Navigation.StateNavigator) {
+function navigate(e, stateNavigator: StateNavigator) {
     var navigationData = LinkUtility.getData(stateNavigator, e.navigationData, e.includeCurrentData, e.currentDataKeys);
     if (e.action)
         stateNavigator.navigate(e.state, navigationData, e.historyAction);
@@ -19,7 +19,7 @@ function navigate(e, stateNavigator: Navigation.StateNavigator) {
 
 var NavigationDriver = function(url) {
     return function(navigate$) {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         var navigated$ = new Rx.ReplaySubject(1);
         navigate$.subscribe(e => {
             if (e.stateNavigator) {

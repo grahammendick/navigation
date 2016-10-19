@@ -1,8 +1,8 @@
 import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import * as CycleDOM from '@cycle/dom';
 
-var NavigationLink = (stateNavigator: Navigation.StateNavigator, properties: any, children: any) => {
+var NavigationLink = (stateNavigator: StateNavigator, properties: any, children: any) => {
     var newProperties: any = {};
     for(var key in properties)
         newProperties[key] = properties[key];
