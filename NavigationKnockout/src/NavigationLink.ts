@@ -1,5 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import * as ko from 'knockout';
 
 var NavigationLink = ko.bindingHandlers['navigationLink'] = {
@@ -15,7 +15,7 @@ function setNavigationLink(element: HTMLAnchorElement, valueAccessor: () => any,
     var stateKey = ko.unwrap(valueAccessor());
     var data = {};
     var navigationData = ko.unwrap(allBindings.get('navigationData'));
-    var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
+    var stateNavigator: StateNavigator = allBindings.get('stateNavigator');
     for (var key in navigationData) {
         data[key] = ko.unwrap(navigationData[key]);
     }

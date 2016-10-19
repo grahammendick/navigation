@@ -1,5 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import * as ko from 'knockout';
 
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
@@ -14,7 +14,7 @@ var RefreshLink = ko.bindingHandlers['refreshLink'] = {
 function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
     var data = {};
     var navigationData = ko.unwrap(valueAccessor());
-    var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
+    var stateNavigator: StateNavigator = allBindings.get('stateNavigator');
     for (var key in navigationData) {
         data[key] = ko.unwrap(navigationData[key]);
     }

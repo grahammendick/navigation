@@ -1,10 +1,10 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="knockout.d.ts" />
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import * as ko from 'knockout';
 
 class LinkUtility {
-    static setLink(stateNavigator: Navigation.StateNavigator, element: HTMLAnchorElement, linkAccessor: () => string) {
+    static setLink(stateNavigator: StateNavigator, element: HTMLAnchorElement, linkAccessor: () => string) {
         try {
             element.href = stateNavigator.historyManager.getHref(linkAccessor());
         } catch (e) {
@@ -12,7 +12,7 @@ class LinkUtility {
         }
     }
 
-    static getData(stateNavigator: Navigation.StateNavigator, navigationData, includeCurrentData, currentDataKeys) {
+    static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData, currentDataKeys) {
         if (currentDataKeys)
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
@@ -20,7 +20,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static setActive(element: HTMLAnchorElement, stateNavigator: Navigation.StateNavigator, navigationData, activeCssClass, disableActive) {
+    static setActive(element: HTMLAnchorElement, stateNavigator: StateNavigator, navigationData, activeCssClass, disableActive) {
         if (!activeCssClass && !disableActive)
             return;
         var active = !!element.href;
@@ -52,7 +52,7 @@ class LinkUtility {
 
     static addListeners(element: HTMLAnchorElement, setLink: () => void, allBindings: KnockoutAllBindingsAccessor, viewModel: any) {
         var lazy = !!allBindings.get('lazy');
-        var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
+        var stateNavigator: StateNavigator = allBindings.get('stateNavigator');
         ko.utils.registerEventHandler(element, 'click', (e: MouseEvent) => {
             if (lazy)
                 setLink();
