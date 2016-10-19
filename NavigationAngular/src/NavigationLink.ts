@@ -1,5 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import * as angular from 'angular';
 
 var NavigationLink = ($parse: ng.IParseService) => {
@@ -7,7 +7,7 @@ var NavigationLink = ($parse: ng.IParseService) => {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var stateKey, navigationData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
-            var stateNavigator: Navigation.StateNavigator = scope.$eval(attrs['stateNavigator']);
+            var stateNavigator: StateNavigator = scope.$eval(attrs['stateNavigator']);
             LinkUtility.addListeners(element, () => setNavigationLink(element, attrs, stateNavigator, stateKey, navigationData,
                 includeCurrentData, currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope)
             var watchAttrs = [attrs['navigationLink'], attrs['navigationData'], attrs['includeCurrentData'], 
@@ -25,7 +25,7 @@ var NavigationLink = ($parse: ng.IParseService) => {
     }
 };
 
-function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator,
+function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: StateNavigator,
     stateKey: string, navigationData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getNavigationLink(stateKey,
         LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys))
