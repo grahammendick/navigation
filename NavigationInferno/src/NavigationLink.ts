@@ -1,12 +1,12 @@
 import LinkUtility from './LinkUtility';
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import InfernoComponent from 'inferno-component';
 import createElement from 'inferno-create-element';
 
 class NavigationLink extends InfernoComponent {
     private onNavigate = () => this.forceUpdate();
     
-    private getStateNavigator(): Navigation.StateNavigator {
+    private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     

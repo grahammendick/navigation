@@ -1,11 +1,11 @@
 /// <reference path="navigation.d.ts" />
 /// <reference path="inferno-component.d.ts" />
 /// <reference path="inferno-create-element.d.ts" />
-import * as Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import InfernoComponent from 'inferno-component';
 
 class LinkUtility {
-    static getLink(stateNavigator: Navigation.StateNavigator, linkAccessor: () => string): string {
+    static getLink(stateNavigator: StateNavigator, linkAccessor: () => string): string {
         try {
             return stateNavigator.historyManager.getHref(linkAccessor());
         } catch (e) {
@@ -13,7 +13,7 @@ class LinkUtility {
         }
     }
 
-    static getData(stateNavigator: Navigation.StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
@@ -21,7 +21,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static setActive(stateNavigator: Navigation.StateNavigator, props: any, toProps: any) {
+    static setActive(stateNavigator: StateNavigator, props: any, toProps: any) {
         if (!props.activeCssClass && !props.disableActive)
             return;
         var active = !!toProps.href;
@@ -58,7 +58,7 @@ class LinkUtility {
             && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
     }
     
-    static addListeners(component: InfernoComponent, stateNavigator: Navigation.StateNavigator, props: any, toProps: any, getLink: () => string) {
+    static addListeners(component: InfernoComponent, stateNavigator: StateNavigator, props: any, toProps: any, getLink: () => string) {
         var lazy = !!props.lazy;
         toProps.onClick = (e: MouseEvent, domId: string) => {
             var element = <HTMLAnchorElement> component.refs.el;
