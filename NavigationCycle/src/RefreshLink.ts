@@ -1,6 +1,6 @@
-import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import CycleDOM = require('@cycle/dom');
+import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import * as CycleDOM from '@cycle/dom';
 
 var RefreshLink = (stateNavigator: Navigation.StateNavigator, properties: any, children: any) => {
     var newProperties: any = {};
@@ -16,4 +16,4 @@ var RefreshLink = (stateNavigator: Navigation.StateNavigator, properties: any, c
     LinkUtility.setHistoryAction(newProperties, properties.historyAction);
     return CycleDOM.h(newProperties.href ? 'a' : 'span', newProperties, children);
 }
-export = RefreshLink;
+export default RefreshLink;

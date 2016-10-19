@@ -1,9 +1,9 @@
-import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import NavigationBackLink = require('./NavigationBackLink');
-import NavigationLink = require('./NavigationLink');
-import RefreshLink = require('./RefreshLink');
-import Rx = require('rx');
+import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import NavigationBackLink from './NavigationBackLink';
+import NavigationLink from './NavigationLink';
+import RefreshLink from './RefreshLink';
+import * as Rx from 'rx';
 
 function navigate(e, stateNavigator: Navigation.StateNavigator) {
     var navigationData = LinkUtility.getData(stateNavigator, e.navigationData, e.includeCurrentData, e.currentDataKeys);
@@ -48,4 +48,4 @@ var NavigationDriver = function(url) {
         return navigated$;
     };
 }
-export = NavigationDriver;
+export default NavigationDriver;

@@ -1,7 +1,7 @@
 /// <reference path="navigation.d.ts" />
 /// <reference path="cycle-dom.d.ts" />
 /// <reference path="rx.d.ts" />
-import Navigation = require('navigation');
+import * as Navigation from 'navigation';
 
 class HistoryActionHook {
     private historyAction;
@@ -61,5 +61,4 @@ class LinkUtility {
             properties.historyAction = new HistoryActionHook(historyAction);
     }
 }
-export = LinkUtility;
-
+export default LinkUtility;
