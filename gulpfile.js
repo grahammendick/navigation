@@ -6,6 +6,7 @@ var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
+var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
 var tests = [
@@ -23,7 +24,7 @@ function rollupTestTask(name, file, to) {
         external: ['assert', 'react', 'react-addons-test-utils'],
         plugins: [
             rollupTypescript({
-                typescript: require('typescript'),
+                typescript: typescript,
                 jsx: 'react'
             })
         ]
@@ -75,7 +76,7 @@ function rollupTask(name, file, to, globals) {
         external: Object.keys(globals),
         plugins: [
             rollupTypescript({
-                typescript: require('typescript'),
+                typescript: typescript,
                 target: 'es3',
                 module: 'es6'
             })
