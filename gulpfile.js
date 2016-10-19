@@ -1,11 +1,11 @@
 ﻿'use strict'
 var gulp = require('gulp');
+var gulpTypescript = require('gulp-tsc');
 var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
-var gulpTypescript = require('gulp-tsc');
 var uglify = require('gulp-uglify');
 
 var tests = [
