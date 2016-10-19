@@ -25,6 +25,8 @@ function rollupTestTask(name, file, to) {
         plugins: [
             rollupTypescript({
                 typescript: typescript,
+                target: 'es3',
+                module: 'es6',
                 jsx: 'react'
             })
         ]
