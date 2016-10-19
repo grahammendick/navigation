@@ -51,11 +51,11 @@ gulp.task('test', testTasks);
 
 var items = [
     require('./build/npm/navigation/package.json'),
-    require('./build/npm/navigation-react/package.json'),
-    require('./build/npm/navigation-knockout/package.json'),
-    require('./build/npm/navigation-angular/package.json'),
-    require('./build/npm/navigation-cycle/package.json'),
-    require('./build/npm/navigation-inferno/package.json')
+    Object.assign(require('./build/npm/navigation-react/package.json'), { globals: { react: 'React' } }),
+    Object.assign(require('./build/npm/navigation-knockout/package.json'), { globals: { knockout: 'ko' } }),
+    Object.assign(require('./build/npm/navigation-angular/package.json'), { globals: { angular: 'angular' } }),
+    Object.assign(require('./build/npm/navigation-cycle/package.json'), { globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } }),
+    Object.assign(require('./build/npm/navigation-inferno/package.json'), { globals: { 'inferno-component': 'InfernoComponent', 'inferno-create-element': 'InfernoCreateElement' } })
 ];
 var info = ['/**',
   ' * <%= details.name %> v<%= details.version %>',
@@ -63,10 +63,10 @@ var info = ['/**',
   ' * License: <%= details.license %>',
   ' */',
   ''].join('\r\n');
-function rollupTask(name, file, to) {
+function rollupTask(name, file, to, globals) {
     return rollup.rollup({
         entry: file,
-        external: ['angular', 'knockout', 'react', '@cycle/dom', 'rx', 'inferno-component', 'inferno-create-element'],
+        external: Object.keys(globals),
         plugins: [
             rollupTypescript({
                 typescript: require('typescript'),
@@ -78,16 +78,7 @@ function rollupTask(name, file, to) {
         bundle.write({
             format: 'iife',
             moduleName: name,
-            globals: {
-                navigation: 'Navigation',
-                angular: 'angular',
-                knockout: 'ko',
-                react: 'React',
-                '@cycle/dom': 'CycleDOM',
-                rx: 'Rx',
-                'inferno-component': 'InfernoComponent',
-                'inferno-create-element': 'InfernoCreateElement'
-            },
+            globals: Object.assign({ navigation: 'Navigation'}, globals),
             dest: './build/dist/' + to
         });
     });        
@@ -113,7 +104,7 @@ var itemTasks = items.reduce((tasks, item) => {
     var tsFrom = './' + name + '/src/' + name + '.ts';
     var jsTo = packageName.replace('-', '.') + '.js';
     item.name = upperName.replace('-', ' ');
-    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo));
+    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
     gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
     tasks.buildTasks.push('Build' + name);
