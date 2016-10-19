@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import ko = require('knockout');
+﻿import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import * as ko from 'knockout';
 
 var NavigationBackLink = ko.bindingHandlers['navigationBackLink'] = {
     init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor, viewModel: any) => {
@@ -15,4 +15,4 @@ function setNavigationBackLink(element: HTMLAnchorElement, valueAccessor: () => 
     var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
     LinkUtility.setLink(stateNavigator, element, () => stateNavigator.getNavigationBackLink(ko.unwrap(valueAccessor())));
 }
-export = NavigationBackLink;
+export default NavigationBackLink;

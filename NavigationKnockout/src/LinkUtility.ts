@@ -1,7 +1,7 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="knockout.d.ts" />
-import Navigation = require('navigation');
-import ko = require('knockout');
+import * as Navigation from 'navigation';
+import * as ko from 'knockout';
 
 class LinkUtility {
     static setLink(stateNavigator: Navigation.StateNavigator, element: HTMLAnchorElement, linkAccessor: () => string) {
@@ -88,4 +88,4 @@ class LinkUtility {
         }
     }
 }
-export = LinkUtility;
+export default LinkUtility;
