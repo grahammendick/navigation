@@ -1,10 +1,8 @@
 declare module 'inferno-component' {
-    export = InfernoComponent;
+    export default class InfernoComponent {
+        props: any;
+        context: any;
+        refs: any;
+        forceUpdate();
+    }
 } 
-
-declare class InfernoComponent {
-    props: any;
-    context: any;
-    refs: any;
-    forceUpdate();
-}
