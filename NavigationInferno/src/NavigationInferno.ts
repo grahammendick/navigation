@@ -1,10 +1,5 @@
-import NavigationBackLink = require('./NavigationBackLink');
-import NavigationLink = require('./NavigationLink');
-import RefreshLink = require('./RefreshLink');
+import NavigationBackLink from './NavigationBackLink';
+import NavigationLink from './NavigationLink';
+import RefreshLink from './RefreshLink';
 
-class NavigationInferno {
-    static NavigationBackLink = NavigationBackLink;
-    static NavigationLink = NavigationLink;
-    static RefreshLink = RefreshLink;
-}
-export = NavigationInferno; 
+export { NavigationBackLink, NavigationLink, RefreshLink };

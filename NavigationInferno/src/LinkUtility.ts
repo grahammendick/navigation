@@ -1,8 +1,8 @@
 /// <reference path="navigation.d.ts" />
 /// <reference path="inferno-component.d.ts" />
 /// <reference path="inferno-create-element.d.ts" />
-import Navigation = require('navigation');
-import InfernoComponent = require('inferno-component');
+import * as Navigation from 'navigation';
+import InfernoComponent from 'inferno-component';
 
 class LinkUtility {
     static getLink(stateNavigator: Navigation.StateNavigator, linkAccessor: () => string): string {
@@ -93,4 +93,4 @@ class LinkUtility {
         }
     }
 }
-export = LinkUtility;
+export default LinkUtility;

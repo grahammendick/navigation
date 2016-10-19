@@ -1,7 +1,7 @@
-import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import InfernoComponent = require('inferno-component');
-import createElement = require('inferno-create-element');
+import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import InfernoComponent from 'inferno-component';
+import createElement from 'inferno-create-element';
 
 class NavigationBackLink extends InfernoComponent {
     private onNavigate = () => this.forceUpdate();
@@ -35,4 +35,4 @@ class NavigationBackLink extends InfernoComponent {
         return createElement('a', props, this.props.children);
     }
 };
-export = NavigationBackLink;
+export default NavigationBackLink;
