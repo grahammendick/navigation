@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import angular = require('angular');
+﻿import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import * as angular from 'angular';
 
 var NavigationLink = ($parse: ng.IParseService) => {
     return {
@@ -33,4 +33,4 @@ function setNavigationLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, 
     if (stateNavigator.stateContext.state && stateNavigator.stateContext.state.key === stateKey)
         LinkUtility.setActive(element, stateNavigator, attrs, navigationData, activeCssClass, disableActive);
 }
-export = NavigationLink;
+export default NavigationLink;

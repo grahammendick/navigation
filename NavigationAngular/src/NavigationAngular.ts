@@ -1,15 +1,10 @@
-﻿import NavigationBackLink = require('./NavigationBackLink');
-import NavigationLink = require('./NavigationLink');
-import RefreshLink = require('./RefreshLink');
-import angular = require('angular');
+﻿import NavigationBackLink from './NavigationBackLink';
+import NavigationLink from './NavigationLink';
+import RefreshLink from './RefreshLink';
+import * as angular from 'angular';
 
-class NavigationAngular {
-    static NavigationBackLink = NavigationBackLink;
-    static NavigationLink = NavigationLink;
-    static RefreshLink = RefreshLink;
-}
 angular.module('NavigationAngular', [])
     .directive('navigationBackLink', NavigationBackLink)
     .directive('navigationLink', NavigationLink)
     .directive('refreshLink', RefreshLink);
-export = NavigationAngular; 
+export { NavigationBackLink, NavigationLink, RefreshLink };

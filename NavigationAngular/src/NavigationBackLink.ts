@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import angular = require('angular');
+﻿import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import * as angular from 'angular';
 
 var NavigationBackLink = ($parse: ng.IParseService) => {
     return {
@@ -20,4 +20,4 @@ var NavigationBackLink = ($parse: ng.IParseService) => {
 function setNavigationBackLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator, distance: number) {
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getNavigationBackLink(distance));
 }
-export = NavigationBackLink;
+export default NavigationBackLink;

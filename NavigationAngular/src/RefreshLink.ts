@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import angular = require('angular');
+﻿import LinkUtility from './LinkUtility';
+import * as Navigation from 'navigation';
+import * as angular from 'angular';
 
 var RefreshLink = ($parse: ng.IParseService) => {
     return {
@@ -31,4 +31,4 @@ function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, sta
     );
     LinkUtility.setActive(element, stateNavigator, attrs, navigationData, activeCssClass, disableActive);
 }
-export = RefreshLink;
+export default RefreshLink;

@@ -1,9 +1,9 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="angular.d.ts" />
 /// <reference path="jquery.d.ts" />
-import Navigation = require('navigation');
-import angular = require('angular');
-import jquery = require('jquery');
+import * as Navigation from 'navigation';
+import * as angular from 'angular';
+import * as jquery from 'jquery';
 
 class LinkUtility {
     static setLink(stateNavigator: Navigation.StateNavigator, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
@@ -88,4 +88,4 @@ class LinkUtility {
         }
     }
 }
-export = LinkUtility; 
+export default LinkUtility;
