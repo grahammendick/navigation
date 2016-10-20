@@ -1,6 +1,6 @@
-﻿import Route = require('./routing/Route');
-import Router = require('./routing/Router');
-import State = require('./config/State');
+﻿import Route from './routing/Route';
+import Router from './routing/Router';
+import State from './config/State';
 type RouteInfo = { routes: Route[]; params: { [index: string]: number }; matches: any };
 type MatchInfo = { route: Route; data: any; routePath: string };
 
@@ -153,4 +153,4 @@ class StateRouter {
         return routes;
     }
 }
-export = StateRouter;
+export default StateRouter;

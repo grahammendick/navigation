@@ -1,4 +1,4 @@
-﻿import TypeConverter = require('./TypeConverter');
+﻿import TypeConverter from './TypeConverter';
 
 class ArrayConverter extends TypeConverter {
     private converter: TypeConverter;
@@ -50,4 +50,4 @@ class ArrayConverter extends TypeConverter {
         return { val: vals.join(ArrayConverter.SEPARATOR), arrayVal: arr };
     }
 }
-export = ArrayConverter;
+export default ArrayConverter;

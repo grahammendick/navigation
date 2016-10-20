@@ -1,9 +1,9 @@
-﻿import Crumb = require('./config/Crumb');
-import NavigationDataManager = require('./NavigationDataManager');
-import Route = require('./routing/Route');
-import State = require('./config/State');
-import StateInfo = require('./config/StateInfo');
-import StateRouter = require('./StateRouter');
+﻿import Crumb from './config/Crumb';
+import NavigationDataManager from './NavigationDataManager';
+import Route from './routing/Route';
+import State from './config/State';
+import StateInfo from './config/StateInfo';
+import StateRouter from './StateRouter';
 
 class StateHandler {
     private navigationDataManager = new NavigationDataManager();
@@ -129,4 +129,4 @@ class StateHandler {
         return crumbs;
     }
 }
-export = StateHandler;
+export default StateHandler;

@@ -1,12 +1,12 @@
 ﻿/// <reference path="navigation.d.ts" />
 /// <reference path="angular.d.ts" />
 /// <reference path="jquery.d.ts" />
-import Navigation = require('navigation');
-import angular = require('angular');
-import jquery = require('jquery');
+import { StateNavigator } from 'navigation';
+import * as angular from 'angular';
+import * as jquery from 'jquery';
 
 class LinkUtility {
-    static setLink(stateNavigator: Navigation.StateNavigator, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
+    static setLink(stateNavigator: StateNavigator, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, linkAccessor: () => string) {
         try {
             attrs.$set('href', stateNavigator.historyManager.getHref(linkAccessor()));
         } catch (e) {
@@ -14,7 +14,7 @@ class LinkUtility {
         }
     }
 
-    static getData(stateNavigator: Navigation.StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
+    static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
         if (includeCurrentData)
@@ -22,7 +22,7 @@ class LinkUtility {
         return navigationData;
     }
 
-    static setActive(element: ng.IAugmentedJQuery, stateNavigator: Navigation.StateNavigator, attrs: ng.IAttributes, navigationData, activeCssClass, disableActive) {
+    static setActive(element: ng.IAugmentedJQuery, stateNavigator: StateNavigator, attrs: ng.IAttributes, navigationData, activeCssClass, disableActive) {
         if (!activeCssClass && !disableActive)
             return;
         var active = !!attrs['href'];
@@ -54,7 +54,7 @@ class LinkUtility {
 
     static addListeners(element: ng.IAugmentedJQuery, setLink: () => void, $parse: ng.IParseService, attrs: ng.IAttributes, scope: ng.IScope) {
         var lazy = !!scope.$eval(attrs['lazy']);
-        var stateNavigator: Navigation.StateNavigator = scope.$eval(attrs['stateNavigator']);
+        var stateNavigator: StateNavigator = scope.$eval(attrs['stateNavigator']);
         element.on('click', (e: JQueryEventObject) => {
             var anchor = <HTMLAnchorElement> element[0];
             if (lazy)
@@ -88,4 +88,4 @@ class LinkUtility {
         }
     }
 }
-export = LinkUtility; 
+export default LinkUtility;

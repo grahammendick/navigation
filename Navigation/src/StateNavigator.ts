@@ -1,10 +1,10 @@
-﻿import Crumb = require('./config/Crumb');
-import HashHistoryManager = require('./history/HashHistoryManager');
-import HistoryManager = require('./history/HistoryManager');
-import State = require('./config/State');
-import StateInfo = require('./config/StateInfo');
-import StateContext = require('./StateContext');
-import StateHandler = require('./StateHandler');
+﻿import Crumb from './config/Crumb';
+import HashHistoryManager from './history/HashHistoryManager';
+import HistoryManager from './history/HistoryManager';
+import State from './config/State';
+import StateInfo from './config/StateInfo';
+import StateContext from './StateContext';
+import StateHandler from './StateHandler';
 
 class StateNavigator {
     private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
@@ -166,4 +166,4 @@ class StateNavigator {
         this.navigateLink(url != null ? url : this.historyManager.getCurrentUrl());
     };
 }
-export = StateNavigator;
+export default StateNavigator;

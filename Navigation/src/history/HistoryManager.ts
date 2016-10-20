@@ -7,4 +7,4 @@
     getUrl(hrefElement: HTMLAnchorElement | Location): string;
     stop(): void;
 }
-export = HistoryManager;
+export default HistoryManager;

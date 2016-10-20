@@ -1,13 +1,13 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import angular = require('angular');
+﻿import LinkUtility from './LinkUtility';
+import { StateNavigator } from 'navigation';
+import * as angular from 'angular';
 
 var RefreshLink = ($parse: ng.IParseService) => {
     return {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var navigationData, includeCurrentData, currentDataKeys, activeCssClass, disableActive;
-            var stateNavigator: Navigation.StateNavigator = scope.$eval(attrs['stateNavigator']);
+            var stateNavigator: StateNavigator = scope.$eval(attrs['stateNavigator']);
             LinkUtility.addListeners(element, () => setRefreshLink(element, attrs, stateNavigator, navigationData,
                 includeCurrentData, currentDataKeys, activeCssClass, disableActive), $parse, attrs, scope);
             var watchAttrs = [attrs['refreshLink'], attrs['includeCurrentData'], 
@@ -24,11 +24,11 @@ var RefreshLink = ($parse: ng.IParseService) => {
     }
 };
 
-function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator,
+function setRefreshLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: StateNavigator,
     navigationData: any, includeCurrentData: boolean, currentDataKeys: string, activeCssClass: string, disableActive: boolean) {
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getRefreshLink(
         LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys))
     );
     LinkUtility.setActive(element, stateNavigator, attrs, navigationData, activeCssClass, disableActive);
 }
-export = RefreshLink;
+export default RefreshLink;

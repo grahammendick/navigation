@@ -1,14 +1,13 @@
 ﻿/// <reference path="assert.d.ts" />
 /// <reference path="mocha.d.ts" />
-/// <reference path="../src/navigation.d.ts" />
-import assert = require('assert');
-import Navigation = require('../src/Navigation');
+import * as assert from 'assert';
+import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from '../src/Navigation';
 
 describe('Navigation', function () {
     describe('State', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
         });
@@ -39,9 +38,9 @@ describe('Navigation', function () {
     });
 
     describe('Second State', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's', route: 'r' }
             ]);
@@ -73,9 +72,9 @@ describe('Navigation', function () {
     });
 
     describe('State With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
         });
@@ -106,9 +105,9 @@ describe('Navigation', function () {
     });
 
     describe('Invalid State', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
         });
@@ -127,9 +126,9 @@ describe('Navigation', function () {
     });
 
     describe('Transition', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -170,9 +169,9 @@ describe('Navigation', function () {
     });
 
     describe('Transition With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -213,9 +212,9 @@ describe('Navigation', function () {
     });
 
     describe('State State', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
         });
@@ -255,9 +254,9 @@ describe('Navigation', function () {
     });
 
     describe('State State With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
         });
@@ -298,9 +297,9 @@ describe('Navigation', function () {
     
 
     describe('Null State', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
         });
@@ -319,9 +318,9 @@ describe('Navigation', function () {
     });
     
     describe('Transition From Without Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0', trackCrumbTrail: false },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -364,9 +363,9 @@ describe('Navigation', function () {
     });
 
     describe('Transition With Trail Transition With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -414,9 +413,9 @@ describe('Navigation', function () {
     });
     
     describe('Transition Transition', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -462,9 +461,9 @@ describe('Navigation', function () {
     
     
     describe('Refresh With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -510,9 +509,9 @@ describe('Navigation', function () {
     });
 
     describe('Refresh', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -556,9 +555,9 @@ describe('Navigation', function () {
     });
     
     describe('Back With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -608,9 +607,9 @@ describe('Navigation', function () {
     });
 
     describe('Back', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -658,9 +657,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Two With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -720,9 +719,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Two', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' },
@@ -778,9 +777,9 @@ describe('Navigation', function () {
     });
 
     describe('Back One By One With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -835,9 +834,9 @@ describe('Navigation', function () {
     });
 
     describe('Back One By One', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -892,9 +891,9 @@ describe('Navigation', function () {
     });
 
     describe('Can Navigate Back With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -939,9 +938,9 @@ describe('Navigation', function () {
     });
 
     describe('Can Navigate Back', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2' }
@@ -980,9 +979,9 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Back With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1016,9 +1015,9 @@ describe('Navigation', function () {
     });
 
     describe('Invalid Back', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2' }
@@ -1052,9 +1051,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Invalid Back With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1091,9 +1090,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Invalid Back', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1130,9 +1129,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1183,9 +1182,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1236,9 +1235,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh Transition With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -1297,9 +1296,9 @@ describe('Navigation', function () {
     });
 
     describe('Back Refresh Transition', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -1356,9 +1355,9 @@ describe('Navigation', function () {
     });
 
     describe('Transition Transition With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1405,9 +1404,9 @@ describe('Navigation', function () {
     });
 
     describe('Crumb Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -1464,9 +1463,9 @@ describe('Navigation', function () {
     });
 
     describe('State State Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                     { key: 's', route: 'r', trackCrumbTrail: true },
                 ]);
             var state = stateNavigator.states['s'];
@@ -1502,9 +1501,9 @@ describe('Navigation', function () {
     });
 
     describe('Transition State State Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -1545,9 +1544,9 @@ describe('Navigation', function () {
     });
 
     describe('State State Back Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
@@ -1588,9 +1587,9 @@ describe('Navigation', function () {
     });
 
     describe('Transition State State Back Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -1635,9 +1634,9 @@ describe('Navigation', function () {
     });
 
     describe('State State Back Two Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1686,9 +1685,9 @@ describe('Navigation', function () {
     });
 
     describe('State State Back One By One Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1741,7 +1740,7 @@ describe('Navigation', function () {
 
     describe('Bookmarked Link With Trail Navigate', function() {
         it ('should populate old and previous States', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1758,7 +1757,7 @@ describe('Navigation', function () {
 
     describe('Bookmarked Link Navigate', function() {
         it ('should populate old but not previous States', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -1775,7 +1774,7 @@ describe('Navigation', function () {
 
     describe('Bookmarked Link Clear Navigate', function() {
         it ('should populate previous but not old States', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -1793,7 +1792,7 @@ describe('Navigation', function () {
 
     describe('State State Navigated', function () {
         it('should call all lifecycle functions apart from disposed', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var link = stateNavigator.getNavigationLink('s');
@@ -1822,7 +1821,7 @@ describe('Navigation', function () {
 
     describe('State State Unloading', function () {
         it('should only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var link = stateNavigator.getNavigationLink('s');
@@ -1845,7 +1844,7 @@ describe('Navigation', function () {
 
     describe('State State Navigating', function () {
         it('should only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var link = stateNavigator.getNavigationLink('s');
@@ -1871,7 +1870,7 @@ describe('Navigation', function () {
 
     describe('State State Validate', function () {
         it('should only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var link = stateNavigator.getNavigationLink('s');
@@ -1897,7 +1896,7 @@ describe('Navigation', function () {
 
     describe('Transition Navigated', function () {
         it('should call all lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -1927,7 +1926,7 @@ describe('Navigation', function () {
 
     describe('Transition Unloading', function () {
         it('should only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -1951,7 +1950,7 @@ describe('Navigation', function () {
 
     describe('Transition Navigating', function () {
         it('should only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -1978,7 +1977,7 @@ describe('Navigation', function () {
 
     describe('Transition Validate', function () {
         it('should only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -2005,7 +2004,7 @@ describe('Navigation', function () {
 
     describe('Transition Navigating Navigate', function () {
         it('should populate State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2022,7 +2021,7 @@ describe('Navigation', function () {
 
     describe('Transition Transition Navigated', function () {
         it('should call all lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2054,7 +2053,7 @@ describe('Navigation', function () {
 
     describe('Transition Transition Unloading', function () {
         it('should only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2080,7 +2079,7 @@ describe('Navigation', function () {
 
     describe('Transition Transition Navigating', function () {
         it('should only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2109,7 +2108,7 @@ describe('Navigation', function () {
 
     describe('Transition Transition Validate', function () {
         it('should only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2138,7 +2137,7 @@ describe('Navigation', function () {
 
     describe('Refresh Navigated', function () {
         it('should call all lifecycle functions apart from disposed', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2172,7 +2171,7 @@ describe('Navigation', function () {
 
     describe('Refresh Unloading', function () {
         it('should only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2200,7 +2199,7 @@ describe('Navigation', function () {
 
     describe('Refresh Navigating', function () {
         it('should only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2231,7 +2230,7 @@ describe('Navigation', function () {
 
     describe('Refresh Validate', function () {
         it('should only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2262,7 +2261,7 @@ describe('Navigation', function () {
 
     describe('Back One Navigated', function () {
         it('should call all lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -2293,7 +2292,7 @@ describe('Navigation', function () {
 
     describe('Back One Unloading', function () {
         it('should only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -2318,7 +2317,7 @@ describe('Navigation', function () {
 
     describe('Back One Navigating', function () {
         it('should only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -2346,7 +2345,7 @@ describe('Navigation', function () {
 
     describe('Back One Validate', function () {
         it('should only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -2374,7 +2373,7 @@ describe('Navigation', function () {
 
     describe('Back Two Navigated', function () {
         it('should call all lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -2412,7 +2411,7 @@ describe('Navigation', function () {
 
     describe('Back Two Unloading', function () {
         it('should only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -2444,7 +2443,7 @@ describe('Navigation', function () {
 
     describe('Back Two Navigating', function () {
         it('should only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -2479,7 +2478,7 @@ describe('Navigation', function () {
 
     describe('Back Two Validate', function () {
         it('should only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -2514,7 +2513,7 @@ describe('Navigation', function () {
 
     describe('Back One By One Navigated', function () {
         it('should twice call all lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -2571,7 +2570,7 @@ describe('Navigation', function () {
 
     describe('Back One By One Unloading', function () {
         it('should twice only call unloading function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -2611,7 +2610,7 @@ describe('Navigation', function () {
 
     describe('Back One By One Navigating', function () {
         it('should twice only call unloading and navigating functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -2654,7 +2653,7 @@ describe('Navigation', function () {
 
     describe('Back One By One Valiate', function () {
         it('should twice only call validate function', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -2700,7 +2699,7 @@ describe('Navigation', function () {
 
     describe('Unloading Navigate', function () {
         it('should go to to State instead of initial State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -2735,7 +2734,7 @@ describe('Navigation', function () {
 
     describe('Navigating Navigate', function () {
         it('should go to to State instead of initial State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -2766,7 +2765,7 @@ describe('Navigation', function () {
 
     describe('On Navigate', function () {
         it('should call onNavigate listener', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2795,7 +2794,7 @@ describe('Navigation', function () {
 
     describe('Duplicate On Navigate', function () {
         it('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var oldStates = [];
@@ -2812,7 +2811,7 @@ describe('Navigation', function () {
 
     describe('Duplicate On Off Navigate', function () {
         it('should call onNavigate listener', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2843,7 +2842,7 @@ describe('Navigation', function () {
 
     describe('Copy On Navigate', function () {
         it('should call both onNavigate listeners', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2882,7 +2881,7 @@ describe('Navigation', function () {
 
     describe('Multiple On Navigate', function () {
         it('should call multiple onNavigate listeners', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2925,7 +2924,7 @@ describe('Navigation', function () {
 
     describe('Off Navigate', function () {
         it('should stop calling onNavigate listener', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2953,7 +2952,7 @@ describe('Navigation', function () {
 
     describe('Multiple Off Navigate', function () {
         it('should individually stop calling onNavigate listeners', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -2994,7 +2993,7 @@ describe('Navigation', function () {
 
     describe('Unloading Navigate And Continue', function () {
         it('should go to to State instead of initial State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -3022,7 +3021,7 @@ describe('Navigation', function () {
 
     describe('Unloading Navigate Url And Continue', function () {
         it('should go to State once', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2' }
@@ -3052,7 +3051,7 @@ describe('Navigation', function () {
 
     describe('Navigating Navigate And Continue', function () {
         it('should go to to State instead of initial State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0'},
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true},
@@ -3073,7 +3072,7 @@ describe('Navigation', function () {
 
     describe('Navigated Navigate On Navigate', function () {
         it('should call onNavigate listener once', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2' },
@@ -3103,7 +3102,7 @@ describe('Navigation', function () {
 
     describe('State Params Navigated', function () {
         it('should pass State and Data but no old State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatingData, navigatingUrl;
@@ -3134,7 +3133,7 @@ describe('Navigation', function () {
 
     describe('Transition Params Navigated', function () {
         it('should pass old State, State and Data', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -3174,7 +3173,7 @@ describe('Navigation', function () {
 
     describe('Navigating Navigate Params Navigated', function () {
         it('should pass State and Data', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -3204,7 +3203,7 @@ describe('Navigation', function () {
 
     describe('History Navigate', function () {
         it('should pass history flag to lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -3227,7 +3226,7 @@ describe('Navigation', function () {
 
     describe('Non History Navigate', function () {
         it('should not pass history flag to lifecycle functions', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0'},
                 { key: 's1', route: 'r1' }
             ]);
@@ -3250,7 +3249,7 @@ describe('Navigation', function () {
 
     describe('Async Data Navigating', function () {
         it('should pass async data to navigated function', function(done: MochaDone) {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0'},
                 { key: 's1', route: 'r1' }
             ]);
@@ -3268,7 +3267,7 @@ describe('Navigation', function () {
 
     describe('Async Data Navigating Navigating', function () {
         it('should pass async data to navigated function once', function(done: MochaDone) {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
@@ -3292,7 +3291,7 @@ describe('Navigation', function () {
 
     describe('Reversed Async Data Navigating Navigating', function () {
         it('should pass second async data to navigated function', function(done: MochaDone) {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0'},
                 { key: 's1', route: 'r1' }
             ]);
@@ -3316,7 +3315,7 @@ describe('Navigation', function () {
 
     describe('No Async Data Navigating', function () {
         it('should not pass any async data', function(done: MochaDone) {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' },
                 { key: 's2', route: 'r2' }
@@ -3338,7 +3337,7 @@ describe('Navigation', function () {
 
     describe('Route Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 's' },
                 { key: 's1', route: 'abc/{x}' }
             ]);
@@ -3351,7 +3350,7 @@ describe('Navigation', function () {
 
     describe('Route Root Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{y}' },
                 { key: 's1', route: 's' }
             ]);
@@ -3365,7 +3364,7 @@ describe('Navigation', function () {
 
     describe('Route Root Order Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's1', route: 's' },
                 { key: 's0', route: '{y}' }
             ]);
@@ -3378,7 +3377,7 @@ describe('Navigation', function () {
 
     describe('Two Route Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 's' },
                 { key: 's1', route: ['abc/{x}', 'def/{y}'] }
             ]);
@@ -3393,7 +3392,7 @@ describe('Navigation', function () {
 
     describe('Expand Route Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 's' },
                 { key: 's1', route: 'abc/{x}+/def/{y}' }
             ]);
@@ -3408,7 +3407,7 @@ describe('Navigation', function () {
     
     describe('Two Route Root Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: ['abc/{x}', '{y}'] },
                 { key: 's1', route: 's' }
             ]);
@@ -3424,7 +3423,7 @@ describe('Navigation', function () {
     
     describe('Two Route Root Order Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's1', route: 's' },
                 { key: 's0', route: ['abc/{x}', '{y}'] }
             ]);
@@ -3439,7 +3438,7 @@ describe('Navigation', function () {
 
     describe('Expand Route Root Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '+abc/{x}' },
                 { key: 's1', route: 's' }
             ]);
@@ -3454,7 +3453,7 @@ describe('Navigation', function () {
 
     describe('Expand And Two Route Navigate', function () {
         it('should go to State', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 's' },
                 { key: 's1', route: ['abc/{x}+/def/{y}', 'ghi/{y}'] }
             ]);
@@ -3470,9 +3469,9 @@ describe('Navigation', function () {
     });
 
     describe('Clear State Context', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
         });
@@ -3511,14 +3510,14 @@ describe('Navigation', function () {
 
     describe('History Null', function () {
         var replaceHistory;
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ],
                 historyManager
@@ -3549,14 +3548,14 @@ describe('Navigation', function () {
 
     describe('History Add', function () {
         var replaceHistory;
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ],
                 historyManager
@@ -3587,14 +3586,14 @@ describe('Navigation', function () {
 
     describe('History Replace', function () {
         var replaceHistory;
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ],
                 historyManager
@@ -3625,14 +3624,14 @@ describe('Navigation', function () {
 
     describe('History None', function () {
         var replaceHistory;
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
             }
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                     { key: 's', route: 'r' }
                 ],
                 historyManager
@@ -3666,9 +3665,9 @@ describe('Navigation', function () {
             var dialogs = [
                 { key: 's', route: 'r' }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3684,9 +3683,9 @@ describe('Navigation', function () {
             var dialogs = [
                 { key: 's', route: 'r' }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3702,9 +3701,9 @@ describe('Navigation', function () {
             var dialogs = [
                 { key: 's', route: 'r' }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3720,9 +3719,9 @@ describe('Navigation', function () {
             var dialogs = [
                 { key: 's', route: 'r' }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3739,10 +3738,10 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3759,10 +3758,10 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3779,10 +3778,10 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3799,10 +3798,10 @@ describe('Navigation', function () {
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             var replaceHistory = undefined;
             historyManager.addHistory = (url: string, replace: boolean) => {
                 replaceHistory = replace;
@@ -3816,11 +3815,11 @@ describe('Navigation', function () {
     describe('History Navigated Navigate', function () {
         it('should not call history manager', function() {
             var called = false;
-            var historyManager = new Navigation.HashHistoryManager();
+            var historyManager = new HashHistoryManager();
             historyManager.addHistory = (url: string, replace: boolean) => {
                 called = true;
             }
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                     { key: 's0', route: 'r0' },
                     { key: 's1', route: 'r1' }
                 ],
@@ -3835,9 +3834,9 @@ describe('Navigation', function () {
     });
 
     describe('Reload Dialog', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r' }
             ]);
             stateNavigator.navigate('s0');
@@ -3872,9 +3871,9 @@ describe('Navigation', function () {
     });
 
     describe('Reload Transition', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r' }
             ]);
             stateNavigator.navigate('s0');
@@ -3922,9 +3921,9 @@ describe('Navigation', function () {
     });
     
     describe('Reload Refresh', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r' }
             ]);
             stateNavigator.navigate('s0');
@@ -3975,9 +3974,9 @@ describe('Navigation', function () {
     });
     
     describe('Reload Back', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r' }
             ]);
             stateNavigator.navigate('s0');
@@ -4032,9 +4031,9 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Dialog', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             try {
@@ -4071,9 +4070,9 @@ describe('Navigation', function () {
     });
 
     describe('Reload Error Transition', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4122,9 +4121,9 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Refresh', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4176,9 +4175,9 @@ describe('Navigation', function () {
     });
     
     describe('Reload Error Back', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -4234,13 +4233,13 @@ describe('Navigation', function () {
     });
 
     describe('Two Controllers Dialog', function() {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function() {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's0', route: 'r' }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's1', route: 'r' }
             ]);
         });
@@ -4276,14 +4275,14 @@ describe('Navigation', function () {
     });
 
     describe('Two Controllers Transition', function() {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function() {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's2', route: 'r0' },
                 { key: 's3', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4338,14 +4337,14 @@ describe('Navigation', function () {
     });
     
     describe('Two Controllers Refresh', function() {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function() {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's2', route: 'r0' },
                 { key: 's3', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4406,15 +4405,15 @@ describe('Navigation', function () {
     });
     
     describe('Two Controllers Back', function() {
-        var stateNavigator0: Navigation.StateNavigator;
-        var stateNavigator1: Navigation.StateNavigator;
+        var stateNavigator0: StateNavigator;
+        var stateNavigator1: StateNavigator;
         beforeEach(function() {
-            stateNavigator0 = new Navigation.StateNavigator([
+            stateNavigator0 = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            stateNavigator1 = new Navigation.StateNavigator([
+            stateNavigator1 = new StateNavigator([
                 { key: 's3', route: 'r0' },
                 { key: 's4', route: 'r1', trackCrumbTrail: true },
                 { key: 's5', route: 'r2', trackCrumbTrail: true }
@@ -4486,7 +4485,7 @@ describe('Navigation', function () {
             var dialogs = [
                 { key: 's', route: 'r' }
             ];
-            var stateNavigator = new Navigation.StateNavigator(dialogs);
+            var stateNavigator = new StateNavigator(dialogs);
             var stop = false;
             stateNavigator.historyManager.stop = () => stop = true;
             stateNavigator.configure(dialogs);
@@ -4496,10 +4495,10 @@ describe('Navigation', function () {
 
     describe('Two Controllers History Navigate', function() {
         it('should add history', function() {
-            var stateNavigator0 = new Navigation.StateNavigator([
+            var stateNavigator0 = new StateNavigator([
                 { key: 's', route: 'r0' }
             ]);
-            var stateNavigator1 = new Navigation.StateNavigator([
+            var stateNavigator1 = new StateNavigator([
                 { key: 's', route: 'r1' }
             ]);
             var url0, url1;
@@ -4513,10 +4512,10 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Route Param', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         var s2Link: string; 
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1/{crumb?}', trackCrumbTrail: true },
                 { key: 's2', route: 'r2/{crumb?}', trackCrumbTrail: true }
@@ -4573,10 +4572,10 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Route Splat Param', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         var s2Link: string; 
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1/{*crumb?}', trackCrumbTrail: true },
                 { key: 's2', route: 'r2/{*crumb?}', trackCrumbTrail: true }
@@ -4633,11 +4632,11 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Mixed Param', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         var s2Link: string; 
         var s3Link: string; 
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2/{*crumb?}', trackCrumbTrail: true },
@@ -4703,7 +4702,7 @@ describe('Navigation', function () {
     
     describe('Crumb Trail Mandatory Route Param', function() {
         it ('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1/{crumb}', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
@@ -4715,10 +4714,10 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Key', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         var s1Link: string, s2Link: string;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: 'trail' }
@@ -4780,9 +4779,9 @@ describe('Navigation', function () {
     });
     
     describe('Refresh Back Custom Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4836,20 +4835,20 @@ describe('Navigation', function () {
     
     describe('Crumb Trail Malicious', function() {
         it ('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'r/1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
             stateNavigator.navigateBack(1);
-            assert(stateNavigator.stateContext.data.x, 'www.google.com');
+            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
             assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url .*is invalid/);
         });
     });
     
     describe('Crumb Trail Invalid', function() {
         it ('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4859,7 +4858,7 @@ describe('Navigation', function () {
     
     describe('Crumb Trail Encode', function() {
         it ('should throw error', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
@@ -4876,9 +4875,9 @@ describe('Navigation', function () {
     });
     
     describe('Repeated States With Trail', function() {
-        var stateNavigator: Navigation.StateNavigator;
+        var stateNavigator: StateNavigator;
         beforeEach(function() {
-            stateNavigator = new Navigation.StateNavigator([
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true },
@@ -4936,7 +4935,7 @@ describe('Navigation', function () {
 
     describe('Start Route', function () {
         it('should navigate', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '' },
                 { key: 's1', route: 'ab' }
             ]);
@@ -4947,7 +4946,7 @@ describe('Navigation', function () {
 
     describe('Start Empty Route', function () {
         it('should navigate', function() {
-            var stateNavigator = new Navigation.StateNavigator([
+            var stateNavigator = new StateNavigator([
                 { key: 's0', route: '' },
                 { key: 's1', route: 'ab' }
             ]);
@@ -4958,13 +4957,13 @@ describe('Navigation', function () {
 
     describe('HTML5 History', function () {
         it('should prepend slash', function() {
-            var history = new Navigation.HTML5HistoryManager();
+            var history = new HTML5HistoryManager();
             assert.strictEqual(history.getHref('a'), '/a');
             assert.strictEqual(history.getHref('/a'), '/a');
-            history = new Navigation.HTML5HistoryManager('a');
+            history = new HTML5HistoryManager('a');
             assert.strictEqual(history.getHref('b'), '/a/b');
             assert.strictEqual(history.getHref('/b'), '/a/b');
-            history = new Navigation.HTML5HistoryManager('/a');
+            history = new HTML5HistoryManager('/a');
             assert.strictEqual(history.getHref('b'), '/a/b');
             assert.strictEqual(history.getHref('/b'), '/a/b');
         });

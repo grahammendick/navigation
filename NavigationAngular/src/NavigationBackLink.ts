@@ -1,13 +1,13 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import angular = require('angular');
+﻿import LinkUtility from './LinkUtility';
+import { StateNavigator } from 'navigation';
+import * as angular from 'angular';
 
 var NavigationBackLink = ($parse: ng.IParseService) => {
     return {
         restrict: 'EA',
         link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             var distance;
-            var stateNavigator: Navigation.StateNavigator = scope.$eval(attrs['stateNavigator']);
+            var stateNavigator: StateNavigator = scope.$eval(attrs['stateNavigator']);
             LinkUtility.addListeners(element, () => setNavigationBackLink(element, attrs, stateNavigator, distance), $parse, attrs, scope);
             scope.$watch(attrs['navigationBackLink'], function (value) {
                 distance = value;
@@ -17,7 +17,7 @@ var NavigationBackLink = ($parse: ng.IParseService) => {
     }
 };
 
-function setNavigationBackLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: Navigation.StateNavigator, distance: number) {
+function setNavigationBackLink(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, stateNavigator: StateNavigator, distance: number) {
     LinkUtility.setLink(stateNavigator, element, attrs, () => stateNavigator.getNavigationBackLink(distance));
 }
-export = NavigationBackLink;
+export default NavigationBackLink;

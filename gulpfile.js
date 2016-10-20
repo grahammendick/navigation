@@ -1,14 +1,12 @@
-﻿var browserify = require('browserify');
-var buffer = require('vinyl-buffer');
-var shim = require('browserify-shim');
+﻿'use strict'
 var gulp = require('gulp');
-var concat = require('gulp-concat');
-var derequire = require('gulp-derequire');
+var gulpTypescript = require('gulp-tsc');
 var header = require('gulp-header');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
-var source = require('vinyl-source-stream');
-var typescript = require('gulp-tsc');
+var rollup = require('rollup');
+var rollupTypescript = require('rollup-plugin-typescript');
+var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
 var tests = [
@@ -20,82 +18,107 @@ var tests = [
     { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
     { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
 ];
-var testTasks = [];
-function testTask(file, to) {
-    return browserify(file)
-        .plugin('tsify', { jsx: 'react' })
-        .bundle()
-        .pipe(source(to))
-        .pipe(rename(to))
-        .pipe(gulp.dest('./build/dist'))
+function rollupTestTask(name, file, to) {
+    return rollup.rollup({
+        entry: file,
+        external: ['assert', 'react', 'react-addons-test-utils'],
+        plugins: [
+            rollupTypescript({
+                typescript: typescript,
+                target: 'es3',
+                module: 'es6',
+                jsx: 'react'
+            })
+        ]
+    }).then((bundle) => {
+        bundle.write({
+            format: 'cjs',
+            dest: to
+        });
+    });
+}
+function testTask(file) {
+    return gulp.src(file)
         .pipe(mocha({ reporter: 'progress' }));
 }
-for (var i = 0; i < tests.length; i++) {
-    (function (test) {
-        gulp.task('Test' + test.name, function () {
-            var folder = './Navigation' + (test.folder || '') + '/test/';
-            return testTask(folder + test.name + 'Test.' + (test.ext || 'ts'), test.to)
-        });
-    })(tests[i]);
-    testTasks.push('Test' + tests[i].name);
-}
+var testTasks = tests.reduce((tasks, test) => {
+    var folder = './Navigation' + (test.folder || '') + '/test/';
+    var file = folder + test.name + 'Test.' + (test.ext || 'ts');
+    var to = './build/dist/' + test.to;
+    gulp.task('RollupTest' + test.name, () => rollupTestTask(test.name, file, to));
+    gulp.task('Test' + test.name, ['RollupTest' + test.name], () => testTask(to));
+    tasks.push('Test' + test.name);
+    return tasks;
+}, []);
 gulp.task('test', testTasks);
 
 var items = [
     require('./build/npm/navigation/package.json'),
-    require('./build/npm/navigation-react/package.json'),
-    require('./build/npm/navigation-knockout/package.json'),
-    require('./build/npm/navigation-angular/package.json'),
-    require('./build/npm/navigation-cycle/package.json'),
-    require('./build/npm/navigation-inferno/package.json')
+    Object.assign({ globals: { react: 'React' } }, 
+        require('./build/npm/navigation-react/package.json')),
+    Object.assign({ globals: { knockout: 'ko' } },
+        require('./build/npm/navigation-knockout/package.json')),
+    Object.assign({ globals: { angular: 'angular' } },
+        require('./build/npm/navigation-angular/package.json')),
+    Object.assign({ globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } },
+        require('./build/npm/navigation-cycle/package.json')),
+    Object.assign({ globals: { 'inferno-component': 'InfernoComponent',
+            'inferno-create-element': 'InfernoCreateElement' } },
+        require('./build/npm/navigation-inferno/package.json'))
 ];
-var buildTasks = [];
-var packageTasks = [];
 var info = ['/**',
   ' * <%= details.name %> v<%= details.version %>',
   ' * (c) Graham Mendick - <%= details.homepage %>',
   ' * License: <%= details.license %>',
   ' */',
   ''].join('\r\n');
-function buildTask(name, file, to, details) {
-    return browserify(file, { standalone: name })
-        .plugin('tsify')
-        .transform(shim)
-        .bundle()
-        .pipe(source(to))
-        .pipe(rename(to))
-        .pipe(derequire())
-        .pipe(buffer())
+function rollupTask(name, file, to, globals) {
+    return rollup.rollup({
+        entry: file,
+        external: Object.keys(globals),
+        plugins: [
+            rollupTypescript({
+                typescript: typescript,
+                target: 'es3',
+                module: 'es6'
+            })
+        ]
+    }).then((bundle) => {
+        bundle.write({
+            format: 'iife',
+            moduleName: name,
+            globals: Object.assign({ navigation: 'Navigation'}, globals),
+            dest: './build/dist/' + to
+        });
+    });        
+}
+function buildTask(file, details) {
+    return gulp.src('./build/dist/' + file)
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'))
-        .pipe(rename(to.replace(/js$/, 'min.js')))
+        .pipe(rename(file.replace(/js$/, 'min.js')))
         .pipe(uglify())
-        .pipe(buffer())
         .pipe(header(info, { details : details } ))
         .pipe(gulp.dest('./build/dist'));
 }
 function packageTask(name, file) {
     return gulp.src(file)
-        .pipe(typescript())
+        .pipe(gulpTypescript())
         .pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
-for (var i = 0; i < items.length; i++) {
-    var packageName = items[i].name;
-    var upperName = packageName.replace(/\b./g, function(val){ return val.toUpperCase(); })
+var itemTasks = items.reduce((tasks, item) => {
+    var packageName = item.name;
+    var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
     var name = upperName.replace('-', '');
     var tsFrom = './' + name + '/src/' + name + '.ts';
     var jsTo = packageName.replace('-', '.') + '.js';
-    items[i].name = upperName.replace('-', ' ');
-    (function (name, tsFrom, jsTo, item, packageName) {
-        gulp.task('Build' + name, function () {
-            return buildTask(name, tsFrom, jsTo, item);
-        });
-        gulp.task('Package' + name, function () {
-            return packageTask(packageName, tsFrom);
-        });
-    })(name, tsFrom, jsTo, items[i], packageName);
-    buildTasks.push('Build' + name);
-    packageTasks.push('Package' + name);
-}
-gulp.task('build', buildTasks);
-gulp.task('package', packageTasks);
+    item.name = upperName.replace('-', ' ');
+    gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}));
+    gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
+    gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
+    tasks.buildTasks.push('Build' + name);
+    tasks.packageTasks.push('Package' + name);
+    return tasks;
+}, { buildTasks: [], packageTasks: [] });
+gulp.task('build', itemTasks.buildTasks);
+gulp.task('package', itemTasks.packageTasks);

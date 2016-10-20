@@ -1,4 +1,4 @@
-﻿import HistoryManager = require('./HistoryManager');
+﻿import HistoryManager from './HistoryManager';
 
 class HTML5HistoryManager implements HistoryManager {
     private navigateHistory: () => void;
@@ -48,4 +48,4 @@ class HTML5HistoryManager implements HistoryManager {
         return (url && url.substring(0, 1) !== '/') ? '/' + url : url;
     }
 }
-export = HTML5HistoryManager;
+export default HTML5HistoryManager;

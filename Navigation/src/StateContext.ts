@@ -1,5 +1,5 @@
-﻿import Crumb = require('./config/Crumb');
-import State = require('./config/State');
+﻿import Crumb from './config/Crumb';
+import State from './config/State';
 
 class StateContext {
     oldState: State = null;
@@ -40,4 +40,4 @@ class StateContext {
         return newData;
     }
 }
-export = StateContext;
+export default StateContext;

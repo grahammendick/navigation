@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import React = require('react');
+﻿import LinkUtility from './LinkUtility';
+import { StateNavigator } from 'navigation';
+import * as React from 'react';
 
 class RefreshLink extends React.Component<any, any> {
     private onNavigate = () => {
@@ -17,7 +17,7 @@ class RefreshLink extends React.Component<any, any> {
         stateNavigator: React.PropTypes.object
     }
     
-    private getStateNavigator(): Navigation.StateNavigator {
+    private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
@@ -56,4 +56,4 @@ class RefreshLink extends React.Component<any, any> {
         return React.createElement('a', props, this.props.children);
     }
 };
-export = RefreshLink;
+export default RefreshLink;

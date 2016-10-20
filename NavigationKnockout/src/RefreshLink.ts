@@ -1,6 +1,6 @@
-﻿import LinkUtility = require('./LinkUtility');
-import Navigation = require('navigation');
-import ko = require('knockout');
+﻿import LinkUtility from './LinkUtility';
+import { StateNavigator } from 'navigation';
+import * as ko from 'knockout';
 
 var RefreshLink = ko.bindingHandlers['refreshLink'] = {
     init: (element, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor, viewModel: any) => {
@@ -14,7 +14,7 @@ var RefreshLink = ko.bindingHandlers['refreshLink'] = {
 function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor) {
     var data = {};
     var navigationData = ko.unwrap(valueAccessor());
-    var stateNavigator: Navigation.StateNavigator = allBindings.get('stateNavigator');
+    var stateNavigator: StateNavigator = allBindings.get('stateNavigator');
     for (var key in navigationData) {
         data[key] = ko.unwrap(navigationData[key]);
     }
@@ -23,4 +23,4 @@ function setRefreshLink(element: HTMLAnchorElement, valueAccessor: () => any, al
     );
     LinkUtility.setActive(element, stateNavigator, data, ko.unwrap(allBindings.get('activeCssClass')), ko.unwrap(allBindings.get('disableActive')));
 }
-export = RefreshLink;
+export default RefreshLink;

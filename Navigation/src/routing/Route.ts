@@ -1,4 +1,4 @@
-﻿import Segment = require('./Segment');
+﻿import Segment from './Segment';
 
 class Route {
     path: string;
@@ -74,4 +74,4 @@ class Route {
         return route.length !== 0 ? route : '/';
     }
 }
-export = Route;
+export default Route;
