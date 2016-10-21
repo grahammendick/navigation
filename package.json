@@ -5,6 +5,7 @@
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-header": "^1.2.2",
+    "gulp-insert": "^0.5.0",
     "gulp-mocha": "^2.0.0",
     "gulp-rename": "^1.2.0",
     "gulp-tsc": "^1.1.4",
