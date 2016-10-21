@@ -1,7 +1,6 @@
 ﻿'use strict'
 var gulp = require('gulp');
 var gulpTypescript = require('gulp-tsc');
-var header = require('gulp-header');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
