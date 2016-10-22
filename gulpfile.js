@@ -1,7 +1,7 @@
 ﻿'use strict'
 var gulp = require('gulp');
 var gulpTypescript = require('gulp-tsc');
-var header = require('gulp-header');
+var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
@@ -66,12 +66,6 @@ var items = [
             'inferno-create-element': 'InfernoCreateElement' } },
         require('./build/npm/navigation-inferno/package.json'))
 ];
-var info = ['/**',
-  ' * <%= details.name %> v<%= details.version %>',
-  ' * (c) Graham Mendick - <%= details.homepage %>',
-  ' * License: <%= details.license %>',
-  ' */',
-  ''].join('\r\n');
 function rollupTask(name, file, to, globals) {
     return rollup.rollup({
         entry: file,
@@ -93,12 +87,18 @@ function rollupTask(name, file, to, globals) {
     });        
 }
 function buildTask(file, details) {
+    var info = `/**
+ * ${details.name} v${details.version}
+ * (c) Graham Mendick - ${details.homepage}
+ * License: ${details.license}
+ */
+`;
     return gulp.src('./build/dist/' + file)
-        .pipe(header(info, { details : details } ))
+        .pipe(insert.prepend(info))
         .pipe(gulp.dest('./build/dist'))
         .pipe(rename(file.replace(/js$/, 'min.js')))
         .pipe(uglify())
-        .pipe(header(info, { details : details } ))
+        .pipe(insert.prepend(info))
         .pipe(gulp.dest('./build/dist'));
 }
 function packageTask(name, file) {
