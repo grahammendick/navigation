@@ -2,11 +2,11 @@
  * Adds React and Data modules to prevent them from appearing in the People
  * and Person component webpack bundles
  */
-var Data = require('./Data');
-var Navigation = require('navigation');
-var NavigationReact = require('navigation-react');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import Data from './Data';
+import Navigation from 'navigation';
+import NavigationReact from 'navigation-react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 /**
  * Configures the states for the two views.
