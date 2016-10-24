@@ -1,4 +1,4 @@
-var http = require('http');
+var express = require('express');
 var fs = require('fs');
 var webpack = require('webpack');
 var React = require('react');
@@ -6,6 +6,31 @@ var ReactDOMServer = require('react-dom/server');
 var Navigation = require('navigation');
 var NavigationShared = require('./NavigationShared');
 var Data = require('./Data');
+
+var app = express();
+
+/**
+ * Dynamically runs webpack to slow down the JavaScript and make the isomorphic
+ * functionality clearly visible. Don't copy this, webpack should be part of
+ * the build step. 
+ */
+app.get('/app.js', function (req, res) {
+    webpack({
+        entry: "./NavigationClient.js",
+        output: {
+            path: __dirname,
+            filename: "app.js"
+        },
+        module: {
+            loaders: [
+                { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+            ]
+        }
+    }, function(err, stats) {
+        fs.createReadStream('./app.js')
+            .pipe(res);
+    })
+});
 
 /**
  * A single set of routes handles both the HTML and AJAX requests. Uses
@@ -16,21 +41,19 @@ var Data = require('./Data');
  * props as JSON. If it's an HTML request it creates the component for the
  * current State and returns the rendered HTML with the JSON props inlined.
  */
-http.createServer(function(req, res) {
-    if (handleStatic(req, res))
-        return;
+app.get('*', function (req, res) {
     var stateNavigator = NavigationShared.getStateNavigator();
     registerControllers(stateNavigator);
     NavigationShared.registerComponents(stateNavigator);
     stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
-        res.setHeader('vary', 'content-type');
-        if (req.headers['content-type'] === 'application/json') {
-            res.write(JSON.stringify(asyncData));
+        res.set('vary', 'content-type');
+        if (req.get('content-type') === 'application/json') {
+            res.send(JSON.stringify(asyncData));
         } else {
             var props = safeStringify(asyncData);
             asyncData.stateNavigator = stateNavigator;
             var component = state.createComponent(asyncData);
-            res.write(`<html>
+            res.send(`<html>
                 <head>
                     <title>Isomorphic Navigation</title>
                     <style>
@@ -46,10 +69,9 @@ http.createServer(function(req, res) {
                 </body>
             </html>`);
         }
-        res.end();
     });
     stateNavigator.start(req.url);
-}).listen(8080);
+});
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
@@ -69,33 +91,8 @@ function registerControllers(stateNavigator) {
     }
 }
 
-/**
- * Dynamically runs webpack to slow down the JavaScript and make the isomorphic
- * functionality clearly visible. Don't copy this, webpack should be part of
- * the build step. 
- */
-function handleStatic(req, res) {
-    if (req.url === '/favicon.ico') {
-        res.statusCode = 404;
-        res.end();
-        return true;
-    }
-    if (req.url === '/app.js') {
-        webpack({
-            entry: "./NavigationClient.js",
-            output: {
-                path: __dirname,
-                filename: "app.js"
-            }
-        }, function(err, stats) {
-            fs.createReadStream('./app.js')
-                .pipe(res);
-        })
-        return true;
-    }
-    return false;
-}
+app.listen(8080);
 
 function safeStringify(props) {
-  return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--')
+  return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
 }
