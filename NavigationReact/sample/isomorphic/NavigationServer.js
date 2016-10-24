@@ -73,6 +73,8 @@ app.get('*', function (req, res) {
     stateNavigator.start(req.url);
 });
 
+app.listen(8080);
+
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
  * just before the State becomes active, calls into the data layer and passes 
@@ -90,8 +92,6 @@ function registerControllers(stateNavigator) {
         });
     }
 }
-
-app.listen(8080);
 
 function safeStringify(props) {
   return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
