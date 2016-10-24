@@ -1,11 +1,11 @@
-var express = require('express');
-var fs = require('fs');
-var webpack = require('webpack');
-var React = require('react');
-var ReactDOMServer = require('react-dom/server');
-var Navigation = require('navigation');
-var NavigationShared = require('./NavigationShared');
-var Data = require('./Data');
+import express from 'express';
+import fs from 'fs';
+import webpack from 'webpack';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import Navigation from 'navigation';
+import { getStateNavigator, registerComponents } from './NavigationShared';
+import { searchPeople, getPerson } from './Data';
 
 var app = express();
 
@@ -42,9 +42,9 @@ app.get('/app.js', function (req, res) {
  * current State and returns the rendered HTML with the JSON props inlined.
  */
 app.get('*', function (req, res) {
-    var stateNavigator = NavigationShared.getStateNavigator();
+    var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);
-    NavigationShared.registerComponents(stateNavigator);
+    registerComponents(stateNavigator);
     stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
         res.set('vary', 'content-type');
         if (req.get('content-type') === 'application/json') {
@@ -82,12 +82,12 @@ app.listen(8080);
  */
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
-        Data.searchPeople(data.pageNumber, function(people) {
+        searchPeople(data.pageNumber, function(people) {
             navigate({people: people});
         });
     }
     stateNavigator.states.person.navigating = function(data, url, navigate) {
-        Data.getPerson(data.id, function(person) {
+        getPerson(data.id, function(person) {
             navigate({person: person});
         });
     }

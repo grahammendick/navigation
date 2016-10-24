@@ -15,6 +15,6 @@
     "webpack": "^1.13.2"
   },
   "scripts": {
-    "start": "babel-node NavigationServer.js --presets react,es2015"
+    "start": "babel-node NavigationServer.js"
   }
 }

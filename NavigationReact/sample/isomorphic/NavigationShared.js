@@ -1,12 +1,12 @@
-var React = require('react');
-var Navigation = require('navigation');
-var People = require('./People');
-var Person = require('./Person');
+import React from 'react';
+import Navigation from 'navigation';
+import People from './People';
+import Person from './Person';
 
 /**
  * Configures the states for the two views.
  */
-exports.getStateNavigator = function() {
+function getStateNavigator() {
     return new Navigation.StateNavigator([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
         {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
@@ -16,7 +16,7 @@ exports.getStateNavigator = function() {
 /**
  * Registers the components creators for the States.
  */
-exports.registerComponents = function(stateNavigator) {
+function registerComponents(stateNavigator) {
     stateNavigator.states.people.createComponent = function(data) {
         return React.createElement(People.Listing, data);
     }
@@ -24,3 +24,5 @@ exports.registerComponents = function(stateNavigator) {
         return React.createElement(Person.Details, data);
     }
 }
+
+export { getStateNavigator, registerComponents }
