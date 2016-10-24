@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from 'navigation';
+import { StateNavigator, HTML5HistoryManager } from 'navigation';
 import People from './People';
 import Person from './Person';
 
@@ -7,10 +7,10 @@ import Person from './Person';
  * Configures the states for the two views.
  */
 function getStateNavigator() {
-    return new Navigation.StateNavigator([
+    return new StateNavigator([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
         {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
-    ], new Navigation.HTML5HistoryManager());
+    ], new HTML5HistoryManager());
 }
 
 /**

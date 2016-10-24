@@ -3,7 +3,7 @@
  * and Person component webpack bundles
  */
 import Data from './Data';
-import Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import NavigationReact from 'navigation-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
 /**
  * Configures the states for the two views.
  */
-var stateNavigator = new Navigation.StateNavigator([
+var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
     {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);

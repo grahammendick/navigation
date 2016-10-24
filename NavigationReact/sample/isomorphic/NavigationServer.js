@@ -3,7 +3,6 @@ import fs from 'fs';
 import webpack from 'webpack';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import Navigation from 'navigation';
 import { getStateNavigator, registerComponents } from './NavigationShared';
 import { searchPeople, getPerson } from './Data';
 
