@@ -1,36 +1,46 @@
-var React = require('react');
-var NavigationReact = require('navigation-react');
-var NavigationLink = NavigationReact.NavigationLink;
-var RefreshLink = NavigationReact.RefreshLink;
+import React from 'react';
+import { NavigationLink, RefreshLink } from 'navigation-react';
 
-exports.Listing = React.createClass({
-    render: function() {
-        var stateNavigator = this.props.stateNavigator;
-        var people = this.props.people.map(function (person) {
-            return (
-                React.createElement("tr", {key: person.id}, 
-                    React.createElement("td", null, React.createElement(NavigationLink, {stateKey: "person", navigationData: {id: person.id}, stateNavigator: stateNavigator}, person.name)), 
-                    React.createElement("td", null, person.dateOfBirth)
-                )
-            );
-        });
-        return (
-            React.createElement("div", {id: "listing"}, 
-                React.createElement("table", null, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null, "Name"), 
-                            React.createElement("th", null, "Date of Birth")
-                        )
-                    ), 
-                    React.createElement("tbody", null, people)
-                ), 
-                React.createElement("div", {id: "pager"}, 
-                    "Go to page", 
-                    React.createElement(RefreshLink, {navigationData: {pageNumber: 1}, disableActive: true, stateNavigator: stateNavigator}, "1"), 
-                    React.createElement(RefreshLink, {navigationData: {pageNumber: 2}, disableActive: true, stateNavigator: stateNavigator}, "2")
-                )
-            )
-        );
-    }
-})
+export default ({ people, stateNavigator }) => {
+    var rows = people.map((person) => (
+        <tr key={person.id}>
+            <td>
+                <NavigationLink
+                    stateKey="person"
+                    navigationData={{ id: person.id }}
+                    stateNavigator={stateNavigator}>
+                    {person.name}
+                </NavigationLink>
+            </td>
+            <td>{person.dateOfBirth}</td>
+        </tr>
+    ));
+    return (
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </table>
+            <div>
+                Go to page
+                <RefreshLink
+                    navigationData={{ pageNumber: 1 }}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    1
+                </RefreshLink>
+                <RefreshLink
+                    navigationData={{ pageNumber: 2 }}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    2
+                </RefreshLink>                    
+            </div>
+        </div>
+    );
+};
