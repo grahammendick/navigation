@@ -6,7 +6,7 @@ import { NavigationBackLink } from 'navigation-react';
 /**
  * Registers the component creator for the Details State.
  */
-exports.registerComponent = function(stateNavigator) {
+function registerComponent(stateNavigator) {
     stateNavigator.states.person.createComponent = function(data) {
         var person = getPerson(data.id);
         return React.createElement(Details, {person: person, stateNavigator: stateNavigator});
@@ -31,3 +31,5 @@ var Details = ({ person, stateNavigator }) => (
         </div>
     </div>
 );
+
+export { registerComponent };

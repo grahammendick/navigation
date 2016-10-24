@@ -6,7 +6,7 @@ import { NavigationLink, RefreshLink } from 'navigation-react';
 /**
  * Registers the component creator for the Listing State.
  */
-exports.registerComponent = function(stateNavigator) {
+function registerComponent(stateNavigator) {
     stateNavigator.states.people.createComponent = function(data) {
         var people = searchPeople(data.pageNumber);
         return React.createElement(Listing, {people: people, stateNavigator: stateNavigator});
@@ -56,3 +56,5 @@ var Listing = ({ people, stateNavigator }) => {
         </div>
     );
 };
+
+export { registerComponent };
