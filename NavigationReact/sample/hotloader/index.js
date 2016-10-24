@@ -1,8 +1,8 @@
-var Navigation = require('navigation');
-var Router = require('./Router');
+import Navigation from 'navigation';
+import { configure } from './Router';
 
 var stateNavigator = new Navigation.StateNavigator();
-Router.configure(stateNavigator);
+configure(stateNavigator);
 stateNavigator.start();
 
 if (module.hot) {
