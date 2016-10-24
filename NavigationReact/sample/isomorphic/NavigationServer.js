@@ -94,5 +94,5 @@ function registerControllers(stateNavigator) {
 }
 
 function safeStringify(props) {
-  return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
+    return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
 }
