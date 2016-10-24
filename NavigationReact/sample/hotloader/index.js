@@ -1,7 +1,7 @@
-import Navigation from 'navigation';
+import { StateNavigator } from 'navigation';
 import { configure } from './Router';
 
-var stateNavigator = new Navigation.StateNavigator();
+var stateNavigator = new StateNavigator();
 configure(stateNavigator);
 stateNavigator.start();
 
