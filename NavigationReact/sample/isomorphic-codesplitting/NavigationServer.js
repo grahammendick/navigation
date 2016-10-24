@@ -1,13 +1,43 @@
-var http = require('http');
-var fs = require('fs');
-var webpack = require('webpack');
-var React = require('react');
-var ReactDOMServer = require('react-dom/server');
-var Navigation = require('navigation');
-var NavigationShared = require('./NavigationShared');
-var Data = require('./Data');
-var People = require('./People');
-var Person = require('./Person');
+import express from 'express';
+import fs from 'fs';
+import webpack from 'webpack';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import getStateNavigator from './NavigationShared';
+import { searchPeople, getPerson } from './Data';
+import { registerComponent as registerPeopleComponent } from './People';
+import { registerComponent as registerPersonComponent } from './Person';
+
+var app = express();
+
+/**
+ * Dynamically runs webpack to slow down the JavaScript and make the isomorphic
+ * functionality clearly visible. Don't copy this, webpack should be part of
+ * the build step. 
+ */
+app.get('/app.js', function (req, res) {
+    webpack({
+        entry: "./NavigationClient.js",
+        output: {
+            path: __dirname,
+            publicPath: '/',
+            filename: "app.js"
+        },
+        module: {
+            loaders: [
+                { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+            ]
+        }
+    }, function(err, stats) {
+        fs.createReadStream('./app.js')
+            .pipe(res);
+    })
+});
+
+app.get('/:id(\\d+).app.js', function (req, res) {
+    fs.createReadStream('./' + req.params.id + '.app.js')
+        .pipe(res);
+});
 
 /**
  * A single set of routes handles both the HTML and AJAX requests. Uses
@@ -18,22 +48,20 @@ var Person = require('./Person');
  * props as JSON. If it's an HTML request it creates the component for the
  * current State and returns the rendered HTML with the JSON props inlined.
  */
-http.createServer(function(req, res) {
-    if (handleStatic(req, res))
-        return;
-    var stateNavigator = NavigationShared.getStateNavigator();
+app.get('*', function (req, res) {
+    var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);
-    People.registerComponent(stateNavigator);
-    Person.registerComponent(stateNavigator);    
+    registerPeopleComponent(stateNavigator);
+    registerPersonComponent(stateNavigator);    
     stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
-        res.setHeader('vary', 'content-type');
-        if (req.headers['content-type'] === 'application/json') {
-            res.write(JSON.stringify(asyncData));
+        res.set('vary', 'content-type');
+        if (req.get('content-type') === 'application/json') {
+            res.send(JSON.stringify(asyncData));
         } else {
             var props = safeStringify(asyncData);
             asyncData.stateNavigator = stateNavigator;
             var component = state.createComponent(asyncData);
-            res.write(`<html>
+            res.send(`<html>
                 <head>
                     <title>Isomorphic Navigation Code Splitting</title>
                     <style>
@@ -49,10 +77,11 @@ http.createServer(function(req, res) {
                 </body>
             </html>`);
         }
-        res.end();
     });
     stateNavigator.start(req.url);
-}).listen(8080);
+});
+
+app.listen(8080);
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
@@ -61,50 +90,17 @@ http.createServer(function(req, res) {
  */
 function registerControllers(stateNavigator, callback) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
-        Data.searchPeople(data.pageNumber, function(people) {
+        searchPeople(data.pageNumber, function(people) {
             navigate({people: people});
         });
     }
     stateNavigator.states.person.navigating = function(data, url, navigate) {
-        Data.getPerson(data.id, function(person) {
+        getPerson(data.id, function(person) {
             navigate({person: person});
         });
     }
 }
 
-/**
- * Dynamically runs webpack to slow down the JavaScript and make the isomorphic
- * functionality clearly visible. Don't copy this, webpack should be part of
- * the build step. 
- */
-function handleStatic(req, res) {
-    if (req.url === '/favicon.ico') {
-        res.statusCode = 404;
-        res.end();
-        return true;
-    }
-    if (req.url === '/app.js') {
-        webpack({
-            entry: "./NavigationClient.js",
-            output: {
-                path: __dirname,
-                filename: "app.js"
-            }
-        }, function(err, stats) {
-            fs.createReadStream('./app.js')
-                .pipe(res);
-        })
-        return true;
-    }
-    var matches = req.url.match(/(\d+)\.app\.js$/);
-    if (matches) {
-        fs.createReadStream('./' + matches[1] + '.app.js')
-            .pipe(res);
-        return true;
-    }
-    return false;
-}
-
 function safeStringify(props) {
-  return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--')
+  return JSON.stringify(props).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
 }
