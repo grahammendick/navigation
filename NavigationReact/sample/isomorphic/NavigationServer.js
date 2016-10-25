@@ -31,6 +31,11 @@ app.get('/app.js', function (req, res) {
     })
 });
 
+app.get('/favicon.ico', function (req, res) {
+    res.statusCode = 404;
+    res.end();
+});
+
 /**
  * A single set of routes handles both the HTML and AJAX requests. Uses
  * content negotiation, based on the content-type header, to decide 
