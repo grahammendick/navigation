@@ -18,10 +18,10 @@ function getStateNavigator() {
  */
 function registerComponents(stateNavigator) {
     stateNavigator.states.people.createComponent = function(data) {
-        return React.createElement(People, data);
+        return <People {...data} />;
     }
-    stateNavigator.states.person.createComponent = function(data, url, navigate) {
-        return React.createElement(Person, data);
+    stateNavigator.states.person.createComponent = function(data) {
+        return <Person {...data} />;
     }
 }
 
