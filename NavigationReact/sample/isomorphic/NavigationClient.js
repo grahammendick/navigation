@@ -1,15 +1,14 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Navigation = require('navigation');
-var NavigationShared = require('./NavigationShared');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { getStateNavigator, registerComponents } from './NavigationShared';
 
 /**
  * Creates a State Navigator and, after registering the controllers, triggers
  * an initial render for the current State and props returned from the server. 
  */
-var stateNavigator = NavigationShared.getStateNavigator();
+var stateNavigator = getStateNavigator();
 registerControllers(stateNavigator);
-NavigationShared.registerComponents(stateNavigator);
+registerComponents(stateNavigator);
 stateNavigator.start();
 
 /**

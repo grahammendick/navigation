@@ -55,10 +55,18 @@ stateNavigator.states.people.render = function(data, store) {
 stateNavigator.states.person.render = function(data, store) {
     var people = store.getState();
     var person = people.filter((person) => person.id === data.id)[0];
+    var handleChange = (name) => {
+        store.dispatch({
+            type: 'EDIT',
+            id: person.id,
+            name: name
+        });
+    };
     ReactDOM.render(
         <Details
             person={person}
             store={store}
+            handleChange={handleChange}
             stateNavigator={stateNavigator} />,
         document.getElementById('content')
     );

@@ -5,7 +5,7 @@ Navigation works just as well on the server as it does on the client. Use it wit
 Once you've cloned the repository, you can install the dependencies and start the isomorphic code splitting example:
 
     npm install
-    node NavigationServer.js
+    npm run start
 	
 Then visit http://localhost:8080/ in your browser to see isomorphic Navigation code splitting in action.
 * Click a Hyperlink before the JavaScript loads and the navigation happens on the server. Click a Hyperlink after the JavaScript loads and the navigation happens on the client. 

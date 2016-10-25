@@ -2,16 +2,16 @@
  * Adds React and Data modules to prevent them from appearing in the People
  * and Person component webpack bundles
  */
-var Data = require('./Data');
-var Navigation = require('navigation');
-var NavigationReact = require('navigation-react');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import Data from './Data';
+import { StateNavigator } from 'navigation';
+import NavigationReact from 'navigation-react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 /**
  * Configures the states for the two views.
  */
-var stateNavigator = new Navigation.StateNavigator([
+var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
     {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);

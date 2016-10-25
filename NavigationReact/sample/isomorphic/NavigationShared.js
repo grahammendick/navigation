@@ -1,26 +1,28 @@
-var React = require('react');
-var Navigation = require('navigation');
-var People = require('./People');
-var Person = require('./Person');
+import React from 'react';
+import { StateNavigator, HTML5HistoryManager } from 'navigation';
+import People from './People';
+import Person from './Person';
 
 /**
  * Configures the states for the two views.
  */
-exports.getStateNavigator = function() {
-    return new Navigation.StateNavigator([
+function getStateNavigator() {
+    return new StateNavigator([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
         {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
-    ], new Navigation.HTML5HistoryManager());
+    ], new HTML5HistoryManager());
 }
 
 /**
  * Registers the components creators for the States.
  */
-exports.registerComponents = function(stateNavigator) {
+function registerComponents(stateNavigator) {
     stateNavigator.states.people.createComponent = function(data) {
-        return React.createElement(People.Listing, data);
+        return <People {...data} />;
     }
-    stateNavigator.states.person.createComponent = function(data, url, navigate) {
-        return React.createElement(Person.Details, data);
+    stateNavigator.states.person.createComponent = function(data) {
+        return <Person {...data} />;
     }
 }
+
+export { getStateNavigator, registerComponents }

@@ -1,11 +1,11 @@
-var Navigation = require('navigation');
+import { StateNavigator, HTML5HistoryManager } from 'navigation';
 
 /**
  * Configures the states for the two views.
  */
-exports.getStateNavigator = function() {
-    return new Navigation.StateNavigator([
+export default function() {
+    return new StateNavigator([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
         {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
-    ], new Navigation.HTML5HistoryManager());
-}
+    ], new HTML5HistoryManager());
+};
