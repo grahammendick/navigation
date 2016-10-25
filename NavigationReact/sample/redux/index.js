@@ -65,7 +65,6 @@ stateNavigator.states.person.render = function(data, store) {
     ReactDOM.render(
         <Details
             person={person}
-            store={store}
             handleChange={handleChange}
             stateNavigator={stateNavigator} />,
         document.getElementById('content')

@@ -45,7 +45,7 @@ var Listing = ({ people, stateNavigator }) => {
     );
 };
 
-var Details = ({ person, store, handleChange, stateNavigator }) => (
+var Details = ({ person, handleChange, stateNavigator }) => (
     <div>
         <NavigationBackLink
             distance={1}
