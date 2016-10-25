@@ -61,9 +61,9 @@ var Details = ({ person, store, stateNavigator }) => {
                 Person Search
             </NavigationBackLink>
             <div>
-                <h2>{person.name}</h2>
-                <label htmlFor="name">Date of Birth</label>
-                <input id="name" value={person.name} onChange={handleChange} />
+                <h2><input id="name" value={person.name} onChange={handleChange} /></h2>
+                <div className="label">Date of Birth</div>
+                <div>{person.dateOfBirth}</div>
                 <div className="label">Email</div>
                 <div>{person.email}</div>
                 <div className="label">Phone</div>
