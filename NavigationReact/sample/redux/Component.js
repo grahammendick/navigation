@@ -45,32 +45,27 @@ var Listing = ({ people, stateNavigator }) => {
     );
 };
 
-var Details = ({ person, store, stateNavigator }) => {
-    var handleChange = (event) => {
-        store.dispatch({
-            type: 'EDIT',
-            id: person.id,
-            name: event.target.value
-        });
-    };
-    return (
+var Details = ({ person, store, handleChange, stateNavigator }) => (
+    <div>
+        <NavigationBackLink
+            distance={1}
+            stateNavigator={stateNavigator}>
+            Person Search
+        </NavigationBackLink>
         <div>
-            <NavigationBackLink
-                distance={1}
-                stateNavigator={stateNavigator}>
-                Person Search
-            </NavigationBackLink>
-            <div>
-                <h2><input id="name" value={person.name} onChange={handleChange} /></h2>
-                <div className="label">Date of Birth</div>
-                <div>{person.dateOfBirth}</div>
-                <div className="label">Email</div>
-                <div>{person.email}</div>
-                <div className="label">Phone</div>
-                <div>{person.phone}</div>
-            </div>
+            <h2>
+                <input id="name"
+                    value={person.name}
+                    onChange={(event) => handleChange(event.target.value)} />
+            </h2>
+            <div className="label">Date of Birth</div>
+            <div>{person.dateOfBirth}</div>
+            <div className="label">Email</div>
+            <div>{person.email}</div>
+            <div className="label">Phone</div>
+            <div>{person.phone}</div>
         </div>
-    );
-};
+    </div>
+);
 
 export { Listing, Details };
