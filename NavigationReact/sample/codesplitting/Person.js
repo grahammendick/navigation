@@ -9,7 +9,7 @@ import { NavigationBackLink } from 'navigation-react';
 function registerComponent(stateNavigator) {
     stateNavigator.states.person.createComponent = function(data) {
         var person = getPerson(data.id);
-        return React.createElement(Details, {person: person, stateNavigator: stateNavigator});
+        return <Details person={person} stateNavigator={stateNavigator} />
     }
 }
 

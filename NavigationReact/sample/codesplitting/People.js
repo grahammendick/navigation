@@ -9,7 +9,7 @@ import { NavigationLink, RefreshLink } from 'navigation-react';
 function registerComponent(stateNavigator) {
     stateNavigator.states.people.createComponent = function(data) {
         var people = searchPeople(data.pageNumber);
-        return React.createElement(Listing, {people: people, stateNavigator: stateNavigator});
+        return <Listing people={people} stateNavigator={stateNavigator} />
     }
 }
 
