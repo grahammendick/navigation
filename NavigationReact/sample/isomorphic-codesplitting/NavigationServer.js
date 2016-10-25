@@ -15,7 +15,7 @@ var app = express();
  * functionality clearly visible. Don't copy this, webpack should be part of
  * the build step. 
  */
-app.get('/app.js', function (req, res) {
+app.get('/app.js', function(req, res) {
     webpack({
         entry: "./NavigationClient.js",
         output: {
@@ -34,12 +34,12 @@ app.get('/app.js', function (req, res) {
     })
 });
 
-app.get('/:id(\\d+).app.js', function (req, res) {
+app.get('/:id(\\d+).app.js', function(req, res) {
     fs.createReadStream('./' + req.params.id + '.app.js')
         .pipe(res);
 });
 
-app.get('/favicon.ico', function (req, res) {
+app.get('/favicon.ico', function(req, res) {
     res.statusCode = 404;
     res.end();
 });
@@ -53,7 +53,7 @@ app.get('/favicon.ico', function (req, res) {
  * props as JSON. If it's an HTML request it creates the component for the
  * current State and returns the rendered HTML with the JSON props inlined.
  */
-app.get('*', function (req, res) {
+app.get('*', function(req, res) {
     var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);
     registerPeopleComponent(stateNavigator);
