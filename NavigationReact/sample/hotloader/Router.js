@@ -13,7 +13,7 @@ function configure(stateNavigator) {
     stateNavigator.states.people.navigated = function(data) {
         var people = searchPeople(data.pageNumber);
         ReactDOM.render(
-            React.createElement(People, {people: people, stateNavigator: stateNavigator}),
+            <People people={people} stateNavigator={stateNavigator} />,
             document.getElementById('content')
         );		
     }
@@ -21,7 +21,7 @@ function configure(stateNavigator) {
     stateNavigator.states.person.navigated = function(data) {
         var person = getPerson(data.id);
         ReactDOM.render(
-            React.createElement(Person, {person: person, stateNavigator: stateNavigator}),
+            <Person person={person} stateNavigator={stateNavigator} />,
             document.getElementById('content')
         );		
     }
