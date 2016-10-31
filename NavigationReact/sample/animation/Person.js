@@ -1,7 +1,8 @@
+import animate from './animate';
 import React from 'react';
 import { NavigationBackLink } from 'navigation-react';
 
-export default ({ person, stateNavigator }) => (
+export default animate(({ person, stateNavigator }) => (
     <div>
         <NavigationBackLink
             distance={1}
@@ -18,5 +19,5 @@ export default ({ person, stateNavigator }) => (
             <div>{person.phone}</div>
         </div>
     </div>
-);
+));
 
