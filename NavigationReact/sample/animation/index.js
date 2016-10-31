@@ -1,3 +1,4 @@
+import Animation from './Animation';
 import Person from './Person';
 import People from './People';
 import { searchPeople, getPerson } from './Data';
@@ -13,7 +14,7 @@ var stateNavigator = new StateNavigator([
 stateNavigator.states.people.navigated = function(data) {
     var people = searchPeople(data.pageNumber);
     ReactDOM.render(
-        <People people={people} stateNavigator={stateNavigator} />,
+        <Animation component={People} people={people} stateNavigator={stateNavigator} direction={-1} />,
         document.getElementById('content')
     );		
 }
@@ -21,7 +22,7 @@ stateNavigator.states.people.navigated = function(data) {
 stateNavigator.states.person.navigated = function(data) {
     var person = getPerson(data.id);
     ReactDOM.render(
-        <Person person={person} stateNavigator={stateNavigator} />,
+        <Animation component={Person} person={person} stateNavigator={stateNavigator} direction={1} />,
         document.getElementById('content')
     );		
 }

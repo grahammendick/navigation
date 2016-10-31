@@ -1,8 +1,7 @@
-import animate from './animate';
 import React from 'react';
 import { NavigationLink, RefreshLink } from 'navigation-react';
 
-export default animate(({ people, stateNavigator }) => {
+export default ({ people, stateNavigator }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
@@ -44,4 +43,4 @@ export default animate(({ people, stateNavigator }) => {
             </div>
         </div>
     );
-});
+};
