@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationLink, RefreshLink } from 'navigation-react';
 
-var Listing = ({ people, stateNavigator }) => {
+export default ({ people, stateNavigator }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
@@ -44,5 +44,3 @@ var Listing = ({ people, stateNavigator }) => {
         </div>
     );
 };
-
-export { Listing };

@@ -1,3 +1,5 @@
+import Person from './Person';
+import People from './People';
 import { searchPeople, getPerson } from './Data';
 import { StateNavigator } from 'navigation';
 import React from 'react';

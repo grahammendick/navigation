@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationBackLink } from 'navigation-react';
 
-var Details = ({ person, stateNavigator }) => (
+export default ({ person, stateNavigator }) => (
     <div>
         <NavigationBackLink
             distance={1}
@@ -20,4 +20,3 @@ var Details = ({ person, stateNavigator }) => (
     </div>
 );
 
-export { Details };
