@@ -16,7 +16,7 @@ stateNavigator.states.people.navigated = function(data) {
     ReactDOM.render(
         <Animation component={People} people={people} stateNavigator={stateNavigator} direction={-1} />,
         document.getElementById('content')
-    );		
+    );
 }
 
 stateNavigator.states.person.navigated = function(data) {
@@ -24,7 +24,7 @@ stateNavigator.states.person.navigated = function(data) {
     ReactDOM.render(
         <Animation component={Person} person={person} stateNavigator={stateNavigator} direction={1} />,
         document.getElementById('content')
-    );		
+    );
 }
 
 stateNavigator.start();
