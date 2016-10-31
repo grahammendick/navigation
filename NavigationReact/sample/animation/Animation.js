@@ -13,9 +13,9 @@ export default ({ direction, ...data }) => (
         {interpolatedStyles =>
             <div>
                 {interpolatedStyles.map(config => {
-                    var Component = config.data.component;
+                    var {component: Component, ...props} = config.data;
                     return <div className="view" key={config.key} style={{left: config.style.left}}>
-                        <Component {...config.data} />
+                        <Component {...props} />
                     </div>;
                 })}
             </div>
