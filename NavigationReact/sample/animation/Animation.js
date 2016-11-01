@@ -1,7 +1,7 @@
 import React from 'react';
-import {TransitionMotion, spring} from 'react-motion';
+import { TransitionMotion, spring } from 'react-motion';
 
-export default ({ direction, ...data }) => (
+export default ({direction, ...data}) => (
     <TransitionMotion
         willLeave={() => ({left: spring(direction * -400, {precision: 10})})}
         willEnter={() => ({left: direction * 400})}
