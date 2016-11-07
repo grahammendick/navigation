@@ -6,13 +6,12 @@ class ComponentB extends Component {
         this.state = {count: 0}
     }
     render() {
-        var increment = (prev) => ({count: prev.count + 1});
         var {title, stateNavigator} = this.props;
         return (
             <div>
                 <h1>{title}</h1>
                 <h2>{this.state.count}</h2>
-                <button onClick={() => this.setState(increment)} >Increment</button>
+                <button onClick={() => this.setState((prev) => ({count: prev.count + 1}))}>Increment</button>
             </div>
         );
     }
