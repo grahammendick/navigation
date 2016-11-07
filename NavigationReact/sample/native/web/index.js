@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 
 var stateNavigator = new StateNavigator([
     { key: 'first', renderScene: () => ({component: ComponentA, props: {title: "First", stateNavigator}}) },
-    { key: 'second', trackCrumbTrail: true, renderScene: () => ({component: ComponentB, props: {title: "Second"}}) }
+    { key: 'second', trackCrumbTrail: true, renderScene: () => ({component: ComponentB, props: {title: "Second", stateNavigator}}) }
 ]);
 
 stateNavigator.start('first');

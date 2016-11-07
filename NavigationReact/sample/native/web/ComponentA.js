@@ -6,7 +6,7 @@ class ComponentA extends Component {
         var {title, stateNavigator} = this.props;
         return (
             <div>
-                <ComponentB title={title} />
+                <ComponentB title={title} stateNavigator={stateNavigator} />
                 <button onClick={(() => stateNavigator.navigate('second'))} >Next</button>
             </div>
         );
