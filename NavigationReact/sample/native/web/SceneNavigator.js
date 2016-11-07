@@ -8,8 +8,9 @@ class SceneNavigator extends Component{
     }
     
     render() {
-        var { stateContext: { state, data}} = this.props.stateNavigator;
-        return state.renderScene(data);
+        var {stateContext: { state, data}} = this.props.stateNavigator;
+        var {component: Component, props} = state.renderScene(data);
+        return <Component {...props} />
     }
 }
 
