@@ -7,7 +7,7 @@ class ComponentA extends Component {
         return (
             <div>
                 <ComponentB title={title} stateNavigator={stateNavigator} />
-                <button onClick={(() => stateNavigator.navigate('second'))} >Next</button>
+                <button onClick={(() => stateNavigator.navigate('second'))}>Next</button>
             </div>
         );
     }

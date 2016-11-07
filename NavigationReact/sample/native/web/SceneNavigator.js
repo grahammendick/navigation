@@ -19,7 +19,6 @@ class SceneNavigator extends Component{
             });
         });
     }
-    
     render() {
         var {stateContext: {url, crumbs}} = this.props.stateNavigator;
         var urls = crumbs.map((crumb) => crumb.url).concat(url);
