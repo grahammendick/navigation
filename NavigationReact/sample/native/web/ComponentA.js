@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 
 class ComponentA extends Component {
     render() {
-        return <ComponentB title={this.props.title} />;
+        var {title, stateNavigator} = this.props;
+        return (
+            <div>
+                <ComponentB title={title} />
+                <button onClick={(() => stateNavigator.navigate('second'))} >Next</button>
+            </div>
+        );
     }
 }
 
