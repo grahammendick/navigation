@@ -10,7 +10,7 @@ var stateNavigator = new StateNavigator([
     { key: 'second', trackCrumbTrail: true, renderScene: () => ({component: ComponentB, props: {title: "Second", stateNavigator}}) }
 ]);
 
-stateNavigator.start('first');
+stateNavigator.start('/first');
 
 ReactDOM.render(
     <SceneNavigator stateNavigator={stateNavigator} />,

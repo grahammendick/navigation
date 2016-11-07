@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 class ComponentB extends Component {
     constructor(props) {
         super(props);
-        this.state = { count: 0 }
+        this.state = {count: 0}
     }
     render() {
-        var increment = (prev) => ({ count: prev.count + 1 });
+        var increment = (prev) => ({count: prev.count + 1});
         var {title, stateNavigator} = this.props;
         return (
             <div>
