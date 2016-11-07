@@ -11,11 +11,10 @@ class SceneNavigator extends Component{
         stateNavigator.onNavigate(() => {
             this.setState((prevState) => {
                 var {stateContext: {state, data, url, crumbs}} = stateNavigator;
-                var scenes = {};
+                var scenes = {[url]: state.renderScene(data)};
                 for(var i = 0; i < crumbs.length; i++) {
                     scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
                 }
-                scenes[url] = state.renderScene(data);
                 return {scenes};
             });
         });
