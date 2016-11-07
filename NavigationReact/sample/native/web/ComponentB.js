@@ -12,7 +12,6 @@ class ComponentB extends Component {
             <div>
                 <h1>{title}</h1>
                 <h2>{this.state.count}</h2>
-                {stateNavigator.canNavigateBack(1) && <button onClick={(() => stateNavigator.navigateBack(1))} >Back</button>}
                 <button onClick={() => this.setState(increment)} >Increment</button>
             </div>
         );

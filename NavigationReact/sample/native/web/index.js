@@ -1,3 +1,4 @@
+import Back from './Back.js';
 import ComponentA from './ComponentA.js';
 import ComponentB from './ComponentB.js';
 import { StateNavigator } from 'navigation';
@@ -13,6 +14,9 @@ var stateNavigator = new StateNavigator([
 stateNavigator.start('/first');
 
 ReactDOM.render(
-    <SceneNavigator stateNavigator={stateNavigator} />,
+    <div>
+        <Back stateNavigator={stateNavigator} />
+        <SceneNavigator stateNavigator={stateNavigator} />
+    </div>,
     document.getElementById('content')
 );
