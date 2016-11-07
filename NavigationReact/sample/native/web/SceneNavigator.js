@@ -4,9 +4,7 @@ class SceneNavigator extends Component{
     constructor(props) {
         super(props);
         var {stateContext: {state, data, url}} = props.stateNavigator;
-        this.state = {scenes: {
-            [url]: state.renderScene(data)
-        }};
+        this.state = {scenes: {[url]: state.renderScene(data)}};
     }
     componentDidMount() {
         var {stateNavigator} = this.props;
