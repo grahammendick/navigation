@@ -8,10 +8,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 var stateNavigator = new StateNavigator([
-    {key: 'first', renderScene: () => <ComponentA title="First" stateNavigator={stateNavigator} next="second"/>, styleStart: () => ({x: 200})},
-    {key: 'second', trackCrumbTrail: true, renderScene: () => <ComponentA title="Second" stateNavigator={stateNavigator} next="third"/>},
-    {key: 'third', trackCrumbTrail: true, renderScene: () => <ComponentB title="Third" stateNavigator={stateNavigator}/>}
+    {key: 'first', styleStart: () => ({x: 200})},
+    {key: 'second', trackCrumbTrail: true},
+    {key: 'third', trackCrumbTrail: true}
 ]);
+
+var {first, second, third} = stateNavigator.states;
+first.renderScene = () => <ComponentA title="First" stateNavigator={stateNavigator} next="second"/>;
+second.renderScene = () => <ComponentA title="Second" stateNavigator={stateNavigator} next="third"/>;
+third.renderScene = () => <ComponentB title="Third" stateNavigator={stateNavigator}/>;
 
 stateNavigator.start('/first');
 
