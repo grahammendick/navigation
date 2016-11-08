@@ -14,6 +14,7 @@ var stateNavigator = new StateNavigator([
 ]);
 
 stateNavigator.states.first.startStyle = () => ({x: 200});
+stateNavigator.states.first.endStyle = (endStyle) => endStyle;
 
 stateNavigator.start('/first');
 
