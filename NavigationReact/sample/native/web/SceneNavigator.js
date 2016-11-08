@@ -1,4 +1,4 @@
-import {Motion, spring} from 'react-motion';
+import {Motion} from 'react-motion';
 import React, {Component} from 'react';
 
 class SceneNavigator extends Component{
@@ -22,20 +22,15 @@ class SceneNavigator extends Component{
     }
     render() {
         var {stateContext: {url: url, crumbs, oldState}} = this.props.stateNavigator;
+        var {defaultStyle, endStyle, style} = this.props;
         var urls = crumbs.map((crumb) => crumb.url).concat(url);
         var scenes = urls.map((url, i) => {
             var {component: Component, props} = this.state.scenes[url];
             var last = urls.length === i + 1;
             return (
-                <Motion key={url} defaultStyle={{x: oldState ? 400 : 200}} style={{x: spring(!last ? 0 : 200)}}>
-                    {({x}) =>
-                        <div style={{
-                            position: 'absolute',
-                            display: !last ? 'none' : 'block',
-                            width: '200px',
-                            height: '500px',
-                            backgroundColor: '#fff',
-                            transform: `translate3d(${x}px, 0, 0)`}}>
+                <Motion key={url} defaultStyle={defaultStyle(!oldState)} style={endStyle(last)}>
+                    {(interpolatingStyle) =>
+                        <div style={style(interpolatingStyle, last)}>
                             <Component {...props} />
                         </div>
                     }

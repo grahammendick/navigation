@@ -1,7 +1,8 @@
 import Back from './Back.js';
 import ComponentA from './ComponentA.js';
 import ComponentB from './ComponentB.js';
-import { StateNavigator } from 'navigation';
+import {spring} from 'react-motion';
+import {StateNavigator} from 'navigation';
 import SceneNavigator from './SceneNavigator.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -17,7 +18,17 @@ stateNavigator.start('/first');
 ReactDOM.render(
     <div>
         <Back stateNavigator={stateNavigator} />
-        <SceneNavigator stateNavigator={stateNavigator} />
+        <SceneNavigator
+            defaultStyle={(start) => ({x: !start ? 400 : 200})}
+            endStyle={(show) => ({x: spring(!show ? 0 : 200)})}
+            style={({x}, show) => ({
+                position: 'absolute',
+                display: !show ? 'none' : 'block',
+                width: '200px',
+                height: '500px',
+                backgroundColor: '#fff',
+                transform: `translate3d(${x}px, 0, 0)`})}
+            stateNavigator={stateNavigator} />
     </div>,
     document.getElementById('content')
 );
