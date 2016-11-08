@@ -25,7 +25,7 @@ class SceneNavigator extends Component{
         var {startStyle, endStyle, style} = this.props;
         var sceneContexts = crumbs.concat({state, url});
         var scenes = sceneContexts.map((sceneContext, i) => {
-            var {component: Component, props} = this.state.scenes[sceneContext.url];
+            var {component: Scene, props} = this.state.scenes[sceneContext.url];
             var last = sceneContexts.length === i + 1;
             return (
                 <Motion key={sceneContext.url}
@@ -33,7 +33,7 @@ class SceneNavigator extends Component{
                     style={getStyle(sceneContext.state.endStyle, endStyle(last))}>
                     {(interpolatingStyle) => 
                         <div style={getStyle(sceneContext.state.style, style(interpolatingStyle, last))}>
-                            <Component {...props} />
+                            <Scene {...props} />
                         </div>
                     }
                 </Motion>
