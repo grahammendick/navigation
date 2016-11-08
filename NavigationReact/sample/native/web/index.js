@@ -8,9 +8,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 var stateNavigator = new StateNavigator([
-    {key: 'first', renderScene: () => ({component: ComponentA, props: {title: "First", stateNavigator, next: 'second'}}), styleStart: () => ({x: 200})},
-    {key: 'second', trackCrumbTrail: true, renderScene: () => ({component: ComponentA, props: {title: "Second", stateNavigator, next: 'third'}})},
-    {key: 'third', trackCrumbTrail: true, renderScene: () => ({component: ComponentB, props: {title: "Third", stateNavigator}})}
+    {key: 'first', renderScene: () => <ComponentA title="First" stateNavigator={stateNavigator} next="second"/>, styleStart: () => ({x: 200})},
+    {key: 'second', trackCrumbTrail: true, renderScene: () => <ComponentA title="Second" stateNavigator={stateNavigator} next="third"/>},
+    {key: 'third', trackCrumbTrail: true, renderScene: () => <ComponentB title="Third" stateNavigator={stateNavigator}/>}
 ]);
 
 stateNavigator.start('/first');
