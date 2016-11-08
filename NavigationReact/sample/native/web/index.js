@@ -13,7 +13,7 @@ var stateNavigator = new StateNavigator([
     { key: 'third', trackCrumbTrail: true, renderScene: () => ({component: ComponentB, props: {title: "Third", stateNavigator}}) }
 ]);
 
-stateNavigator.states.first.startStyle = () => ({x:200});
+stateNavigator.states.first.startStyle = () => ({x: 200});
 
 stateNavigator.start('/first');
 

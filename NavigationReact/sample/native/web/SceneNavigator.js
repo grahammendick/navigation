@@ -23,17 +23,16 @@ class SceneNavigator extends Component{
     render() {
         var {stateContext: {state, url, crumbs}} = this.props.stateNavigator;
         var {startStyle, endStyle, style} = this.props;
-        var sceneContexts = crumbs.map((crumb) => ({state: crumb.state, url: crumb.url})).concat({state, url});
+        var sceneContexts = crumbs.concat({state, url});
         var scenes = sceneContexts.map((sceneContext, i) => {
             var {component: Component, props} = this.state.scenes[sceneContext.url];
             var last = sceneContexts.length === i + 1;
-            var defaultStyle = startStyle;
-            if (sceneContext.state.startStyle)
-                defaultStyle = sceneContext.state.startStyle(defaultStyle);
             return (
-                <Motion key={sceneContext.url} defaultStyle={defaultStyle} style={endStyle(last)}>
-                    {(interpolatingStyle) =>
-                        <div style={style(interpolatingStyle, last)}>
+                <Motion key={sceneContext.url}
+                    defaultStyle={getStyle(sceneContext.state.startStyle, startStyle)}
+                    style={getStyle(sceneContext.state.endStyle, endStyle(last))}>
+                    {(interpolatingStyle) => 
+                        <div style={getStyle(sceneContext.state.style, style(interpolatingStyle, last))}>
                             <Component {...props} />
                         </div>
                     }
@@ -42,6 +41,10 @@ class SceneNavigator extends Component{
         });
         return <div>{scenes}</div>;
     }
+}
+
+function getStyle(overrideStyle, style) {
+    return overrideStyle ? overrideStyle(style) : style;
 }
 
 export default SceneNavigator;
