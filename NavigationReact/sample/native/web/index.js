@@ -13,13 +13,15 @@ var stateNavigator = new StateNavigator([
     { key: 'third', trackCrumbTrail: true, renderScene: () => ({component: ComponentB, props: {title: "Third", stateNavigator}}) }
 ]);
 
+stateNavigator.states.first.startStyle = () => ({x:200});
+
 stateNavigator.start('/first');
 
 ReactDOM.render(
     <div>
         <Back stateNavigator={stateNavigator} />
         <SceneNavigator
-            defaultStyle={(start) => ({x: !start ? 400 : 200})}
+            startStyle={{x: 400}}
             endStyle={(show) => ({x: spring(!show ? 0 : 200)})}
             style={({x}, show) => ({
                 position: 'absolute',
