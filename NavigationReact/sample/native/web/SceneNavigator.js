@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import {Motion, spring} from 'react-motion';
+import React, {Component} from 'react';
 
 class SceneNavigator extends Component{
     constructor(props) {
@@ -24,7 +25,20 @@ class SceneNavigator extends Component{
         var urls = crumbs.map((crumb) => crumb.url).concat(url);
         var scenes = urls.map((url) => {
             var {component: Component, props} = this.state.scenes[url];
-            return <Component key={url} {...props} />
+            return (
+                <Motion key={url} defaultStyle={{x: 0}} style={{x: spring(400)}}>
+                    {({x}) =>
+                        <div style={{
+                            position: 'absolute',
+                            width: '200px',
+                            height: '500px',
+                            backgroundColor: '#fff',
+                            transform: `translate3d(${x}px, 0, 0)`}}>
+                            <Component {...props} />
+                        </div>
+                    }
+                </Motion>
+            );
         });
         return <div>{scenes}</div>;
     }
