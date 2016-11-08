@@ -21,15 +21,16 @@ class SceneNavigator extends Component{
         });
     }
     render() {
-        var {stateContext: {url, crumbs}} = this.props.stateNavigator;
-        var urls = crumbs.map((crumb) => crumb.url).concat(url);
+        var {stateContext: {url: currentUrl, crumbs}} = this.props.stateNavigator;
+        var urls = crumbs.map((crumb) => crumb.url).concat(currentUrl);
         var scenes = urls.map((url) => {
             var {component: Component, props} = this.state.scenes[url];
             return (
-                <Motion key={url} defaultStyle={{x: 0}} style={{x: spring(400)}}>
+                <Motion key={url} defaultStyle={{x: 400}} style={{x: spring(currentUrl !== url ? 0 : 200)}}>
                     {({x}) =>
                         <div style={{
                             position: 'absolute',
+                            display: currentUrl !== url ? 'none' : 'block',
                             width: '200px',
                             height: '500px',
                             backgroundColor: '#fff',
