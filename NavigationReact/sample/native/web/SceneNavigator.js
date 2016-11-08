@@ -4,14 +4,14 @@ import React, {Component} from 'react';
 class SceneNavigator extends Component{
     constructor(props) {
         super(props);
-        var {stateContext: {state, data, url}} = props.stateNavigator;
+        var {state, data, url} = props.stateNavigator.stateContext;
         this.state = {scenes: {[url]: state.renderScene(data)}};
     }
     componentDidMount() {
         var {stateNavigator} = this.props;
         stateNavigator.onNavigate(() => {
             this.setState((prevState) => {
-                var {stateContext: {state, data, url, crumbs}} = stateNavigator;
+                var {state, data, url, crumbs} = stateNavigator.stateContext;
                 var scenes = {[url]: state.renderScene(data)};
                 for(var i = 0; i < crumbs.length; i++) {
                     scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
