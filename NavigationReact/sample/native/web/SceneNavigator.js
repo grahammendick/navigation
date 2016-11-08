@@ -23,16 +23,14 @@ class SceneNavigator extends Component{
     render() {
         var {stateContext: {state, url, crumbs}} = this.props.stateNavigator;
         var {startStyle, endStyle, style} = this.props;
-        var sceneContexts = crumbs.concat({state, url});
-        var scenes = sceneContexts.map((sceneContext, i) => {
+        var scenes = crumbs.concat({state, url, show: true}).map((sceneContext) => {
             var {component: Scene, props} = this.state.scenes[sceneContext.url];
-            var last = sceneContexts.length === i + 1;
             return (
                 <Motion key={sceneContext.url}
                     defaultStyle={getStyle(sceneContext.state.startStyle, startStyle)}
-                    style={getStyle(sceneContext.state.endStyle, endStyle(last))}>
+                    style={getStyle(sceneContext.state.endStyle, endStyle(!!sceneContext.show))}>
                     {(interpolatingStyle) => 
-                        <div style={getStyle(sceneContext.state.style, style(interpolatingStyle, last))}>
+                        <div style={getStyle(sceneContext.state.style, style(interpolatingStyle, !!sceneContext.show))}>
                             <Scene {...props} />
                         </div>
                     }
