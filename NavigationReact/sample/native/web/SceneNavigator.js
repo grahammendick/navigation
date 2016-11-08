@@ -22,7 +22,7 @@ class SceneNavigator extends Component{
     }
     render() {
         var {state, data, url, crumbs} = this.props.stateNavigator.stateContext;
-        var {styleStart, styleEnd, styleMiddle} = this.props;
+        var {styleStart, styleMiddle, styleEnd} = this.props;
         var scenes = crumbs.concat({state, data, url, show: true}).map((sceneContext, i) => {
             var {state, data, url, show} = sceneContext;
             var {component: Scene, props} = this.state.scenes[url];

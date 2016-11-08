@@ -20,7 +20,6 @@ ReactDOM.render(
         <Back stateNavigator={stateNavigator} />
         <SceneNavigator
             styleStart={() => ({x: 400})}
-            styleEnd={(show) => ({x: spring(!show ? 0 : 200)})}
             styleMiddle={({x}, show) => ({
                 position: 'absolute',
                 display: !show ? 'none' : 'block',
@@ -28,6 +27,7 @@ ReactDOM.render(
                 height: '500px',
                 backgroundColor: '#fff',
                 transform: `translate3d(${x}px, 0, 0)`})}
+            styleEnd={(show) => ({x: spring(!show ? 0 : 200)})}
             stateNavigator={stateNavigator} />
     </div>,
     document.getElementById('content')
