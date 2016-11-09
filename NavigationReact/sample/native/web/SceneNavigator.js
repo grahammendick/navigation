@@ -25,10 +25,10 @@ class SceneNavigator extends Component{
         var {getDefaultStyle, getStyle, interpolateStyle} = this.props;
         var scenes = crumbs.concat({state, data, url, show: true})
             .map(({state, data, url, show}) =>
-                <Motion key={url} defaultStyle={getDefaultStyle(oldState, state, data)}
-                    style={getStyle(!!show, oldState, state, data)}>
+                <Motion key={url} defaultStyle={getDefaultStyle(state, data)}
+                    style={getStyle(!!show, state, data)}>
                     {(interpolatingStyle) => 
-                        <div style={interpolateStyle(interpolatingStyle, !!show, oldState, state, data)}>
+                        <div style={interpolateStyle(interpolatingStyle, !!show, state, data)}>
                             {this.state.scenes[url]}
                         </div>
                     }
