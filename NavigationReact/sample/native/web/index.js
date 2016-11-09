@@ -18,8 +18,8 @@ first.renderScene = () => <ComponentA title="First" stateNavigator={stateNavigat
 second.renderScene = () => <ComponentA title="Second" stateNavigator={stateNavigator} next="third"/>;
 third.renderScene = () => <ComponentB title="Third" stateNavigator={stateNavigator}/>;
 
-//stateNavigator.start('/first');
-stateNavigator.start('/third?crumb=%2Ffirst&crumb=%2Fsecond');
+stateNavigator.start('/first');
+//stateNavigator.start('/third?crumb=%2Ffirst&crumb=%2Fsecond');
 
 ReactDOM.render(
     <div>
