@@ -25,15 +25,15 @@ ReactDOM.render(
     <div>
         <Back stateNavigator={stateNavigator} />
         <SceneNavigator
-            styleStart={(first) => ({x: first ? 200 : 400})}
-            styleMiddle={({x}, show) => ({
+            getDefaultStyle={(first) => ({x: first ? 200 : 400})}
+            getStyle={(show) => ({x: spring(!show ? 0 : 200)})}
+            interpolateStyle={({x}, show) => ({
                 position: 'absolute',
                 display: !show ? 'none' : 'block',
                 width: '200px',
                 height: '500px',
                 backgroundColor: '#fff',
                 transform: `translate3d(${x}px, 0, 0)`})}
-            styleEnd={(show) => ({x: spring(!show ? 0 : 200)})}
             stateNavigator={stateNavigator} />
     </div>,
     document.getElementById('content')
