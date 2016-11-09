@@ -25,7 +25,7 @@ ReactDOM.render(
     <div>
         <Back stateNavigator={stateNavigator} />
         <SceneNavigator
-            getDefaultStyle={(first) => ({x: first ? 200 : 400})}
+            getDefaultStyle={(oldState) => ({x: !oldState ? 200 : 400})}
             getStyle={(show) => ({x: spring(!show ? 0 : 200)})}
             interpolateStyle={({x}, show) => ({
                 position: 'absolute',
