@@ -23,9 +23,8 @@ class SceneNavigator extends Component{
     render() {
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
         var {styleStart, styleMiddle, styleEnd} = this.props;
-        var scenes = crumbs.concat({state, data, url, show: true}).map((sceneContext) => {
-            var {state, data, url, show} = sceneContext;
-            return (
+        var scenes = crumbs.concat({state, data, url, show: true})
+            .map(({state, data, url, show}) =>
                 <Motion key={url} defaultStyle={(state.styleStart || styleStart)(!oldState, data)}
                     style={(state.styleEnd || styleEnd)(!!show, data)}>
                     {(interpolatingStyle) => 
@@ -34,8 +33,7 @@ class SceneNavigator extends Component{
                         </div>
                     }
                 </Motion>
-            );
-        });
+        );
         return <div>{scenes}</div>;
     }
 }
