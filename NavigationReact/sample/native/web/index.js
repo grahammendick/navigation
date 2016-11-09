@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 var stateNavigator = new StateNavigator([
-    {key: 'first', styleStart: () => ({x: 200})},
+    {key: 'first'},
     {key: 'second', trackCrumbTrail: true},
     {key: 'third', trackCrumbTrail: true}
 ]);
@@ -18,13 +18,14 @@ first.renderScene = () => <ComponentA title="First" stateNavigator={stateNavigat
 second.renderScene = () => <ComponentA title="Second" stateNavigator={stateNavigator} next="third"/>;
 third.renderScene = () => <ComponentB title="Third" stateNavigator={stateNavigator}/>;
 
-stateNavigator.start('/first');
+//stateNavigator.start('/first');
+stateNavigator.start('/third?crumb=%2Ffirst&crumb=%2Fsecond');
 
 ReactDOM.render(
     <div>
         <Back stateNavigator={stateNavigator} />
         <SceneNavigator
-            styleStart={() => ({x: 400})}
+            styleStart={(first) => ({x: first ? 200 : 400})}
             styleMiddle={({x}, show) => ({
                 position: 'absolute',
                 display: !show ? 'none' : 'block',
