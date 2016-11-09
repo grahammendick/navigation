@@ -32,8 +32,7 @@ class SceneNavigator extends Component{
                             {this.state.scenes[url]}
                         </div>
                     }
-                </Motion>
-        );
+                </Motion>);
         return <div>{scenes}</div>;
     }
 }
