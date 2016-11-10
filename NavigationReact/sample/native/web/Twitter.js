@@ -27,6 +27,9 @@ var styles = {
         margin: '0 auto'
     },
     twitter: {
+        fontFamily: 'Segoe UI,sans-serif',
+        fontSize: '80%',
+        cursor: 'default',
         backgroundColor: '#fff',
         position: 'absolute',
         marginTop: '89px',
