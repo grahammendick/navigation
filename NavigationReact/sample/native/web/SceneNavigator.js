@@ -24,7 +24,7 @@ class SceneNavigator extends Component{
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
         var {getUnmountedStyle, getMountStyle, getMountedStyle, getUnmountStyle, interpolateStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
-        return (<TransitionMotion willLeave={() => ({...getUnmountStyle(state, data), leave: 1})}
+        return <TransitionMotion willLeave={() => ({...getUnmountStyle(state, data), leave: 1})}
             styles={sceneContexts.map(({state, data, url, mount}) => ({
                 key: url,
                 data: {scene: this.state.scenes[url], state, data, mount},
@@ -40,11 +40,9 @@ class SceneNavigator extends Component{
                                     {scene}
                                 </div>
                             }
-                        </Motion>
-                    )}
-                </div>
-            }
-        </TransitionMotion>);
+                        </Motion>)}
+                </div>}
+        </TransitionMotion>;
     }
 }
 
