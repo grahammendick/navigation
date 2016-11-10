@@ -8,9 +8,7 @@ export default ({stateNavigator}) => (
             <SceneNavigator
                 getDefaultStyle={(state) => ({translate: state.key == 'home' ? 0 : 100, scale: 1})}
                 getStyle={(active) => ({translate: spring(!active ? 5: 0), scale: spring(!active ? 0.9: 1)})}
-                interpolateStyle={({translate, scale}) => ({
-                    position: 'absolute', top: 0,
-                    backgroundColor: '#fff', height: '402px',
+                interpolateStyle={({translate, scale}) => ({...styles.scene,
                     transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
                 stateNavigator={stateNavigator} />
         </div>
@@ -36,5 +34,11 @@ var styles = {
         marginLeft: '49px',
         width: '225px',
         height: '402px'
-    }    
+    },
+    scene: {
+        position: 'absolute',
+        top: 0,
+        backgroundColor: '#fff',
+        height: '402px'
+    }
 }
