@@ -25,7 +25,7 @@ class SceneNavigator extends Component{
         return <Motion key={key} defaultStyle={getUnmountedStyle(state, data)}
             style={(leave ? style : (mount ? getMountStyle : getMountedStyle)(state, data))}>
             {(interpolatingStyle) => <div style={interpolateStyle(interpolatingStyle)}>{scene}</div>}
-        </Motion>
+        </Motion>;
     }
     render() {
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
