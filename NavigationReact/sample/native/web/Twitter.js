@@ -4,7 +4,7 @@ import {spring} from 'react-motion';
 
 export default ({stateNavigator}) => (
     <div style={styles.phone}>
-        <div  style={styles.twitter}>
+        <div style={styles.twitter}>
             <SceneNavigator
                 getDefaultStyle={(state) => ({translate: state.key == 'home' ? 0 : 100, scale: 1})}
                 getStyle={(active) => ({translate: spring(!active ? 5: 0), scale: spring(!active ? 0.9: 1)})}
