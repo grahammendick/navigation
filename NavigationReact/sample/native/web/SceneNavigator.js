@@ -28,15 +28,15 @@ class SceneNavigator extends Component{
             styles={sceneContexts.map(({state, data, url, mount}) => ({
                 key: url,
                 data: {scene: this.state.scenes[url], state, data, mount},
-                style: {...getUnmountedStyle(state, data), leave: 0}
+                style: {...getMountStyle(state, data), leave: 0}
             }))}>
             {interpolatedStyles =>
                 <div>
                     {interpolatedStyles.map(({key, data: {scene, state, data, mount}, style: {leave,...style}}) => 
                         <Motion key={key} defaultStyle={getUnmountedStyle(state, data)}
-                            style={(mount ? getMountStyle : getMountedStyle)(state, data)}>
+                            style={(leave ? style : (mount ? getMountStyle : getMountedStyle)(state, data))}>
                             {(interpolatingStyle) => 
-                                <div style={interpolateStyle(leave ? style : interpolatingStyle)}>
+                                <div style={interpolateStyle(interpolatingStyle)}>
                                     {scene}
                                 </div>
                             }
