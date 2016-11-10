@@ -22,13 +22,13 @@ class SceneNavigator extends Component{
     }
     render() {
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
-        var {getDefaultStyle, getStyle, interpolateStyle} = this.props;
-        var scenes = crumbs.concat({state, data, url, active: true})
-            .map(({state, data, url, active}) =>
-                <Motion key={url} defaultStyle={getDefaultStyle(state, data)}
-                    style={getStyle(!!active, state, data)}>
+        var {getUnmountedStyle, getMountStyle, getMountedStyle, interpolateStyle} = this.props;
+        var scenes = crumbs.concat({state, data, url, mount: true})
+            .map(({state, data, url, mount}) =>
+                <Motion key={url} defaultStyle={getUnmountedStyle(state, data)}
+                    style={(mount ? getMountStyle : getMountedStyle)(state, data)}>
                     {(interpolatingStyle) => 
-                        <div style={interpolateStyle(interpolatingStyle, !!active, state, data)}>
+                        <div style={interpolateStyle(interpolatingStyle)}>
                             {this.state.scenes[url]}
                         </div>
                     }
