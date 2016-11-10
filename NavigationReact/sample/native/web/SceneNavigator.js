@@ -1,4 +1,4 @@
-import {Motion, TransitionMotion} from 'react-motion';
+import {spring, Motion, TransitionMotion} from 'react-motion';
 import React, {Component} from 'react';
 
 class SceneNavigator extends Component{
@@ -24,19 +24,19 @@ class SceneNavigator extends Component{
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
         var {getUnmountedStyle, getMountStyle, getMountedStyle, interpolateStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
-        return (<TransitionMotion
+        return (<TransitionMotion willLeave={() => ({translate: spring(100), scale: 1, leave: 1})}
             styles={sceneContexts.map(({state, data, url, mount}) => ({
                 key: url,
                 data: {scene: this.state.scenes[url], state, data, mount},
-                style: {}
+                style: {...(mount ? getMountStyle : getMountedStyle)(state, data), leave: 0}
             }))}>
             {interpolatedStyles =>
                 <div>
-                    {interpolatedStyles.map(({key, data: {scene, state, data, mount}, style}) => 
+                    {interpolatedStyles.map(({key, data: {scene, state, data, mount}, style: {leave,...style}}) => 
                         <Motion key={key} defaultStyle={getUnmountedStyle(state, data)}
                             style={(mount ? getMountStyle : getMountedStyle)(state, data)}>
                             {(interpolatingStyle) => 
-                                <div style={interpolateStyle(interpolatingStyle)}>
+                                <div style={interpolateStyle(leave ? style : interpolatingStyle)}>
                                     {scene}
                                 </div>
                             }
