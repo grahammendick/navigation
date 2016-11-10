@@ -12,6 +12,7 @@ var stateNavigator = new StateNavigator([
 
 var {home, tweet} = stateNavigator.states;
 home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
+tweet.renderScene = () => <Home stateNavigator={stateNavigator}/>;
 
 stateNavigator.start('/home');
 

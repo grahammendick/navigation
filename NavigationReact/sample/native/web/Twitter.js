@@ -6,13 +6,11 @@ export default ({stateNavigator}) => (
     <div style={styles.phone}>
         <div  style={styles.twitter}>
             <SceneNavigator
-                getDefaultStyle={(state) => ({x: state.key == 'home' ? 0 : 400})}
-                getStyle={(active) => ({x: spring(!active ? 0 : 0)})}
-                interpolateStyle={({x}, active) => ({
-                    position: 'absolute',
-                    display: !active ? 'none' : 'block',
-                    backgroundColor: '#fff',
-                    transform: `translate3d(${x}px, 0, 0)`})}
+                getDefaultStyle={(state) => ({translate: state.key == 'home' ? 0 : 100, scale: 1})}
+                getStyle={(active) => ({translate: spring(!active ? 5: 0), scale: spring(!active ? 0.9: 1)})}
+                interpolateStyle={({translate, scale}) => ({
+                    position: 'absolute', top: 0,
+                    transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
                 stateNavigator={stateNavigator} />
         </div>
     </div>    
@@ -31,7 +29,7 @@ var styles = {
         fontSize: '80%',
         overflow: 'hidden',
         cursor: 'default',
-        backgroundColor: '#fff',
+        backgroundColor: '#000',
         position: 'absolute',
         marginTop: '89px',
         marginLeft: '49px',
