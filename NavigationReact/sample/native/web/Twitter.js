@@ -10,6 +10,7 @@ export default ({stateNavigator}) => (
                 getStyle={(active) => ({translate: spring(!active ? 5: 0), scale: spring(!active ? 0.9: 1)})}
                 interpolateStyle={({translate, scale}) => ({
                     position: 'absolute', top: 0,
+                    backgroundColor: '#fff', height: '402px',
                     transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
                 stateNavigator={stateNavigator} />
         </div>
