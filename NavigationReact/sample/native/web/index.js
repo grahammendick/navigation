@@ -26,10 +26,10 @@ ReactDOM.render(
         <Back stateNavigator={stateNavigator} />
         <SceneNavigator
             getDefaultStyle={(state) => ({x: state == first ? 200 : 400})}
-            getStyle={(show) => ({x: spring(!show ? 0 : 200)})}
-            interpolateStyle={({x}, show) => ({
+            getStyle={(active) => ({x: spring(!active ? 0 : 200)})}
+            interpolateStyle={({x}, active) => ({
                 position: 'absolute',
-                display: !show ? 'none' : 'block',
+                display: !active ? 'none' : 'block',
                 width: '200px',
                 height: '500px',
                 backgroundColor: '#fff',
