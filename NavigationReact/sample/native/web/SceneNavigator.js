@@ -37,8 +37,8 @@ class SceneNavigator extends Component{
                 data: {scene: this.state.scenes[url], state, data, mount},
                 style: {...getMountStyle(state, data), leave: 0}
             }))}>
-            {interpolatedStyles =>
-                <div>{interpolatedStyles.map((config) => this.renderMotion(config))}</div>}
+            {interpolatingStyles =>
+                <div>{interpolatingStyles.map((config) => this.renderMotion(config))}</div>}
         </TransitionMotion>;
     }
 }
