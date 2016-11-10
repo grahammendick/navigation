@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 
 class Back extends Component {
+    constructor(props) {
+        super(props);
+        this.onNavigate = () => this.forceUpdate();
+    }
     componentDidMount() {
-        this.props.stateNavigator.onNavigate(() => {
-            this.forceUpdate();
-        });
+        this.props.stateNavigator.onNavigate(this.onNavigate);
+    }
+    componentWillUnmount() {
+        this.props.stateNavigator.offNavigate(this.onNavigate);
     }
     render() {
         var {stateNavigator} = this.props;
