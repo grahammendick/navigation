@@ -6,7 +6,7 @@ export default ({stateNavigator}) => (
     <div style={styles.phone}>
         <div  style={styles.twitter}>
             <SceneNavigator
-                getDefaultStyle={(state) => ({x: state.key == 'first' ? 0 : 400})}
+                getDefaultStyle={(state) => ({x: state.key == 'home' ? 0 : 400})}
                 getStyle={(active) => ({x: spring(!active ? 0 : 0)})}
                 interpolateStyle={({x}, active) => ({
                     position: 'absolute',
@@ -29,6 +29,7 @@ var styles = {
     twitter: {
         fontFamily: 'Segoe UI,sans-serif',
         fontSize: '80%',
+        overflow: 'hidden',
         cursor: 'default',
         backgroundColor: '#fff',
         position: 'absolute',

@@ -1,6 +1,4 @@
 import Back from './Back.js';
-import ComponentA from './ComponentA.js';
-import ComponentB from './ComponentB.js';
 import Home from './Home.js';
 import Twitter from './Twitter.js';
 import {StateNavigator} from 'navigation';
@@ -8,18 +6,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 var stateNavigator = new StateNavigator([
-    {key: 'first'},
-    {key: 'second', trackCrumbTrail: true},
-    {key: 'third', trackCrumbTrail: true}
+    {key: 'home'},
+    {key: 'tweet', trackCrumbTrail: true}
 ]);
 
-var {first, second, third} = stateNavigator.states;
-first.renderScene = () => <Home stateNavigator={stateNavigator}/>;
-second.renderScene = () => <ComponentA title="Second" stateNavigator={stateNavigator} next="third"/>;
-third.renderScene = () => <ComponentB title="Third" stateNavigator={stateNavigator}/>;
+var {home, tweet} = stateNavigator.states;
+home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
 
-stateNavigator.start('/first');
-//stateNavigator.start('/third?crumb=%2Ffirst&crumb=%2Fsecond');
+stateNavigator.start('/home');
 
 ReactDOM.render(
     <Twitter stateNavigator={stateNavigator} />,
