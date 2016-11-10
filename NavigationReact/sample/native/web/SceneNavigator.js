@@ -20,9 +20,16 @@ class SceneNavigator extends Component{
             });
         });
     }
+    renderMotion({key, data: {scene, state, data, mount}, style: {leave,...style}}) {
+        var {getUnmountedStyle, getMountStyle, getMountedStyle, interpolateStyle} = this.props;
+        return <Motion key={key} defaultStyle={getUnmountedStyle(state, data)}
+            style={(leave ? style : (mount ? getMountStyle : getMountedStyle)(state, data))}>
+            {(interpolatingStyle) => <div style={interpolateStyle(interpolatingStyle)}>{scene}</div>}
+        </Motion>
+    }
     render() {
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
-        var {getUnmountedStyle, getMountStyle, getMountedStyle, getUnmountStyle, interpolateStyle} = this.props;
+        var {getMountStyle, getUnmountStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
         return <TransitionMotion willLeave={() => ({...getUnmountStyle(state, data), leave: 1})}
             styles={sceneContexts.map(({state, data, url, mount}) => ({
@@ -31,17 +38,7 @@ class SceneNavigator extends Component{
                 style: {...getMountStyle(state, data), leave: 0}
             }))}>
             {interpolatedStyles =>
-                <div>
-                    {interpolatedStyles.map(({key, data: {scene, state, data, mount}, style: {leave,...style}}) => 
-                        <Motion key={key} defaultStyle={getUnmountedStyle(state, data)}
-                            style={(leave ? style : (mount ? getMountStyle : getMountedStyle)(state, data))}>
-                            {(interpolatingStyle) => 
-                                <div style={interpolateStyle(interpolatingStyle)}>
-                                    {scene}
-                                </div>
-                            }
-                        </Motion>)}
-                </div>}
+                <div>{interpolatedStyles.map((config) => this.renderMotion(config))}</div>}
         </TransitionMotion>;
     }
 }
