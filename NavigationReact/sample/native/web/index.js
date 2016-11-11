@@ -1,5 +1,5 @@
-import Back from './Back.js';
 import Home from './Home.js';
+import Tweet from './Tweet.js';
 import Twitter from './Twitter.js';
 import {StateNavigator} from 'navigation';
 import React from 'react';
@@ -12,7 +12,7 @@ var stateNavigator = new StateNavigator([
 
 var {home, tweet} = stateNavigator.states;
 home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
-tweet.renderScene = () => <Home stateNavigator={stateNavigator}/>;
+tweet.renderScene = () => <Tweet stateNavigator={stateNavigator}/>;
 
 stateNavigator.start('/home');
 

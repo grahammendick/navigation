@@ -1,10 +1,11 @@
+import Back from './Back.js';
 import React from 'react';
 
 export default ({stateNavigator}) => (
     <div style={styles.scene}>
         <div style={styles.nav}>
-            <svg style={styles.icon} viewBox="0 0 64 72"><g><path d="M60.034 33.795l-26-23.984a2.997 2.997 0 0 0-4.068 0l-26 23.984a3 3 0 0 0 4.068 4.41l2.265-2.09 6.809 24.683A3 3 0 0 0 20 63h24a3 3 0 0 0 2.892-2.202l6.809-24.683 2.265 2.09a2.988 2.988 0 0 0 2.033.795 3 3 0 0 0 2.035-5.205zM32 53a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-11a6.999 6.999 0 1 1 0-13.998A7 7 0 1 1 32 42z"></path></g></svg>
-            <h1 style={styles.heading}>Home</h1>
+            <svg onClick={() => stateNavigator.navigateBack(1)} style={styles.icon} viewBox="0 0 46 72"><g><path d="M40 33H15.243l7.878-7.879a2.998 2.998 0 0 0 0-4.242 2.998 2.998 0 0 0-4.242 0l-13 13a2.998 2.998 0 0 0 0 4.242l13 13c.585.586 1.353.879 2.121.879s1.536-.293 2.121-.879a2.998 2.998 0 0 0 0-4.242L15.243 39H40a3 3 0 1 0 0-6z"></path></g></svg>
+            <h1 style={styles.heading}>Tweet</h1>
         </div>
         <ul style={styles.tweets}>
             <li style={styles.tweet} onClick={() => stateNavigator.navigate('tweet')}>
