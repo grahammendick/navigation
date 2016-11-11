@@ -128,7 +128,7 @@ var getHome = () => {
 
 var getTweet = (tweetId) => {
     var tweet = {...tweets[tweetId], id: tweetId};
-    tweet.replies.map((id) => ({...tweets[id], id}));
+    tweet.replies = tweet.replies.map((id) => ({...tweets[id], id}));
     return tweet;
 }
 
