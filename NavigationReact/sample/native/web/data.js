@@ -108,3 +108,16 @@ var tweets = {
         replies: [9,5]
     },
 };
+
+var getHome = () => {
+    var homeTweets = [1,5,9,2,5,10];
+    return homeTweets.map((id) => {...tweets[id]});
+}
+
+var getTweet = (tweetId) => {
+    var tweet = {...tweets[tweetId]};
+    tweet.replies.map((id) => {...tweets[id]});
+    return tweet;
+}
+
+export {getHome, getTweet};
