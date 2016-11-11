@@ -31,7 +31,8 @@ class SceneNavigator extends Component{
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
         var {getUnmountedStyle, getMountStyle, getUnmountStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
-        return <TransitionMotion willEnter={() => ({...getUnmountedStyle(state, data), parent: 1})} 
+        return <TransitionMotion
+            willEnter={() => ({...getUnmountedStyle(state, data), parent: 1})} 
             willLeave={() => ({...getUnmountStyle(state, data), parent: 1})}
             styles={sceneContexts.map(({state, data, url, mount}) => ({
                 key: url,
