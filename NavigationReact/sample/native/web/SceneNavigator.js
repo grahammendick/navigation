@@ -24,7 +24,7 @@ class SceneNavigator extends Component{
         var {getMountStyle, getMountedStyle, interpolateStyle} = this.props;
         var style = (mount ? getMountStyle : getMountedStyle)(state, data);
         return <Motion key={key} style={parent ? parentStyle : style}>
-            {(interpolatingStyle) => <div style={interpolateStyle(interpolatingStyle)}>{scene}</div>}
+            {(tweenStyle) => <div style={interpolateStyle(tweenStyle)}>{scene}</div>}
         </Motion>;
     }
     render() {
@@ -38,8 +38,7 @@ class SceneNavigator extends Component{
                 data: {scene: this.state.scenes[url], state, data, mount},
                 style: {...getMountStyle(state, data), parent: spring(0)}
             }))}>
-            {interpolatingStyles =>
-                <div>{interpolatingStyles.map((config) => this.renderScene(config))}</div>}
+            {tweenStyles => <div>{tweenStyles.map((config) => this.renderScene(config))}</div>}
         </TransitionMotion>;
     }
 }
