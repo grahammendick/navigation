@@ -10,7 +10,7 @@ export default ({stateNavigator}) => (
                 getMountStyle={() => ({translate: spring(0), scale: spring(1)})}
                 getMountedStyle={() => ({translate: spring(5), scale: spring(0.9)})}
                 getUnmountStyle={() => ({translate: spring(100, {precision: 10}), scale: 1})}
-                interpolateStyle={({translate, scale}) => ({...styles.scene,
+                animateStyle={({translate, scale}) => ({...styles.scene,
                     transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
                 stateNavigator={stateNavigator} />
         </div>
