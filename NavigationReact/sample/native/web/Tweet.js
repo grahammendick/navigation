@@ -12,7 +12,7 @@ export default ({stateNavigator}) => (
             <h2 style={styles.name}>React</h2>
             <div style={styles.username}>@reactjs</div>
             <div style={styles.message}>Have you tried our 15.4 release candidate? Give it a shot and let us know if you have any issues before we ship it! </div>
-            <span style={styles.time}>3h</span>
+            <div style={styles.fullTime}>12:04 pm · 11 Nov 2016</div>
         </div>
         <ul style={styles.tweets}>
             <li style={styles.tweet} onClick={() => stateNavigator.navigate('tweet')}>
@@ -49,11 +49,16 @@ var styles = {
         height: '30px'
     },
     detail: {
-        padding: '5% 3%'  
+        padding: '5% 3%',
+        borderBottom: '1px solid #ccd6dd'
     },
     message: {
         fontSize: '125%',
         clear: 'both'
+    },
+    fullTime: {
+        color: '#657786',
+        padding: '3px 0'
     },
     tweets: {
         padding: 0,
