@@ -22,8 +22,8 @@ class SceneNavigator extends Component{
     }
     renderMotion({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
         var {getMountStyle, getMountedStyle, interpolateStyle} = this.props;
-        return <Motion key={key}
-            style={(parent ? parentStyle : (mount ? getMountStyle : getMountedStyle)(state, data))}>
+        var style = (mount ? getMountStyle : getMountedStyle)(state, data);
+        return <Motion key={key} style={parent ? parentStyle : style}>
             {(interpolatingStyle) => <div style={interpolateStyle(interpolatingStyle)}>{scene}</div>}
         </Motion>;
     }
