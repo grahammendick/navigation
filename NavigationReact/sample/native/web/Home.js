@@ -33,7 +33,8 @@ var styles = {
     },
     heading: {
         fontSize: '120%',
-        margin: '5px 0 0 5%',
+        padding: '5px 0 0 5%',
+        margin: '0',
         verticalAlign: 'top',
         display: 'inline-block'
     },
