@@ -5,7 +5,7 @@ export default ({stateNavigator}) => (
     <div style={styles.scene}>
         <div style={styles.nav}>
             <svg onClick={() => stateNavigator.navigateBack(1)} style={styles.icon} viewBox="0 0 46 72"><g><path d="M40 33H15.243l7.878-7.879a2.998 2.998 0 0 0 0-4.242 2.998 2.998 0 0 0-4.242 0l-13 13a2.998 2.998 0 0 0 0 4.242l13 13c.585.586 1.353.879 2.121.879s1.536-.293 2.121-.879a2.998 2.998 0 0 0 0-4.242L15.243 39H40a3 3 0 1 0 0-6z"></path></g></svg>
-            <h1 onClick={() => stateNavigator.navigateBack(1)} style={styles.heading}>Tweet</h1>
+            <h1 style={styles.heading}>Tweet</h1>
         </div>
         <div style={styles.content}>
             <div style={styles.detail}>
