@@ -23,24 +23,28 @@ class SceneNavigator extends Component{
     renderScene({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
         var {getMountStyle, getMountedStyle, animateStyle} = this.props;
         var style = (mount ? getMountStyle : getMountedStyle)(state, data);
-        return <Motion key={key} style={parent ? parentStyle : style}>
-            {(tweenStyle) => <div style={animateStyle(tweenStyle)}>{scene}</div>}
-        </Motion>;
+        return (
+            <Motion key={key} style={parent ? parentStyle : style}>
+                {(tweenStyle) => <div style={animateStyle(tweenStyle)}>{scene}</div>}
+            </Motion>
+        );
     }
     render() {
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
         var {getUnmountedStyle, getMountStyle, getUnmountStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
-        return <TransitionMotion
-            willEnter={() => ({...getUnmountedStyle(state, data), parent: 1})} 
-            willLeave={() => ({...getUnmountStyle(state, data), parent: 1})}
-            styles={sceneContexts.map(({state, data, url, mount}) => ({
-                key: url,
-                data: {scene: this.state.scenes[url], state, data, mount},
-                style: {...getMountStyle(state, data), parent: spring(0)}
-            }))}>
-            {tweenStyles => <div>{tweenStyles.map((config) => this.renderScene(config))}</div>}
-        </TransitionMotion>;
+        return (
+            <TransitionMotion
+                willEnter={() => ({...getUnmountedStyle(state, data), parent: 1})} 
+                willLeave={() => ({...getUnmountStyle(state, data), parent: 1})}
+                styles={sceneContexts.map(({state, data, url, mount}) => ({
+                    key: url,
+                    data: {scene: this.state.scenes[url], state, data, mount},
+                    style: {...getMountStyle(state, data), parent: spring(0)}
+                }))}>
+                {tweenStyles => <div>{tweenStyles.map((config) => this.renderScene(config))}</div>}
+            </TransitionMotion>
+        );
     }
 }
 
