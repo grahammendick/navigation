@@ -1,3 +1,4 @@
+import {getHome, getTweet} from './data.js';
 import Home from './Home.js';
 import Tweet from './Tweet.js';
 import Twitter from './Twitter.js';
@@ -11,8 +12,8 @@ var stateNavigator = new StateNavigator([
 ]);
 
 var {home, tweet} = stateNavigator.states;
-home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
-tweet.renderScene = () => <Tweet stateNavigator={stateNavigator}/>;
+home.renderScene = () => <Home tweets={getHome()} stateNavigator={stateNavigator}/>;
+tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} stateNavigator={stateNavigator}/>;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
