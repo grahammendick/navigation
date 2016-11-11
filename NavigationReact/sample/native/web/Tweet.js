@@ -10,7 +10,7 @@ export default ({stateNavigator}) => (
         <div style={styles.detail}>
             <img src="react.png" style={styles.logo} />
             <h2 style={styles.name}>React</h2>
-            <span style={styles.username}>@reactjs</span>
+            <div style={styles.username}>@reactjs</div>
             <div style={styles.message}>Have you tried our 15.4 release candidate? Give it a shot and let us know if you have any issues before we ship it! </div>
             <span style={styles.time}>3h</span>
         </div>
@@ -49,10 +49,10 @@ var styles = {
         height: '30px'
     },
     detail: {
-        fontSize: '125%',
         padding: '5% 3%'  
     },
     message: {
+        fontSize: '125%',
         clear: 'both'
     },
     tweets: {
@@ -66,7 +66,8 @@ var styles = {
         width: '20%',
         display: 'block',
         float: 'left',
-        borderRadius: '.35rem'
+        borderRadius: '.35rem',
+        marginRight: '3%'
     },
     tweet: {
         padding: '3%',
@@ -78,7 +79,6 @@ var styles = {
     name: {
         display: 'inline',
         fontSize: '100%',            
-        marginLeft: '3%',
         marginRight: '2%'
     },
     username: {

@@ -51,7 +51,8 @@ var styles = {
         width: '20%',
         display: 'block',
         float: 'left',
-        borderRadius: '.35rem'
+        borderRadius: '.35rem',
+        marginRight: '3%'
     },
     tweet: {
         padding: '3%',
@@ -63,7 +64,6 @@ var styles = {
     name: {
         display: 'inline',
         fontSize: '100%',            
-        marginLeft: '3%',
         marginRight: '2%'
     },
     username: {
