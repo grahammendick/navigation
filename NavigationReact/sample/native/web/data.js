@@ -6,7 +6,7 @@ var tweets = {
         time: '6:49 PM - 30 Oct 2016',
         retweets: 120,
         likes: 207,
-        replies: []
+        replies: [4,8,5]
     },
     2: {
         name: 'Preethi Kasireddy',
@@ -15,7 +15,7 @@ var tweets = {
         time: '11:14 PM - 15 Oct 2016',
         retweets: 95,
         likes: 259,
-        replies: []
+        replies: [9,3]
     },
     3: {
         name: 'Preethi Kasireddy',
@@ -24,7 +24,7 @@ var tweets = {
         time: '5:21 AM - 7 Oct 2016',
         retweets: 521,
         likes: 945,
-        replies: []
+        replies: [6]
     },
     4: {
         name: 'Preethi Kasireddy',
@@ -33,7 +33,7 @@ var tweets = {
         time: '7:15 PM - 29 Jun 2016',
         retweets: 30,
         likes: 60,
-        replies: []
+        replies: [10,7,11,2]
     },
     5: {
         name: 'Sebastian Markbåge',
@@ -42,7 +42,7 @@ var tweets = {
         time: '6:45 PM - 20 Oct 2016',
         retweets: 52,
         likes: 192,
-        replies: []
+        replies: [1,12,8]
     },
     6: {
         name: 'Sebastian Markbåge',
@@ -51,7 +51,7 @@ var tweets = {
         time: '8:23 PM - 20 Sep 2016',
         retweets: 10,
         likes: 24,
-        replies: []
+        replies: [4,3]
     },
     7: {
         name: 'Sebastian Markbåge',
@@ -60,7 +60,7 @@ var tweets = {
         time: '5:37 AM - 16 Sep 2016',
         retweets: 2,
         likes: 13,
-        replies: []
+        replies: [6]
     },
     8: {
         name: 'Sebastian Markbåge',
@@ -69,7 +69,7 @@ var tweets = {
         time: '8:15 AM - 30 Aug 2016',
         retweets: 15,
         likes: 40,
-        replies: []
+        replies: [10,9,7,2]
     },
     9: {
         name: 'Dan Abramov',
@@ -78,7 +78,7 @@ var tweets = {
         time: '5:29 PM - 31 Oct 2016',
         retweets: 27,
         likes: 63,
-        replies: []
+        replies: [7]
     },
     10: {
         name: 'Dan Abramov',
@@ -87,7 +87,7 @@ var tweets = {
         time: '5:15 PM - 31 Oct 2016',
         retweets: 339,
         likes: 534,
-        replies: []
+        replies: [2,1,6,8]
     },
     11: {
         name: 'Dan Abramov',
@@ -96,7 +96,7 @@ var tweets = {
         time: '4:06 PM - 28 Oct 2016',
         retweets: 9,
         likes: 70,
-        replies: []
+        replies: [4,10]
     },
     12: {
         name: 'Dan Abramov',
@@ -105,6 +105,6 @@ var tweets = {
         time: '10:37 PM - 13 Oct 2016',
         retweets: 16,
         likes: 112,
-        replies: []
+        replies: [9,5]
     },
 };
