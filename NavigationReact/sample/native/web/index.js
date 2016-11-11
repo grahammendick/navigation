@@ -14,6 +14,8 @@ var {home, tweet} = stateNavigator.states;
 home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
 tweet.renderScene = () => <Tweet stateNavigator={stateNavigator}/>;
 
+tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
+
 stateNavigator.start('/home');
 
 ReactDOM.render(
