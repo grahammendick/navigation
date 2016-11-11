@@ -20,7 +20,7 @@ class SceneNavigator extends Component{
             });
         });
     }
-    renderMotion({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
+    renderScene({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
         var {getMountStyle, getMountedStyle, interpolateStyle} = this.props;
         var style = (mount ? getMountStyle : getMountedStyle)(state, data);
         return <Motion key={key} style={parent ? parentStyle : style}>
@@ -39,7 +39,7 @@ class SceneNavigator extends Component{
                 style: {...getMountStyle(state, data), parent: spring(0)}
             }))}>
             {interpolatingStyles =>
-                <div>{interpolatingStyles.map((config) => this.renderMotion(config))}</div>}
+                <div>{interpolatingStyles.map((config) => this.renderScene(config))}</div>}
         </TransitionMotion>;
     }
 }
