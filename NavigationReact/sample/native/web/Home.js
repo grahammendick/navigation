@@ -50,7 +50,8 @@ var styles = {
     logo: {
         width: '20%',
         display: 'block',
-        float: 'left'
+        float: 'left',
+        borderRadius: '.35rem'
     },
     tweet: {
         padding: '3%',

@@ -7,6 +7,13 @@ export default ({stateNavigator}) => (
             <svg onClick={() => stateNavigator.navigateBack(1)} style={styles.icon} viewBox="0 0 46 72"><g><path d="M40 33H15.243l7.878-7.879a2.998 2.998 0 0 0 0-4.242 2.998 2.998 0 0 0-4.242 0l-13 13a2.998 2.998 0 0 0 0 4.242l13 13c.585.586 1.353.879 2.121.879s1.536-.293 2.121-.879a2.998 2.998 0 0 0 0-4.242L15.243 39H40a3 3 0 1 0 0-6z"></path></g></svg>
             <h1 style={styles.heading}>Tweet</h1>
         </div>
+        <div style={styles.detail}>
+            <img src="react.png" style={styles.logo} />
+            <h2 style={styles.name}>React</h2>
+            <span style={styles.username}>@reactjs</span>
+            <div style={styles.message}>Have you tried our 15.4 release candidate? Give it a shot and let us know if you have any issues before we ship it! </div>
+            <span style={styles.time}>3h</span>
+        </div>
         <ul style={styles.tweets}>
             <li style={styles.tweet} onClick={() => stateNavigator.navigate('tweet')}>
                 <h2 style={styles.name}>React</h2>
@@ -40,7 +47,14 @@ var styles = {
         padding: '10px 0',
         boxShadow: '0 0 4px #657786',
         height: '30px'
-    },   
+    },
+    detail: {
+        fontSize: '125%',
+        padding: '5% 3%'  
+    },
+    message: {
+        clear: 'both'
+    },
     tweets: {
         padding: 0,
         margin: 0,
@@ -51,7 +65,8 @@ var styles = {
     logo: {
         width: '20%',
         display: 'block',
-        float: 'left'
+        float: 'left',
+        borderRadius: '.35rem'
     },
     tweet: {
         padding: '3%',
