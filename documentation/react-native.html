@@ -38,11 +38,25 @@
             <h1>React Native</h1>
             <h2>Rendering Scenes</h2>
             <p>
-                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like managing and animating the stack. You can see it in action the following Twitter example. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
+                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like managing and animating the stack. You can see it in action the following <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/native/web">Twitter example</a>. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
             </p>
             <div id="container" style="font-size:115%; user-select: none;"></div>
+            <p>
+                You create a new <code>StateNavigator</code> passing in an array of <code>States</code> that represent the scenes in your app, just like you would <a href="state-navigation.html">on the web</a>. Make sure you set <code>trackCrumbTrail</code> true to enable the <a href="breadcrumb-trail.html">breadcrumb trail</a> stack navigation.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'home'},
+  {key: 'tweet', trackCrumbTrail: true}
+]);</code></pre>
+            <p>
+                Then you attach a <code>renderScene</code> function to each <code>State</code>. This is similar to the <code>navigated</code> function you'd use on the web except that <code>renderScene</code> returns a component.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.home.renderScene = function(data) {
+  return &lt;Home />;
+}</code></pre>
         </div>
     </div>
+    <script type="text/javascript" src="../js/prism.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
