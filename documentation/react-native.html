@@ -68,6 +68,16 @@
   animateStyle={({translate, scale}) => ({
     transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
   stateNavigator={stateNavigator} /></code></pre>
+            <h2>Notifying</h2>
+            <p>
+                An in-app notification takes a user directly to a particular scene, but if the stack isn't populated as expected then the back navigation becomes confusing. With the Navigation router the breadcrumb trail, or stack, is just a string, so you can populate the desired stack when jumping to a scene. You can test this out in the Twitter example: click a few tweets to build up a stack and then refresh the browser. You'll notice that the stack persists across refreshes because it's stored in the browser Url.
+            </p>
+            <div class="note">
+                <h2>Note</h2>
+                <div>
+                    The Navigation router for React Native hasn't been released yet. If you want to try it out take a look at the <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/native/web">source code for the Twitter example</a>.
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
