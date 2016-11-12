@@ -36,11 +36,11 @@
         </div>
         <div id="article">
             <h1>React Native</h1>
-            <h2>Rendering Scenes</h2>
             <p>
-                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like managing and animating the stack. You can see it in action the following Twitter example. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
+                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like populating and animating the stack. You can see it in action in the following Twitter example. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
             </p>
             <div id="container" style="font-size:115%; user-select: none;"></div>
+            <h2>Rendering Scenes</h2>
             <p>
                 You create a new <code>StateNavigator</code> passing in an array of <code>States</code> that represent the scenes in your app, just like you would on the web. Make sure you set <code>trackCrumbTrail</code> true to enable the <a href="breadcrumb-trail.html">breadcrumb trail</a> stack navigation.
             </p>
