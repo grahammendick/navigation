@@ -72,7 +72,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var stateNavigator = new _navigation.StateNavigator([{ key: 'home' }, { key: 'tweet', trackCrumbTrail: true }]);
+	var stateNavigator = new _navigation.StateNavigator([{ key: 'home', route: '' }, { key: 'tweet', trackCrumbTrail: true }]);
 
 	var _stateNavigator$state = stateNavigator.states,
 	    home = _stateNavigator$state.home,
@@ -90,7 +90,7 @@
 	    return crumbs;
 	};
 
-	stateNavigator.start('/home');
+	stateNavigator.start();
 
 	_reactDom2.default.render(_react2.default.createElement(_Twitter2.default, { stateNavigator: stateNavigator }), document.getElementById('container'));
 
