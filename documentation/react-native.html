@@ -57,6 +57,9 @@
             <p>
                 Navigate around as you would programmatically on the web and the <code>SceneNavigator</code> renders the scene for the active <code>State</code>. There are four distinct stages a scene can pass through. You provide a style for each stage and the <code>SceneNavigator</code> animates the transitions between them. A scene starts off in the <code>unmountedStyle</code>; when a scene becomes active it changes into the <code>mountStyle</code>; when forward navigation moves it back in the stack it takes on the <code>mountedStyle</code>; and finally it's assigned the <code>unmountStyle</code> when back navigation removes it from the stack.
             </p>
+            <p>
+                <a href="https://github.com/chenglou/react-motion">React Motion</a> controls the animation so you specify the styles using its <code>spring</code> function. The <code>animateStyle prop</code> translates the interpolated values into a style object that's applied to the scene. Here's what the style <code>props</code> look like for the animation in the Twitter example:
+            </p>
             <pre><code class="language-jsx">&lt;SceneNavigator
   getUnmountedStyle={() => ({translate: 100, scale: 1})}
   getMountStyle={() => ({translate: spring(0), scale: spring(1)})}
