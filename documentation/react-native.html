@@ -38,7 +38,7 @@
             <h1>React Native</h1>
             <h2>Rendering Scenes</h2>
             <p>
-                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like managing and animating the stack. You can see it in action the following <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReact/sample/native/web">Twitter example</a>. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
+                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like managing and animating the stack. You can see it in action the following Twitter example. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
             </p>
             <div id="container" style="font-size:115%; user-select: none;"></div>
             <p>
@@ -51,9 +51,17 @@
             <p>
                 Then you attach a <code>renderScene</code> function to each <code>State</code>. This is similar to the <code>navigated</code> function you'd use on the web except that <code>renderScene</code> returns a component.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.home.renderScene = function(data) {
-  return &lt;Home />;
+            <pre><code class="language-jsx">stateNavigator.states.tweet.renderScene = function(data) {
+  return &lt;Tweet id={data.id} />;
 }</code></pre>
+            <pre><code class="language-jsx">&lt;SceneNavigator
+  getUnmountedStyle={() => ({translate: 100, scale: 1})}
+  getMountStyle={() => ({translate: spring(0), scale: spring(1)})}
+  getMountedStyle={() => ({translate: spring(5), scale: spring(0.9)})}
+  getUnmountStyle={() => ({translate: spring(100), scale: 1})}
+  animateStyle={({translate, scale}) => ({
+    transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
+  stateNavigator={stateNavigator} /></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
