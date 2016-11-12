@@ -49,11 +49,14 @@
   {key: 'tweet', trackCrumbTrail: true}
 ]);</code></pre>
             <p>
-                Then you attach a <code>renderScene</code> function to each <code>State</code>. This is similar to the <code>navigated</code> function you'd use on the web except that <code>renderScene</code> returns a component.
+                Then you attach a <code>renderScene</code> function to each <code>State</code>. This is similar to the <code>navigated</code> function used on the web except that <code>renderScene</code> returns a component.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.tweet.renderScene = function(data) {
   return &lt;Tweet id={data.id} />;
 }</code></pre>
+            <p>
+                Navigate around as you would programmatically on the web and the <code>SceneNavigator</code> renders the scene for the active <code>State</code>. There are four distinct stages a scene can pass through. You provide a style for each stage and the <code>SceneNavigator</code> animates the transitions between them. A scene starts off in the <code>unmountedStyle</code>; when a scene becomes active it changes into the <code>mountStyle</code>; when forward navigation moves it back in the stack it takes on the <code>mountedStyle</code>; and finally it's assigned the <code>unmountStyle</code> when back navigation removes it from the stack.
+            </p>
             <pre><code class="language-jsx">&lt;SceneNavigator
   getUnmountedStyle={() => ({translate: 100, scale: 1})}
   getMountStyle={() => ({translate: spring(0), scale: spring(1)})}
