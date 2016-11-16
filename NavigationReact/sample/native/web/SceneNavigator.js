@@ -6,18 +6,22 @@ class SceneNavigator extends Component{
         super(props);
         var {state, data, url} = props.stateNavigator.stateContext;
         this.state = {scenes: {[url]: state.renderScene(data)}};
+        this.onNavigate = this.onNavigate.bind(this);
     }
     componentDidMount() {
-        var {stateNavigator} = this.props;
-        stateNavigator.onNavigate((oldState, state, data, asyncData) => {
-            this.setState((prevState) => {
-                var {url, crumbs} = stateNavigator.stateContext;
-                var scenes = {[url]: state.renderScene(data, asyncData)};
-                for(var i = 0; i < crumbs.length; i++) {
-                    scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
-                }
-                return {scenes};
-            });
+        this.props.stateNavigator.onNavigate(this.onNavigate);
+    }
+    componentWillUnmount() {
+        this.props.stateNavigator.offNavigate(this.onNavigate);
+    }
+    onNavigate(oldState, state, data, asyncData) {
+        this.setState((prevState) => {
+            var {url, crumbs} = this.props.stateNavigator.stateContext;
+            var scenes = {[url]: state.renderScene(data, asyncData)};
+            for(var i = 0; i < crumbs.length; i++) {
+                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
+            }
+            return {scenes};
         });
     }
     renderScene({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
