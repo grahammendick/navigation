@@ -21,11 +21,11 @@ class SceneNavigator extends Component{
         });
     }
     renderScene({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
-        var {getMountStyle, getMountedStyle, animateStyle} = this.props;
+        var {getMountStyle, getMountedStyle, animateStyle, children} = this.props;
         var style = (mount ? getMountStyle : getMountedStyle)(state, data);
         return (
             <Motion key={key} style={parent ? parentStyle : style}>
-                {(tweenStyle) => <div style={animateStyle(tweenStyle)}>{scene}</div>}
+                {(tweenStyle) => children(tweenStyle, scene, state, data)}
             </Motion>
         );
     }
