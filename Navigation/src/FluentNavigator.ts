@@ -6,6 +6,7 @@ import StateHandler from './StateHandler';
 interface FluentNavigator {
     url: string,
     navigate(stateKey: string, navigationData?: any): FluentNavigator;
+    refresh(navigationData?: any): FluentNavigator;
 }
 
 function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
@@ -20,6 +21,11 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
         return fluentContext;
     }
 
+    function navigateLink(url): FluentNavigator {
+        var { state, data } = stateHandler.parseLink(url);
+        return createFluentNavigator(states, stateHandler, getFluentContext(state, data, url));
+    }
+
     return {
         url: stateContext.url,
         navigate: function(stateKey: string, navigationData?: any): FluentNavigator {
@@ -28,8 +34,15 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             if (typeof navigationData === 'function')
                 navigationData = navigationData(stateContext.data);
             var url = stateHandler.getLink(states[stateKey], navigationData, stateContext.crumbs, stateContext.nextCrumb);
-            var { state, data } = stateHandler.parseLink(url);
-            return createFluentNavigator(states, stateHandler, getFluentContext(state, data, url));
+            return navigateLink(url);
+        },
+        refresh: function(navigationData?: any): FluentNavigator {
+            if (typeof navigationData === 'function')
+                navigationData = navigationData(stateContext.data);
+            var url = stateHandler.getLink(stateContext.state, navigationData, stateContext.crumbs, stateContext.nextCrumb);
+            if (url == null)
+                throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+            return navigateLink(url);
         }
     }
 }
