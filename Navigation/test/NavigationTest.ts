@@ -4969,7 +4969,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Fluent', function () {
+    describe('Fluent State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
