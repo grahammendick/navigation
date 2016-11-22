@@ -12,7 +12,7 @@ class FluentNavigator {
     private states: { [index: string]: State } = {};
     private stateHandler: StateHandler;
 
-    constructor(states, stateHandler, stateContext?: StateContext) {
+    constructor(states: { [index: string]: State }, stateHandler: StateHandler, stateContext?: StateContext) {
         this.states = states;
         this.stateHandler = stateHandler;
         if (stateContext) {
