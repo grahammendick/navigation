@@ -4981,4 +4981,19 @@ describe('Navigation', function () {
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
+
+    describe('Fluent Transition', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .url;
+            assert.strictEqual(url, '/r1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
 });
