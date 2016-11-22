@@ -4978,6 +4978,7 @@ describe('Navigation', function () {
                 .navigate('s')
                 .url;
             assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
 });
