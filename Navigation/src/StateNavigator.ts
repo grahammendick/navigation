@@ -44,7 +44,7 @@ class StateNavigator {
         this.stateContext.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
         this.stateContext.data = data;
-        this.stateContext.nextCrumb = new Crumb(data, state, url, this.getLink(state, data, []), false);
+        this.stateContext.nextCrumb = new Crumb(data, state, url, this.getLink(state, data), false);
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
@@ -79,15 +79,16 @@ class StateNavigator {
     getNavigationLink(stateKey: string, navigationData?: any): string {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
-        return this.getLink(this.states[stateKey], navigationData);
+        var { crumbs, nextCrumb } = this.stateContext;
+        return this.getLink(this.states[stateKey], navigationData, crumbs, nextCrumb);
     }
 
-    private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
-        if (!crumbTrail) {
-            crumbTrail = [];
-            var crumbs = this.stateContext.crumbs.slice();
-            if (this.stateContext.nextCrumb)
-                crumbs.push(this.stateContext.nextCrumb);
+    private getLink(state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): string {
+        var crumbTrail = [];
+        if (crumbs) {
+            crumbs = crumbs.slice();
+            if (nextCrumb)
+                crumbs.push(nextCrumb);
             crumbs = state.truncateCrumbTrail(state, crumbs);
             for(var i = 0; i < crumbs.length; i++)
                 crumbTrail.push(crumbs[i].crumblessUrl)
@@ -118,7 +119,8 @@ class StateNavigator {
     }
 
     getRefreshLink(navigationData?: any): string {
-        return this.getLink(this.stateContext.state, navigationData);
+        var { crumbs, nextCrumb } = this.stateContext;
+        return this.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
