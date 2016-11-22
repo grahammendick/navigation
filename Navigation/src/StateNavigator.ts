@@ -1,5 +1,5 @@
 ﻿import Crumb from './config/Crumb';
-import FluentNavigator from './FluentNavigator';
+import { FluentNavigator, createFluentNavigator } from './FluentNavigator';
 import HashHistoryManager from './history/HashHistoryManager';
 import HistoryManager from './history/HistoryManager';
 import State from './config/State';
@@ -153,8 +153,8 @@ class StateNavigator {
     }
 
     fluent(withContext = false): FluentNavigator {
-        var stateContext = !withContext ? null : this.stateContext;
-        return new FluentNavigator(this.states, this.stateHandler, stateContext);
+        var stateContext = !withContext ? undefined : this.stateContext;
+        return createFluentNavigator(this.states, this.stateHandler, stateContext);
     }
     
     start(url?: string) {
