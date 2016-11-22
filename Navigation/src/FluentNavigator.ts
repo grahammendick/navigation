@@ -9,7 +9,7 @@ interface FluentNavigator {
 }
 
 function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
-    var getFluentContext = function(state: State, data: any, url: string): StateContext {
+    function getFluentContext(state: State, data: any, url: string): StateContext {
         var fluentContext = new StateContext();
         fluentContext.state = state;
         fluentContext.url = url;
