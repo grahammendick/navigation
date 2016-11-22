@@ -36,6 +36,9 @@ class FluentNavigator {
     public navigate(stateKey: string, navigationData?: any): this {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
+        if (typeof navigationData === 'function'){
+            navigationData = navigationData(this.data);
+        }
         var url = this.stateHandler.getLink(this.states[stateKey], navigationData, this.crumbs, this.nextCrumb);
         var { state, data } = this.stateHandler.parseLink(url);
         this.setFluentContext(state, data, url);
