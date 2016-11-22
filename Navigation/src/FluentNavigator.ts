@@ -7,6 +7,7 @@ interface FluentNavigator {
     url: string,
     navigate(stateKey: string, navigationData?: any): FluentNavigator;
     refresh(navigationData?: any): FluentNavigator;
+    navigateBack(distance: number): FluentNavigator;
 }
 
 function createFluentNavigator(states: { [index: string]: State }, stateHandler: StateHandler, stateContext = new StateContext()): FluentNavigator {
@@ -42,6 +43,12 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             var url = stateHandler.getLink(stateContext.state, navigationData, stateContext.crumbs, stateContext.nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
+            return navigateLink(url);
+        },
+        navigateBack: function(distance: number): FluentNavigator {
+            if (!(distance <= stateContext.crumbs.length && distance > 0))
+                throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
+            var url = stateContext.crumbs[stateContext.crumbs.length - distance].url;
             return navigateLink(url);
         }
     }
