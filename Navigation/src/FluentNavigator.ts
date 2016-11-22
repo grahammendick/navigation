@@ -24,7 +24,7 @@ class FluentNavigator {
         }
     }
 
-    private setContext(state: State, data: any, url: string) {
+    private setFluentContext(state: State, data: any, url: string) {
         this.state = state;
         this.url = url;
         this.crumbs = data[state.crumbTrailKey];
@@ -38,7 +38,7 @@ class FluentNavigator {
             throw new Error(stateKey + ' is not a valid State');
         var url = this.getLink(this.states[stateKey], navigationData, this.crumbs, this.nextCrumb);
         var { state, data } = this.parseLink(url);
-        this.setContext(state, data, url);
+        this.setFluentContext(state, data, url);
         return this;
     }
 }
