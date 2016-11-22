@@ -1,6 +1,7 @@
 import Crumb from './config/Crumb';
 import State from './config/State';
 import StateContext from './StateContext';
+import StateHandler from './StateHandler';
 
 class FluentNavigator {
     private state: State = null;
@@ -9,12 +10,11 @@ class FluentNavigator {
     private crumbs: Crumb[] = [];
     private nextCrumb: Crumb = null;
     private states: { [index: string]: State } = {};
-    private getLink;
-    private parseLink;
+    private stateHandler: StateHandler;
 
-    constructor(states, getLink, parseLink, stateContext?: StateContext) {
+    constructor(states, stateHandler, stateContext?: StateContext) {
         this.states = states;
-        this.getLink = getLink;
+        this.stateHandler = stateHandler;
         if (stateContext) {
             this.state = stateContext.state;
             this.data = stateContext.data;
@@ -30,14 +30,14 @@ class FluentNavigator {
         this.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
         this.data = data;
-        this.nextCrumb = new Crumb(data, state, url, this.getLink(state, data), false);
+        this.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
     }
 
     public navigate(stateKey: string, navigationData?: any): this {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
-        var url = this.getLink(this.states[stateKey], navigationData, this.crumbs, this.nextCrumb);
-        var { state, data } = this.parseLink(url);
+        var url = this.stateHandler.getLink(this.states[stateKey], navigationData, this.crumbs, this.nextCrumb);
+        var { state, data } = this.stateHandler.parseNavigationLink(url);
         this.setFluentContext(state, data, url);
         return this;
     }

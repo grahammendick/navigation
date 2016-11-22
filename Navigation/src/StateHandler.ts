@@ -46,7 +46,20 @@ class StateHandler {
         return builtStates;
     }
 
-    getNavigationLink(state: State, navigationData: any, crumbTrail: string[]): string {
+    getLink(state: State, navigationData: any, crumbs?: Crumb[], nextCrumb?: Crumb): string {
+        var crumbTrail = [];
+        if (crumbs) {
+            crumbs = crumbs.slice();
+            if (nextCrumb)
+                crumbs.push(nextCrumb);
+            crumbs = state.truncateCrumbTrail(state, crumbs);
+            for(var i = 0; i < crumbs.length; i++)
+                crumbTrail.push(crumbs[i].crumblessUrl)
+        }
+        return this.getNavigationLink(state, navigationData, crumbTrail);
+    }
+
+    private getNavigationLink(state: State, navigationData: any, crumbTrail: string[]): string {
         var { data, arrayData } = this.navigationDataManager.formatData(state, navigationData, crumbTrail);
         var routeInfo = this.router.getRoute(state, data, arrayData);
         if (routeInfo.route == null)

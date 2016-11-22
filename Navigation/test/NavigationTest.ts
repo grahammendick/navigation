@@ -4968,4 +4968,16 @@ describe('Navigation', function () {
             assert.strictEqual(history.getHref('/b'), '/a/b');
         });
     });
+
+    describe('Fluent', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s')
+                .url;
+            assert.strictEqual(url, '/r');
+        });
+    });
 });
