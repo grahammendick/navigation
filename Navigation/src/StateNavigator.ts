@@ -113,7 +113,7 @@ class StateNavigator {
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        var { state, data } = this.stateHandler.parseLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -147,7 +147,7 @@ class StateNavigator {
     }
     
     parseLink(url: string): { state: State, data: any } {
-        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        var { state, data } = this.stateHandler.parseLink(url);
         delete data[state.crumbTrailKey];
         return { state, data };
     }
