@@ -42,3 +42,4 @@ class FluentNavigator {
         return this;
     }
 }
+export default FluentNavigator;

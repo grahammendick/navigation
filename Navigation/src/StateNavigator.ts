@@ -1,4 +1,5 @@
 ﻿import Crumb from './config/Crumb';
+import FluentNavigator from './FluentNavigator';
 import HashHistoryManager from './history/HashHistoryManager';
 import HistoryManager from './history/HistoryManager';
 import State from './config/State';
@@ -162,6 +163,11 @@ class StateNavigator {
         var { state, data } = this.stateHandler.parseNavigationLink(url);
         delete data[state.crumbTrailKey];
         return { state, data };
+    }
+
+    fluent(withContext = false): FluentNavigator {
+        var stateContext = !withContext ? null : this.stateContext;
+        return new FluentNavigator(this.states, this.getLink, this.stateHandler.parseNavigationLink, stateContext);
     }
     
     start(url?: string) {
