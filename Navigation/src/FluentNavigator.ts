@@ -25,9 +25,8 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
         navigate: function(stateKey: string, navigationData?: any): FluentNavigator {
             if (!states[stateKey])
                 throw new Error(stateKey + ' is not a valid State');
-            if (typeof navigationData === 'function'){
+            if (typeof navigationData === 'function')
                 navigationData = navigationData(stateContext.data);
-            }
             var url = stateHandler.getLink(states[stateKey], navigationData, stateContext.crumbs, stateContext.nextCrumb);
             var { state, data } = stateHandler.parseLink(url);
             return createFluentNavigator(states, stateHandler, getFluentContext(state, data, url));
