@@ -33,6 +33,16 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', individualNavigationData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
@@ -67,6 +77,16 @@ describe('Navigation Data', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s', individualNavigationData);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', individualNavigationData)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -111,6 +131,16 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', individualNavigationData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
@@ -146,6 +176,16 @@ describe('Navigation Data', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s', arrayNavigationData);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', arrayNavigationData)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -206,6 +246,16 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', arrayNavigationData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
@@ -256,6 +306,16 @@ describe('Navigation Data', function () {
         describe('Navigate Link', function() {
             beforeEach(function() {
                 var link = stateNavigator.getNavigationLink('s', arrayNavigationData);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', arrayNavigationData)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
