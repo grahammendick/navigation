@@ -280,4 +280,108 @@ describe('Fluent', function () {
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
+
+    describe('Back One By One With Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigate('s3')
+                .navigateBack(1)
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Back One By One', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigate('s3')
+                .navigateBack(1)
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Invalid Back With Trail', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2');
+            assert.throws(() => fluent.navigateBack(3));
+        });
+    });
+
+    describe('Invalid Back', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2' }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2');
+            assert.throws(() => fluent.navigateBack(1));
+        });
+    });
+
+    describe('Back Invalid Back With Trail', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigateBack(1);
+            assert.throws(() => fluent.navigateBack(2));
+        });
+    });
+
+    describe('Back Invalid Back', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigateBack(1);
+            assert.throws(() => fluent.navigateBack(1));
+        });
+    });
 });
