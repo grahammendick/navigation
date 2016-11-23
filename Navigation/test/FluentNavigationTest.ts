@@ -151,4 +151,37 @@ describe('Fluent', function () {
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
+
+    describe('Transition Transition', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .url;
+            assert.strictEqual(url, '/r2');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Refresh With Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .refresh()
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
 });

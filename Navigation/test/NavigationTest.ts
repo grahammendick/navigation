@@ -402,22 +402,15 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
-            });
-            it('should populate old State', function() {
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-            });
-            it('should not populate previous State', function() {
                 assert.equal(stateNavigator.stateContext.previousState, null);
-            });
-            it('should not populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
     });
-    
-    
+
     describe('Refresh With Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
@@ -449,16 +442,10 @@ describe('Navigation', function () {
         });
         
         function test() {            
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            });
-            it('should populate old State', function() {
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-            });
-            it('should populate previous State', function() {
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-            });
-            it('should populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
                 assert.ok(stateNavigator.stateContext.crumbs[0].last);
