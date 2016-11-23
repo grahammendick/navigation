@@ -3,8 +3,8 @@
 import * as assert from 'assert';
 import { StateNavigator } from '../src/Navigation';
 
-describe('Navigation', function () {
-    describe('Fluent State', function () {
+describe('Fluent', function () {
+    describe('State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
@@ -17,7 +17,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Fluent Second State', function () {
+    describe('Second State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -31,11 +31,33 @@ describe('Navigation', function () {
         });
     });
 
-    /*describe('Fluent Transition', function () {
+    describe('State With Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s')
+                .url;
+            assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Invalid State', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            assert.throws(() =>  stateNavigator.fluent().navigate('s0'), /is not a valid State/);
+        });
+    });
+
+    describe('Transition', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
+                { key: 's1', route: 'r1' }
             ]);
             var url = stateNavigator.fluent()
                 .navigate('s0')
@@ -46,7 +68,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Fluent Transition With Trail', function () {
+    /*describe('Fluent Transition With Trail', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },

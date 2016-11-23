@@ -91,10 +91,8 @@ describe('Navigation', function () {
         });
         
         function test(){
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-            });
-            it('should have not populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -149,16 +147,10 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            });
-            it('should populate old State', function() {
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
-            });
-            it('should not populate previous State', function() {
                 assert.equal(stateNavigator.stateContext.previousState, null);
-            });
-            it('should not populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
