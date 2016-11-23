@@ -31,6 +31,8 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
             if (typeof navigationData === 'function')
                 navigationData = navigationData(stateContext.data);
             var url = stateHandler.getLink(states[stateKey], navigationData, stateContext.crumbs, stateContext.nextCrumb);
+            if (url == null)
+                throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             return navigateLink(url);
         },
         refresh: function(navigationData?: any): FluentNavigator {

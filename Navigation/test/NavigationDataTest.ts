@@ -5529,6 +5529,12 @@ describe('Navigation Data', function () {
                 assert.equal(stateNavigator.getNavigationLink('s'), null);
             });
         });
+
+        describe('Fluent Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.fluent().navigate('s'), /Invalid route data/);
+            });
+        });
     });
 
     describe('Missing Route Data Refresh', function() {
@@ -5551,6 +5557,14 @@ describe('Navigation Data', function () {
                 var link = stateNavigator.getNavigationLink('s', { s1: 1, s2: 2 });
                 stateNavigator.navigateLink(link);
                 assert.equal(stateNavigator.getRefreshLink(), null);
+            });
+        });
+
+        describe('Fluent Navigate Link', function() {
+            it('should throw error', function() {
+                var fluent = stateNavigator.fluent()
+                    .navigate('s', { s1: 1, s2: 2 });
+                assert.throws(() => fluent.refresh(), /Invalid route data/);
             });
         });
     });
