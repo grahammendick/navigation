@@ -5180,6 +5180,17 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['s'], true);
@@ -5218,6 +5229,18 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationLink('s1', data);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh((currentData) => currentData)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -5274,6 +5297,21 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationBackLink(2);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({}));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .navigate('s2')
+                    .navigate('s3')
+                    .navigateBack(2)
+                    .refresh((currentData) => currentData)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
