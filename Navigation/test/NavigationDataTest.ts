@@ -5019,14 +5019,10 @@ describe('Navigation Data', function () {
             individualNavigationData['boolean'] = true;
             individualNavigationData['number'] = 0;
             stateNavigator.navigate('s', individualNavigationData);
-            var i = 0;
-            for (var key in stateNavigator.stateContext.data) {
-                i++;
-            }
             assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
             assert.strictEqual(stateNavigator.stateContext.data['boolean'], true);
             assert.strictEqual(stateNavigator.stateContext.data['number'], 0);
-            assert.equal(i, 3);
+            assert.equal(Object.keys(stateNavigator.stateContext.data).length, 3);
         });
     });
 
@@ -5043,47 +5039,114 @@ describe('Navigation Data', function () {
     });
 
     describe('Link Default Types Bool Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { b1: 'boolean' } }
             ]);
-            var data = { b1: true, b2: false };
-            var url = stateNavigator.getNavigationLink('s', data);
-            assert.notEqual(url.indexOf('b1=true&'), -1);
-            assert.notEqual(url.indexOf('b2=false1_'), -1);
         });
+        var data = { b1: true, b2: false };
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                link = stateNavigator.getNavigationLink('s', data);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent()
+                    .navigate('s', data)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include default types in link', function() {
+                assert.notEqual(link.indexOf('b1=true&'), -1);
+                assert.notEqual(link.indexOf('b2=false1_'), -1);
+            });
+        }
     });
 
     describe('Link Default Types Number Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { n1: 'number' } }
             ]);
-            var data = { n1: 0, n2: 1 };
-            var url = stateNavigator.getNavigationLink('s', data);
-            assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=11_'), -1);
         });
+        var data = { n1: 0, n2: 1 };
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                link = stateNavigator.getNavigationLink('s', data);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent()
+                    .navigate('s', data)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include default types in link', function() {
+                assert.notEqual(link.indexOf('n1=0&'), -1);
+                assert.notEqual(link.indexOf('n2=11_'), -1);
+            });
+        }
     });
 
     describe('Link Default Types Refresh Navigate', function() {
-        it('should not include default types in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { s1: 'string', s2: 'number', n1: 'number' } }
             ]);
-            var data = {
-                s1: 'hello',
-                s2: 'world',
-                n1: 0,
-                n2: 1
-            };
-            stateNavigator.navigate('s', data);
-            var url = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null));
-            assert.notEqual(url.indexOf('s1=hello&'), -1);
-            assert.notEqual(url.indexOf('s2=world1_'), -1);
-            assert.notEqual(url.indexOf('n1=0&'), -1);
-            assert.notEqual(url.indexOf('n2=11_'), -1);
         });
+        var data = {
+            s1: 'hello',
+            s2: 'world',
+            n1: 0,
+            n2: 1
+        };
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s', data);
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null));
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent()
+                    .navigate('s', data)
+                    .refresh((currentData) => currentData)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include default types in link', function() {
+                assert.notEqual(link.indexOf('s1=hello&'), -1);
+                assert.notEqual(link.indexOf('s2=world1_'), -1);
+                assert.notEqual(link.indexOf('n1=0&'), -1);
+                assert.notEqual(link.indexOf('n2=11_'), -1);
+            });
+        }
     });
 
     describe('Override Default Types', function() {
