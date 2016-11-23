@@ -28,10 +28,8 @@ describe('Navigation', function () {
         });
         
         function test(){
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-            });
-            it('should have not populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -62,10 +60,8 @@ describe('Navigation', function () {
         });
         
         function test(){
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-            });
-            it('should have not populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -4966,49 +4962,6 @@ describe('Navigation', function () {
             history = new HTML5HistoryManager('/a');
             assert.strictEqual(history.getHref('b'), '/a/b');
             assert.strictEqual(history.getHref('/b'), '/a/b');
-        });
-    });
-
-    describe('Fluent State', function () {
-        it('should navigate', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var url = stateNavigator.fluent()
-                .navigate('s')
-                .url;
-            assert.strictEqual(url, '/r');
-            assert.strictEqual(stateNavigator.stateContext.url, null);
-        });
-    });
-
-    describe('Fluent Transition', function () {
-        it('should navigate', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1' },
-            ]);
-            var url = stateNavigator.fluent()
-                .navigate('s0')
-                .navigate('s1')
-                .url;
-            assert.strictEqual(url, '/r1');
-            assert.strictEqual(stateNavigator.stateContext.url, null);
-        });
-    });
-
-    describe('Fluent Transition With Trail', function () {
-        it('should navigate', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
-            ]);
-            var url = stateNavigator.fluent()
-                .navigate('s0')
-                .navigate('s1')
-                .url;
-            assert.strictEqual(url, '/r1?crumb=%2Fr0');
-            assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
 });
