@@ -218,4 +218,66 @@ describe('Fluent', function () {
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
+
+    describe('Back', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Back Two With Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+                { key: 's4', route: 'r4', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigate('s3')
+                .navigate('s4')
+                .navigateBack(2)
+                .url;
+            assert.strictEqual(url, '/r2?crumb=%2Fr0&crumb=%2Fr1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Back Two', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+                { key: 's4', route: 'r4', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigate('s3')
+                .navigate('s4')
+                .navigateBack(2)
+                .url;
+            assert.strictEqual(url, '/r2');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
 });
