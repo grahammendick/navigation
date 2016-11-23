@@ -4881,59 +4881,132 @@ describe('Navigation Data', function () {
     });
 
     describe('Crumb Link Defaults Navigate', function() {
-        it('should not include defaults in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var data = {};
-            data['number'] = 1;
-            data['_bool'] = '';
-            data['string'] = 4;
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1', data);
-            stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({}))
-            stateNavigator.navigate('s2');
-            var link = stateNavigator.stateContext.crumbs[1].url;
-            assert.equal(link.indexOf('_bool'), -1);
-            assert.equal(link.indexOf('number'), -1);
-            assert.notEqual(link.indexOf('string'), -1);
         });
+        var data = {};
+        data['number'] = 1;
+        data['_bool'] = '';
+        data['string'] = 4;
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', data);
+                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({}))
+                stateNavigator.navigate('s2');
+                link = stateNavigator.stateContext.crumbs[1].url;
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh((currentData) => currentData)
+                    .navigate('s2')
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.stateContext.crumbs[1].url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include defaults in link', function() {
+                assert.equal(link.indexOf('_bool'), -1);
+                assert.equal(link.indexOf('number'), -1);
+                assert.notEqual(link.indexOf('string'), -1);
+            });
+        }
     });
 
     describe('Link Navigate With Trail', function() {
-        it('should include data in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0');
-            var data = {};
-            data['_number'] = 1;
-            data['string'] = 'Hello';
-            stateNavigator.refresh(data);
-            var link = stateNavigator.getNavigationLink('s1');
-            assert.notEqual(link.indexOf('_number'), -1);
-            assert.notEqual(link.indexOf('string'), -1);
         });
+        var data = {};
+        data['_number'] = 1;
+        data['string'] = 'Hello';
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                stateNavigator.refresh(data);
+                link = stateNavigator.getNavigationLink('s1');
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent(true)
+                    .refresh(data)
+                    .navigate('s1')
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should include data in link', function() {
+                assert.notEqual(link.indexOf('_number'), -1);
+                assert.notEqual(link.indexOf('string'), -1);
+            });
+        }
     });
 
     describe('Link Navigate', function() {
-        it('should not include data in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.navigate('s0');
-            var data = {};
-            data['_number'] = 1;
-            data['string'] = 'Hello';
-            stateNavigator.refresh(data);
-            var link = stateNavigator.getNavigationLink('s1');
-            assert.equal(link.indexOf('_number'), -1);
-            assert.equal(link.indexOf('string'), -1);
         });
+        var data = {};
+        data['_number'] = 1;
+        data['string'] = 'Hello';
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                stateNavigator.refresh(data);
+                link = stateNavigator.getNavigationLink('s1');
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent(true)
+                    .refresh(data)
+                    .navigate('s1')
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include data in link', function() {
+                assert.equal(link.indexOf('_number'), -1);
+                assert.equal(link.indexOf('string'), -1);
+            });
+        }
     });
 
     describe('Link Default Types Navigate', function() {
