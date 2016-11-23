@@ -5327,37 +5327,81 @@ describe('Navigation Data', function () {
     });
 
     describe('Reserved Url Character Default Types', function () {
-        it('should not include default types in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { '*/()-_+~@:?><.;[]{}!£$%^#&': 'number' } }
             ]);
             var data = {};
             data['*/()-_+~@:?><.;[]{}!£$%^#&'] = 0;
             data['**=/()-_+~@:?><.;[]{}!£$%^#&&'] = 1;
             stateNavigator.navigate('s', data);
-            var url = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({}));
-            assert.notEqual(url.indexOf('=0&'), -1);
-            assert.notEqual(url.indexOf('=11_'), -1);
-            assert.strictEqual(stateNavigator.stateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
-            assert.strictEqual(stateNavigator.stateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
         });
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({}));
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent(true)
+                    .refresh((currentData) => currentData)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include default types in link', function() {
+                assert.notEqual(link.indexOf('=0&'), -1);
+                assert.notEqual(link.indexOf('=11_'), -1);
+                assert.strictEqual(stateNavigator.stateContext.data['*/()-_+~@:?><.;[]{}!£$%^#&'], 0);
+                assert.strictEqual(stateNavigator.stateContext.data['**=/()-_+~@:?><.;[]{}!£$%^#&&'], 1);
+            });
+        }
     });
 
     describe('Separator Url Character Default Types', function () {
-        it('should not include default types in link', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', defaultTypes: { _0_1_2_3_4_5_: 'number' } }
             ]);
             var data = {};
             data['_0_1_2_3_4_5_'] = 10;
             data['__0_1_2_3_4_5_'] = 20;
             stateNavigator.navigate('s', data);
-            var url = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null));
-            assert.notEqual(url.indexOf('=10&'), -1);
-            assert.notEqual(url.indexOf('=201_'), -1);
-            assert.strictEqual(stateNavigator.stateContext.data['_0_1_2_3_4_5_'], 10);
-            assert.strictEqual(stateNavigator.stateContext.data['__0_1_2_3_4_5_'], 20);
         });
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null));
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent(true)
+                    .refresh((currentData) => currentData)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not include default types in link', function() {
+                assert.notEqual(link.indexOf('=10&'), -1);
+                assert.notEqual(link.indexOf('=201_'), -1);
+                assert.strictEqual(stateNavigator.stateContext.data['_0_1_2_3_4_5_'], 10);
+                assert.strictEqual(stateNavigator.stateContext.data['__0_1_2_3_4_5_'], 20);
+            });
+        }
     });
 
     describe('Refresh Current Data', function() {
@@ -5389,6 +5433,18 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationLink('s1', data);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData(null, ['s', 'c']));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh(({s, c}) => ({s, c}))
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -5429,6 +5485,17 @@ describe('Navigation Data', function () {
                 var link = stateNavigator.getNavigationLink('s0', data);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s1', stateNavigator.stateContext.includeCurrentData({}, ['number', 'char']));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data)
+                    .navigate('s1', ({number, char}) => ({number, char}))
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
