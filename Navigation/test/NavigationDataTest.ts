@@ -4087,6 +4087,23 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data1)
+                    .navigate('s1')
+                    .navigate('s2')
+                    .navigate('s3', data2)
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateNavigator.stateContext.oldData['s'], 'World');
@@ -4141,6 +4158,23 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationLink('s3', data2);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationBackLink(2);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data1)
+                    .navigate('s1')
+                    .navigate('s2')
+                    .navigate('s3', data2)
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -4208,6 +4242,24 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data1)
+                    .navigate('s1')
+                    .navigate('s2', data2)
+                    .navigate('s3')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate old and previous data', function () {
                 assert.strictEqual(stateNavigator.stateContext.oldData['s'], 'World');
@@ -4265,6 +4317,24 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationBackLink(1);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data1)
+                    .navigate('s1')
+                    .navigate('s2', data2)
+                    .navigate('s3')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -4330,6 +4400,24 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationBackLink(1);
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data1)
+                    .navigate('s1')
+                    .navigate('s2', data2)
+                    .navigate('s2')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.fluent(true)
+                    .navigateBack(1)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
