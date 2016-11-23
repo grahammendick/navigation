@@ -464,4 +464,60 @@ describe('Fluent', function () {
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
+
+    describe('Transition Transition With Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .url;
+            assert.strictEqual(url, '/r2?crumb=%2Fr1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Crumb Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true },
+                { key: 's3', route: 'r3', trackCrumbTrail: true },
+                { key: 's4', route: 'r4', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigate('s3')
+                .navigate('s4')
+                .url;
+            assert.strictEqual(url, '/r4?crumb=%2Fr0&crumb=%2Fr1&crumb=%2Fr2&crumb=%2Fr3');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('State State Custom Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true },
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
+            var url = stateNavigator.fluent()
+                .navigate('s')
+                .navigate('s')
+                .url;
+            assert.strictEqual(url, '/r?crumb=%2Fr');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
 });
