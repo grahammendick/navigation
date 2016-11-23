@@ -68,11 +68,11 @@ describe('Fluent', function () {
         });
     });
 
-    /*describe('Fluent Transition With Trail', function () {
+    describe('Transition With Trail', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var url = stateNavigator.fluent()
                 .navigate('s0')
@@ -81,5 +81,33 @@ describe('Fluent', function () {
             assert.strictEqual(url, '/r1?crumb=%2Fr0');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
-    });*/
+    });
+
+    describe('State State', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s')
+                .navigate('s')
+                .url;
+            assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('State State With Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s')
+                .navigate('s')
+                .url;
+            assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
 });
