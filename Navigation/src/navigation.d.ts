@@ -1,4 +1,4 @@
-﻿// Type definitions for Navigation 2.0.0
+﻿// Type definitions for Navigation 3.1.0
 // Project: http://grahammendick.github.io/navigation/
 // Definitions by: Graham Mendick <https://github.com/grahammendick>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -410,6 +410,56 @@ declare namespace Navigation {
     }
 
     /**
+     * Fluently manages all navigation. These can be forward, backward or
+     * refreshing the current State
+     */
+    interface FluentNavigator {
+        /**
+         * Gets the current Url
+         */
+        url: string;
+        /**
+         * Navigates to a State
+         * @param stateKey The key of a State
+         * @throws state does not match the key of a State or there is 
+         * NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        navigate(stateKey: string): FluentNavigator;
+        /**
+         * Navigates to a State
+         * @param stateKey The key of a State
+         * @param navigationData The NavigationData to be passed to the next
+         * State and stored in the StateContext
+         * @throws state does not match the key of a State or there is 
+         * NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        navigate(stateKey: string, navigationData: any): FluentNavigator;
+        /**
+         * Navigates back along the crumb trail
+         * @param distance Starting at 1, the number of Crumb steps to go back
+         * @throws canNavigateBack returns false for this distance
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        navigateBack(distance: number): FluentNavigator;
+        /**
+         * Navigates to the current State passing no NavigationData
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        refresh(): FluentNavigator;
+        /**
+         * Navigates to the current State
+         * @param navigationData The NavigationData to be passed to the current
+         * State and stored in the StateContext
+         * @param A value determining the effect on browser history
+         * @throws There is NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        refresh(navigationData: any): FluentNavigator;
+    }
+
+    /**
      * Manages all navigation. These can be forward, backward or refreshing the
      * current State
      */
@@ -592,6 +642,18 @@ declare namespace Navigation {
          * @param url The url to parse
          */
         parseLink(url: string): { state: State; data: any; };
+        /**
+         * Creates a clean FluentNavigator
+         * @returns A FluentNavigator 
+         */
+        fluent(): FluentNavigator;
+        /**
+         * Creates a FluentNavigator
+         * @param withContext a value indicating whether to inherit the current
+         * context
+         * @returns A FluentNavigator
+         */
+        fluent(withContext: boolean): FluentNavigator;
         /**
          * Navigates to the current location 
          */
