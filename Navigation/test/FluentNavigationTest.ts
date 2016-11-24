@@ -628,6 +628,87 @@ describe('Fluent', function () {
         });
     });
 
+    describe('Reload Dialog', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r' }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.configure([
+                { key: 's1', route: 'r' }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s1')
+                .url;
+            assert.strictEqual(url, '/r');
+            assert.strictEqual(stateNavigator.stateContext.state.key, 's0');
+        });
+    });
+
+    describe('Reload Transition', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r' }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.stateContext.clear();
+            stateNavigator.configure([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Reload Refresh', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r' }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.stateContext.clear();
+            stateNavigator.configure([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .refresh()
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Reload Back', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r' }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.stateContext.clear();
+            stateNavigator.configure([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Invalid Context', function () {
         it('should throw error', function() {
             var stateNavigator = new StateNavigator([
