@@ -35,18 +35,18 @@ function createFluentNavigator(states: { [index: string]: State }, stateHandler:
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
             return navigateLink(url);
         },
+        navigateBack: function(distance: number): FluentNavigator {
+            if (!(distance <= stateContext.crumbs.length && distance > 0))
+                throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + stateContext.crumbs.length + ')');
+            var url = stateContext.crumbs[stateContext.crumbs.length - distance].url;
+            return navigateLink(url);
+        },
         refresh: function(navigationData?: any): FluentNavigator {
             if (typeof navigationData === 'function')
                 navigationData = navigationData(stateContext.data);
             var url = stateHandler.getLink(stateContext.state, navigationData, stateContext.crumbs, stateContext.nextCrumb);
             if (url == null)
                 throw new Error('Invalid route data, a mandatory route parameter has not been supplied a value');
-            return navigateLink(url);
-        },
-        navigateBack: function(distance: number): FluentNavigator {
-            if (!(distance <= stateContext.crumbs.length && distance > 0))
-                throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + stateContext.crumbs.length + ')');
-            var url = stateContext.crumbs[stateContext.crumbs.length - distance].url;
             return navigateLink(url);
         }
     }
