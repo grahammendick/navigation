@@ -5592,8 +5592,9 @@ describe('Navigation Data', function () {
     });
 
     describe('Without Types Back Navigate', function () {
-        it('should not track types', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 's0', trackTypes: false },
                 { key: 's1', route: 's1', trackCrumbTrail: true },
                 { key: 's2', route: 's2', trackCrumbTrail: true }
@@ -5601,16 +5602,38 @@ describe('Navigation Data', function () {
             stateNavigator.navigate('s0', { x: '0_1_2_' });
             stateNavigator.navigate('s1');
             stateNavigator.navigate('s2');
-            var link = stateNavigator.getNavigationBackLink(2);
-            stateNavigator.navigateBack(2);
-            assert.strictEqual ('/s0?x=0_1_2_', link);
-            assert.strictEqual(stateNavigator.stateContext.data.x, '0_1_2_');
-        })
+        });
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                link = stateNavigator.getNavigationBackLink(2);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not track types', function() {
+                stateNavigator.navigateBack(2);
+                assert.strictEqual ('/s0?x=0_1_2_', link);
+                assert.strictEqual(stateNavigator.stateContext.data.x, '0_1_2_');
+            })
+        }
     });
 
     describe('Without Types Default Back Navigate', function () {
-        it('should not track types', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 's0', trackTypes: false, defaults: { x: 2 }, defaultTypes: { y: 'boolean' } },
                 { key: 's1', route: 's1', trackCrumbTrail: true },
                 { key: 's2', route: 's2', trackCrumbTrail: true }
@@ -5618,11 +5641,32 @@ describe('Navigation Data', function () {
             stateNavigator.navigate('s0', { x: '3', y: 'true' });
             stateNavigator.navigate('s1');
             stateNavigator.navigate('s2');
-            var link = stateNavigator.getNavigationBackLink(2);
-            stateNavigator.navigateLink(link);
-            assert.strictEqual(stateNavigator.stateContext.data.x, 3);
-            assert.strictEqual(stateNavigator.stateContext.data.y, true);
         });
+        var link;
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                link = stateNavigator.getNavigationBackLink(2);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                link = stateNavigator.fluent(true)
+                    .navigateBack(2)
+                    .url;
+            });
+            test();
+        });
+
+        function test() {
+            it('should not track types', function() {
+                stateNavigator.navigateLink(link);
+                assert.strictEqual(stateNavigator.stateContext.data.x, 3);
+                assert.strictEqual(stateNavigator.stateContext.data.y, true);
+            });
+        }
     });
 
     describe('Without Types Array Type', function () {
@@ -5665,6 +5709,17 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getRefreshLink(data);
                 stateNavigator.navigateLink(link);
             });            
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s', data)
+                    .refresh(data)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
             test();
         });
         
@@ -5718,6 +5773,18 @@ describe('Navigation Data', function () {
             });            
             test();
         });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data)
+                    .navigate('s1')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
         
         function test(){
             it('should populate data', function() {
@@ -5757,6 +5824,20 @@ describe('Navigation Data', function () {
                 var link = stateNavigator0.getNavigationLink('s0', data0);
                 stateNavigator0.navigateLink(link);
                 link = stateNavigator1.getNavigationLink('s1', data1);
+                stateNavigator1.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator0.fluent()
+                    .navigate('s0', data0)
+                    .url;
+                stateNavigator0.navigateLink(link);
+                link = stateNavigator1.fluent()
+                    .navigate('s1', data1)
+                    .url;
                 stateNavigator1.navigateLink(link);
             });
             test();
@@ -5824,6 +5905,26 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var fluent0 = stateNavigator0.fluent()
+                    .navigate('s0', data0);
+                var fluent1 = stateNavigator1.fluent()
+                    .navigate('s2', data1);
+                fluent0 = fluent0.navigate('s1');
+                fluent1 = fluent1.navigate('s3');
+                var link = fluent0
+                    .navigateBack(1)
+                    .url;
+                stateNavigator0.navigateLink(link);
+                link = fluent1
+                    .navigateBack(1)
+                    .url;
+                stateNavigator1.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator0.stateContext.data['string'], 'Hello');
@@ -5881,6 +5982,24 @@ describe('Navigation Data', function () {
                 link = stateNavigator1.getNavigationLink('s3');
                 stateNavigator1.navigateLink(link);
                 link = stateNavigator1.getRefreshLink(data1);
+                stateNavigator1.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator0.fluent()
+                    .navigate('s0')
+                    .navigate('s1')
+                    .refresh(data0)
+                    .url;
+                stateNavigator0.navigateLink(link);
+                link = stateNavigator1.fluent()
+                    .navigate('s2')
+                    .navigate('s3')
+                    .refresh(data1)
+                    .url;
                 stateNavigator1.navigateLink(link);
             });
             test();
