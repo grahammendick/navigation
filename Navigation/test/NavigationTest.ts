@@ -4538,16 +4538,10 @@ describe('Navigation', function () {
                 assert.equal(s2Link.indexOf('crumb'), -1);
                 assert.notEqual(s2Link.indexOf('trail'), -1);
             })          
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
-            });
-            it('should populate old State', function() {
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-            });
-            it('should not populate previous State', function() {
                 assert.equal(stateNavigator.stateContext.previousState, null);
-            });
-            it('should not populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -4591,16 +4585,10 @@ describe('Navigation', function () {
         });
         
         function test() {
-            it('should populate State', function() {
+            it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            });
-            it('should populate old State', function() {
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-            });
-            it('should not populate previous State', function() {
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-            });
-            it('should populate crumb trail', function() {
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
                 assert.ok(stateNavigator.stateContext.crumbs[0].last);
@@ -4632,7 +4620,7 @@ describe('Navigation', function () {
     });
     
     describe('Crumb Trail Encode', function() {
-        it ('should throw error', function() {
+        it ('should populate context', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }

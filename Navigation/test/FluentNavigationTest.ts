@@ -957,12 +957,73 @@ describe('Fluent', function () {
                 .navigate('s0')
                 .navigate('s1')
                 .navigate('s2');
-            var url1 = fluent.url;
-            var url2 = fluent
+            var s2Url = fluent.url;
+            var s3Url = fluent
                 .navigate('s3')
                 .url;
-            assert.strictEqual(url1, '/r2/%2Fr0/%2Fr1');
-            assert.strictEqual(url2, '/r3/%2Fr01-%2Fr11-%2Fr2');
+            assert.strictEqual(s2Url, '/r2/%2Fr0/%2Fr1');
+            assert.strictEqual(s3Url, '/r3/%2Fr01-%2Fr11-%2Fr2');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Crumb Trail Key', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: 'trail' }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2');
+            var s2Url = fluent.url;
+            var s1Url = fluent
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(s1Url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(s2Url, '/r2?trail=%2Fr0&trail=%2Fr1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Refresh Back Custom Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, crumbs) => {
+                return crumbs;
+            };
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .refresh()
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Crumb Trail Encode', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.urlEncode = (state, key, val) => {
+                return encodeURIComponent(val).replace('%2F', '/');
+            }
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .url;
+            assert.strictEqual(url, '/r1?crumb=/r0');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
