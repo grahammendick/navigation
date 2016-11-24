@@ -627,4 +627,17 @@ describe('Fluent', function () {
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
+
+    describe('Invalid Context', function () {
+        it('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0');
+            fluent.navigate('s1');
+            assert.throws(() => fluent.navigateBack(1));
+        });
+    });
 });
