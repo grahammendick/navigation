@@ -5476,7 +5476,7 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1', data);
-                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({b: true}));
+                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({b: true, 'n': 2}));
             });
             test();
         });
@@ -5487,7 +5487,7 @@ describe('Navigation Data', function () {
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s1', data);
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({b: true}));
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({b: true, 'n': 2}));
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -5498,7 +5498,7 @@ describe('Navigation Data', function () {
                 var link = stateNavigator.fluent()
                     .navigate('s0')
                     .navigate('s1', data)
-                    .refresh(({s, n, c}) => ({b: true, s, n, c}))
+                    .refresh(({s, n, c}) => ({b: true, 'n': 2, s, c}))
                     .url;
                 stateNavigator.navigateLink(link);
             });
@@ -5510,7 +5510,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['b'], true);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
                 assert.strictEqual(stateNavigator.stateContext.data['c'], '1');
-                assert.strictEqual(stateNavigator.stateContext.data['n'], 1);
+                assert.strictEqual(stateNavigator.stateContext.data['n'], 2);
             });
         }
     });
@@ -5587,7 +5587,7 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1', data);
-                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({b: true}, ['s', 'c']));
+                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({b: true, c: '2'}, ['s', 'c']));
             });
             test();
         });
@@ -5598,7 +5598,7 @@ describe('Navigation Data', function () {
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s1', data);
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({b: true}, ['s', 'c']));
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({b: true, c: '2'}, ['s', 'c']));
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -5609,7 +5609,7 @@ describe('Navigation Data', function () {
                 var link = stateNavigator.fluent()
                     .navigate('s0')
                     .navigate('s1', data)
-                    .refresh(({s, c}) => ({b: true, s, c}))
+                    .refresh(({s, c}) => ({b: true, c: '2', s}))
                     .url;
                 stateNavigator.navigateLink(link);
             });
@@ -5620,7 +5620,7 @@ describe('Navigation Data', function () {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['b'], true);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.data['c'], '1');
+                assert.strictEqual(stateNavigator.stateContext.data['c'], '2');
                 assert.strictEqual(stateNavigator.stateContext.data['n'], undefined);
             });
         }
