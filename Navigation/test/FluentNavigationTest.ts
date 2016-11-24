@@ -843,6 +843,130 @@ describe('Fluent', function () {
         });
     });
 
+    describe('Two Controllers Refresh', function () {
+        it('should navigate', function() {
+            var stateNavigator0 = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var stateNavigator1 = new StateNavigator([
+                { key: 's2', route: 'r2' },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+            var fluent0 = stateNavigator0.fluent()
+                .navigate('s0');
+            var fluent1 = stateNavigator1.fluent()
+                .navigate('s2');
+            fluent0 = fluent0
+                .navigate('s1');
+            fluent1 = fluent1
+                .navigate('s3');
+            var url0 = fluent0
+                .refresh()
+                .url;
+            var url1 = fluent1
+                .refresh()
+                .url;
+            assert.strictEqual(url0, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url1, '/r3?crumb=%2Fr2');
+            assert.strictEqual(stateNavigator0.stateContext.url, null);
+            assert.strictEqual(stateNavigator1.stateContext.url, null);
+        });
+    });
+
+    describe('Two Controllers Back', function () {
+        it('should navigate', function() {
+            var stateNavigator0 = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var stateNavigator1 = new StateNavigator([
+                { key: 's3', route: 'r3' },
+                { key: 's4', route: 'r4', trackCrumbTrail: true },
+                { key: 's5', route: 'r5', trackCrumbTrail: true }
+            ]);
+            var fluent0 = stateNavigator0.fluent()
+                .navigate('s0');
+            var fluent1 = stateNavigator1.fluent()
+                .navigate('s3');
+            fluent0 = fluent0
+                .navigate('s1');
+            fluent1 = fluent1
+                .navigate('s4');
+            fluent0 = fluent0
+                .navigate('s2');
+            fluent1 = fluent1
+                .navigate('s5');
+            var url0 = fluent0
+                .navigateBack(1)
+                .url;
+            var url1 = fluent1
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url0, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url1, '/r4?crumb=%2Fr3');
+            assert.strictEqual(stateNavigator0.stateContext.url, null);
+            assert.strictEqual(stateNavigator1.stateContext.url, null);
+        });
+    });
+
+    describe('Crumb Trail Route Param', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{crumb?}', trackCrumbTrail: true },
+                { key: 's2', route: 'r2/{crumb?}', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .url;
+            assert.strictEqual(url, '/r2/%2Fr01-%2Fr1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Crumb Trail Route Splat Param', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1/{*crumb?}', trackCrumbTrail: true },
+                { key: 's2', route: 'r2/{*crumb?}', trackCrumbTrail: true }
+            ]);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2')
+                .url;
+            assert.strictEqual(url, '/r2/%2Fr0/%2Fr1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
+    describe('Crumb Trail Mixed Param', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2/{*crumb?}', trackCrumbTrail: true },
+                { key: 's3', route: 'r3/{crumb?}', trackCrumbTrail: true }
+            ]);
+            var fluent = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s2');
+            var url1 = fluent.url;
+            var url2 = fluent
+                .navigate('s3')
+                .url;
+            assert.strictEqual(url1, '/r2/%2Fr0/%2Fr1');
+            assert.strictEqual(url2, '/r3/%2Fr01-%2Fr11-%2Fr2');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Invalid Context', function () {
         it('should throw error', function() {
             var stateNavigator = new StateNavigator([
