@@ -5421,6 +5421,117 @@ describe('Navigation Data', function () {
             beforeEach(function() {
                 stateNavigator.navigate('s0');
                 stateNavigator.navigate('s1', data);
+                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({}));
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({}));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh((currentData) => currentData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['c'], '1');
+                assert.strictEqual(stateNavigator.stateContext.data['n'], 1);
+            });
+        }
+    });
+
+    describe('Refresh New And Current Data', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        var data = {};
+        data['s'] = 'Hello';
+        data['n'] = 1;
+        data['c'] = '1';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', data);
+                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({b: true}));
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({b: true}));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh(({s, n, c}) => ({b: true, s, n, c}))
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['b'], true);
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['c'], '1');
+                assert.strictEqual(stateNavigator.stateContext.data['n'], 1);
+            });
+        }
+    });
+
+    describe('Refresh Current Data Keys', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        var data = {};
+        data['s'] = 'Hello';
+        data['n'] = 1;
+        data['c'] = '1';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', data);
                 stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData(null, ['s', 'c']));
             });
             test();
@@ -5452,6 +5563,62 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['c'], '1');
+                assert.strictEqual(stateNavigator.stateContext.data['n'], undefined);
+            });
+        }
+    });
+
+    describe('Refresh New And Current Data Keys', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+        });
+        var data = {};
+        data['s'] = 'Hello';
+        data['n'] = 1;
+        data['c'] = '1';
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1', data);
+                stateNavigator.refresh(stateNavigator.stateContext.includeCurrentData({b: true}, ['s', 'c']));
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1', data);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink(stateNavigator.stateContext.includeCurrentData({b: true}, ['s', 'c']));
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh(({s, c}) => ({b: true, s, c}))
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['b'], true);
                 assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
                 assert.strictEqual(stateNavigator.stateContext.data['c'], '1');
                 assert.strictEqual(stateNavigator.stateContext.data['n'], undefined);
