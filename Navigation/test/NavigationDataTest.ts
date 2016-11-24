@@ -6052,6 +6052,18 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0', data)
+                    .navigate('s1')
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
@@ -6097,6 +6109,19 @@ describe('Navigation Data', function () {
                 link = stateNavigator.getNavigationLink('s2');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .navigate('s2')
+                    .navigateBack(1)
+                    .url;
                 stateNavigator.navigateLink(link);
             });
             test();
@@ -6155,6 +6180,19 @@ describe('Navigation Data', function () {
             test();
         });
 
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s0')
+                    .navigate('s1', data)
+                    .refresh()
+                    .navigateBack(1)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
         function test() {
             it('should populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['string'], 'Hello');
@@ -6205,6 +6243,12 @@ describe('Navigation Data', function () {
                 assert.throws(() => stateNavigator.navigateLink(link), /The Url .+ is invalid/);
             });
         });
+
+        describe('Fluent Navigate', function() {
+            it('should throw error', function() {
+                assert.throws(() => stateNavigator.fluent().navigate('s', individualNavigationData), /The Url .+ is invalid/);
+            });
+        });
     });
 
     describe('Array Data Constraint', function() {
@@ -6239,6 +6283,12 @@ describe('Navigation Data', function () {
             it('should throw error', function() {
                 var link = stateNavigator.getNavigationLink('s', arrayNavigationData);
                 assert.throws(() => stateNavigator.navigateLink(link), /The Url .+ is invalid/);
+            });
+        });
+
+        describe('Fluent Navigate', function() {
+            it('should throw error', function() {
+                assert.throws(() => stateNavigator.fluent().navigate('s', arrayNavigationData), /The Url .+ is invalid/);
             });
         });
     });
