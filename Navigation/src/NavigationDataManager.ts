@@ -1,5 +1,6 @@
 ﻿import ConverterFactory from './converter/ConverterFactory';
 import State from './config/State';
+import TypeConverter from './converter/TypeConverter';
 
 class NavigationDataManager {
     private static SEPARATOR = '1_';
@@ -106,7 +107,7 @@ class NavigationDataManager {
         return this.converterFactory.getConverterFromKey(converterKey).convertFrom(val, separable);
     }
 
-    getConverter(obj: any) {
+    getConverter(obj: any): TypeConverter {
         var fullName = NavigationDataManager.getTypeName(obj);
         if (fullName === 'array') {
             var arr: any[] = obj;

@@ -1,16 +1,16 @@
-﻿// Type definitions for Navigation 2.0.0
+﻿// Type definitions for Navigation 3.1.0
 // Project: http://grahammendick.github.io/navigation/
 // Definitions by: Graham Mendick <https://github.com/grahammendick>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 declare module 'navigation' {
     export = Navigation;
-} 
+}
 
-declare module Navigation {
+declare namespace Navigation {
     /**
      * Defines a contract a class must implement in order to configure a State
      */
-    interface IState {
+    interface StateInfo {
         /**
          * Gets the unique key
          */
@@ -47,9 +47,9 @@ declare module Navigation {
     }
 
     /**
-     * Represents the endpoint of a navigation
+     * Represents a view and is the destination of a navigation
      */
-    class State implements IState {
+    class State implements StateInfo {
         /**
          * Gets the unique key
          */
@@ -92,10 +92,9 @@ declare module Navigation {
          */
         trackTypes: boolean;
         /**
-         * Gets or sets the StateHandler responsible for building and parsing
-         * navigation links to this State
+         * Gets the additional state attributes
          */
-        stateHandler: StateHandler;
+        [extras: string]: any;        
         /**
          * Called on the old State before navigating to a different State
          * @param state The new State
@@ -114,7 +113,7 @@ declare module Navigation {
          * @param data The current NavigationData
          * @param asyncData The data passed asynchronously while navigating
          */
-        navigated: (data: any, asyncData?: any) => void;
+        navigated: (data: any, asyncData: any) => void;
         /**
          * Called on the new State before navigating to it
          * @param data The new NavigationData
@@ -123,13 +122,43 @@ declare module Navigation {
          * @param history A value indicating whether browser history was used
          */
         navigating: (data: any, url: string, navigate: (asyncData?: any) => void, history: boolean) => void;
+        /**
+         * Encodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Decodes the Url value
+         * @param state The State navigated to
+         * @param key The key of the navigation data item
+         * @param val The Url value of the navigation data item
+         * @param queryString A value indicating the Url value's location
+         */
+        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
+        /**
+         * Validates the NavigationData before navigating to the new State
+         * @param data The new NavigationData
+         * @returns Validation success indicator
+         */
+        validate(data: any): boolean;
+        /**
+         * Truncates the crumb trail whenever a repeated or initial State is
+         * encountered
+         * @param The State navigated to
+         * @param The Crumb collection representing the crumb trail
+         * @returns Truncated crumb trail
+         */
+        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
     }
 
     /**
      * Defines a contract a class must implement in order to manage the browser
      * Url
      */
-    interface IHistoryManager {
+    interface HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history
          */
@@ -155,9 +184,9 @@ declare module Navigation {
          */
         getHref(url: string): string;
         /**
-         * Gets a Url from the anchor 
+         * Gets a Url from the anchor or location
          */
-        getUrl(anchor: HTMLAnchorElement): string;
+        getUrl(hrefElement: HTMLAnchorElement | Location): string;
         /**
          * Removes browser history event listeners
          */
@@ -169,7 +198,7 @@ declare module Navigation {
      * without the hashchange event or outside of a browser environment, then
      * history is disabled
      */
-    class HashHistoryManager implements IHistoryManager {
+    class HashHistoryManager implements HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history.
          * Set to true if used in a browser without the hashchange event or 
@@ -207,9 +236,9 @@ declare module Navigation {
          */
         getHref(url: string): string;
         /**
-         * Gets a Url from the anchor 
+         * Gets a Url from the anchor or location
          */
-        getUrl(anchor: HTMLAnchorElement): string;
+        getUrl(hrefElement: HTMLAnchorElement | Location): string;
         /**
          * Removes a listener for the hashchange event
          */
@@ -221,7 +250,7 @@ declare module Navigation {
      * without the HTML5 history api or outside of a browser environment, then
      * history is disabled
      */
-    class HTML5HistoryManager implements IHistoryManager {
+    class HTML5HistoryManager implements HistoryManager {
         /**
          * Gets or sets a value indicating whether to disable browser history.
          * Set to true if used in a browser without the HTML5 history api or 
@@ -258,9 +287,9 @@ declare module Navigation {
          */
         getHref(url: string): string;
         /**
-         * Gets a Url from the anchor 
+         * Gets a Url from the anchor or location
          */
-        getUrl(anchor: HTMLAnchorElement): string;
+        getUrl(hrefElement: HTMLAnchorElement | Location): string;
         /**
          * Removes a listener for the popstate event
          */
@@ -359,10 +388,6 @@ declare module Navigation {
          */
         crumbs: Crumb[];
         /**
-         * Gets the crumb trail
-         */
-        crumbTrail: string[];
-        /**
          * Gets the next crumb
          */
         nextCrumb: Crumb;
@@ -385,8 +410,58 @@ declare module Navigation {
     }
 
     /**
-     * Manages all navigation. These can be forward using an action parameter;
-     * backward via a Crumb; or refreshing the current State
+     * Fluently manages all navigation. These can be forward, backward or
+     * refreshing the current State
+     */
+    interface FluentNavigator {
+        /**
+         * Gets the current Url
+         */
+        url: string;
+        /**
+         * Navigates to a State
+         * @param stateKey The key of a State
+         * @throws state does not match the key of a State or there is 
+         * NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        navigate(stateKey: string): FluentNavigator;
+        /**
+         * Navigates to a State
+         * @param stateKey The key of a State
+         * @param navigationData The NavigationData to be passed to the next
+         * State and stored in the StateContext
+         * @throws state does not match the key of a State or there is 
+         * NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        navigate(stateKey: string, navigationData: any): FluentNavigator;
+        /**
+         * Navigates back along the crumb trail
+         * @param distance Starting at 1, the number of Crumb steps to go back
+         * @throws canNavigateBack returns false for this distance
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        navigateBack(distance: number): FluentNavigator;
+        /**
+         * Navigates to the current State passing no NavigationData
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        refresh(): FluentNavigator;
+        /**
+         * Navigates to the current State
+         * @param navigationData The NavigationData to be passed to the current
+         * State and stored in the StateContext
+         * @param A value determining the effect on browser history
+         * @throws There is NavigationData that cannot be converted to a String
+         * @throws A mandatory route parameter has not been supplied a value
+         */
+        refresh(navigationData: any): FluentNavigator;
+    }
+
+    /**
+     * Manages all navigation. These can be forward, backward or refreshing the
+     * current State
      */
     class StateNavigator {
         /**
@@ -396,49 +471,49 @@ declare module Navigation {
         /**
          * Gets the browser Url manager
          */
-        historyManager: IHistoryManager;
+        historyManager: HistoryManager;
         /**
          * Gets a list of States
          */
         states: { [index: string]: State; };
         /**
-         * Initializes a new instance of the StateController class
+         * Initializes a new instance of the StateNavigator class
          */
         constructor();
         /**
-         * Initializes a new instance of the StateController class
+         * Initializes a new instance of the StateNavigator class
          * @param states A collection of States
          */
-        constructor(states: IState[]);
+        constructor(states: StateInfo[]);
         /**
-         * Initializes a new instance of the StateController class
+         * Initializes a new instance of the StateNavigator class
          * @param states A collection of States
          * @param historyManager The manager of the browser Url
          */
-        constructor(states: IState[], historyManager: IHistoryManager);
+        constructor(states: StateInfo[], historyManager: HistoryManager);
         /**
-         * Configures the StateController
-         * @param states A collection of States
+         * Configures the StateNavigator
+         * @param stateInfos A collection of State Infos
          */
-        configure(states: IState[]): void;
+        configure(stateInfos: StateInfo[]): void;
         /**
-         * Configures the StateController
-         * @param states A collection of States
+         * Configures the StateNavigator
+         * @param stateInfos A collection of State Infos
          * @param historyManager The manager of the browser Url
          */
-        configure(states: IState[], historyManager: IHistoryManager): void;
+        configure(stateInfos: StateInfo[], historyManager: HistoryManager): void;
         /**
          * Registers a navigate event listener
          * @param handler The navigate event listener
          */
-        onNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void): void;
         /**
          * Unregisters a navigate event listener
          * @param handler The navigate event listener
          */
-        offNavigate(handler: (oldState: State, state: State, data: any) => void): void;
+        offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void): void;
         /**
-         * Navigates to a State passing no NavigationData
+         * Navigates to a State
          * @param stateKey The key of a State
          * @throws state does not match the key of a State or there is 
          * NavigationData that cannot be converted to a String
@@ -465,9 +540,9 @@ declare module Navigation {
          * NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigate(stateKey: string, navigationData: any, historyAction: string): void;
+        navigate(stateKey: string, navigationData: any, historyAction: 'add' | 'replace' | 'none'): void;
         /**
-         * Gets a Url to navigate to a State passing no NavigationData
+         * Gets a Url to navigate to a State
          * @param stateKey The key of a State
          * @returns Url that will navigate to State specified in the action
          * @throws state does not match the key of a State or there is 
@@ -490,25 +565,22 @@ declare module Navigation {
          */
         canNavigateBack(distance: number): boolean;
         /**
-         * Navigates back to the Crumb contained in the crumb trail,
-         * represented by the Crumbs collection, as specified by the distance.
+         * Navigates back along the crumb trail
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @throws canNavigateBack returns false for this distance
          * @throws A mandatory route parameter has not been supplied a value
          */
         navigateBack(distance: number): void;
         /**
-         * Navigates back to the Crumb contained in the crumb trail,
-         * represented by the Crumbs collection, as specified by the distance.
+         * Navigates back along the crumb trail
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @param A value determining the effect on browser history
          * @throws canNavigateBack returns false for this distance
          * @throws A mandatory route parameter has not been supplied a value
          */
-        navigateBack(distance: number, historyAction: string): void;
+        navigateBack(distance: number, historyAction: 'add' | 'replace' | 'none'): void;
         /**
-         * Gets a Url to navigate to a Crumb contained in the crumb trail, 
-         * represented by the Crumbs collection, as specified by the distance.
+         * Gets a Url to navigate back along the crumb trail
          * @param distance Starting at 1, the number of Crumb steps to go back
          * @throws canNavigateBack returns false for this distance
          */
@@ -534,10 +606,9 @@ declare module Navigation {
          * @throws There is NavigationData that cannot be converted to a String
          * @throws A mandatory route parameter has not been supplied a value
          */
-        refresh(navigationData: any, historyAction: string): void;
+        refresh(navigationData: any, historyAction: 'add' | 'replace' | 'none'): void;
         /**
-         * Gets a Url to navigate to the current State passing no 
-         * NavigationData
+         * Gets a Url to navigate to the current State
          */
         getRefreshLink(): string;
         /**
@@ -558,19 +629,31 @@ declare module Navigation {
          * @param url The target location
          * @param A value determining the effect on browser history
          */
-        navigateLink(url: string, historyAction: string): void;
+        navigateLink(url: string, historyAction: 'add' | 'replace' | 'none'): void;
         /**
          * Navigates to the url
          * @param url The target location
          * @param A value determining the effect on browser history
          * @param history A value indicating whether browser history was used
          */
-        navigateLink(url: string, historyAction: string, history: boolean): void;
+        navigateLink(url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): void;
         /**
          * Parses the url out into State and Navigation Data
          * @param url The url to parse
          */
         parseLink(url: string): { state: State; data: any; };
+        /**
+         * Creates a clean FluentNavigator
+         * @returns A FluentNavigator 
+         */
+        fluent(): FluentNavigator;
+        /**
+         * Creates a FluentNavigator
+         * @param withContext a value indicating whether to inherit the current
+         * context
+         * @returns A FluentNavigator
+         */
+        fluent(withContext: boolean): FluentNavigator;
         /**
          * Navigates to the current location 
          */
@@ -580,85 +663,5 @@ declare module Navigation {
          * @param url The url to navigate to 
          */
         start(url: string): void;
-    }
-
-    /**
-     * Builds and parses navigation links
-     */
-    class StateHandler {
-        /**
-         * Gets a link that navigates to the state passing the data
-         * @param router The builder and parser of State routes
-         * @param state The State to navigate to
-         * @param data The data to pass when navigating
-         * @param arrayData The query string and splat array data
-         * @returns The navigation link
-         */
-        getNavigationLink(router: IRouter, state: State, data: any, arrayData: { [index: string]: string[]; }): string;
-        /**
-         * Navigates to the url
-         * @param oldState The current State
-         * @param state The State to navigate to
-         * @param url The target location
-         */
-        navigateLink(oldState: State, state: State, url: string): void;
-        /**
-         * Gets the data parsed from the url
-         * @param router The builder and parser of State routes
-         * @param state The State navigated to
-         * @param url The current url
-         * @returns The navigation data and query string and splat keys
-         */
-        getNavigationData(router: IRouter, state: State, url: string): { data: any; separableData: any; };
-        /**
-         * Encodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlEncode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Decodes the Url value
-         * @param state The State navigated to
-         * @param key The key of the navigation data item
-         * @param val The Url value of the navigation data item
-         * @param queryString A value indicating the Url value's location
-         */
-        urlDecode(state: State, key: string, val: string, queryString: boolean): string;
-        /**
-         * Truncates the crumb trail whenever a repeated or initial State is
-         * encountered
-         * @param The State navigated to
-         * @param The Crumb collection representing the crumb trail
-         * @returns Truncated crumb trail
-         */
-        truncateCrumbTrail(state: State, crumbs: Crumb[]): Crumb[];
-    }
-
-    /**
-     * Defines a contract a class must implement in order build and parse
-     * State routes
-     */
-    interface IRouter {
-        /**
-         * Gets the matching State and data for the route
-         * @param route The route to match
-         * @returns The matched State and data and splat keys
-         */
-        getData(route: string): { state: State; data: any; separableData: any; };
-        /**
-         * Gets the matching route and data for the state and data
-         * @param The state to match
-         * @param The data to match
-         * @param arrayData The splat array data
-         * @returns The matched route and data
-         */
-        getRoute(state: State, data: any, arrayData: { [index: string]: string[]; }): { route: string; data: any; };
-        /**
-         * Registers all route configuration information
-         * @param states Collection of States
-         */
-        addRoutes(states: State[]): void;
     }
 }

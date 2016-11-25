@@ -1,4 +1,5 @@
 ﻿import Crumb from './config/Crumb';
+import { FluentNavigator, createFluentNavigator } from './FluentNavigator';
 import HashHistoryManager from './history/HashHistoryManager';
 import HistoryManager from './history/HistoryManager';
 import State from './config/State';
@@ -44,7 +45,7 @@ class StateNavigator {
         this.stateContext.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
         this.stateContext.data = data;
-        this.stateContext.nextCrumb = new Crumb(data, state, url, this.getLink(state, data, []), false);
+        this.stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
         if (this.stateContext.crumbs.length > 0) {
@@ -79,20 +80,8 @@ class StateNavigator {
     getNavigationLink(stateKey: string, navigationData?: any): string {
         if (!this.states[stateKey])
             throw new Error(stateKey + ' is not a valid State');
-        return this.getLink(this.states[stateKey], navigationData);
-    }
-
-    private getLink(state: State, navigationData: any, crumbTrail?: string[]): string {
-        if (!crumbTrail) {
-            crumbTrail = [];
-            var crumbs = this.stateContext.crumbs.slice();
-            if (this.stateContext.nextCrumb)
-                crumbs.push(this.stateContext.nextCrumb);
-            crumbs = state.truncateCrumbTrail(state, crumbs);
-            for(var i = 0; i < crumbs.length; i++)
-                crumbTrail.push(crumbs[i].crumblessUrl)
-        }
-        return this.stateHandler.getNavigationLink(state, navigationData, crumbTrail);
+        var { crumbs, nextCrumb } = this.stateContext;
+        return this.stateHandler.getLink(this.states[stateKey], navigationData, crumbs, nextCrumb);
     }
 
     canNavigateBack(distance: number) {
@@ -118,12 +107,13 @@ class StateNavigator {
     }
 
     getRefreshLink(navigationData?: any): string {
-        return this.getLink(this.stateContext.state, navigationData);
+        var { crumbs, nextCrumb } = this.stateContext;
+        return this.stateHandler.getLink(this.stateContext.state, navigationData, crumbs, nextCrumb);
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
-        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        var { state, data } = this.stateHandler.parseLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -157,9 +147,14 @@ class StateNavigator {
     }
     
     parseLink(url: string): { state: State, data: any } {
-        var { state, data } = this.stateHandler.parseNavigationLink(url);
+        var { state, data } = this.stateHandler.parseLink(url);
         delete data[state.crumbTrailKey];
         return { state, data };
+    }
+
+    fluent(withContext = false): FluentNavigator {
+        var stateContext = !withContext ? undefined : this.stateContext;
+        return createFluentNavigator(this.states, this.stateHandler, stateContext);
     }
     
     start(url?: string) {

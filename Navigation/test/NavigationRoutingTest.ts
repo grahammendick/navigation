@@ -1723,34 +1723,34 @@ describe('MatchTest', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
             stateNavigator = new StateNavigator([
-                { key: 's', route: 'a/{=*"()\'-_~@:?><.;[],!£$%^#&?}', defaults: { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' } }
+                { key: 's', route: 'a/{=*"()\'-_~@:?><.;[],!£$%^#&?}', defaults: { '=*"()\'-_~@:?><.;[],!£$%^#&': 'x*="()\'-__+~@:?><.;[],!£$%^#&' } }
             ]);
         });
         
         it('should match', function() {
-            var { data } = stateNavigator.parseLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            var { data } = stateNavigator.parseLink('/a/x*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            var { data } = stateNavigator.parseLink('/a/*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], 'x*="()\'-__+~@:?><.;[],!£$%^#&');
+            var { data } = stateNavigator.parseLink('/a/x*%3D%22()\'-0__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?x*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            assert.strictEqual(data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], 'x*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['x*="()\'-__+~@:?><.;[],!£$%^#&'], 'x*="()\'-_+~@:?><.;[],!£$%^#&');
             var { data } = stateNavigator.parseLink('/a');
             assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            var { data } = stateNavigator.parseLink('/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], 'x*="()\'-__+~@:?><.;[],!£$%^#&');
+            var { data } = stateNavigator.parseLink('/a?x*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], '*="()\'-__+~@:?><.;[],!£$%^#&');
-            assert.strictEqual(data['*="()\'-__+~@:?><.;[],!£$%^#&'], '*="()\'-_+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['=*"()\'-_~@:?><.;[],!£$%^#&'], 'x*="()\'-__+~@:?><.;[],!£$%^#&');
+            assert.strictEqual(data['x*="()\'-__+~@:?><.;[],!£$%^#&'], 'x*="()\'-_+~@:?><.;[],!£$%^#&');
         });
 
         it('should build', function() {
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': '*="()\'-__+~@:?><.;[],!£$%^#&', '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': 'x*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a/x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': 'x*="()\'-_+~@:?><.;[],!£$%^#&', 'x*="()\'-__+~@:?><.;[],!£$%^#&': 'x*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a/x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26?x*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': 'x*="()\'-__+~@:?><.;[],!£$%^#&' }), '/a');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { '=*"()\'-_~@:?><.;[],!£$%^#&': 'x*="()\'-__+~@:?><.;[],!£$%^#&', 'x*="()\'-__+~@:?><.;[],!£$%^#&': 'x*="()\'-_+~@:?><.;[],!£$%^#&'}), '/a?x*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/a');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { '*="()\'-__+~@:?><.;[],!£$%^#&': '*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a?*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { 'x*="()\'-__+~@:?><.;[],!£$%^#&': 'x*="()\'-_+~@:?><.;[],!£$%^#&' }), '/a?x*%3D%22()\'-__%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26=x*%3D%22()\'-0_%2B~%40%3A%3F%3E%3C.%3B%5B%5D%2C!%C2%A3%24%25%5E%23%26');
         });
     });
 
