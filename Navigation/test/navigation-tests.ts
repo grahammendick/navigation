@@ -71,6 +71,15 @@ namespace NavigationTests {
 	var crumb = stateNavigator.stateContext.crumbs[0];
 	link = crumb.url;
 	stateNavigator.navigateLink(link, 'none', true);
+
+	// Fluent Navigation
+	var link = stateNavigator.fluent()
+		.navigate('people')
+		.refresh()
+		.refresh({ page: 3 })
+		.navigate('person', { id: 10 })
+		.navigateBack(1)
+		.url;
 	
 	// State Context
 	var state: Navigation.State = stateNavigator.stateContext.state;
