@@ -14,7 +14,7 @@ var stateNavigator = new StateNavigator([
 stateNavigator.states.people.navigated = function(data) {
     var people = searchPeople(data.pageNumber);
     ReactDOM.render(
-        <Animation stateNavigator={stateNavigator} direction={-1}>
+        <Animation direction={-1} stateNavigator={stateNavigator}>
             <People people={people} stateNavigator={stateNavigator} />
         </Animation>,
         document.getElementById('content')
@@ -24,7 +24,7 @@ stateNavigator.states.people.navigated = function(data) {
 stateNavigator.states.person.navigated = function(data) {
     var person = getPerson(data.id);
     ReactDOM.render(
-        <Animation stateNavigator={stateNavigator} direction={1}>
+        <Animation direction={1} stateNavigator={stateNavigator}>
             <Person person={person} stateNavigator={stateNavigator} />
         </Animation>,
         document.getElementById('content')
