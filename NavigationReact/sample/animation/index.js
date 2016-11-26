@@ -14,7 +14,9 @@ var stateNavigator = new StateNavigator([
 stateNavigator.states.people.navigated = function(data) {
     var people = searchPeople(data.pageNumber);
     ReactDOM.render(
-        <Animation component={People} people={people} stateNavigator={stateNavigator} direction={-1} />,
+        <Animation stateNavigator={stateNavigator} direction={-1}>
+            <People people={people} stateNavigator={stateNavigator} />
+        </Animation>,
         document.getElementById('content')
     );
 }
@@ -22,7 +24,9 @@ stateNavigator.states.people.navigated = function(data) {
 stateNavigator.states.person.navigated = function(data) {
     var person = getPerson(data.id);
     ReactDOM.render(
-        <Animation component={Person} person={person} stateNavigator={stateNavigator} direction={1} />,
+        <Animation stateNavigator={stateNavigator} direction={1}>
+            <Person person={person} stateNavigator={stateNavigator} />
+        </Animation>,
         document.getElementById('content')
     );
 }
