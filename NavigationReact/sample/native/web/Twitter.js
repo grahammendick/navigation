@@ -1,6 +1,6 @@
 import React from 'react';
 import SceneNavigator from './SceneNavigator.js';
-import {spring} from 'react-motion';
+import spring from './spring.js'
 
 export default ({stateNavigator}) => (
     <div style={styles.phone}>

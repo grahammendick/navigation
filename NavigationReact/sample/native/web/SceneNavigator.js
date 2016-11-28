@@ -1,5 +1,6 @@
-import {spring, Motion, TransitionMotion} from 'react-motion';
+import {Motion, TransitionMotion} from 'react-motion';
 import React, {Component} from 'react';
+import spring from './spring.js'
 
 class SceneNavigator extends Component{
     constructor(props) {
@@ -24,7 +25,6 @@ class SceneNavigator extends Component{
             return {scenes};
         });
     }
-    //TODO - hide react motion from user code - create spring wrapper (with better precision default)?
     //TODO - rename parent to something more obscure so no fear of user choosing same style prop
     renderScene({key, data: {scene, state, data, mount}, style: {parent,...parentStyle}}) {
         var {mountStyle, mountedStyle, children} = this.props;
