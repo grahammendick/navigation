@@ -37,11 +37,11 @@ class SceneNavigator extends Component{
     }
     render() {
         var {oldState, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
-        var {unmountedStyle, mountStyle, unmountStyle} = this.props;
+        var {mountStyle, unmountStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
         return (
             <TransitionMotion
-                willEnter={() => ({...getStyleAccessor(unmountedStyle)(state, data), parent: 1})} 
+                willEnter={() => ({...stripStyle(getStyleAccessor(unmountStyle)(state, data)), parent: 1})} 
                 willLeave={() => ({...getStyleAccessor(unmountStyle)(state, data), parent: 1})}
                 styles={sceneContexts.map(({state, data, url, mount}) => ({
                     key: url,
@@ -52,6 +52,13 @@ class SceneNavigator extends Component{
             </TransitionMotion>
         );
     }
+}
+
+function stripStyle(style) {
+    var strippedStyle = {};
+    for(var key in style)
+        strippedStyle[key] = typeof style[key] === 'number' ? style[key] : style[key].val;
+    return strippedStyle;
 }
 
 function getStyleAccessor(styleProp) {
