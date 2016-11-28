@@ -1,5 +1,4 @@
-import {spring as motionSpring} from 'react-motion';
+import {spring} from 'react-motion';
 
-export default function spring(val, config) {
-    return motionSpring(val, config);
-} 
+export default (val, config) => spring(val, config);
+
