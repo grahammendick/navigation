@@ -41,6 +41,7 @@ var styles = {
         position: 'absolute',
         top: 0,
         backgroundColor: '#fff',
-        height: '402px'
+        height: '402px',
+        userSelect: 'none'
     }
 }
