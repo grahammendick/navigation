@@ -16,8 +16,8 @@ class SceneNavigator extends Component{
         this.props.stateNavigator.offNavigate(this.onNavigate);
     }
     onNavigate(oldState, state, data, asyncData) {
-        this.setState((prevState) => {
-            var {url, crumbs} = this.props.stateNavigator.stateContext;
+        this.setState((prevState, props) => {
+            var {url, crumbs} = props.stateNavigator.stateContext;
             var scenes = {[url]: state.renderScene(data, asyncData)};
             for(var i = 0; i < crumbs.length; i++) {
                 scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
