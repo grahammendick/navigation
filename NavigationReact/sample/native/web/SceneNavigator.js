@@ -36,7 +36,7 @@ class SceneNavigator extends Component{
     }
     render() {
         var {oldState, oldData, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
-        var {mountedStyle, unmountedStyle} = this.props;
+        var {unmountedStyle, mountedStyle} = this.props;
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
         return (
             <TransitionMotion
