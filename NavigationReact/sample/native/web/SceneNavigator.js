@@ -1,5 +1,5 @@
-import {Motion, TransitionMotion} from 'react-motion';
 import React, {Component} from 'react';
+import {Motion, TransitionMotion} from 'react-motion';
 import spring from './spring.js'
 
 class SceneNavigator extends Component{
