@@ -26,8 +26,8 @@ class SceneNavigator extends Component{
         });
     }
     renderScene({key, data: {scene, state, data, mount}, style: {transitioning,...transitionStyle}}) {
-        var {mountedStyle, mountedBackStyle, children} = this.props;
-        var style = getStyle(mount ? mountedStyle : mountedBackStyle, state, data);
+        var {mountedStyle, crumbStyle, children} = this.props;
+        var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
                 {(tweenStyle) => children(tweenStyle, scene, state, data)}

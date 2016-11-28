@@ -8,7 +8,7 @@ export default ({stateNavigator}) => (
             <SceneNavigator
                 unmountedStyle={{translate: spring(100), scale: spring(1)}}
                 mountedStyle={{translate: spring(0), scale: spring(1)}}
-                mountedBackStyle={{translate: spring(5), scale: spring(0.9)}}
+                crumbStyle={{translate: spring(5), scale: spring(0.9)}}
                 stateNavigator={stateNavigator}>
                     {({translate, scale}, scene) => <div style={{...styles.scene,
                         transform: `translate(${translate}%) scale(${scale}, ${scale})`}}>{scene}</div>}
