@@ -6,9 +6,9 @@ export default ({stateNavigator}) => (
     <div style={styles.phone}>
         <div style={styles.twitter}>
             <SceneNavigator
-                mountStyle={{translate: spring(0), scale: spring(1)}}
-                mountedStyle={{translate: spring(5), scale: spring(0.9)}}
-                unmountStyle={{translate: spring(100, {precision: 10}), scale: 1}}
+                mountedStyle={{translate: spring(0), scale: spring(1)}}
+                mountedBackStyle={{translate: spring(5), scale: spring(0.9)}}
+                unmountedStyle={{translate: spring(100, {precision: 10}), scale: 1}}
                 stateNavigator={stateNavigator}>
                     {({translate, scale}, scene) => <div style={{...styles.scene,
                         transform: `translate(${translate}%) scale(${scale}, ${scale})`}}>{scene}</div>}
