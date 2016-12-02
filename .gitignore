@@ -12,6 +12,8 @@ Navigation*/test/**/*.js
 !cycle-dom.d.ts
 !rx.d.ts
 !inferno-*.d.ts
+!react-motion.d.ts
+!react-native.d.ts
 !assert.d.ts
 !mocha.d.ts
 !react-addons-test-utils.d.ts
