@@ -9,12 +9,21 @@ import { View } from 'react-native';
 import spring from './spring.js'
 
 class SceneNavigator extends React.Component<any, any>{
+    private onNavigate = (oldState, state, data, asyncData) => {
+        this.setState((prevState) => {
+            var {url, crumbs} = this.getStateNavigator().stateContext;
+            var scenes = {[url]: state.renderScene(data, asyncData)};
+            for(var i = 0; i < crumbs.length; i++) {
+                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
+            }
+            return {scenes};
+        });
+    }
     constructor(props, context) {
         super(props, context);
         //TODO get asyncData from context and pass to renderScene (needs core change)
         var {state, data, url} = this.getStateNavigator().stateContext;
         this.state = {scenes: {[url]: (state as any).renderScene(data)}};
-        this.onNavigate = this.onNavigate.bind(this);
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
@@ -27,16 +36,6 @@ class SceneNavigator extends React.Component<any, any>{
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
-    }
-    onNavigate(oldState, state, data, asyncData) {
-        this.setState((prevState) => {
-            var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: state.renderScene(data, asyncData)};
-            for(var i = 0; i < crumbs.length; i++) {
-                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
-            }
-            return {scenes};
-        });
     }
     renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
         var {mountedStyle, crumbStyle, children} = this.props;
