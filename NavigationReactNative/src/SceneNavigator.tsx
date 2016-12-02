@@ -1,27 +1,35 @@
+/// <reference path="navigation.d.ts" />
 /// <reference path="react.d.ts" />
 /// <reference path="react-motion.d.ts" />
 /// <reference path="react-native.d.ts" />
+import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Motion, TransitionMotion } from 'react-motion';
 import { View } from 'react-native';
 import spring from './spring.js'
 
 class SceneNavigator extends React.Component<any, any>{
-    constructor(props) {
-        super(props);
-        var {state, data, url} = props.stateNavigator.stateContext;
-        this.state = {scenes: {[url]: state.renderScene(data)}};
+    constructor(props, context) {
+        super(props, context);
+        var {state, data, url} = this.getStateNavigator().stateContext;
+        this.state = {scenes: {[url]: (state as any).renderScene(data)}};
         this.onNavigate = this.onNavigate.bind(this);
     }
+    static contextTypes = {
+        stateNavigator: React.PropTypes.object
+    }
+    private getStateNavigator(): StateNavigator {
+        return this.props.stateNavigator || (this.context as any).stateNavigator;
+    }
     componentDidMount() {
-        this.props.stateNavigator.onNavigate(this.onNavigate);
+        this.getStateNavigator().onNavigate(this.onNavigate);
     }
     componentWillUnmount() {
-        this.props.stateNavigator.offNavigate(this.onNavigate);
+        this.getStateNavigator().offNavigate(this.onNavigate);
     }
     onNavigate(oldState, state, data, asyncData) {
-        this.setState((prevState, props) => {
-            var {url, crumbs} = props.stateNavigator.stateContext;
+        this.setState((prevState) => {
+            var {url, crumbs} = this.getStateNavigator().stateContext;
             var scenes = {[url]: state.renderScene(data, asyncData)};
             for(var i = 0; i < crumbs.length; i++) {
                 scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
@@ -41,9 +49,9 @@ class SceneNavigator extends React.Component<any, any>{
         );
     }
     render() {
-        var {oldState, oldData, state, data, url, crumbs} = this.props.stateNavigator.stateContext;
+        var {oldState, oldData, state, data, url, crumbs} = this.getStateNavigator().stateContext;
         var {unmountedStyle, mountedStyle} = this.props;
-        var sceneContexts = crumbs.concat({state, data, url, mount: true});
+        var sceneContexts = (crumbs as [any]).concat({state, data, url, mount: true});
         return (
             <TransitionMotion
                 willEnter={() => getStyle(unmountedStyle, state, data, 1, true)} 
@@ -61,11 +69,11 @@ class SceneNavigator extends React.Component<any, any>{
 
 function getStyle(styleProp, state, data, transitioning?, strip?) {
     var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
-    var newStyle = {};
+    var newStyle: any = {};
     for(var key in style)
-        newStyle[key] = !strip || typeof style[key] === 'number' ? style[key] : style[key].val;
+        newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
     if (transitioning)
-        newStyle['transitioning'] = transitioning;
+        newStyle.transitioning = transitioning;
     return newStyle;
 }
 
