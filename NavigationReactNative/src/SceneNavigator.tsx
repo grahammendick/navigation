@@ -11,6 +11,7 @@ import spring from './spring.js'
 class SceneNavigator extends React.Component<any, any>{
     constructor(props, context) {
         super(props, context);
+        //TODO get asyncData from context and pass to renderScene (needs core change)
         var {state, data, url} = this.getStateNavigator().stateContext;
         this.state = {scenes: {[url]: (state as any).renderScene(data)}};
         this.onNavigate = this.onNavigate.bind(this);
