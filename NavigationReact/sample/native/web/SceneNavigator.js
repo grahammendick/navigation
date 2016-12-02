@@ -25,8 +25,10 @@ class SceneNavigator extends Component{
             return {scenes};
         });
     }
-    renderScene({key, data: {scene, state, data, mount}, style: {transitioning,...transitionStyle}}) {
+    renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
         var {mountedStyle, crumbStyle, children} = this.props;
+        var transitioning = transitionStyle.transitioning;
+        delete transitionStyle.transitioning;
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
@@ -40,12 +42,12 @@ class SceneNavigator extends Component{
         var sceneContexts = crumbs.concat({state, data, url, mount: true});
         return (
             <TransitionMotion
-                willEnter={() => ({...stripStyle(getStyle(unmountedStyle, state, data)), transitioning: 1})} 
-                willLeave={() => ({...getStyle(unmountedStyle, oldState, oldData), transitioning: 1})}
+                willEnter={() => getStyle(unmountedStyle, state, data, 1, true)} 
+                willLeave={() => getStyle(unmountedStyle, oldState, oldData, 1)}
                 styles={sceneContexts.map(({state, data, url, mount}) => ({
                     key: url,
                     data: {scene: this.state.scenes[url], state, data, mount},
-                    style: {...getStyle(mountedStyle, state, data), transitioning: spring(0)}
+                    style: getStyle(mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => <div>{tweenStyles.map((config) => this.renderScene(config))}</div>}
             </TransitionMotion>
@@ -53,15 +55,14 @@ class SceneNavigator extends Component{
     }
 }
 
-function stripStyle(style) {
-    var strippedStyle = {};
+function getStyle(styleProp, state, data, transitioning, strip) {
+    var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+    var newStyle = {};
     for(var key in style)
-        strippedStyle[key] = typeof style[key] === 'number' ? style[key] : style[key].val;
-    return strippedStyle;
-}
-
-function getStyle(styleProp, state, data) {
-    return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+        newStyle[key] = !strip || typeof style[key] === 'number' ? style[key] : style[key].val;
+    if (transitioning)
+        newStyle.transitioning = transitioning;
+    return newStyle;
 }
 
 export default SceneNavigator;
