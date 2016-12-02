@@ -65,7 +65,10 @@ var items = [
         require('./build/npm/navigation-cycle/package.json')),
     Object.assign({ globals: { 'inferno-component': 'InfernoComponent',
             'inferno-create-element': 'InfernoCreateElement' } },
-        require('./build/npm/navigation-inferno/package.json'))
+        require('./build/npm/navigation-inferno/package.json')),
+    Object.assign({ globals: { react: 'React', 'react-native': 'ReactNative',
+            'react-motion': 'ReactMotion' } }, {target: 'es6'},
+        require('./build/npm/navigation-react-native/package.json')),
 ];
 function rollupTask(name, file, to, globals) {
     return rollup.rollup({
@@ -75,7 +78,8 @@ function rollupTask(name, file, to, globals) {
             rollupTypescript({
                 typescript: typescript,
                 target: 'es3',
-                module: 'es6'
+                module: 'es6',
+                jsx: 'react'
             })
         ]
     }).then((bundle) => {
@@ -102,29 +106,24 @@ function buildTask(file, details) {
         .pipe(insert.prepend(info))
         .pipe(gulp.dest('./build/dist'));
 }
-function packageTask(name, file) {
+function packageTask(name, file, target) {
     return gulp.src(file)
-        .pipe(gulpTypescript())
+        .pipe(gulpTypescript({target: target, additionalTscParameters: ['--jsx', 'react']}))
         .pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
 var itemTasks = items.reduce((tasks, item) => {
     var packageName = item.name;
     var upperName = packageName.replace(/\b./g, (val) => val.toUpperCase());
-    var name = upperName.replace('-', '');
+    var name = upperName.replace(/-/g, '');
     var tsFrom = './' + name + '/src/' + name + '.ts';
-    var jsTo = packageName.replace('-', '.') + '.js';
-    item.name = upperName.replace('-', ' ');
+    var jsTo = packageName.replace(/-/g, '.') + '.js';
+    item.name = upperName.replace(/-/g, ' ');
     gulp.task('Rollup' + name, () => rollupTask(name, tsFrom, jsTo, item.globals || {}));
     gulp.task('Build' + name, ['Rollup' + name], () => buildTask(jsTo, item));
-    gulp.task('Package' + name, () => packageTask(packageName, tsFrom));
+    gulp.task('Package' + name, () => packageTask(packageName, tsFrom, item.target || 'es3'));
     tasks.buildTasks.push('Build' + name);
     tasks.packageTasks.push('Package' + name);
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
-gulp.task('PackageNavigationReactNative', () => {
-    return gulp.src('./NavigationReactNative/src/*')
-        .pipe(gulp.dest('./build/npm/navigation-react-native/lib'));
-});
-itemTasks.packageTasks.push('PackageNavigationReactNative');
 gulp.task('build', itemTasks.buildTasks);
 gulp.task('package', itemTasks.packageTasks);

@@ -1,3 +1,6 @@
+/// <reference path="react.d.ts" />
+/// <reference path="react-motion.d.ts" />
+/// <reference path="react-native.d.ts" />
 import * as React from 'react';
 import { Motion, TransitionMotion } from 'react-motion';
 import { View } from 'react-native';
