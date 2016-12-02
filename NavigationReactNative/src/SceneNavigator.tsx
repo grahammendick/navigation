@@ -70,8 +70,9 @@ class SceneNavigator extends React.Component<any, any>{
 function getStyle(styleProp, state, data, transitioning?, strip?) {
     var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
     var newStyle: any = {};
-    for(var key in style)
+    for(var key in style) {
         newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
+    }
     if (transitioning)
         newStyle.transitioning = transitioning;
     return newStyle;
