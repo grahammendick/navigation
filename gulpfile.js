@@ -121,5 +121,10 @@ var itemTasks = items.reduce((tasks, item) => {
     tasks.packageTasks.push('Package' + name);
     return tasks;
 }, { buildTasks: [], packageTasks: [] });
+gulp.task('PackageNavigationReactNative', () => {
+    return gulp.src('./NavigationReactNative/src/*')
+        .pipe(gulp.dest('./build/npm/navigation-react-native/lib'));
+});
+itemTasks.packageTasks.push('PackageNavigationReactNative');
 gulp.task('build', itemTasks.buildTasks);
 gulp.task('package', itemTasks.packageTasks);
