@@ -19,12 +19,6 @@ class SceneNavigator extends React.Component<any, any>{
             return {scenes};
         });
     }
-    constructor(props, context) {
-        super(props, context);
-        //TODO get asyncData from context and pass to renderScene (needs core change)
-        var {state, data, url} = this.getStateNavigator().stateContext;
-        this.state = {scenes: {[url]: (state as any).renderScene(data)}};
-    }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
@@ -50,6 +44,8 @@ class SceneNavigator extends React.Component<any, any>{
     }
     render() {
         var {oldState, oldData, state, data, url, crumbs} = this.getStateNavigator().stateContext;
+        if (!state)
+            return null;
         var {unmountedStyle, mountedStyle} = this.props;
         var sceneContexts = (crumbs as [any]).concat({state, data, url, mount: true});
         return (
