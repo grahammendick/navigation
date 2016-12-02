@@ -1,10 +1,9 @@
-'use strict';
-import React, {Component} from 'react';
-import {Motion, TransitionMotion} from 'react-motion';
-import {View} from 'react-native';
+import * as React from 'react';
+import { Motion, TransitionMotion } from 'react-motion';
+import { View } from 'react-native';
 import spring from './spring.js'
 
-class SceneNavigator extends Component{
+class SceneNavigator extends React.Component<any, any>{
     constructor(props) {
         super(props);
         var {state, data, url} = props.stateNavigator.stateContext;
@@ -57,13 +56,13 @@ class SceneNavigator extends Component{
     }
 }
 
-function getStyle(styleProp, state, data, transitioning, strip) {
+function getStyle(styleProp, state, data, transitioning?, strip?) {
     var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
     var newStyle = {};
     for(var key in style)
         newStyle[key] = !strip || typeof style[key] === 'number' ? style[key] : style[key].val;
     if (transitioning)
-        newStyle.transitioning = transitioning;
+        newStyle['transitioning'] = transitioning;
     return newStyle;
 }
 
