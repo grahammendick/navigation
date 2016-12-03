@@ -108,7 +108,7 @@ function buildTask(file, details) {
 }
 function packageTask(name, file) {
     return gulp.src(file)
-        .pipe(gulpTypescript({additionalTscParameters: ['--jsx', 'react']}))
+        .pipe(gulpTypescript({jsx: 'react'}))
         .pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
 var itemTasks = items.reduce((tasks, item) => {
