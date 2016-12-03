@@ -33,6 +33,7 @@ class SceneNavigator extends React.Component<any, any>{
     }
     renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
         var {mountedStyle, crumbStyle, children} = this.props;
+        transitionStyle = getStyle(transitionStyle);
         var transitioning = transitionStyle.transitioning;
         delete transitionStyle.transitioning;
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
@@ -63,7 +64,7 @@ class SceneNavigator extends React.Component<any, any>{
     }
 }
 
-function getStyle(styleProp, state, data, transitioning?, strip?) {
+function getStyle(styleProp, state?, data?, transitioning?, strip?) {
     var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
     var newStyle: any = {};
     for(var key in style) {

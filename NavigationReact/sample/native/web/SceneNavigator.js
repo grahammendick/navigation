@@ -27,6 +27,7 @@ class SceneNavigator extends Component{
     }
     renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
         var {mountedStyle, crumbStyle, children} = this.props;
+        transitionStyle = getStyle(transitionStyle);
         var transitioning = transitionStyle.transitioning;
         delete transitionStyle.transitioning;
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
