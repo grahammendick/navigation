@@ -32,6 +32,7 @@ class SceneNavigator extends React.Component<any, any>{
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
     renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
+        var url = this.props.stateNavigator.stateContext.url;
         var {mountedStyle, crumbStyle, children} = this.props;
         transitionStyle = getStyle(transitionStyle);
         var transitioning = transitionStyle.transitioning;
@@ -39,7 +40,7 @@ class SceneNavigator extends React.Component<any, any>{
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene, state, data)}
+                {(tweenStyle) => children(tweenStyle, scene, key === url)}
             </Motion>
         );
     }
