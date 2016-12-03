@@ -1,7 +1,6 @@
 Navigation*/src/**/*.js
 Navigation*/test/**/*.js
 !Navigation*/sample/**/*.js
-!NavigationReactNative/src/**/*.js
 **/*.d.ts
 !navigation.d.ts
 !angular.d.ts
