@@ -25,8 +25,8 @@ class SceneNavigator extends Component{
             return {scenes};
         });
     }
-    renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
-        var url = this.props.stateNavigator.stateContext.url;
+    renderScene({key, data: {scene, state, data, url, mount}, style: transitionStyle}) {
+        var stateContext = this.props.stateNavigator.stateContext;
         var {mountedStyle, crumbStyle, children} = this.props;
         transitionStyle = getStyle(transitionStyle);
         var transitioning = transitionStyle.transitioning;
@@ -34,7 +34,7 @@ class SceneNavigator extends Component{
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene, key === url)}
+                {(tweenStyle) => children(tweenStyle, scene, url === stateContext.url)}
             </Motion>
         );
     }
@@ -48,7 +48,7 @@ class SceneNavigator extends Component{
                 willLeave={() => getStyle(unmountedStyle, oldState, oldData, 1)}
                 styles={sceneContexts.map(({state, data, url, mount}) => ({
                     key: url,
-                    data: {scene: this.state.scenes[url], state, data, mount},
+                    data: {scene: this.state.scenes[url], state, data, url, mount},
                     style: getStyle(mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => <div>{tweenStyles.map((config) => this.renderScene(config))}</div>}

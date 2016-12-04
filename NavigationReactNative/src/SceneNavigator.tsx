@@ -31,8 +31,8 @@ class SceneNavigator extends React.Component<any, any>{
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
-    renderScene({key, data: {scene, state, data, mount}, style: transitionStyle}) {
-        var url = this.props.stateNavigator.stateContext.url;
+    renderScene({key, data: {scene, state, data, url, mount}, style: transitionStyle}) {
+        var stateContext = this.getStateNavigator().stateContext;
         var {mountedStyle, crumbStyle, children} = this.props;
         transitionStyle = getStyle(transitionStyle);
         var transitioning = transitionStyle.transitioning;
@@ -40,7 +40,7 @@ class SceneNavigator extends React.Component<any, any>{
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene, key === url)}
+                {(tweenStyle) => children(tweenStyle, scene, url === stateContext.url)}
             </Motion>
         );
     }
@@ -56,7 +56,7 @@ class SceneNavigator extends React.Component<any, any>{
                 willLeave={() => getStyle(unmountedStyle, oldState, oldData, 1)}
                 styles={sceneContexts.map(({state, data, url, mount}) => ({
                     key: url,
-                    data: {scene: this.state.scenes[url], state, data, mount},
+                    data: {scene: this.state.scenes[url], state, data, url, mount},
                     style: getStyle(mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => <View>{tweenStyles.map((config) => this.renderScene(config))}</View>}
