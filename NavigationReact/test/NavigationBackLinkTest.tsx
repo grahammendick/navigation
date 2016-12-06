@@ -92,7 +92,7 @@ describe('NavigationBackLinkTest', function () {
                     lazy={false}
                     historyAction='replace'
                     navigating={() => false}
-                    aria-another="z"
+                    aria-label="z"
                     target="_blank"
                     stateNavigator={stateNavigator}>
                     link text
@@ -103,7 +103,7 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(link.props['href'], '#/r0');
             assert.equal(link.props['children'], 'link text');
             assert.notEqual(link.props['onClick'], null);
-            assert.equal(link.props['aria-another'], 'z');
+            assert.equal(link.props['aria-label'], 'z');
             assert.equal(link.props['target'], '_blank');
             assert.equal(Object.keys(link.props).length, 5);
         })
