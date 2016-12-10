@@ -14,7 +14,7 @@ declare namespace NavigationReact {
     import React = __React;
 
     /**
-     * Defines the Link contract
+     * Defines the common Link Props contract
      */
     interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
         /**
@@ -36,7 +36,7 @@ declare namespace NavigationReact {
     }
 
     /**
-     * Defines the Refresh Link contract
+     * Defines the Refresh Link Props contract
      */
     interface RefreshLinkProps extends LinkProps {
         /**
@@ -67,7 +67,7 @@ declare namespace NavigationReact {
     class RefreshLink extends React.Component<RefreshLinkProps, any> { }
 
     /**
-     * Defines the Navigation Link contract
+     * Defines the Navigation Link Props contract
      */
     interface NavigationLinkProps extends RefreshLinkProps {
         /**
@@ -82,7 +82,7 @@ declare namespace NavigationReact {
     class NavigationLink extends React.Component<NavigationLinkProps, any> { }
 
     /**
-     * Defines the Navigation Back Link contract
+     * Defines the Navigation Back Link Props contract
      */
     interface NavigationBackLinkProps extends RefreshLinkProps {
         /**
