@@ -1601,6 +1601,7 @@ describe('NavigationLinkTest', function () {
                     navigating={(e, domId, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
+                        return true;
                     }}
                     stateNavigator={stateNavigator}>
                     link text
