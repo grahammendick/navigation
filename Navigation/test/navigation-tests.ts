@@ -1,4 +1,4 @@
-/// <reference path="../src/navigation.d.ts" />
+/// <reference path="../types/navigation.d.ts" />
 
 namespace NavigationTests {
 	// History Manager
