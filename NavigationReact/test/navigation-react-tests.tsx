@@ -1,6 +1,5 @@
 /// <reference path="../src/navigation.d.ts" />
 /// <reference path="../src/react.d.ts" />
-
 import { StateNavigator } from 'navigation';
 import { NavigationBackLink, NavigationLink, RefreshLink } from '../src/navigation-react';
 import * as React from 'react';
