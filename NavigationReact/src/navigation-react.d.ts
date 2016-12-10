@@ -3,20 +3,14 @@
 // Definitions by: Graham Mendick <https://github.com/grahammendick>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-///<reference path="navigation.d.ts"/>
-///<reference path="react.d.ts"/>
-
-declare module 'navigation-react' {
-    export = NavigationReact;
-}
+import { StateNavigator } from 'navigation';
+import { Component, HTMLProps } from 'react';
 
 declare namespace NavigationReact {
-    import React = __React;
-
     /**
      * Defines the Link Props contract
      */
-    interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
+    interface LinkProps extends HTMLProps<HTMLAnchorElement> {
         /**
          * Indicates whether Links listen for navigate events
          */
@@ -64,7 +58,7 @@ declare namespace NavigationReact {
     /**
      * Hyperlink Component the navigates to the current State
      */
-    class RefreshLink extends React.Component<RefreshLinkProps, any> { }
+    class RefreshLink extends Component<RefreshLinkProps, any> { }
 
     /**
      * Defines the Navigation Link Props contract
@@ -79,7 +73,7 @@ declare namespace NavigationReact {
     /**
      * Hyperlink Component the navigates to a State
      */
-    class NavigationLink extends React.Component<NavigationLinkProps, any> { }
+    class NavigationLink extends Component<NavigationLinkProps, any> { }
 
     /**
      * Defines the Navigation Back Link Props contract
@@ -94,5 +88,6 @@ declare namespace NavigationReact {
     /**
      * Hyperlink Component the navigates back along the crumb trail
      */
-    class NavigationBackLink extends React.Component<NavigationBackLinkProps, any> { }
+    class NavigationBackLink extends Component<NavigationBackLinkProps, any> { }
 }
+export = NavigationReact;
