@@ -1,7 +1,7 @@
-/// <reference path="../src/navigation.d.ts" />
-/// <reference path="../src/react.d.ts" />
+/// <reference types="navigation" />
+/// <reference types="react" />
 import { StateNavigator } from 'navigation';
-import { NavigationBackLink, NavigationLink, RefreshLink } from '../types/navigation-react';
+import { NavigationBackLink, NavigationLink, RefreshLink } from '../src/navigation-react';
 import * as React from 'react';
 
 namespace NavigationReactTests {

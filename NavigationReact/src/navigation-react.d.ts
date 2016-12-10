@@ -2,6 +2,8 @@
 // Project: http://grahammendick.github.io/navigation/
 // Definitions by: Graham Mendick <https://github.com/grahammendick>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+/// <reference types="navigation" />
+/// <reference types="react" />
 import { StateNavigator } from 'navigation';
 import { Component, HTMLProps } from 'react';
 
@@ -27,7 +29,7 @@ declare namespace NavigationReact {
         /**
          * The State Navigator
          */
-        stateNavigator?: Navigation.StateNavigator;
+        stateNavigator?: StateNavigator;
     }
 
     /**

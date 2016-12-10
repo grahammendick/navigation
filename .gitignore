@@ -20,3 +20,4 @@ build/**/lib
 npm-debug.log
 node_modules
 !Navigation*/src/node_modules
+!Navigation*/test/node_modules
