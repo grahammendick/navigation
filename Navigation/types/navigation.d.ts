@@ -182,9 +182,13 @@ declare namespace Navigation {
          */
         getHref(url: string): string;
         /**
-         * Gets a Url from the anchor or location
+         * Gets a Url from the anchor
          */
-        getUrl(hrefElement: HTMLAnchorElement | Location): string;
+        getUrl(hrefElement: HTMLAnchorElement): string;
+        /**
+         * Gets a Url from the location
+         */
+        getUrl(hrefElement: Location): string;
         /**
          * Removes browser history event listeners
          */
@@ -230,9 +234,13 @@ declare namespace Navigation {
          */
         getHref(url: string): string;
         /**
-         * Gets a Url from the anchor or location
+         * Gets a Url from the anchor
          */
-        getUrl(hrefElement: HTMLAnchorElement | Location): string;
+        getUrl(hrefElement: HTMLAnchorElement): string;
+        /**
+         * Gets a Url from the location
+         */
+        getUrl(hrefElement: Location): string;
         /**
          * Removes a listener for the hashchange event
          */
@@ -277,9 +285,13 @@ declare namespace Navigation {
          */
         getHref(url: string): string;
         /**
-         * Gets a Url from the anchor or location
+         * Gets a Url from the anchor
          */
-        getUrl(hrefElement: HTMLAnchorElement | Location): string;
+        getUrl(hrefElement: HTMLAnchorElement): string;
+        /**
+         * Gets a Url from the location
+         */
+        getUrl(hrefElement: Location): string;
         /**
          * Removes a listener for the popstate event
          */
