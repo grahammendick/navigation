@@ -14,7 +14,7 @@ declare namespace NavigationReact {
     import React = __React;
 
     /**
-     * Defines the common Link Props contract
+     * Defines the Link Props contract
      */
     interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
         /**
