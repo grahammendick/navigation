@@ -1,4 +1,4 @@
-﻿/// <reference path="navigation.d.ts" />
+﻿/// <reference types="navigation" />
 /// <reference path="knockout.d.ts" />
 import { StateNavigator } from 'navigation';
 import * as ko from 'knockout';

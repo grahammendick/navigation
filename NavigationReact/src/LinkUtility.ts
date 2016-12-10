@@ -1,4 +1,4 @@
-﻿/// <reference path="navigation.d.ts" />
+﻿/// <reference types="navigation" />
 /// <reference path="react.d.ts" />
 import { StateNavigator } from 'navigation';
 import * as React from 'react';

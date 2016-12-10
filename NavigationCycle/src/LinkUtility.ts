@@ -1,4 +1,4 @@
-/// <reference path="navigation.d.ts" />
+/// <reference types="navigation" />
 /// <reference path="cycle-dom.d.ts" />
 /// <reference path="rx.d.ts" />
 import { StateNavigator } from 'navigation';
