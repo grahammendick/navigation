@@ -1,6 +1,6 @@
 /// <reference types="navigation" />
-/// <reference path="cycle-dom.d.ts" />
-/// <reference path="rx.d.ts" />
+/// <reference types="@cycle/dom" />
+/// <reference types="rx" />
 import { StateNavigator } from 'navigation';
 
 class HistoryActionHook {

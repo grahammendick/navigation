@@ -1,5 +1,5 @@
 ﻿/// <reference types="navigation" />
-/// <reference path="react.d.ts" />
+/// <reference types="react" />
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
 

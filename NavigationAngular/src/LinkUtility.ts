@@ -1,6 +1,6 @@
 ﻿/// <reference types="navigation" />
-/// <reference path="angular.d.ts" />
-/// <reference path="jquery.d.ts" />
+/// <reference types="angular" />
+/// <reference types="jquery" />
 import { StateNavigator } from 'navigation';
 import * as angular from 'angular';
 import * as jquery from 'jquery';

@@ -1,6 +1,6 @@
 /// <reference types="navigation" />
-/// <reference path="inferno-component.d.ts" />
-/// <reference path="inferno-create-element.d.ts" />
+/// <reference types="inferno-component" />
+/// <reference types="inferno-create-element" />
 import { StateNavigator } from 'navigation';
 import InfernoComponent from 'inferno-component';
 
