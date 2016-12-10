@@ -1,7 +1,7 @@
 import { StateNavigator } from 'navigation';
-import * as React from 'react';
+import { HTMLProps } from 'react';
 
-export interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
+export interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     lazy?: boolean;
     historyAction?: string;
     navigating?: (e: MouseEvent, domId: string, link: string) => boolean;
