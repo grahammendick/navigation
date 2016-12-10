@@ -1,5 +1,5 @@
-﻿/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
+﻿/// <reference types="assert" />
+/// <reference types="mocha" />
 import * as assert from 'assert';
 import { StateNavigator } from '../src/Navigation';
 
