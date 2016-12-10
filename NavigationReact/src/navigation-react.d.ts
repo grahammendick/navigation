@@ -18,7 +18,7 @@ declare namespace NavigationReact {
      */
     interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
         /**
-         * Indicates Links should not listen for navigate events
+         * Indicates whether Links listen for navigate events
          */
         lazy?: boolean;
         /**
@@ -44,7 +44,7 @@ declare namespace NavigationReact {
          */
         navigationData?: any;
         /**
-         * Indicates to include all the current NavigationData
+         * Indicates whether to include all the current NavigationData
          */
         includeCurrentData?: boolean;
         /**
