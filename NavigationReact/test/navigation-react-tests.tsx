@@ -30,7 +30,7 @@ namespace NavigationReactTests {
 				stateNavigator={stateNavigator}
 				target="_blank"
 				aria-label="Go to the second page of people">
-				Go to page 2
+				People
 			</RefreshLink>
 		);
 	}
