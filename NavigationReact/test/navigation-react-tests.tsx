@@ -14,6 +14,10 @@ namespace NavigationReactTests {
 
 	// Refresh Link
 	var RefreshLinkTest = function() {
+		return <RefreshLink>People</RefreshLink>;
+	}
+
+	RefreshLinkTest = function() {
 		return (
 			<RefreshLink
 				navigationData={{ page: 2 }}
@@ -34,6 +38,10 @@ namespace NavigationReactTests {
 
 	// Navigation Link
 	var NavigationLinkTest = function() {
+		return <NavigationLink stateKey="person">Person</NavigationLink>;
+	}
+
+	NavigationLinkTest = function() {
 		return (
 			<NavigationLink
 				stateKey="person"
@@ -55,6 +63,10 @@ namespace NavigationReactTests {
 
 	// Navigation Back Link
 	var NavigationBackLinkTest = function() {
+		return <NavigationBackLink distance={1}>People</NavigationBackLink>;
+	}
+
+	NavigationBackLinkTest = function() {
 		return (
 			<NavigationBackLink
 				distance={1}
