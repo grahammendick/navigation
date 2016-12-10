@@ -12,27 +12,6 @@ namespace NavigationReactTests {
 		{ key: 'person', route: 'person/{id}', trackCrumbTrail: true }
 	]);
 
-	// Navigation Link
-	var NavigationLinkTest = function() {
-		return (
-			<NavigationLink
-				stateKey="people"
-				navigationData={{ page: 1 }}
-				includeCurrentData={true}
-				currentDataKeys="sort"
-				activeCssClass="active"
-				disableActive={true}
-				lazy={false}
-				historyAction="replace"
-				navigating= {(e: MouseEvent, domId: string, link: string) => true} 
-				stateNavigator={stateNavigator}
-				target="_blank"
-				aria-label="Go to the first page of people">
-				Go to page 1
-			</NavigationLink>
-		);
-	}
-
 	// Refresh Link
 	var RefreshLinkTest = function() {
 		return (
@@ -53,13 +32,34 @@ namespace NavigationReactTests {
 		);
 	}
 
+	// Navigation Link
+	var NavigationLinkTest = function() {
+		return (
+			<NavigationLink
+				stateKey="person"
+				navigationData={{ id: 12 }}
+				includeCurrentData={false}
+				currentDataKeys=""
+				activeCssClass=""
+				disableActive={false}
+				lazy={false}
+				historyAction="add"
+				navigating= {(e: MouseEvent, domId: string, link: string) => true} 
+				stateNavigator={stateNavigator}
+				target="_blank"
+				aria-label="View the person's details">
+				Person
+			</NavigationLink>
+		);
+	}
+
 	// Navigation Back Link
 	var NavigationBackLinkTest = function() {
 		return (
 			<NavigationBackLink
 				distance={1}
 				lazy={false}
-				historyAction="replace"
+				historyAction="none"
 				navigating= {(e: MouseEvent, domId: string, link: string) => true} 
 				stateNavigator={stateNavigator}
 				target="_blank"

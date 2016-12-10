@@ -15,7 +15,7 @@ declare namespace NavigationReact {
 
     interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
         lazy?: boolean;
-        historyAction?: string;
+        historyAction?: 'add' | 'replace' | 'none';
         navigating?: (e: MouseEvent, domId: string, link: string) => boolean;
         stateNavigator?: Navigation.StateNavigator;
     }

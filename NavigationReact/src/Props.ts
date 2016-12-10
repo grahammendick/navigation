@@ -3,7 +3,7 @@ import { HTMLProps } from 'react';
 
 export interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     lazy?: boolean;
-    historyAction?: string;
+    historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent, domId: string, link: string) => boolean;
     stateNavigator?: StateNavigator;
 }
