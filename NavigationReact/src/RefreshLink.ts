@@ -1,8 +1,9 @@
 ﻿import LinkUtility from './LinkUtility';
 import { StateNavigator } from 'navigation';
+import { RefreshLinkProps } from './Props';
 import * as React from 'react';
 
-class RefreshLink extends React.Component<any, any> {
+class RefreshLink extends React.Component<RefreshLinkProps, any> {
     private onNavigate = () => {
         if (this.state.stateContext !== this.getStateNavigator().stateContext.url)
             this.setState(this.getNextState());
