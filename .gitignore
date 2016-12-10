@@ -3,6 +3,7 @@ Navigation*/test/**/*.js
 !Navigation*/sample/**/*.js
 **/*.d.ts
 !navigation.d.ts
+!navigation-react.d.ts
 !angular.d.ts
 !jquery.d.ts
 !knockout.d.ts
