@@ -1,6 +1,3 @@
-/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
-/// <reference path="react-addons-test-utils.d.ts" />
 import * as assert from 'assert';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { NavigationBackLink } from '../src/NavigationReact';
@@ -319,6 +316,7 @@ describe('NavigationBackLinkTest', function () {
                     navigating={(e, domId, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
+                        return true;
                     }}
                     stateNavigator={stateNavigator}>
                     link text

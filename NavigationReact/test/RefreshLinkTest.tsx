@@ -1,6 +1,3 @@
-/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
-/// <reference path="react-addons-test-utils.d.ts" />
 import * as assert from 'assert';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { RefreshLink } from '../src/NavigationReact';

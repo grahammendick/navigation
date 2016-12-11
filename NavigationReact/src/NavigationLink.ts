@@ -1,8 +1,9 @@
 ﻿import LinkUtility from './LinkUtility';
 import { StateNavigator } from 'navigation';
+import { NavigationLinkProps } from './Props';
 import * as React from 'react';
 
-class NavigationLink extends React.Component<any, any> {
+class NavigationLink extends React.Component<NavigationLinkProps, any> {
     private onNavigate = () => {
         if (this.state.stateContext !== this.getStateNavigator().stateContext.url)
             this.setState(this.getNextState());

@@ -1,7 +1,4 @@
-﻿/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
-/// <reference path="../src/navigation.d.ts" />
-import * as assert from 'assert';
+﻿import * as assert from 'assert';
 import { StateNavigator } from '../src/Navigation';
 
 describe('MatchTest', function () {
