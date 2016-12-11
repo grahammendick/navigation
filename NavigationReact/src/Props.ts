@@ -1,14 +1,14 @@
 import { StateNavigator } from 'navigation';
 import { HTMLProps } from 'react';
 
-export interface LinkProps extends HTMLProps<HTMLAnchorElement> {
+interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     lazy?: boolean;
     historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent, domId: string, link: string) => boolean;
     stateNavigator?: StateNavigator;
 }
 
-export interface RefreshLinkProps extends LinkProps {
+interface RefreshLinkProps extends LinkProps {
     navigationData?: any;
     includeCurrentData?: boolean;
     currentDataKeys?: string;
@@ -16,10 +16,11 @@ export interface RefreshLinkProps extends LinkProps {
     disableActive?: boolean;
 }
 
-export interface NavigationLinkProps extends RefreshLinkProps {
+interface NavigationLinkProps extends RefreshLinkProps {
     stateKey: string;
 }
 
-export interface NavigationBackLinkProps extends RefreshLinkProps {
+interface NavigationBackLinkProps extends RefreshLinkProps {
     distance: number;
 }
+export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps }
