@@ -5,5 +5,5 @@ build/dist
 build/**/lib
 npm-debug.log
 node_modules
-**/*.d.ts
-!Navigation*/**/@types/*.d.ts
+!Navigation*/test/node_modules
+
