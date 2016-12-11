@@ -1,6 +1,4 @@
-﻿/// <reference types="navigation" />
-/// <reference types="knockout" />
-import { StateNavigator } from 'navigation';
+﻿import { StateNavigator } from 'navigation';
 import * as ko from 'knockout';
 
 class LinkUtility {

@@ -1,6 +1,3 @@
-/// <reference types="navigation" />
-/// <reference types="navigation-react" />
-/// <reference types="react" />
 import { StateNavigator } from 'navigation';
 import { NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
 import * as React from 'react';

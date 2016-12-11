@@ -1,4 +1,3 @@
-/// <reference types="navigation" />
 import { HashHistoryManager, StateNavigator, State } from 'navigation';
 
 namespace NavigationTests {

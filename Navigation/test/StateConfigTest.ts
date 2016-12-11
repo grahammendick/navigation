@@ -1,6 +1,4 @@
-﻿/// <reference types="assert" />
-/// <reference types="mocha" />
-import * as assert from 'assert';
+﻿import * as assert from 'assert';
 import { StateNavigator } from '../src/Navigation';
 
 describe('StateConfigTest', function () {

@@ -1,7 +1,4 @@
-﻿/// <reference types="navigation" />
-/// <reference types="angular" />
-/// <reference types="jquery" />
-import { StateNavigator } from 'navigation';
+﻿import { StateNavigator } from 'navigation';
 import * as angular from 'angular';
 import * as jquery from 'jquery';
 
