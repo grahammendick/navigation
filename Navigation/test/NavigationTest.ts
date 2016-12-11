@@ -1,6 +1,4 @@
-﻿/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
-import * as assert from 'assert';
+﻿import * as assert from 'assert';
 import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from '../src/Navigation';
 
 describe('Navigation', function () {

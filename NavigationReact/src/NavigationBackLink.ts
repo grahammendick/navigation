@@ -1,8 +1,9 @@
 ﻿import LinkUtility from './LinkUtility';
 import { StateNavigator } from 'navigation';
+import { NavigationBackLinkProps } from './Props';
 import * as React from 'react';
 
-class NavigationBackLink extends React.Component<any, any> {
+class NavigationBackLink extends React.Component<NavigationBackLinkProps, any> {
     private onNavigate = () => {
         if (this.state.stateContext !== this.getStateNavigator().stateContext.url
             || this.state.crumb !== this.getNavigationBackLink())

@@ -1,6 +1,4 @@
-﻿/// <reference path="navigation.d.ts" />
-/// <reference path="react.d.ts" />
-import { StateNavigator } from 'navigation';
+﻿import { StateNavigator } from 'navigation';
 import * as React from 'react';
 
 class LinkUtility {

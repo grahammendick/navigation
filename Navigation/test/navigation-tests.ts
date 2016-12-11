@@ -1,8 +1,8 @@
-/// <reference path="../src/navigation.d.ts" />
+import { HashHistoryManager, StateNavigator, State } from 'navigation';
 
 namespace NavigationTests {
 	// History Manager
-	class LogHistoryManager extends Navigation.HashHistoryManager  {
+	class LogHistoryManager extends HashHistoryManager  {
 	    addHistory(url: string) {
 			console.log('add history');
 			super.addHistory(url, false);
@@ -14,7 +14,7 @@ namespace NavigationTests {
         { key: 'people', route: ['people/{page}', 'people/{page}/sort/{sort}'], defaults: { page: 1 }, help: 'people.htm' },
         { key: 'person', route: 'person/{id}', trackTypes: false, defaultTypes: { id: 'number' }, trackCrumbTrail: true }
 	];
-    var stateNavigator = new Navigation.StateNavigator(config);
+    var stateNavigator = new StateNavigator(config);
     stateNavigator.configure(config, new LogHistoryManager());
 	
 	// States
@@ -35,16 +35,16 @@ namespace NavigationTests {
 		navigate();
 	};
 	person.navigated = (data) => {};
-    person.urlEncode = function urlEncode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
+    person.urlEncode = function urlEncode(state: State, key: string, val: string, queryString: boolean): string {
         return queryString ? val.replace(/\s/g, '+') : encodeURIComponent(val);
     };
-    person.urlDecode = function urlDecode(state: Navigation.State, key: string, val: string, queryString: boolean): string {
+    person.urlDecode = function urlDecode(state: State, key: string, val: string, queryString: boolean): string {
         return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
     };
 	person.validate = (data: any) => data.id > 0;
 	
 	// Navigation Event
-	var navigationListener = (oldState: Navigation.State, state: Navigation.State, data: any, asyncData: any) => {
+	var navigationListener = (oldState: State, state: State, data: any, asyncData: any) => {
 		stateNavigator.offNavigate(navigationListener);
 	};
 	stateNavigator.onNavigate(navigationListener);
@@ -82,7 +82,7 @@ namespace NavigationTests {
 		.url;
 	
 	// State Context
-	var state: Navigation.State = stateNavigator.stateContext.state;
+	var state: State = stateNavigator.stateContext.state;
 	var url: string = stateNavigator.stateContext.url;
 	var title: string = stateNavigator.stateContext.title;
 	var page: number = stateNavigator.stateContext.data.page;

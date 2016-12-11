@@ -1,6 +1,3 @@
-/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
-/// <reference path="react-addons-test-utils.d.ts" />
 import * as assert from 'assert';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { RefreshLink } from '../src/NavigationReact';
@@ -85,7 +82,7 @@ describe('RefreshLinkTest', function () {
                     lazy={false}
                     historyAction='replace'
                     navigating={() => false}
-                    aria-another="z"
+                    aria-label="z"
                     target="_blank"
                     stateNavigator={stateNavigator}>
                     link text
@@ -96,7 +93,7 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.props['href'], '#/r?x=a');
             assert.equal(link.props['children'], 'link text');
             assert.notEqual(link.props['onClick'], null);
-            assert.equal(link.props['aria-another'], 'z');
+            assert.equal(link.props['aria-label'], 'z');
             assert.equal(link.props['target'], '_blank');
             assert.equal(Object.keys(link.props).length, 5);
         })

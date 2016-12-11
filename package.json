@@ -10,6 +10,7 @@
     "gulp-tsc": "^1.2.6",
     "gulp-uglify": "^2.0.0",
     "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "rollup": "^0.36.3",
     "rollup-plugin-typescript": "^0.8.1",
