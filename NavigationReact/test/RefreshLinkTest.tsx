@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { RefreshLink } from '../src/NavigationReact';
 import * as React from 'react';

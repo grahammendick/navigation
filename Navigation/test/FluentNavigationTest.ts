@@ -1,6 +1,5 @@
-/// <reference path="assert.d.ts" />
-/// <reference path="mocha.d.ts" />
 import * as assert from 'assert';
+import * as mocha from 'mocha';
 import { StateNavigator } from '../src/Navigation';
 
 describe('Fluent', function () {
