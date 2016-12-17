@@ -4,7 +4,7 @@ import { Motion, TransitionMotion } from 'react-motion';
 import { View } from 'react-native';
 import spring from './spring.js'
 
-class SceneNavigator extends React.Component<any, any>{
+class SceneNavigator extends React.Component<any, any> {
     private onNavigate = (oldState, state, data, asyncData) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
