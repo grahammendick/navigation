@@ -1,1 +1,1 @@
-﻿module.exports = require('./lib/Navigation');
+module.exports = require('./lib/Navigation');

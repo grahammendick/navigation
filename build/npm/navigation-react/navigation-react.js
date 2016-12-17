@@ -1,1 +1,1 @@
-﻿module.exports = require('./lib/NavigationReact');
+module.exports = require('./lib/NavigationReact');
