@@ -5,7 +5,7 @@ import { BackAndroid } from 'react-native';
 class NavigationBackAndroid extends React.Component<any, any> {
     private onBack = () => {
         var stateNavigator = this.getStateNavigator();
-        if (this.state.state === stateNavigator.stateContext.state) {
+        if (this.state.url === stateNavigator.stateContext.url) {
             var listener = this.props.navigating;
             var navigate = true;
             if (listener)
@@ -18,7 +18,7 @@ class NavigationBackAndroid extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { state: this.getStateNavigator().stateContext.state };
+        this.state = { url: this.getStateNavigator().stateContext.url };
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
