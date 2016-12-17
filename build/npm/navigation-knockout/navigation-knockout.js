@@ -1,1 +1,1 @@
-﻿module.exports = require('./lib/NavigationKnockout');
+module.exports = require('./lib/NavigationKnockout');
