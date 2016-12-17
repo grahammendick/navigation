@@ -1,1 +1,1 @@
-﻿module.exports = require('./lib/NavigationInferno');
+module.exports = require('./lib/NavigationInferno');

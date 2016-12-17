@@ -1,1 +1,1 @@
-﻿module.exports = require('./lib/NavigationCycle');
+module.exports = require('./lib/NavigationCycle');
