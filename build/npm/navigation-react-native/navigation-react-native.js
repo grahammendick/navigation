@@ -1,1 +1,1 @@
-﻿module.exports = require('./lib/NavigationReactNative');
+module.exports = require('./lib/NavigationReactNative');
