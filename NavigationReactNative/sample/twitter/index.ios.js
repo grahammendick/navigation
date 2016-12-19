@@ -11,43 +11,43 @@ import {
   Text,
   View
 } from 'react-native';
+import { StateNavigator } from 'navigation';
+import { SceneNavigator, spring } from 'navigation-react-native';
 
-export default class twitter extends Component {
+const stateNavigator = new StateNavigator([
+  { key: 'home' },
+  { key: 'tweet', trackCrumbTrail: true }
+]);
+
+var { home, tweet } = stateNavigator.states;
+home.renderScene = () => <Text style={styles.welcome}>Welcome</Text>;
+//tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} stateNavigator={stateNavigator}/>;
+
+tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
+
+export default class Twitter extends Component {
+  componentDidMount() {
+    stateNavigator.start('home');
+  }
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+        <SceneNavigator
+          unmountedStyle={{translate: spring(100), scale: spring(1)}}
+          mountedStyle={{translate: spring(0), scale: spring(1)}}
+          crumbStyle={{translate: spring(5), scale: spring(0.9)}}
+          stateNavigator={stateNavigator}>
+              {({translate, scale}, scene) => <View>{scene}</View>}
+      </SceneNavigator>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   welcome: {
-    fontSize: 20,
+    fontSize: 50,
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
 });
 
-AppRegistry.registerComponent('twitter', () => twitter);
+AppRegistry.registerComponent('twitter', () => Twitter);
