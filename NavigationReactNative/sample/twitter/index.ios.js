@@ -39,7 +39,14 @@ export default class Twitter extends Component {
             mountedStyle={{translate: spring(0), scale: spring(1)}}
             crumbStyle={{translate: spring(5), scale: spring(0.9)}}
             stateNavigator={stateNavigator}>
-                {({translate, scale}, scene) => <View>{scene}</View>}
+                {({translate, scale}, scene) => <View style={{
+                  transform: [
+                    { translateX: translate },
+                    { scale: scale },
+                  ],
+                  position: 'absolute',
+                  backgroundColor: 'red'
+                }}>{scene}</View>}
         </SceneNavigator>
       </View>
     );
@@ -49,7 +56,6 @@ export default class Twitter extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
 });
 
