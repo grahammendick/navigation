@@ -1,7 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 
-export default () => <Text style={styles.home}>Home</Text>;
+export default ({ stateNavigator }) => (
+    <View>
+        <Text style={styles.home}>Home</Text>
+        <TouchableHighlight onPress={() => {
+            stateNavigator.navigate('tweet');
+        }}>
+            <Text>Tweet</Text>
+        </TouchableHighlight>
+    </View>
+);
 
 const styles = StyleSheet.create({
   home: {
