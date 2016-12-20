@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { SceneNavigator, spring } from 'navigation-react-native';
+import Home from './Home';
+import Tweet from './Tweet';
 
 const stateNavigator = new StateNavigator([
   { key: 'home' },
@@ -20,8 +22,8 @@ const stateNavigator = new StateNavigator([
 ]);
 
 var { home, tweet } = stateNavigator.states;
-home.renderScene = () => <Text style={styles.welcome}>Welcome</Text>;
-//tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} stateNavigator={stateNavigator}/>;
+home.renderScene = () => <Home stateNavigator={stateNavigator} />;
+tweet.renderScene = () => <Tweet stateNavigator={stateNavigator}/>;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
@@ -31,22 +33,23 @@ export default class Twitter extends Component {
   }
   render() {
     return (
-        <SceneNavigator
-          unmountedStyle={{translate: spring(100), scale: spring(1)}}
-          mountedStyle={{translate: spring(0), scale: spring(1)}}
-          crumbStyle={{translate: spring(5), scale: spring(0.9)}}
-          stateNavigator={stateNavigator}>
-              {({translate, scale}, scene) => <View>{scene}</View>}
-      </SceneNavigator>
+      <View style={styles.container}>
+          <SceneNavigator
+            unmountedStyle={{translate: spring(100), scale: spring(1)}}
+            mountedStyle={{translate: spring(0), scale: spring(1)}}
+            crumbStyle={{translate: spring(5), scale: spring(0.9)}}
+            stateNavigator={stateNavigator}>
+                {({translate, scale}, scene) => <View>{scene}</View>}
+        </SceneNavigator>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  welcome: {
-    fontSize: 50,
-    textAlign: 'center',
-    margin: 10,
+  container: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
 
