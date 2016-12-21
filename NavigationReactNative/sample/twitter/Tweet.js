@@ -12,7 +12,7 @@ export default ({ stateNavigator }) => (
     <TouchableHighlight underlayColor="white" onPress={() => {
       stateNavigator.navigate('tweet');
     }}>
-      <Text>Tweet</Text>
+      <Text>Tweet {stateNavigator.stateContext.crumbs.length}</Text>
     </TouchableHighlight>
   </View>
 );
