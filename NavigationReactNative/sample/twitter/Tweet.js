@@ -19,7 +19,7 @@ export default ({ stateNavigator }) => (
 
 const styles = StyleSheet.create({
   view: {
-    margin: 25,
+    margin: 20,
   },
   tweet: {
     fontSize: 50,
