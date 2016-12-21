@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 export default ({ stateNavigator }) => (
     <View>
         <Text style={styles.home}>Home</Text>
-        <TouchableHighlight onPress={() => {
+        <TouchableHighlight underlayColor="white" onPress={() => {
             stateNavigator.navigate('tweet');
         }}>
             <Text>Tweet</Text>

@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import {
+  Dimensions,
   AppRegistry,
   StyleSheet,
   Text,
@@ -33,20 +34,20 @@ export default class Twitter extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <View>
           <SceneNavigator
             unmountedStyle={{translate: spring(100), scale: spring(1)}}
             mountedStyle={{translate: spring(0), scale: spring(1)}}
             crumbStyle={{translate: spring(5), scale: spring(0.9)}}
             stateNavigator={stateNavigator}>
-                {({translate, scale}, scene) => <View style={{
-                  transform: [
-                    { translateX: translate },
-                    { scale: scale },
-                  ],
-                  position: 'absolute',
-                  backgroundColor: 'red'
-                }}>{scene}</View>}
+                {({translate, scale}, scene) => <View style={[
+                  styles.scene,
+                  { transform: [
+                      { translateX: Dimensions.get('window').width * translate / 100 },
+                      { scale: scale },
+                    ]
+                  },
+                ]}>{scene}</View>}
         </SceneNavigator>
       </View>
     );
@@ -54,9 +55,14 @@ export default class Twitter extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  scene: {
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: 'white',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    position: 'absolute',
+  }
 });
 
 AppRegistry.registerComponent('twitter', () => Twitter);
