@@ -40,15 +40,18 @@ export default class Twitter extends Component {
           mountedStyle={{ translate: spring(0), scale: spring(1) }}
           crumbStyle={{ translate: spring(5), scale: spring(0.9) }}
           stateNavigator={stateNavigator}>
-          {({translate, scale}, scene) => <View style={[
-            styles.scene,
-            {
-              transform: [
-                { translateX: Dimensions.get('window').width * translate / 100 },
-                { scale: scale },
-              ]
-            },
-          ]}>{scene}</View>}
+          {({translate, scale}, scene, active) => (
+              <View
+                pointerEvents={active ? 'auto' : 'none'}
+                style={[
+                  styles.scene,
+                  { transform: [
+                      { translateX: Dimensions.get('window').width * translate / 100 },
+                      { scale: scale },
+                    ]
+                  },
+                ]}>{scene}</View>
+          )}
         </SceneNavigator>
       </View>
     );
