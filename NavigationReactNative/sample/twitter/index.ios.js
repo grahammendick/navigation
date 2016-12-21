@@ -1,17 +1,5 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Dimensions, AppRegistry, StyleSheet, Text, View } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { SceneNavigator, spring } from 'navigation-react-native';
 import Home from './Home';
