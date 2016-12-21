@@ -23,6 +23,8 @@ class SceneNavigator extends React.Component<any, any> {
     }
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.onNavigate);
+        if (this.props.startStateKey)
+            this.getStateNavigator().navigate(this.props.startStateKey);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);

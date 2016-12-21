@@ -28,35 +28,29 @@ tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
-export default class Twitter extends Component {
-  componentDidMount() {
-    stateNavigator.navigate('home');
-  }
-  render() {
-    return (
-      <View>
-        <SceneNavigator
-          unmountedStyle={{ translate: spring(100), scale: spring(1) }}
-          mountedStyle={{ translate: spring(0), scale: spring(1) }}
-          crumbStyle={{ translate: spring(5), scale: spring(0.9) }}
-          stateNavigator={stateNavigator}>
-          {({translate, scale}, scene, active) => (
-              <View
-                pointerEvents={active ? 'auto' : 'none'}
-                style={[
-                  styles.scene,
-                  { transform: [
-                      { translateX: Dimensions.get('window').width * translate / 100 },
-                      { scale: scale },
-                    ]
-                  },
-                ]}>{scene}</View>
-          )}
-        </SceneNavigator>
-      </View>
-    );
-  }
-}
+export default Twitter = () => (
+  <View>
+    <SceneNavigator
+      startStateKey="home"
+      unmountedStyle={{ translate: spring(100), scale: spring(1) }}
+      mountedStyle={{ translate: spring(0), scale: spring(1) }}
+      crumbStyle={{ translate: spring(5), scale: spring(0.9) }}
+      stateNavigator={stateNavigator}>
+      {({translate, scale}, scene, active) => (
+          <View
+            pointerEvents={active ? 'auto' : 'none'}
+            style={[
+              styles.scene,
+              { transform: [
+                  { translateX: Dimensions.get('window').width * translate / 100 },
+                  { scale: scale },
+                ]
+              },
+            ]}>{scene}</View>
+      )}
+    </SceneNavigator>
+  </View>
+);
 
 const styles = StyleSheet.create({
   scene: {
