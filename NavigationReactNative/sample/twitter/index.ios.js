@@ -24,7 +24,7 @@ const stateNavigator = new StateNavigator([
 
 var { home, tweet } = stateNavigator.states;
 home.renderScene = () => <Home stateNavigator={stateNavigator} />;
-tweet.renderScene = () => <Tweet stateNavigator={stateNavigator}/>;
+tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
@@ -35,19 +35,20 @@ export default class Twitter extends Component {
   render() {
     return (
       <View>
-          <SceneNavigator
-            unmountedStyle={{translate: spring(100), scale: spring(1)}}
-            mountedStyle={{translate: spring(0), scale: spring(1)}}
-            crumbStyle={{translate: spring(5), scale: spring(0.9)}}
-            stateNavigator={stateNavigator}>
-                {({translate, scale}, scene) => <View style={[
-                  styles.scene,
-                  { transform: [
-                      { translateX: Dimensions.get('window').width * translate / 100 },
-                      { scale: scale },
-                    ]
-                  },
-                ]}>{scene}</View>}
+        <SceneNavigator
+          unmountedStyle={{ translate: spring(100), scale: spring(1) }}
+          mountedStyle={{ translate: spring(0), scale: spring(1) }}
+          crumbStyle={{ translate: spring(5), scale: spring(0.9) }}
+          stateNavigator={stateNavigator}>
+          {({translate, scale}, scene) => <View style={[
+            styles.scene,
+            {
+              transform: [
+                { translateX: Dimensions.get('window').width * translate / 100 },
+                { scale: scale },
+              ]
+            },
+          ]}>{scene}</View>}
         </SceneNavigator>
       </View>
     );
