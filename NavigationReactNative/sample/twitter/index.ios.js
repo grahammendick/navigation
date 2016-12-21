@@ -29,7 +29,7 @@ tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
 export default class Twitter extends Component {
   componentDidMount() {
-    stateNavigator.start('home');
+    stateNavigator.navigate('home');
   }
   render() {
     return (
