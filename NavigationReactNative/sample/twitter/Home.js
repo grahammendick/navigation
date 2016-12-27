@@ -1,16 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ListView, TouchableHighlight } from 'react-native';
 
-export default ({ stateNavigator }) => (
-  <View style={styles.view}>
-    <Text style={styles.home}>Home</Text>
-    <TouchableHighlight underlayColor="white" onPress={() => {
-      stateNavigator.navigate('tweet');
-    } }>
-      <Text>Tweet</Text>
-    </TouchableHighlight>
-  </View>
-);
+export default ({ tweets, stateNavigator }) => {
+  const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  const dataSource = ds.cloneWithRows(tweets);
+  return (
+    <View style={styles.view}>
+      <Text style={styles.home}>Home</Text>
+      <TouchableHighlight underlayColor="white" onPress={() => {
+        stateNavigator.navigate('tweet');
+      } }>
+        <Text>Tweet</Text>
+      </TouchableHighlight>
+      <ListView
+        dataSource={dataSource}
+        renderRow={rowData => <Text>{rowData.name}</Text>} />
+    </View>);
+};
 
 const styles = StyleSheet.create({
   view: {

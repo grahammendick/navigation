@@ -4,6 +4,7 @@ import { StateNavigator } from 'navigation';
 import { SceneNavigator, spring } from 'navigation-react-native';
 import Home from './Home';
 import Tweet from './Tweet';
+import { getHome } from './data';
 
 const stateNavigator = new StateNavigator([
   { key: 'home' },
@@ -11,7 +12,7 @@ const stateNavigator = new StateNavigator([
 ]);
 
 var { home, tweet } = stateNavigator.states;
-home.renderScene = () => <Home stateNavigator={stateNavigator} />;
+home.renderScene = () => <Home tweets={getHome()} stateNavigator={stateNavigator}/>;
 tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
