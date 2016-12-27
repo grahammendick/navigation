@@ -22,28 +22,40 @@ const Row = ({ id, name, logo, text, stateNavigator }) => (
   <TouchableHighlight underlayColor="white" onPress={() => {
     stateNavigator.navigate('tweet', { id: id });
   } }>
-    <View>
-      <Text>{name}</Text>
+    <View style={styles.tweet}>
       <Image
         style={styles.logo}
         source={{uri: logo}}
       />
-      <Text>{text}</Text>
+      <View style={{flex: 1}}>
+        <Text style={styles.name}>{name}</Text>
+        <Text>{text}</Text>
+      </View>
     </View>
   </TouchableHighlight>
 );
 
 const styles = StyleSheet.create({
   view: {
-    margin: 25,
   },
   home: {
     paddingTop: 10,
     fontSize: 50,
     marginTop: 50,
   },
+  tweet: {
+    flexDirection: 'row',
+    padding: 10,
+    borderBottomColor: '#ccd6dd',
+    borderBottomWidth: 1,
+  },
+  name: {
+    fontWeight: 'bold',
+  },
   logo: {
     width: 50,
     height: 50,
+    borderRadius: 8,
+    marginRight: 8,
   },
 });
