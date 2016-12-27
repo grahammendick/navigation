@@ -20,9 +20,9 @@ export default Twitter = () => (
   <View>
     <SceneNavigator
       startStateKey="home"
-      unmountedStyle={{ translate: spring(100), scale: spring(1) }}
+      unmountedStyle={{ translate: spring(1), scale: spring(1) }}
       mountedStyle={{ translate: spring(0), scale: spring(1) }}
-      crumbStyle={{ translate: spring(5), scale: spring(0.9) }}
+      crumbStyle={{ translate: spring(0.05), scale: spring(0.9) }}
       stateNavigator={stateNavigator}>
       {({translate, scale}, scene, active) => (
           <View
@@ -30,7 +30,7 @@ export default Twitter = () => (
             style={[
               styles.scene,
               { transform: [
-                  { translateX: Dimensions.get('window').width * translate / 100 },
+                  { translateX: Dimensions.get('window').width * translate },
                   { scale: scale },
                 ]
               },
