@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 
-export default ({ stateNavigator }) => (
+export default ({tweet: {name}, stateNavigator}) => (
   <View style={styles.view}>
     <TouchableHighlight underlayColor="white" onPress={() => {
       stateNavigator.navigateBack(1);
@@ -10,9 +10,9 @@ export default ({ stateNavigator }) => (
     </TouchableHighlight>
     <Text style={styles.tweet}>Tweet</Text>
     <TouchableHighlight underlayColor="white" onPress={() => {
-      stateNavigator.navigate('tweet');
+      stateNavigator.navigate('tweet', {id: 1});
     }}>
-      <Text>Tweet {stateNavigator.stateContext.crumbs.length}</Text>
+      <Text>{name} {stateNavigator.stateContext.crumbs.length}</Text>
     </TouchableHighlight>
   </View>
 );

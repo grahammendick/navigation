@@ -1,8 +1,8 @@
 import React from 'react';
-import { StateNavigator } from 'navigation';
+import {StateNavigator} from 'navigation';
 import Home from './Home';
 import Tweet from './Tweet';
-import { getHome } from './data';
+import {getHome, getTweet} from './data';
 
 export default () => {
   const stateNavigator = new StateNavigator([
@@ -12,7 +12,7 @@ export default () => {
 
   const { home, tweet } = stateNavigator.states;
   home.renderScene = () => <Home tweets={getHome()} stateNavigator={stateNavigator}/>;
-  tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
+  tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} stateNavigator={stateNavigator} />;
 
   tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
   return stateNavigator;
