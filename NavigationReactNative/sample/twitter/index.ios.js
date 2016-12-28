@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, AppRegistry, StyleSheet, View } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { SceneNavigator, spring } from 'navigation-react-native';
 import Home from './Home';
