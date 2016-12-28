@@ -17,18 +17,26 @@ tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
+var getStyle = (translate, scale, opacity) => (
+  { translate: spring(translate),
+    scale: spring(scale),
+    opacity: spring(opacity)
+  }
+);
+
 export default Twitter = () => (
   <View>
     <SceneNavigator
       startStateKey="home"
-      unmountedStyle={{ translate: spring(1), scale: spring(1) }}
-      mountedStyle={{ translate: spring(0), scale: spring(1) }}
-      crumbStyle={{ translate: spring(0.05), scale: spring(0.9) }}
+      unmountedStyle={getStyle(1, 1, 1)}
+      mountedStyle={getStyle(0, 1, 1)}
+      crumbStyle={getStyle(0.05, 0.9, 0)}
       stateNavigator={stateNavigator}>
-      {({translate, scale}, scene, active) => (
+      {({translate, scale, opacity}, scene, active) => (
           <Scene
             scale={scale}
             translate={translate}
+            opacity={opacity}
             active={active}
             dimensions={Dimensions.get('window')}>
             {scene}
@@ -38,18 +46,20 @@ export default Twitter = () => (
   </View>
 );
 
-var Scene = ({ translate, scale, active,
+var Scene = ({ translate, scale, opacity, active,
   dimensions: { width, height }, children }) => (
   <View
     pointerEvents={active ? 'auto' : 'none'}
     style={[
       styles.scene,
-      { width: width, height: height },
-      { transform: [
+      { width: width,
+        height: height,
+        opacity: opacity,
+        transform: [
           { translateX: width * translate },
           { scale: scale },
         ]
-      },
+      }
     ]}>
     {children}
   </View>
