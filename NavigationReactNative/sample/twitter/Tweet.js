@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet, Text, Image, View, TouchableHighlight} from 'react-native';
 import Tweets from './Tweets';
 
-export default ({tweet: {name, username, logo, text, time, retweets, likes, replies}, stateNavigator}) => (
+export default ({tweet: {name, username, logo, text, 
+  time, retweets, likes, replies}, stateNavigator}) => (
   <View style={styles.view}>
     <TouchableHighlight underlayColor="white" onPress={() => {
       stateNavigator.navigateBack(1);
