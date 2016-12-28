@@ -33,8 +33,8 @@ export default Twitter = () => (
   </View>
 );
 
-const Scene = ({ translate, scale, opacity, pointerEvents,
-  dimensions: { width, height }, children }) => (
+const Scene = ({translate, scale, opacity, pointerEvents,
+  dimensions: {width, height}, children}) => (
   <View
     pointerEvents={pointerEvents}
     style={[
