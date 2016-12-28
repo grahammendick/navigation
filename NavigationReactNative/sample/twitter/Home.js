@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, Image, View, ListView, TouchableHighlight } from 'react-native';
 
 export default ({ tweets, stateNavigator }) => {
-  const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-  const dataSource = ds.cloneWithRows(tweets);
+  const dataSource = new ListView
+    .DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    .cloneWithRows(tweets);
   return (
     <View style={styles.view}>
       <Text style={styles.home}>Home</Text>
