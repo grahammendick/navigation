@@ -5,7 +5,7 @@ import createStateNavigator from './createStateNavigator';
 
 const stateNavigator = createStateNavigator();
 
-var getStyle = (translate, scale, opacity) => ({
+const getStyle = (translate, scale, opacity) => ({
   translate: spring(translate),
   scale: spring(scale),
   opacity: spring(opacity)
@@ -33,7 +33,7 @@ export default Twitter = () => (
   </View>
 );
 
-var Scene = ({ translate, scale, opacity, pointerEvents,
+const Scene = ({ translate, scale, opacity, pointerEvents,
   dimensions: { width, height }, children }) => (
   <View
     pointerEvents={pointerEvents}

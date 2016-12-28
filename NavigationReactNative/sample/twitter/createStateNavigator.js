@@ -10,7 +10,7 @@ export default () => {
     { key: 'tweet', trackCrumbTrail: true }
   ]);
 
-  var { home, tweet } = stateNavigator.states;
+  const { home, tweet } = stateNavigator.states;
   home.renderScene = () => <Home tweets={getHome()} stateNavigator={stateNavigator}/>;
   tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
 
