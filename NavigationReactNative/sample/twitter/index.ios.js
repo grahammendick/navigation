@@ -44,9 +44,7 @@ var Scene = ({ translate, scale, active,
     pointerEvents={active ? 'auto' : 'none'}
     style={[
       styles.scene,
-      { width: width,
-        height: height,
-      },
+      { width: width, height: height },
       { transform: [
           { translateX: width * translate },
           { scale: scale },
