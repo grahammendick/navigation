@@ -36,7 +36,7 @@ export default Twitter = () => (
             scale={scale}
             translate={translate}
             opacity={opacity}
-            active={active}
+            pointerEvents={active ? 'auto' : 'none'}
             dimensions={Dimensions.get('window')}>
             {scene}
           </Scene>
@@ -45,10 +45,10 @@ export default Twitter = () => (
   </View>
 );
 
-var Scene = ({ translate, scale, opacity, active,
+var Scene = ({ translate, scale, opacity, pointerEvents,
   dimensions: { width, height }, children }) => (
   <View
-    pointerEvents={active ? 'auto' : 'none'}
+    pointerEvents={pointerEvents}
     style={[
       styles.scene,
       { width: width,
