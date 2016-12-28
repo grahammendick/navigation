@@ -23,7 +23,7 @@ const Tweet = ({id, name, logo, text, stateNavigator}) => (
         style={styles.logo}
         source={{uri: logo}}
       />
-      <View style={{flex: 1}}>
+      <View style={styles.details}>
         <Text style={styles.name}>{name}</Text>
         <Text>{text}</Text>
       </View>
@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomColor: '#ccd6dd',
     borderBottomWidth: 1,
+  },
+  details: {
+    flex: 1,
   },
   name: {
     fontWeight: 'bold',
