@@ -38,16 +38,17 @@ export default Twitter = () => (
   </View>
 );
 
-var Scene = ({ translate, scale, active, dimensions, children }) => (
+var Scene = ({ translate, scale, active,
+  dimensions: { width, height }, children }) => (
   <View
     pointerEvents={active ? 'auto' : 'none'}
     style={[
       styles.scene,
-      { width: dimensions.width,
-        height: dimensions.height,
+      { width: width,
+        height: height,
       },
       { transform: [
-          { translateX: dimensions.width * translate },
+          { translateX: width * translate },
           { scale: scale },
         ]
       },
