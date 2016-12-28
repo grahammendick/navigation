@@ -17,12 +17,11 @@ tweet.renderScene = () => <Tweet stateNavigator={stateNavigator} />;
 
 tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
-var getStyle = (translate, scale, opacity) => (
-  { translate: spring(translate),
-    scale: spring(scale),
-    opacity: spring(opacity)
-  }
-);
+var getStyle = (translate, scale, opacity) => ({
+  translate: spring(translate),
+  scale: spring(scale),
+  opacity: spring(opacity)
+});
 
 export default Twitter = () => (
   <View>
