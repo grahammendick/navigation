@@ -48,7 +48,7 @@ class SceneNavigator extends React.Component<any, any> {
         var {oldState, oldData, state, data, url, crumbs} = this.getStateNavigator().stateContext;
         if (!state)
             return null;
-        var {unmountedStyle, mountedStyle} = this.props;
+        var {unmountedStyle, mountedStyle, style} = this.props;
         var sceneContexts = (crumbs as [any]).concat({state, data, url, mount: true});
         return (
             <TransitionMotion
@@ -59,7 +59,9 @@ class SceneNavigator extends React.Component<any, any> {
                     data: {scene: this.state.scenes[url], state, data, url, mount},
                     style: getStyle(mountedStyle, state, data, spring(0))
                 }))}>
-                {tweenStyles => <View>{tweenStyles.map((config) => this.renderScene(config))}</View>}
+                {tweenStyles => (
+                    <View style={style}>{tweenStyles.map((config) => this.renderScene(config))}</View>
+                )}
             </TransitionMotion>
         );
     }
