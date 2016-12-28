@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, Image, View, ListView, TouchableHighlight } from 'react-native';
 
-export default ({ tweets, stateNavigator }) => {
+export default ({tweets, stateNavigator}) => {
   const dataSource = new ListView
     .DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     .cloneWithRows(tweets);
@@ -14,9 +14,9 @@ export default ({ tweets, stateNavigator }) => {
     </View>);
 };
 
-const Tweet = ({ id, name, logo, text, stateNavigator }) => (
+const Tweet = ({id, name, logo, text, stateNavigator}) => (
   <TouchableHighlight underlayColor="white" onPress={() => {
-    stateNavigator.navigate('tweet', { id: id });
+    stateNavigator.navigate('tweet', {id});
   }}>
     <View style={styles.tweet}>
       <Image
