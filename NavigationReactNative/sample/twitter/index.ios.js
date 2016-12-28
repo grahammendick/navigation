@@ -26,19 +26,34 @@ export default Twitter = () => (
       crumbStyle={{ translate: spring(0.05), scale: spring(0.9) }}
       stateNavigator={stateNavigator}>
       {({translate, scale}, scene, active) => (
-          <View
+          <Scene
+            scale={scale}
+            translate={translate}
             pointerEvents={active ? 'auto' : 'none'}
-            style={[
-              styles.scene,
-              { transform: [
-                  { translateX: Dimensions.get('window').width * translate },
-                  { scale: scale },
-                ]
-              },
-            ]}>{scene}</View>
+            dimensions={Dimensions.get('window')}>
+            {scene}
+          </Scene>
       )}
     </SceneNavigator>
   </View>
+);
+
+var Scene = ({ translate, scale, pointerEvents, dimensions, children }) => (
+  <View
+    pointerEvents={pointerEvents}
+    style={[
+      styles.scene,
+      { width: dimensions.width,
+        height: dimensions.height,
+      },
+      { transform: [
+          { translateX: dimensions.width * translate },
+          { scale: scale },
+        ]
+      },
+    ]}>
+      {children}
+    </View>
 );
 
 const styles = StyleSheet.create({
@@ -46,8 +61,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     backgroundColor: 'white',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
     position: 'absolute',
   }
 });
