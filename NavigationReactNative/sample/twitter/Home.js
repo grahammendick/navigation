@@ -10,14 +10,20 @@ export default ({tweets, stateNavigator}) => {
       <Text style={styles.home}>Home</Text>
       <ListView
         dataSource={dataSource}
-        renderRow={tweet => <Tweet {...tweet} stateNavigator={stateNavigator} />} />
+        renderRow={tweet => (
+          <Tweet
+            {...tweet}
+            stateNavigator={stateNavigator} />
+        )} />
     </View>
   );
 };
 
 const Tweet = ({id, name, logo, text, stateNavigator}) => (
-  <TouchableHighlight underlayColor="white" onPress={() => {
-    stateNavigator.navigate('tweet', {id});
+  <TouchableHighlight
+    underlayColor="white"
+    onPress={() => {
+      stateNavigator.navigate('tweet', {id});
   }}>
     <View style={styles.tweet}>
       <Image
