@@ -18,7 +18,7 @@ class NavigationBackAndroid extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { url: this.getStateNavigator().stateContext.url };
+        this.state = {url: this.getStateNavigator().stateContext.url};
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
