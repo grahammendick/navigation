@@ -11,7 +11,8 @@ export default ({tweets, stateNavigator}) => {
       <ListView
         dataSource={dataSource}
         renderRow={tweet => <Tweet {...tweet} stateNavigator={stateNavigator} />} />
-    </View>);
+    </View>
+  );
 };
 
 const Tweet = ({id, name, logo, text, stateNavigator}) => (
