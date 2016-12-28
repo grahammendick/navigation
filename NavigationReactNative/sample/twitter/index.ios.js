@@ -54,8 +54,6 @@ var Scene = ({ translate, scale, opacity, pointerEvents,
 
 const styles = StyleSheet.create({
   scene: {
-    borderWidth: 1,
-    borderColor: 'black',
     backgroundColor: 'white',
     position: 'absolute',
   }
