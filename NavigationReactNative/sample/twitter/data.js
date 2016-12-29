@@ -3,18 +3,21 @@ var accounts = {
     name: 'Preethi Kasireddy',
     username: '@iam_preethi',
     logo: 'https://pbs.twimg.com/profile_images/462295995531816964/-qH1C62A_200x200.jpeg',
+    bio: 'Software Engineer @coinbase. Previously @a16z & @GoldmanSachs. Besides doing nerdy things, I love running & reading. I believe in the magic of thinking big :)',
     tweets: [1, 2, 3, 4]
   },
   2: {
     name: 'Sebastian Markbåge',
     username: '@sebmarkbage',
     logo: 'https://pbs.twimg.com/profile_images/762857977036480513/G6HPkHDy_200x200.jpg',
+    bio: 'React JS · TC39 · The Facebook · Tweets are personal',
     tweets: [5, 6, 7, 8]
   },
   3: {
     name: 'Dan Abramov',
     username: '@dan_abramov',
     logo: 'https://pbs.twimg.com/profile_images/553711083064541184/9VsY9i09_200x200.jpeg',
+    bio: 'Co-authored Redux, Create React App, React Hot Loader, React DnD. Helping improve @reactjs. Personal opinions. #juniordevforlife',
     tweets: [9, 10, 11, 12]
   }
 };
