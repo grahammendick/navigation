@@ -1,24 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
-import BackIcon from './BackIcon';
+import Banner from './Banner';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
   text, time, retweets, likes, replies}, stateNavigator}) => (
   <View>
-    <View style={styles.banner}>
-      <TouchableHighlight
-        underlayColor="white"
-        style={styles.back}
-        onPress={() => {
-          stateNavigator.navigateBack(1);
-      }}>
-        <View>
-          <BackIcon />
-        </View>
-      </TouchableHighlight>
-      <Text style={styles.title}>Tweet</Text>
-    </View>
+    <Banner title="Tweet" stateNavigator={stateNavigator} />
     <ScrollView style={styles.view}>
       <View>
         <View style={styles.heading}>
@@ -54,21 +42,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
-  },
-  banner: {
-    flexDirection: 'row',
-    paddingTop: 40,
-    paddingBottom: 20,
-    borderBottomWidth: 2,
-    borderColor: '#ccd6dd',
-  },
-  back: {
-    marginTop: -6,
-    marginLeft: 10,
-    width: 40,
-  },
-  title: {
-    fontWeight: 'bold',
   },
   heading: {
     flexDirection: 'row',
