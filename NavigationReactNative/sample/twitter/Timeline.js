@@ -9,10 +9,7 @@ export default ({timeline: {name, username, logo, bio,
     <Banner title={name} stateNavigator={stateNavigator} />
     <ScrollView style={styles.view}>
       <View>
-        <Image
-          style={styles.logo}
-          source={logo}
-        />
+        <Image style={styles.logo} source={logo} />
         <Text style={styles.name}>{name}</Text>
         <Text>{username}</Text>
         <Text style={styles.bio}>{bio}</Text>
