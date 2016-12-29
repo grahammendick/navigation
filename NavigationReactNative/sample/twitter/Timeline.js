@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
   },
   interactions: {
     flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccd6dd',
     paddingTop: 12,
     paddingBottom: 12,
   },
