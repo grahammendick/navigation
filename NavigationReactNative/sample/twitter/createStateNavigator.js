@@ -18,6 +18,11 @@ export default () => {
   timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} stateNavigator={stateNavigator} />;
 
   tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
-  timeline.truncateCrumbTrail = (state, crumbs) => crumbs;
+  timeline.truncateCrumbTrail = (state, crumbs) => {
+    const crumb = crumbs[crumbs.length - 1];
+    if (crumb.state === state && crumb.data.id === stateNavigator.stateContext.data.id)
+      return crumbs.slice(0, -1);
+    return crumbs;
+  };
   return stateNavigator;
 }
