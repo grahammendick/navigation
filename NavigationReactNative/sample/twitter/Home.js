@@ -3,7 +3,7 @@ import { StyleSheet, Text, Image, View, TouchableHighlight } from 'react-native'
 import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (
-  <View style={styles.view}>
+  <View>
     <View style={styles.banner}>
       <Text style={styles.title}>Home</Text>
     </View>
@@ -16,7 +16,7 @@ export default ({tweets, stateNavigator}) => (
 const styles = StyleSheet.create({
   banner: {
     paddingTop: 40,
-    paddingLeft: 60,
+    paddingLeft: 50,
     paddingBottom: 20,
     borderBottomWidth: 2,
     borderColor: '#ccd6dd',
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   view: {
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
     paddingTop: 10,
   },
 });
