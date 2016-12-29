@@ -4,6 +4,8 @@ var accounts = {
     username: '@iam_preethi',
     logo: 'https://pbs.twimg.com/profile_images/462295995531816964/-qH1C62A_200x200.jpeg',
     bio: 'Software Engineer @coinbase. Previously @a16z & @GoldmanSachs. Besides doing nerdy things, I love running & reading. I believe in the magic of thinking big :)',
+    following: 763,
+    followers: 6722,
     tweets: [1, 2, 3, 4]
   },
   2: {
@@ -11,6 +13,8 @@ var accounts = {
     username: '@sebmarkbage',
     logo: 'https://pbs.twimg.com/profile_images/762857977036480513/G6HPkHDy_200x200.jpg',
     bio: 'React JS · TC39 · The Facebook · Tweets are personal',
+    following: 354,
+    followers: 14319,
     tweets: [5, 6, 7, 8]
   },
   3: {
@@ -18,6 +22,8 @@ var accounts = {
     username: '@dan_abramov',
     logo: 'https://pbs.twimg.com/profile_images/553711083064541184/9VsY9i09_200x200.jpeg',
     bio: 'Co-authored Redux, Create React App, React Hot Loader, React DnD. Helping improve @reactjs. Personal opinions. #juniordevforlife',
+    following: 1576,
+    followers: 52822,
     tweets: [9, 10, 11, 12]
   }
 };
