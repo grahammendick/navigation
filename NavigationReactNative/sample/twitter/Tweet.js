@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, Image, View, TouchableHighlight} from 'react-native';
 import Tweets from './Tweets';
 
-export default ({tweet: {account: {name, username, logo}, 
+export default ({tweet: {account: {id: accountId, name, username, logo}, 
   text, time, retweets, likes, replies}, stateNavigator}) => (
   <View style={styles.view}>
     <TouchableHighlight underlayColor="white" onPress={() => {
@@ -12,10 +12,14 @@ export default ({tweet: {account: {name, username, logo},
     </TouchableHighlight>
     <View>
       <View style={styles.heading}>
-        <Image
-          style={styles.logo}
-          source={{uri: logo}}
-        />
+        <TouchableHighlight underlayColor="white" onPress={() => {
+            stateNavigator.navigate('timeline', {id: accountId});
+        }}>
+          <Image
+            style={styles.logo}
+            source={{uri: logo}}
+          />
+        </TouchableHighlight>
         <View style={styles.details}>
           <Text style={styles.name}>{name}</Text>
           <Text>{username}</Text>
