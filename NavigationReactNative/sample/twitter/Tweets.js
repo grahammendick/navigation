@@ -8,17 +8,23 @@ export default ({tweets, stateNavigator}) => {
   return (
     <ListView
       dataSource={dataSource}
-      renderRow={({account: {name, logo}, id, text}) => (
+      renderRow={({account: {id: accountId, name, logo}, id, text}) => (
         <TouchableHighlight
           underlayColor="white"
           onPress={() => {
             stateNavigator.navigate('tweet', {id});
         }}>
           <View style={styles.tweet}>
-            <Image
-              style={styles.logo}
-              source={{uri: logo}}
-            />
+            <TouchableHighlight
+              underlayColor="white"
+              onPress={() => {
+                stateNavigator.navigate('timeline', {id: accountId});
+            }}>
+              <Image
+                style={styles.logo}
+                source={{uri: logo}}
+              />
+            </TouchableHighlight>
             <View style={styles.details}>
               <Text style={styles.name}>{name}</Text>
               <Text>{text}</Text>

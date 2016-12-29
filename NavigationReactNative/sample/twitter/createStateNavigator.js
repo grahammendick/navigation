@@ -2,18 +2,22 @@ import React from 'react';
 import {StateNavigator} from 'navigation';
 import Home from './Home';
 import Tweet from './Tweet';
-import {getHome, getTweet} from './data';
+import Timeline from './Timeline';
+import {getHome, getTweet, getTimeline} from './data';
 
 export default () => {
   const stateNavigator = new StateNavigator([
     { key: 'home' },
-    { key: 'tweet', trackCrumbTrail: true }
+    { key: 'tweet', trackCrumbTrail: true },
+    { key: 'timeline', trackCrumbTrail: true }
   ]);
 
-  const { home, tweet } = stateNavigator.states;
+  const { home, tweet, timeline } = stateNavigator.states;
   home.renderScene = () => <Home tweets={getHome()} stateNavigator={stateNavigator}/>;
   tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} stateNavigator={stateNavigator} />;
+  timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} stateNavigator={stateNavigator} />;
 
   tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
+  timeline.truncateCrumbTrail = (state, crumbs) => crumbs;
   return stateNavigator;
 }

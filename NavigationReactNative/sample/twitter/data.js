@@ -2,17 +2,20 @@ var accounts = {
     1: {
         name: 'Preethi Kasireddy',
         username: '@iam_preethi',
-        logo: 'https://pbs.twimg.com/profile_images/462295995531816964/-qH1C62A_normal.jpeg'
+        logo: 'https://pbs.twimg.com/profile_images/462295995531816964/-qH1C62A_200x200.jpeg',
+        tweets: [1,2,3,4]
     },
     2: {
         name: 'Sebastian Markbåge',
         username: '@sebmarkbage',
-        logo: 'https://pbs.twimg.com/profile_images/762857977036480513/G6HPkHDy_normal.jpg'
+        logo: 'https://pbs.twimg.com/profile_images/762857977036480513/G6HPkHDy_200x200.jpg',
+        tweets: [5,6,7,8]
     },
     3: {
         name: 'Dan Abramov',
         username: '@dan_abramov',
-        logo: 'https://pbs.twimg.com/profile_images/553711083064541184/9VsY9i09_normal.jpeg'
+        logo: 'https://pbs.twimg.com/profile_images/553711083064541184/9VsY9i09_200x200.jpeg',
+        tweets: [9,10,11,12]
     }
 };
 
@@ -125,14 +128,20 @@ const fetchTweet = id => ({
 });
 
 const getHome = () => {
-    var homeTweets = [1,5,9,2,6,10];
+    const homeTweets = [1,5,9,2,6,10];
     return homeTweets.map(id => fetchTweet(id));
 };
 
-const getTweet = (tweetId) => {
-    var tweet = fetchTweet(tweetId);
-    tweet.replies = tweet.replies.map(id => fetchTweet(id));
+const getTweet = id => {
+    const tweet = fetchTweet(id);
+    tweet.replies = tweet.replies.map(replyId => fetchTweet(replyId));
     return tweet;
 };
 
-export {getHome, getTweet};
+const getTimeline = id => {
+    const timeline = {...accounts[id]};
+    timeline.tweets = timeline.tweets.map(tweetId => fetchTweet(tweetId));
+    return timeline;
+};
+
+export {getHome, getTweet, getTimeline};

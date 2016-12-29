@@ -10,7 +10,7 @@ export default ({tweet: {account: {name, username, logo},
     }}>
       <Text>Back</Text>
     </TouchableHighlight>
-    <View style={styles.detail}>
+    <View>
       <View style={styles.heading}>
         <Image
           style={styles.logo}
@@ -37,10 +37,6 @@ export default ({tweet: {account: {name, username, logo},
 const styles = StyleSheet.create({
   view: {
     margin: 20,
-  },
-  tweet: {
-    fontSize: 50,
-    marginTop: 50,
   },
   heading: {
     flexDirection: 'row',
