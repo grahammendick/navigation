@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, Image, View, TouchableHighlight} from 'react-native';
+import BackIcon from './BackIcon';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
@@ -12,7 +13,9 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         onPress={() => {
           stateNavigator.navigateBack(1);
       }}>
-        <Text>Back</Text>
+        <View>
+          <BackIcon />
+        </View>
       </TouchableHighlight>
       <Text style={styles.title}>Tweet</Text>
     </View>
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   back: {
+    marginTop: -6,
     width: 40,
   },
   title: {
