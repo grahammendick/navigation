@@ -8,7 +8,7 @@ export default ({tweets, stateNavigator}) => {
   return (
     <ListView
       dataSource={dataSource}
-      renderRow={({id, name, logo, text}) => (
+      renderRow={({account: {name, logo}, id, text}) => (
         <TouchableHighlight
           underlayColor="white"
           onPress={() => {
