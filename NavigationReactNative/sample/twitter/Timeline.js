@@ -20,23 +20,21 @@ export default ({timeline: {name, username, logo, bio,
       <Text style={styles.title}>{name}</Text>
     </View>
     <View style={styles.view}>
-      <View>
-        <Image
-          style={styles.logo}
-          source={logo}
-        />
-        <Text style={styles.name}>{name}</Text>
-        <Text>{username}</Text>
-        <Text style={styles.bio}>{bio}</Text>
-      </View>
-      <View style={styles.interactions}>
-        <Text style={styles.count}>{following.toLocaleString()}</Text>
-        <Text style={styles.interaction}>FOLLOWING</Text>
-        <Text style={styles.count}>{followers.toLocaleString()}</Text>
-        <Text style={styles.interaction}>FOLLOWERS</Text>
-      </View>
-      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+      <Image
+        style={styles.logo}
+        source={logo}
+      />
+      <Text style={styles.name}>{name}</Text>
+      <Text>{username}</Text>
+      <Text style={styles.bio}>{bio}</Text>
     </View>
+    <View style={styles.interactions}>
+      <Text style={styles.count}>{following.toLocaleString()}</Text>
+      <Text style={styles.interaction}>FOLLOWING</Text>
+      <Text style={styles.count}>{followers.toLocaleString()}</Text>
+      <Text style={styles.interaction}>FOLLOWERS</Text>
+    </View>
+    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
   </View>
 );
 
@@ -83,6 +81,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccd6dd',
     paddingTop: 12,
     paddingBottom: 12,
+    marginLeft: 20,
+    marginRight: 20,
   },
   count: {
     fontWeight: 'bold',

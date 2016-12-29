@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
   tweet: {
     flexDirection: 'row',
     padding: 10,
+    marginLeft: 10,
+    marginRight: 10,
     borderBottomColor: '#ccd6dd',
     borderBottomWidth: 1,
   },
