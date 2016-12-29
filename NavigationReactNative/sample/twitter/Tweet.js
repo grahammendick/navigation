@@ -5,7 +5,7 @@ import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
   text, time, retweets, likes, replies}, stateNavigator}) => (
-  <View style={styles.view}>
+  <View>
     <View style={styles.banner}>
       <TouchableHighlight
         underlayColor="white"
@@ -19,31 +19,33 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
       </TouchableHighlight>
       <Text style={styles.title}>Tweet</Text>
     </View>
-    <View>
-      <View style={styles.heading}>
-        <TouchableHighlight underlayColor="white" onPress={() => {
-            stateNavigator.navigate('timeline', {id: accountId});
-        }}>
-          <Image
-            style={styles.logo}
-            source={{uri: logo}}
-          />
-        </TouchableHighlight>
-        <View style={styles.details}>
-          <Text style={styles.name}>{name}</Text>
-          <Text>{username}</Text>
+    <View style={styles.view}>
+      <View>
+        <View style={styles.heading}>
+          <TouchableHighlight underlayColor="white" onPress={() => {
+              stateNavigator.navigate('timeline', {id: accountId});
+          }}>
+            <Image
+              style={styles.logo}
+              source={{uri: logo}}
+            />
+          </TouchableHighlight>
+          <View style={styles.details}>
+            <Text style={styles.name}>{name}</Text>
+            <Text>{username}</Text>
+          </View>
+        </View>
+        <Text style={styles.text}>{text}</Text>
+        <Text style={styles.time}>{time}</Text>
+        <View style={styles.interactions}>
+          <Text style={styles.count}>{retweets}</Text>
+          <Text style={styles.interaction}>RETWEETS</Text>
+          <Text style={styles.count}>{likes}</Text>
+          <Text style={styles.interaction}>LIKES</Text>
         </View>
       </View>
-      <Text style={styles.text}>{text}</Text>
-      <Text style={styles.time}>{time}</Text>
-      <View style={styles.interactions}>
-        <Text style={styles.count}>{retweets}</Text>
-        <Text style={styles.interaction}>RETWEETS</Text>
-        <Text style={styles.count}>{likes}</Text>
-        <Text style={styles.interaction}>LIKES</Text>
-      </View>
+      <Tweets tweets={replies} stateNavigator={stateNavigator} />
     </View>
-    <Tweets tweets={replies} stateNavigator={stateNavigator} />
   </View>
 );
 
@@ -53,12 +55,16 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   banner: {
-    paddingTop: 40,
-    paddingBottom: 40,
     flexDirection: 'row',
+    paddingTop: 40,
+    paddingBottom: 20,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    borderColor: '#ccd6dd',
   },
   back: {
     marginTop: -6,
+    marginLeft: 10,
     width: 40,
   },
   title: {

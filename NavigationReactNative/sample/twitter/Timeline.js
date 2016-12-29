@@ -5,7 +5,7 @@ import Tweets from './Tweets';
 
 export default ({timeline: {name, username, logo, bio, 
   followers, following, tweets}, stateNavigator}) => (
-  <View style={styles.view}>
+  <View>
     <View style={styles.banner}>
       <TouchableHighlight
         underlayColor="white"
@@ -19,22 +19,24 @@ export default ({timeline: {name, username, logo, bio,
       </TouchableHighlight>
       <Text style={styles.title}>{name}</Text>
     </View>
-    <View>
-      <Image
-        style={styles.logo}
-        source={{uri: logo}}
-      />
-      <Text style={styles.name}>{name}</Text>
-      <Text>{username}</Text>
-      <Text style={styles.bio}>{bio}</Text>
+    <View style={styles.view}>
+      <View>
+        <Image
+          style={styles.logo}
+          source={{uri: logo}}
+        />
+        <Text style={styles.name}>{name}</Text>
+        <Text>{username}</Text>
+        <Text style={styles.bio}>{bio}</Text>
+      </View>
+      <View style={styles.interactions}>
+        <Text style={styles.count}>{following.toLocaleString()}</Text>
+        <Text style={styles.interaction}>FOLLOWING</Text>
+        <Text style={styles.count}>{followers.toLocaleString()}</Text>
+        <Text style={styles.interaction}>FOLLOWERS</Text>
+      </View>
+      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
     </View>
-    <View style={styles.interactions}>
-      <Text style={styles.count}>{following.toLocaleString()}</Text>
-      <Text style={styles.interaction}>FOLLOWING</Text>
-      <Text style={styles.count}>{followers.toLocaleString()}</Text>
-      <Text style={styles.interaction}>FOLLOWERS</Text>
-    </View>
-    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
   </View>
 );
 
@@ -44,12 +46,16 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   banner: {
-    paddingTop: 40,
-    paddingBottom: 40,
     flexDirection: 'row',
+    paddingTop: 40,
+    paddingBottom: 20,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    borderColor: '#ccd6dd',
   },
   back: {
     marginTop: -6,
+    marginLeft: 10,
     width: 40,
   },
   title: {
