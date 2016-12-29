@@ -38,9 +38,8 @@ export default ({tweets, stateNavigator}) => {
 const styles = StyleSheet.create({
   tweet: {
     flexDirection: 'row',
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
     borderBottomColor: '#ccd6dd',
     borderBottomWidth: 1,
   },

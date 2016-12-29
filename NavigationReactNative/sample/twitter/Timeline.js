@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, Image, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
 import BackIcon from './BackIcon';
 import Tweets from './Tweets';
 
@@ -19,35 +19,37 @@ export default ({timeline: {name, username, logo, bio,
       </TouchableHighlight>
       <Text style={styles.title}>{name}</Text>
     </View>
-    <View style={styles.view}>
-      <Image
-        style={styles.logo}
-        source={logo}
-      />
-      <Text style={styles.name}>{name}</Text>
-      <Text>{username}</Text>
-      <Text style={styles.bio}>{bio}</Text>
-    </View>
-    <View style={styles.interactions}>
-      <Text style={styles.count}>{following.toLocaleString()}</Text>
-      <Text style={styles.interaction}>FOLLOWING</Text>
-      <Text style={styles.count}>{followers.toLocaleString()}</Text>
-      <Text style={styles.interaction}>FOLLOWERS</Text>
-    </View>
-    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+    <ScrollView style={styles.view}>
+      <View>
+        <Image
+          style={styles.logo}
+          source={logo}
+        />
+        <Text style={styles.name}>{name}</Text>
+        <Text>{username}</Text>
+        <Text style={styles.bio}>{bio}</Text>
+      </View>
+      <View style={styles.interactions}>
+        <Text style={styles.count}>{following.toLocaleString()}</Text>
+        <Text style={styles.interaction}>FOLLOWING</Text>
+        <Text style={styles.count}>{followers.toLocaleString()}</Text>
+        <Text style={styles.interaction}>FOLLOWERS</Text>
+      </View>
+      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+    </ScrollView>
   </View>
 );
 
 const styles = StyleSheet.create({
   view: {
-    marginLeft: 20,
-    marginRight: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
   },
   banner: {
     flexDirection: 'row',
     paddingTop: 40,
     paddingBottom: 20,
-    marginBottom: 20,
     borderBottomWidth: 2,
     borderColor: '#ccd6dd',
   },
@@ -81,8 +83,6 @@ const styles = StyleSheet.create({
     borderColor: '#ccd6dd',
     paddingTop: 12,
     paddingBottom: 12,
-    marginLeft: 20,
-    marginRight: 20,
   },
   count: {
     fontWeight: 'bold',

@@ -7,7 +7,9 @@ export default ({tweets, stateNavigator}) => (
     <View style={styles.banner}>
       <Text style={styles.title}>Home</Text>
     </View>
-    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+    <View style={styles.view}>
+      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+    </View>
   </View>
 );
 
@@ -22,5 +24,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
+  },
+  view: {
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });
