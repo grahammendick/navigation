@@ -4,15 +4,16 @@ import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (
   <View style={styles.view}>
-    <Text style={styles.home}>Home</Text>
+    <Text style={styles.title}>Home</Text>
     <Tweets tweets={tweets} stateNavigator={stateNavigator} />
   </View>
 );
 
 const styles = StyleSheet.create({
-  home: {
-    paddingTop: 10,
-    fontSize: 50,
-    marginTop: 50,
+  title: {
+    paddingTop: 40,
+    paddingLeft: 60,
+    paddingBottom: 40,
+    fontWeight: 'bold',
   },
 });

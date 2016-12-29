@@ -5,12 +5,18 @@ import Tweets from './Tweets';
 export default ({timeline: {name, username, logo, bio, 
   followers, following, tweets}, stateNavigator}) => (
   <View style={styles.view}>
-    <TouchableHighlight underlayColor="white" onPress={() => {
-      stateNavigator.navigateBack(1);
-    }}>
-      <Text>Back</Text>
-    </TouchableHighlight>
-    <View style={styles.heading}>
+    <View style={styles.banner}>
+      <TouchableHighlight
+        underlayColor="white"
+        style={styles.back}
+        onPress={() => {
+          stateNavigator.navigateBack(1);
+      }}>
+        <Text>Back</Text>
+      </TouchableHighlight>
+      <Text style={styles.title}>{name}</Text>
+    </View>
+    <View>
       <Image
         style={styles.logo}
         source={{uri: logo}}
@@ -31,9 +37,19 @@ export default ({timeline: {name, username, logo, bio,
 
 const styles = StyleSheet.create({
   view: {
-    margin: 20,
+    marginLeft: 20,
+    marginRight: 20,
   },
-  heading: {
+  banner: {
+    paddingTop: 40,
+    paddingBottom: 40,
+    flexDirection: 'row',
+  },
+  back: {
+    width: 40,
+  },
+  title: {
+    fontWeight: 'bold',
   },
   logo: {
     width: 100,
