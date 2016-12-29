@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingLeft: 60,
     paddingBottom: 20,
-    marginBottom: 10,
     borderBottomWidth: 2,
     borderColor: '#ccd6dd',
   },
@@ -28,5 +27,6 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 10,
     paddingRight: 10,
+    paddingTop: 10,
   },
 });
