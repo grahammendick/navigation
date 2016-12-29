@@ -2,7 +2,7 @@ var accounts = {
   1: {
     name: 'Preethi Kasireddy',
     username: '@iam_preethi',
-    logo: 'https://pbs.twimg.com/profile_images/462295995531816964/-qH1C62A_200x200.jpeg',
+    logo: require('./iam_preethi.jpeg'),
     bio: 'Software Engineer @coinbase. Previously @a16z & @GoldmanSachs. Besides doing nerdy things, I love running & reading. I believe in the magic of thinking big :)',
     following: 763,
     followers: 6722,
@@ -11,7 +11,7 @@ var accounts = {
   2: {
     name: 'Sebastian Markbåge',
     username: '@sebmarkbage',
-    logo: 'https://pbs.twimg.com/profile_images/762857977036480513/G6HPkHDy_200x200.jpg',
+    logo: require('./sebmarkbage.jpg'),
     bio: 'React JS · TC39 · The Facebook · Tweets are personal',
     following: 354,
     followers: 14319,
@@ -20,7 +20,7 @@ var accounts = {
   3: {
     name: 'Dan Abramov',
     username: '@dan_abramov',
-    logo: 'https://pbs.twimg.com/profile_images/553711083064541184/9VsY9i09_200x200.jpeg',
+    logo: require('./dan_abramov.jpeg'),
     bio: 'Co-authored Redux, Create React App, React Hot Loader, React DnD. Helping improve @reactjs. Personal opinions. #juniordevforlife',
     following: 1576,
     followers: 52822,

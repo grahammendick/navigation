@@ -23,7 +23,7 @@ export default ({timeline: {name, username, logo, bio,
       <View>
         <Image
           style={styles.logo}
-          source={{uri: logo}}
+          source={logo}
         />
         <Text style={styles.name}>{name}</Text>
         <Text>{username}</Text>

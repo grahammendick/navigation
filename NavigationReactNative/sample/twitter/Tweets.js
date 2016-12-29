@@ -22,7 +22,7 @@ export default ({tweets, stateNavigator}) => {
             }}>
               <Image
                 style={styles.logo}
-                source={{uri: logo}}
+                source={logo}
               />
             </TouchableHighlight>
             <View style={styles.details}>
