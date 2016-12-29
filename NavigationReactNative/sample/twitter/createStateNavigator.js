@@ -20,8 +20,8 @@ export default () => {
   tweet.truncateCrumbTrail = (state, crumbs) => crumbs;
 
   timeline.truncateCrumbTrail = (state, crumbs, data) => {
-    const crumb = crumbs[crumbs.length - 1];
-    if (crumb.state === state && crumb.data.id === data.id)
+    const lastCrumb = crumbs[crumbs.length - 1];
+    if (lastCrumb.state === state && lastCrumb.data.id === data.id)
       return crumbs.slice(0, -1);
     return crumbs;
   };
