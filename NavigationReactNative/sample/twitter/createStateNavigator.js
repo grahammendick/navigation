@@ -7,9 +7,9 @@ import {getHome, getTweet, getTimeline} from './data';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    { key: 'home' },
-    { key: 'tweet', trackCrumbTrail: true },
-    { key: 'timeline', trackCrumbTrail: true }
+    {key: 'home'},
+    {key: 'tweet', trackCrumbTrail: true},
+    {key: 'timeline', trackCrumbTrail: true}
   ]);
 
   const { home, tweet, timeline } = stateNavigator.states;

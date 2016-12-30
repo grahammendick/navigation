@@ -39,12 +39,13 @@ const Scene = ({translate, scale, opacity, pointerEvents,
     pointerEvents={pointerEvents}
     style={[
       styles.scene,
-      { width: width,
+      {
+        width: width,
         height: height,
         opacity: opacity,
         transform: [
-          { translateX: width * translate },
-          { scale: scale },
+          {translateX: width * translate},
+          {scale: scale},
         ]
       }
     ]}>
