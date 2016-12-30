@@ -1,4 +1,4 @@
-var accounts = {
+const accounts = {
   1: {
     name: 'Preethi Kasireddy',
     username: '@iam_preethi',
@@ -28,7 +28,7 @@ var accounts = {
   }
 };
 
-var tweets = {
+const tweets = {
   1: {
     account: 1,
     text: 'When you hear a dogmatic opinion about some code, best practice or tool.. question it. Most things in programming are not so black & white.',
@@ -141,6 +141,11 @@ const getHome = () => {
   return homeTweets.map(id => fetchTweet(id));
 };
 
+const getNotifications = () => {
+  const notifications = [1, 2, 3];
+  return notifications.map(id => ({...accounts[id], id}));
+};
+
 const getTweet = id => {
   const tweet = fetchTweet(id);
   tweet.replies = tweet.replies.map(replyId => fetchTweet(replyId));
@@ -153,4 +158,4 @@ const getTimeline = id => {
   return timeline;
 };
 
-export { getHome, getTweet, getTimeline };
+export { getHome, getNotifications, getTweet, getTimeline };
