@@ -30,8 +30,12 @@ export default class Twitter extends Component {
     const {activeTab} = this.state;
     return (
       <View style={styles.app}>
-        <TabNavigator visible={activeTab === 'timeline'} />
-        <TabNavigator visible={activeTab === 'notifications'} />
+        <TabNavigator
+          stateNavigator={timelineStateNavigator}
+          visible={activeTab === 'timeline'} />
+        <TabNavigator
+          stateNavigator={notificationsStateNavigator}
+          visible={activeTab === 'notifications'} />
         <Footer
           activeTab={activeTab}
           onTimeline={this.onTimeline}
@@ -41,13 +45,13 @@ export default class Twitter extends Component {
   }
 }
 
-const TabNavigator = ({visible}) => (
+const TabNavigator = ({stateNavigator, visible}) => (
   <SceneNavigator
     startStateKey="home"
     unmountedStyle={getStyle(1, 1, 1)}
     mountedStyle={getStyle(0, 1, 1)}
     crumbStyle={getStyle(0.05, 0.9, 0)}
-    stateNavigator={timelineStateNavigator}>
+    stateNavigator={stateNavigator}>
     {({translate, scale, opacity}, scene, active) => (
         <Scene
           visible={visible}
@@ -62,13 +66,14 @@ const TabNavigator = ({visible}) => (
   </SceneNavigator>
 );
 
-const Scene = ({translate, scale, opacity, pointerEvents,
+const Scene = ({visible, translate, scale, opacity, pointerEvents,
   dimensions: {width, height}, children}) => (
   <View
     pointerEvents={pointerEvents}
     style={[
       styles.scene,
       {
+        top: visible ? 0 : -height,
         width: width,
         height: height -65,
         opacity: opacity,
