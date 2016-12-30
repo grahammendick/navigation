@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, Image, ScrollView, View, TouchableHighlight } from 'react-native';
 import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (
@@ -7,9 +7,9 @@ export default ({tweets, stateNavigator}) => (
     <View style={styles.banner}>
       <Text style={styles.title}>Home</Text>
     </View>
-    <View style={styles.view}>
+    <ScrollView style={styles.view}>
       <Tweets tweets={tweets} stateNavigator={stateNavigator} />
-    </View>
+    </ScrollView>
   </View>
 );
 
