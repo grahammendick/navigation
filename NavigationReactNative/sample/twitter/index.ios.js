@@ -28,8 +28,11 @@ export default class Twitter extends Component {
   }
   onTab(tabName, stateNavigator) {
     const {activeTab} = this.state;
-    if (activeTab === tabName)
-      stateNavigator.navigateBack(stateNavigator.stateContext.crumbs.length);
+    if (activeTab === tabName) {
+      const crumbCount = stateNavigator.stateContext.crumbs.length
+      if (crumbCount)
+        stateNavigator.navigateBack(crumbCount);
+    }
     else
       this.setState({activeTab: tabName});
   }
