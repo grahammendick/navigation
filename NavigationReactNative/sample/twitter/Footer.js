@@ -2,12 +2,12 @@ import React from 'react';
 import {StyleSheet, TouchableHighlight, Text, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 
-export default ({activeTab}) => (
+export default ({activeTab, onTimeline, onNotifications}) => (
   <View style={styles.footer}>
     <TouchableHighlight
       underlayColor="white"
       style={styles.tab}
-      onPress={() => {}}>
+      onPress={onTimeline}>
       <View style={{}}>
         <Svg
           style={styles.timelineIcon}
@@ -22,7 +22,7 @@ export default ({activeTab}) => (
     <TouchableHighlight
       underlayColor="white"
       style={styles.tab}
-      onPress={() => {}}>
+      onPress={onNotifications}>
       <View style={{}}>
         <Svg
           style={styles.notificationsIcon}

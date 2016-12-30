@@ -17,6 +17,14 @@ export default class Twitter extends Component {
   constructor(props) {
     super(props);
     this.state = {activeTab: 'timeline'};
+    this.onTimeline = this.onTimeline.bind(this);
+    this.onNotifications = this.onNotifications.bind(this);
+  }
+  onTimeline() {
+    this.setState({activeTab: 'timeline'});
+  }
+  onNotifications() {
+    this.setState({activeTab: 'notifications'});
   }
   render() {
     const {activeTab} = this.state;
@@ -24,7 +32,10 @@ export default class Twitter extends Component {
       <View style={styles.app}>
         <TabNavigator visible={activeTab === 'timeline'} />
         <TabNavigator visible={activeTab === 'notifications'} />
-        <Footer activeTab={activeTab} />
+        <Footer
+          activeTab={activeTab}
+          onTimeline={this.onTimeline}
+          onNotifications={this.onNotifications} />
       </View>
     );
   }
@@ -51,14 +62,13 @@ const TabNavigator = ({visible}) => (
   </SceneNavigator>
 );
 
-const Scene = ({visible, translate, scale, opacity, pointerEvents,
+const Scene = ({translate, scale, opacity, pointerEvents,
   dimensions: {width, height}, children}) => (
   <View
     pointerEvents={pointerEvents}
     style={[
       styles.scene,
       {
-        top: visible ? 0 : -height,
         width: width,
         height: height -65,
         opacity: opacity,
