@@ -59,34 +59,34 @@ export default class Twitter extends Component {
 }
 
 const TabSceneNavigator = ({stateNavigator, startStateKey, visible}) => (
-  <View style={{top: visible ? 0 : -999999, position: 'absolute'}}>
-    <SceneNavigator
-      startStateKey={startStateKey}
-      unmountedStyle={getStyle(1, 1, 1)}
-      mountedStyle={getStyle(0, 1, 1)}
-      crumbStyle={getStyle(0.05, 0.9, 0)}
-      stateNavigator={stateNavigator}>
-      {({translate, scale, opacity}, scene, active) => (
-          <Scene
-            scale={scale}
-            translate={translate}
-            opacity={opacity}
-            pointerEvents={active ? 'auto' : 'none'}
-            dimensions={Dimensions.get('window')}>
-            {scene}
-          </Scene>
-      )}
-    </SceneNavigator>
-  </View>
+  <SceneNavigator
+    startStateKey={startStateKey}
+    unmountedStyle={getStyle(1, 1, 1)}
+    mountedStyle={getStyle(0, 1, 1)}
+    crumbStyle={getStyle(0.05, 0.9, 0)}
+    stateNavigator={stateNavigator}>
+    {({translate, scale, opacity}, scene, active) => (
+        <Scene
+          visible={visible}
+          scale={scale}
+          translate={translate}
+          opacity={opacity}
+          pointerEvents={active ? 'auto' : 'none'}
+          dimensions={Dimensions.get('window')}>
+          {scene}
+        </Scene>
+    )}
+  </SceneNavigator>
 );
 
-const Scene = ({translate, scale, opacity, pointerEvents,
+const Scene = ({visible, translate, scale, opacity, pointerEvents,
   dimensions: {width, height}, children}) => (
   <View
     pointerEvents={pointerEvents}
     style={[
       styles.scene,
       {
+        top: visible ? 0 : -9999,
         width: width,
         height: height -65,
         opacity: opacity,
