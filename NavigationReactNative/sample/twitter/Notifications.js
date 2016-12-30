@@ -49,4 +49,24 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingTop: 10,
   },
+  notification: {
+    paddingTop: 10,
+    paddingBottom: 15,
+    borderBottomColor: '#ccd6dd',
+    borderBottomWidth: 1,
+  },
+  details: {
+    flexDirection: 'row',
+  },
+  name: {
+    fontWeight: 'bold',
+    paddingRight: 4,
+  },
+  logo: {
+    width: 35,
+    height: 35,
+    borderRadius: 5,
+    marginRight: 5,
+    marginBottom: 10,
+  },
 });
