@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     flex: 1,
     height: 70,
+    borderTopWidth: 2,
+    borderColor: '#ccd6dd',
     backgroundColor: 'white',
   },
 });
