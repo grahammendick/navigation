@@ -12,7 +12,7 @@ const getStyle = (translate, scale, opacity) => ({
 });
 
 export default Twitter = () => (
-  <View>
+  <View style={styles.app}>
     <SceneNavigator
       startStateKey="home"
       unmountedStyle={getStyle(1, 1, 1)}
@@ -30,6 +30,7 @@ export default Twitter = () => (
           </Scene>
       )}
     </SceneNavigator>
+    <Footer />
   </View>
 );
 
@@ -41,7 +42,7 @@ const Scene = ({translate, scale, opacity, pointerEvents,
       styles.scene,
       {
         width: width,
-        height: height,
+        height: height -70,
         opacity: opacity,
         transform: [
           {translateX: width * translate},
@@ -53,11 +54,26 @@ const Scene = ({translate, scale, opacity, pointerEvents,
   </View>
 );
 
+const Footer = () => (
+  <View style={styles.footer}>
+  </View>
+);
+
 const styles = StyleSheet.create({
+  app: {
+    flexDirection: 'row',
+    flex: 1,
+  },
   scene: {
     backgroundColor: 'white',
     position: 'absolute',
-  }
+  },
+  footer: {
+    alignSelf: 'flex-end',
+    flex: 1,
+    height: 70,
+    backgroundColor: 'white',
+  },
 });
 
 AppRegistry.registerComponent('twitter', () => Twitter);
