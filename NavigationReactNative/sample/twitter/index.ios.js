@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { Dimensions, AppRegistry, StyleSheet, View } from 'react-native';
-import { SceneNavigator, spring } from 'navigation-react-native';
+import {Dimensions, AppRegistry, StyleSheet, View} from 'react-native';
+import {SceneNavigator, spring} from 'navigation-react-native';
 import createStateNavigator from './createStateNavigator';
 import Footer from './Footer';
 
