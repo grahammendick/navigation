@@ -24,7 +24,7 @@ export default class Twitter extends Component {
       <View style={styles.app}>
         <TabNavigator visible={activeTab === 'timeline'} />
         <TabNavigator visible={activeTab === 'notifications'} />
-        <Footer />
+        <Footer activeTab={activeTab} />
       </View>
     );
   }
