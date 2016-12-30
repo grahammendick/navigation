@@ -13,10 +13,6 @@ const getStyle = (translate, scale, opacity) => ({
   opacity: spring(opacity)
 });
 
-const navigateBackToStart = (stateNavigator) => {
-    stateNavigator.navigateBack(stateNavigator.stateContext.crumbs.length);
-};
-
 export default class Twitter extends Component {
   constructor(props) {
     super(props);
@@ -25,18 +21,17 @@ export default class Twitter extends Component {
     this.onNotifications = this.onNotifications.bind(this);
   }
   onTimeline() {
-    const {activeTab} = this.state;
-    if (activeTab === 'timeline')
-      navigateBackToStart(timelineStateNavigator);
-    else
-      this.setState({activeTab: 'timeline'});
+    this.onTab('timeline', timelineStateNavigator);
   }
   onNotifications() {
+    this.onTab('notifications', notificationsStateNavigator);
+  }
+  onTab(tabName, stateNavigator) {
     const {activeTab} = this.state;
-    if (activeTab === 'notifications')
-      navigateBackToStart(notificationsStateNavigator);
+    if (activeTab === tabName)
+      stateNavigator.navigateBack(stateNavigator.stateContext.crumbs.length);
     else
-    this.setState({activeTab: 'notifications'});
+      this.setState({activeTab: tabName});
   }
   render() {
     const {activeTab} = this.state;
