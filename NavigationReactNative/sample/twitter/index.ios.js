@@ -41,10 +41,10 @@ export default class Twitter extends Component {
     const {activeTab} = this.state;
     return (
       <View style={styles.app}>
-        <TabNavigator
+        <TabSceneNavigator
           stateNavigator={timelineStateNavigator}
           visible={activeTab === 'timeline'} />
-        <TabNavigator
+        <TabSceneNavigator
           stateNavigator={notificationsStateNavigator}
           visible={activeTab === 'notifications'} />
         <Footer
@@ -56,7 +56,7 @@ export default class Twitter extends Component {
   }
 }
 
-const TabNavigator = ({stateNavigator, visible}) => (
+const TabSceneNavigator = ({stateNavigator, visible}) => (
   <View style={{top: visible ? 0 : -999999, position: 'absolute'}}>
     <SceneNavigator
       startStateKey="home"
