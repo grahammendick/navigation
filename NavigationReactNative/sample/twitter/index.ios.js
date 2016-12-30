@@ -43,9 +43,11 @@ export default class Twitter extends Component {
       <View style={styles.app}>
         <TabSceneNavigator
           stateNavigator={timelineStateNavigator}
+          startStateKey="home"
           visible={activeTab === 'timeline'} />
         <TabSceneNavigator
           stateNavigator={notificationsStateNavigator}
+          startStateKey="notifications"
           visible={activeTab === 'notifications'} />
         <Footer
           activeTab={activeTab}
@@ -56,10 +58,10 @@ export default class Twitter extends Component {
   }
 }
 
-const TabSceneNavigator = ({stateNavigator, visible}) => (
+const TabSceneNavigator = ({stateNavigator, startStateKey, visible}) => (
   <View style={{top: visible ? 0 : -999999, position: 'absolute'}}>
     <SceneNavigator
-      startStateKey="home"
+      startStateKey={startStateKey}
       unmountedStyle={getStyle(1, 1, 1)}
       mountedStyle={getStyle(0, 1, 1)}
       crumbStyle={getStyle(0.05, 0.9, 0)}

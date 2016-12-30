@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, Image, ListView, ScrollView, View, TouchableHighlight} from 'react-native';
 
 export default ({notifications, stateNavigator}) => {
   const dataSource = new ListView
