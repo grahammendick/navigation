@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image, ScrollView, View, TouchableHighlight } from 'react-native';
+import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
 import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (

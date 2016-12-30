@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight, Text, View } from 'react-native';
+import {StyleSheet, TouchableHighlight, Text, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 
 export default () => (
