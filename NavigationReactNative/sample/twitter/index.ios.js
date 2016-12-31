@@ -86,7 +86,7 @@ const Scene = ({visible, translate, scale, opacity, pointerEvents,
     style={[
       styles.scene,
       {
-        top: visible ? 0 : -9999,
+        top: visible ? 0 : -height,
         width: width,
         height: height -65,
         opacity: opacity,
