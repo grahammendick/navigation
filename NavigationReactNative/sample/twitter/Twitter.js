@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import {SceneNavigator, spring} from 'navigation-react-native';
 
 const getStyle = (translate, scale, opacity) => ({
@@ -35,26 +35,18 @@ const Scene = ({visible, translate, scale, opacity, pointerEvents,
   dimensions: {width, height}, offset, children}) => (
   <View
     pointerEvents={pointerEvents}
-    style={[
-      styles.scene,
-      {
-        top: visible ? 0 : -2*height,
-        width: width,
-        height: height -offset,
-        opacity: opacity,
-        transform: [
-          {translateX: width * translate},
-          {scale: scale},
-        ]
-      }
-    ]}>
+    style={{
+      position: 'absolute',
+      backgroundColor: 'white',
+      top: visible ? 0 : -2*height,
+      width: width,
+      height: height -offset,
+      opacity: opacity,
+      transform: [
+        {translateX: width * translate},
+        {scale: scale},
+      ]
+    }}>
     {children}
   </View>
 );
-
-const styles = StyleSheet.create({
-  scene: {
-    backgroundColor: 'white',
-    position: 'absolute',
-  },
-});
