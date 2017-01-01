@@ -8,12 +8,13 @@ const getStyle = (translate, scale, opacity) => ({
   opacity: spring(opacity)
 });
 
-export default ({stateNavigator, startStateKey, visible}) => (
+export default ({stateNavigator, startStateKey, visible, offset, style}) => (
   <SceneNavigator
     startStateKey={startStateKey}
     unmountedStyle={getStyle(1, 1, 1)}
     mountedStyle={getStyle(0, 1, 1)}
     crumbStyle={getStyle(0.05, 0.9, 0)}
+    style={style}
     stateNavigator={stateNavigator}>
     {({translate, scale, opacity}, scene, active) => (
         <Scene
@@ -21,6 +22,7 @@ export default ({stateNavigator, startStateKey, visible}) => (
           scale={scale}
           translate={translate}
           opacity={opacity}
+          offset={offset || 0}
           pointerEvents={active ? 'auto' : 'none'}
           dimensions={Dimensions.get('window')}>
           {scene}
@@ -30,7 +32,7 @@ export default ({stateNavigator, startStateKey, visible}) => (
 );
 
 const Scene = ({visible, translate, scale, opacity, pointerEvents,
-  dimensions: {width, height}, children}) => (
+  dimensions: {width, height}, offset, children}) => (
   <View
     pointerEvents={pointerEvents}
     style={[
@@ -38,7 +40,7 @@ const Scene = ({visible, translate, scale, opacity, pointerEvents,
       {
         top: visible ? 0 : -height,
         width: width,
-        height: height -65,
+        height: height -offset,
         opacity: opacity,
         transform: [
           {translateX: width * translate},
