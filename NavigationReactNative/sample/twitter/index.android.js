@@ -10,7 +10,7 @@ export default TwitterAndroid = () => (
     stateNavigator={stateNavigator}
     startStateKey="home"
     visible={true}
-    style={{flex: 1}} />
+    style={{flex: 1, backgroundColor: 'black'}} />
 );
 
 AppRegistry.registerComponent('twitter', () => TwitterAndroid);
