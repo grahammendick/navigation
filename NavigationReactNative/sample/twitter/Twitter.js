@@ -38,7 +38,7 @@ const Scene = ({visible, translate, scale, opacity, pointerEvents,
     style={{
       position: 'absolute',
       backgroundColor: 'white',
-      top: visible ? 0 : -2*height,
+      top: visible ? 0 : -2 * height,
       width: width,
       height: height -offset,
       opacity: opacity,
