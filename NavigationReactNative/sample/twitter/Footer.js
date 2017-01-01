@@ -40,8 +40,6 @@ export default ({activeTab, onTimeline, onNotifications}) => (
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
-    alignSelf: 'flex-end',
-    flex: 1,
     height: 65,
     borderTopWidth: 2,
     paddingTop: 5,

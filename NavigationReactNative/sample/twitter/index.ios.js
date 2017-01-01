@@ -56,7 +56,8 @@ export default class TwitterIOS extends Component {
 
 const styles = StyleSheet.create({
   app: {
-    flexDirection: 'row',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
     flex: 1,
   },
 });
