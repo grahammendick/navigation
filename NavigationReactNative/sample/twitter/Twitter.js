@@ -22,7 +22,7 @@ export default ({stateNavigator, startStateKey, visible, offset, style}) => (
           scale={scale}
           translate={translate}
           opacity={opacity}
-          offset={offset || 0}
+          offset={offset}
           pointerEvents={active ? 'auto' : 'none'}
           dimensions={Dimensions.get('window')}>
           {scene}

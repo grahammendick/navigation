@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 20,
+    marginTop: 20,
   },
   logo: {
     width: 100,

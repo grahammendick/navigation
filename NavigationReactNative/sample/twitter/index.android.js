@@ -10,6 +10,7 @@ export default TwitterAndroid = () => (
     stateNavigator={stateNavigator}
     startStateKey="home"
     visible={true}
+    offset={20}
     style={{flex: 1, backgroundColor: 'black'}} />
 );
 
