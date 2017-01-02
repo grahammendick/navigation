@@ -3,28 +3,28 @@ import {StyleSheet, TouchableHighlight, Text, View, Animated} from 'react-native
 import Svg, {Path} from 'react-native-svg';
 import {NavigationBackAndroid} from 'navigation-react-native';
 
-const navigating = (activeTab, goToPage) => {
-  if (activeTab === 1) {
-    goToPage(0);
-    return false;
-  }
-  return true;
-}  
-
 export default ({activeTab, goToPage, containerWidth, scrollValue, stateNavigator}) => {
-    const tabUnderlineStyle = {
-      position: 'absolute',
-      width: containerWidth / 2,
-      height: 4,
-      backgroundColor: '#1da1f2',
-      bottom: 0,
-    };
-    const left = scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0,  containerWidth / 2, ],
-    });
-    return (
+  const tabUnderlineStyle = {
+    position: 'absolute',
+    width: containerWidth / 2,
+    height: 4,
+    backgroundColor: '#1da1f2',
+    bottom: 0,
+  };
+  const left = scrollValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, containerWidth / 2]
+  });
+  const navigating = () => {
+    if (activeTab === 1) {
+      goToPage(0);
+      return false;
+    }
+    return true;
+  }  
+  return (
     <View>
-      <NavigationBackAndroid stateNavigator={stateNavigator} navigating={() => navigating(activeTab, goToPage)} />
+      <NavigationBackAndroid stateNavigator={stateNavigator} navigating={navigating} />
       <View style={styles.banner}>
         <Text style={styles.title}>Home</Text>
       </View>
