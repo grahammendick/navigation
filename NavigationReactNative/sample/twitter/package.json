@@ -11,6 +11,7 @@
     "navigation-react-native": "*",
     "react": "15.4.1",
     "react-native": "0.39.2",
+    "react-native-scrollable-tab-view": "^0.7.0",
     "react-native-svg": "^4.4.1"
   },
   "devDependencies": {

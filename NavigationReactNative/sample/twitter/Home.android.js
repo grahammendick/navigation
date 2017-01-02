@@ -1,32 +1,16 @@
 import React from 'react';
-import {StyleSheet, Text, ScrollView, View} from 'react-native';
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Tweets from './Tweets';
+import Follows from './Follows';
 
-export default ({tweets, stateNavigator}) => (
-  <View>
-    <View style={styles.banner}>
-      <Text style={styles.title}>Home</Text>
-    </View>
-    <ScrollView style={styles.view}>
-      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
-    </ScrollView>
-  </View>
+export default ({tweets, follows, stateNavigator}) => (
+  <ScrollableTabView 
+      renderTabBar={() => <DefaultTabBar
+        style={{marginTop: 20}}
+        activeTextColor="#1da1f2"
+        inactiveTextColor="#657786"
+        underlineStyle={{backgroundColor: '#1da1f2'}} />}>
+      <Tweets tweets={tweets} stateNavigator={stateNavigator} tabLabel="Timeline" />
+      <Follows follows={follows} stateNavigator={stateNavigator} tabLabel="Notification" />
+  </ScrollableTabView>
 );
-
-const styles = StyleSheet.create({
-  banner: {
-    paddingTop: 35,
-    paddingLeft: 50,
-    paddingBottom: 22,
-    borderBottomWidth: 2,
-    borderColor: '#ccd6dd',
-  },
-  title: {
-    fontWeight: 'bold',
-  },
-  view: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 10,
-  },
-});
