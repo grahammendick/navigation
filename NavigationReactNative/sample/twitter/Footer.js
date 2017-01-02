@@ -8,7 +8,7 @@ export default ({activeTab, onTimeline, onNotifications}) => (
       underlayColor="white"
       style={styles.tab}
       onPress={onTimeline}>
-      <View style={{}}>
+      <View>
         <Svg
           style={styles.timelineIcon}
           viewBox="0 0 64 72">
@@ -23,7 +23,7 @@ export default ({activeTab, onTimeline, onNotifications}) => (
       underlayColor="white"
       style={styles.tab}
       onPress={onNotifications}>
-      <View style={{}}>
+      <View>
         <Svg
           style={styles.notificationsIcon}
           viewBox="0 0 64 72">
