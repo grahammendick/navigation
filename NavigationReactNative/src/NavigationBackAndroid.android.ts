@@ -32,6 +32,9 @@ class NavigationBackAndroid extends React.Component<any, any> {
     componentWillUnmount() {
         BackAndroid.removeEventListener('hardwareBackPress', this.onBack);
     }
+    render() {
+        return null;
+    }
 }
 
 export default NavigationBackAndroid;
