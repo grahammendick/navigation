@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, View} from 'react-native';
 import createStateNavigator from './createStateNavigator';
-import Footer from './Footer';
+import TabBar from './TabBar';
 import Twitter from './Twitter';
 
 const timelineStateNavigator = createStateNavigator();
@@ -45,7 +45,7 @@ export default class TwitterIOS extends Component {
           startStateKey="notifications"
           visible={activeTab === 'notifications'}
           offset={65} />
-        <Footer
+        <TabBar
           activeTab={activeTab}
           onTimeline={this.onTimeline}
           onNotifications={this.onNotifications} />
