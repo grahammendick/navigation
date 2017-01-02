@@ -16,26 +16,24 @@ export default ({stateNavigator, startStateKey, visible, offset}) => (
     crumbStyle={getStyle(0.05, 0.9, 0)}
     style={{flex: +visible, backgroundColor: 'black'}}
     stateNavigator={stateNavigator}>
-    {({translate, scale, opacity}, scene, active) => {
-      const {width, height} = Dimensions.get('window');
-      return (
-        <View
-          pointerEvents={active ? 'auto' : 'none'}
-          style={{
-            position: 'absolute',
-            backgroundColor: 'white',
-            top: visible ? 0 : -2 * height,
-            width: width,
-            height: height -offset,
-            opacity: opacity,
-            transform: [
-              {translateX: width * translate},
-              {scale: scale},
-            ]
-          }}>
-          {scene}
-        </View>
-      )
-    }}
+    {({translate, scale, opacity}, scene, active) => (
+      <View
+        pointerEvents={active ? 'auto' : 'none'}
+        style={{
+          position: 'absolute',
+          backgroundColor: 'white',
+          left: 0,
+          right: 0,
+          top: visible ? 0 : -999999,
+          bottom: visible ? 0 : 999999,
+          opacity: opacity,
+          transform: [
+            {translateX: Dimensions.get('window').width * translate},
+            {scale: scale},
+          ]
+        }}>
+        {scene}
+      </View>
+    )}
   </SceneNavigator>
 );

@@ -57,9 +57,7 @@ class SceneNavigator extends React.Component<any, any> {
                     style: getStyle(mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => (
-                    <View
-                        style={style}
-                        onLayout={() => this.forceUpdate()}>
+                    <View style={style}>
                         {tweenStyles.map((config) => this.renderScene(config))}
                     </View>
                 )}
