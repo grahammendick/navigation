@@ -6,7 +6,7 @@ import Follows from './Follows';
 
 export default ({tweets, follows, stateNavigator}) => (
   <ScrollableTabView 
-      renderTabBar={() => <TabBar />}>
+      renderTabBar={() => <TabBar stateNavigator={stateNavigator} />}>
       <Tweets tweets={tweets} stateNavigator={stateNavigator} tabLabel="Timeline" />
       <Follows follows={follows} stateNavigator={stateNavigator} tabLabel="Notification" />
   </ScrollableTabView>

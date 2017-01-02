@@ -10,9 +10,10 @@ class NavigationBackAndroid extends React.Component<any, any> {
             var navigate = true;
             if (listener)
                 navigate = listener();
-            if (navigate && stateNavigator.canNavigateBack(1))
+            var canNavigateBack = stateNavigator.canNavigateBack(1);
+            if (navigate && canNavigateBack)
                 stateNavigator.navigateBack(1);
-            return true;
+            return !navigate || canNavigateBack;
         }
         return false;
     }
