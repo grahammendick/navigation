@@ -28,8 +28,8 @@ export default ({title, stateNavigator}) => (
 const styles = StyleSheet.create({
   banner: {
     flexDirection: 'row',
-    paddingTop: 30,
-    paddingBottom: 10,
+    paddingTop: 35,
+    paddingBottom: 15,
     borderBottomWidth: 2,
     borderColor: '#ccd6dd',
   },

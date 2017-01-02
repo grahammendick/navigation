@@ -45,12 +45,10 @@ export default class TwitterIOS extends Component {
           startStateKey="notifications"
           visible={activeTab === 'notifications'}
           offset={65} />
-        <View style={styles.footer}>
-          <Footer
-            activeTab={activeTab}
-            onTimeline={this.onTimeline}
-            onNotifications={this.onNotifications} />
-        </View>
+        <Footer
+          activeTab={activeTab}
+          onTimeline={this.onTimeline}
+          onNotifications={this.onNotifications} />
       </View>
     );
   }
@@ -61,12 +59,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     flex: 1,
-  },
-  footer: {
-    height: 65,
-    borderTopWidth: 2,
-    borderColor: '#ccd6dd',
-    backgroundColor: 'white',    
   },
 });
 
