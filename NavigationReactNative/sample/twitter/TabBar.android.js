@@ -18,7 +18,7 @@ export default ({activeTab, goToPage, containerWidth, scrollValue}) => {
       <View style={styles.banner}>
         <Text style={styles.title}>Home</Text>
       </View>
-      <View style={styles.footer}>
+      <View style={styles.tabBar}>
         <TouchableHighlight
           underlayColor="white"
           style={styles.tab}
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
   },
-  footer: {
+  tabBar: {
     flexDirection: 'row',
     height: 55,
     backgroundColor: 'transparent',

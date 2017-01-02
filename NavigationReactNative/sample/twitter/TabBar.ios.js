@@ -3,7 +3,7 @@ import {StyleSheet, TouchableHighlight, Text, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 
 export default ({activeTab, onTimeline, onNotifications}) => (
-  <View style={styles.footer}>
+  <View style={styles.tabBar}>
     <TouchableHighlight
       underlayColor="white"
       style={styles.tab}
@@ -38,7 +38,7 @@ export default ({activeTab, onTimeline, onNotifications}) => (
 );
 
 const styles = StyleSheet.create({
-  footer: {
+  tabBar: {
     flexDirection: 'row',
     height: 65,
     borderTopWidth: 2,
