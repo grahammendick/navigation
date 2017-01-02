@@ -15,7 +15,7 @@ export default ({tweets, stateNavigator}) => (
 
 const styles = StyleSheet.create({
   banner: {
-    paddingTop: 35,
+    paddingTop: 30,
     paddingLeft: 50,
     paddingBottom: 22,
     borderBottomWidth: 2,
