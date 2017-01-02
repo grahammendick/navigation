@@ -40,11 +40,8 @@ export default ({activeTab, onTimeline, onNotifications}) => (
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
-    height: 65,
-    borderTopWidth: 2,
     paddingTop: 5,
-    borderColor: '#ccd6dd',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
   },
   tab: {
     flex: 1,

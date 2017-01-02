@@ -18,9 +18,9 @@ export default ({follows, stateNavigator}) => {
 
 const styles = StyleSheet.create({
   banner: {
-    paddingTop: 35,
+    paddingTop: 30,
     paddingLeft: 50,
-    paddingBottom: 22,
+    paddingBottom: 17,
     borderBottomWidth: 2,
     borderColor: '#ccd6dd',
   },
