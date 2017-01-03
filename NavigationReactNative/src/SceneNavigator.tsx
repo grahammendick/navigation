@@ -15,6 +15,10 @@ class SceneNavigator extends React.Component<any, any> {
             return {scenes};
         });
     }
+    constructor(props, context) {
+        super(props, context);
+        this.state = {scenes: {}};
+    }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
