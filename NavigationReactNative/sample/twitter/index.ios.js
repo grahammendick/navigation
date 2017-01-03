@@ -38,13 +38,11 @@ export default class TwitterIOS extends Component {
         <Twitter
           stateNavigator={timelineStateNavigator}
           startStateKey="home"
-          visible={activeTab === 'timeline'}
-          offset={65} />
+          visible={activeTab === 'timeline'} />
         <Twitter
           stateNavigator={notificationsStateNavigator}
           startStateKey="notifications"
-          visible={activeTab === 'notifications'}
-          offset={65} />
+          visible={activeTab === 'notifications'} />
         <TabBar
           activeTab={activeTab}
           onTimeline={this.onTimeline}

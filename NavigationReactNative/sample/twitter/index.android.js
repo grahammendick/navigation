@@ -9,8 +9,7 @@ export default TwitterAndroid = () => (
   <Twitter
     stateNavigator={stateNavigator}
     startStateKey="home"
-    visible={true}
-    offset={25} />
+    visible={true} />
 );
 
 AppRegistry.registerComponent('twitter', () => TwitterAndroid);

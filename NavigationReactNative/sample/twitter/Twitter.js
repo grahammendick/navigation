@@ -8,7 +8,7 @@ const getStyle = (translate, scale, opacity) => ({
   opacity: spring(opacity)
 });
 
-export default ({stateNavigator, startStateKey, visible, offset}) => (
+export default ({stateNavigator, startStateKey, visible}) => (
   <SceneNavigator
     startStateKey={startStateKey}
     unmountedStyle={getStyle(1, 1, 1)}
