@@ -2017,8 +2017,8 @@ describe('Navigation Data', function () {
             ]);
             var state = stateNavigator.states['s'];
             state.truncateCrumbTrail = (state, crumbs, data) => {
-                if (data.string === 'Hello' && data.boolean === true
-                    && data.number === 0 && +data.date === +new Date(2010, 3, 7))
+                if (data['string'] === 'Hello' && data['boolean'] === true
+                    && data['number'] === 0 && +data['date'] === +new Date(2010, 3, 7))
                     return crumbs;
                 return [];
             };
@@ -3137,7 +3137,7 @@ describe('Navigation Data', function () {
             ]);
             var state = stateNavigator.states['s'];
             state.truncateCrumbTrail = (state, crumbs, data) => {
-                if (data.string === 'Hello' && data._bool === true && data.number === 1)
+                if (data['string'] === 'Hello' && data._bool === true && data['number'] === 1)
                     return crumbs;
                 return [];
             };
@@ -3166,6 +3166,57 @@ describe('Navigation Data', function () {
                 var link = stateNavigator.fluent()
                     .navigate('s')
                     .navigate('s')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('Override Defaults Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                if (data.string === 'World' && data._bool === true && data.number === 2)
+                    return crumbs;
+                return [];
+            };
+        });
+        var data = { 'string': 'World', 'number': 2 };
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s', data);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', data);
+                stateNavigator.navigateLink(link, );
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s', data)
                     .url;
                 stateNavigator.navigateLink(link);
             });
