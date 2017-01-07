@@ -1951,7 +1951,7 @@ describe('Navigation Data', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
-                { key: 's', route: 'r', trackCrumbTrail: true },
+                { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
             state.truncateCrumbTrail = (state, crumbs, data) => {
@@ -2009,11 +2009,11 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Custom Trail Individual Data', function() {
+    describe('Individual Data Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
-                { key: 's', route: 'r', trackCrumbTrail: true },
+                { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
             state.truncateCrumbTrail = (state, crumbs, data) => {
@@ -2065,11 +2065,11 @@ describe('Navigation Data', function () {
         }
     });
 
-    describe('Custom Trail Array Data', function() {
+    describe('Array Data Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
-                { key: 's', route: 'r', trackCrumbTrail: true },
+                { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
             state.truncateCrumbTrail = (state, crumbs, data) => {
@@ -3125,6 +3125,56 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'World');
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 0);
+            });
+        }
+    });
+
+    describe('Defaults Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                if (data.string === 'Hello' && data._bool === true && data.number === 1)
+                    return crumbs;
+                return [];
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
             });
         }
     });
