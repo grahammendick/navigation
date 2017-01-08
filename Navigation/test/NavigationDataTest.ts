@@ -1947,6 +1947,184 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                var lastCrumb = crumbs[crumbs.length - 1];
+                return lastCrumb && lastCrumb.data.n === data.n ? crumbs.slice(0, -1) : crumbs;
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s', { n: 1, t: 'a' });
+                stateNavigator.navigate('s', { n: 1, t: 'b' });
+                stateNavigator.navigate('s', { n: 2 });
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', { n: 1, t: 'a' });
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', { n: 1, t: 'b' });
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', { n: 2 });
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s', { n: 1, t: 'a' })
+                    .navigate('s', { n: 1, t: 'b' })
+                    .navigate('s', { n: 2 })
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.crumbs[0].data.n, null);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s']);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data.n, 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data.t, 'b');
+            });
+        }
+    });
+
+    describe('Individual Data Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                if (data['string'] === 'Hello' && data['boolean'] === true
+                    && data['number'] === 0 && +data['date'] === +new Date(2010, 3, 7))
+                    return crumbs;
+                return [];
+            };
+        });
+        var individualNavigationData = {};
+        individualNavigationData['string'] = 'Hello';
+        individualNavigationData['boolean'] = true;
+        individualNavigationData['number'] = 0;
+        individualNavigationData['date'] = new Date(2010, 3, 7);
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s', individualNavigationData);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', individualNavigationData);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s', individualNavigationData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('Array Data Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                if (data.array_string && data.array_string[0] === 'He-llo' && data.array_string[1] === 'World'
+                    && data.array_boolean[0] === '' && data.array_boolean[1] === true && data.array_boolean[2] === false
+                    && data.array_number[0] === 1 && data.array_number[1] === null && data.array_number[2] === undefined && data.array_number[3] === 2
+                    && +data.array_date[0] === +new Date(2010, 3, 7) && +data.array_date[1] === +new Date(2011, 7, 3)
+                    && data.array_blank[0] === '' && data.array_blank[1] === null && data.array_blank[2] === undefined)
+                    return crumbs;
+                return [];
+            };
+        });
+        var arrayNavigationData = {};
+        arrayNavigationData['array_string'] = ['He-llo', 'World'];
+        arrayNavigationData['array_boolean'] = ['', true, false];
+        arrayNavigationData['array_number'] = [1, null, undefined, 2];
+        arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
+        arrayNavigationData['array_blank'] = ['', null, undefined];
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s', arrayNavigationData);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', arrayNavigationData);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s', arrayNavigationData)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
     describe('Defaults', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
@@ -2947,6 +3125,107 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'World');
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
                 assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 0);
+            });
+        }
+    });
+
+    describe('Defaults Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                if (data['string'] === 'Hello' && data._bool === true && data['number'] === 1)
+                    return crumbs;
+                return [];
+            };
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s')
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('Override Defaults Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } }
+            ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, crumbs, data) => {
+                if (data.string === 'World' && data._bool === true && data.number === 2)
+                    return crumbs;
+                return [];
+            };
+        });
+        var data = { 'string': 'World', 'number': 2 };
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s', data);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s', data);
+                stateNavigator.navigateLink(link, );
+            });
+            test();
+        });
+
+        describe('Fluent Navigate', function() {
+            beforeEach(function() {
+                var link = stateNavigator.fluent()
+                    .navigate('s')
+                    .navigate('s', data)
+                    .url;
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
             });
         }
     });

@@ -1,4 +1,4 @@
-import { HashHistoryManager, StateNavigator, State } from 'navigation';
+import { Crumb, HashHistoryManager, StateNavigator, State } from 'navigation';
 
 // History Manager
 class LogHistoryManager extends HashHistoryManager  {
@@ -41,6 +41,7 @@ person.urlDecode = function urlDecode(state: State, key: string, val: string, qu
     return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
 };
 person.validate = (data: any) => data.id > 0;
+person.truncateCrumbTrail = (state: State, crumbs: Crumb[], data: any) => crumbs;
 
 // Navigation Event
 var navigationListener = (oldState: State, state: State, data: any, asyncData: any) => {

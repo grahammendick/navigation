@@ -1,0 +1,28 @@
+{
+  "name": "navigation-react-native",
+  "version": "1.0.0",
+  "description": "React Native plugin for the Navigation router",
+  "main": "navigation-react-native.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grahammendick/navigation"
+  },
+  "keywords": [
+    "router",
+    "navigation",
+    "react-native"
+  ],
+  "dependencies": {
+    "react-motion": "*"
+  },
+  "peerDependencies": {
+    "navigation": "*",
+    "react-native": "*"
+  },
+  "author": "Graham Mendick",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/grahammendick/navigation/issues"
+  },
+  "homepage": "http://grahammendick.github.io/navigation/"
+}

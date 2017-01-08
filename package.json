@@ -7,14 +7,14 @@
     "gulp-insert": "^0.5.0",
     "gulp-mocha": "^3.0.1",
     "gulp-rename": "^1.2.0",
-    "gulp-tsc": "^1.2.4",
+    "gulp-tsc": "^1.2.6",
     "gulp-uglify": "^2.0.0",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
+    "react-dom": "^15.3.2",
     "rollup": "^0.36.3",
     "rollup-plugin-typescript": "^0.8.1",
-    "typescript": "^2.0.3"
+    "typescript": "^2.1.4"
   },
   "scripts": {
     "test": "gulp test",
