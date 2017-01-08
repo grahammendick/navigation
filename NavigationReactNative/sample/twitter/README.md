@@ -6,4 +6,4 @@ Follow React Native's Getting Started guide to set up your development environme
 
     npm install
 
-Then run `react-native run-ios` or `react-native run-android` to start the example on your chosen device. Almost all the code is shared between iOS and Android. Also, play around with `Twitter.js` to see how you can control the animations when changing scenes.
+Then run `react-native run-ios` or `react-native run-android` to start the example on your chosen device. Almost all the code is shared between iOS and Android. Play around with `Twitter.js` to see how you can control the animations when changing scenes.
