@@ -108,7 +108,7 @@ p code{
    padding:1.5%;
 }
 code{
-    font-family:Consolas;
+    font-family:Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     font-size:.9em;
 }
 #article pre{
