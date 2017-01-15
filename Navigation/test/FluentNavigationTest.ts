@@ -502,6 +502,21 @@ describe('Fluent', function () {
         });
     });
 
+    describe('State State', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true },
+            ]);
+            var state = stateNavigator.states['s'];
+            var url = stateNavigator.fluent()
+                .navigate('s')
+                .navigate('s')
+                .url;
+            assert.strictEqual(url, '/r?crumb=%2Fr');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Transition State State', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([

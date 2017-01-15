@@ -1332,6 +1332,40 @@ describe('Navigation', function () {
         }
     });
 
+    describe('State State', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r', trackCrumbTrail: true },
+            ]);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+                stateNavigator.navigate('s');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s']);
+            });
+        }
+    });
+
     describe('Transition State State', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
