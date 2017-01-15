@@ -41,13 +41,7 @@ class State implements StateInfo {
     }
 
     truncateCrumbTrail(state: State, crumbs: Crumb[], data: any): Crumb[] {
-        var newCrumbs: Crumb[] = [];
-        for (var i = 0; i < crumbs.length; i++) {
-            if (crumbs[i].state === state)
-                break;
-            newCrumbs.push(crumbs[i]);
-        }
-        return newCrumbs;
+        return crumbs;
     }
 }
 export default State;

@@ -258,8 +258,10 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
-                assert.equal(stateNavigator.stateContext.previousState, null);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s']);
+                assert.ok(stateNavigator.stateContext.crumbs[0].last);
             });
         }
     });
@@ -444,10 +446,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -1063,8 +1067,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -1162,11 +1170,13 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s3']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 3);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
                 assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs[2].state, stateNavigator.states['s1']);
                 assert.ok(!stateNavigator.stateContext.crumbs[0].last);
-                assert.ok(stateNavigator.stateContext.crumbs[1].last);
+                assert.ok(!stateNavigator.stateContext.crumbs[1].last);
+                assert.ok(stateNavigator.stateContext.crumbs[2].last);
             });
         }
     });
@@ -3803,10 +3813,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -3984,10 +3996,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -4190,14 +4204,18 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator1.stateContext.state, stateNavigator1.states['s3']);
                 assert.equal(stateNavigator0.stateContext.oldState, stateNavigator0.states['s1']);
                 assert.equal(stateNavigator1.stateContext.oldState, stateNavigator1.states['s3']);
-                assert.equal(stateNavigator0.stateContext.previousState, stateNavigator0.states['s0']);
-                assert.equal(stateNavigator1.stateContext.previousState, stateNavigator1.states['s2']);
-                assert.equal(stateNavigator0.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator0.stateContext.previousState, stateNavigator0.states['s1']);
+                assert.equal(stateNavigator1.stateContext.previousState, stateNavigator1.states['s3']);
+                assert.equal(stateNavigator0.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator0.stateContext.crumbs[0].state, stateNavigator0.states['s0']);
-                assert.ok(stateNavigator0.stateContext.crumbs[0].last);
-                assert.equal(stateNavigator1.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator0.stateContext.crumbs[1].state, stateNavigator0.states['s1']);
+                assert.ok(!stateNavigator0.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator0.stateContext.crumbs[1].last);
+                assert.equal(stateNavigator1.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator1.stateContext.crumbs[0].state, stateNavigator1.states['s2']);
-                assert.ok(stateNavigator1.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator1.stateContext.crumbs[1].state, stateNavigator1.states['s3']);
+                assert.ok(!stateNavigator1.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator1.stateContext.crumbs[1].last);
             });
         }
     });
@@ -4676,15 +4694,21 @@ describe('Navigation', function () {
         
         function test() {
             it('should match', function() {
-                assert.equal(stateNavigator.stateContext.url.match(/crumb/g).length, 1);
+                assert.equal(stateNavigator.stateContext.url.match(/crumb/g).length, 4);
             });
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s3']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s3']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 4);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs[2].state, stateNavigator.states['s2']);
+                assert.equal(stateNavigator.stateContext.crumbs[3].state, stateNavigator.states['s3']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(!stateNavigator.stateContext.crumbs[1].last);
+                assert.ok(!stateNavigator.stateContext.crumbs[2].last);
+                assert.ok(stateNavigator.stateContext.crumbs[3].last);
             });
         }
     });

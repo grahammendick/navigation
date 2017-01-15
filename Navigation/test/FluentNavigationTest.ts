@@ -105,7 +105,7 @@ describe('Fluent', function () {
                 .navigate('s')
                 .navigate('s')
                 .url;
-            assert.strictEqual(url, '/r');
+            assert.strictEqual(url, '/r?crumb=%2Fr');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
@@ -179,7 +179,7 @@ describe('Fluent', function () {
                 .navigate('s1')
                 .refresh()
                 .url;
-            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url, '/r1?crumb=%2Fr0&crumb=%2Fr1');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
@@ -398,7 +398,7 @@ describe('Fluent', function () {
                 .navigateBack(1)
                 .refresh()
                 .url;
-            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url, '/r1?crumb=%2Fr0&crumb=%2Fr1');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
@@ -438,7 +438,7 @@ describe('Fluent', function () {
                 .refresh()
                 .navigate('s3')
                 .url;
-            assert.strictEqual(url, '/r3?crumb=%2Fr0&crumb=%2Fr1');
+            assert.strictEqual(url, '/r3?crumb=%2Fr0&crumb=%2Fr1&crumb=%2Fr1');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
@@ -680,7 +680,7 @@ describe('Fluent', function () {
                 .navigate('s1')
                 .refresh()
                 .url;
-            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url, '/r1?crumb=%2Fr0&crumb=%2Fr1');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
@@ -765,7 +765,7 @@ describe('Fluent', function () {
                 .navigate('s1')
                 .refresh()
                 .url;
-            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url, '/r1?crumb=%2Fr0&crumb=%2Fr1');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
@@ -866,8 +866,8 @@ describe('Fluent', function () {
             var url1 = fluent1
                 .refresh()
                 .url;
-            assert.strictEqual(url0, '/r1?crumb=%2Fr0');
-            assert.strictEqual(url1, '/r3?crumb=%2Fr2');
+            assert.strictEqual(url0, '/r1?crumb=%2Fr0&crumb=%2Fr1');
+            assert.strictEqual(url1, '/r3?crumb=%2Fr2&crumb=%2Fr3');
             assert.strictEqual(stateNavigator0.stateContext.url, null);
             assert.strictEqual(stateNavigator1.stateContext.url, null);
         });
@@ -1042,7 +1042,7 @@ describe('Fluent', function () {
                 .navigate('s3')
                 .navigate('s1')
                 .url;
-            assert.strictEqual(url, '/r1?crumb=%2Fr0');
+            assert.strictEqual(url, '/r1?crumb=%2Fr0&crumb=%2Fr1&crumb=%2Fr2&crumb=%2Fr3');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
