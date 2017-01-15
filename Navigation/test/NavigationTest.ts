@@ -1332,12 +1332,14 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State', function() {
+    describe('State State Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
+            var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         
         describe('Navigate', function() {
@@ -1360,8 +1362,7 @@ describe('Navigation', function () {
         
         function test() {
             it('should populate crumb trail', function() {
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
     });

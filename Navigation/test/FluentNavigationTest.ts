@@ -502,17 +502,18 @@ describe('Fluent', function () {
         });
     });
 
-    describe('State State', function () {
+    describe('State State Custom Trail', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
             var state = stateNavigator.states['s'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
             var url = stateNavigator.fluent()
                 .navigate('s')
                 .navigate('s')
                 .url;
-            assert.strictEqual(url, '/r?crumb=%2Fr');
+            assert.strictEqual(url, '/r');
             assert.strictEqual(stateNavigator.stateContext.url, null);
         });
     });
