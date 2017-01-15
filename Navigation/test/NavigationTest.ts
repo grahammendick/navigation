@@ -1332,16 +1332,12 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Custom Trail', function() {
+    describe('State State', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
-            var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1370,17 +1366,13 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Transition State State Custom Trail', function() {
+    describe('Transition State State', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1413,16 +1405,12 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Back Custom Trail', function() {
+    describe('State State Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1454,17 +1442,13 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Transition State State Back Custom Trail', function() {
+    describe('Transition State State Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1499,7 +1483,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Back Two Custom Trail', function() {
+    describe('State State Back Two', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -1507,10 +1491,6 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1548,7 +1528,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Back One By One Custom Trail', function() {
+    describe('State State Back One By One', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -1556,10 +1536,6 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -4564,17 +4540,13 @@ describe('Navigation', function () {
         }
     });
     
-    describe('Refresh Back Custom Trail', function() {
+    describe('Refresh Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
         });
 
         describe('Navigate', function() {
