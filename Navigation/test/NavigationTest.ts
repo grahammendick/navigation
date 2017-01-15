@@ -1569,6 +1569,53 @@ describe('Navigation', function () {
         }
     });
 
+    describe('State State Back Two Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s2');
+                stateNavigator.navigateBack(2);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(2);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
     describe('State State Back One By One', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
