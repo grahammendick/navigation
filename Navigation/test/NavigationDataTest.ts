@@ -4605,9 +4605,7 @@ describe('Navigation Data', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s2'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
          });
         var data1 = {};
         data1['s'] = 'Hello';
@@ -4621,7 +4619,7 @@ describe('Navigation Data', function () {
                 stateNavigator.navigate('s0', data1);
                 stateNavigator.navigate('s1');
                 stateNavigator.navigate('s2', data2);
-                stateNavigator.navigate('s2');
+                stateNavigator.navigate('s1');
                 stateNavigator.navigateBack(1);
                 stateNavigator.navigateBack(1);
             });
@@ -4636,7 +4634,7 @@ describe('Navigation Data', function () {
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationLink('s2', data2);
                 stateNavigator.navigateLink(link);
-                link = stateNavigator.getNavigationLink('s2');
+                link = stateNavigator.getNavigationLink('s1');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getNavigationBackLink(1);
                 stateNavigator.navigateLink(link);
@@ -4652,7 +4650,7 @@ describe('Navigation Data', function () {
                     .navigate('s0', data1)
                     .navigate('s1')
                     .navigate('s2', data2)
-                    .navigate('s2')
+                    .navigate('s1')
                     .navigateBack(1)
                     .url;
                 stateNavigator.navigateLink(link);
@@ -4669,12 +4667,12 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.oldData['s'], 'World');
                 assert.strictEqual(stateNavigator.stateContext.oldData['t1'], undefined);
                 assert.strictEqual(stateNavigator.stateContext.oldData['t2'], 2);
-                assert.strictEqual(stateNavigator.stateContext.previousData['s'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.previousData['t1'], 1);
-                assert.strictEqual(stateNavigator.stateContext.previousData['t2'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.data['s'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.data['t1'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.data['s'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.data['t1'], 1);
                 assert.strictEqual(stateNavigator.stateContext.data['t2'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.previousData['s'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.previousData['t1'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.previousData['t2'], undefined);
             });
         }
     });
@@ -4687,9 +4685,7 @@ describe('Navigation Data', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(-1);
          });
         var data = {};
         data['s'] = 'Hello';
@@ -4751,9 +4747,7 @@ describe('Navigation Data', function () {
                 { key: 's1', route: 'r1' }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
          });
         var data = {};
         data['s'] = 'Hello';
@@ -6554,9 +6548,7 @@ describe('Navigation Data', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(-1);
         });
         var data = {};
         data['string'] = 'Hello';
