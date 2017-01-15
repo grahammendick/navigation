@@ -3767,9 +3767,7 @@ describe('Navigation Data', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.concat(crumbs);
         });
         var data = {};
         data['s'] = 'Hello';
@@ -3823,9 +3821,7 @@ describe('Navigation Data', function () {
                 { key: 's', route: 'r/{s?}', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.concat(crumbs);
         });
         var data = {};
         data['s'] = 'Hello';
@@ -3880,10 +3876,8 @@ describe('Navigation Data', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s2'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         var data = { s: 1, t: '2' };
         
@@ -3926,13 +3920,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 1);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['_bool'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], '2');
             });
         }
     });
@@ -3945,10 +3937,8 @@ describe('Navigation Data', function () {
                 { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s2'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         var data = { s: 1, t: '2' };
         
@@ -3991,13 +3981,11 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['s'], 1);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['t'], '2');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['_bool'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['s'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['t'], '2');
             });
         }
     });
@@ -4010,10 +3998,8 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r1', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
                     { key: 's2', route: 'r2', trackCrumbTrail: true }
                 ]);
-            var state = stateNavigator.states['s2'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         var data = {};
         data['string'] = 'World';
@@ -4058,9 +4044,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'World');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], 'World');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['_bool'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], 0);
             });
         }
     });
@@ -4073,10 +4059,8 @@ describe('Navigation Data', function () {
                     { key: 's1', route: 'r/{string}/{number}', trackCrumbTrail: true, defaults: { 'string': 'Hello', _bool: true, 'number': 1 } },
                     { key: 's2', route: 'r2', trackCrumbTrail: true }
                 ]);
-            var state = stateNavigator.states['s2'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         var data = {};
         data['string'] = 'World';
@@ -4121,9 +4105,9 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'World');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 0);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], 'World');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['_bool'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], 0);
             });
         }
     });
