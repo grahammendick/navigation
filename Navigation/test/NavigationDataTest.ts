@@ -3637,10 +3637,8 @@ describe('Navigation Data', function () {
                     { key: 's2', route: 'r2', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 } },
                     { key: 's3', route: 'r3', trackCrumbTrail: true }
                 ]);
-            var state = stateNavigator.states['s3'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         
         describe('Navigate', function() {
@@ -3686,14 +3684,12 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[2].data['emptyString'], '');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[2].data['number'], 4);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[2].data['char'], 7);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['_bool'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['emptyString'], '');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 4);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['char'], 7);
             });
         }
     });
@@ -3707,10 +3703,8 @@ describe('Navigation Data', function () {
                     { key: 's2', route: 'r2/{char}/{number?}', trackCrumbTrail: true, defaults: { emptyString: '', 'number': 4, char: 7 } },
                     { key: 's3', route: 'r3', trackCrumbTrail: true }
                 ]);
-            var state = stateNavigator.states['s3'];
-            state.truncateCrumbTrail = (state, data, crumbs) => {
-                return crumbs;
-            };
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         
         describe('Navigate', function() {
@@ -3756,14 +3750,12 @@ describe('Navigation Data', function () {
 
         function test() {
             it('should populate data', function () {
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], undefined);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['string'], 'Hello');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['_bool'], true);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 1);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[2].data['emptyString'], '');
-                assert.strictEqual(stateNavigator.stateContext.crumbs[2].data['number'], 4);
-                assert.strictEqual(stateNavigator.stateContext.crumbs[2].data['char'], 7);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['string'], 'Hello');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['_bool'], true);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[0].data['number'], 1);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['emptyString'], '');
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['number'], 4);
+                assert.strictEqual(stateNavigator.stateContext.crumbs[1].data['char'], 7);
             });
         }
     });
