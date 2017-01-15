@@ -41,7 +41,7 @@ person.urlDecode = function urlDecode(state: State, key: string, val: string, qu
     return queryString ? val.replace(/\+/g, ' ') : decodeURIComponent(val);
 };
 person.validate = (data: any) => data.id > 0;
-person.truncateCrumbTrail = (state: State, crumbs: Crumb[], data: any) => crumbs;
+person.truncateCrumbTrail = (state: State, data: any, crumbs: Crumb[]) => crumbs;
 
 // Navigation Event
 var navigationListener = (oldState: State, state: State, data: any, asyncData: any) => {
