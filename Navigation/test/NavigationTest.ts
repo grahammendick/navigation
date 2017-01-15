@@ -1406,6 +1406,46 @@ describe('Navigation', function () {
         }
     });
 
+    describe('Transition State State Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(-1);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s1');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s1']);
+            });
+        }
+    });
+
     describe('State State Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {

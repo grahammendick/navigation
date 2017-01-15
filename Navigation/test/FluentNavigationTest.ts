@@ -534,6 +534,24 @@ describe('Fluent', function () {
         });
     });
 
+    describe('Transition State State Custom Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(-1);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .navigate('s1')
+                .url;
+            assert.strictEqual(url, '/r1?crumb=%2Fr1');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('State State Back', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
