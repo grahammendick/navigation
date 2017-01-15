@@ -153,7 +153,7 @@ const getTweet = id => {
 };
 
 const getTimeline = id => {
-  const timeline = { ...accounts[id] };
+  const timeline = { ...accounts[id], id };
   timeline.tweets = timeline.tweets.map(tweetId => fetchTweet(tweetId));
   return timeline;
 };
