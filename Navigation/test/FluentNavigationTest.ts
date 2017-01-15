@@ -1043,6 +1043,25 @@ describe('Fluent', function () {
         });
     });
 
+    describe('Refresh Back Custom Trail', function () {
+        it('should navigate', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+            var url = stateNavigator.fluent()
+                .navigate('s0')
+                .navigate('s1')
+                .refresh()
+                .navigateBack(1)
+                .url;
+            assert.strictEqual(url, '/r0');
+            assert.strictEqual(stateNavigator.stateContext.url, null);
+        });
+    });
+
     describe('Crumb Trail Encode', function () {
         it('should navigate', function() {
             var stateNavigator = new StateNavigator([
