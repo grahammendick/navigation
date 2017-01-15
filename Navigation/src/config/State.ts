@@ -40,7 +40,7 @@ class State implements StateInfo {
         return true;
     }
 
-    truncateCrumbTrail(state: State, crumbs: Crumb[], data: any): Crumb[] {
+    truncateCrumbTrail(state: State, data: any, crumbs: Crumb[]): Crumb[] {
         return crumbs;
     }
 }

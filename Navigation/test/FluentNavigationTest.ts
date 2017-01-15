@@ -508,7 +508,7 @@ describe('Fluent', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()
@@ -527,7 +527,7 @@ describe('Fluent', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()
@@ -546,7 +546,7 @@ describe('Fluent', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()
@@ -566,7 +566,7 @@ describe('Fluent', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()
@@ -588,7 +588,7 @@ describe('Fluent', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()
@@ -611,7 +611,7 @@ describe('Fluent', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()
@@ -994,7 +994,7 @@ describe('Fluent', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
             var url = stateNavigator.fluent()

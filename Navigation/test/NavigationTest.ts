@@ -1339,7 +1339,7 @@ describe('Navigation', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
@@ -1378,7 +1378,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
@@ -1420,7 +1420,7 @@ describe('Navigation', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
@@ -1462,7 +1462,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
@@ -1508,7 +1508,7 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
@@ -1557,7 +1557,7 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
@@ -4572,7 +4572,7 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
+            state.truncateCrumbTrail = (state, data, crumbs) => {
                 return crumbs;
             };
         });
