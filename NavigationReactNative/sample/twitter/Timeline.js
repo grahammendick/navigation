@@ -4,12 +4,12 @@ import {NavigationBackAndroid} from 'navigation-react-native';
 import Banner from './Banner';
 import Tweets from './Tweets';
 
-export default ({timeline: {name, username, logo, bio, 
+export default ({timeline: {id, name, username, logo, bio, 
   followers, following, tweets}, stateNavigator}) => (
   <View>
     <NavigationBackAndroid stateNavigator={stateNavigator} />
     <Banner title={name} stateNavigator={stateNavigator} />
-    <ScrollView style={styles.view}>
+    <ScrollView ref={el => {if (el) this.scrollView = el}} style={styles.view}>
       <View>
         <Image style={styles.logo} source={logo} />
         <Text style={styles.name}>{name}</Text>
@@ -22,7 +22,14 @@ export default ({timeline: {name, username, logo, bio,
         <Text style={styles.count}>{followers.toLocaleString()}</Text>
         <Text style={styles.interaction}>FOLLOWERS</Text>
       </View>
-      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+      <Tweets
+        tweets={tweets}
+        onTimeline={accountId => {
+          if (accountId === id)
+            this.scrollView.scrollTo({y: 0});
+          return accountId !== id;
+        }}
+        stateNavigator={stateNavigator} />
     </ScrollView>
   </View>
 );

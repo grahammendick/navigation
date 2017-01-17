@@ -258,8 +258,10 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
-                assert.equal(stateNavigator.stateContext.previousState, null);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s']);
+                assert.ok(stateNavigator.stateContext.crumbs[0].last);
             });
         }
     });
@@ -444,10 +446,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -1063,8 +1067,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -1162,11 +1170,13 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s3']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 3);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
                 assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs[2].state, stateNavigator.states['s1']);
                 assert.ok(!stateNavigator.stateContext.crumbs[0].last);
-                assert.ok(stateNavigator.stateContext.crumbs[1].last);
+                assert.ok(!stateNavigator.stateContext.crumbs[1].last);
+                assert.ok(stateNavigator.stateContext.crumbs[2].last);
             });
         }
     });
@@ -1329,9 +1339,7 @@ describe('Navigation', function () {
                 { key: 's', route: 'r', trackCrumbTrail: true },
             ]);
             var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => [];
         });
         
         describe('Navigate', function() {
@@ -1354,23 +1362,18 @@ describe('Navigation', function () {
         
         function test() {
             it('should populate crumb trail', function() {
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
-                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
     });
 
-    describe('Transition State State Custom Trail', function() {
+    describe('Transition State State', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1403,16 +1406,52 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Back Custom Trail', function() {
+    describe('Transition State State Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(-1);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s1');
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate crumb trail', function() {
+                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s1']);
+            });
+        }
+    });
+
+    describe('State State Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1444,17 +1483,13 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Transition State State Back Custom Trail', function() {
+    describe('Transition State State Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1489,7 +1524,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Back Two Custom Trail', function() {
+    describe('State State Back Two', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -1497,10 +1532,6 @@ describe('Navigation', function () {
                 { key: 's1', route: 'r1', trackCrumbTrail: true },
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
         });
         
         describe('Navigate', function() {
@@ -1538,7 +1569,7 @@ describe('Navigation', function () {
         }
     });
 
-    describe('State State Back One By One Custom Trail', function() {
+    describe('State State Back Two Custom Trail', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -1547,9 +1578,52 @@ describe('Navigation', function () {
                 { key: 's2', route: 'r2', trackCrumbTrail: true }
             ]);
             var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s2');
+                stateNavigator.navigateBack(2);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(2);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
+    describe('State State Back One By One', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
         });
         
         describe('Navigate', function() {
@@ -1586,6 +1660,56 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+            });
+        }
+    });
+
+    describe('State State Back One By One Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s1');
+                stateNavigator.navigate('s2');
+                stateNavigator.navigateBack(1);
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s2');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
     });
@@ -3803,10 +3927,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -3984,10 +4110,12 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator.stateContext.crumbs[1].last);
             });
         }
     });
@@ -4190,14 +4318,18 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator1.stateContext.state, stateNavigator1.states['s3']);
                 assert.equal(stateNavigator0.stateContext.oldState, stateNavigator0.states['s1']);
                 assert.equal(stateNavigator1.stateContext.oldState, stateNavigator1.states['s3']);
-                assert.equal(stateNavigator0.stateContext.previousState, stateNavigator0.states['s0']);
-                assert.equal(stateNavigator1.stateContext.previousState, stateNavigator1.states['s2']);
-                assert.equal(stateNavigator0.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator0.stateContext.previousState, stateNavigator0.states['s1']);
+                assert.equal(stateNavigator1.stateContext.previousState, stateNavigator1.states['s3']);
+                assert.equal(stateNavigator0.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator0.stateContext.crumbs[0].state, stateNavigator0.states['s0']);
-                assert.ok(stateNavigator0.stateContext.crumbs[0].last);
-                assert.equal(stateNavigator1.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator0.stateContext.crumbs[1].state, stateNavigator0.states['s1']);
+                assert.ok(!stateNavigator0.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator0.stateContext.crumbs[1].last);
+                assert.equal(stateNavigator1.stateContext.crumbs.length, 2);
                 assert.equal(stateNavigator1.stateContext.crumbs[0].state, stateNavigator1.states['s2']);
-                assert.ok(stateNavigator1.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator1.stateContext.crumbs[1].state, stateNavigator1.states['s3']);
+                assert.ok(!stateNavigator1.stateContext.crumbs[0].last);
+                assert.ok(stateNavigator1.stateContext.crumbs[1].last);
             });
         }
     });
@@ -4546,17 +4678,13 @@ describe('Navigation', function () {
         }
     });
     
-    describe('Refresh Back Custom Trail', function() {
+    describe('Refresh Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
-            var state = stateNavigator.states['s1'];
-            state.truncateCrumbTrail = (state, crumbs) => {
-                return crumbs;
-            };
         });
 
         describe('Navigate', function() {
@@ -4594,7 +4722,52 @@ describe('Navigation', function () {
             });
         }
     });
-    
+
+    describe('Refresh Back Custom Trail', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var state = stateNavigator.states['s1'];
+            state.truncateCrumbTrail = (state, data, crumbs) => crumbs.slice(0, 1);
+        });
+
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+                stateNavigator.refresh();
+                stateNavigator.navigateBack(1);
+            });
+            test();
+        });
+        
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getRefreshLink();
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationBackLink(1);
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+        
+        function test() {
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
     describe('Crumb Trail Malicious', function() {
         it ('should throw error', function() {
             var stateNavigator = new StateNavigator([
@@ -4676,15 +4849,21 @@ describe('Navigation', function () {
         
         function test() {
             it('should match', function() {
-                assert.equal(stateNavigator.stateContext.url.match(/crumb/g).length, 1);
+                assert.equal(stateNavigator.stateContext.url.match(/crumb/g).length, 4);
             });
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s3']);
-                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
-                assert.equal(stateNavigator.stateContext.crumbs.length, 1);
+                assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s3']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 4);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
-                assert.ok(stateNavigator.stateContext.crumbs[0].last);
+                assert.equal(stateNavigator.stateContext.crumbs[1].state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.crumbs[2].state, stateNavigator.states['s2']);
+                assert.equal(stateNavigator.stateContext.crumbs[3].state, stateNavigator.states['s3']);
+                assert.ok(!stateNavigator.stateContext.crumbs[0].last);
+                assert.ok(!stateNavigator.stateContext.crumbs[1].last);
+                assert.ok(!stateNavigator.stateContext.crumbs[2].last);
+                assert.ok(stateNavigator.stateContext.crumbs[3].last);
             });
         }
     });
