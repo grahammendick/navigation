@@ -16,9 +16,8 @@ export default ({stateNavigator, startStateKey, visible}) => (
     crumbStyle={getStyle(0.05, 0.9, 0)}
     style={{flex: +visible, backgroundColor: 'black'}}
     stateNavigator={stateNavigator}>
-    {({translate, scale, opacity}, scene, active) => (
+    {({translate, scale, opacity}, scene) => (
       <View
-        pointerEvents={active ? 'auto' : 'none'}
         style={{
           position: 'absolute',
           backgroundColor: 'white',

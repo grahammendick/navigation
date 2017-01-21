@@ -3,6 +3,7 @@ import {StyleSheet, Text, Image, ListView, View, TouchableHighlight} from 'react
 import Svg, {Path} from 'react-native-svg';
 
 export default ({follows, stateNavigator}) => {
+  const {url} = stateNavigator.stateContext;
   const dataSource = new ListView
     .DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     .cloneWithRows(follows);
@@ -13,7 +14,8 @@ export default ({follows, stateNavigator}) => {
         <TouchableHighlight
           underlayColor="white"
           onPress={() => {
-          stateNavigator.navigate('timeline', {id});
+            if (url === stateNavigator.stateContext.url)
+              stateNavigator.navigate('timeline', {id});
         }}>
           <View style={styles.follow}>
             <Svg

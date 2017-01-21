@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, Image, View, ListView, TouchableHighlight} from 'react-native';
 
 export default ({tweets, onTimeline, stateNavigator}) => {
+  const {url} = stateNavigator.stateContext;
   const dataSource = new ListView
     .DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     .cloneWithRows(tweets);
@@ -12,14 +13,17 @@ export default ({tweets, onTimeline, stateNavigator}) => {
         <TouchableHighlight
           underlayColor="white"
           onPress={() => {
-            stateNavigator.navigate('tweet', {id});
+            if (url === stateNavigator.stateContext.url)
+              stateNavigator.navigate('tweet', {id});
         }}>
           <View style={styles.tweet}>
             <TouchableHighlight
               underlayColor="white"
               onPress={() => {
-                if (!onTimeline || onTimeline(accountId))
+                if ((!onTimeline || onTimeline(accountId))
+                  && url === stateNavigator.stateContext.url) {
                   stateNavigator.navigate('timeline', {id: accountId});
+                }
             }}>
               <Image style={styles.logo} source={logo} />
             </TouchableHighlight>

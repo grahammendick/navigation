@@ -3,18 +3,16 @@ import {StyleSheet, Text, ScrollView, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import Follows from './Follows';
 
-export default ({follows, stateNavigator}) => {
-  return (
-    <View>
-      <View style={styles.banner}>
-        <Text style={styles.title}>Notifications</Text>
-      </View>
-      <ScrollView style={styles.view}>
-        <Follows follows={follows} stateNavigator={stateNavigator} />
-      </ScrollView>
+export default ({follows, stateNavigator}) => (
+  <View>
+    <View style={styles.banner}>
+      <Text style={styles.title}>Notifications</Text>
     </View>
-  );
-};
+    <ScrollView style={styles.view}>
+      <Follows follows={follows} stateNavigator={stateNavigator} />
+    </ScrollView>
+  </View>
+);
 
 const styles = StyleSheet.create({
   banner: {

@@ -36,12 +36,11 @@ class SceneNavigator extends React.Component<any, any> {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
     renderScene({key, data: {scene, state, data, url, mount}, style: {transitioning, ...transitionStyle}}) {
-        var stateContext = this.getStateNavigator().stateContext;
         var {mountedStyle, crumbStyle, children} = this.props;
         var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene, url === stateContext.url)}
+                {(tweenStyle) => children(tweenStyle, scene)}
             </Motion>
         );
     }
