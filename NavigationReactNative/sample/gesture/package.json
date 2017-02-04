@@ -7,7 +7,8 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"navigation": "^3.0.0",
+		"navigation": "*",
+		"navigation-react-native": "*",
 		"react": "~15.4.0-rc.4",
 		"react-native": "0.41.1"
 	},
