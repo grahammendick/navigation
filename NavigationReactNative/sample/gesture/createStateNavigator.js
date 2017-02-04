@@ -11,7 +11,7 @@ export default () => {
 
   const { home, next } = stateNavigator.states;
   home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
-  next.renderScene = () => <Next stateNavigator={stateNavigator}/>;
+  next.renderScene = (data, asyncData, moveScene) => <Next moveScene={moveScene} stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }
