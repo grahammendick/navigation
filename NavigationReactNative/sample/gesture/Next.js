@@ -22,13 +22,15 @@ export default class Next extends React.Component {
   handlePanResponderGrant(e, gestureState) {
   }
   handlePanResponderMove(e, gestureState) {
-    this.props.moveScene({translate: gestureState.dx / Dimensions.get('window').width});
+    var {moveScene} = this.props; 
+    moveScene({translate: gestureState.dx / Dimensions.get('window').width});
   }
   handlePanResponderEnd(e, gestureState) {
+    var {moveScene, stateNavigator} = this.props; 
     if (gestureState.dx / Dimensions.get('window').width < 0.5)
-      this.props.moveScene(null);
+      moveScene(null);
     else
-      this.props.stateNavigator.navigateBack(1);
+      stateNavigator.navigateBack(1);
   }
   render() {
     const {stateNavigator} = this.props;
