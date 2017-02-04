@@ -8,9 +8,12 @@ class SceneNavigator extends React.Component<any, any> {
     private onNavigate = (oldState, state, data, asyncData) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: state.renderScene(data, asyncData)};
+            var scenes = {[url]: {element: state.renderScene(data, asyncData)}};
             for(var i = 0; i < crumbs.length; i++) {
-                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
+                scenes[crumbs[i].url] = {
+                    ...prevState.scenes[crumbs[i].url],
+                    style: null
+                };
             }
             return {scenes};
         });
@@ -56,7 +59,7 @@ class SceneNavigator extends React.Component<any, any> {
                 willLeave={() => getStyle(unmountedStyle, oldState, oldData, 1)}
                 styles={sceneContexts.map(({state, data, url}) => ({
                     key: url,
-                    data: {scene: this.state.scenes[url], state, data, url, mount: url === nextCrumb.url},
+                    data: {scene: this.state.scenes[url].element, state, data, url, mount: url === nextCrumb.url},
                     style: getStyle(mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => (
