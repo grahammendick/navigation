@@ -7,7 +7,6 @@ export default class Next extends React.Component {
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder.bind(this),
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
-      onPanResponderGrant: this.handlePanResponderGrant.bind(this),
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
       onPanResponderTerminate: this.handlePanResponderEnd.bind(this),
@@ -18,8 +17,6 @@ export default class Next extends React.Component {
   }
   handleMoveShouldSetPanResponder(e, gestureState) {
     return true;
-  }
-  handlePanResponderGrant(e, gestureState) {
   }
   handlePanResponderMove(e, gestureState) {
     var {moveScene} = this.props; 
