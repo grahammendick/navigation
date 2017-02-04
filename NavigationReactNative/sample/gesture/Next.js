@@ -1,5 +1,6 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Text, View, TouchableHighlight, PanResponder} from 'react-native';
+import {spring} from 'navigation-react-native';
 
 export default class Next extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class Next extends React.Component {
   }
   handlePanResponderMove(e, gestureState) {
     var {moveScene} = this.props; 
-    moveScene({translate: Math.max(0, gestureState.dx) / Dimensions.get('window').width});
+    moveScene({translate: spring(Math.max(0, gestureState.dx) / Dimensions.get('window').width)});
   }
   handlePanResponderEnd(e, gestureState) {
     var {moveScene, stateNavigator} = this.props; 
