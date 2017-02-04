@@ -8,7 +8,7 @@ class SceneNavigator extends React.Component<any, any> {
     private onNavigate = (oldState, state, data, asyncData) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: {element: state.renderScene(data, asyncData)}};
+            var scenes = {[url]: {element: state.renderScene(data, asyncData, this.moveScene(url))}};
             for(var i = 0; i < crumbs.length; i++) {
                 scenes[crumbs[i].url] = {
                     ...prevState.scenes[crumbs[i].url],
@@ -37,6 +37,16 @@ class SceneNavigator extends React.Component<any, any> {
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
+    }
+    moveScene(url) {
+        return style => {
+            this.setState((prevState) => {
+                var scenes = {...prevState.scenes};
+                if (scenes[url])
+                    scenes[url].style = style; 
+                return {scenes};
+            }
+        )};
     }
     renderScene({key, data: {scene, state, data, url, mount}, style: {transitioning, ...transitionStyle}}) {
         var {mountedStyle, crumbStyle, children} = this.props;
