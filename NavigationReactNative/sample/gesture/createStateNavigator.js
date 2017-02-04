@@ -1,16 +1,17 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
-import Scene from './Scene';
+import Home from './Home';
+import Next from './Next';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'sceneOne'},
-    {key: 'sceneTwo', trackCrumbTrail: true},
+    {key: 'home'},
+    {key: 'next', trackCrumbTrail: true},
   ]);
 
-  const { sceneOne, sceneTwo } = stateNavigator.states;
-  sceneOne.renderScene = () => <Scene name="One" stateNavigator={stateNavigator}/>;
-  sceneTwo.renderScene = () => <Scene name="Two" stateNavigator={stateNavigator}/>;
+  const { home, next } = stateNavigator.states;
+  home.renderScene = () => <Home stateNavigator={stateNavigator}/>;
+  next.renderScene = () => <Next stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }

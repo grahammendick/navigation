@@ -4,7 +4,7 @@ import {SceneNavigator, spring} from 'navigation-react-native';
 
 export default ({stateNavigator}) => (
   <SceneNavigator
-    startStateKey="sceneOne"
+    startStateKey="home"
     unmountedStyle={{translate: spring(1)}}
     mountedStyle={{translate: spring(0)}}
     crumbStyle={{translate: spring(0)}}

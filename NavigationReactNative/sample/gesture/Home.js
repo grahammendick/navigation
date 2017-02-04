@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 
-export default ({name, stateNavigator}) => {
+export default ({stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.scene}>
@@ -9,9 +9,9 @@ export default ({name, stateNavigator}) => {
         underlayColor="white"
         onPress={() => {
           if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigate('sceneTwo');
+            stateNavigator.navigate('next');
       }}>
-        <Text>{name}</Text>
+        <Text>Home</Text>
       </TouchableHighlight>
     </View>
   )
