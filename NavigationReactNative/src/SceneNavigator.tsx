@@ -70,7 +70,7 @@ class SceneNavigator extends React.Component<any, any> {
                 styles={sceneContexts.map(({state, data, url}) => ({
                     key: url,
                     data: {scene: this.state.scenes[url], state, data, url, mount: url === nextCrumb.url},
-                    style: getStyle(mountedStyle, state, data, spring(0))
+                    style: getStyle(this.state.scenes[url].style || mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => (
                     <View style={style}>
