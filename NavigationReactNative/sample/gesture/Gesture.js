@@ -1,9 +1,9 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
-import {SceneNavigator, spring} from 'navigation-react-native';
+import {NavigationMotion, spring} from 'navigation-react-native';
 
 export default ({stateNavigator}) => (
-  <SceneNavigator
+  <NavigationMotion
     startStateKey="scene"
     unmountedStyle={{translate: spring(1)}}
     mountedStyle={{translate: spring(0)}}
@@ -25,5 +25,5 @@ export default ({stateNavigator}) => (
         {scene}
       </View>
     )}
-  </SceneNavigator>
+  </NavigationMotion>
 );
