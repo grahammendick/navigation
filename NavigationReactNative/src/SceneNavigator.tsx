@@ -8,7 +8,7 @@ class SceneNavigator extends React.Component<any, any> {
     private onNavigate = (oldState, state, data, asyncData) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: {element: state.renderScene(data, asyncData, this.moveScene(url))}};
+            var scenes = {[url]: {element: state.renderScene(data, this.moveScene(url), asyncData)}};
             for(var i = 0; i < crumbs.length; i++) {
                 scenes[crumbs[i].url] = {
                     ...prevState.scenes[crumbs[i].url],

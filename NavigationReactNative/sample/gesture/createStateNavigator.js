@@ -8,7 +8,7 @@ export default () => {
   ]);
 
   const { scene } = stateNavigator.states;
-  scene.renderScene = (data, asyncData, moveScene) => <Scene moveScene={moveScene} stateNavigator={stateNavigator}/>;
+  scene.renderScene = (data, moveScene) => <Scene moveScene={moveScene} stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }
