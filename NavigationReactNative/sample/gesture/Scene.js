@@ -13,7 +13,8 @@ export default class Next extends React.Component {
     });
   }
   handleMoveShouldSetPanResponder(e, gestureState) {
-    return true;
+    var {stateNavigator} = this.props; 
+    return stateNavigator.canNavigateBack(1);
   }
   handlePanResponderMove(e, gestureState) {
     var {moveScene} = this.props; 
@@ -38,9 +39,11 @@ export default class Next extends React.Component {
           underlayColor="white"
           onPress={() => {
             if (url === stateNavigator.stateContext.url)
-              stateNavigator.navigate('next');
+              stateNavigator.navigate('scene');
         }}>
-          <Text>Next</Text>
+          <Text style={styles.text}>
+            Scene {stateNavigator.stateContext.crumbs.length}
+          </Text>
         </TouchableHighlight>
       </View>
     )
@@ -53,7 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#000',
+  },
+  text: {
+    fontSize: 40,
   },
 });
