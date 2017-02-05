@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
-import {SceneNavigator, spring} from 'navigation-react-native';
+import {NavigationMotion, spring} from 'navigation-react-native';
 
 const getStyle = (translate, scale, opacity) => ({
   translate: spring(translate),
@@ -9,7 +9,7 @@ const getStyle = (translate, scale, opacity) => ({
 });
 
 export default ({stateNavigator, startStateKey, visible}) => (
-  <SceneNavigator
+  <NavigationMotion
     startStateKey={startStateKey}
     unmountedStyle={getStyle(1, 1, 1)}
     mountedStyle={getStyle(0, 1, 1)}
@@ -34,5 +34,5 @@ export default ({stateNavigator, startStateKey, visible}) => (
         {scene}
       </View>
     )}
-  </SceneNavigator>
+  </NavigationMotion>
 );
