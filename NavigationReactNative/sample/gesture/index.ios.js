@@ -6,8 +6,7 @@ import Gesture from './Gesture';
 const stateNavigator = createStateNavigator();
 
 export default GestureIOS = () => (
-  <Gesture
-    stateNavigator={stateNavigator} />
+  <Gesture stateNavigator={stateNavigator} />
 );
 
 AppRegistry.registerComponent('gesture', () => GestureIOS);
