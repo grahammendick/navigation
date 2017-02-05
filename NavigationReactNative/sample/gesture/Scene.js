@@ -22,7 +22,7 @@ export default class Next extends React.Component {
   }
   handlePanResponderEnd(e, gestureState) {
     var {moveScene, stateNavigator} = this.props; 
-    if (gestureState.dx / Dimensions.get('window').width < 0.5)
+    if (gestureState.dx / Dimensions.get('window').width < 0.4)
       moveScene(null);
     else
       stateNavigator.navigateBack(1);
