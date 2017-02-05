@@ -29,21 +29,22 @@ export default class Next extends React.Component {
   }
   render() {
     const {stateNavigator} = this.props;
-    const {url} = stateNavigator.stateContext;
+    const {url, crumbs} = stateNavigator.stateContext;
     return (
       <View
-        style={styles.scene}
+        style={[
+          {backgroundColor: crumbs.length % 2 === 0 ? '#036' : '#f36207'},
+          styles.scene
+        ]}
         {...this.panResponder.panHandlers}
         >
         <TouchableHighlight
-          underlayColor="white"
+          underlayColor="transparent"
           onPress={() => {
             if (url === stateNavigator.stateContext.url)
               stateNavigator.navigate('scene');
         }}>
-          <Text style={styles.text}>
-            Scene {stateNavigator.stateContext.crumbs.length}
-          </Text>
+          <Text style={styles.text}>Scene {crumbs.length}</Text>
         </TouchableHighlight>
       </View>
     )
@@ -55,11 +56,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#000',
   },
   text: {
     fontSize: 40,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
