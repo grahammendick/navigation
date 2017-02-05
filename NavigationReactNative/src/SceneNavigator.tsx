@@ -8,9 +8,12 @@ class SceneNavigator extends React.Component<any, any> {
     private onNavigate = (oldState, state, data, asyncData) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: state.renderScene(data, asyncData)};
+            var scenes = {[url]: {element: state.renderScene(data, this.moveScene(url), asyncData)}};
             for(var i = 0; i < crumbs.length; i++) {
-                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url]; 
+                scenes[crumbs[i].url] = {
+                    ...prevState.scenes[crumbs[i].url],
+                    style: null
+                };
             }
             return {scenes};
         });
@@ -35,12 +38,22 @@ class SceneNavigator extends React.Component<any, any> {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
+    moveScene(url) {
+        return style => {
+            this.setState((prevState) => {
+                var scenes = {...prevState.scenes};
+                if (scenes[url])
+                    scenes[url].style = style; 
+                return {scenes};
+            }
+        )};
+    }
     renderScene({key, data: {scene, state, data, url, mount}, style: {transitioning, ...transitionStyle}}) {
         var {mountedStyle, crumbStyle, children} = this.props;
-        var style = getStyle(mount ? mountedStyle : crumbStyle, state, data);
+        var style = scene.style || getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene)}
+                {(tweenStyle) => children(tweenStyle, scene.element)}
             </Motion>
         );
     }
@@ -57,7 +70,7 @@ class SceneNavigator extends React.Component<any, any> {
                 styles={sceneContexts.map(({state, data, url}) => ({
                     key: url,
                     data: {scene: this.state.scenes[url], state, data, url, mount: url === nextCrumb.url},
-                    style: getStyle(mountedStyle, state, data, spring(0))
+                    style: getStyle(this.state.scenes[url].style || mountedStyle, state, data, spring(0))
                 }))}>
                 {tweenStyles => (
                     <View style={style}>
