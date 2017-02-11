@@ -1,11 +1,14 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
-import colors from './colors';
+
+const colors = ['maroon', 'red', 'crimson', 'orange', 'brown',
+  'sienna', 'olive', 'purple', 'fuchsia', 'indigo',
+  'green', 'navy', 'blue', 'teal', 'black'];
 
 export default ({stateNavigator}) => (
   <ScrollView>
     <View style={styles.grid}>
-      {colors().map(color => (
+      {colors.map(color => (
         <TouchableHighlight
           key={color}
           style={[
