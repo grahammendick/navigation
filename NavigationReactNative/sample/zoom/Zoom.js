@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
-import Overlay from './Overlay';
 
 const getMeasurements = ({x,y,w,h}, show) => ({
   x: spring(x, {stiffness: 250}),
@@ -19,9 +18,18 @@ export default ({stateNavigator}) => (
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {({show,...measurements}, scene, state, data) => (
+    {({show,x,y,w,h}, scene, state, {color}) => (
       <View style={styles.scene}>
-        <Overlay {...measurements} color={data.color} />
+        <View
+          style={{
+            position: 'absolute',
+            left: x,
+            top: y,
+            width: w,
+            height: h,
+            backgroundColor: color,
+          }}>
+        </View>
         <View
           style={{
             flex: 1,
