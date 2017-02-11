@@ -20,7 +20,7 @@ export default ({stateNavigator}) => (
             underlayColor={color}
             onPress={() => {
               this[color].measure((ox, oy, w, h, x, y) => {
-                stateNavigator.navigate('detail', {x, y, w, h, color});
+                stateNavigator.navigate('detail', {w, h, x, y, color});
               });
             }}>
             <Text></Text>

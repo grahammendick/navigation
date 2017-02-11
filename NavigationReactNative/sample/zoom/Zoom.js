@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
 
-const getOverlay = ({x, y, w, h}) => {
+const getOverlay = ({x, y, w, h}, color) => {
   if (!x) return null;
   console.log(w)
   return (
@@ -13,7 +13,7 @@ const getOverlay = ({x, y, w, h}) => {
         top: y,
         width: w,
         height: h,
-        backgroundColor: 'green',
+        backgroundColor: color,
       }}>
     </View>
   );
@@ -36,7 +36,7 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
         }}>
-        {getOverlay(measurements)}
+        {getOverlay(measurements, stateNavigator.stateContext.data.color)}
         <View
           style={{
             flex: 1,
