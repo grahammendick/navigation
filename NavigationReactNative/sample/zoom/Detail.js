@@ -1,8 +1,15 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View} from 'react-native';
+import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 
 export default ({color, stateNavigator}) => (
   <View style={styles.detail}>
+    <TouchableHighlight
+      underlayColor="#fff"
+      onPress={() => {
+        stateNavigator.navigateBack(1);
+      }}>
+      <Text style={styles.back}>X</Text>
+    </TouchableHighlight>
     <View style={[
       {backgroundColor: color},
       styles.color
@@ -16,10 +23,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  back: {
+    height: 50,
+    fontSize: 20,
+    color: '#000',
+    fontWeight: 'bold',
+    paddingTop: 20,
+    paddingLeft: 20,
+  },
   color: {
     flex: .6,
-    margin: 20,
-    marginTop: 50,
+    marginLeft: 20,
+    marginRight: 20,
   },
   text:{
     flex: .4,
