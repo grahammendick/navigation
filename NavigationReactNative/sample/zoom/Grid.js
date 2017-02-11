@@ -6,30 +6,35 @@ const colors = ['maroon', 'red', 'crimson', 'orange', 'brown',
   'green', 'navy', 'blue', 'teal', 'black'];
 
 export default ({stateNavigator}) => (
-  <ScrollView>
-    <View style={styles.grid}>
-      {colors.map(color => (
-        <TouchableHighlight
-          key={color}
-          style={[
-            {backgroundColor: color},
-            styles.color
-          ]}
-          underlayColor={color}
-          onPress={() => {
-            stateNavigator.navigate('detail');
-          }}>
-          <Text style={styles.text}>{color}</Text>
-        </TouchableHighlight>
-      ))}
-    </View>
-  </ScrollView>
+  <View style={styles.grid}>
+    <ScrollView>
+      <View style={styles.colors}>
+        {colors.map(color => (
+          <TouchableHighlight
+            key={color}
+            style={[
+              {backgroundColor: color},
+              styles.color
+            ]}
+            underlayColor={color}
+            onPress={() => {
+              stateNavigator.navigate('detail', {color: color});
+            }}>
+            <Text style={styles.text}>{color}</Text>
+          </TouchableHighlight>
+        ))}
+      </View>
+    </ScrollView>
+  </View>
 );
 
 const styles = StyleSheet.create({
   grid: {
-    marginTop: 50,
     flex: 1,
+    backgroundColor: '#fff',
+    marginTop: 50,
+  },
+  colors: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
