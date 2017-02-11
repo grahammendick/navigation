@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
   },
   color: {
     flex: .6,
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 15,
+    marginRight: 15,
   },
   text:{
     flex: .4,
