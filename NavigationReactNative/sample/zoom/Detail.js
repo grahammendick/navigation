@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {spring} from 'navigation-react-native';
 
-export default ({color, stateNavigator}) => (
+export default ({color, moveScene, stateNavigator}) => (
   <View style={styles.detail}>
     <TouchableHighlight
       underlayColor="#fff"
@@ -10,10 +11,23 @@ export default ({color, stateNavigator}) => (
       }}>
       <Text style={styles.back}>X</Text>
     </TouchableHighlight>
-    <View style={[
-      {backgroundColor: color},
-      styles.color
-    ]} />
+    <View
+      onLayout={() => {
+        this.el.measure((ox, oy, w, h, x, y) => {
+          moveScene({
+            w: spring(w),
+            h: spring(h),
+            x: spring(x),
+            y: spring(y),
+            show: spring(1)
+          });
+        });
+      }}
+      ref={el => this.el = el}
+      style={[
+        {backgroundColor: color},
+        styles.color
+      ]} />
     <Text style={styles.text}>{color}</Text>
   </View>
 );

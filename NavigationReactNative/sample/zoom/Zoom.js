@@ -4,7 +4,6 @@ import {NavigationMotion, spring} from 'navigation-react-native';
 
 const getOverlay = ({x, y, w, h}, color) => {
   if (!x) return null;
-  console.log(w)
   return (
     <View
       style={{
@@ -23,7 +22,7 @@ export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
     unmountedStyle={(state, {color,...measurements}) => ({show: spring(0), ...measurements})}
-    mountedStyle={{show: spring(1), x: spring(10), y: spring(50), w: spring(350), h: spring(400)}}
+    mountedStyle={(state, {color,...measurements}) => ({show: spring(1), ...measurements})}
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>

@@ -11,7 +11,7 @@ export default () => {
 
   const { grid, detail } = stateNavigator.states;
   grid.renderScene = data => <Grid stateNavigator={stateNavigator}/>;
-  detail.renderScene = data => <Detail {...data} stateNavigator={stateNavigator}/>;
+  detail.renderScene = (data, moveScene) => <Detail {...data} moveScene={moveScene} stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }
