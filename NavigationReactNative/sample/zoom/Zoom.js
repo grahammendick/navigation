@@ -19,11 +19,19 @@ const getOverlay = ({x, y, w, h}, color) => {
   );
 };
 
+const measurements = ({x,y,w,h}, show) => ({
+  x: spring(x, {stiffness: 250}),
+  y: spring(y, {stiffness: 250}),
+  w: spring(w, {stiffness: 250}),
+  h: spring(h, {stiffness: 250}),
+  show: spring(show, {stiffness: 250}),
+});
+
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
-    unmountedStyle={(state, {color,x,y,w,h}) => ({show: spring(0), x: spring(x), y: spring(y), w: spring(w), h: spring(h)})}
-    mountedStyle={(state, {color,...measurements}) => ({show: spring(1), ...measurements})}
+    unmountedStyle={(state, data) => ({...measurements(data, 0)})}
+    mountedStyle={(state, data) => ({...measurements(data, 1)})}
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
@@ -36,7 +44,7 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
         }}>
-        {getOverlay(measurements, 'green')}
+        {getOverlay(measurements, stateNavigator.stateContext.data.color)}
         <View
           style={{
             flex: 1,

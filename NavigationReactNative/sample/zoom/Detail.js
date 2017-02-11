@@ -15,11 +15,11 @@ export default ({color, moveScene, stateNavigator}) => (
       onLayout={() => {
         this.el.measure((ox, oy, w, h, x, y) => {
           moveScene({
-            w: spring(w),
-            h: spring(h),
-            x: spring(x),
-            y: spring(y),
-            show: spring(1)
+            w: spring(w, {stiffness: 250}),
+            h: spring(h, {stiffness: 250}),
+            x: spring(x, {stiffness: 250}),
+            y: spring(y, {stiffness: 250}),
+            show: spring(1, {stiffness: 250})
           });
         });
       }}
