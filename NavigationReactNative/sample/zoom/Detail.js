@@ -3,14 +3,12 @@ import {StyleSheet, ScrollView, Text, View} from 'react-native';
 
 export default ({color, stateNavigator}) => (
   <View style={styles.detail}>
-    <ScrollView>
-      <View style={[
-        {backgroundColor: color},
-        styles.color
-      ]}>
-        <Text style={styles.text}>{color}</Text>
-      </View>
-    </ScrollView>
+    <View style={[
+      {backgroundColor: color},
+      styles.color
+    ]}>
+      <Text style={styles.text}>{color}</Text>
+    </View>
   </View>
 );
 
@@ -21,8 +19,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   color: {
-    flexDirection: 'row',
-    height: 500,
+    flex: 1,
     padding: 10,
     margin: 10,
     justifyContent: 'center',
