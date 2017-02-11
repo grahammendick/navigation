@@ -53,7 +53,7 @@ class NavigationMotion extends React.Component<any, any> {
         var style = scene.style || getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene.element)}
+                {(tweenStyle) => children(tweenStyle, scene.element, state, data)}
             </Motion>
         );
     }

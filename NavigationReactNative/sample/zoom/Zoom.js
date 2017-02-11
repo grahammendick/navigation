@@ -19,9 +19,9 @@ export default ({stateNavigator}) => (
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {({show,...measurements}, scene) => (
+    {({show,...measurements}, scene, state, data) => (
       <View style={styles.scene}>
-        <Overlay {...measurements} color="green" />
+        <Overlay {...measurements} color={data.color} />
         <View
           style={{
             flex: 1,
