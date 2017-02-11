@@ -36,7 +36,7 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
         }}>
-        {getOverlay(measurements, stateNavigator.stateContext.data.color)}
+        {getOverlay(measurements, 'green')}
         <View
           style={{
             flex: 1,
