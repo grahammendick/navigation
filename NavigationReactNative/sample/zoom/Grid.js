@@ -20,7 +20,7 @@ export default ({stateNavigator}) => (
             onPress={() => {
               stateNavigator.navigate('detail', {color: color});
             }}>
-            <Text style={styles.text}>{color}</Text>
+            <Text></Text>
           </TouchableHighlight>
         ))}
       </View>
@@ -32,24 +32,16 @@ const styles = StyleSheet.create({
   grid: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: 50,
   },
   colors: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    marginTop: 50,
   },
   color: {
     width: 100,
     height: 150,
-    padding: 10,
     margin: 10,
-    justifyContent: 'center',
   },
-  text: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: '#fff',
-    fontWeight: 'bold',
-  }
 });

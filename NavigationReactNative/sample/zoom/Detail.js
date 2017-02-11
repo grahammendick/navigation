@@ -6,9 +6,8 @@ export default ({color, stateNavigator}) => (
     <View style={[
       {backgroundColor: color},
       styles.color
-    ]}>
-      <Text style={styles.text}>{color}</Text>
-    </View>
+    ]} />
+    <Text style={styles.text}>{color}</Text>
   </View>
 );
 
@@ -16,18 +15,17 @@ const styles = StyleSheet.create({
   detail: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: 50,
   },
   color: {
-    flex: 1,
-    padding: 10,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: .6,
+    margin: 20,
+    marginTop: 50,
   },
   text:{
+    flex: .4,
     fontSize: 80,
-    color: '#fff',
+    color: '#000',
+    textAlign:'center',
     fontWeight: 'bold',
   },
 });
