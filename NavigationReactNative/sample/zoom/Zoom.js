@@ -22,8 +22,8 @@ const getOverlay = ({x, y, w, h}) => {
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
-    unmountedStyle={{show: spring(0)}}
-    mountedStyle={(state, {color,...measurements}) => ({show: spring(1), ...measurements})}
+    unmountedStyle={(state, {color,...measurements}) => ({show: spring(0), ...measurements})}
+    mountedStyle={{show: spring(1), x: spring(10), y: spring(50), w: spring(350), h: spring(400)}}
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
