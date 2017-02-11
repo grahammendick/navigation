@@ -1,0 +1,19 @@
+export default () => (
+  [
+    'maroon',
+    'red',
+    'crimson',
+    'orange',
+    'brown',
+    'sienna',
+    'olive',
+    'purple',
+    'fuchsia',
+    'indigo',
+    'green',
+    'navy',
+    'blue',
+    'teal',
+    'black',
+  ]
+)

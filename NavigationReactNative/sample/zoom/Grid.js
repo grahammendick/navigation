@@ -1,18 +1,22 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import colors from './colors';
 
 export default ({stateNavigator}) => (
   <ScrollView>
     <View style={styles.grid}>
-      {[...Array(20).keys()].map(item => (
+      {colors().map(color => (
         <TouchableHighlight
-          key={item}
-          style={styles.item}
-          underlayColor="#fff"
+          key={color}
+          style={[
+            {backgroundColor: color},
+            styles.color
+          ]}
+          underlayColor={color}
           onPress={() => {
             stateNavigator.navigate('detail');
           }}>
-          <Text style={styles.text}>{item}</Text>
+          <Text style={styles.text}>{color}</Text>
         </TouchableHighlight>
       ))}
     </View>
@@ -27,17 +31,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  item: {
+  color: {
     width: 100,
     height: 150,
-    backgroundColor: 'red',
     padding: 10,
     margin: 10,
     justifyContent: 'center',
   },
   text: {
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: 20,
     color: '#fff',
     fontWeight: 'bold',
   }
