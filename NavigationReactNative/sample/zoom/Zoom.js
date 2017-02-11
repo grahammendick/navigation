@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
 
-const getMeasurements = ({x,y,w,h}, show) => ({
+const getStyle = ({x,y,w,h}, show) => ({
   x: spring(x, {stiffness: 250}),
   y: spring(y, {stiffness: 250}),
   w: spring(w, {stiffness: 250}),
@@ -13,8 +13,8 @@ const getMeasurements = ({x,y,w,h}, show) => ({
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
-    unmountedStyle={(state, data) => ({...getMeasurements(data, 0)})}
-    mountedStyle={(state, data) => ({...getMeasurements(data, 1)})}
+    unmountedStyle={(state, data) => ({...getStyle(data, 0)})}
+    mountedStyle={(state, data) => ({...getStyle(data, 1)})}
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
