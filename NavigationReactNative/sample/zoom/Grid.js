@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, Text, View,
+  TouchableHighlight, findNodeHandle, UIManager} from 'react-native';
 
 const colors = ['maroon', 'red', 'crimson', 'orange', 'brown',
   'sienna', 'olive', 'purple', 'fuchsia', 'indigo',
@@ -12,13 +13,16 @@ export default ({stateNavigator}) => (
         {colors.map(color => (
           <TouchableHighlight
             key={color}
+            ref={el => this.el = el}
             style={[
               {backgroundColor: color},
               styles.color
             ]}
             underlayColor={color}
             onPress={() => {
-              stateNavigator.navigate('detail', {color: color});
+              UIManager.measureInWindow(findNodeHandle(this.el), (x, y) => {
+                stateNavigator.navigate('detail', {x, y, color});
+              });
             }}>
             <Text></Text>
           </TouchableHighlight>
