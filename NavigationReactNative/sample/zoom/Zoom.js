@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
 
-const getStyle = ({x,y,w,h}, show) => ({
+const getStyle = ({x, y, w, h}, show) => ({
   x: spring(x, {stiffness: 250}),
   y: spring(y, {stiffness: 250}),
   w: spring(w, {stiffness: 250}),
@@ -18,7 +18,7 @@ export default ({stateNavigator}) => (
     crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {({show,x,y,w,h}, scene, state, {color}) => (
+    {({show, x, y, w, h}, scene, state, {color}) => (
       <View style={styles.scene}>
         <View
           style={{
