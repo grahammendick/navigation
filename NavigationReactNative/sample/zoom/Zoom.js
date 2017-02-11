@@ -5,9 +5,12 @@ import {NavigationMotion, spring} from 'navigation-react-native';
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
+    unmountedStyle={{show: spring(0)}}
+    mountedStyle={{show: spring(1)}}
+    crumbStyle={{show: spring(1)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {(style, scene) => (
+    {({show}, scene) => (
       <View
         style={{
           position: 'absolute',
@@ -15,6 +18,7 @@ export default ({stateNavigator}) => (
           right: 0,
           top: 0,
           bottom: 0,
+          opacity: Math.floor(show),
         }}>
         {scene}
       </View>
