@@ -5,31 +5,35 @@ const colors = ['maroon', 'red', 'crimson', 'orange', 'brown',
   'sienna', 'olive', 'purple', 'fuchsia', 'indigo',
   'green', 'navy', 'blue', 'teal', 'black'];
 
-export default ({stateNavigator}) => (
-  <View style={styles.grid}>
-    <ScrollView>
-      <View style={styles.colors}>
-        {colors.map(color => (
-          <TouchableHighlight
-            key={color}
-            ref={el => this[color] = el}
-            style={[
-              {backgroundColor: color},
-              styles.color
-            ]}
-            underlayColor={color}
-            onPress={() => {
-              this[color].measure((ox, oy, w, h, x, y) => {
-                stateNavigator.navigate('detail', {w, h, x, y, color});
-              });
-            }}>
-            <Text></Text>
-          </TouchableHighlight>
-        ))}
-      </View>
-    </ScrollView>
-  </View>
-);
+export default ({stateNavigator}) => {
+  const {url} = stateNavigator.stateContext;
+  return (
+    <View style={styles.grid}>
+      <ScrollView>
+        <View style={styles.colors}>
+          {colors.map(color => (
+            <TouchableHighlight
+              key={color}
+              ref={el => this[color] = el}
+              style={[
+                {backgroundColor: color},
+                styles.color
+              ]}
+              underlayColor={color}
+              onPress={() => {
+                this[color].measure((ox, oy, w, h, x, y) => {
+                  if (url === stateNavigator.stateContext.url)
+                    stateNavigator.navigate('detail', {w, h, x, y, color});
+                });
+              }}>
+              <Text></Text>
+            </TouchableHighlight>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   grid: {

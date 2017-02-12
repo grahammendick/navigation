@@ -2,35 +2,39 @@ import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {spring} from 'navigation-react-native';
 
-export default ({color, moveScene, stateNavigator}) => (
-  <View style={styles.detail}>
-    <TouchableHighlight
-      underlayColor="#fff"
-      onPress={() => {
-        stateNavigator.navigateBack(1);
-      }}>
-      <Text style={styles.back}>X</Text>
-    </TouchableHighlight>
-    <View
-      onLayout={() => {
-        this.el.measure((ox, oy, w, h, x, y) => {
-          moveScene({
-            w: spring(w, {stiffness: 250}),
-            h: spring(h, {stiffness: 250}),
-            x: spring(x, {stiffness: 250}),
-            y: spring(y, {stiffness: 250}),
-            show: spring(1, {stiffness: 250})
+export default ({color, moveScene, stateNavigator}) => {
+  const {url} = stateNavigator.stateContext;
+  return (
+    <View style={styles.detail}>
+      <TouchableHighlight
+        underlayColor="#fff"
+        onPress={() => {
+          if (url === stateNavigator.stateContext.url)
+            stateNavigator.navigateBack(1);
+        }}>
+        <Text style={styles.back}>X</Text>
+      </TouchableHighlight>
+      <View
+        onLayout={() => {
+          this.el.measure((ox, oy, w, h, x, y) => {
+            moveScene({
+              w: spring(w, {stiffness: 250}),
+              h: spring(h, {stiffness: 250}),
+              x: spring(x, {stiffness: 250}),
+              y: spring(y, {stiffness: 250}),
+              show: spring(1, {stiffness: 250})
+            });
           });
-        });
-      }}
-      ref={el => this.el = el}
-      style={[
-        {backgroundColor: color},
-        styles.color
-      ]} />
-    <Text style={styles.text}>{color}</Text>
-  </View>
-);
+        }}
+        ref={el => this.el = el}
+        style={[
+          {backgroundColor: color},
+          styles.color
+        ]} />
+      <Text style={styles.text}>{color}</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   detail: {
