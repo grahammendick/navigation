@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {Dimensions, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 
 const colors = ['maroon', 'red', 'crimson', 'orange', 'brown',
   'sienna', 'olive', 'purple', 'fuchsia', 'indigo',
@@ -23,7 +23,8 @@ export default ({stateNavigator}) => {
               onPress={() => {
                 this[color].measure((ox, oy, w, h, x, y) => {
                   if (url === stateNavigator.stateContext.url)
-                    stateNavigator.navigate('detail', {w, h, x, y, color});
+                    stateNavigator.navigate('detail', {w, h, x, y, color,
+                      width: Dimensions.get('window').width});
                 });
               }}>
               <Text></Text>

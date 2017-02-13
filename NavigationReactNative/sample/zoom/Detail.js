@@ -22,7 +22,8 @@ export default ({color, moveScene, stateNavigator}) => {
               h: spring(h, {stiffness: 250}),
               x: spring(x, {stiffness: 250}),
               y: spring(y, {stiffness: 250}),
-              show: spring(1, {stiffness: 250})
+              show: spring(1, {stiffness: 250}),
+              translate: spring(0, {stiffness: 250}),
             });
           });
         }}
