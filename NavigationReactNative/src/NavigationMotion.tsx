@@ -50,10 +50,10 @@ class NavigationMotion extends React.Component<any, any> {
     }
     renderScene({key, data: {scene, state, data, mount}, style: {transitioning, ...transitionStyle}}) {
         var {mountedStyle, crumbStyle, children} = this.props;
-        var style = scene.style || getStyle(mount ? mountedStyle : crumbStyle, state, data);
+        var style = (scene && scene.style) || getStyle(mount ? mountedStyle : crumbStyle, state, data);
         return (
             <Motion key={key} style={transitioning ? transitionStyle : style}>
-                {(tweenStyle) => children(tweenStyle, scene.element, state, data)}
+                {(tweenStyle) => children(tweenStyle, scene && scene.element, state, data)}
             </Motion>
         );
     }
@@ -67,11 +67,14 @@ class NavigationMotion extends React.Component<any, any> {
             <TransitionMotion
                 willEnter={() => getStyle(unmountedStyle, state, data, 1, true)} 
                 willLeave={() => getStyle(unmountedStyle, oldState, oldData, 1)}
-                styles={sceneContexts.map(({state, data, url}) => ({
-                    key: url,
-                    data: {scene: this.state.scenes[url], state, data, mount: url === nextCrumb.url},
-                    style: getStyle(this.state.scenes[url].style || mountedStyle, state, data, spring(0))
-                }))}>
+                styles={sceneContexts.map(({state, data, url}) => {
+                    var scene = this.state.scenes[url];
+                    return {
+                        key: url,
+                        data: {scene, state, data, mount: url === nextCrumb.url},
+                        style: getStyle((scene && scene.style) || mountedStyle, state, data, spring(0))
+                    }
+                })}>
                 {tweenStyles => (
                     <View style={style}>
                         {tweenStyles.map((config) => this.renderScene(config))}
