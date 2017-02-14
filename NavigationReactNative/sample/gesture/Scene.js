@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Text, View, TouchableHighlight, PanResponder} from 'react-native';
-import {spring} from 'navigation-react-native';
+import {NavigationBackAndroid, spring} from 'navigation-react-native';
 
 export default class Next extends React.Component {
   constructor(props) {
@@ -38,6 +38,7 @@ export default class Next extends React.Component {
         ]}
         {...this.panResponder.panHandlers}
         >
+        <NavigationBackAndroid stateNavigator={stateNavigator} />
         <TouchableHighlight
           underlayColor="transparent"
           onPress={() => {
