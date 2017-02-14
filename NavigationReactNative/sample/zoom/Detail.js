@@ -1,11 +1,12 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
-import {spring} from 'navigation-react-native';
+import {NavigationBackAndroid, spring} from 'navigation-react-native';
 
 export default ({color, moveScene, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.detail}>
+      <NavigationBackAndroid stateNavigator={stateNavigator} />
       <TouchableHighlight
         underlayColor="#fff"
         onPress={() => {
