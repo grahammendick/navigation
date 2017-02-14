@@ -1,9 +1,10 @@
 import React from 'react';
 import {Dimensions, StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 
-const colors = ['maroon', 'red', 'crimson', 'orange', 'brown',
-  'sienna', 'olive', 'purple', 'fuchsia', 'indigo',
-  'green', 'navy', 'blue', 'teal', 'black'];
+const colors = [
+  'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
+  'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
+];
 
 export default ({stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
