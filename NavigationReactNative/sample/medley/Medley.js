@@ -10,7 +10,7 @@ export default ({stateNavigator}) => (
     crumbStyle={{translateX: spring(0), translateY: spring(0)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {({translate}, scene) => (
+    {({translateX, translateY}, scene) => (
       <View
         style={{
           position: 'absolute',
@@ -19,8 +19,8 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
           transform: [
-            {translateX: Dimensions.get('window').width * translate},
-            {translateY: Dimensions.get('window').height * translate},
+            {translateX: Dimensions.get('window').width * translateX},
+            {translateY: Dimensions.get('window').height * translateY},
           ]
         }}>
         {scene}

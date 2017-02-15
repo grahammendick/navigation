@@ -3,10 +3,10 @@ import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationBackAndroid} from 'navigation-react-native';
 
 const nextDirection = {
-    north: 'east',
-    east: 'south',
-    south: 'west',
-    west: 'north',
+    North: 'East',
+    East: 'South',
+    South: 'West',
+    West: 'North',
 };
 
 export default ({direction, stateNavigator}) => {
@@ -18,7 +18,7 @@ export default ({direction, stateNavigator}) => {
           underlayColor="#fff"
           onPress={() => {
             if (url === stateNavigator.stateContext.url)
-              stateNavigator.navigate(nextDirection[direction]);
+              stateNavigator.navigate(`scene${nextDirection[direction]}`);
         }}>
           <Text style={styles.text}>{direction} {crumbs.length}</Text>
         </TouchableHighlight>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 40,
-    color: '#fff',
+    color: '#000',
     fontWeight: 'bold',
   },
 });

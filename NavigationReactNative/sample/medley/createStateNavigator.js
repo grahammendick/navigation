@@ -1,6 +1,7 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import Scene from './Scene';
+import {spring} from 'navigation-react-native';
 
 export default () => {
   const stateNavigator = new StateNavigator([
@@ -11,10 +12,10 @@ export default () => {
   ]);
 
   const { sceneNorth, sceneEast, sceneSouth, sceneWest } = stateNavigator.states;
-  sceneNorth.renderScene = (data, moveScene) => <Scene direction="north" stateNavigator={stateNavigator}/>;
-  sceneEast.renderScene = (data, moveScene) => <Scene direction="east" stateNavigator={stateNavigator}/>;
-  sceneSouth.renderScene = (data, moveScene) => <Scene direction="south" stateNavigator={stateNavigator}/>;
-  sceneWest.renderScene = (data, moveScene) => <Scene direction="west" stateNavigator={stateNavigator}/>;
+  sceneNorth.renderScene = (data, moveScene) => <Scene direction="North" stateNavigator={stateNavigator}/>;
+  sceneEast.renderScene = (data, moveScene) => <Scene direction="East" stateNavigator={stateNavigator}/>;
+  sceneSouth.renderScene = (data, moveScene) => <Scene direction="South" stateNavigator={stateNavigator}/>;
+  sceneWest.renderScene = (data, moveScene) => <Scene direction="West" stateNavigator={stateNavigator}/>;
 
   sceneNorth.unmountedStyle = () => ({translateX: spring(0), translateY: spring(1)});
   sceneEast.unmountedStyle = () => ({translateX: spring(1), translateY: spring(0)});
