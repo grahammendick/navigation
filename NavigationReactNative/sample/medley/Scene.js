@@ -9,13 +9,16 @@ const nextDirection = {
     West: 'North',
 };
 
-export default ({direction, stateNavigator}) => {
+export default ({direction, color, stateNavigator}) => {
     const {url, crumbs} = stateNavigator.stateContext;
     return (
-      <View style={styles.scene}>
+      <View style={[
+        styles.scene,
+        {backgroundColor: color}
+      ]}>
         <NavigationBackAndroid stateNavigator={stateNavigator} />
         <TouchableHighlight
-          underlayColor="#fff"
+          underlayColor={color}
           onPress={() => {
             if (url === stateNavigator.stateContext.url)
               stateNavigator.navigate(`scene${nextDirection[direction]}`);
@@ -23,7 +26,7 @@ export default ({direction, stateNavigator}) => {
           <Text style={styles.text}>{direction} {crumbs.length}</Text>
         </TouchableHighlight>
         <TouchableHighlight
-          underlayColor="#fff"
+          underlayColor={color}
           onPress={() => {
             if (url === stateNavigator.stateContext.url)
               stateNavigator.navigateBack(1);
@@ -39,11 +42,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   text: {
     fontSize: 40,
-    color: '#000',
+    color: '#fff',
     fontWeight: 'bold',
   },
 });
