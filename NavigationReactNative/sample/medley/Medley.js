@@ -6,8 +6,8 @@ export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="sceneNorth"
     unmountedStyle={state => state.unmountedStyle()}
-    mountedStyle={{translateX: spring(0), translateY: spring(0)}}
-    crumbStyle={{translateX: spring(0), translateY: spring(0)}}
+    mountedStyle={{translateX: spring(0, {stiffness: 30}), translateY: spring(0, {stiffness: 30})}}
+    crumbStyle={{translateX: spring(0, {stiffness: 30}), translateY: spring(0, {stiffness: 30})}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({translateX, translateY}, scene) => (

@@ -17,10 +17,10 @@ export default () => {
   sceneSouth.renderScene = (data, moveScene) => <Scene direction="South" color="green" stateNavigator={stateNavigator}/>;
   sceneWest.renderScene = (data, moveScene) => <Scene direction="West" color="black" stateNavigator={stateNavigator}/>;
 
-  sceneNorth.unmountedStyle = () => ({translateX: spring(0), translateY: spring(1)});
-  sceneEast.unmountedStyle = () => ({translateX: spring(1), translateY: spring(0)});
-  sceneSouth.unmountedStyle = () => ({translateX: spring(0), translateY: spring(-1)});
-  sceneWest.unmountedStyle = () => ({translateX: spring(-1), translateY: spring(0)});
+  sceneNorth.unmountedStyle = () => ({translateX: spring(0, {stiffness: 30}), translateY: spring(1, {stiffness: 30})});
+  sceneEast.unmountedStyle = () => ({translateX: spring(1, {stiffness: 30}), translateY: spring(0, {stiffness: 30})});
+  sceneSouth.unmountedStyle = () => ({translateX: spring(0, {stiffness: 30}), translateY: spring(-1, {stiffness: 30})});
+  sceneWest.unmountedStyle = () => ({translateX: spring(-1, {stiffness: 30}), translateY: spring(0, {stiffness: 30})});
   
   return stateNavigator;
 }
