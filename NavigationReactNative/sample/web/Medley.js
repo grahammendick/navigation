@@ -8,6 +8,7 @@ export default ({stateNavigator}) => (
     unmountedStyle={state => state.unmountedStyle()}
     mountedStyle={{translateX: spring(0, {stiffness: 30}), translateY: spring(0, {stiffness: 30})}}
     crumbStyle={{translateX: spring(0, {stiffness: 30}), translateY: spring(0, {stiffness: 30})}}
+    style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({translateX, translateY}, scene) => (
       <div
@@ -17,6 +18,7 @@ export default ({stateNavigator}) => (
           right: 0,
           top: 0,
           bottom: 0,
+          transform: `translate(${translateX * 100}px ${translateY * 100}px)`,
         }}>
         {scene}
       </div>
