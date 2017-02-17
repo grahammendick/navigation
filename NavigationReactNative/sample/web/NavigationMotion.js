@@ -45,11 +45,10 @@ class NavigationMotion extends React.Component {
             }
         )};
     }
-    renderScene({key, data: {scene, state, data, mount}, style: {transitioning, ...transitionStyle}}) {
-        var {mountedStyle, crumbStyle, children} = this.props;
-        var style = (scene && scene.style) || getStyle(mount ? mountedStyle : crumbStyle, state, data);
+    renderScene({key, data: {scene, state, data}, style}) {
+        var {children} = this.props;
         return (
-            <Motion key={key} style={transitioning ? transitionStyle : style}>
+            <Motion key={key} style={style}>
                 {(tweenStyle) => children(tweenStyle, scene && scene.element, state, data)}
             </Motion>
         );
@@ -58,18 +57,18 @@ class NavigationMotion extends React.Component {
         var {oldState, oldData, state, data, crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         if (!state)
             return null;
-        var {unmountedStyle, mountedStyle, style} = this.props;
+        var {unmountedStyle, mountedStyle, crumbStyle, style} = this.props;
         var sceneContexts = crumbs.concat(nextCrumb);
         return (
             <TransitionMotion
-                willEnter={() => getStyle(unmountedStyle, state, data, 1, true)} 
-                willLeave={() => getStyle(unmountedStyle, oldState, oldData, 1)}
+                willEnter={() => getStyle(unmountedStyle, state, data, true)} 
+                willLeave={() => getStyle(unmountedStyle, oldState, oldData)}
                 styles={sceneContexts.map(({state, data, url}) => {
                     var scene = this.state.scenes[url];
                     return {
                         key: url,
-                        data: {scene, state, data, mount: url === nextCrumb.url},
-                        style: getStyle((scene && scene.style) || mountedStyle, state, data, spring(0))
+                        data: {scene, state, data},
+                        style: getStyle((scene && scene.style) || (url === nextCrumb.url ? mountedStyle : crumbStyle), state, data)
                     }
                 })}>
                 {tweenStyles => (
@@ -82,14 +81,12 @@ class NavigationMotion extends React.Component {
     }
 }
 
-function getStyle(styleProp, state, data, transitioning, strip) {
+function getStyle(styleProp, state, data, strip) {
     var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
     var newStyle = {};
     for(var key in style) {
         newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
     }
-    if (transitioning)
-        newStyle.transitioning = transitioning;
     return newStyle;
 }
 
