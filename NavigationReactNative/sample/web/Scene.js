@@ -25,7 +25,7 @@ export default ({direction, color, stateNavigator}) => {
       <div
         style={styles.text}
         onClick={() => {
-          if (url === stateNavigator.stateContext.url)
+          if (url === stateNavigator.stateContext.url && stateNavigator.canNavigateBack(1))
             stateNavigator.navigateBack(1);
         }}>
         Back
