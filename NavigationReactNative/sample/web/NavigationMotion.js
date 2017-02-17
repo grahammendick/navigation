@@ -52,11 +52,9 @@ class NavigationMotion extends React.Component {
     }
     render() {
         var {oldState, oldData, state, data, crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        if (!state)
-            return null;
         var {unmountedStyle, style, children} = this.props;
         var sceneContexts = crumbs.concat(nextCrumb);
-        return (
+        return (state &&
             <TransitionMotion
                 willEnter={() => getStyle(unmountedStyle, state, data, true)} 
                 willLeave={() => getStyle(unmountedStyle, oldState, oldData)}
