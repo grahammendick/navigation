@@ -53,11 +53,16 @@ class NavigationMotion extends React.Component {
             </Motion>
         );
     }
+    calculateStyle(scene, mount, state, data) {
+        var {mountedStyle, crumbStyle} = this.props;
+        var style = (scene && scene.style) || (mount ? mountedStyle : crumbStyle);
+        return getStyle(style, state, data);
+    }
     render() {
         var {oldState, oldData, state, data, crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         if (!state)
             return null;
-        var {unmountedStyle, mountedStyle, crumbStyle, style} = this.props;
+        var {unmountedStyle, style} = this.props;
         var sceneContexts = crumbs.concat(nextCrumb);
         return (
             <TransitionMotion
@@ -68,7 +73,7 @@ class NavigationMotion extends React.Component {
                     return {
                         key: url,
                         data: {scene, state, data},
-                        style: getStyle((scene && scene.style) || (url === nextCrumb.url ? mountedStyle : crumbStyle), state, data)
+                        style: this.calculateStyle(scene, url === nextCrumb.url, state, data)
                     }
                 })}>
                 {tweenStyles => (
