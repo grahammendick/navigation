@@ -23,7 +23,7 @@ class NavigationMotion extends React.Component {
         this.state = {scenes: {}};
     }
     getStateNavigator(){
-        return this.props.stateNavigator || (this.context as any).stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
         var stateNavigator = this.getStateNavigator();
