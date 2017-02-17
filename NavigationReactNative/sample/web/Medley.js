@@ -13,7 +13,7 @@ export default ({stateNavigator}) => (
       <div
         style={{
           position: 'absolute',
-          transform: `translate(${translateX * 400}px, ${translateY * 600}px)`,
+          transform: `translate(${translateX * 300}px, ${translateY * 460}px)`,
         }}>
         {scene}
       </div>

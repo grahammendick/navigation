@@ -41,8 +41,8 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '400px',
-    height: '600px',
+    width: '300px',
+    height: '460px',
   },
   text: {
     fontSize: 40,
