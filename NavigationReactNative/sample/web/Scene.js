@@ -36,6 +36,8 @@ export default ({direction, color, stateNavigator}) => {
 
 const styles = {
   scene: {
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
