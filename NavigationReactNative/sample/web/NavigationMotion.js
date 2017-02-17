@@ -45,14 +45,6 @@ class NavigationMotion extends React.Component {
             }
         )};
     }
-    renderScene({key, data: {scene, state, data}, style}) {
-        var {children} = this.props;
-        return (
-            <Motion key={key} style={style}>
-                {(tweenStyle) => children(tweenStyle, scene && scene.element, state, data)}
-            </Motion>
-        );
-    }
     calculateStyle(scene, mount, state, data) {
         var {mountedStyle, crumbStyle} = this.props;
         var style = (scene && scene.style) || (mount ? mountedStyle : crumbStyle);
@@ -62,23 +54,24 @@ class NavigationMotion extends React.Component {
         var {oldState, oldData, state, data, crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         if (!state)
             return null;
-        var {unmountedStyle, style} = this.props;
+        var {unmountedStyle, style, children} = this.props;
         var sceneContexts = crumbs.concat(nextCrumb);
         return (
             <TransitionMotion
                 willEnter={() => getStyle(unmountedStyle, state, data, true)} 
                 willLeave={() => getStyle(unmountedStyle, oldState, oldData)}
-                styles={sceneContexts.map(({state, data, url}) => {
-                    var scene = this.state.scenes[url];
-                    return {
-                        key: url,
-                        data: {scene, state, data},
-                        style: this.calculateStyle(scene, url === nextCrumb.url, state, data)
-                    }
-                })}>
+                styles={sceneContexts.map(({state, data, url}) => ({
+                    key: url,
+                    data: {scene: this.state.scenes[url], state, data},
+                    style: this.calculateStyle(this.state.scenes[url], url === nextCrumb.url, state, data)
+                }))}>
                 {tweenStyles => (
                     <div style={style}>
-                        {tweenStyles.map((config) => this.renderScene(config))}
+                        {tweenStyles.map(({key, data: {scene, state, data}, style: transitionStyle}) => (
+                            <Motion key={key} style={transitionStyle}>
+                                {(tweenStyle) => children(tweenStyle, scene && scene.element, state, data)}
+                            </Motion>
+                        ))}
                     </div>
                 )}
             </TransitionMotion>
