@@ -39,6 +39,8 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '400px',
+    height: '600px',
   },
   text: {
     fontSize: 40,
