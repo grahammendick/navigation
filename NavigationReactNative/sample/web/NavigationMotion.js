@@ -65,10 +65,8 @@ class NavigationMotion extends React.Component {
                 }))}>
                 {tweenStyles => (
                     <div style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data}, style: transitionStyle}) => (
-                            <Motion key={key} style={transitionStyle}>
-                                {(tweenStyle) => children(tweenStyle, scene && scene.element, state, data)}
-                            </Motion>
+                        {tweenStyles.map(({key, data: {scene, state, data}, style: tweenStyle}) => (
+                            children(tweenStyle, scene && scene.element, key, state, data)
                         ))}
                     </div>
                 )}
