@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
-import {NavigationMotion, spring} from 'navigation-react-native';
+import {NavigationMotion} from 'navigation-react-native';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
