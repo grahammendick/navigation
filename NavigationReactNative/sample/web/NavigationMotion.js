@@ -45,10 +45,10 @@ class NavigationMotion extends React.Component {
             }
         )};
     }
-    calculateStyle(scene, mount, state, data) {
+    contextStyle(scene, url) {
         var {mountedStyle, crumbStyle} = this.props;
-        var style = (scene && scene.style) || (mount ? mountedStyle : crumbStyle);
-        return getStyle(style, state, data);
+        var mount = url === this.getStateNavigator().stateContext.nextCrumb.url;
+        return (scene && scene.style) || (mount ? mountedStyle : crumbStyle);
     }
     render() {
         var {state, data, crumbs, nextCrumb} = this.getStateNavigator().stateContext;
@@ -61,7 +61,7 @@ class NavigationMotion extends React.Component {
                 styles={sceneContexts.map(({state, data, url}) => ({
                     key: url,
                     data: {scene: this.state.scenes[url], state, data},
-                    style: this.calculateStyle(this.state.scenes[url], url === nextCrumb.url, state, data)
+                    style: getStyle(this.contextStyle(this.state.scenes[url], url), state, data)
                 }))}>
                 {tweenStyles => (
                     <div style={style}>
