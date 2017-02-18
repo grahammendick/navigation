@@ -57,7 +57,7 @@ class NavigationMotion extends React.Component {
         return (state &&
             <TransitionMotion
                 willEnter={() => getStyle(unmountedStyle, state, data, true)} 
-                willLeave={() => getStyle(unmountedStyle, oldState, oldData)}
+                willLeave={({data: {state, data}}) => getStyle(unmountedStyle, state || oldState, data || oldData)}
                 styles={sceneContexts.map(({state, data, url}) => ({
                     key: url,
                     data: {scene: this.state.scenes[url], state, data},
