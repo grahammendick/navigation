@@ -28,7 +28,7 @@ export default ({direction, color, stateNavigator}) => {
       <TouchableHighlight
         underlayColor={color}
         onPress={() => {
-          if (url === stateNavigator.stateContext.url)
+          if (url === stateNavigator.stateContext.url && stateNavigator.canNavigateBack(1))
             stateNavigator.navigateBack(1);
       }}>
         <Text style={styles.text}>Back</Text>
