@@ -1,11 +1,10 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Motion, TransitionMotion } from 'react-motion';
-import { View } from 'react-native';
 import spring from './spring.js'
 
-class NavigationMotion extends React.Component<any, any> {
-    private onNavigate = (oldState, state, data, asyncData) => {
+class NavigationMotion extends React.Component {
+    onNavigate(oldState, state, data, asyncData) {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
             var scenes = {[url]: {element: state.renderScene(data, this.moveScene(url), asyncData)}};
@@ -20,13 +19,11 @@ class NavigationMotion extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
+        this.onNavigate = this.onNavigate.bind(this);
         this.state = {scenes: {}};
     }
-    static contextTypes = {
-        stateNavigator: React.PropTypes.object
-    }
-    private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || (this.context as any).stateNavigator;
+    getStateNavigator(){
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
         var stateNavigator = this.getStateNavigator();
@@ -66,24 +63,28 @@ class NavigationMotion extends React.Component<any, any> {
                     style: getStyle(this.transitionStyle(this.state.scenes[url], url), state, data)
                 }))}>
                 {tweenStyles => (
-                    <View style={style}>
+                    <div style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data}, style}) => (
                             children(style, scene && scene.element, key, state, data)
                         ))}
-                    </View>
+                    </div>
                 )}
             </TransitionMotion>
         );
     }
 }
 
-function getStyle(styleProp, state, data, strip = false) {
+function getStyle(styleProp, state, data, strip) {
     var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
-    var newStyle: any = {};
+    var newStyle = {};
     for(var key in style) {
         newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
     }
     return newStyle;
+}
+
+NavigationMotion.contextTypes = {
+    stateNavigator: React.PropTypes.object
 }
 
 export default NavigationMotion;

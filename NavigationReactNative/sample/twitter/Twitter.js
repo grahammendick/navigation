@@ -16,8 +16,9 @@ export default ({stateNavigator, startStateKey, visible}) => (
     crumbStyle={getStyle(0.05, 0.9, 0)}
     style={{flex: +visible, backgroundColor: 'black'}}
     stateNavigator={stateNavigator}>
-    {({translate, scale, opacity}, scene) => (
+    {({translate, scale, opacity}, scene, url) => (
       <View
+        key={url}
         style={{
           position: 'absolute',
           backgroundColor: 'white',

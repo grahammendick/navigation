@@ -1,16 +1,16 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
-import {NavigationMotion, spring} from 'navigation-react-native';
+import {NavigationMotion} from 'navigation-react-native';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
-    startStateKey="scene"
-    unmountedStyle={{translate: spring(1)}}
-    mountedStyle={{translate: spring(0)}}
-    crumbStyle={{translate: spring(0)}}
+    startStateKey="sceneNorth"
+    unmountedStyle={state => state.unmountedStyle()}
+    mountedStyle={state => state.mountedStyle()}
+    crumbStyle={state => state.crumbStyle()}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {({translate}, scene, url) => (
+    {({translateX  = 0, translateY = 0}, scene, url) => (
       <View
         key={url}
         style={{
@@ -20,7 +20,8 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
           transform: [
-            {translateX: Dimensions.get('window').width * translate},
+            {translateX: Dimensions.get('window').width * translateX},
+            {translateY: Dimensions.get('window').height * translateY},
           ]
         }}>
         {scene}
