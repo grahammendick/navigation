@@ -25,14 +25,14 @@ export default ({direction, color, stateNavigator}) => {
       }}>
         <Text style={styles.text}>{direction} {crumbs.length}</Text>
       </TouchableHighlight>
-      <TouchableHighlight
+      {stateNavigator.canNavigateBack(1) && <TouchableHighlight
         underlayColor={color}
         onPress={() => {
-          if (url === stateNavigator.stateContext.url && stateNavigator.canNavigateBack(1))
+          if (url === stateNavigator.stateContext.url)
             stateNavigator.navigateBack(1);
       }}>
         <Text style={styles.text}>Back</Text>
-      </TouchableHighlight>
+      </TouchableHighlight>}
     </View>
   )
 };
