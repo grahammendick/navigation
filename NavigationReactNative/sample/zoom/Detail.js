@@ -18,8 +18,7 @@ export default ({color, moveScene, stateNavigator}) => {
       <View
         onLayout={() => {
           this.el.measure((ox, oy, w, h, x, y) => {
-            var {data} = stateNavigator.stateContext;
-            moveScene({...data, w, h, x, y});
+            moveScene({w, h, x, y});
           });
         }}
         ref={el => this.el = el}

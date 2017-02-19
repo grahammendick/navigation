@@ -56,17 +56,17 @@ class NavigationMotion extends React.Component<any, any> {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
         return (state &&
             <TransitionMotion
-                willEnter={({data: {state, data}}) => getStyle(unmountedStyle, state, data, true)}
-                willLeave={({data: {state, data}}) => getStyle(unmountedStyle, state, data)}
+                willEnter={({data: {state, data, sceneData}}) => getStyle(unmountedStyle, state, data, sceneData, true)}
+                willLeave={({data: {state, data, sceneData}}) => getStyle(unmountedStyle, state, data, sceneData)}
                 styles={this.getSceneContexts().map(({state, data, url, scene, sceneData, mount}) => ({
                     key: url,
-                    data: {scene, state, data},
-                    style: getStyle(mount ? mountedStyle : crumbStyle, state, sceneData || data)
+                    data: {scene, state, data, sceneData},
+                    style: getStyle(mount ? mountedStyle : crumbStyle, state, data, sceneData)
                 }))}>
                 {tweenStyles => (
                     <View style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data}, style}) => (
-                            children(style, scene.element, key, state, data)
+                        {tweenStyles.map(({key, data: {scene, state, data, sceneData}, style}) => (
+                            children(style, scene.element, key, state, data, sceneData)
                         ))}
                     </View>
                 )}
@@ -75,8 +75,8 @@ class NavigationMotion extends React.Component<any, any> {
     }
 }
 
-function getStyle(styleProp, state, data, strip = false) {
-    var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+function getStyle(styleProp, state, data, sceneData, strip = false) {
+    var style = typeof styleProp === 'function' ? styleProp(state, data, sceneData) : styleProp;
     var newStyle: any = {};
     for(var key in style) {
         newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
