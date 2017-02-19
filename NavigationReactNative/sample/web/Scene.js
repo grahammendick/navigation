@@ -22,14 +22,14 @@ export default ({direction, color, stateNavigator}) => {
         }}>
         {direction} {crumbs.length}
       </div>
-      <div
+      {stateNavigator.canNavigateBack(1) && <div
         style={styles.text}
         onClick={() => {
-          if (url === stateNavigator.stateContext.url && stateNavigator.canNavigateBack(1))
+          if (url === stateNavigator.stateContext.url)
             stateNavigator.navigateBack(1);
         }}>
         Back
-      </div>
+      </div>}
     </div>
   )
 };
