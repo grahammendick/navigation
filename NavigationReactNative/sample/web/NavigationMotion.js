@@ -8,12 +8,8 @@ class NavigationMotion extends React.Component {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
             var scenes = {[url]: {element: state.renderScene(data, this.moveScene(url), asyncData)}};
-            for(var i = 0; i < crumbs.length; i++) {
-                scenes[crumbs[i].url] = {
-                    ...prevState.scenes[crumbs[i].url],
-                    style: null
-                };
-            }
+            for(var i = 0; i < crumbs.length; i++)
+                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url];
             return {scenes};
         });
     }
@@ -36,36 +32,38 @@ class NavigationMotion extends React.Component {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
     moveScene(url) {
-        return style => {
+        return data => {
             this.setState((prevState) => {
                 var scenes = {...prevState.scenes};
                 if (scenes[url])
-                    scenes[url].style = style; 
+                    scenes[url].data = data; 
                 return {scenes};
             }
         )};
     }
-    transitionStyle(scene, url) {
-        var {mountedStyle, crumbStyle} = this.props;
-        var mount = url === this.getStateNavigator().stateContext.nextCrumb.url;
-        return (scene && scene.style) || (mount ? mountedStyle : crumbStyle);
+    getScenes(){
+        var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
+        return crumbs.concat(nextCrumb).map(({state, data, url}) => {
+            var scene = this.state.scenes[url] || {};
+            return {state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url};
+        });
     }
     render() {
         var {state, crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        var {unmountedStyle, style, children} = this.props;
+        var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
         return (state &&
             <TransitionMotion
-                willEnter={({data: {state, data}}) => getStyle(unmountedStyle, state, data, true)}
-                willLeave={({data: {state, data}}) => getStyle(unmountedStyle, state, data)}
-                styles={crumbs.concat(nextCrumb).map(({state, data, url}) => ({
+                willEnter={({data: sceneContext}) => getStyle(unmountedStyle, sceneContext, true)}
+                willLeave={({data: sceneContext}) => getStyle(unmountedStyle, sceneContext)}
+                styles={this.getScenes().map(({url, mount, ...sceneContext}) => ({
                     key: url,
-                    data: {scene: this.state.scenes[url], state, data},
-                    style: getStyle(this.transitionStyle(this.state.scenes[url], url), state, data)
+                    data: sceneContext,
+                    style: getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
                 }))}>
                 {tweenStyles => (
                     <div style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data}, style}) => (
-                            children(style, scene && scene.element, key, state, data)
+                        {tweenStyles.map(({key, data: {scene, state, data, sceneData}, style}) => (
+                            children(style, scene.element, key, state, data, sceneData)
                         ))}
                     </div>
                 )}
@@ -74,8 +72,8 @@ class NavigationMotion extends React.Component {
     }
 }
 
-function getStyle(styleProp, state, data, strip) {
-    var style = typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+function getStyle(styleProp, {state, data, sceneData}, strip) {
+    var style = typeof styleProp === 'function' ? styleProp(state, data, sceneData) : styleProp;
     var newStyle = {};
     for(var key in style) {
         newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
