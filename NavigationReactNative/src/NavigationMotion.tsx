@@ -48,7 +48,7 @@ class NavigationMotion extends React.Component<any, any> {
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         return crumbs.concat(nextCrumb).map(({state, data, url}) => {
             var scene = this.state.scenes[url] || {};
-            return { state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url };
+            return {state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url};
         });
     }
     render() {
