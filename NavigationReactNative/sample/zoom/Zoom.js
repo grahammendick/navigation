@@ -14,9 +14,9 @@ const getStyle = ({x, y, w, h, width}, show, translate = false) => ({
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
-    unmountedStyle={(state, data) => ({...getStyle(data, 0, true)})}
-    mountedStyle={(state, data, sceneData) => ({...getStyle({...data, ...sceneData}, 1)})}
-    crumbStyle={{...getStyle({}, 1)}}
+    unmountedStyle={(state, data) => (getStyle(data, 0, true))}
+    mountedStyle={(state, data, sceneData) => (getStyle({...data, ...sceneData}, 1))}
+    crumbStyle={getStyle({}, 1)}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({show, x, y, w, h, translate}, scene, url, state, {color}) => (
