@@ -18,14 +18,8 @@ export default ({color, moveScene, stateNavigator}) => {
       <View
         onLayout={() => {
           this.el.measure((ox, oy, w, h, x, y) => {
-            moveScene({
-              w: spring(w, {stiffness: 250}),
-              h: spring(h, {stiffness: 250}),
-              x: spring(x, {stiffness: 250}),
-              y: spring(y, {stiffness: 250}),
-              show: spring(1, {stiffness: 250}),
-              translate: spring(0, {stiffness: 250}),
-            });
+            var {data} = stateNavigator.stateContext;
+            moveScene({...data, w, h, x, y});
           });
         }}
         ref={el => this.el = el}

@@ -48,7 +48,7 @@ class NavigationMotion extends React.Component<any, any> {
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         return crumbs.concat(nextCrumb).map(({state, data, url}) => {
             var scene = this.state.scenes[url] || {};
-            return { state, data: scene.data || data, url, scene, mount: url === nextCrumb.url };
+            return { state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url };
         });
     }
     render() {
@@ -58,10 +58,10 @@ class NavigationMotion extends React.Component<any, any> {
             <TransitionMotion
                 willEnter={({data: {state, data}}) => getStyle(unmountedStyle, state, data, true)}
                 willLeave={({data: {state, data}}) => getStyle(unmountedStyle, state, data)}
-                styles={this.getSceneContexts().map(({state, data, url, scene, mount}) => ({
+                styles={this.getSceneContexts().map(({state, data, url, scene, sceneData, mount}) => ({
                     key: url,
                     data: {scene, state, data},
-                    style: getStyle(mount ? mountedStyle : crumbStyle, state, data)
+                    style: getStyle(mount ? mountedStyle : crumbStyle, state, sceneData || data)
                 }))}>
                 {tweenStyles => (
                     <View style={style}>
