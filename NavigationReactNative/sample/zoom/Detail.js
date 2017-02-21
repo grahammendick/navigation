@@ -12,7 +12,7 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
         onPress={() => {
           if (url === stateNavigator.stateContext.url){
             colorRef.measure((ox, oy, w, h, x, y) => {
-              moveScene({fromW: w, fromH: h, fromX: x, fromY: y});
+              moveScene({_w: w, _h: h, _x: x, _y: y});
               stateNavigator.navigateBack(1);
             });
           }
