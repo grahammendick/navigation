@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
 
 const getStyle = ({x, y, w, h, width}, show) => ({
