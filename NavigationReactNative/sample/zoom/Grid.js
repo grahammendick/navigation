@@ -12,7 +12,9 @@ export default ({moveScene, stateNavigator}) => {
     <View style={styles.grid}>
       <ScrollView>
         <View
-          onLayout={() => { moveScene({colors: this.colors}); }}
+          onLayout={() => {
+            moveScene({colors: this.colors});
+          }}
           style={styles.colors}>
           {colors.map(color => (
             <TouchableHighlight
