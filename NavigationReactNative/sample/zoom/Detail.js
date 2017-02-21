@@ -20,11 +20,11 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
       </TouchableHighlight>
       <View
         onLayout={() => {
-          this.el.measure((ox, oy, w, h, x, y) => {
+          this.color.measure((ox, oy, w, h, x, y) => {
             moveScene({w, h, x, y});
           });
         }}
-        ref={el => this.el = el}
+        ref={el => this.color = el}
         style={[
           {backgroundColor: color},
           styles.color
