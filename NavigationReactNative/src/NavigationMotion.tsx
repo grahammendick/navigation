@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import spring from './spring.js'
 
 class NavigationMotion extends React.Component<any, any> {
-    private onNavigate = (oldState, state, data, asyncData) => {
+    private onNavigate = (oldState, state, data) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
             var scenes = {};
@@ -13,7 +13,7 @@ class NavigationMotion extends React.Component<any, any> {
             for(var i = 0; i < crumbs.length; i++)
                 scenes[crumbs[i].url] = previousScene = prevState.scenes[crumbs[i].url];
             var previousSceneData = previousScene && previousScene.data;
-            scenes[url] = {element: state.renderScene(data, this.moveScene(url), previousSceneData)};
+            scenes[url] = {...prevState.scenes[url], element: state.renderScene(data, this.moveScene(url), previousSceneData)};
             return {scenes};
         });
     }
