@@ -8,13 +8,17 @@ const getStyle = ({x, y, w, h, width}, show, translate = false) => ({
   w: spring(w || 0, {stiffness: 250}),
   h: spring(h || 0, {stiffness: 250}),
   show: spring(show, {stiffness: 250}),
-  translate: spring(translate && Dimensions.get('window').width !== width ? 1 : 0, {stiffness: 250}),
+  translate: spring(0, {stiffness: 250}),
 });
 
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
-    unmountedStyle={(state, data) => getStyle(data, 0, true)}
+    unmountedStyle={(state, data, sceneData) => {
+      if (sceneData && sceneData.fromX)
+        data = {...data, x: sceneData.fromX, y: sceneData.fromY, w: sceneData.fromW, h: sceneData.fromH};
+      return getStyle(data, 0, true);
+    }}
     mountedStyle={(state, data, sceneData) => getStyle({...data, ...sceneData}, 1)}
     crumbStyle={getStyle({}, 1)}
     style={{flex: 1}}

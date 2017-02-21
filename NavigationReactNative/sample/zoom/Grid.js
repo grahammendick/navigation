@@ -6,23 +6,29 @@ const colors = [
   'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
 ];
 
-export default ({stateNavigator}) => {
+export default ({moveScene, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.grid}>
       <ScrollView>
-        <View style={styles.colors}>
+        <View
+          onLayout={() => { moveScene({colors: this.colors}); }}
+          style={styles.colors}>
           {colors.map(color => (
             <TouchableHighlight
               key={color}
-              ref={el => this[color] = el}
+              ref={el => {
+                if (!this.colors)
+                  this.colors = {};
+                this.colors[color] = el;
+              }}
               style={[
                 {backgroundColor: color},
                 styles.color
               ]}
               underlayColor={color}
               onPress={() => {
-                this[color].measure((ox, oy, w, h, x, y) => {
+                this.colors[color].measure((ox, oy, w, h, x, y) => {
                   if (url === stateNavigator.stateContext.url) {
                     const width = Dimensions.get('window').width;
                     stateNavigator.navigate('detail', {w, h, x, y, color, width});

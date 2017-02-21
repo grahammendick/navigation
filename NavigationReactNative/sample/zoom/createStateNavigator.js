@@ -10,8 +10,11 @@ export default () => {
   ]);
 
   const { grid, detail } = stateNavigator.states;
-  grid.renderScene = data => <Grid stateNavigator={stateNavigator}/>;
-  detail.renderScene = (data, moveScene) => <Detail {...data} moveScene={moveScene} stateNavigator={stateNavigator}/>;
+  grid.renderScene = (data, moveScene) => <Grid moveScene={moveScene} stateNavigator={stateNavigator}/>;
+  detail.renderScene = (data, moveScene, previousSceneData) => {
+    var colorRef = previousSceneData.colors[data.color];
+    return <Detail {...data} colorRef={colorRef} moveScene={moveScene} stateNavigator={stateNavigator}/>;
+  }
   
   return stateNavigator;
 }

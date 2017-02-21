@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationBackAndroid, spring} from 'navigation-react-native';
 
-export default ({color, moveScene, stateNavigator}) => {
+export default ({color, colorRef, moveScene, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.detail}>
@@ -10,8 +10,12 @@ export default ({color, moveScene, stateNavigator}) => {
       <TouchableHighlight
         underlayColor="#fff"
         onPress={() => {
-          if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigateBack(1);
+          if (url === stateNavigator.stateContext.url){
+            colorRef.measure((ox, oy, w, h, x, y) => {
+              moveScene({fromW: w, fromH: h, fromX: x, fromY: y});
+              stateNavigator.navigateBack(1);
+            });
+          }
         }}>
         <Text style={styles.back}>X</Text>
       </TouchableHighlight>
