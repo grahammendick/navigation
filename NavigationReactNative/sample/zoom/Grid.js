@@ -20,8 +20,7 @@ export default ({moveScene, stateNavigator}) => {
             <TouchableHighlight
               key={color}
               ref={el => {
-                if (!this.colors)
-                  this.colors = {};
+                this.colors = this.colors || {};
                 this.colors[color] = el;
               }}
               style={[
