@@ -8,9 +8,12 @@ class NavigationMotion extends React.Component<any, any> {
     private onNavigate = (oldState, state, data, asyncData) => {
         this.setState((prevState) => {
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: {element: state.renderScene(data, this.moveScene(url), asyncData)}};
+            var scenes = {};
+            var previousScene = null;
             for(var i = 0; i < crumbs.length; i++)
-                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url];
+                scenes[crumbs[i].url] = previousScene = prevState.scenes[crumbs[i].url];
+            var previousSceneData = previousScene && previousScene.data;
+            scenes[url] = {element: state.renderScene(data, this.moveScene(url), previousSceneData)};
             return {scenes};
         });
     }
