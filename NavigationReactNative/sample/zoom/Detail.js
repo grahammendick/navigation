@@ -10,12 +10,11 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
       <TouchableHighlight
         underlayColor="#fff"
         onPress={() => {
-          if (url === stateNavigator.stateContext.url){
-            colorRef.measure((ox, oy, w, h, x, y) => {
-              moveScene({w, h, x, y});
+          colorRef.measure((ox, oy, w, h, x, y) => {
+            moveScene({w, h, x, y});
+            if (url === stateNavigator.stateContext.url)
               stateNavigator.navigateBack(1);
-            });
-          }
+          });
         }}>
         <Text style={styles.back}>X</Text>
       </TouchableHighlight>
