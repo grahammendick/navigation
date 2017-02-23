@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
 
-const getStyle = ({x, y, w, h, width}, show) => ({
-  x: spring(x || 0, {stiffness: 250}),
-  y: spring(y || 0, {stiffness: 250}),
-  w: spring(w || 0, {stiffness: 250}),
-  h: spring(h || 0, {stiffness: 250}),
+const getStyle = ({x, y, w, h, width}, show = 1) => ({
+  x: spring(x, {stiffness: 250}),
+  y: spring(y, {stiffness: 250}),
+  w: spring(w, {stiffness: 250}),
+  h: spring(h, {stiffness: 250}),
   show: spring(show, {stiffness: 250}),
 });
 
@@ -14,8 +14,8 @@ export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
     unmountedStyle={(state, data, sceneData) => getStyle({...data, ...sceneData}, 0)}
-    mountedStyle={(state, data, sceneData) => getStyle({...data, ...sceneData}, 1)}
-    crumbStyle={getStyle({}, 1)}
+    mountedStyle={(state, data, sceneData) => getStyle({...data, ...sceneData})}
+    crumbStyle={getStyle({})}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({show, x, y, w, h}, scene, url, state, {color}) => (
