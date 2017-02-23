@@ -7,9 +7,9 @@ import spring from './spring.js'
 class NavigationMotion extends React.Component<any, any> {
     private onNavigate = (oldState, state, data) => {
         this.setState((prevState) => {
-            var {url, crumbs} = this.getStateNavigator().stateContext;
             var scenes = {};
             var previousScene = null;
+            var {url, crumbs} = this.getStateNavigator().stateContext;
             for(var i = 0; i < crumbs.length; i++)
                 scenes[crumbs[i].url] = previousScene = prevState.scenes[crumbs[i].url];
             var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
