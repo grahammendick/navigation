@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationBackAndroid, spring} from 'navigation-react-native';
 
 export default ({color, colorRef, moveScene, stateNavigator}) => {
