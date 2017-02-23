@@ -4,12 +4,15 @@ import { Motion, TransitionMotion } from 'react-motion';
 import spring from './spring.js'
 
 class NavigationMotion extends React.Component {
-    onNavigate(oldState, state, data, asyncData) {
+    onNavigate(oldState, state, data) {
         this.setState((prevState) => {
+            var scenes = {};
+            var previousScene = null;
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var scenes = {[url]: {element: state.renderScene(data, this.moveScene(url), asyncData)}};
             for(var i = 0; i < crumbs.length; i++)
-                scenes[crumbs[i].url] = prevState.scenes[crumbs[i].url];
+                scenes[crumbs[i].url] = previousScene = prevState.scenes[crumbs[i].url];
+            var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
+            scenes[url] = {...prevState.scenes[url], element};
             return {scenes};
         });
     }
