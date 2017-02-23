@@ -11,11 +11,7 @@ export default ({moveScene, stateNavigator}) => {
   return (
     <View style={styles.grid}>
       <ScrollView>
-        <View
-          onLayout={() => {
-            moveScene({colors: this.colors});
-          }}
-          style={styles.colors}>
+        <View style={styles.colors}>
           {colors.map(color => (
             <TouchableHighlight
               key={color}
@@ -30,6 +26,7 @@ export default ({moveScene, stateNavigator}) => {
               underlayColor={color}
               onPress={() => {
                 this.colors[color].measure((ox, oy, w, h, x, y) => {
+                  moveScene({colorRef: this.colors[color]});
                   if (url === stateNavigator.stateContext.url)
                     stateNavigator.navigate('detail', {w, h, x, y, color});
                 });
