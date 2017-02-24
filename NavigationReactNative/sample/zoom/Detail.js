@@ -11,9 +11,10 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
         underlayColor="#fff"
         onPress={() => {
           colorRef.measure((ox, oy, w, h, x, y) => {
-            moveScene({w, h, x, y});
-            if (url === stateNavigator.stateContext.url)
+            if (url === stateNavigator.stateContext.url) {
               stateNavigator.navigateBack(1);
+              moveScene({w, h, x, y});
+            }
           });
         }}>
         <Text style={styles.back}>X</Text>
