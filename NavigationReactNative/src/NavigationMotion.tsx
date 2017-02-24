@@ -54,14 +54,16 @@ class NavigationMotion extends React.Component<any, any> {
     }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        return crumbs.concat(nextCrumb).map(({state, data, url}) => {
-            var scene = this.state.scenes[url] || {};
-            return {state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url};
-        });
+        return crumbs.concat(nextCrumb).map(({state, data, url}) => (
+            {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
+        ));
+    }
+    getSceneData(url) {
+        var scene = this.state.scenes[url];
+        return scene && scene.data;
     }
     getStyle(styleProp, {state, data, url}, strip = false) {
-        var scene = this.state.scenes[url];
-        var style = typeof styleProp === 'function' ? styleProp(state, data, scene && scene.data) : styleProp;
+        var style = typeof styleProp === 'function' ? styleProp(state, data, this.getSceneData(url)) : styleProp;
         var newStyle: any = {};
         for(var key in style) {
             newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
@@ -82,8 +84,8 @@ class NavigationMotion extends React.Component<any, any> {
                 }))}>
                 {tweenStyles => (
                     <View style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data, sceneData}, style}) => (
-                            children(style, scene.element, key, state, data, sceneData)
+                        {tweenStyles.map(({key, data: {scene, state, data, url}, style}) => (
+                            children(style, scene && scene.element, key, state, data, this.getSceneData(url))
                         ))}
                     </View>
                 )}
