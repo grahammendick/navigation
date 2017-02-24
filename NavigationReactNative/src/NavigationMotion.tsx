@@ -52,16 +52,25 @@ class NavigationMotion extends React.Component<any, any> {
             return {state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url};
         });
     }
+    getStyle(styleProp, {state, data, url}, strip = false) {
+        var scene = this.state.scenes[url];
+        var style = typeof styleProp === 'function' ? styleProp(state, data, scene && scene.data) : styleProp;
+        var newStyle: any = {};
+        for(var key in style) {
+            newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
+        }
+        return newStyle;
+    }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
         return (this.getStateNavigator().stateContext.state &&
             <TransitionMotion
-                willEnter={({data: sceneContext}) => getStyle(unmountedStyle, sceneContext, true)}
-                willLeave={({data: sceneContext}) => getStyle(unmountedStyle, sceneContext)}
-                styles={this.getScenes().map(({url, mount, ...sceneContext}) => ({
-                    key: url,
+                willEnter={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext, true)}
+                willLeave={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext)}
+                styles={this.getScenes().map(({mount, ...sceneContext}) => ({
+                    key: sceneContext.url,
                     data: sceneContext,
-                    style: getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
+                    style: this.getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
                 }))}>
                 {tweenStyles => (
                     <View style={style}>
@@ -73,15 +82,6 @@ class NavigationMotion extends React.Component<any, any> {
             </TransitionMotion>
         );
     }
-}
-
-function getStyle(styleProp, {state, data, sceneData}, strip = false) {
-    var style = typeof styleProp === 'function' ? styleProp(state, data, sceneData) : styleProp;
-    var newStyle: any = {};
-    for(var key in style) {
-        newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
-    }
-    return newStyle;
 }
 
 export default NavigationMotion;
