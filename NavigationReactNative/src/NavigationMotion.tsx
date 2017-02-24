@@ -45,6 +45,13 @@ class NavigationMotion extends React.Component<any, any> {
             });
         };
     }
+    clearScene(url) {
+        this.setState((prevState) => {
+            var scenes = {...prevState.scenes};
+            delete scenes[url];
+            return {scenes};
+        });
+    }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         return crumbs.concat(nextCrumb).map(({state, data, url}) => {
@@ -67,6 +74,7 @@ class NavigationMotion extends React.Component<any, any> {
             <TransitionMotion
                 willEnter={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext, true)}
                 willLeave={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext)}
+                didLeave={({data: sceneContext}) => { this.clearScene(sceneContext.url); }}
                 styles={this.getScenes().map(({mount, ...sceneContext}) => ({
                     key: sceneContext.url,
                     data: sceneContext,
