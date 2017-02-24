@@ -5,21 +5,10 @@ import { View } from 'react-native';
 import spring from './spring.js'
 
 class NavigationMotion extends React.Component<any, any> {
-    private onNavigate = (oldState, state, data) => {
-        this.setState((prevState) => {
-            var scenes = {};
-            var previousScene = null;
-            var {url, crumbs} = this.getStateNavigator().stateContext;
-            for(var i = 0; i < crumbs.length; i++)
-                scenes[crumbs[i].url] = previousScene = prevState.scenes[crumbs[i].url];
-            var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
-            scenes[url] = {...prevState.scenes[url], element};
-            return {scenes};
-        });
-    }
     constructor(props, context) {
         super(props, context);
         this.state = {scenes: {}};
+        this.onNavigate = this.onNavigate.bind(this);
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
@@ -37,15 +26,24 @@ class NavigationMotion extends React.Component<any, any> {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
+    onNavigate(oldState, state, data) {
+        this.setState((prevState) => {
+            var scenes = {...prevState.scenes};
+            var {url, crumbs} = this.getStateNavigator().stateContext;
+            var previousScene = crumbs.length > 0 ? prevState.scenes[crumbs[crumbs.length - 1].url] : null;
+            var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
+            scenes[url] = {...scenes[url], element};
+            return {scenes};
+        });
+    }
     moveScene(url) {
         return data => {
             this.setState((prevState) => {
                 var scenes = {...prevState.scenes};
-                if (scenes[url])
-                    scenes[url].data = data; 
+                scenes[url] = {...scenes[url], data};
                 return {scenes};
-            }
-        )};
+            });
+        };
     }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
