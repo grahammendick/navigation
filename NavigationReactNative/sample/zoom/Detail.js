@@ -22,7 +22,8 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
       <View
         onLayout={() => {
           this.color.measure((ox, oy, w, h, x, y) => {
-            moveScene({w, h, x, y});
+            if (url === stateNavigator.stateContext.url)
+              moveScene({w, h, x, y});
           });
         }}
         ref={el => this.color = el}
