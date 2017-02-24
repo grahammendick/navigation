@@ -26,9 +26,10 @@ export default ({moveScene, stateNavigator}) => {
               underlayColor={color}
               onPress={() => {
                 this.colors[color].measure((ox, oy, w, h, x, y) => {
-                  moveScene({colorRef: this.colors[color]});
-                  if (url === stateNavigator.stateContext.url)
+                  if (url === stateNavigator.stateContext.url) {
+                    moveScene({colorRef: this.colors[color]});
                     stateNavigator.navigate('detail', {w, h, x, y, color});
+                  }
                 });
               }}>
               <Text></Text>
