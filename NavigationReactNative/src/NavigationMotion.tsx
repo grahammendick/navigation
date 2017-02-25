@@ -30,8 +30,8 @@ class NavigationMotion extends React.Component<any, any> {
         this.setState(prevState => {
             var scenes = {...prevState.scenes};
             var {url, crumbs} = this.getStateNavigator().stateContext;
-            var previousScene = crumbs.length > 0 ? prevState.scenes[crumbs[crumbs.length - 1].url] : null;
-            var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
+            var previousUrl = crumbs.length > 0 ? crumbs[crumbs.length - 1].url : null;
+            var element = state.renderScene(data, this.moveScene(url), this.getSceneData(previousUrl));
             scenes[url] = {...scenes[url], element};
             return {scenes};
         });
@@ -60,7 +60,7 @@ class NavigationMotion extends React.Component<any, any> {
     }
     getSceneData(url) {
         var scene = this.state.scenes[url];
-        return scene && scene.data;
+        return (scene && scene.data) || {};
     }
     getStyle(styleProp, {state, data, url}, strip = false) {
         var style = typeof styleProp === 'function' ? styleProp(state, data, this.getSceneData(url)) : styleProp;
