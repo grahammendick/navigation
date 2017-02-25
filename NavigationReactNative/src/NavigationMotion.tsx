@@ -27,7 +27,7 @@ class NavigationMotion extends React.Component<any, any> {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
     onNavigate(oldState, state, data) {
-        this.setState((prevState) => {
+        this.setState(prevState => {
             var scenes = {...prevState.scenes};
             var {url, crumbs} = this.getStateNavigator().stateContext;
             var previousScene = crumbs.length > 0 ? prevState.scenes[crumbs[crumbs.length - 1].url] : null;
@@ -38,7 +38,7 @@ class NavigationMotion extends React.Component<any, any> {
     }
     moveScene(url) {
         return data => {
-            this.setState((prevState) => {
+            this.setState(prevState => {
                 var scenes = {...prevState.scenes};
                 scenes[url] = {...scenes[url], data};
                 return {scenes};
@@ -46,7 +46,7 @@ class NavigationMotion extends React.Component<any, any> {
         };
     }
     clearScene(url) {
-        this.setState((prevState) => {
+        this.setState(prevState => {
             var scenes = {...prevState.scenes};
             delete scenes[url];
             return {scenes};
