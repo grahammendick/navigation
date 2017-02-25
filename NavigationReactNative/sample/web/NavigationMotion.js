@@ -4,18 +4,6 @@ import { Motion, TransitionMotion } from 'react-motion';
 import spring from './spring.js'
 
 class NavigationMotion extends React.Component {
-    onNavigate(oldState, state, data) {
-        this.setState((prevState) => {
-            var scenes = {};
-            var previousScene = null;
-            var {url, crumbs} = this.getStateNavigator().stateContext;
-            for(var i = 0; i < crumbs.length; i++)
-                scenes[crumbs[i].url] = previousScene = prevState.scenes[crumbs[i].url];
-            var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
-            scenes[url] = {...prevState.scenes[url], element};
-            return {scenes};
-        });
-    }
     constructor(props, context) {
         super(props, context);
         this.onNavigate = this.onNavigate.bind(this);
@@ -34,53 +22,72 @@ class NavigationMotion extends React.Component {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
+    onNavigate(oldState, state, data) {
+        this.setState(prevState => {
+            var scenes = {...prevState.scenes};
+            var {url, crumbs} = this.getStateNavigator().stateContext;
+            var previousScene = crumbs.length > 0 ? prevState.scenes[crumbs[crumbs.length - 1].url] : null;
+            var element = state.renderScene(data, this.moveScene(url), previousScene && previousScene.data);
+            scenes[url] = {...scenes[url], element};
+            return {scenes};
+        });
+    }
     moveScene(url) {
         return data => {
-            this.setState((prevState) => {
+            this.setState(prevState => {
                 var scenes = {...prevState.scenes};
-                if (scenes[url])
-                    scenes[url].data = data; 
+                scenes[url] = {...scenes[url], data};
                 return {scenes};
-            }
-        )};
+            });
+        };
+    }
+    clearScene(url) {
+        this.setState(prevState => {
+            var scenes = {...prevState.scenes};
+            delete scenes[url];
+            return {scenes};
+        });
     }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        return crumbs.concat(nextCrumb).map(({state, data, url}) => {
-            var scene = this.state.scenes[url] || {};
-            return {state, data, url, scene, sceneData: scene.data, mount: url === nextCrumb.url};
-        });
+        return crumbs.concat(nextCrumb).map(({state, data, url}) => (
+            {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
+        ));
+    }
+    getSceneData(url) {
+        var scene = this.state.scenes[url];
+        return scene && scene.data;
+    }
+    getStyle(styleProp, {state, data, url}, strip) {
+        var style = typeof styleProp === 'function' ? styleProp(state, data, this.getSceneData(url)) : styleProp;
+        var newStyle = {};
+        for(var key in style) {
+            newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
+        }
+        return newStyle;
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
         return (this.getStateNavigator().stateContext.state &&
             <TransitionMotion
-                willEnter={({data: sceneContext}) => getStyle(unmountedStyle, sceneContext, true)}
-                willLeave={({data: sceneContext}) => getStyle(unmountedStyle, sceneContext)}
-                styles={this.getScenes().map(({url, mount, ...sceneContext}) => ({
-                    key: url,
+                willEnter={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext, true)}
+                willLeave={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext)}
+                didLeave={({data: sceneContext}) => {this.clearScene(sceneContext.url)}}
+                styles={this.getScenes().map(({mount, ...sceneContext}) => ({
+                    key: sceneContext.url,
                     data: sceneContext,
-                    style: getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
+                    style: this.getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
                 }))}>
                 {tweenStyles => (
                     <div style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data, sceneData}, style}) => (
-                            children(style, scene.element, key, state, data, sceneData)
+                        {tweenStyles.map(({key, data: {scene, state, data, url}, style}) => (
+                            children(style, scene && scene.element, key, state, data, this.getSceneData(url))
                         ))}
                     </div>
                 )}
             </TransitionMotion>
         );
     }
-}
-
-function getStyle(styleProp, {state, data, sceneData}, strip) {
-    var style = typeof styleProp === 'function' ? styleProp(state, data, sceneData) : styleProp;
-    var newStyle = {};
-    for(var key in style) {
-        newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
-    }
-    return newStyle;
 }
 
 NavigationMotion.contextTypes = {

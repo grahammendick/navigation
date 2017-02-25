@@ -7,8 +7,8 @@ import spring from './spring.js'
 class NavigationMotion extends React.Component<any, any> {
     constructor(props, context) {
         super(props, context);
-        this.state = {scenes: {}};
         this.onNavigate = this.onNavigate.bind(this);
+        this.state = {scenes: {}};
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
