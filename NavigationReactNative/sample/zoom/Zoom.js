@@ -3,11 +3,11 @@ import {StyleSheet, View} from 'react-native';
 import {NavigationMotion, spring} from 'navigation-react-native';
 
 const getStyle = ({x, y, w, h, width}, show = 1) => ({
-  x: spring(x, {stiffness: 250}),
-  y: spring(y, {stiffness: 250}),
-  w: spring(w, {stiffness: 250}),
-  h: spring(h, {stiffness: 250}),
-  show: spring(show, {stiffness: 250}),
+  x: spring(x, {precision: 1, stiffness: 900, damping: 45}),
+  y: spring(y, {precision: 1, stiffness: 900, damping: 45}),
+  w: spring(w, {precision: 1, stiffness: 900, damping: 45}),
+  h: spring(h, {precision: 1, stiffness: 900, damping: 45}),
+  show: spring(show, {stiffness: 900, damping: 45}),
 });
 
 export default ({stateNavigator}) => (
