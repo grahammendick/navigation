@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import {NavigationBackAndroid, spring} from 'navigation-react-native';
+import {NavigationBackAndroid} from 'navigation-react-native';
 
 export default ({color, colorRef, moveScene, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
