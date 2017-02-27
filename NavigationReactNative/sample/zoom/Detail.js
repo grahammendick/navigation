@@ -15,12 +15,8 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
   };
   return (
     <View style={styles.detail}>
-      <NavigationBackAndroid
-        navigating={navigateBack}
-        stateNavigator={stateNavigator} />
-      <TouchableHighlight
-        underlayColor="#fff"
-        onPress={navigateBack}>
+      <NavigationBackAndroid navigating={navigateBack} stateNavigator={stateNavigator} />
+      <TouchableHighlight underlayColor="#fff" onPress={navigateBack}>
         <Text style={styles.back}>X</Text>
       </TouchableHighlight>
       <View
