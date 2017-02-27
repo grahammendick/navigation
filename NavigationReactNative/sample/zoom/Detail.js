@@ -6,7 +6,17 @@ export default ({color, colorRef, moveScene, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.detail}>
-      <NavigationBackAndroid stateNavigator={stateNavigator} />
+      <NavigationBackAndroid
+        navigating={() => {
+          colorRef.measure((ox, oy, w, h, x, y) => {
+            if (url === stateNavigator.stateContext.url) {
+              stateNavigator.navigateBack(1);
+              moveScene({w, h, x, y});
+            }
+          });
+          return false;
+        }}
+        stateNavigator={stateNavigator} />
       <TouchableHighlight
         underlayColor="#fff"
         onPress={() => {
