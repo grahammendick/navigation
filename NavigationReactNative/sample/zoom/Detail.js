@@ -1,22 +1,22 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import {NavigationBackAndroid, spring} from 'navigation-react-native';
+import {NavigationBackAndroid} from 'navigation-react-native';
 
 export default ({color, colorRef, moveScene, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
+  const navigateBack = () => {
+    colorRef.measure((ox, oy, w, h, x, y) => {
+      if (url === stateNavigator.stateContext.url) {
+        stateNavigator.navigateBack(1);
+        moveScene({w, h, x, y});
+      }
+    });
+    return false;
+  };
   return (
     <View style={styles.detail}>
-      <NavigationBackAndroid stateNavigator={stateNavigator} />
-      <TouchableHighlight
-        underlayColor="#fff"
-        onPress={() => {
-          colorRef.measure((ox, oy, w, h, x, y) => {
-            if (url === stateNavigator.stateContext.url) {
-              stateNavigator.navigateBack(1);
-              moveScene({w, h, x, y});
-            }
-          });
-        }}>
+      <NavigationBackAndroid navigating={navigateBack} stateNavigator={stateNavigator} />
+      <TouchableHighlight underlayColor="#fff" onPress={navigateBack}>
         <Text style={styles.back}>X</Text>
       </TouchableHighlight>
       <View
