@@ -58,8 +58,8 @@ class NavigationMotion extends React.Component<any, any> {
         ));
     }
     getSceneData(data, url, prevState?) {
-        var scene = (prevState || this.state.scenes)[url] || {};
-        return {...data, ...scene.data};
+        var scene = (prevState || this.state.scenes)[url];
+        return {...data, ...(scene && scene.data)};
     }
     getStyle(styleProp, {state, data, url}, strip = false) {
         var style = typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
