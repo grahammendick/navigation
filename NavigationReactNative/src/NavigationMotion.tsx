@@ -2,7 +2,6 @@ import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Motion, TransitionMotion } from 'react-motion';
 import { View } from 'react-native';
-import spring from './spring.js'
 
 class NavigationMotion extends React.Component<any, any> {
     constructor(props, context) {
