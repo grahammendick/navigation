@@ -1,7 +1,6 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Motion, TransitionMotion } from 'react-motion';
-import spring from './spring.js'
 
 class NavigationMotion extends React.Component {
     constructor(props, context) {
@@ -16,8 +15,10 @@ class NavigationMotion extends React.Component {
         var stateNavigator = this.getStateNavigator();
         stateNavigator.onNavigate(this.onNavigate);
         var {startStateKey, startNavigationData} = this.props;
-        if (startStateKey)
+        if (startStateKey) {
+            stateNavigator.stateContext.clear();
             stateNavigator.navigate(startStateKey, startNavigationData);
+        }
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
@@ -25,9 +26,8 @@ class NavigationMotion extends React.Component {
     onNavigate(oldState, state, data) {
         this.setState(prevState => {
             var scenes = {...prevState.scenes};
-            var {url, crumbs} = this.getStateNavigator().stateContext;
-            var previousUrl = crumbs.length > 0 ? crumbs[crumbs.length - 1].url : null;
-            var element = state.renderScene(data, this.moveScene(url), this.getSceneData(previousUrl));
+            var {url} = this.getStateNavigator().stateContext;
+            var element = state.renderScene(this.getSceneData(data, url, prevState), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
             return {scenes};
         });
@@ -54,12 +54,12 @@ class NavigationMotion extends React.Component {
             {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
         ));
     }
-    getSceneData(url) {
-        var scene = this.state.scenes[url];
-        return (scene && scene.data) || {};
+    getSceneData(data, url, prevState) {
+        var scene = (prevState || this.state.scenes)[url];
+        return {...data, ...(scene && scene.data)};
     }
     getStyle(styleProp, {state, data, url}, strip) {
-        var style = typeof styleProp === 'function' ? styleProp(state, data, this.getSceneData(url)) : styleProp;
+        var style = typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
         var newStyle = {};
         for(var key in style) {
             newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
@@ -81,7 +81,7 @@ class NavigationMotion extends React.Component {
                 {tweenStyles => (
                     <div style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data, url}, style}) => (
-                            children(style, scene && scene.element, key, state, data, this.getSceneData(url))
+                            children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
                     </div>
                 )}
