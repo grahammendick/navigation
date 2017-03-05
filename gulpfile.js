@@ -3,9 +3,11 @@ var gulp = require('gulp');
 var gulpTypescript = require('gulp-tsc');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
+var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
+var strip = require('gulp-strip-comments');
 var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
@@ -26,10 +28,12 @@ function rollupTestTask(name, file, to) {
         plugins: [
             rollupTypescript({
                 typescript: typescript,
+                importHelpers: true,
                 target: 'es3',
                 module: 'es6',
                 jsx: 'react'
-            })
+            }),
+            nodeResolve({ jsnext: true, main: true })
         ]
     }).then((bundle) => {
         bundle.write({
@@ -78,10 +82,12 @@ function rollupTask(name, file, to, globals) {
         plugins: [
             rollupTypescript({
                 typescript: typescript,
+                importHelpers: true,
                 target: 'es3',
                 module: 'es6',
                 jsx: 'react'
-            })
+            }),
+            nodeResolve({ jsnext: true, main: true })
         ]
     }).then((bundle) => {
         bundle.write({
@@ -100,6 +106,7 @@ function buildTask(file, details) {
  */
 `;
     return gulp.src('./build/dist/' + file)
+        .pipe(strip())
         .pipe(insert.prepend(info))
         .pipe(gulp.dest('./build/dist'))
         .pipe(rename(file.replace(/js$/, 'min.js')))
