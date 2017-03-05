@@ -28,10 +28,10 @@ function rollupTestTask(name, file, to) {
         plugins: [
             rollupTypescript({
                 typescript: typescript,
+                importHelpers: true,
                 target: 'es3',
                 module: 'es6',
-                jsx: 'react',
-                importHelpers: true
+                jsx: 'react'
             }),
             nodeResolve({ jsnext: true, main: true })
         ]
@@ -82,10 +82,10 @@ function rollupTask(name, file, to, globals) {
         plugins: [
             rollupTypescript({
                 typescript: typescript,
+                importHelpers: true,
                 target: 'es3',
                 module: 'es6',
-                jsx: 'react',
-                importHelpers: true
+                jsx: 'react'
             }),
             nodeResolve({ jsnext: true, main: true })
         ]
