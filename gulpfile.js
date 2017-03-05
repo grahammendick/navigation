@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var gulpTypescript = require('gulp-tsc');
 var insert = require('gulp-insert');
 var mocha = require('gulp-mocha');
+var nodeResolve = require('rollup-plugin-node-resolve');
 var rename = require('gulp-rename');
 var rollup = require('rollup');
 var rollupTypescript = require('rollup-plugin-typescript');
@@ -28,8 +29,10 @@ function rollupTestTask(name, file, to) {
                 typescript: typescript,
                 target: 'es3',
                 module: 'es6',
-                jsx: 'react'
-            })
+                jsx: 'react',
+                importHelpers: true
+            }),
+            nodeResolve({ jsnext: true, main: true })
         ]
     }).then((bundle) => {
         bundle.write({
@@ -80,8 +83,10 @@ function rollupTask(name, file, to, globals) {
                 typescript: typescript,
                 target: 'es3',
                 module: 'es6',
-                jsx: 'react'
-            })
+                jsx: 'react',
+                importHelpers: true
+            }),
+            nodeResolve({ jsnext: true, main: true })
         ]
     }).then((bundle) => {
         bundle.write({

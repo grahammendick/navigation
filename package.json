@@ -13,7 +13,9 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
     "rollup": "^0.36.3",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-typescript": "^0.8.1",
+    "tslib": "^1.6.0",
     "typescript": "^2.2.1"
   },
   "scripts": {
