@@ -116,7 +116,7 @@ function buildTask(file, details) {
 }
 function packageTask(name, file, details) {
     return gulp.src(file)
-        .pipe(gulpTypescript({target: (details.compilerOptions || {}).target, jsx: 'react'}))
+        .pipe(gulpTypescript(details.compilerOptions))
         .pipe(gulp.dest('./build/npm/' + name + '/lib'));
 }
 var itemTasks = items.reduce((tasks, item) => {
