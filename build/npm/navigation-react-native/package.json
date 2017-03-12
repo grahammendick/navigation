@@ -13,7 +13,7 @@
     "react-native"
   ],
   "dependencies": {
-    "react-motion": "*"
+    "react-motion": "^0.4.6"
   },
   "peerDependencies": {
     "navigation": "*",
