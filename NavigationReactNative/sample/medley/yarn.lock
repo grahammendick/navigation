@@ -2622,6 +2622,16 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
 
+navigation-react-native@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/navigation-react-native/-/navigation-react-native-1.0.0.tgz#6bcefb32944142a05b59963cee741c06054ca60e"
+  dependencies:
+    react-motion "^0.4.6"
+
+navigation@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/navigation/-/navigation-4.0.0.tgz#3342071a7f0ac1b46f8a1f50ac9ffbc962109b88"
+
 negotiator@0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.5.3.tgz#269d5c476810ec92edbe7b6c2f28316384f9a7e8"
@@ -2942,7 +2952,7 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-motion@^0.4.7:
+react-motion@^0.4.6:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/react-motion/-/react-motion-0.4.7.tgz#f77331ec7920bdb0d0cfc37eb6ffa10571bf42c7"
   dependencies:
