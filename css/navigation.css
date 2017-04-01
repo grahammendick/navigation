@@ -184,6 +184,11 @@ div.app code{
     background-color:#fff5d7;
     font-weight:normal;
 }
+#article img{
+    display:block;
+    margin:0 auto;
+    padding: 2% 0;
+}
 #menu a{
     display:block;
     padding:6px 0 6px 2%;
