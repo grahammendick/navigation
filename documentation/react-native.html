@@ -37,50 +37,67 @@
         <div id="article">
             <h1>React Native</h1>
             <p>
-                Like React, the Navigation router works on native apps as well as the web. The Navigation router provides a <code>SceneNavigator</code> component to handle the unique requirements of native app navigation, like populating and animating the stack. You can see it in action in the following Twitter example. When you select a tweet, the current view scales back as the new one slides in from the right. When you click the back arrow, the current view slides out to the right as the previous one scales back in.
+                The Navigation router works just as well on mobile as it does on the web. There's a separate <code>Navigation React Native</code> plugin package that provides the mobile-specific components:
             </p>
-            <div id="container" style="font-size:115%; user-select: none;"></div>
+            <pre><code class="language-js">npm install navigation navigation-react-native</code></pre>
+            <p>
+                Navigation React Native is modelled on React Motion. You animate scenes as they come and go like you animate components as they mount and unmount with React Motion. You can <a href="https://exp.host/@grahammendick/twitter">open this Twitter example</a> on your mobile to see Navigation React Native in action.
+            </p>
             <h2>Rendering Scenes</h2>
             <p>
-                You create a new <code>StateNavigator</code> passing in an array of <code>States</code> that represent the scenes in your app, just like you would on the web. Make sure you set <code>trackCrumbTrail</code> true to enable the <a href="breadcrumb-trail.html">breadcrumb trail</a> stack navigation.
+                You <a href="state-navigation.html">define your States</a> in much the same way as on the web. The only difference is that you must enable the <a href="breadcrumb-trail.html">breadcrumb trail</a> so that Navigation React Native can keep track of the visited scenes.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">const stateNavigator = new StateNavigator([
   {key: 'home'},
   {key: 'tweet', trackCrumbTrail: true}
 ]);</code></pre>
             <p>
-                Then you attach a <code>renderScene</code> function to each <code>State</code>. This is similar to the <code>navigated</code> function used on the web except that <code>renderScene</code> returns a component.
+                Attach a <code>renderScene</code> function to each <code>State</code> and return the component that makes up the scene. Navigation React Native calls this function when the <code>State</code> becomes active, passing in the navigation data.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.tweet.renderScene = function(data) {
-  return &lt;Tweet id={data.id} />;
-}</code></pre>
+            <pre><code class="language-jsx">stateNavigator.states.home.renderScene = () => &lt;Home />;
+stateNavigator.states.tweet.renderScene = (data) => &lt;Tweet id={data.id} />;</code></pre>
+            <h2>Animating Scenes</h2>
             <p>
-                Navigate around as you would programmatically on the web and the <code>SceneNavigator</code> renders the scene for the active <code>State</code>. There are four distinct stages a scene can pass through. You provide a style for each stage and the <code>SceneNavigator</code> animates the transitions between them. A scene starts off in the <code>unmountedStyle</code>; when a scene becomes active it changes into the <code>mountStyle</code>; when forward navigation moves it back in the stack it takes on the <code>mountedStyle</code>; and finally it's assigned the <code>unmountStyle</code> when back navigation removes it from the stack.
+                There are three distinct stages that a scene can be in: unmounted, mounted or crumb. As you navigate between <code>States</code>, the scenes move from one stage to another.
             </p>
+            <img alt="The three stages of navigation: unmounted, mounted and crumb" src="native-navigation.png"/>
             <p>
-                <a href="https://github.com/chenglou/react-motion">React Motion</a> controls the animation so you specify the styles using its <code>spring</code> function. The <code>animateStyle prop</code> translates the interpolated values into a style object that's applied to the scene. Here's what the style <code>props</code> look like for the animation in the Twitter example:
+                When you open up the <a href="https://exp.host/@grahammendick/twitter">Twitter example</a>, the home scene starts off <strong>mounted</strong> and the tweet scene starts off <strong>unmounted</strong>. Navigating to a tweet <strong>mounts</strong> the tweet scene and moves the home scene into the bread<strong>crumb</strong> trail.
             </p>
-            <pre><code class="language-jsx">&lt;SceneNavigator
-  getUnmountedStyle={() => ({translate: 100, scale: 1})}
-  getMountStyle={() => ({translate: spring(0), scale: spring(1)})}
-  getMountedStyle={() => ({translate: spring(5), scale: spring(0.9)})}
-  getUnmountStyle={() => ({translate: spring(100), scale: 1})}
-  animateStyle={({translate, scale}) => ({
-    transform: `translate(${translate}%) scale(${scale}, ${scale})`})}
-  stateNavigator={stateNavigator} /></code></pre>
-            <h2>Notifying</h2>
+            <pre><code class="language-jsx">stateNavigator.navigate('tweet', {id: 10});</code></pre>
+            <p>Navigating back from the tweet to home <strong>unmounts</strong> the tweet scene and <strong>mounts</strong> the home scene again.</p>
+            <pre><code class="language-jsx">stateNavigator.navigateBack(1);</code></pre>
             <p>
-                An in-app notification takes a user directly to a particular scene, but if the stack isn't populated as expected then the back navigation becomes confusing. With the Navigation router the breadcrumb trail, or stack, is just a string, so you can populate the desired stack when jumping to a scene. You can test this out in the Twitter example: click a few tweets to build up a stack and then refresh the browser. You'll notice that the stack persists across refreshes because it's stored in the browser Url.
+                Navigation React Native has a <code>NavigationMotion</code> component so you can animate the scenes as they move through each of the three stages. It has an API similar to the <code>TransitionMotion</code> component from React Motion. You provide a style for each stage and a child function that interpolates between these styles as you navigate. Here's a simplified version of the Twitter animation that fades scenes in and out.
             </p>
+            <pre><code class="language-jsx">import {NavigationMotion, spring} from 'navigation-react-native';
+
+const Twitter = () => (
+  &lt;NavigationMotion
+    startStateKey="home"
+    unmountedStyle={{opacity: spring(0)}}
+    mountedStyle={{opacity: spring(1)}}
+    crumbStyle={{opacity: spring(0)}}
+    stateNavigator={stateNavigator}>
+    {(style, scene, url) => (
+      &lt;View
+        key={url}
+        style={{opacity: style.opacity}}>
+        {scene}
+      &lt;/View>
+    )}
+  &lt;/NavigationMotion>
+);
+</code></pre>
+            <p>You can check out the complete <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactNative/sample/twitter">source code for the Twitter example</a>.</p>
             <div class="note">
                 <h2>Note</h2>
                 <div>
-                    The Navigation router for React Native hasn't been released yet. If you want to try it out take a look at the <a href="https://github.com/grahammendick/navigation/tree/master/NavigationReactNative/sample/twitter">source code for the Twitter example</a>.
+                    Navigation React Native is implemented in JavaScript, so it can’t match the authentic app UX that a native implementation offers.
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
-    <script src="app.js"></script>
 </body>
 </html>
