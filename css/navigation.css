@@ -187,7 +187,9 @@ div.app code{
 #article img{
     display:block;
     margin:0 auto;
-    padding: 2% 0;
+    padding:2% 0;
+    width:100%;
+    max-width:384px;
 }
 #menu a{
     display:block;
