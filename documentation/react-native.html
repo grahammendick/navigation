@@ -64,13 +64,13 @@ stateNavigator.states.tweet.renderScene = (data) => &lt;Tweet id={data.id} />;</
             <p>
                 When you open up the Twitter example, the home scene starts off <strong>mounted</strong> and the tweet scene starts off <strong>unmounted</strong>. Navigating to a tweet, <strong>mounts</strong> the tweet scene and moves the home scene into the bread<strong>crumb</strong> trail.
             </p>
-            <pre><code class="language-jsx">stateNavigator.navigate('tweet', { id: 10 });</code></pre>
+            <pre><code class="language-jsx">stateNavigator.navigate('tweet', {id: 10});</code></pre>
             <p>Navigating back from the tweet to home, <strong>unmounts</strong> the tweet scene and <strong>mounts</strong> the home scene again.</p>
             <pre><code class="language-jsx">stateNavigator.navigateBack(1);</code></pre>
             <p>
                 Navigation React Native has a <code>NavigationMotion</code> component so you can animate the scenes as they move through each of the three stages. It has an API similar to the <code>TransitionMotion</code> component from React Motion. You provide a style for each stage and a child function that interpolates between these styles as you navigate. Here's a simplified version of the Twitter animation that fades scenes in and out.
             </p>
-            <pre><code class="language-jsx">import { NavigationMotion, spring } from 'navigation-react-native';
+            <pre><code class="language-jsx">import {NavigationMotion, spring} from 'navigation-react-native';
 
 const Twitter = () => (
   &lt;NavigationMotion
