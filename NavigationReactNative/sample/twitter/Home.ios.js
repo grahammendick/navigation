@@ -3,7 +3,7 @@ import {StyleSheet, Text, ScrollView, View} from 'react-native';
 import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (
-  <View>
+  <View style={{flex: 1}}>
     <View style={styles.banner}>
       <Text style={styles.title}>Home</Text>
     </View>
@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 10,
+    flex: 1,
   },
 });

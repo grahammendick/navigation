@@ -8,7 +8,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
   text, time, retweets, likes, replies}, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
-    <View>
+    <View style={{flex: 1}}>
       <NavigationBackAndroid stateNavigator={stateNavigator} />
       <Banner title="Tweet" stateNavigator={stateNavigator} />
       <ScrollView style={styles.view}>
@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 20,
+    flex: 1,
   },
   heading: {
     flexDirection: 'row',
+    marginTop: 20,
     marginBottom: 10,
   },
   logo: {

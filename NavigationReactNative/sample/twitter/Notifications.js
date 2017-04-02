@@ -4,7 +4,7 @@ import Svg, {Path} from 'react-native-svg';
 import Follows from './Follows';
 
 export default ({follows, stateNavigator}) => (
-  <View>
+  <View style={{flex: 1}}>
     <View style={styles.banner}>
       <Text style={styles.title}>Notifications</Text>
     </View>
@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
   view: {
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 10,
+    flex: 1,
   },
 });
