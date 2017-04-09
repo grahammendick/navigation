@@ -6,8 +6,8 @@ import { View } from 'react-native';
 class NavigationMotion extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.registerSharedElement = this.registerSharedElement.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
+        this.registerSharedElement = this.registerSharedElement.bind(this);
         this.state = {scenes: {}};
     }
     static contextTypes = {
@@ -34,21 +34,21 @@ class NavigationMotion extends React.Component {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
-    registerSharedElement(url, name, element, measurements) {
-        this.setState(({scenes: prevScenes}) => {
-            var scenes = {...prevScenes};
-            var sharedElements = scenes[url] && scenes[url].sharedElements;
-            sharedElements = {...sharedElements, [name]: {element, measurements}}
-            scenes[url] = {...scenes[url], sharedElements};
-            return {scenes};
-        });
-    }
     onNavigate(oldState, state, data) {
         this.setState(({scenes: prevScenes}) => {
             var scenes = {...prevScenes};
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
+            return {scenes};
+        });
+    }
+    registerSharedElement(url, name, element, measurements) {
+        this.setState(({scenes: prevScenes}) => {
+            var scenes = {...prevScenes};
+            var sharedElements = scenes[url] && scenes[url].sharedElements;
+            sharedElements = {...sharedElements, [name]: {element, measurements}}
+            scenes[url] = {...scenes[url], sharedElements};
             return {scenes};
         });
     }
