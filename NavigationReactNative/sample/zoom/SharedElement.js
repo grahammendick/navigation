@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
 class SharedElement extends React.Component {
     constructor(props, context) {
@@ -8,16 +9,18 @@ class SharedElement extends React.Component {
     static contextTypes = {
         registerSharedElement: React.PropTypes.func
     }
-    register(name, component, children) {
-        var {registerSharedElement} = this.context;
-        if (component && this.component !== component) {
-            this.component = component;
-            registerSharedElement(name, component, children);
-        }
+    register() {
+        this.component.measure((ox, oy, w, h, x, y) => {
+            var {name, children} = this.props;
+            var {registerSharedElement} = this.context;
+            registerSharedElement(name, children, {w, h, x, y});
+        });
     }
     render() {
-        var {name, children} = this.props;
-        return React.cloneElement(children, {ref: component => {this.register(name, component, children)}});
+        return React.cloneElement(this.props.children, {
+            onLayout: this.register,
+            ref: comp => {this.component = comp}
+        });
     }
 }
 

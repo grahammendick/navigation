@@ -8,7 +8,7 @@ class NavigationMotion extends React.Component {
         super(props, context);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
-        this.state = {scenes: {}, oldSharedElements: {}, sharedElements: {}};
+        this.state = {scenes: {}};
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
@@ -34,41 +34,28 @@ class NavigationMotion extends React.Component {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
-    registerSharedElement(name, component, element) {
-        var oldSharedElement = this.state.oldSharedElements[name] || {};
-        var sharedElement = {component, element};
-        this.measureComponents(oldSharedElement.component, component)
-            .then(([oldMeasurements, measurements]) => {
-                this.setState(({oldSharedElements, sharedElements}) => {
-                    oldSharedElement.measurements = oldMeasurements;
-                    if (oldMeasurements)
-                        sharedElement = {component, element: React.cloneElement(element), measurements};
-                    return {sharedElements: {...sharedElements, [name]: sharedElement}};
-                });
-            });
-    }
-    measureComponents(oldComponent, component, callback) {
-        if (!oldComponent) return Promise.resolve([]);
-        var measure = comp => (new Promise(res => {
-            comp.measure((ox, oy, w, h, x, y) => {res({w, h, x, y})});
-        }));
-        return new Promise(res => {
-            Promise.all([measure(oldComponent, measure(component))]).then(measurements => res(measurements));
-        })
+    registerSharedElement(url, name, element, measurements) {
+        this.setState(({scenes: prevScenes}) => {
+            var scenes = {...prevScenes};
+            var sharedElements = scenes[url] && scenes[url].sharedElements;
+            sharedElements = {...sharedElements, [name]: {element, measurements}}
+            scenes[url] = {...scenes[url], sharedElements};
+            return {scenes};
+        });
     }
     onNavigate(oldState, state, data) {
-        this.setState(({scenes: prevScenes, sharedElements}) => {
+        this.setState(({scenes: prevScenes}) => {
             var scenes = {...prevScenes};
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes, oldSharedElements: sharedElements, sharedElements: {}};
+            return {scenes};
         });
     }
     moveScene(url) {
         return data => {
-            this.setState(prevState => {
-                var scenes = {...prevState.scenes};
+            this.setState(({scenes: prevScenes}) => {
+                var scenes = {...prevScenes};
                 scenes[url] = {...scenes[url], data};
                 return {scenes};
             });
