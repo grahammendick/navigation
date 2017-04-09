@@ -15,8 +15,7 @@ class SharedElement extends React.Component {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
-        var stateNavigator = this.getStateNavigator();
-        stateNavigator.onNavigate(this.register);
+        this.getStateNavigator().onNavigate(this.register);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.register);
