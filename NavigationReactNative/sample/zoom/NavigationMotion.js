@@ -43,7 +43,7 @@ class NavigationMotion extends React.Component {
                     oldSharedElement.measurements = oldMeasurements;
                     if (oldMeasurements)
                         sharedElement = {component, element: React.cloneElement(element), measurements};
-                    return {sharedElements: {...sharedElements, name: sharedElement}};
+                    return {sharedElements: {...sharedElements, [name]: sharedElement}};
                 });
             });
     }

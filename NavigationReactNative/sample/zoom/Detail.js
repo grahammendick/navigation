@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import NavigationBackAndroid from './NavigationBackAndroid';
+import SharedElement from './SharedElement';
 
 export default ({color, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
@@ -15,11 +16,13 @@ export default ({color, stateNavigator}) => {
         }}>
         <Text style={styles.back}>X</Text>
       </TouchableHighlight>
-      <View
-        style={[
-          {backgroundColor: color},
-          styles.color
-        ]} />
+      <SharedElement name={color}>
+        <View
+          style={[
+            {backgroundColor: color},
+            styles.color
+          ]} />
+      </SharedElement>
       <Text style={styles.text}>{color}</Text>
     </View>
   );
