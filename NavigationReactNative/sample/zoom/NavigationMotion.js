@@ -33,7 +33,7 @@ class NavigationMotion extends React.Component {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
-    registerSharedElement(ref, el) {        
+    registerSharedElement(component, element) {        
     }
     onNavigate(oldState, state, data) {
         this.setState(prevState => {
