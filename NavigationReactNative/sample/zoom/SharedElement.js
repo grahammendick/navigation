@@ -5,9 +5,9 @@ class SharedElement extends React.Component {
         registerSharedElement: React.PropTypes.func
     }
     render() {
-        var {children} = this.props;
+        var {key, children} = this.props;
         var {registerSharedElement} = this.context;
-        return React.cloneElement(children, {ref: component => {registerSharedElement(component, children)}});
+        return React.cloneElement(children, {ref: component => {registerSharedElement(key, component, children)}});
     }
 }
 

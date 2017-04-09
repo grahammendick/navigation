@@ -33,8 +33,26 @@ class NavigationMotion extends React.Component {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
-    registerSharedElement(component, element) {
-
+    registerSharedElement(key, component, element) {
+        var oldSharedElement = this.state.oldSharedElements[key] || {};
+        var sharedElement = {component, element};
+        Promise.all([this.measure(oldSharedElement.component), this.measure(component)])
+            .then(measurements => {
+                this.setState(({oldSharedElements, sharedElements: prevSharedElements}) => {
+                    oldSharedElement.measurements = measurements[0];
+                    sharedElement.measurements = measurements[0] && measurements[1];
+                    var sharedElements = {...prevSharedElements, key: sharedElement};
+                    return {sharedElements};
+                });
+            });
+    }
+    measure(component) {
+        return new Promise(res => {
+            if (!component) res(null);
+            component.measure((ox, oy, w, h, x, y) => {
+                res({w, h, x, y});
+            });
+        });
     }
     onNavigate(oldState, state, data) {
         this.setState(({scenes: prevScenes, sharedElements}) => {
@@ -42,7 +60,7 @@ class NavigationMotion extends React.Component {
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes, oldSharedElements: sharedElements};
+            return {scenes, oldSharedElements: sharedElements, sharedElements: {}};
         });
     }
     moveScene(url) {
