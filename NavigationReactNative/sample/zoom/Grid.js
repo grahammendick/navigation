@@ -14,7 +14,10 @@ export default ({stateNavigator}) => {
       <ScrollView>
         <View style={styles.colors}>
           {colors.map(color => (
-            <SharedElement key={color} name={color}>
+            <SharedElement
+              key={color}
+              name={color}
+              stateNavigator={stateNavigator}>
               <TouchableHighlight
                 key={color}
                 style={[
