@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
+import SharedElement from './SharedElement';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
@@ -13,20 +14,22 @@ export default ({stateNavigator}) => {
       <ScrollView>
         <View style={styles.colors}>
           {colors.map(color => (
-            <TouchableHighlight
-              key={color}
-              style={[
-                {backgroundColor: color},
-                styles.color
-              ]}
-              underlayColor={color}
-              onPress={() => {
-                if (url === stateNavigator.stateContext.url) {
-                  stateNavigator.navigate('detail', {color});
-                }
-              }}>
-              <Text></Text>
-            </TouchableHighlight>
+            <SharedElement key={color} name={color}>
+              <TouchableHighlight
+                key={color}
+                style={[
+                  {backgroundColor: color},
+                  styles.color
+                ]}
+                underlayColor={color}
+                onPress={() => {
+                  if (url === stateNavigator.stateContext.url) {
+                    stateNavigator.navigate('detail', {color});
+                  }
+                }}>
+                <Text></Text>
+              </TouchableHighlight>
+            </SharedElement>
           ))}
         </View>
       </ScrollView>
