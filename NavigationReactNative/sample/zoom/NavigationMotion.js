@@ -37,12 +37,12 @@ class NavigationMotion extends React.Component {
         var oldSharedElement = this.state.oldSharedElements[key] || {};
         var sharedElement = {component, element};
         Promise.all([this.measure(oldSharedElement.component), this.measure(component)])
-            .then(measurements => {
+            .then(([oldMeasurements, measurements]) => {
                 this.setState(({oldSharedElements, sharedElements: prevSharedElements}) => {
-                    oldSharedElement.measurements = measurements[0];
-                    sharedElement.measurements = measurements[0] && measurements[1];
-                    var sharedElements = {...prevSharedElements, key: sharedElement};
-                    return {sharedElements};
+                    oldSharedElement.measurements = oldMeasurements;
+                    if (oldMeasurements)
+                        sharedElement = {component, element: React.cloneElement(element), measurements};
+                    return {...prevSharedElements, key: sharedElement};
                 });
             });
     }
