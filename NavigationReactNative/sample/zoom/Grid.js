@@ -19,7 +19,6 @@ export default ({stateNavigator}) => {
               name={color}
               stateNavigator={stateNavigator}>
               <TouchableHighlight
-                key={color}
                 style={[
                   {backgroundColor: color},
                   styles.color
