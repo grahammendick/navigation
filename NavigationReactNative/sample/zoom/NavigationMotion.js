@@ -12,6 +12,12 @@ class NavigationMotion extends React.Component {
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
+    static childContextTypes = {
+        registerSharedElement: React.PropTypes.func
+    }
+    getChildContext() {
+        return {registerSharedElement: this.registerSharedElement};
+    }
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
@@ -26,6 +32,8 @@ class NavigationMotion extends React.Component {
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
+    }
+    registerSharedElement(ref, el) {        
     }
     onNavigate(oldState, state, data) {
         this.setState(prevState => {
