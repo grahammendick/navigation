@@ -14,13 +14,22 @@ class SharedElement extends React.Component {
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
+    componentDidMount() {
+        var stateNavigator = this.getStateNavigator();
+        stateNavigator.onNavigate(this.register);
+    }
+    componentWillUnmount() {
+        this.getStateNavigator().offNavigate(this.register);
+    }
     register() {
-        this.component.measure((ox, oy, w, h, x, y) => {
-            var {url} = this.state;
-            var {name, children} = this.props;
-            var {registerSharedElement} = this.context;
-            registerSharedElement(url, name, children, {w, h, x, y});
-        });
+        var {url} = this.state;
+        if (url === this.getStateNavigator().stateContext.url) {
+            this.component.measure((ox, oy, w, h, x, y) => {
+                var {name, children} = this.props;
+                var {registerSharedElement} = this.context;
+                registerSharedElement(url, name, children, {w, h, x, y});
+            });
+        }
     }
     render() {
         return React.cloneElement(this.props.children, {
