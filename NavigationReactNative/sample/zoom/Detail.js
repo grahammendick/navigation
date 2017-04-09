@@ -16,7 +16,9 @@ export default ({color, stateNavigator}) => {
         }}>
         <Text style={styles.back}>X</Text>
       </TouchableHighlight>
-      <SharedElement name={color}>
+      <SharedElement
+        name={color}
+        stateNavigator={stateNavigator}>
         <View
           style={[
             {backgroundColor: color},
