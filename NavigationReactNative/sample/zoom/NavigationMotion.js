@@ -7,7 +7,7 @@ class NavigationMotion extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.onNavigate = this.onNavigate.bind(this);
-        this.state = {scenes: {}};
+        this.state = {scenes: {}, oldSharedElements: {}, sharedElements: {}};
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
@@ -33,15 +33,16 @@ class NavigationMotion extends React.Component {
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
-    registerSharedElement(component, element) {        
+    registerSharedElement(component, element) {
+
     }
     onNavigate(oldState, state, data) {
-        this.setState(prevState => {
-            var scenes = {...prevState.scenes};
+        this.setState(({scenes: prevScenes, sharedElements}) => {
+            var scenes = {...prevScenes};
             var {url} = this.getStateNavigator().stateContext;
-            var element = state.renderScene(this.getSceneData(data, url, prevState), this.moveScene(url));
+            var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes};
+            return {scenes, oldSharedElements: sharedElements};
         });
     }
     moveScene(url) {
