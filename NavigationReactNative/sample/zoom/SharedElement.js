@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View } from 'react-native';
 
 class SharedElement extends React.Component {
     static contextTypes = {
