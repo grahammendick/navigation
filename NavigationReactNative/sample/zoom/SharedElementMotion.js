@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Motion } from 'react-motion';
 
 class SharedElementMotion extends React.Component {
     constructor(props, context) {

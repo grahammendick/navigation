@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-import { Motion, TransitionMotion } from 'react-motion';
+import { TransitionMotion } from 'react-motion';
 import { View } from 'react-native';
 
 class NavigationMotion extends React.Component {
