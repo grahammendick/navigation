@@ -8,16 +8,25 @@ class NavigationMotion extends React.Component {
         super(props, context);
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
+        this.onRegisterSharedElement = this.onRegisterSharedElement.bind(this);
+        this.offRegisterSharedElement = this.offRegisterSharedElement.bind(this);
         this.state = {scenes: {}};
+        this.registrationHandlers = [];
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
     static childContextTypes = {
-        registerSharedElement: React.PropTypes.func
+        registerSharedElement: React.PropTypes.func,
+        onRegisterSharedElement: React.PropTypes.func,
+        offRegisterSharedElement: React.PropTypes.func
     }
     getChildContext() {
-        return {registerSharedElement: this.registerSharedElement};
+        return {
+            registerSharedElement: this.registerSharedElement,
+            onRegisterSharedElement: this.onRegisterSharedElement,
+            offRegisterSharedElement: this.offRegisterSharedElement
+        };
     }
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
@@ -43,15 +52,6 @@ class NavigationMotion extends React.Component {
             return {scenes};
         });
     }
-    registerSharedElement(url, name, element, measurements) {
-        this.setState(({scenes: prevScenes}) => {
-            var scenes = {...prevScenes};
-            var sharedElements = scenes[url] && scenes[url].sharedElements;
-            sharedElements = {...sharedElements, [name]: {element, measurements}}
-            scenes[url] = {...scenes[url], sharedElements};
-            return {scenes};
-        });
-    }
     moveScene(url) {
         return data => {
             this.setState(({scenes: prevScenes}) => {
@@ -60,6 +60,17 @@ class NavigationMotion extends React.Component {
                 return {scenes};
             });
         };
+    }
+    registerSharedElement(url, name, element, measurements) {
+        for(var i = 0; i < this.registrationHandlers.length; i++) {
+            this.registrationHandlers[i](url, name, element, measurements);
+        }
+    }
+    onRegisterSharedElement(registrationHandler) {
+        this.registrationHandlers.push(registrationHandler);
+    }
+    offRegisterSharedElement(registrationHandler) {
+        this.registrationHandlers.remove(registrationHandler);
     }
     clearScene(url) {
         this.setState(prevState => {
