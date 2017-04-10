@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Motion } from 'react-motion';
+import { View } from 'react-native';
 
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
@@ -31,21 +32,31 @@ class SharedElementMotion extends React.Component {
     getSharedElements() {
         var {currentUrl, oldUrl} = this.getStateNavigator().stateContext;
         var {sharedElements} = this.state;
-        var activeSharedElements = [];
+        var matchedSharedElements = [];
         if (url !== currentUrl) {
             for(var name in sharedElements[url]) {
                 if ((sharedElements[oldUr] || {})[name]) {
-                    activeSharedElements.push({
+                    matchedSharedElements.push({
+                        name,
                         from: sharedElements[oldUrl][name],
                         to: sharedElements[url][name]
                     })
                 }
             }
         }
-        return activeSharedElements;
+        return matchedSharedElements;
     }
     render() {
-        return null;
+        var {fromStyle, toStyle} = this.props;
+        return (
+            <View>
+                {this.getSharedElements().map(({name, from, to}) => (
+                    <Motion key={name} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
+                        {tweenStyle => children(style, from.element)}
+                    </Motion>
+                ))}
+            </View>
+        );
     }
 }
 
