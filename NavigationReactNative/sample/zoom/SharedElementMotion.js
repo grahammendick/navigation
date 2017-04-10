@@ -28,6 +28,22 @@ class SharedElementMotion extends React.Component {
             return {sharedElements};
         });
     }
+    getSharedElements() {
+        var {currentUrl, oldUrl} = this.getStateNavigator().stateContext;
+        var {sharedElements} = this.state;
+        var activeSharedElements = [];
+        if (url !== currentUrl) {
+            for(var name in sharedElements[url]) {
+                if ((sharedElements[oldUr] || {})[name]) {
+                    activeSharedElements.push({
+                        from: sharedElements[oldUrl][name],
+                        to: sharedElements[url][name]
+                    })
+                }
+            }
+        }
+        return activeSharedElements;
+    }
     render() {
         return null;
     }
