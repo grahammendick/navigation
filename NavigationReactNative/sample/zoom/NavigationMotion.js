@@ -70,7 +70,9 @@ class NavigationMotion extends React.Component {
         this.registrationHandlers.push(registrationHandler);
     }
     offRegisterSharedElement(registrationHandler) {
-        this.registrationHandlers.remove(registrationHandler);
+        var index = this.registrationHandlers.indexOf(registrationHandler);
+        if (index > -1)
+            this.registrationHandlers.splice(index, 1);
     }
     clearScene(url) {
         this.setState(prevState => {
