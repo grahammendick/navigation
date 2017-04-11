@@ -47,12 +47,12 @@ class SharedElementMotion extends React.Component {
         return matchedSharedElements;
     }
     render() {
-        var {fromStyle, toStyle} = this.props;
+        var {fromStyle = m => m, toStyle = m => m} = this.props;
         return (
             <View>
                 {this.getSharedElements().map(({name, from, to}) => (
                     <Motion key={name} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
-                        {tweenStyle => children(style, from.element)}
+                        {tweenStyle => children(style, from.element, name)}
                     </Motion>
                 ))}
             </View>
