@@ -15,10 +15,10 @@ class SharedElementMotion extends React.Component {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     render() {
-        var {children, fromStyle = m => m, toStyle = m => m} = this.props;
+        var {style, children, fromStyle = m => m, toStyle = m => m} = this.props;
         return (
             this.state.url === this.getStateNavigator().stateContext.url &&
-            <View>
+            <View style={style}>
                 {this.context.getSharedElements().map(({name, from, to}) => (
                     <Motion key={name} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
                         {tweenStyle => children(tweenStyle, from.element, name)}

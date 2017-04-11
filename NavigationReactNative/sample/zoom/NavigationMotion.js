@@ -76,7 +76,7 @@ class NavigationMotion extends React.Component {
             if (oldSharedElements[name]) {
                 matchedSharedElements.push({
                     name,
-                    from: sharedElements[name],
+                    from: oldSharedElements[name],
                     to: sharedElements[name]
                 })
             }
