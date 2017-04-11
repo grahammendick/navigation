@@ -4,8 +4,10 @@ import State from './config/State';
 class StateContext {
     oldState: State = null;
     oldData: any = {};
+    oldUrl: string = null;
     previousState: State = null;
     previousData: any = {};
+    previousUrl: string = null;
     state: State = null;
     data: any = {};
     url: string = null;
@@ -16,8 +18,10 @@ class StateContext {
     clear() {
         this.oldState = null;
         this.oldData = {};
+        this.oldUrl = null;
         this.previousState = null;
         this.previousData = {};
+        this.previousUrl = null;
         this.state = null;
         this.data = {};
         this.url = null;
