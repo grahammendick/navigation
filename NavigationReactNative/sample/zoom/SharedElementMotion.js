@@ -31,11 +31,11 @@ class SharedElementMotion extends React.Component {
     }
     getSharedElements() {
         var {currentUrl, oldUrl} = this.getStateNavigator().stateContext;
-        var {sharedElements} = this.state;
+        var {url, sharedElements} = this.state;
         var matchedSharedElements = [];
         if (url !== currentUrl) {
             for(var name in sharedElements[url]) {
-                if ((sharedElements[oldUr] || {})[name]) {
+                if ((sharedElements[oldUrl] || {})[name]) {
                     matchedSharedElements.push({
                         name,
                         from: sharedElements[oldUrl][name],

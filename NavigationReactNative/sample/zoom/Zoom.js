@@ -12,9 +12,8 @@ export default ({stateNavigator}) => (
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {(style, scene, url) => (
-      <View style={{flex: 1}}>
-        <View
-          key={url}
+      <View key={url} style={{flex: 1}}>
+        <View          
           style={{
             position: 'absolute',
             left: 0,
