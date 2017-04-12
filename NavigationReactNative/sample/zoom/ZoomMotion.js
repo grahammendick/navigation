@@ -10,7 +10,6 @@ const getStyle = ({x, y, w, h}) => ({
   h: spring(h, {precision: 10}),
 });
 
-
 export default ({stateNavigator}) => (
   <SharedElementMotion
     toStyle={getStyle}
