@@ -13,16 +13,14 @@ export default ({stateNavigator}) => (
     stateNavigator={stateNavigator}>
     {(style, scene, url) => (
       <View key={url}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-          }}>
-        <View style={{flex: 1}}>
-          {scene}
-        </View>
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        {scene}
         <ZoomMotion stateNavigator={stateNavigator} />
       </View>
     )}
