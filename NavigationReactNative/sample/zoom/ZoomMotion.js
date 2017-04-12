@@ -24,7 +24,7 @@ export default ({stateNavigator}) => (
           top: y,
           width: w,
           height: h,
-          backgroundColor: name
+          backgroundColor: name,
         }}>
       </View>            
     )}
