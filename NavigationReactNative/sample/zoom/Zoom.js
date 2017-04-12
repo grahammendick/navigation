@@ -1,17 +1,18 @@
 import React from 'react';
 import {View} from 'react-native';
+import spring from './spring';
 import NavigationMotion from './NavigationMotion';
 import ZoomMotion from './ZoomMotion';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="grid"
-    unmountedStyle={{}}
-    mountedStyle={{}}
-    crumbStyle={{}}
+    unmountedStyle={{opacity: spring(0)}}
+    mountedStyle={{opacity: spring(1)}}
+    crumbStyle={{opacity: spring(0)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {(style, scene, url) => (
+    {({opacity}, scene, url) => (
       <View key={url}
         style={{
           position: 'absolute',
@@ -20,7 +21,9 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
         }}>
-        {scene}
+        <View style={{opacity: opacity, flex: 1}}>
+          {scene}
+        </View>
         <ZoomMotion stateNavigator={stateNavigator} />
       </View>
     )}
