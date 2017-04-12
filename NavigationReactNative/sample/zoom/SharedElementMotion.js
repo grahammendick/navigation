@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Motion } from 'react-motion';
-import { View, Modal } from 'react-native';
+import { Modal } from 'react-native';
 
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
