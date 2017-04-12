@@ -16,13 +16,14 @@ class SharedElementMotion extends React.Component {
     }
     render() {
         var {style, children, fromStyle = m => m, toStyle = m => m} = this.props;
+        var {url} = this.getStateNavigator().stateContext;
+        var sharedElements = this.state.url === url ? this.context.getSharedElements() : [];
         return (
-            this.state.url === this.getStateNavigator().stateContext.url &&
             <Modal
-                visible={!this.state.hide}
+                visible={sharedElements.length !== 0 && !this.state.hide}
                 transparent={true}
                 animationType="none">
-                {this.context.getSharedElements().map(({name, from, to}) => (
+                {sharedElements.map(({name, from, to}) => (
                     <Motion key={name} onRest={() => {this.setState({hide: true})}} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
                         {tweenStyle => children(tweenStyle, from.element, name)}
                     </Motion>
