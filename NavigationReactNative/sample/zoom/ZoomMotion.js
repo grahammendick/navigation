@@ -5,7 +5,6 @@ import spring from './spring';
 
 export default ({stateNavigator}) => (
   <SharedElementMotion
-    style={{flex: 1}}
     toStyle={({x, y, w, h}) => ({x: spring(x), y: spring(y), w: spring(w), h: spring(h)})}
     stateNavigator={stateNavigator}>
     {({x, y, w, h}, sharedElement, name) => (
@@ -17,8 +16,8 @@ export default ({stateNavigator}) => (
           top: y,
           width: w,
           height: h,
+          backgroundColor: name
         }}>
-        {sharedElement}
       </View>            
     )}
   </SharedElementMotion>

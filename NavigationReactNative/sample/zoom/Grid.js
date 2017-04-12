@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import SharedElement from './SharedElement';
+import ZoomMotion from './ZoomMotion';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',

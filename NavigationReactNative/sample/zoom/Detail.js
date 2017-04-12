@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import NavigationBackAndroid from './NavigationBackAndroid';
 import SharedElement from './SharedElement';
+import ZoomMotion from './ZoomMotion';
 
 export default ({color, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
@@ -26,6 +27,7 @@ export default ({color, stateNavigator}) => {
           ]} />
       </SharedElement>
       <Text style={styles.text}>{color}</Text>
+      <ZoomMotion stateNavigator={stateNavigator} />
     </View>
   );
 };

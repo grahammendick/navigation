@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Motion } from 'react-motion';
-import { View } from 'react-native';
+import { View, Modal } from 'react-native';
 
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
@@ -18,13 +18,16 @@ class SharedElementMotion extends React.Component {
         var {style, children, fromStyle = m => m, toStyle = m => m} = this.props;
         return (
             this.state.url === this.getStateNavigator().stateContext.url &&
-            <View style={style}>
+            <Modal
+                visible={!this.state.hide}
+                transparent={true}
+                animationType="none">
                 {this.context.getSharedElements().map(({name, from, to}) => (
-                    <Motion key={name} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
+                    <Motion key={name} onRest={() => {this.setState({hide: true})}} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
                         {tweenStyle => children(tweenStyle, from.element, name)}
                     </Motion>
                 ))}
-            </View>
+            </Modal>
         );
     }
 }
