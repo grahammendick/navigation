@@ -9,7 +9,7 @@ export default ({stateNavigator}) => (
     startStateKey="grid"
     unmountedStyle={{opacity: spring(0)}}
     mountedStyle={{opacity: spring(1)}}
-    crumbStyle={{opacity: spring(0)}}
+    crumbStyle={{opacity: spring(.9)}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({opacity}, scene, url) => (
@@ -21,7 +21,7 @@ export default ({stateNavigator}) => (
           top: 0,
           bottom: 0,
         }}>
-        <View style={{opacity: opacity, flex: 1}}>
+        <View style={{opacity: opacity === 1 ? opacity : opacity / 2, flex: 1}}>
           {scene}
         </View>
         <ZoomMotion stateNavigator={stateNavigator} />
