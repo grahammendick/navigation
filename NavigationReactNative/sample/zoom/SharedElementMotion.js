@@ -22,6 +22,7 @@ class SharedElementMotion extends React.Component {
             <Modal
                 visible={sharedElements.length !== 0 && !this.state.hide}
                 supportedOrientations={['portrait', 'landscape']}
+                onRequestClose={() => {}}
                 transparent={true}
                 animationType="none">
                 {sharedElements.map(({name, from, to}) => (
