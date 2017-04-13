@@ -14,20 +14,31 @@ class SharedElementMotion extends React.Component {
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
+    stripStyle(style) {
+        var newStyle = {};
+        for(var key in style) {
+            newStyle[key] = style[key].val;
+        }
+        return newStyle;        
+    }
     render() {
-        var {style, children, fromStyle = m => m, toStyle = m => m} = this.props;
+        var {style, children, elementStyle} = this.props;
         var {url} = this.getStateNavigator().stateContext;
         var sharedElements = this.state.url === url ? this.context.getSharedElements() : [];
         return (
             <Modal
-                visible={sharedElements.length !== 0 && !this.state.hide}
-                supportedOrientations={['portrait', 'landscape']}
-                onRequestClose={() => {}}
                 transparent={true}
-                animationType="none">
-                {sharedElements.map(({name, from, to}) => (
-                    <Motion key={name} onRest={() => {this.setState({hide: true})}} defaultStyle={fromStyle(from.measurements)} style={toStyle(to.measurements)}>
-                        {tweenStyle => children(tweenStyle, from.element, name)}
+                animationType="none"
+                onRequestClose={() => {}}
+                supportedOrientations={['portrait', 'landscape']}
+                visible={sharedElements.length !== 0 && !this.state.hide}>
+                {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
+                    <Motion
+                        key={name}
+                        onRest={() => {this.setState({hide: true})}}
+                        defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
+                        style={elementStyle(name, {...mounted.measurements, ...mounted.data})}>
+                        {tweenStyle => children(tweenStyle, name, old.data, mounted.data, old.ref, mounted.ref)}
                     </Motion>
                 ))}
             </Modal>

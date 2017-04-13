@@ -12,9 +12,9 @@ const getStyle = ({x, y, w, h}) => ({
 
 export default ({stateNavigator}) => (
   <SharedElementMotion
-    toStyle={getStyle}
+    elementStyle={(name, data) => getStyle(data)}
     stateNavigator={stateNavigator}>
-    {({x, y, w, h}, sharedElement, name) => (
+    {({x, y, w, h}, name, {color}) => (
       <View
         key={name}
         style={{
@@ -23,7 +23,7 @@ export default ({stateNavigator}) => (
           top: y,
           width: w,
           height: h,
-          backgroundColor: name,
+          backgroundColor: color,
         }}>
       </View>            
     )}

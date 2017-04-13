@@ -17,6 +17,7 @@ export default ({stateNavigator}) => {
             <SharedElement
               key={color}
               name={color}
+              data={{color}}
               stateNavigator={stateNavigator}>
               <TouchableHighlight
                 style={[

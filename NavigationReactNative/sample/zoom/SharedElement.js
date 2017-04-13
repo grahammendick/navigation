@@ -23,17 +23,16 @@ class SharedElement extends React.Component {
     register() {
         var {url} = this.state;
         if (url === this.getStateNavigator().stateContext.url) {
-            this.component.measure((ox, oy, w, h, x, y) => {
-                var {name, children} = this.props;
-                var {registerSharedElement} = this.context;
-                registerSharedElement(url, name, children, {w, h, x, y});
+            this.ref.measure((ox, oy, w, h, x, y) => {
+                var {name, data} = this.props;
+                this.context.registerSharedElement(url, name, this.ref, {w, h, x, y}, data);
             });
         }
     }
     render() {
         return React.cloneElement(this.props.children, {
             onLayout: this.register,
-            ref: comp => {this.component = comp}
+            ref: comp => {this.ref = comp}
         });
     }
 }

@@ -48,11 +48,11 @@ class NavigationMotion extends React.Component {
             return {scenes};
         });
     }
-    registerSharedElement(url, name, element, measurements) {
+    registerSharedElement(url, name, ref, measurements, data) {
         this.setState(({scenes: prevScenes}) => {
             var scenes = {...prevScenes};
             var sharedElements = scenes[url] && scenes[url].sharedElements;
-            sharedElements = {...sharedElements, [name]: {element, measurements}}
+            sharedElements = {...sharedElements, [name]: {ref, measurements, data}}
             scenes[url] = {...scenes[url], sharedElements};
             return {scenes};
         });
@@ -70,18 +70,18 @@ class NavigationMotion extends React.Component {
         var {url, oldUrl} = this.getStateNavigator().stateContext;
         var {scenes} = this.state;
         var oldSharedElements = ((scenes[oldUrl] || {}).sharedElements || {});
-        var sharedElements = ((scenes[url] || {}).sharedElements || {});
-        var matchedSharedElements = [];
-        for(var name in sharedElements) {
+        var mountedSharedElements = ((scenes[url] || {}).sharedElements || {});
+        var sharedElements = [];
+        for(var name in mountedSharedElements) {
             if (oldSharedElements[name]) {
-                matchedSharedElements.push({
+                sharedElements.push({
                     name,
-                    from: oldSharedElements[name],
-                    to: sharedElements[name]
+                    oldElement: oldSharedElements[name],
+                    mountedElement: mountedSharedElements[name]
                 })
             }
         }
-        return matchedSharedElements;
+        return sharedElements;
     }
     clearScene(url) {
         this.setState(prevState => {
