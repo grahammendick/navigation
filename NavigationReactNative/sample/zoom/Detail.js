@@ -26,7 +26,12 @@ export default ({color, stateNavigator}) => {
             styles.color
           ]} />
       </SharedElement>
-      <Text style={styles.text}>{color}</Text>
+      <SharedElement
+        name={`text${color}`}
+        data={{color, fontSize: 80}}
+        stateNavigator={stateNavigator}>
+        <Text style={styles.text}>{color}</Text>
+      </SharedElement>
     </View>
   );
 };

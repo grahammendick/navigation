@@ -30,7 +30,14 @@ export default ({stateNavigator}) => {
                     stateNavigator.navigate('detail', {color});
                   }
                 }}>
-                <Text></Text>
+                <View>
+                  <SharedElement
+                    name={`text${color}`}
+                    data={{color, fontSize: 20}}
+                    stateNavigator={stateNavigator}>
+                    <Text style={styles.text}>{color}</Text>
+                  </SharedElement>
+                </View>
               </TouchableHighlight>
             </SharedElement>
           ))}
@@ -57,5 +64,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 20,
+    justifyContent: 'center',
   },
+  text: {
+    color: '#fff',
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  }
 });
