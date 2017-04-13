@@ -3,19 +3,20 @@ import {Text, View} from 'react-native';
 import SharedElementMotion from './SharedElementMotion';
 import spring from './spring';
 
-const getStyle = ({x, y, w, h, fontSize = 0}) => ({
+const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
   x: spring(x, {precision: 10}),
   y: spring(y, {precision: 10}),
   w: spring(w, {precision: 10}),
   h: spring(h, {precision: 10}),
   fontSize: spring(fontSize, {precision: 10}),
+  fontColor: spring(fontColor, {precision: 10}),
 });
 
 export default ({stateNavigator}) => (
   <SharedElementMotion
     elementStyle={(name, data) => getStyle(data)}
     stateNavigator={stateNavigator}>
-    {({x, y, w, h, fontSize}, name, {color}) => (
+    {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <View
         style={{
           position: 'absolute',
@@ -35,8 +36,11 @@ export default ({stateNavigator}) => (
           fontSize,
           textAlign: 'center',
           fontWeight: 'bold',
+          color: `rgb(${fontColor},${fontColor},${fontColor})`,
           zIndex: 1,
-        }}>{color}</Text>
+        }}>
+          {color}
+        </Text>
     )}
   </SharedElementMotion>
 );
