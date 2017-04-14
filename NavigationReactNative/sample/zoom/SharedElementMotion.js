@@ -5,10 +5,11 @@ import { Modal } from 'react-native';
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
         super(props, context);
+        this.reset = this.reset.bind(this);
         this.state = {
             url: this.getStateNavigator().stateContext.url,
             sharedElements: this.context.getSharedElements(),
-            animatedCount: 0,
+            animatedElements: {},
         };
     }
     static contextTypes = {
@@ -20,12 +21,13 @@ class SharedElementMotion extends React.Component {
     }
     componentWillReceiveProps() {
         if (this.state.url === this.getStateNavigator().stateContext.url) {
-            this.setState(({sharedElements: prevSharedElements, animatedCount}) => {
+            this.setState(({sharedElements: prevSharedElements, animatedElements}) => {
                 var {onAnimating, onAnimated} = this.props;
                 var sharedElements = this.context.getSharedElements();
-                for(var i = 0; i < sharedElements.length && sharedElements.length !== animatedCount && onAnimating; i++) {
+                for(var i = 0; i < sharedElements.length && onAnimating; i++) {
                     var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-                    onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
+                    if (!animatedElements[name])
+                        onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
                 }
                 if (sharedElements.length === 0 && prevSharedElements.length > 0) {
                     for(var i = 0; i < prevSharedElements.length && onAnimated; i++) {
@@ -36,6 +38,15 @@ class SharedElementMotion extends React.Component {
                 return {sharedElements};
             });
         }
+    }
+    componentDidMount() {
+        this.getStateNavigator().onNavigate(this.reset);
+    }
+    componentWillUnmount() {
+        this.getStateNavigator().offNavigate(this.reset);
+    }
+    reset() {
+        this.setState({animatedElements: {}});
     }
     stripStyle(style) {
         var newStyle = {};
@@ -53,13 +64,13 @@ class SharedElementMotion extends React.Component {
                 animationType="none"
                 onRequestClose={() => {}}
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}
-                visible={sharedElements.length !== 0 && sharedElements.length !== this.state.animatedCount}>
+                visible={sharedElements.length !== Object.keys(this.state.animatedElements).length}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
                         key={name}
                         onRest={() => {
                             onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
-                            this.setState(({animatedCount}) => ({animatedCount: animatedCount + 1}));
+                            this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));
                         }}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
                         style={elementStyle(name, {...mounted.measurements, ...mounted.data})}>
