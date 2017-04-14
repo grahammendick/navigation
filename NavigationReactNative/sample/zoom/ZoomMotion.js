@@ -4,12 +4,12 @@ import SharedElementMotion from './SharedElementMotion';
 import spring from './spring';
 
 const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
-  x: spring(x, {precision: 10}),
-  y: spring(y, {precision: 10}),
-  w: spring(w, {precision: 10}),
-  h: spring(h, {precision: 10}),
-  fontSize: spring(fontSize, {precision: 10}),
-  fontColor: spring(fontColor, {precision: 10}),
+  x: spring(x, {precision: 1}),
+  y: spring(y, {precision: 1}),
+  w: spring(w, {precision: 1}),
+  h: spring(h, {precision: 1}),
+  fontSize: spring(fontSize, {precision: 1}),
+  fontColor: spring(fontColor, {precision: 1}),
 });
 
 export default ({stateNavigator}) => (

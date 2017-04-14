@@ -7,7 +7,8 @@ class SharedElementMotion extends React.Component {
         super(props, context);
         this.state = {
             url: this.getStateNavigator().stateContext.url,
-            sharedElements: this.context.getSharedElements()
+            sharedElements: this.context.getSharedElements(),
+            animatedCount: 0,
         };
     }
     static contextTypes = {
@@ -20,6 +21,15 @@ class SharedElementMotion extends React.Component {
     componentWillReceiveProps() {
         this.setState(({sharedElements: prevSharedElements}) => {
             var sharedElements = this.context.getSharedElements();
+            for(var i = 0; i < sharedElements.length; i++) {
+                // sharedElements[i].oldElement.ref.setNativeProps({style: {opacity: 0}})
+                sharedElements[i].mountedElement.ref.setNativeProps({style: {opacity: 0}})
+            }
+            if (sharedElements.length === 0 && prevSharedElements.length > 0) {
+                for(var i = 0; i < prevSharedElements.length; i++) {
+                    prevSharedElements[i].mountedElement.ref.setNativeProps({style: {opacity: 1}});
+                }                
+            }
             return {sharedElements};
         });
     }
@@ -39,11 +49,14 @@ class SharedElementMotion extends React.Component {
                 animationType="none"
                 onRequestClose={() => {}}
                 supportedOrientations={['portrait', 'landscape']}
-                visible={sharedElements.length !== 0 && !this.state.hide}>
+                visible={sharedElements.length !== 0 && sharedElements.length !== this.state.animatedCount}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
                         key={name}
-                        onRest={() => {this.setState({hide: true})}}
+                        onRest={() => {
+                            mounted.ref.setNativeProps({style: {opacity: 1}})
+                            this.setState(({animatedCount}) => ({animatedCount: animatedCount + 1}))
+                        }}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
                         style={elementStyle(name, {...mounted.measurements, ...mounted.data})}>
                         {tweenStyle => children(tweenStyle, name, old.data, mounted.data)}
