@@ -16,8 +16,7 @@ export default ({stateNavigator}) => (
   <SharedElementMotion
     elementStyle={(name, data) => getStyle(data)}
     onNavigating={(name, oldRef, mountedRef, oldData, mountedData) => {
-      if (mountedData.hide)
-        mountedRef.setNativeProps({style:{opacity: 0}})
+      mountedData.hide && mountedRef.setNativeProps({style:{opacity: 0}})
     }}
     onNavigated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
     stateNavigator={stateNavigator}>
