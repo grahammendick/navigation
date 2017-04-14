@@ -37,9 +37,6 @@ class SharedElementMotion extends React.Component {
             });
         }
     }
-    shouldComponentUpdate() {
-        return this.state.url === this.getStateNavigator().stateContext.url;
-    }
     stripStyle(style) {
         var newStyle = {};
         for(var key in style) {
