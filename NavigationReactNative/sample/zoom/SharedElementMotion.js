@@ -19,7 +19,7 @@ class SharedElementMotion extends React.Component {
         for(var key in style) {
             newStyle[key] = style[key].val;
         }
-        return newStyle;        
+        return newStyle;
     }
     render() {
         var {style, children, elementStyle} = this.props;
