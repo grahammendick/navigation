@@ -15,6 +15,8 @@ const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
 export default ({stateNavigator}) => (
   <SharedElementMotion
     elementStyle={(name, data) => getStyle(data)}
+    onAnimating={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 0}})}}
+    onAnimated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
     stateNavigator={stateNavigator}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <View
