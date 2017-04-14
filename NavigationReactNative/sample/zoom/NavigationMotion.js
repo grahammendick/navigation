@@ -69,11 +69,11 @@ class NavigationMotion extends React.Component {
     getSharedElements() {
         var {url, oldUrl} = this.getStateNavigator().stateContext;
         var {scenes} = this.state;
-        var oldSharedElements = ((scenes[oldUrl] || {}).sharedElements || {});
-        var mountedSharedElements = ((scenes[url] || {}).sharedElements || {});
+        var oldSharedElements = scenes[oldUrl] && scenes[oldUrl].sharedElements;
+        var mountedSharedElements = scenes[url] && scenes[url].sharedElements;
         var sharedElements = [];
         for(var name in mountedSharedElements) {
-            if (oldSharedElements[name]) {
+            if (oldSharedElements && oldSharedElements[name]) {
                 sharedElements.push({
                     name,
                     oldElement: oldSharedElements[name],
