@@ -5,7 +5,10 @@ import { Modal } from 'react-native';
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {url: this.getStateNavigator().stateContext.url};
+        this.state = {
+            url: this.getStateNavigator().stateContext.url,
+            sharedElements: this.context.getSharedElements()
+        };
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
@@ -13,6 +16,12 @@ class SharedElementMotion extends React.Component {
     }
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
+    }
+    componentWillReceiveProps() {
+        this.setState(({sharedElements: prevSharedElements}) => {
+            var sharedElements = this.context.getSharedElements();
+            return {sharedElements};
+        });
     }
     stripStyle(style) {
         var newStyle = {};
@@ -22,10 +31,9 @@ class SharedElementMotion extends React.Component {
         return newStyle;
     }
     render() {
-        var {style, children, elementStyle} = this.props;
-        var {url} = this.getStateNavigator().stateContext;
-        var sharedElements = this.state.url === url ? this.context.getSharedElements() : [];
-        return (
+        var {children, elementStyle} = this.props;
+        var {url, sharedElements} = this.state;
+        return (url === this.getStateNavigator().stateContext.url &&
             <Modal
                 transparent={true}
                 animationType="none"
@@ -38,7 +46,7 @@ class SharedElementMotion extends React.Component {
                         onRest={() => {this.setState({hide: true})}}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
                         style={elementStyle(name, {...mounted.measurements, ...mounted.data})}>
-                        {tweenStyle => children(tweenStyle, name, old.data, mounted.data, old.ref, mounted.ref)}
+                        {tweenStyle => children(tweenStyle, name, old.data, mounted.data)}
                     </Motion>
                 ))}
             </Modal>
