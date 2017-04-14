@@ -8,7 +8,7 @@ class SharedElementMotion extends React.Component {
         this.state = {
             url: this.getStateNavigator().stateContext.url,
             sharedElements: this.context.getSharedElements(),
-            animatedCount: 0,
+            navigatedCount: 0,
         };
     }
     static contextTypes = {
@@ -51,13 +51,13 @@ class SharedElementMotion extends React.Component {
                 animationType="none"
                 onRequestClose={() => {}}
                 supportedOrientations={['portrait', 'landscape']}
-                visible={sharedElements.length !== 0 && sharedElements.length !== this.state.animatedCount}>
+                visible={sharedElements.length !== 0 && sharedElements.length !== this.state.navigatedCount}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
                         key={name}
                         onRest={() => {
                             onNavigated(name, old.ref, mounted.ref);
-                            this.setState(({animatedCount}) => ({animatedCount: animatedCount + 1}));
+                            this.setState(({navigatedCount}) => ({navigatedCount: navigatedCount + 1}));
                         }}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
                         style={elementStyle(name, {...mounted.measurements, ...mounted.data})}>
