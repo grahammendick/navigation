@@ -52,7 +52,7 @@ class SharedElementMotion extends React.Component {
                 transparent={true}
                 animationType="none"
                 onRequestClose={() => {}}
-                supportedOrientations={['portrait', 'landscape']}
+                supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}
                 visible={sharedElements.length !== 0 && sharedElements.length !== this.state.animatedCount}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
