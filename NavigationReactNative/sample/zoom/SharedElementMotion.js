@@ -19,21 +19,23 @@ class SharedElementMotion extends React.Component {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentWillReceiveProps() {
-        this.setState(({sharedElements: prevSharedElements}) => {
-            var {onNavigating, onNavigated} = this.props;
-            var sharedElements = this.context.getSharedElements();
-            for(var i = 0; i < sharedElements.length && onNavigating; i++) {
-                var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-                onNavigating(name, old.ref, mounted.ref, old.data, mounted.data);
-            }
-            if (sharedElements.length === 0 && prevSharedElements.length > 0) {
-                for(var i = 0; i < prevSharedElements.length && onNavigated; i++) {
-                    var {name, mountedElement: mounted} = prevSharedElements[i];
-                    onNavigated(name, null, mounted.ref, null, mounted.data);
-                }                
-            }
-            return {sharedElements};
-        });
+        if (this.state.url === this.getStateNavigator().stateContext.url) {
+            this.setState(({sharedElements: prevSharedElements, navigatedCount}) => {
+                var {onNavigating, onNavigated} = this.props;
+                var sharedElements = this.context.getSharedElements();
+                for(var i = 0; i < sharedElements.length && sharedElements.length !== navigatedCount && onNavigating; i++) {
+                    var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
+                    onNavigating(name, old.ref, mounted.ref, old.data, mounted.data);
+                }
+                if (sharedElements.length === 0 && prevSharedElements.length > 0) {
+                    for(var i = 0; i < prevSharedElements.length && onNavigated; i++) {
+                        var {name, mountedElement: mounted} = prevSharedElements[i];
+                        onNavigated(name, null, mounted.ref, null, mounted.data);
+                    }                
+                }
+                return {sharedElements};
+            });
+        }
     }
     stripStyle(style) {
         var newStyle = {};
