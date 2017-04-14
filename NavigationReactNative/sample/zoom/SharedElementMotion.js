@@ -21,16 +21,16 @@ class SharedElementMotion extends React.Component {
     componentWillReceiveProps() {
         if (this.state.url === this.getStateNavigator().stateContext.url) {
             this.setState(({sharedElements: prevSharedElements, navigatedCount}) => {
-                var {onNavigating, onNavigated} = this.props;
+                var {onAnimating, onAnimated} = this.props;
                 var sharedElements = this.context.getSharedElements();
-                for(var i = 0; i < sharedElements.length && sharedElements.length !== navigatedCount && onNavigating; i++) {
+                for(var i = 0; i < sharedElements.length && sharedElements.length !== navigatedCount && onAnimating; i++) {
                     var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-                    onNavigating(name, old.ref, mounted.ref, old.data, mounted.data);
+                    onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
                 }
                 if (sharedElements.length === 0 && prevSharedElements.length > 0) {
-                    for(var i = 0; i < prevSharedElements.length && onNavigated; i++) {
+                    for(var i = 0; i < prevSharedElements.length && onAnimated; i++) {
                         var {name, mountedElement: mounted} = prevSharedElements[i];
-                        onNavigated(name, null, mounted.ref, null, mounted.data);
+                        onAnimated(name, null, mounted.ref, null, mounted.data);
                     }                
                 }
                 return {sharedElements};
@@ -45,7 +45,7 @@ class SharedElementMotion extends React.Component {
         return newStyle;
     }
     render() {
-        var {children, elementStyle, onNavigated = () => {}} = this.props;
+        var {children, elementStyle, onAnimated = () => {}} = this.props;
         var {url, sharedElements} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
@@ -58,7 +58,7 @@ class SharedElementMotion extends React.Component {
                     <Motion
                         key={name}
                         onRest={() => {
-                            onNavigated(name, old.ref, mounted.ref, old.data, mounted.data);
+                            onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
                             this.setState(({navigatedCount}) => ({navigatedCount: navigatedCount + 1}));
                         }}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}

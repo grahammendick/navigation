@@ -15,10 +15,10 @@ const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
 export default ({stateNavigator}) => (
   <SharedElementMotion
     elementStyle={(name, data) => getStyle(data)}
-    onNavigating={(name, oldRef, mountedRef, oldData, mountedData) => {
+    onAnimating={(name, oldRef, mountedRef, oldData, mountedData) => {
       mountedData.hide && mountedRef.setNativeProps({style:{opacity: 0}})
     }}
-    onNavigated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
+    onAnimated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
     stateNavigator={stateNavigator}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <View
