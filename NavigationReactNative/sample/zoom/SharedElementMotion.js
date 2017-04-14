@@ -23,13 +23,13 @@ class SharedElementMotion extends React.Component {
             var {onNavigating, onNavigated} = this.props;
             var sharedElements = this.context.getSharedElements();
             for(var i = 0; i < sharedElements.length && onNavigating; i++) {
-                var {name, oldElement, mountedElement} = sharedElements[i];
-                onNavigating(name, oldElement.ref, mountedElement.ref);
+                var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
+                onNavigating(name, old.ref, mounted.ref, old.data, mounted.data);
             }
             if (sharedElements.length === 0 && prevSharedElements.length > 0) {
                 for(var i = 0; i < prevSharedElements.length && onNavigated; i++) {
-                    var {name, oldElement, mountedElement} = prevSharedElements[i];
-                    onNavigated(name, null, mountedElement.ref);
+                    var {name, mountedElement: mounted} = prevSharedElements[i];
+                    onNavigated(name, null, mounted.ref, null, mounted.data);
                 }                
             }
             return {sharedElements};
@@ -56,7 +56,7 @@ class SharedElementMotion extends React.Component {
                     <Motion
                         key={name}
                         onRest={() => {
-                            onNavigated(name, old.ref, mounted.ref);
+                            onNavigated(name, old.ref, mounted.ref, old.data, mounted.data);
                             this.setState(({navigatedCount}) => ({navigatedCount: navigatedCount + 1}));
                         }}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}

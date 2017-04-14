@@ -18,7 +18,7 @@ export default ({color, stateNavigator}) => {
       </TouchableHighlight>
       <SharedElement
         name={color}
-        data={{color}}
+        data={{color, hide: true}}
         stateNavigator={stateNavigator}>
         <View
           style={[
@@ -28,7 +28,7 @@ export default ({color, stateNavigator}) => {
       </SharedElement>
       <SharedElement
         name={`text${color}`}
-        data={{color, fontSize: 80, fontColor: 0}}
+        data={{color, fontSize: 80, fontColor: 0, hide: true}}
         stateNavigator={stateNavigator}>
         <Text style={styles.text}>{color}</Text>
       </SharedElement>
