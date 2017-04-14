@@ -4,19 +4,19 @@ import SharedElementMotion from './SharedElementMotion';
 import spring from './spring';
 
 const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
-  x: spring(x, {precision: 1}),
-  y: spring(y, {precision: 1}),
-  w: spring(w, {precision: 1}),
-  h: spring(h, {precision: 1}),
-  fontSize: spring(fontSize, {precision: 1}),
-  fontColor: spring(fontColor, {precision: 1}),
+  x: spring(x, {precision: 10}),
+  y: spring(y, {precision: 10}),
+  w: spring(w, {precision: 10}),
+  h: spring(h, {precision: 10}),
+  fontSize: spring(fontSize, {precision: 10}),
+  fontColor: spring(fontColor, {precision: 10}),
 });
 
 export default ({stateNavigator}) => (
   <SharedElementMotion
     elementStyle={(name, data) => getStyle(data)}
-    onAnimating={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 0}})}}
-    onAnimated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
+    onNavigating={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 0}})}}
+    onNavigated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
     stateNavigator={stateNavigator}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <View

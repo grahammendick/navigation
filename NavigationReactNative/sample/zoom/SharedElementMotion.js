@@ -20,16 +20,16 @@ class SharedElementMotion extends React.Component {
     }
     componentWillReceiveProps() {
         this.setState(({sharedElements: prevSharedElements}) => {
-            var {onAnimating, onAnimated} = this.props;
+            var {onNavigating, onNavigated} = this.props;
             var sharedElements = this.context.getSharedElements();
-            for(var i = 0; i < sharedElements.length && onAnimating; i++) {
+            for(var i = 0; i < sharedElements.length && onNavigating; i++) {
                 var {name, oldElement, mountedElement} = sharedElements[i];
-                onAnimating(name, oldElement.ref, mountedElement.ref);
+                onNavigating(name, oldElement.ref, mountedElement.ref);
             }
             if (sharedElements.length === 0 && prevSharedElements.length > 0) {
-                for(var i = 0; i < prevSharedElements.length && onAnimated; i++) {
+                for(var i = 0; i < prevSharedElements.length && onNavigated; i++) {
                     var {name, oldElement, mountedElement} = prevSharedElements[i];
-                    onAnimated(name, null, mountedElement.ref);
+                    onNavigated(name, null, mountedElement.ref);
                 }                
             }
             return {sharedElements};
@@ -43,7 +43,7 @@ class SharedElementMotion extends React.Component {
         return newStyle;
     }
     render() {
-        var {children, elementStyle, onAnimated} = this.props;
+        var {children, elementStyle, onNavigated} = this.props;
         var {url, sharedElements} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
@@ -56,8 +56,8 @@ class SharedElementMotion extends React.Component {
                     <Motion
                         key={name}
                         onRest={() => {
-                            if (onAnimated)
-                                onAnimated(name, old.ref, mounted.ref);
+                            if (onNavigated)
+                                onNavigated(name, old.ref, mounted.ref);
                             this.setState(({animatedCount}) => ({animatedCount: animatedCount + 1}));
                         }}
                         defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
