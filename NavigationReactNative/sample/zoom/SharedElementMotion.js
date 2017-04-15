@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Motion } from 'react-motion';
 import { Modal } from 'react-native';
+import spring from './spring';
 
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
@@ -72,9 +73,9 @@ class SharedElementMotion extends React.Component {
                             onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
                             this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));
                         }}
-                        defaultStyle={this.stripStyle(elementStyle(name, {...old.measurements, ...old.data}))}
-                        style={elementStyle(name, {...mounted.measurements, ...mounted.data})}>
-                        {tweenStyle => children(tweenStyle, name, old.data, mounted.data)}
+                        defaultStyle={{...this.stripStyle(elementStyle(name, {...old.measurements, ...old.data})), __force: 0}}
+                        style={{...elementStyle(name, {...mounted.measurements, ...mounted.data}), __force: spring(1)}}>
+                        {({__force, ...tweenStyle}) => children(tweenStyle, name, old.data, mounted.data)}
                     </Motion>
                 ))}
             </Modal>
