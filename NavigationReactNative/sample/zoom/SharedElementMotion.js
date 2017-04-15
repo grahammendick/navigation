@@ -21,34 +21,42 @@ class SharedElementMotion extends React.Component {
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
-    componentWillReceiveProps() {
-        if (this.state.url === this.getStateNavigator().stateContext.url) {
-            this.setState(({sharedElements: prevSharedElements, animatedElements}) => {
-                var {onAnimating, onAnimated} = this.props;
-                var sharedElements = this.context.getSharedElements();
-                for(var i = 0; i < sharedElements.length && onAnimating; i++) {
-                    var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-                    if (!animatedElements[name])
-                        onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
-                }
-                if (sharedElements.length === 0 && prevSharedElements.length > 0) {
-                    for(var i = 0; i < prevSharedElements.length && onAnimated; i++) {
-                        var {name, mountedElement: mounted} = prevSharedElements[i];
-                        onAnimated(name, null, mounted.ref, null, mounted.data);
-                    }                
-                }
-                return {sharedElements};
-            });
-        }
-    }
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.reset);
+        this.animate();
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.reset);
+        cancelAnimationFrame(this.animateId);
+    }
+    animate() {
+        this.animatedId = requestAnimationFrame(() => {
+            if (this.state.url !== this.getStateNavigator().stateContext.url)
+                return;
+            var {onAnimating, onAnimated} = this.props;
+            var {sharedElements: prevSharedElements = [], animatedElements} = this.state;
+            var sharedElements = this.context.getSharedElements();
+            for(var i = 0; i < sharedElements.length && onAnimating; i++) {
+                var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
+                if (!animatedElements[name])
+                    onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
+            }
+            if (sharedElements.length === 0 && prevSharedElements.length > 0) {
+                for(var i = 0; i < prevSharedElements.length && onAnimated; i++) {
+                    var {name, mountedElement: mounted} = prevSharedElements[i];
+                    onAnimated(name, null, mounted.ref, null, mounted.data);
+                }                
+            }
+            if (sharedElements.length !== 0)
+                this.setState({sharedElements});
+            this.animate();
+        });
     }
     reset() {
-        this.setState(({force}) => ({animatedElements: {}, force: force + 1}));
+        if (this.state.url !== this.getStateNavigator().stateContext.url)
+            this.setState(({force}) => ({animatedElements: {}, force: force + 1}));
+        else
+            this.animate();
     }
     stripStyle(style) {
         var newStyle = {};
@@ -59,7 +67,8 @@ class SharedElementMotion extends React.Component {
     }
     onAnimated(name, old, mounted) {
         var {onAnimated = () => {}} = this.props;
-        onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
+        var unmounted = old.url = this.getStateNavigator().stateContext.oldUrl;
+        onAnimated(name, !unmounted ? old.ref : null, mounted.ref, !unmounted ? old.data : null, mounted.data);
         this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));        
     }
     render() {
@@ -68,7 +77,7 @@ class SharedElementMotion extends React.Component {
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
                 transparent={true} animationType="none" onRequestClose={() => {}}
-                visible={sharedElements.length !== Object.keys(this.state.animatedElements).length}
+                visible={sharedElements.length > Object.keys(this.state.animatedElements).length}
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion

@@ -60,7 +60,7 @@ class NavigationMotion extends React.Component {
     }
     registerSharedElement(url, name, ref, measurements, data) {
         this.sharedElements[url] = this.sharedElements[url] || {};
-        this.sharedElements[url][name] = {ref, measurements, data};
+        this.sharedElements[url][name] = {ref, measurements, data, url};
     }
     getSharedElements() {
         var {url, oldUrl} = this.getStateNavigator().stateContext;
