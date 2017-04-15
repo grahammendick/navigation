@@ -20,10 +20,9 @@ export default ({stateNavigator}) => (
           right: 0,
           top: 0,
           bottom: 0,
+          opacity: opacity === 1 ? opacity : opacity / 2
         }}>
-        <View style={{opacity: opacity === 1 ? opacity : opacity / 2, flex: 1}}>
-          {scene}
-        </View>
+        {scene}
         <ZoomMotion stateNavigator={stateNavigator} />
       </View>
     )}
