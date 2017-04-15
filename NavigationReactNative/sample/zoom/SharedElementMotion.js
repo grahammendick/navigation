@@ -57,8 +57,13 @@ class SharedElementMotion extends React.Component {
         }
         return newStyle;
     }
+    onAnimated(name, old, mounted) {
+        var {onAnimated = () => {}} = this.props;
+        onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
+        this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));        
+    }
     render() {
-        var {children, elementStyle, onAnimated = () => {}} = this.props;
+        var {children, elementStyle} = this.props;
         var {url, sharedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
@@ -67,11 +72,7 @@ class SharedElementMotion extends React.Component {
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
-                        key={name}
-                        onRest={() => {
-                            onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
-                            this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));
-                        }}
+                        key={name} onRest={() => {this.onAnimated(name, old, mounted)}}
                         defaultStyle={{...this.stripStyle(elementStyle(name, {...old.measurements, ...old.data})), __force: 0}}
                         style={{...elementStyle(name, {...mounted.measurements, ...mounted.data}), __force: spring(force)}}>
                         {({__force, ...tweenStyle}) => children(tweenStyle, name, old.data, mounted.data)}
