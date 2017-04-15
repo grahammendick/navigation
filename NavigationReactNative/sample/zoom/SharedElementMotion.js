@@ -11,6 +11,7 @@ class SharedElementMotion extends React.Component {
             url: this.getStateNavigator().stateContext.url,
             sharedElements: this.context.getSharedElements(),
             animatedElements: {},
+            force: 1,
         };
     }
     static contextTypes = {
@@ -47,7 +48,7 @@ class SharedElementMotion extends React.Component {
         this.getStateNavigator().offNavigate(this.reset);
     }
     reset() {
-        this.setState({animatedElements: {}});
+        this.setState(({force}) => ({animatedElements: {}, force: force + 1}));
     }
     stripStyle(style) {
         var newStyle = {};
@@ -58,7 +59,7 @@ class SharedElementMotion extends React.Component {
     }
     render() {
         var {children, elementStyle, onAnimated = () => {}} = this.props;
-        var {url, sharedElements} = this.state;
+        var {url, sharedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
                 transparent={true}
@@ -74,7 +75,7 @@ class SharedElementMotion extends React.Component {
                             this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));
                         }}
                         defaultStyle={{...this.stripStyle(elementStyle(name, {...old.measurements, ...old.data})), __force: 0}}
-                        style={{...elementStyle(name, {...mounted.measurements, ...mounted.data}), __force: spring(1)}}>
+                        style={{...elementStyle(name, {...mounted.measurements, ...mounted.data}), __force: spring(force)}}>
                         {({__force, ...tweenStyle}) => children(tweenStyle, name, old.data, mounted.data)}
                     </Motion>
                 ))}
