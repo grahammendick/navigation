@@ -49,10 +49,6 @@ class NavigationMotion extends React.Component {
             return {scenes};
         });
     }
-    registerSharedElement(url, name, ref, measurements, data) {
-        this.sharedElements[url] = this.sharedElements[url] || {};
-        this.sharedElements[url][name] = {ref, measurements, data};
-    }
     moveScene(url) {
         return data => {
             this.setState(({scenes: prevScenes}) => {
@@ -61,6 +57,10 @@ class NavigationMotion extends React.Component {
                 return {scenes};
             });
         };
+    }
+    registerSharedElement(url, name, ref, measurements, data) {
+        this.sharedElements[url] = this.sharedElements[url] || {};
+        this.sharedElements[url][name] = {ref, measurements, data};
     }
     getSharedElements() {
         var {url, oldUrl} = this.getStateNavigator().stateContext;
