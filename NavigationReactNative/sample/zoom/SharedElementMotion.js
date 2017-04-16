@@ -77,11 +77,11 @@ class SharedElementMotion extends React.Component {
     }
     render() {
         var {children, elementStyle} = this.props;
-        var {url, sharedElements, force} = this.state;
+        var {url, sharedElements, animatedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
                 transparent={true} animationType="none" onRequestClose={() => {}}
-                visible={sharedElements.length > Object.keys(this.state.animatedElements).length}
+                visible={sharedElements.length > Object.keys(animatedElements).length}
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
