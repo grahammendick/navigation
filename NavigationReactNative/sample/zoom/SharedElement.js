@@ -22,7 +22,8 @@ class SharedElement extends React.Component {
     }
     register() {
         var {url} = this.state;
-        if (url === this.getStateNavigator().stateContext.url) {
+        if (url === this.getStateNavigator().stateContext.url
+            || url === this.getStateNavigator().stateContext.oldUrl) {
             this.ref.measure((ox, oy, w, h, x, y) => {
                 var {name, data} = this.props;
                 this.context.registerSharedElement(url, name, this.ref, {w, h, x, y}, data);
