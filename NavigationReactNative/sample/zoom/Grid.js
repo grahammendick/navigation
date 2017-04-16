@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import SharedElement from './SharedElement';
-import ZoomMotion from './ZoomMotion';
+import ZoomShared from './ZoomShared';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
@@ -12,7 +12,7 @@ export default ({stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.grid}>
-      <ZoomMotion stateNavigator={stateNavigator} />
+      <ZoomShared stateNavigator={stateNavigator} />
       <ScrollView>
         <View style={styles.colors}>
           {colors.map(color => (
