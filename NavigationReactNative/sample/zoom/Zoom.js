@@ -2,7 +2,6 @@ import React from 'react';
 import {View} from 'react-native';
 import spring from './spring';
 import NavigationMotion from './NavigationMotion';
-import ZoomMotion from './ZoomMotion';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
@@ -23,7 +22,6 @@ export default ({stateNavigator}) => (
           opacity: opacity === 1 ? opacity : opacity / 2
         }}>
         {scene}
-        <ZoomMotion stateNavigator={stateNavigator} />
       </View>
     )}
   </NavigationMotion>

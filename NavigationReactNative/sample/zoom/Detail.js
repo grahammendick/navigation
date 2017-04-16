@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import NavigationBackAndroid from './NavigationBackAndroid';
+import ZoomMotion from './ZoomMotion';
 import SharedElement from './SharedElement';
 
 export default ({color, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
     <View style={styles.detail}>
+      <ZoomMotion stateNavigator={stateNavigator} />
       <NavigationBackAndroid stateNavigator={stateNavigator} />
       <TouchableHighlight
         underlayColor="#fff"
