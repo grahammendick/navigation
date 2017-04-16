@@ -45,7 +45,7 @@ class SharedElementMotion extends React.Component {
                 for(var i = 0; i < prevSharedElements.length && onAnimated; i++) {
                     var {name, mountedElement: mounted} = prevSharedElements[i];
                     onAnimated(name, null, mounted.ref, null, mounted.data);
-                }                
+                }
             }
             if (sharedElements.length !== 0)
                 this.setState({sharedElements});
@@ -54,7 +54,7 @@ class SharedElementMotion extends React.Component {
     }
     reset() {
         if (this.state.url !== this.getStateNavigator().stateContext.url)
-            this.setState(({force}) => ({animatedElements: {}, force: force + 1}));
+            this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
         else
             this.animate();
     }
@@ -66,10 +66,14 @@ class SharedElementMotion extends React.Component {
         return newStyle;
     }
     onAnimated(name, old, mounted) {
-        var {onAnimated = () => {}} = this.props;
-        var unmounted = old.url = this.getStateNavigator().stateContext.oldUrl;
-        onAnimated(name, !unmounted ? old.ref : null, mounted.ref, !unmounted ? old.data : null, mounted.data);
-        this.setState(({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}));        
+        this.setState(
+            ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
+            () => {
+                var {onAnimated = () => {}} = this.props;
+                var unmounted = old.url = this.getStateNavigator().stateContext.oldUrl;
+                onAnimated(name, !unmounted ? old.ref : null, mounted.ref, !unmounted ? old.data : null, mounted.data)
+            }
+        );
     }
     render() {
         var {children, elementStyle} = this.props;
