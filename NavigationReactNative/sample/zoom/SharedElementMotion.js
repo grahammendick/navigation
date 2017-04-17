@@ -23,15 +23,15 @@ class SharedElementMotion extends React.Component {
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.reset);
         this.animate();
-        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animatedId), 300);
+        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 300);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.reset);
-        cancelAnimationFrame(this.animatedId);
+        cancelAnimationFrame(this.animateFrame);
         clearTimeout(this.animateTimeout);
     }
     animate() {
-        this.animatedId = requestAnimationFrame(() => {
+        this.animateFrame = requestAnimationFrame(() => {
             if (this.state.url !== this.getStateNavigator().stateContext.url)
                 return;
             var sharedElements = this.context.getSharedElements();
@@ -51,10 +51,10 @@ class SharedElementMotion extends React.Component {
     reset() {
         if (this.state.url === this.getStateNavigator().stateContext.url) {
             this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
-            cancelAnimationFrame(this.animatedId);
+            cancelAnimationFrame(this.animateFrame);
             clearTimeout(this.animateTimeout);
             this.animate();
-            this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animatedId), 300);
+            this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 300);
         }
     }
     stripStyle(style) {
