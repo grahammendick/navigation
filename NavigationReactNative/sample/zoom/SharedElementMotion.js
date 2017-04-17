@@ -36,8 +36,6 @@ class SharedElementMotion extends React.Component {
     }
     animate() {
         this.animateFrame = requestAnimationFrame(() => {
-            if (this.state.url !== this.getStateNavigator().stateContext.url)
-                return;
             var sharedElements = this.context.getSharedElements();
             if (sharedElements.length !== 0) {
                 this.setState({sharedElements}, () => {
@@ -52,10 +50,10 @@ class SharedElementMotion extends React.Component {
         });
     }
     reset() {
+        cancelAnimationFrame(this.animateFrame);
+        clearTimeout(this.animateTimeout);
         if (this.state.url === this.getStateNavigator().stateContext.url) {
             this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
-            cancelAnimationFrame(this.animateFrame);
-            clearTimeout(this.animateTimeout);
             this.animate();
             this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 300);
         }
