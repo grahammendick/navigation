@@ -34,11 +34,10 @@ class SharedElementMotion extends React.Component {
             if (this.state.url !== this.getStateNavigator().stateContext.url)
                 return;
             var {onAnimating, onAnimated} = this.props;
-            var {animatedElements} = this.state;
             var sharedElements = this.context.getSharedElements();
             for(var i = 0; i < sharedElements.length && onAnimating; i++) {
                 var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-                if (!animatedElements[name])
+                if (!this.state.animatedElements[name])
                     onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
             }
             if (sharedElements.length !== 0)
