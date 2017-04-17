@@ -33,7 +33,7 @@ class SharedElementMotion extends React.Component {
         this.animatedId = requestAnimationFrame(() => {
             if (this.state.url !== this.getStateNavigator().stateContext.url)
                 return;
-            var {onAnimating, onAnimated} = this.props;
+            var {onAnimating} = this.props;
             var sharedElements = this.context.getSharedElements();
             for(var i = 0; i < sharedElements.length && onAnimating; i++) {
                 var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
