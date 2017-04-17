@@ -13,6 +13,10 @@ class SharedElementMotion extends React.Component {
             sharedElements: [], animatedElements: {}, force: 1,
         };
     }
+    static defaultProps = {
+        onAnimating: () => {},
+        onAnimated: () => {}
+    }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
         getSharedElements: React.PropTypes.func
@@ -37,11 +41,10 @@ class SharedElementMotion extends React.Component {
             var sharedElements = this.context.getSharedElements();
             if (sharedElements.length !== 0) {
                 this.setState({sharedElements}, () => {
-                    var {onAnimating} = this.props;
-                    for(var i = 0; i < sharedElements.length && onAnimating; i++) {
+                    for(var i = 0; i < sharedElements.length; i++) {
                         var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
                         if (!this.state.animatedElements[name])
-                            onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
+                            this.props.onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
                     }
                 });
             }
@@ -67,11 +70,7 @@ class SharedElementMotion extends React.Component {
     onAnimated(name, old, mounted) {
         this.setState(
             ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
-            () => {
-                var {onAnimated = () => {}} = this.props;
-                var unmounted = old.url = this.getStateNavigator().stateContext.oldUrl;
-                onAnimated(name, !unmounted ? old.ref : null, mounted.ref, !unmounted ? old.data : null, mounted.data)
-            }
+            () => {this.props.onAnimated(name, old.ref, mounted.ref, old.data, mounted.data)}
         );
     }
     render() {
