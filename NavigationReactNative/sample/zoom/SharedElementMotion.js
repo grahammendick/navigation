@@ -6,12 +6,11 @@ import spring from './spring';
 class SharedElementMotion extends React.Component {
     constructor(props, context) {
         super(props, context);
+        this.animate = this.animate.bind(this);
         this.reset = this.reset.bind(this);
         this.state = {
             url: this.getStateNavigator().stateContext.url,
-            sharedElements: this.context.getSharedElements(),
-            animatedElements: {},
-            force: 1,
+            sharedElements: [], animatedElements: {}, force: 1,
         };
     }
     static contextTypes = {
@@ -24,10 +23,12 @@ class SharedElementMotion extends React.Component {
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.reset);
         this.animate();
+        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animatedId), 300);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.reset);
-        cancelAnimationFrame(this.animateId);
+        cancelAnimationFrame(this.animatedId);
+        clearTimeout(this.animateTimeout);
     }
     animate() {
         this.animatedId = requestAnimationFrame(() => {
@@ -48,10 +49,13 @@ class SharedElementMotion extends React.Component {
         });
     }
     reset() {
-        if (this.state.url !== this.getStateNavigator().stateContext.url)
+        if (this.state.url === this.getStateNavigator().stateContext.url) {
             this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
-        else
+            cancelAnimationFrame(this.animatedId);
+            clearTimeout(this.animateTimeout);
             this.animate();
+            this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animatedId), 300);
+        }
     }
     stripStyle(style) {
         var newStyle = {};
