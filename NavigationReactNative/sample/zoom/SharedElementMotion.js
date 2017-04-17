@@ -58,21 +58,21 @@ class SharedElementMotion extends React.Component {
             this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 500);
         }
     }
-    stripStyle(style) {
-        var newStyle = {};
-        for(var key in style) {
-            newStyle[key] = style[key].val;
-        }
-        return newStyle;
-    }
     onAnimated(name, old, mounted) {
         this.setState(
             ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
             () => {this.props.onAnimated(name, old.ref, mounted.ref, old.data, mounted.data)}
         );
     }
+    getStyle(name, {measurements, data}, strip = false) {
+        var style = this.props.elementStyle(name, {...measurements, ...data});
+        var newStyle = {};
+        for(var key in style) {
+            newStyle[key] = !strip ? style[key] : style[key].val;
+        }
+        return newStyle;
+    }
     render() {
-        var {children, elementStyle} = this.props;
         var {url, sharedElements, animatedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
@@ -82,9 +82,9 @@ class SharedElementMotion extends React.Component {
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
                         key={name} onRest={() => {this.onAnimated(name, old, mounted)}}
-                        defaultStyle={{...this.stripStyle(elementStyle(name, {...old.measurements, ...old.data})), __force: 0}}
-                        style={{...elementStyle(name, {...mounted.measurements, ...mounted.data}), __force: spring(force)}}>
-                        {({__force, ...tweenStyle}) => children(tweenStyle, name, old.data, mounted.data)}
+                        defaultStyle={{...this.getStyle(name, old, true), __force: 0}}
+                        style={{...this.getStyle(name, mounted), __force: spring(force)}}>
+                        {({__force, ...tweenStyle}) => this.props.children(tweenStyle, name, old.data, mounted.data)}
                     </Motion>
                 ))}
             </Modal>
