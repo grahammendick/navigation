@@ -67,9 +67,8 @@ class SharedElementMotion extends React.Component {
     getStyle(name, {measurements, data}, strip = false) {
         var style = this.props.elementStyle(name, {...measurements, ...data});
         var newStyle = {};
-        for(var key in style) {
+        for(var key in style)
             newStyle[key] = !strip ? style[key] : style[key].val;
-        }
         return newStyle;
     }
     render() {

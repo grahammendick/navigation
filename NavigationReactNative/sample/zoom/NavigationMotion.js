@@ -99,9 +99,8 @@ class NavigationMotion extends React.Component {
     getStyle(styleProp, {state, data, url}, strip = false) {
         var style = typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
         var newStyle = {};
-        for(var key in style) {
-            newStyle[key] = (!strip || typeof style[key] === 'number') ? style[key] : style[key].val;
-        }
+        for(var key in style)
+            newStyle[key] = !strip ? style[key] : style[key].val;
         return newStyle;
     }
     render() {
