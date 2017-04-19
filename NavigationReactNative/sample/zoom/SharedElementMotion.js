@@ -19,6 +19,7 @@ class SharedElementMotion extends React.Component {
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
+        movedSharedElement: React.PropTypes.func,
         getSharedElements: React.PropTypes.func
     }
     getStateNavigator() {
@@ -61,10 +62,15 @@ class SharedElementMotion extends React.Component {
     onAnimated(name, old, mounted) {
         this.setState(
             ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
-            () => {this.props.onAnimated(name, old.ref, mounted.ref, old.data, mounted.data)}
+            () => {
+                this.context.movedSharedElement(this.state.url, name, null);
+                this.props.onAnimated(name, old.ref, mounted.ref, old.data, mounted.data)
+            }
         );
     }
-    getStyle(name, {measurements, data}, strip = false) {
+    getStyle(name, {measurements, data, style: defaultStyle}, strip = false) {
+        if (strip && defaultStyle)
+            return defaultStyle;
         var style = this.props.elementStyle(name, {...measurements, ...data});
         var newStyle = {};
         for(var key in style)
@@ -75,7 +81,8 @@ class SharedElementMotion extends React.Component {
         var {url, sharedElements, animatedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
-                transparent={true} animationType="none" onRequestClose={() => {}}
+                transparent={true} animationType="none"
+                onRequestClose={() => {this.getStateNavigator().navigateBack(1)}}
                 visible={sharedElements.length > Object.keys(animatedElements).length}
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
@@ -83,7 +90,10 @@ class SharedElementMotion extends React.Component {
                         key={name} onRest={() => {this.onAnimated(name, old, mounted)}}
                         defaultStyle={{...this.getStyle(name, old, true), __force: 0}}
                         style={{...this.getStyle(name, mounted), __force: spring(force)}}>
-                        {({__force, ...tweenStyle}) => this.props.children(tweenStyle, name, old.data, mounted.data)}
+                        {({__force, ...tweenStyle}) => {
+                            this.context.movedSharedElement(url, name, tweenStyle);
+                            return this.props.children(tweenStyle, name, old.data, mounted.data)
+                        }}
                     </Motion>
                 ))}
             </Modal>
