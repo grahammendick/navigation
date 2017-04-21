@@ -21,14 +21,14 @@ class NavigationMotion extends React.Component {
         registerSharedElement: React.PropTypes.func,
         unregisterSharedElement: React.PropTypes.func,
         movingSharedElement: React.PropTypes.func,
-        getSharedElements: React.PropTypes.func,
+        getSharedElements: React.PropTypes.func
     }
     getChildContext() {
         return {
             registerSharedElement: this.registerSharedElement,
             unregisterSharedElement: this.unregisterSharedElement,
             movingSharedElement: this.movingSharedElement,
-            getSharedElements: this.getSharedElements,
+            getSharedElements: this.getSharedElements
         };
     }
     getStateNavigator() {

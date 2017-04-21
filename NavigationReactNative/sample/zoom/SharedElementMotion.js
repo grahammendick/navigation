@@ -10,7 +10,7 @@ class SharedElementMotion extends React.Component {
         this.reset = this.reset.bind(this);
         this.state = {
             url: this.getStateNavigator().stateContext.url,
-            sharedElements: [], animatedElements: {}, force: 1,
+            sharedElements: [], animatedElements: {}, force: 1
         };
     }
     static defaultProps = {
