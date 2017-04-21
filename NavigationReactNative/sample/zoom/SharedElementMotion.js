@@ -39,9 +39,9 @@ class SharedElementMotion extends React.Component {
         this.animateFrame = requestAnimationFrame(() => {
             var sharedElements = this.context.getSharedElements();
             if (sharedElements.length !== 0) {
-                this.setState({ sharedElements }, () => {
+                this.setState({sharedElements}, () => {
                     for (var i = 0; i < sharedElements.length; i++) {
-                        var { name, oldElement: old, mountedElement: mounted } = sharedElements[i];
+                        var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
                         if (!this.state.animatedElements[name])
                             this.props.onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
                     }
@@ -54,45 +54,45 @@ class SharedElementMotion extends React.Component {
         cancelAnimationFrame(this.animateFrame);
         clearTimeout(this.animateTimeout);
         if (this.state.url === this.getStateNavigator().stateContext.url) {
-            this.setState(({ force }) => ({ sharedElements: [], animatedElements: {}, force: force + 1 }));
+            this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
             this.animate();
             this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 500);
         }
     }
     onAnimated(name, mounted) {
         this.setState(
-            ({ animatedElements }) => ({ animatedElements: { ...animatedElements, [name]: true } }),
+            ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
             () => {
                 var sharedElements = this.context.getSharedElements();
-                var { oldElement: old } = sharedElements.filter(element => element.name === name)[0] || {};
+                var {oldElement: old} = sharedElements.filter(element => element.name === name)[0] || {};
                 this.context.movingSharedElement(this.state.url, name, null);
                 this.props.onAnimated(name, old && old.ref, mounted.ref, old && old.data, mounted.data)
             }
         );
     }
-    getStyle(name, { measurements, data, style: defaultStyle }, strip = false) {
+    getStyle(name, {measurements, data, style: defaultStyle}, strip = false) {
         if (strip && defaultStyle)
             return defaultStyle;
-        var style = this.props.elementStyle(name, { ...measurements, ...data });
+        var style = this.props.elementStyle(name, {...measurements, ...data});
         var newStyle = {};
         for (var key in style)
             newStyle[key] = !strip ? style[key] : style[key].val;
         return newStyle;
     }
     render() {
-        var { url, sharedElements, animatedElements, force } = this.state;
+        var {url, sharedElements, animatedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
                 transparent={true} animationType="none"
                 onRequestClose={() => {this.getStateNavigator().navigateBack(1)}}
                 visible={sharedElements.length > Object.keys(animatedElements).length}
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
-                {sharedElements.map(({ name, oldElement: old, mountedElement: mounted }) => (
+                {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Motion
-                        key={name} onRest={() => { this.onAnimated(name, mounted) }}
-                        defaultStyle={{ ...this.getStyle(name, old, true), __force: 0 }}
-                        style={{ ...this.getStyle(name, mounted), __force: spring(force) }}>
-                        {({ __force, ...tweenStyle }) => {
+                        key={name} onRest={() => {this.onAnimated(name, mounted)}}
+                        defaultStyle={{...this.getStyle(name, old, true), __force: 0}}
+                        style={{...this.getStyle(name, mounted), __force: spring(force)}}>
+                        {({__force, ...tweenStyle}) => {
                             this.context.movingSharedElement(url, name, tweenStyle);
                             return this.props.children(tweenStyle, name, old.data, mounted.data)
                         }}
