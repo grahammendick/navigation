@@ -64,7 +64,7 @@ class SharedElementMotion extends React.Component {
             ({ animatedElements }) => ({ animatedElements: { ...animatedElements, [name]: true } }),
             () => {
                 var sharedElements = this.context.getSharedElements();
-                var { old } = sharedElements.filter(element => element.name === name) || {};
+                var { oldElement: old } = sharedElements.filter(element => element.name === name)[0] || {};
                 this.context.movingSharedElement(this.state.url, name, null);
                 this.props.onAnimated(name, old && old.ref, mounted.ref, old && old.data, mounted.data)
             }
