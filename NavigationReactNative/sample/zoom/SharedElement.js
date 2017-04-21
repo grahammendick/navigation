@@ -9,7 +9,8 @@ class SharedElement extends React.Component {
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
-        registerSharedElement: React.PropTypes.func
+        registerSharedElement: React.PropTypes.func,
+        unregisterSharedElement: React.PropTypes.func
     }
     getStateNavigator() {
         return this.props.stateNavigator || this.context.stateNavigator;
@@ -19,6 +20,7 @@ class SharedElement extends React.Component {
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.register);
+        this.context.unregisterSharedElement(this.state.url, this.props.name);
     }
     register() {
         var {url} = this.state;
