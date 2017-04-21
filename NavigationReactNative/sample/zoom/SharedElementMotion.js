@@ -14,8 +14,8 @@ class SharedElementMotion extends React.Component {
         };
     }
     static defaultProps = {
-        onAnimating: () => { },
-        onAnimated: () => { }
+        onAnimating: () => {},
+        onAnimated: () => {}
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
