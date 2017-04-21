@@ -59,12 +59,14 @@ class SharedElementMotion extends React.Component {
             this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 500);
         }
     }
-    onAnimated(name, old, mounted) {
+    onAnimated(name, mounted) {
         this.setState(
             ({ animatedElements }) => ({ animatedElements: { ...animatedElements, [name]: true } }),
             () => {
+                var sharedElements = this.context.getSharedElements();
+                var { old } = sharedElements.filter(element => element.name === name) || {};
                 this.context.movingSharedElement(this.state.url, name, null);
-                this.props.onAnimated(name, old.ref, mounted.ref, old.data, mounted.data)
+                this.props.onAnimated(name, old && old.ref, mounted.ref, old && old.data, mounted.data)
             }
         );
     }
@@ -87,7 +89,7 @@ class SharedElementMotion extends React.Component {
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
                 {sharedElements.map(({ name, oldElement: old, mountedElement: mounted }) => (
                     <Motion
-                        key={name} onRest={() => { this.onAnimated(name, old, mounted) }}
+                        key={name} onRest={() => { this.onAnimated(name, mounted) }}
                         defaultStyle={{ ...this.getStyle(name, old, true), __force: 0 }}
                         style={{ ...this.getStyle(name, mounted), __force: spring(force) }}>
                         {({ __force, ...tweenStyle }) => {
