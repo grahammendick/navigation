@@ -148,8 +148,11 @@ describe('Navigation', function () {
         function test() {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.url, '/r1');
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -186,7 +189,9 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
             });
         }
@@ -406,7 +411,9 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r1');
                 assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -534,7 +541,9 @@ describe('Navigation', function () {
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s2']);
+                assert.equal(stateNavigator.stateContext.oldUrl, '/r2?crumb=%2Fr0&crumb=%2Fr1');
                 assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s0']);
+                assert.equal(stateNavigator.stateContext.previousUrl, '/r0');
                 assert.equal(stateNavigator.stateContext.crumbs.length, 1);
                 assert.equal(stateNavigator.stateContext.crumbs[0].state, stateNavigator.states['s0']);
                 assert.ok(stateNavigator.stateContext.crumbs[0].last);
@@ -689,6 +698,7 @@ describe('Navigation', function () {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
                 assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s4']);
                 assert.equal(stateNavigator.stateContext.previousState, null);
+                assert.equal(stateNavigator.stateContext.previousUrl, null);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
