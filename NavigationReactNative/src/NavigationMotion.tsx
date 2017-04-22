@@ -5,6 +5,9 @@ import { View } from 'react-native';
 
 class NavigationMotion extends React.Component<any, any> {
     private sharedElements = {};
+    context: {
+        stateNavigator: StateNavigator
+    }
     constructor(props, context) {
         super(props, context);
         this.onNavigate = this.onNavigate.bind(this);
@@ -32,7 +35,7 @@ class NavigationMotion extends React.Component<any, any> {
         };
     }
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || (this.context as any).stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
         var stateNavigator = this.getStateNavigator();

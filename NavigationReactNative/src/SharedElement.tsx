@@ -4,6 +4,11 @@ import { View } from 'react-native';
 
 class SharedElement extends React.Component<any, any> {
     private ref: Element;
+    context: {
+        stateNavigator: StateNavigator,
+        registerSharedElement: (url, name, ref, measurements, data) => void,
+        unregisterSharedElement: (url, name) => void
+    }
     constructor(props, context) {
         super(props, context);
         this.state = {url: this.getStateNavigator().stateContext.url};
@@ -15,14 +20,14 @@ class SharedElement extends React.Component<any, any> {
         unregisterSharedElement: React.PropTypes.func
     }
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || (this.context as any).stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.register);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.register);
-        (this.context as any).unregisterSharedElement(this.state.url, this.props.name);
+        this.context.unregisterSharedElement(this.state.url, this.props.name);
     }
     register() {
         var {url} = this.state;
@@ -31,10 +36,10 @@ class SharedElement extends React.Component<any, any> {
             var {unshare, name, data} = this.props;
             if (!unshare) {
                 (this.ref as any).measure((ox, oy, w, h, x, y) => {
-                    (this.context as any).registerSharedElement(url, name, this.ref, {w, h, x, y}, data);
+                    this.context.registerSharedElement(url, name, this.ref, {w, h, x, y}, data);
                 });
             } else {
-                (this.context as any).unregisterSharedElement(url, name);                
+                this.context.unregisterSharedElement(url, name);
             }
         }
     }

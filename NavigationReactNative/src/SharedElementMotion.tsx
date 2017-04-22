@@ -7,6 +7,11 @@ import spring from './spring';
 class SharedElementMotion extends React.Component<any, any> {
     private animateTimeout: number;
     private animateFrame: number;
+    context: {
+        stateNavigator: StateNavigator,
+        movingSharedElement: (url, name, style) => void,
+        getSharedElements: () => [any]
+    }
     constructor(props, context) {
         super(props, context);
         this.animate = this.animate.bind(this);
@@ -26,7 +31,7 @@ class SharedElementMotion extends React.Component<any, any> {
         getSharedElements: React.PropTypes.func
     }
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || (this.context as any).stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.reset);
@@ -40,7 +45,7 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     animate() {
         this.animateFrame = requestAnimationFrame(() => {
-            var sharedElements = (this.context as any).getSharedElements();
+            var sharedElements = this.context.getSharedElements();
             if (sharedElements.length !== 0) {
                 this.setState({sharedElements}, () => {
                     for (var i = 0; i < sharedElements.length; i++) {
@@ -66,9 +71,9 @@ class SharedElementMotion extends React.Component<any, any> {
         this.setState(
             ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
             () => {
-                var sharedElements = (this.context as any).getSharedElements();
+                var sharedElements = this.context.getSharedElements();
                 var {oldElement: old = undefined} = sharedElements.filter(element => element.name === name)[0] || {};
-                (this.context as any).movingSharedElement(this.state.url, name, null);
+                this.context.movingSharedElement(this.state.url, name, null);
                 this.props.onAnimated(name, old && old.ref, mounted.ref, old && old.data, mounted.data)
             }
         );
@@ -96,7 +101,7 @@ class SharedElementMotion extends React.Component<any, any> {
                         defaultStyle={{...this.getStyle(name, old, true), __force: 0}}
                         style={{...this.getStyle(name, mounted), __force: spring(force)}}>
                         {({__force, ...tweenStyle}) => {
-                            (this.context as any).movingSharedElement(url, name, tweenStyle);
+                            this.context.movingSharedElement(url, name, tweenStyle);
                             return this.props.children(tweenStyle, name, old.data, mounted.data)
                         }}
                     </Motion>
