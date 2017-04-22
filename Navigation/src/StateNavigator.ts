@@ -39,6 +39,7 @@ class StateNavigator {
     private setStateContext(state: State, data: any, url: string) {
         this.stateContext.oldState = this.stateContext.state;
         this.stateContext.oldData = this.stateContext.data;
+        this.stateContext.oldUrl = this.stateContext.url;
         this.stateContext.state = state;
         this.stateContext.url = url;
         this.stateContext.title = state.title;
@@ -48,10 +49,12 @@ class StateNavigator {
         this.stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
         this.stateContext.previousState = null;
         this.stateContext.previousData = {};
+        this.stateContext.previousUrl = null;
         if (this.stateContext.crumbs.length > 0) {
             var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
             this.stateContext.previousState = previousStateCrumb.state;
             this.stateContext.previousData = previousStateCrumb.data;
+            this.stateContext.previousUrl = previousStateCrumb.url;
         }
     }
     
