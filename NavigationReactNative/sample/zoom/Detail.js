@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import NavigationBackAndroid from './NavigationBackAndroid';
-import SharedElement from './SharedElement';
+import {NavigationBackAndroid, SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
 export default ({color, stateNavigator}) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
-import SharedElement from './SharedElement';
+import {SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
 const colors = [

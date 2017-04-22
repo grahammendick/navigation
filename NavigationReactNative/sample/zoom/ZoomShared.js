@@ -1,7 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import SharedElementMotion from './SharedElementMotion';
-import spring from './spring';
+import {SharedElementMotion, spring} from 'navigation-react-native';
 
 const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
   x: spring(x, {precision: 10}),
