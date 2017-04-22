@@ -10,7 +10,7 @@ class SharedElementMotion extends React.Component<any, any> {
     context: {
         stateNavigator: StateNavigator,
         movingSharedElement: (url, name, style) => void,
-        getSharedElements: () => [any]
+        getSharedElements: () => any[]
     }
     constructor(props, context) {
         super(props, context);
