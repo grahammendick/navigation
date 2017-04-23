@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-import { TransitionMotion } from 'react-motion';
+var Transition = require('react-move').Transition;
 import { View } from 'react-native';
 
 class NavigationMotion extends React.Component<any, any> {
@@ -113,32 +113,27 @@ class NavigationMotion extends React.Component<any, any> {
         return {...data, ...(scene && scene.data)};
     }
     getStyle(styleProp, {state, data, url}, strip = false) {
-        var style = typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
-        var newStyle: any = {};
-        for(var key in style)
-            newStyle[key] = !strip ? style[key] : style[key].val;
-        return newStyle;
+        return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
         return (this.getStateNavigator().stateContext.state &&
-            <TransitionMotion
-                willEnter={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext, true)}
-                willLeave={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext)}
-                didLeave={({data: sceneContext}) => {this.clearScene(sceneContext.url)}}
-                styles={this.getScenes().map(({mount, ...sceneContext}) => ({
-                    key: sceneContext.url,
-                    data: sceneContext,
-                    style: this.getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
-                }))}>
+            <Transition
+                duration={300} easing="easeLinear"
+                data={this.getScenes()}
+                getKey={sceneContext => sceneContext.url}
+                enter={sceneContext => this.getStyle(unmountedStyle, sceneContext, true)}
+                leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
+                // didLeave={({data: sceneContext}) => {this.clearScene(sceneContext.url)}}
+                update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}>
                 {tweenStyles => (
                     <View style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data, url}, style}) => (
+                        {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
                     </View>
                 )}
-            </TransitionMotion>
+            </Transition>
         );
     }
 }
