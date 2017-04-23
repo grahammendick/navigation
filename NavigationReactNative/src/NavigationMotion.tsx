@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-var Transition = require('react-move').Transition;
+import { Transition } from 'react-move';
 import { View } from 'react-native';
 
 class NavigationMotion extends React.Component<any, any> {
