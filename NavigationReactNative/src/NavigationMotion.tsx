@@ -116,8 +116,8 @@ class NavigationMotion extends React.Component<any, any> {
             {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
         ));
     }
-    getSceneData(data, url, prevState?) {
-        var scene = (prevState || this.state.scenes)[url];
+    getSceneData(data, url, prevScenes?) {
+        var scene = (prevScenes || this.state.scenes)[url];
         return {...data, ...(scene && scene.data)};
     }
     getStyle(styleProp, {state, data, url}, strip = false) {
