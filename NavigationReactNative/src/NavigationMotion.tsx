@@ -94,11 +94,19 @@ class NavigationMotion extends React.Component<any, any> {
         }
         return sharedElements;
     }
-    clearScene(url) {
-        this.setState(prevState => {
-            var scenes = {...prevState.scenes};
-            delete scenes[url];
-            delete this.sharedElements[url];
+    clearScenes() {
+        this.setState(({scenes: prevScenes}) => {
+            var scenes = {...prevScenes};
+            var urls = this.getScenes().reduce((urls, {url}) => {
+                urls[url] = true;
+                return urls;
+            }, {});
+            for(var url in prevScenes) {
+                if (!urls[url]) {
+                    delete scenes[url];
+                    delete this.sharedElements[url];
+                }
+            }
             return {scenes};
         });
     }
@@ -124,7 +132,7 @@ class NavigationMotion extends React.Component<any, any> {
                 getKey={sceneContext => sceneContext.url}
                 enter={sceneContext => this.getStyle(unmountedStyle, sceneContext, true)}
                 leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
-                // didLeave={({data: sceneContext}) => {this.clearScene(sceneContext.url)}}
+                onRest={() => this.clearScenes()}
                 update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}>
                 {tweenStyles => (
                     <View style={style}>
