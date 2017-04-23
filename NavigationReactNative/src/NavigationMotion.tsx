@@ -131,9 +131,9 @@ class NavigationMotion extends React.Component<any, any> {
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
                 enter={sceneContext => this.getStyle(unmountedStyle, sceneContext, true)}
+                update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}
                 leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
-                onRest={() => this.clearScenes()}
-                update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}>
+                onRest={() => this.clearScenes()}>
                 {tweenStyles => (
                     <View style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
