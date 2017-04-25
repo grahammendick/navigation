@@ -2,18 +2,9 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {SharedElementMotion} from 'navigation-react-native';
 
-const getStyle = ({x, y, w, h, fontSize = 0, fontColor = 0}) => ({
-  x,
-  y,
-  w,
-  h,
-  fontSize,
-  fontColor,
-});
-
 export default ({stateNavigator}) => (
   <SharedElementMotion
-    elementStyle={(name, data) => getStyle(data)}
+    elementStyle={(name, data) => data}
     onAnimating={(name, oldRef, mountedRef, oldData, mountedData) => {
       mountedData.hide && mountedRef.setNativeProps({style:{opacity: 0}})
     }}
