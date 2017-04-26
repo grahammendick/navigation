@@ -2,7 +2,6 @@ import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Animate } from 'react-move';
 import { Modal } from 'react-native';
-import spring from './spring';
 
 class SharedElementMotion extends React.Component<any, any> {
     private animateTimeout: number;
