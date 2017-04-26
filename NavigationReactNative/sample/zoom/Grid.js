@@ -35,7 +35,7 @@ export default ({stateNavigator}) => {
                 <View>
                   <SharedElement
                     name={`text${color}`}
-                    data={{color, fontSize: 20, fontColor: 255}}
+                    data={{color, fontSize: 20, fontColor: '#fff'}}
                     stateNavigator={stateNavigator}>
                     <Text style={styles.text}>{color}</Text>
                   </SharedElement>

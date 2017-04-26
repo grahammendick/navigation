@@ -30,7 +30,7 @@ export default ({stateNavigator}) => (
           fontSize,
           textAlign: 'center',
           fontWeight: 'bold',
-          color: `rgb(${fontColor},${fontColor},${fontColor})`,
+          color: fontColor,
           zIndex: 1,
         }}>
           {color}
