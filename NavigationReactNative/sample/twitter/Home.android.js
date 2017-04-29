@@ -14,11 +14,13 @@ export default class Home extends React.Component {
   }
   render() {
     const {tweets, follows, stateNavigator} = this.props;
-    <ScrollableTabView
-      prerenderingSiblingsNumber={1}
-      renderTabBar={() => <TabBar stateNavigator={stateNavigator} />}>
-      <Tweets tweets={tweets} stateNavigator={stateNavigator} tabLabel="Timeline" />
-      <Follows follows={follows} stateNavigator={stateNavigator} tabLabel="Notification" />
-    </ScrollableTabView>
+    return (
+      <ScrollableTabView
+        prerenderingSiblingsNumber={1}
+        renderTabBar={() => <TabBar stateNavigator={stateNavigator} />}>
+        <Tweets tweets={tweets} stateNavigator={stateNavigator} tabLabel="Timeline" />
+        <Follows follows={follows} stateNavigator={stateNavigator} tabLabel="Notification" />
+      </ScrollableTabView>
+    );
   }
 };
