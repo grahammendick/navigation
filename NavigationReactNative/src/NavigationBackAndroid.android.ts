@@ -3,9 +3,10 @@ import * as React from 'react';
 import { BackAndroid } from 'react-native';
 
 class NavigationBackAndroid extends React.Component<any, any> {
+    private url: string;
     private onBack = () => {
         var stateNavigator = this.getStateNavigator();
-        if (this.state.url === stateNavigator.stateContext.url) {
+        if (this.url === stateNavigator.stateContext.url) {
             var listener = this.props.navigating;
             var navigate = true;
             if (listener)
@@ -19,7 +20,7 @@ class NavigationBackAndroid extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = {url: this.getStateNavigator().stateContext.url};
+        this.url = this.getStateNavigator().stateContext.url;
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
