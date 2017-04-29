@@ -5,7 +5,7 @@ import {NavigationMotion} from 'navigation-react-native';
 export default ({stateNavigator, startStateKey, visible}) => (
   <NavigationMotion
     startStateKey={startStateKey}
-    unmountedStyle={state => ({translate: state.key !== 'home' ? 1 : 0, scale: 1, opacity: 1})}
+    unmountedStyle={state => ({translate: 1, scale: 1, opacity: 1})}
     mountedStyle={{translate: 0, scale: 1, opacity: 1}}
     crumbStyle={{translate: 0.05, scale: 0.9, opacity: 0}}
     style={{flex: +visible, backgroundColor: 'black'}}

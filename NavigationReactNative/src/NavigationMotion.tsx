@@ -125,12 +125,13 @@ class NavigationMotion extends React.Component<any, any> {
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
-        return (this.getStateNavigator().stateContext.state &&
+        var {stateContext} = this.getStateNavigator();
+        return (stateContext.state &&
             <Transition
                 duration={!this.state.move ? 300 : 50} easing="easeLinear"
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
-                enter={sceneContext => this.getStyle(unmountedStyle, sceneContext, true)}
+                enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext, true)}
                 update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}
                 leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
                 onRest={() => this.clearScenes()}>
