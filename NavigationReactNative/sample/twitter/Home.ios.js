@@ -2,16 +2,28 @@ import React from 'react';
 import {StyleSheet, Text, ScrollView, View} from 'react-native';
 import Tweets from './Tweets';
 
-export default ({tweets, stateNavigator}) => (
-  <View style={{flex: 1}}>
-    <View style={styles.banner}>
-      <Text style={styles.title}>Home</Text>
-    </View>
-    <ScrollView style={styles.view}>
-      <Tweets tweets={tweets} stateNavigator={stateNavigator} />
-    </ScrollView>
-  </View>
-);
+export default class Home extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.url = props.stateNavigator.stateContext.url;
+  }
+  shouldComponentUpdate(props) {
+    return this.url === props.stateNavigator.stateContext.url;
+  }
+  render() {
+    const {tweets, stateNavigator} = this.props;
+    return (
+      <View style={{flex: 1}}>
+        <View style={styles.banner}>
+          <Text style={styles.title}>Home</Text>
+        </View>
+        <ScrollView style={styles.view}>
+          <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+        </ScrollView>
+      </View>
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   banner: {

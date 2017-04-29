@@ -4,35 +4,47 @@ import {NavigationBackAndroid} from 'navigation-react-native';
 import Banner from './Banner';
 import Tweets from './Tweets';
 
-export default ({timeline: {id, name, username, logo, bio, 
-  followers, following, tweets}, stateNavigator}) => (
-  <View style={{flex: 1}}>
-    <NavigationBackAndroid stateNavigator={stateNavigator} />
-    <Banner title={name} stateNavigator={stateNavigator} />
-    <ScrollView ref={el => {if (el) this.scrollView = el}} style={styles.view}>
-      <View>
-        <Image style={styles.logo} source={logo} />
-        <Text style={styles.name}>{name}</Text>
-        <Text>{username}</Text>
-        <Text style={styles.bio}>{bio}</Text>
+export default class Timeline extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.url = props.stateNavigator.stateContext.url;
+  }
+  shouldComponentUpdate(props) {
+    return this.url === props.stateNavigator.stateContext.url;
+  }
+  render() {
+    const {timeline: {id, name, username, logo, bio, 
+      followers, following, tweets}, stateNavigator} = this.props;
+    return (
+      <View style={{flex: 1}}>
+        <NavigationBackAndroid stateNavigator={stateNavigator} />
+        <Banner title={name} stateNavigator={stateNavigator} />
+        <ScrollView ref={el => {if (el) this.scrollView = el}} style={styles.view}>
+          <View>
+            <Image style={styles.logo} source={logo} />
+            <Text style={styles.name}>{name}</Text>
+            <Text>{username}</Text>
+            <Text style={styles.bio}>{bio}</Text>
+          </View>
+          <View style={styles.interactions}>
+            <Text style={styles.count}>{following.toLocaleString()}</Text>
+            <Text style={styles.interaction}>FOLLOWING</Text>
+            <Text style={styles.count}>{followers.toLocaleString()}</Text>
+            <Text style={styles.interaction}>FOLLOWERS</Text>
+          </View>
+          <Tweets
+            tweets={tweets}
+            onTimeline={accountId => {
+              if (accountId === id)
+                this.scrollView.scrollTo({y: 0});
+              return accountId !== id;
+            }}
+            stateNavigator={stateNavigator} />
+        </ScrollView>
       </View>
-      <View style={styles.interactions}>
-        <Text style={styles.count}>{following.toLocaleString()}</Text>
-        <Text style={styles.interaction}>FOLLOWING</Text>
-        <Text style={styles.count}>{followers.toLocaleString()}</Text>
-        <Text style={styles.interaction}>FOLLOWERS</Text>
-      </View>
-      <Tweets
-        tweets={tweets}
-        onTimeline={accountId => {
-          if (accountId === id)
-            this.scrollView.scrollTo({y: 0});
-          return accountId !== id;
-        }}
-        stateNavigator={stateNavigator} />
-    </ScrollView>
-  </View>
-);
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   view: {
