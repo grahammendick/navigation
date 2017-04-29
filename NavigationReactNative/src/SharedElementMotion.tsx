@@ -77,9 +77,9 @@ class SharedElementMotion extends React.Component<any, any> {
             }
         );
     }
-    getStyle(name, {measurements, data, style: defaultStyle}, strip = false) {
-        if (strip && defaultStyle)
-            return defaultStyle;
+    getStyle(name, {measurements, data, style}, start = false) {
+        if (start && style)
+            return style;
         return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
