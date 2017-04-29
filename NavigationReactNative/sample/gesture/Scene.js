@@ -5,12 +5,18 @@ import {NavigationBackAndroid, spring} from 'navigation-react-native';
 export default class Next extends React.Component {
   constructor(props) {
     super(props);
+    const {url, crumbs} = props.stateNavigator.stateContext;
+    this.url = url;
+    this.crumbs = crumbs;
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
       onPanResponderTerminate: this.handlePanResponderEnd.bind(this),
     });
+  }
+  shouldComponentUpdate(props) {
+    return this.url === props.stateNavigator.stateContext.url;
   }
   handleMoveShouldSetPanResponder(e, gestureState) {
     var {stateNavigator} = this.props; 
@@ -29,11 +35,10 @@ export default class Next extends React.Component {
   }
   render() {
     const {stateNavigator} = this.props;
-    const {url, crumbs} = stateNavigator.stateContext;
     return (
       <View
         style={[
-          {backgroundColor: crumbs.length % 2 === 0 ? '#036' : '#f36207'},
+          {backgroundColor: this.crumbs.length % 2 === 0 ? '#036' : '#f36207'},
           styles.scene
         ]}
         {...this.panResponder.panHandlers}
@@ -42,10 +47,10 @@ export default class Next extends React.Component {
         <TouchableHighlight
           underlayColor="transparent"
           onPress={() => {
-            if (url === stateNavigator.stateContext.url)
+            if (this.url === stateNavigator.stateContext.url)
               stateNavigator.navigate('scene');
         }}>
-          <Text style={styles.text}>Scene {crumbs.length}</Text>
+          <Text style={styles.text}>Scene {this.crumbs.length}</Text>
         </TouchableHighlight>
       </View>
     )
