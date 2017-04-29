@@ -15,7 +15,7 @@ class NavigationMotion extends React.Component<any, any> {
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
         this.movingSharedElement = this.movingSharedElement.bind(this);
         this.getSharedElements = this.getSharedElements.bind(this);
-        this.state = {scenes: {}};
+        this.state = {scenes: {}, move: false};
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
@@ -55,7 +55,7 @@ class NavigationMotion extends React.Component<any, any> {
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes};
+            return {scenes, move: false};
         });
     }
     moveScene(url) {
@@ -63,7 +63,7 @@ class NavigationMotion extends React.Component<any, any> {
             this.setState(({scenes: prevScenes}) => {
                 var scenes = {...prevScenes};
                 scenes[url] = {...scenes[url], data};
-                return {scenes};
+                return {scenes, move: !!data};
             });
         };
     }
@@ -127,7 +127,7 @@ class NavigationMotion extends React.Component<any, any> {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
         return (this.getStateNavigator().stateContext.state &&
             <Transition
-                duration={300} easing="easeLinear"
+                duration={!this.state.move ? 300 : 50} easing="easeLinear"
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
                 enter={sceneContext => this.getStyle(unmountedStyle, sceneContext, true)}
