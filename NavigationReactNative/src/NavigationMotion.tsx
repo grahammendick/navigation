@@ -120,7 +120,7 @@ class NavigationMotion extends React.Component<any, any> {
         var scene = (prevScenes || this.state.scenes)[url];
         return {...data, ...(scene && scene.data)};
     }
-    getStyle(styleProp, {state, data, url}, strip = false) {
+    getStyle(styleProp, {state, data, url}) {
         return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
     }
     render() {
@@ -131,7 +131,7 @@ class NavigationMotion extends React.Component<any, any> {
                 duration={!this.state.move ? 300 : 50} easing="easeLinear"
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
-                enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext, true)}
+                enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext)}
                 update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}
                 leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
                 onRest={() => this.clearScenes()}>
