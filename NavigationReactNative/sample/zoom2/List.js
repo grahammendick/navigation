@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   priceLabel: {
     position: 'absolute',
     left: 0,
-    bottom: 10,
+    bottom: 25,
     backgroundColor: 'rgba(0, 0, 0, .75)',
     paddingVertical: 7.5,
     paddingHorizontal: 10,
