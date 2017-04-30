@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, ListView, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View, ListView, Image, Text, TouchableWithoutFeedback, Dimensions} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
@@ -23,10 +23,10 @@ export default class List extends React.Component {
       <TouchableWithoutFeedback
         key={sectionId + rowId}
         onPress={this._onListItemPress.bind(this, rowData, sectionId, rowId)}>
-        <View style={[styles.listItem, rowStyle]}>
+        <View style={styles.listItem}>
           <View style={styles.listImage}>
             <Image
-              source={{ uri: rowData.image }}
+              source={rowData.image}
               style={{ flex: 1 }}
             />
           </View>
