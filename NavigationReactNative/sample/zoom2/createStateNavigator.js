@@ -2,6 +2,7 @@ import React from 'react';
 import {StateNavigator} from 'navigation';
 import List from './List';
 import Detail from './Detail';
+import places from './data';
 
 export default () => {
   const stateNavigator = new StateNavigator([
@@ -10,8 +11,8 @@ export default () => {
   ]);
 
   const { list, detail } = stateNavigator.states;
-  list.renderScene = data => <List stateNavigator={stateNavigator}/>;
-  detail.renderScene = data => <Detail {...data} stateNavigator={stateNavigator}/>;
+  list.renderScene = data => <List places={places} stateNavigator={stateNavigator}/>;
+  detail.renderScene = ({index}) => <Detail places={places[index]} stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }
