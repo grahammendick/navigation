@@ -17,6 +17,10 @@ class NavigationMotion extends React.Component<any, any> {
         this.getSharedElements = this.getSharedElements.bind(this);
         this.state = {scenes: {}, move: false};
     }
+    static defaultProps = {
+        duration: 300,
+        easing: 'easeLinear'
+    }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
     }
@@ -124,11 +128,11 @@ class NavigationMotion extends React.Component<any, any> {
         return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
     }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
+        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing} = this.props;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Transition
-                duration={!this.state.move ? 300 : 50} easing="easeLinear"
+                duration={!this.state.move ? duration : 50} easing={easing}
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
                 enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext)}

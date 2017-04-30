@@ -22,7 +22,9 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     static defaultProps = {
         onAnimating: () => {},
-        onAnimated: () => {}
+        onAnimated: () => {},
+        duration: 300,
+        easing: 'easeLinear'
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
@@ -83,6 +85,7 @@ class SharedElementMotion extends React.Component<any, any> {
         return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
+        var {duration, easing} = this.props;
         var {url, sharedElements, animatedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
@@ -93,7 +96,7 @@ class SharedElementMotion extends React.Component<any, any> {
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Animate
                         key={name}
-                        duration={300} easing="easeLinear" immutable={false}
+                        duration={duration} easing={easing} immutable={false}
                         data={{...this.getStyle(name, mounted), __force: force}}
                         default={{...this.getStyle(name, old, true), __force: 0}}
                         onRest={() => {this.onAnimated(name, mounted)}}>
