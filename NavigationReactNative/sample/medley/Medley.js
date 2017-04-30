@@ -10,7 +10,7 @@ export default ({stateNavigator}) => (
     crumbStyle={state => state.crumbStyle()}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
-    {({translateX  = 0, translateY = 0}, scene, url) => (
+    {({translateX = 0, translateY = 0}, scene, url) => (
       <View
         key={url}
         style={{

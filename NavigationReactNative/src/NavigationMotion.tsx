@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-import { TransitionMotion } from 'react-motion';
+import { Transition } from 'react-move';
 import { View } from 'react-native';
 
 class NavigationMotion extends React.Component<any, any> {
@@ -15,7 +15,11 @@ class NavigationMotion extends React.Component<any, any> {
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
         this.movingSharedElement = this.movingSharedElement.bind(this);
         this.getSharedElements = this.getSharedElements.bind(this);
-        this.state = {scenes: {}};
+        this.state = {scenes: {}, move: false};
+    }
+    static defaultProps = {
+        duration: 300,
+        easing: 'easeLinear'
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object
@@ -55,7 +59,7 @@ class NavigationMotion extends React.Component<any, any> {
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes};
+            return {scenes, move: false};
         });
     }
     moveScene(url) {
@@ -63,7 +67,7 @@ class NavigationMotion extends React.Component<any, any> {
             this.setState(({scenes: prevScenes}) => {
                 var scenes = {...prevScenes};
                 scenes[url] = {...scenes[url], data};
-                return {scenes};
+                return {scenes, move: !!data};
             });
         };
     }
@@ -94,11 +98,19 @@ class NavigationMotion extends React.Component<any, any> {
         }
         return sharedElements;
     }
-    clearScene(url) {
-        this.setState(prevState => {
-            var scenes = {...prevState.scenes};
-            delete scenes[url];
-            delete this.sharedElements[url];
+    clearScenes() {
+        this.setState(({scenes: prevScenes}) => {
+            var scenes = {...prevScenes};
+            var urls = this.getScenes().reduce((urls, {url}) => {
+                urls[url] = true;
+                return urls;
+            }, {});
+            for(var url in prevScenes) {
+                if (!urls[url]) {
+                    delete scenes[url];
+                    delete this.sharedElements[url];
+                }
+            }
             return {scenes};
         });
     }
@@ -108,37 +120,33 @@ class NavigationMotion extends React.Component<any, any> {
             {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
         ));
     }
-    getSceneData(data, url, prevState?) {
-        var scene = (prevState || this.state.scenes)[url];
+    getSceneData(data, url, prevScenes?) {
+        var scene = (prevScenes || this.state.scenes)[url];
         return {...data, ...(scene && scene.data)};
     }
-    getStyle(styleProp, {state, data, url}, strip = false) {
-        var style = typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
-        var newStyle: any = {};
-        for(var key in style)
-            newStyle[key] = !strip ? style[key] : style[key].val;
-        return newStyle;
+    getStyle(styleProp, {state, data, url}) {
+        return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
     }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children} = this.props;
-        return (this.getStateNavigator().stateContext.state &&
-            <TransitionMotion
-                willEnter={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext, true)}
-                willLeave={({data: sceneContext}) => this.getStyle(unmountedStyle, sceneContext)}
-                didLeave={({data: sceneContext}) => {this.clearScene(sceneContext.url)}}
-                styles={this.getScenes().map(({mount, ...sceneContext}) => ({
-                    key: sceneContext.url,
-                    data: sceneContext,
-                    style: this.getStyle(mount ? mountedStyle : crumbStyle, sceneContext)
-                }))}>
+        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing} = this.props;
+        var {stateContext} = this.getStateNavigator();
+        return (stateContext.state &&
+            <Transition
+                duration={!this.state.move ? duration : 50} easing={easing}
+                data={this.getScenes()}
+                getKey={sceneContext => sceneContext.url}
+                enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext)}
+                update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}
+                leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
+                onRest={() => this.clearScenes()}>
                 {tweenStyles => (
                     <View style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data, url}, style}) => (
+                        {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
                     </View>
                 )}
-            </TransitionMotion>
+            </Transition>
         );
     }
 }

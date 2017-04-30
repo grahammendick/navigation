@@ -1,13 +1,13 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
-import {NavigationMotion, spring} from 'navigation-react-native';
+import {NavigationMotion} from 'navigation-react-native';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="scene"
-    unmountedStyle={{translate: spring(1)}}
-    mountedStyle={(state, {translate = 0}) => ({translate: spring(translate)})}
-    crumbStyle={{translate: spring(0)}}
+    unmountedStyle={{translate: 1}}
+    mountedStyle={(state, {translate = 0}) => ({translate})}
+    crumbStyle={{translate: 0}}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({translate}, scene, url) => (

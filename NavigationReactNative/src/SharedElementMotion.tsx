@@ -1,8 +1,7 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-import { Motion } from 'react-motion';
+import { Animate } from 'react-move';
 import { Modal } from 'react-native';
-import spring from './spring';
 
 class SharedElementMotion extends React.Component<any, any> {
     private animateTimeout: number;
@@ -23,7 +22,9 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     static defaultProps = {
         onAnimating: () => {},
-        onAnimated: () => {}
+        onAnimated: () => {},
+        duration: 300,
+        easing: 'easeLinear'
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
@@ -36,7 +37,7 @@ class SharedElementMotion extends React.Component<any, any> {
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.reset);
         this.animate();
-        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 500);
+        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 150);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.reset);
@@ -64,7 +65,7 @@ class SharedElementMotion extends React.Component<any, any> {
         if (this.state.url === this.getStateNavigator().stateContext.url) {
             this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
             this.animate();
-            this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 500);
+            this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 150);
         }
     }
     onAnimated(name, mounted) {
@@ -78,16 +79,13 @@ class SharedElementMotion extends React.Component<any, any> {
             }
         );
     }
-    getStyle(name, {measurements, data, style: defaultStyle}, strip = false) {
-        if (strip && defaultStyle)
-            return defaultStyle;
-        var style = this.props.elementStyle(name, {...measurements, ...data});
-        var newStyle = {};
-        for (var key in style)
-            newStyle[key] = !strip ? style[key] : style[key].val;
-        return newStyle;
+    getStyle(name, {measurements, data, style}, start = false) {
+        if (start && style)
+            return style;
+        return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
+        var {duration, easing} = this.props;
         var {url, sharedElements, animatedElements, force} = this.state;
         return (url === this.getStateNavigator().stateContext.url &&
             <Modal
@@ -96,15 +94,17 @@ class SharedElementMotion extends React.Component<any, any> {
                 visible={sharedElements.length > Object.keys(animatedElements).length}
                 supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
-                    <Motion
-                        key={name} onRest={() => {this.onAnimated(name, mounted)}}
-                        defaultStyle={{...this.getStyle(name, old, true), __force: 0}}
-                        style={{...this.getStyle(name, mounted), __force: spring(force)}}>
+                    <Animate
+                        key={name}
+                        duration={duration} easing={easing} immutable={false}
+                        data={{...this.getStyle(name, mounted), __force: force}}
+                        default={{...this.getStyle(name, old, true), __force: 0}}
+                        onRest={() => {this.onAnimated(name, mounted)}}>
                         {({__force, ...tweenStyle}) => {
                             this.context.movingSharedElement(url, name, tweenStyle);
                             return this.props.children(tweenStyle, name, old.data, mounted.data)
                         }}
-                    </Motion>
+                    </Animate>
                 ))}
             </Modal>
         );
