@@ -6,7 +6,7 @@ import ZoomShared from './ZoomShared';
 export default class List extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.url = props.stateNavigator.stateContext;
+    this.url = props.stateNavigator.stateContext.url;
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
