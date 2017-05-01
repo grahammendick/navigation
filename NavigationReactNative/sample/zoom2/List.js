@@ -26,8 +26,10 @@ export default class List extends React.Component {
   componentWillUnmount() {
     this.props.stateNavigator.offNavigate(this.onNavigate);
   }
-  onNavigate(oldState, state, {rowId}) {
-    const inverse = this.url !== this.props.stateNavigator.stateContext.oldUrl;
+  onNavigate() {
+    const {data, oldData, oldUrl} = this.props.stateNavigator.stateContext;
+    const inverse = this.url !== oldUrl;
+    const rowId = !inverse ? data.rowId : oldData.rowId;
     const animations = [];
     const rowInt = parseInt(rowId, 10);
     for (let i = rowInt - 2; i <= rowInt + 2; i++) {
