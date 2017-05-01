@@ -12,10 +12,7 @@ export default class List extends React.Component {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
-    this.state = {
-      dataSource: ds.cloneWithRows(props.places),
-      selectedId: 0,
-    };
+    this.state = {dataSource: ds.cloneWithRows(props.places)};
   }
   shouldComponentUpdate(props) {
     return this.url === props.stateNavigator.stateContext.url;
