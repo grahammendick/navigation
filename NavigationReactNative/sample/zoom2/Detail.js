@@ -17,33 +17,28 @@ export default class Detail extends React.Component {
     return this.url === props.stateNavigator.stateContext.url;
   }
   componentDidMount() {
+    this._animate(false);
+  }
+  _animate(inverse) {
     Animated.timing(this.state.contentAnimation, {
-      toValue: 1,
+      toValue: inverse ? 0 : 1,
       duration: 500,
       useNativeDriver: true,
     }).start(); 
     setTimeout(() => {
       Animated.timing(this.state.navbarAnimation, {
-        toValue: 1,
-        duration: 300,
+        toValue: inverse ? 0 : 1,
+        duration: inverse ? 50 : 300,
         useNativeDriver: true,
       }).start();      
-    }, 500);   
+    }, inverse ? 0 : 500);   
+
   }
   _goBack = () => {
     const {stateNavigator} = this.props;
     if (this.url === stateNavigator.stateContext.url) {
       stateNavigator.navigateBack(1);
-      Animated.timing(this.state.contentAnimation, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-      Animated.timing(this.state.navbarAnimation, {
-        toValue: 0,
-        duration: 50,
-        useNativeDriver: true,
-      }).start();
+      this._animate(true);
     }
   };  
   render() {
