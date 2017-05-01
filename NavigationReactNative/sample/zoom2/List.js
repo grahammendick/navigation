@@ -7,7 +7,7 @@ export default class List extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._rowAnimations = {};
-    this.onNavigate = this.onNavigate.bind(this);
+    this._onNavigate = this._onNavigate.bind(this);
     this.url = props.stateNavigator.stateContext.url;
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
@@ -18,12 +18,12 @@ export default class List extends React.Component {
     return this.url === props.stateNavigator.stateContext.url;
   }
   componentDidMount() {
-    this.props.stateNavigator.onNavigate(this.onNavigate);
+    this.props.stateNavigator.onNavigate(this._onNavigate);
   }
   componentWillUnmount() {
-    this.props.stateNavigator.offNavigate(this.onNavigate);
+    this.props.stateNavigator.offNavigate(this._onNavigate);
   }
-  onNavigate() {
+  _onNavigate() {
     const {data, oldData, oldUrl} = this.props.stateNavigator.stateContext;
     const inverse = this.url !== oldUrl;
     const rowId = {...data, ...oldData}.rowId;
