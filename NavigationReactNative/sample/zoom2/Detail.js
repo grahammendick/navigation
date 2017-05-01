@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Animated, Dimensions, Platform} from 'react-native';
+import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Animated, Platform} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
@@ -56,10 +56,12 @@ export default class Detail extends React.Component {
               name={`image${rowId}`}
               data={{image: place.image}}
               stateNavigator={stateNavigator}>
-              <Image
-                source={place.image}
-                style={{ flex: 1 }}
-              />
+              <View style={styles.image}>
+                <Image
+                  source={place.image}
+                  style={{ flex: 1 }}
+                />
+              </View>
             </SharedElement>
             <SharedElement
               name={`label${rowId}`}
@@ -100,7 +102,7 @@ export default class Detail extends React.Component {
 const styles = StyleSheet.create({
   imageContainer: {},
   image: {
-    width: Dimensions.get('window').width,
+    flexDirection: 'row',
     height: 220,
   },
   priceLabel: {
