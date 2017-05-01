@@ -1,11 +1,13 @@
 import React from 'react';
-import {StyleSheet, View, ListView, Image, Text, TouchableWithoutFeedback, Dimensions} from 'react-native';
+import {StyleSheet, View, ListView, Image, Text, TouchableWithoutFeedback, Dimensions, Animated} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
 export default class List extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this._rowAnimations = {};
+    this.onNavigate = this.onNavigate.bind(this);
     this.url = props.stateNavigator.stateContext.url;
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
@@ -18,12 +20,50 @@ export default class List extends React.Component {
   shouldComponentUpdate(props) {
     return this.url === props.stateNavigator.stateContext.url;
   }
+  componentDidMount() {
+    this.props.stateNavigator.onNavigate(this.onNavigate);
+  }
+  componentWillUnmount() {
+    this.props.stateNavigator.offNavigate(this.onNavigate);
+  }
+  onNavigate(oldState, state, {rowId}) {
+    const inverse = this.url !== this.props.stateNavigator.stateContext.oldUrl;
+    const animations = [];
+    const rowInt = parseInt(rowId, 10);
+    for (let i = rowInt - 2; i <= rowInt + 2; i++) {
+      if (i === rowInt) {
+        continue;
+      }
+      const anim = this._rowAnimations[i];
+      if (anim) {
+        animations.push(
+          Animated.timing(anim, {
+            toValue: inverse ? 0 : i < rowInt ? -1 : 1,
+            duration: 500,
+            useNativeDriver: true,
+          })
+        );
+      }
+    }
+    Animated.parallel(animations).start();    
+  }
   _renderRow = (rowData, sectionId, rowId) => {
+    this._rowAnimations[rowId] = new Animated.Value(0);
+    const rowStyle = {
+      transform: [
+        {
+          translateY: this._rowAnimations[rowId].interpolate({
+            inputRange: [-1, 0, 1],
+            outputRange: [-200, 0, 200],
+          }),
+        },
+      ],
+    };
     return (
       <TouchableWithoutFeedback
         key={sectionId + rowId}
         onPress={this._onListItemPress.bind(this, rowData, sectionId, rowId)}>
-        <View style={styles.listItem}>
+        <Animated.View style={[styles.listItem, rowStyle]}>
           <View style={styles.listImage}>
             <Image
               source={rowData.image}
@@ -35,14 +75,14 @@ export default class List extends React.Component {
               ${rowData.price}
             </Text>
           </View>
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
     );
   };
   _onListItemPress = (rowData, sectionId, rowId) => {
     const {stateNavigator} = this.props;
     if (this.url === stateNavigator.stateContext.url) {
-      stateNavigator.navigate('detail', {index: rowId});
+      stateNavigator.navigate('detail', {rowId});
     }
   };
   render() {
