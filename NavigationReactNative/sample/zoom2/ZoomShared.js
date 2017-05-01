@@ -33,7 +33,6 @@ export default ({stateNavigator}) => (
           top: y,
           width: w,
           height: h,
-          zIndex: 1,
         }, styles.priceLabel]}>
           <Text style={styles.priceLabelText}>
             ${text}
@@ -48,6 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, .75)',
     paddingVertical: 7.5,
     paddingHorizontal: 10,
+    zIndex: 1,
   },
   priceLabelText: {
     fontSize: 19,
