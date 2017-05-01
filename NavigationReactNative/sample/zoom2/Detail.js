@@ -32,7 +32,6 @@ export default class Detail extends React.Component {
         useNativeDriver: true,
       }).start();      
     }, inverse ? 0 : 500);   
-
   }
   _goBack = () => {
     const {stateNavigator} = this.props;
