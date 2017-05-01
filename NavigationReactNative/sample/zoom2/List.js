@@ -112,13 +112,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     alignSelf: 'center',
   },
-  listItemBorder: {
-    width: Dimensions.get('window').width - 30,
-    height: 1,
-    backgroundColor: 'rgba(0, 0, 0, .25)',
-    alignSelf: 'center',
-    marginBottom: 15,
-  },
   listImage: {
     width: Dimensions.get('window').width - 30,
     height: 201,
