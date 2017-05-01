@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Dimensions, Platform} from 'react-native';
+import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Animated, Dimensions, Platform} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
@@ -8,19 +8,39 @@ export default class Detail extends React.Component {
     super(props, context);
     const {url} = props.stateNavigator.stateContext;
     this.url = url;
+    this.state = {
+      contentAnimation: new Animated.Value(0),
+      navbarAnimation: new Animated.Value(0),
+    };
   }
   shouldComponentUpdate(props) {
     return this.url === props.stateNavigator.stateContext.url;
+  }
+  componentDidMount() {
+    Animated.timing(this.state.contentAnimation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();    
   }
   _goBack = () => {
     const {stateNavigator} = this.props;
     if (this.url === stateNavigator.stateContext.url) {
       stateNavigator.navigateBack(1);
+      Animated.timing(this.state.contentAnimation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
     }
   };  
   render() {
     const {place, stateNavigator} = this.props;
-    return (
+    const contentTranslateY = this.state.contentAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [200, 0],
+    });
+      return (
       <View style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.imageContainer}>
@@ -48,9 +68,10 @@ export default class Detail extends React.Component {
               <Text style={styles.title} numberOfLines={1}>{place.title}</Text>
               <View style={styles.placeholder} />
             </View>
-            <View>
+            <Animated.View
+              style={{ transform: [{ translateY: contentTranslateY }] }}>
               <Text style={styles.descriptionText}>{place.description}</Text>
-            </View>
+            </Animated.View>
           </View>
         </ScrollView>
       </View>
