@@ -54,11 +54,16 @@ export default class Detail extends React.Component {
                 style={{ flex: 1 }}
               />
             </SharedElement>
-            <View style={styles.priceLabel}>
-              <Text style={styles.priceLabelText}>
-                ${place.price}
-              </Text>
-            </View>
+            <SharedElement
+              name={`label${rowId}`}
+              data={{text: place.price}}
+              stateNavigator={stateNavigator}>
+              <View style={styles.priceLabel}>
+                <Text style={styles.priceLabelText}>
+                  ${place.price}
+                </Text>
+              </View>
+            </SharedElement>
             <View
               style={styles.navbar}>
               <TouchableOpacity

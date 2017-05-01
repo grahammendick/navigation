@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import {SharedElementMotion} from 'navigation-react-native';
 
 export default ({stateNavigator}) => (
@@ -9,7 +9,7 @@ export default ({stateNavigator}) => (
     onAnimated={(name, oldRef, mountedRef) => {}}
     duration={500}
     stateNavigator={stateNavigator}>
-    {({x, y, w, h}, name, {image}) => (
+    {({x, y, w, h}, name, {image, text}) => (
       name.startsWith('image') ? <Image
         source={image}
         style={{
@@ -19,20 +19,32 @@ export default ({stateNavigator}) => (
           width: w,
           height: h,
         }}>
-      </Image> : <Text          
-        style={{
+      </Image> : <View
+        style={[{
           position: 'absolute',
           left: x,
           top: y,
           width: w,
           height: h,
-          fontSize,
-          textAlign: 'center',
-          fontWeight: 'bold',
-          color: fontColor,
           zIndex: 1,
-        }}>
-        </Text>
+        }, styles.priceLabel]}>
+          <Text style={styles.priceLabelText}>
+            ${text}
+          </Text>
+        </View>
     )}
   </SharedElementMotion>
 );
+
+const styles = StyleSheet.create({
+  priceLabel: {
+    backgroundColor: 'rgba(0, 0, 0, .75)',
+    paddingVertical: 7.5,
+    paddingHorizontal: 10,
+  },
+  priceLabelText: {
+    fontSize: 19,
+    textAlign: 'right',
+    color: 'white',
+  },
+});

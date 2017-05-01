@@ -78,11 +78,16 @@ export default class List extends React.Component {
               />
             </View>
           </SharedElement>
-          <View style={styles.priceLabel}>
-            <Text style={styles.priceLabelText}>
-              ${rowData.price}
-            </Text>
-          </View>
+          <SharedElement
+            name={`label${rowId}`}
+            data={{text: rowData.price}}
+            stateNavigator={stateNavigator}>
+            <View style={styles.priceLabel}>
+              <Text style={styles.priceLabelText}>
+                ${rowData.price}
+              </Text>
+            </View>
+          </SharedElement>
         </Animated.View>
       </TouchableWithoutFeedback>
     );
