@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flex: 1,
     paddingHorizontal: 10,
+    fontWeight: 'bold',
   },
   placeholder: {
     width: 20,
@@ -141,6 +142,6 @@ const styles = StyleSheet.create({
   descriptionText: {
     paddingHorizontal: 10,
     marginBottom: 200,
-    fontSize: 15,
+    fontWeight: 'bold',
   },
 });
