@@ -21,7 +21,14 @@ export default class Detail extends React.Component {
       toValue: 1,
       duration: 500,
       useNativeDriver: true,
-    }).start();    
+    }).start(); 
+    setTimeout(() => {
+      Animated.timing(this.state.navbarAnimation, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();      
+    }, 500);   
   }
   _goBack = () => {
     const {stateNavigator} = this.props;
@@ -30,6 +37,11 @@ export default class Detail extends React.Component {
       Animated.timing(this.state.contentAnimation, {
         toValue: 0,
         duration: 500,
+        useNativeDriver: true,
+      }).start();
+      Animated.timing(this.state.navbarAnimation, {
+        toValue: 0,
+        duration: 50,
         useNativeDriver: true,
       }).start();
     }
@@ -64,8 +76,8 @@ export default class Detail extends React.Component {
                 </Text>
               </View>
             </SharedElement>
-            <View
-              style={styles.navbar}>
+            <Animated.View
+              style={[styles.navbar, { opacity: this.state.navbarAnimation }]}>
               <TouchableOpacity
                 onPress={this._goBack}
                 hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}>
@@ -78,7 +90,7 @@ export default class Detail extends React.Component {
               </TouchableOpacity>
               <Text style={styles.title} numberOfLines={1}>{place.title}</Text>
               <View style={styles.placeholder} />
-            </View>
+            </Animated.View>
             <Animated.View
               style={{ transform: [{ translateY: contentTranslateY }] }}>
               <Text style={styles.descriptionText}>{place.description}</Text>
