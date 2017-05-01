@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Animated, Platform} from 'react-native';
-import {SharedElement} from 'navigation-react-native';
+import {NavigationBackAndroid, SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
 export default class Detail extends React.Component {
@@ -49,6 +49,7 @@ export default class Detail extends React.Component {
       return (
       <View style={{ flex: 1 }}>
         <ZoomShared stateNavigator={stateNavigator} />
+        <NavigationBackAndroid stateNavigator={stateNavigator} />
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.imageContainer}>
             <SharedElement
