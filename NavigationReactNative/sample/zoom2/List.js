@@ -26,9 +26,8 @@ export default class List extends React.Component {
   _onNavigate() {
     const {data, oldData, oldUrl} = this.props.stateNavigator.stateContext;
     const inverse = this.url !== oldUrl;
-    const rowId = {...data, ...oldData}.rowId;
+    const rowInt = {...data, ...oldData}.rowId;
     const animations = [];
-    const rowInt = parseInt(rowId, 10);
     for (let i = rowInt - 2; i <= rowInt + 2; i++) {
       if (i === rowInt) {
         continue;
@@ -92,7 +91,7 @@ export default class List extends React.Component {
   _onListItemPress = (rowData, sectionId, rowId) => {
     const {stateNavigator} = this.props;
     if (this.url === stateNavigator.stateContext.url) {
-      stateNavigator.navigate('detail', {rowId});
+      stateNavigator.navigate('detail', {rowId: +rowId});
     }
   };
   render() {
