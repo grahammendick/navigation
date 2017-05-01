@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, ListView, Image, Text, TouchableWithoutFeedback, Dimensions, Animated} from 'react-native';
+import {StyleSheet, View, ListView, Image, Text, TouchableWithoutFeedback, Animated} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
 import ZoomShared from './ZoomShared';
 
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   listImage: {
-    width: Dimensions.get('window').width - 30,
     height: 201,
   },
   priceLabel: {
