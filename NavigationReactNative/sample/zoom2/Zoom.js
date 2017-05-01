@@ -19,7 +19,7 @@ export default ({stateNavigator}) => (
           right: 0,
           top: 0,
           bottom: 0,
-          opacity: opacity
+          opacity
         }}>
         {scene}
       </View>
