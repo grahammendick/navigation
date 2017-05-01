@@ -35,19 +35,25 @@ export default class Detail extends React.Component {
     }
   };  
   render() {
-    const {place, stateNavigator} = this.props;
+    const {place, rowId, stateNavigator} = this.props;
     const contentTranslateY = this.state.contentAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [200, 0],
     });
       return (
       <View style={{ flex: 1 }}>
+        <ZoomShared stateNavigator={stateNavigator} />
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.imageContainer}>
-            <Image
-              source={place.image}
-              style={{ flex: 1 }}
-            />
+            <SharedElement
+              name={`image${rowId}`}
+              data={{image: place.image}}
+              stateNavigator={stateNavigator}>
+              <Image
+                source={place.image}
+                style={{ flex: 1 }}
+              />
+            </SharedElement>
             <View style={styles.priceLabel}>
               <Text style={styles.priceLabelText}>
                 ${place.price}

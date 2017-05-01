@@ -12,7 +12,7 @@ export default () => {
 
   const { list, detail } = stateNavigator.states;
   list.renderScene = data => <List places={places} stateNavigator={stateNavigator}/>;
-  detail.renderScene = ({rowId}) => <Detail place={places[rowId]} stateNavigator={stateNavigator}/>;
+  detail.renderScene = ({rowId}) => <Detail place={places[rowId]} rowId={rowId} stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }

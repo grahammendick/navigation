@@ -50,6 +50,7 @@ export default class List extends React.Component {
     Animated.parallel(animations).start();    
   }
   _renderRow = (rowData, sectionId, rowId) => {
+    const {stateNavigator} = this.props;
     this._rowAnimations[rowId] = new Animated.Value(0);
     const rowStyle = {
       transform: [
@@ -66,12 +67,17 @@ export default class List extends React.Component {
         key={sectionId + rowId}
         onPress={this._onListItemPress.bind(this, rowData, sectionId, rowId)}>
         <Animated.View style={[styles.listItem, rowStyle]}>
-          <View style={styles.listImage}>
-            <Image
-              source={rowData.image}
-              style={{ flex: 1 }}
-            />
-          </View>
+          <SharedElement
+            name={`image${rowId}`}
+            data={{image: rowData.image}}
+            stateNavigator={stateNavigator}>
+            <View style={styles.listImage}>
+              <Image
+                source={rowData.image}
+                style={{ flex: 1 }}
+              />
+            </View>
+          </SharedElement>
           <View style={styles.priceLabel}>
             <Text style={styles.priceLabelText}>
               ${rowData.price}
@@ -91,6 +97,7 @@ export default class List extends React.Component {
     const {places, stateNavigator} = this.props;
     return (
       <View style={styles.container}>
+        <ZoomShared stateNavigator={stateNavigator} />
         <ListView
           contentContainerStyle={styles.contentContainer}
           dataSource={this.state.dataSource}
