@@ -7,6 +7,7 @@ export default class Detail extends React.Component {
   constructor(props, context) {
     super(props, context);
     const {url} = props.stateNavigator.stateContext;
+    this._onNavigate = this._onNavigate.bind(this);
     this.url = url;
     this.state = {
       contentAnimation: new Animated.Value(0),
@@ -18,6 +19,13 @@ export default class Detail extends React.Component {
   }
   componentDidMount() {
     this._animate(false);
+    this.props.stateNavigator.onNavigate(this._onNavigate);
+  }
+  componentWillUnmount() {
+    this.props.stateNavigator.offNavigate(this._onNavigate);
+  }
+  _onNavigate() {
+      this._animate(true);
   }
   _animate(inverse) {
     Animated.timing(this.state.contentAnimation, {
@@ -37,7 +45,6 @@ export default class Detail extends React.Component {
     const {stateNavigator} = this.props;
     if (this.url === stateNavigator.stateContext.url) {
       stateNavigator.navigateBack(1);
-      this._animate(true);
     }
   };  
   render() {
