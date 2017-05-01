@@ -5,8 +5,15 @@ import {SharedElementMotion} from 'navigation-react-native';
 export default ({stateNavigator}) => (
   <SharedElementMotion
     elementStyle={(name, data) => data}
-    onAnimating={(name, oldRef, mountedRef, oldData, mountedData) => {}}
-    onAnimated={(name, oldRef, mountedRef) => {}}
+    onAnimating={(name, oldRef, mountedRef) => {
+      oldRef.setNativeProps({style:{opacity: 0}});
+      mountedRef.setNativeProps({style:{opacity: 0}});
+    }}
+    onAnimated={(name, oldRef, mountedRef) => {
+      if (oldRef)
+        oldRef.setNativeProps({style:{opacity: 1}});
+      mountedRef.setNativeProps({style:{opacity: 1}});
+    }}
     duration={500}
     stateNavigator={stateNavigator}>
     {({x, y, w, h}, name, {image, text}) => (
