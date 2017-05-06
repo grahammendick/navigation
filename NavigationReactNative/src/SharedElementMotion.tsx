@@ -13,7 +13,6 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
-        this.animate = this.animate.bind(this);
         this.reset = this.reset.bind(this);
         this.state = {
             url: this.getStateNavigator().stateContext.url,
@@ -36,13 +35,9 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.reset);
-        this.animate();
-        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 150);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.reset);
-        cancelAnimationFrame(this.animateFrame);
-        clearTimeout(this.animateTimeout);
     }
     componentWillUpdate() {
         var {sharedElements, onAnimating} = this.props;
@@ -52,14 +47,8 @@ class SharedElementMotion extends React.Component<any, any> {
                 onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
         }
     }
-    animate() {
-    }
     reset() {
-        cancelAnimationFrame(this.animateFrame);
-        clearTimeout(this.animateTimeout);
         this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
-        this.animate();
-        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 150);
     }
     onAnimated(name, mounted) {
         this.setState(
