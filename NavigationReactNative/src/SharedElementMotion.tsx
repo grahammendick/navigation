@@ -22,8 +22,6 @@ class SharedElementMotion extends React.Component<any, any> {
     static defaultProps = {
         onAnimating: () => {},
         onAnimated: () => {},
-        duration: 300,
-        easing: 'easeLinear'
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
