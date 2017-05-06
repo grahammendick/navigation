@@ -15,7 +15,7 @@ class SharedElementMotion extends React.Component<any, any> {
         this.reset = this.reset.bind(this);
         this.state = {
             url: this.getStateNavigator().stateContext.url,
-            sharedElements: [], animatedElements: {}, force: 1
+            animatedElements: {}, force: 1
         };
     }
     static defaultProps = {
@@ -44,7 +44,7 @@ class SharedElementMotion extends React.Component<any, any> {
         }
     }
     reset() {
-        this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
+        this.setState(({force}) => ({animatedElements: {}, force: force + 1}));
     }
     onAnimated(name, mounted) {
         this.setState(
