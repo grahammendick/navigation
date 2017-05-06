@@ -144,7 +144,10 @@ class NavigationMotion extends React.Component<any, any> {
                         {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
-                        {!this.state.move && sharedElementMotion && sharedElementMotion()}
+                        {!this.state.move && sharedElementMotion && sharedElementMotion({
+                            sharedElements: this.getSharedElements(),
+                            stateNavigator: this.getStateNavigator(),
+                        })}
                     </View>
                 )}
             </Transition>

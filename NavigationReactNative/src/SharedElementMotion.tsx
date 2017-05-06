@@ -83,8 +83,8 @@ class SharedElementMotion extends React.Component<any, any> {
         return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
-        var {style, duration, easing} = this.props;
-        var {url, sharedElements, animatedElements, force} = this.state;
+        var {sharedElements, style, duration, easing} = this.props;
+        var {url, animatedElements, force} = this.state;
         return (sharedElements.length > Object.keys(animatedElements).length &&
             <View style={style}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
