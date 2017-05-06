@@ -1,7 +1,7 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Animate } from 'react-move';
-import { Modal } from 'react-native';
+import { View } from 'react-native';
 
 class SharedElementMotion extends React.Component<any, any> {
     private animateTimeout: number;
@@ -83,14 +83,10 @@ class SharedElementMotion extends React.Component<any, any> {
         return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
-        var {duration, easing} = this.props;
+        var {style, duration, easing} = this.props;
         var {url, sharedElements, animatedElements, force} = this.state;
-        return (
-            <Modal
-                transparent={true} animationType="none" onOrientationChange={() => {}}
-                onRequestClose={() => {this.getStateNavigator().navigateBack(1)}}
-                visible={sharedElements.length > Object.keys(animatedElements).length}
-                supportedOrientations={['portrait', 'landscape', 'landscape-left', 'landscape-right']}>
+        return (sharedElements.length > Object.keys(animatedElements).length &&
+            <View style={style}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Animate
                         key={name}
@@ -104,7 +100,7 @@ class SharedElementMotion extends React.Component<any, any> {
                         }}
                     </Animate>
                 ))}
-            </Modal>
+            </View>
         );
     }
 }
