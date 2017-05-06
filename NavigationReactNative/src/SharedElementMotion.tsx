@@ -44,20 +44,15 @@ class SharedElementMotion extends React.Component<any, any> {
         cancelAnimationFrame(this.animateFrame);
         clearTimeout(this.animateTimeout);
     }
+    componentWillUpdate() {
+        var {sharedElements, onAnimating} = this.props;
+        for (var i = 0; i < sharedElements.length; i++) {
+            var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
+            if (!this.state.animatedElements[name])
+                onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
+        }
+    }
     animate() {
-        this.animateFrame = requestAnimationFrame(() => {
-            var sharedElements = this.context.getSharedElements();
-            if (sharedElements.length !== 0) {
-                this.setState({sharedElements}, () => {
-                    for (var i = 0; i < sharedElements.length; i++) {
-                        var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-                        if (!this.state.animatedElements[name])
-                            this.props.onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
-                    }
-                });
-            }
-            this.animate();
-        });
     }
     reset() {
         cancelAnimationFrame(this.animateFrame);
