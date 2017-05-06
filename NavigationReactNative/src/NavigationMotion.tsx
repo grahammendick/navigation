@@ -13,7 +13,6 @@ class NavigationMotion extends React.Component<any, any> {
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
-        this.movingSharedElement = this.movingSharedElement.bind(this);
         this.getSharedElements = this.getSharedElements.bind(this);
         this.state = {scenes: {}, move: false};
     }
@@ -27,14 +26,12 @@ class NavigationMotion extends React.Component<any, any> {
     static childContextTypes = {
         registerSharedElement: React.PropTypes.func,
         unregisterSharedElement: React.PropTypes.func,
-        movingSharedElement: React.PropTypes.func,
         getSharedElements: React.PropTypes.func
     }
     getChildContext() {
         return {
             registerSharedElement: this.registerSharedElement,
             unregisterSharedElement: this.unregisterSharedElement,
-            movingSharedElement: this.movingSharedElement,
             getSharedElements: this.getSharedElements
         };
     }
@@ -78,9 +75,6 @@ class NavigationMotion extends React.Component<any, any> {
     unregisterSharedElement(url, name) {
         if (this.sharedElements[url])
             delete this.sharedElements[url][name];
-    }
-    movingSharedElement(url, name, style) {
-        this.sharedElements[url][name].style = style;
     }
     getSharedElements() {
         var {url, oldUrl} = this.getStateNavigator().stateContext;

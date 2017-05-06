@@ -8,7 +8,6 @@ class SharedElementMotion extends React.Component<any, any> {
     private animateFrame: number;
     context: {
         stateNavigator: StateNavigator,
-        movingSharedElement: (url, name, style) => void,
         getSharedElements: () => any[]
     }
     constructor(props, context) {
@@ -25,7 +24,6 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     static contextTypes = {
         stateNavigator: React.PropTypes.object,
-        movingSharedElement: React.PropTypes.func,
         getSharedElements: React.PropTypes.func
     }
     private getStateNavigator(): StateNavigator {
@@ -54,18 +52,15 @@ class SharedElementMotion extends React.Component<any, any> {
             () => {
                 var sharedElements = this.context.getSharedElements();
                 var {oldElement: old = undefined} = sharedElements.filter(element => element.name === name)[0] || {};
-                this.context.movingSharedElement(this.state.url, name, null);
                 this.props.onAnimated(name, old && old.ref, mounted.ref, old && old.data, mounted.data)
             }
         );
     }
-    getStyle(name, {measurements, data, style}, start = false) {
-        if (start && style)
-            return style;
+    getStyle(name, {measurements, data, style}) {
         return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
-        var {sharedElements, style, duration, easing} = this.props;
+        var {sharedElements, style, children, duration, easing} = this.props;
         var {url, animatedElements, force} = this.state;
         return (sharedElements.length > Object.keys(animatedElements).length &&
             <View style={style}>
@@ -74,12 +69,11 @@ class SharedElementMotion extends React.Component<any, any> {
                         key={name}
                         duration={duration} easing={easing} immutable={false}
                         data={{...this.getStyle(name, mounted), __force: force}}
-                        default={{...this.getStyle(name, old, true), __force: 0}}
+                        default={{...this.getStyle(name, old), __force: 0}}
                         onRest={() => {this.onAnimated(name, mounted)}}>
-                        {({__force, ...tweenStyle}) => {
-                            this.context.movingSharedElement(url, name, tweenStyle);
-                            return this.props.children(tweenStyle, name, old.data, mounted.data)
-                        }}
+                        {({__force, ...tweenStyle}) => (
+                            children(tweenStyle, name, old.data, mounted.data)
+                        )}
                     </Animate>
                 ))}
             </View>
