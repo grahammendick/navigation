@@ -62,11 +62,9 @@ class SharedElementMotion extends React.Component<any, any> {
     reset() {
         cancelAnimationFrame(this.animateFrame);
         clearTimeout(this.animateTimeout);
-        if (this.state.url === this.getStateNavigator().stateContext.url) {
-            this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
-            this.animate();
-            this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 150);
-        }
+        this.setState(({force}) => ({sharedElements: [], animatedElements: {}, force: force + 1}));
+        this.animate();
+        this.animateTimeout = setTimeout(() => cancelAnimationFrame(this.animateFrame), 150);
     }
     onAnimated(name, mounted) {
         this.setState(
@@ -87,7 +85,7 @@ class SharedElementMotion extends React.Component<any, any> {
     render() {
         var {duration, easing} = this.props;
         var {url, sharedElements, animatedElements, force} = this.state;
-        return (url === this.getStateNavigator().stateContext.url &&
+        return (
             <Modal
                 transparent={true} animationType="none" onOrientationChange={() => {}}
                 onRequestClose={() => {this.getStateNavigator().navigateBack(1)}}

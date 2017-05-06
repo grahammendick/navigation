@@ -1,6 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {NavigationMotion} from 'navigation-react-native';
+import ZoomShared from './ZoomShared';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
@@ -9,6 +10,7 @@ export default ({stateNavigator}) => (
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: .9}}
     style={{flex: 1}}
+    sharedElementMotion={() => <ZoomShared stateNavigator={stateNavigator} />}
     stateNavigator={stateNavigator}>
     {({opacity}, scene, url) => (
       <View key={url}

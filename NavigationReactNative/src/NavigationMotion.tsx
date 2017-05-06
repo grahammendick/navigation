@@ -128,7 +128,7 @@ class NavigationMotion extends React.Component<any, any> {
         return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
     }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing} = this.props;
+        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Transition
@@ -144,6 +144,7 @@ class NavigationMotion extends React.Component<any, any> {
                         {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
+                        {!this.state.move && sharedElementMotion && sharedElementMotion()}
                     </View>
                 )}
             </Transition>

@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 import {NavigationBackAndroid, SharedElement} from 'navigation-react-native';
-import ZoomShared from './ZoomShared';
 
 export default class Detail extends React.Component {
   constructor(props, context) {
@@ -17,7 +16,6 @@ export default class Detail extends React.Component {
     const {color, stateNavigator} = this.props;
     return (
       <View style={styles.detail}>
-        <ZoomShared stateNavigator={stateNavigator} />
         <NavigationBackAndroid stateNavigator={stateNavigator} />
         <TouchableHighlight
           underlayColor="#fff"

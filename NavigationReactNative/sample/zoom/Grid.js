@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, TouchableHighlight} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
-import ZoomShared from './ZoomShared';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',
@@ -22,7 +21,6 @@ export default class Grid extends React.Component {
     const {stateNavigator} = this.props;
     return (
       <View style={styles.grid}>
-        <ZoomShared stateNavigator={stateNavigator} />
         <ScrollView>
           <View style={styles.colors}>
             {colors.map(color => (
@@ -43,8 +41,8 @@ export default class Grid extends React.Component {
                   }}>
                   <View>
                     <SharedElement
-                      name={`text${color}`}
                       data={{color, fontSize: 20, fontColor: '#fff'}}
+                      name={`text${color}`}
                       stateNavigator={stateNavigator}>
                       <Text style={styles.text}>{color}</Text>
                     </SharedElement>
