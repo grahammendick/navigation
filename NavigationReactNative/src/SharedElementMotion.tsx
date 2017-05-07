@@ -1,22 +1,35 @@
 import * as React from 'react';
 import { Animate } from 'react-move';
-import { View } from 'react-native';
+import { View, findNodeHandle } from 'react-native';
 
 class SharedElementMotion extends React.Component<any, any> {
-    componentWillReceiveProps({sharedElements, rest}) {
-        var {sharedElements: prevSharedElements, onAnimating, onAnimated} = this.props;
-        for (var i = 0; i < sharedElements.length && onAnimating; i++) {
-            var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-            var prevSharedElement = prevSharedElements.filter(element => element.name === name)[0] || {};
-            if (prevSharedElement.mountedElement !== mounted)
-                onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
-        }
-        if (rest) {
-            for (var i = 0; i < prevSharedElements.length && onAnimated; i++) {
-                var {name, oldElement, mountedElement: mounted} = prevSharedElements[i];
-                var old = sharedElements.length ? oldElement : {};
-                onAnimated(name, old.ref, mounted.ref, old.data, mounted.data);
+    componentWillReceiveProps(nextProps) {
+        var sharedElements = this.getSharedElements(nextProps.sharedElements);
+        var prevSharedElements = this.getSharedElements(this.props.sharedElements);
+        this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
+        this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
+    }
+    diff(fromSharedElements, toSharedElements, action) {
+        for(var name in fromSharedElements) {
+            var from = fromSharedElements[name];
+            var to = toSharedElements[name];
+            if (!to || from.mountedElement.ref !== to.mountedElement.ref) {
+                if (action && this.isMounted(from.oldElement.ref))
+                    action(name, from.oldElement.ref, from.oldElement.data);
+                if (action && this.isMounted(from.mountedRef))
+                    action(name, from.mountedElement.ref, from.mountedElement.data);
             }
+        }        
+    }
+    getSharedElements(sharedElements) {
+        return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
+    }
+    isMounted(ref) {
+        try {
+            findNodeHandle(ref);
+            return true;
+        } catch(e) {
+            return false;
         }
     }
     getStyle(name, {measurements, data, style}) {
@@ -24,7 +37,7 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     render() {
         var {sharedElements, style, children, duration, easing, rest} = this.props;
-        return (!rest &&
+        return (sharedElements.length !== 0 &&
             <View style={style}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Animate

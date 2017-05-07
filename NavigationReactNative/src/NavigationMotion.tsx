@@ -138,8 +138,8 @@ class NavigationMotion extends React.Component<any, any> {
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
                         {!move && sharedElementMotion && sharedElementMotion({
-                            sharedElements: this.getSharedElements(),
-                            rest, duration, easing
+                            sharedElements: !rest ? this.getSharedElements() : [],
+                            duration, easing
                         })}
                     </View>
                 )}
