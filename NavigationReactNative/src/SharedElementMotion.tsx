@@ -19,7 +19,7 @@ class SharedElementMotion extends React.Component<any, any> {
                 if (action && this.isMounted(from.mountedRef))
                     action(name, from.mountedElement.ref, from.mountedElement.data);
             }
-        }        
+        }
     }
     getSharedElements(sharedElements) {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
