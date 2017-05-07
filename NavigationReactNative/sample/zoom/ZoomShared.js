@@ -31,12 +31,8 @@ export default (props) => (
           fontWeight: 'bold',
           color: fontColor,
           ...Platform.select({
-            ios: {
-              zIndex: 1,
-            },
-            android: {
-              elevation: 1,
-            },
+            ios: {zIndex: 1},
+            android: {elevation: 1},
           }),
         }}>
           {color}
