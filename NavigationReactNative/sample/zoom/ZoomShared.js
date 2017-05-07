@@ -4,11 +4,11 @@ import {SharedElementMotion} from 'navigation-react-native';
 
 export default (props) => (
   <SharedElementMotion
+    {...props}
     elementStyle={(name, data) => data}
     style={styles.motion}
     onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
-    onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}
-    {...props}>
+    onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <View
         style={{
