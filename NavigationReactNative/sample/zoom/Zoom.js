@@ -8,9 +8,9 @@ export default ({stateNavigator}) => (
     startStateKey="grid"
     unmountedStyle={{opacity: 0}}
     mountedStyle={{opacity: 1}}
-    crumbStyle={{opacity: .9}}
+    crumbStyle={{opacity: 0}}
     style={{flex: 1}}
-    sharedElementMotion={(props) => <ZoomShared {...props} />}
+    sharedElementMotion={props => <ZoomShared {...props} />}
     stateNavigator={stateNavigator}>
     {({opacity}, scene, url) => (
       <View key={url}
@@ -20,7 +20,7 @@ export default ({stateNavigator}) => (
           right: 0,
           top: 0,
           bottom: 0,
-          opacity: opacity === 1 ? opacity : opacity / 2
+          opacity
         }}>
         {scene}
       </View>
