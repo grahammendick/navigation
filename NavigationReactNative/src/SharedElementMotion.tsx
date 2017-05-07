@@ -6,9 +6,6 @@ import { View } from 'react-native';
 class SharedElementMotion extends React.Component<any, any> {
     private animateTimeout: number;
     private animateFrame: number;
-    context: {
-        getSharedElements: () => any[]
-    }
     constructor(props, context) {
         super(props, context);
         this.reset = this.reset.bind(this);
@@ -17,10 +14,6 @@ class SharedElementMotion extends React.Component<any, any> {
     static defaultProps = {
         onAnimating: () => {},
         onAnimated: () => {},
-    }
-    static contextTypes = {
-        stateNavigator: React.PropTypes.object,
-        getSharedElements: React.PropTypes.func
     }
     componentDidMount() {
         this.props.stateNavigator.onNavigate(this.reset);
@@ -39,14 +32,10 @@ class SharedElementMotion extends React.Component<any, any> {
     reset() {
         this.setState(({force}) => ({animatedElements: {}, force: force + 1}));
     }
-    onAnimated(name, mounted) {
+    onAnimated(name, mounted, old) {
         this.setState(
             ({animatedElements}) => ({animatedElements: {...animatedElements, [name]: true}}),
-            () => {
-                var sharedElements = this.context.getSharedElements();
-                var {oldElement: old = undefined} = sharedElements.filter(element => element.name === name)[0] || {};
-                this.props.onAnimated(name, old && old.ref, mounted.ref, old && old.data, mounted.data)
-            }
+            () => {this.props.onAnimated(name, old.ref, mounted.ref, old.data, mounted.data)}
         );
     }
     getStyle(name, {measurements, data, style}) {
@@ -63,7 +52,7 @@ class SharedElementMotion extends React.Component<any, any> {
                         duration={duration} easing={easing} immutable={false}
                         data={{...this.getStyle(name, mounted), __force: force}}
                         default={{...this.getStyle(name, old), __force: 0}}
-                        onRest={() => {this.onAnimated(name, mounted)}}>
+                        onRest={() => {this.onAnimated(name, mounted, old)}}>
                         {({__force, ...tweenStyle}) => (
                             children(tweenStyle, name, old.data, mounted.data)
                         )}
