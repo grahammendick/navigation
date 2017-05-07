@@ -7,16 +7,12 @@ class SharedElementMotion extends React.Component<any, any> {
     private animateTimeout: number;
     private animateFrame: number;
     context: {
-        stateNavigator: StateNavigator,
         getSharedElements: () => any[]
     }
     constructor(props, context) {
         super(props, context);
         this.reset = this.reset.bind(this);
-        this.state = {
-            url: this.getStateNavigator().stateContext.url,
-            animatedElements: {}, force: 1
-        };
+        this.state = { animatedElements: {}, force: 1 };
     }
     static defaultProps = {
         onAnimating: () => {},
@@ -26,14 +22,11 @@ class SharedElementMotion extends React.Component<any, any> {
         stateNavigator: React.PropTypes.object,
         getSharedElements: React.PropTypes.func
     }
-    private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || this.context.stateNavigator;
-    }
     componentDidMount() {
-        this.getStateNavigator().onNavigate(this.reset);
+        this.props.stateNavigator.onNavigate(this.reset);
     }
     componentWillUnmount() {
-        this.getStateNavigator().offNavigate(this.reset);
+        this.props.stateNavigator.offNavigate(this.reset);
     }
     componentWillUpdate() {
         var {sharedElements, onAnimating} = this.props;
@@ -61,7 +54,7 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     render() {
         var {sharedElements, style, children, duration, easing} = this.props;
-        var {url, animatedElements, force} = this.state;
+        var {animatedElements, force} = this.state;
         return (sharedElements.length > Object.keys(animatedElements).length &&
             <View style={style}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
