@@ -13,7 +13,7 @@ class SharedElementMotion extends React.Component<any, any> {
     }
     static defaultProps = {
         onAnimating: () => {},
-        onAnimated: () => {},
+        onAnimated: () => {}
     }
     componentDidMount() {
         this.props.stateNavigator.onNavigate(this.reset);
@@ -21,12 +21,19 @@ class SharedElementMotion extends React.Component<any, any> {
     componentWillUnmount() {
         this.props.stateNavigator.offNavigate(this.reset);
     }
-    componentWillUpdate() {
-        var {sharedElements, onAnimating} = this.props;
+    componentWillReceiveProps({sharedElements}) {
+        var {sharedElements: prevSharedElements, onAnimating, onAnimated} = this.props;
         for (var i = 0; i < sharedElements.length; i++) {
             var {name, oldElement: old, mountedElement: mounted} = sharedElements[i];
-            if (!this.state.animatedElements[name])
+            var prevSharedElement = prevSharedElements.filter(element => element.name === name)[0] || {};
+            if (prevSharedElement.mountedElement !== mounted)
                 onAnimating(name, old.ref, mounted.ref, old.data, mounted.data);
+        }
+        if (sharedElements.length === 0) {
+            for (var i = 0; i < prevSharedElements.length; i++) {
+                var {name, mountedElement: mounted} = prevSharedElements[i];
+                onAnimated(name, null, mounted.ref, null, mounted.data);
+            }
         }
     }
     reset() {
