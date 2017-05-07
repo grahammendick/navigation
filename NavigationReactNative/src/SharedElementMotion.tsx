@@ -43,8 +43,8 @@ class SharedElementMotion extends React.Component<any, any> {
                     <Animate
                         key={name}
                         duration={duration} easing={easing} immutable={false}
-                        data={{...this.getStyle(name, mounted)}}
-                        default={{...this.getStyle(name, old)}}>
+                        data={this.getStyle(name, mounted)}
+                        default={this.getStyle(name, old)}>
                         {tweenStyle => (
                             children(tweenStyle, name, old.data, mounted.data)
                         )}
