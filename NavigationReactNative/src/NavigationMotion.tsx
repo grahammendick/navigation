@@ -54,7 +54,7 @@ class NavigationMotion extends React.Component<any, any> {
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes, move: false};
+            return {scenes, move: false, rest: false};
         });
     }
     moveScene(url) {
@@ -103,7 +103,7 @@ class NavigationMotion extends React.Component<any, any> {
                     delete this.sharedElements[url];
                 }
             }
-            return {scenes};
+            return {scenes, rest: true};
         });
     }
     getScenes(){
@@ -121,10 +121,11 @@ class NavigationMotion extends React.Component<any, any> {
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
+        var {move, rest} = this.state;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Transition
-                duration={!this.state.move ? duration : 50} easing={easing}
+                duration={!move ? duration : 50} easing={easing}
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
                 enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext)}
@@ -136,10 +137,10 @@ class NavigationMotion extends React.Component<any, any> {
                         {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
-                        {!this.state.move && sharedElementMotion && sharedElementMotion({
+                        {!move && sharedElementMotion && sharedElementMotion({
                             sharedElements: this.getSharedElements(),
                             stateNavigator: this.getStateNavigator(),
-                            duration, easing
+                            rest, duration, easing
                         })}
                     </View>
                 )}
