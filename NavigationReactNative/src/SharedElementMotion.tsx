@@ -1,4 +1,3 @@
-import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Animate } from 'react-move';
 import { View } from 'react-native';

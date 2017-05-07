@@ -139,7 +139,6 @@ class NavigationMotion extends React.Component<any, any> {
                         ))}
                         {!move && sharedElementMotion && sharedElementMotion({
                             sharedElements: this.getSharedElements(),
-                            stateNavigator: this.getStateNavigator(),
                             rest, duration, easing
                         })}
                     </View>
