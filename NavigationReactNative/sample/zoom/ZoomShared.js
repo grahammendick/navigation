@@ -1,15 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Platform} from 'react-native';
 import {SharedElementMotion} from 'navigation-react-native';
 
 export default (props) => (
   <SharedElementMotion
     elementStyle={(name, data) => data}
     style={styles.motion}
-    onAnimating={(name, oldRef, mountedRef, oldData, mountedData) => {
-      mountedData.hide && mountedRef.setNativeProps({style:{opacity: 0}})
-    }}
-    onAnimated={(name, oldRef, mountedRef) => {mountedRef.setNativeProps({style:{opacity: 1}})}}
+    onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
+    onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}
     {...props}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <View
@@ -32,7 +30,14 @@ export default (props) => (
           textAlign: 'center',
           fontWeight: 'bold',
           color: fontColor,
-          zIndex: 1,
+          ...Platform.select({
+            ios: {
+              zIndex: 1,
+            },
+            android: {
+              elevation: 1,
+            },
+          }),
         }}>
           {color}
         </Text>
