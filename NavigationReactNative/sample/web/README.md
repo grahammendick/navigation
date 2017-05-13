@@ -1,5 +1,5 @@
 # Native Medley Web Navigation
-Navigation React Native ideas work just as well on the web. This is a clone of the Medley Native sample with divs in place of Views.
+Navigation React Native ideas work just as well on the web. This is a clone of the Medley and Zoom Native samples with divs in place of Views.
 
 ## Run
 Once you've cloned the repository, you can install the dependencies and start the Native web example:
@@ -7,4 +7,4 @@ Once you've cloned the repository, you can install the dependencies and start th
     npm install
     npm run build
 
-Then open app.html to see Native web Navigation in action. Like a Native app, the previous scenes stay around and are animated into view when navigating back.
+Then open app.html in the `medley` and `zoom` folders to see Native web Navigation in action. Like a Native app, the previous scenes stay around and are animated into view when navigating back.
