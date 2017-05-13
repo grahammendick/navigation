@@ -29,7 +29,7 @@ class SharedElementMotion extends React.Component {
     render() {
         var {sharedElements, style, children, duration, easing} = this.props;
         return (sharedElements.length !== 0 &&
-            <View style={style}>
+            <div style={style}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Animate
                         key={name}
@@ -41,7 +41,7 @@ class SharedElementMotion extends React.Component {
                         )}
                     </Animate>
                 ))}
-            </View>
+            </div>
         );
     }
 }

@@ -6,8 +6,8 @@ export default (props) => (
     {...props}
     elementStyle={(name, data) => data}
     style={styles.motion}
-    onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
-    onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}>
+    onAnimating={(name, ref) => {ref.style.opacity = 0}}
+    onAnimated={(name, ref) => {ref.style.opacity = 1}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <div
         style={{
