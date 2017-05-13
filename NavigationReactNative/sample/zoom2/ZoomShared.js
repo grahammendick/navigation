@@ -2,20 +2,13 @@ import React from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {SharedElementMotion} from 'navigation-react-native';
 
-export default ({stateNavigator}) => (
+export default (props) => (
   <SharedElementMotion
+    {...props}
     elementStyle={(name, data) => data}
-    onAnimating={(name, oldRef, mountedRef) => {
-      oldRef.setNativeProps({style:{opacity: 0}});
-      mountedRef.setNativeProps({style:{opacity: 0}});
-    }}
-    onAnimated={(name, oldRef, mountedRef) => {
-      if (oldRef)
-        oldRef.setNativeProps({style:{opacity: 1}});
-      mountedRef.setNativeProps({style:{opacity: 1}});
-    }}
-    duration={500}
-    stateNavigator={stateNavigator}>
+    style={styles.motion}
+    onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
+    onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}>
     {({x, y, w, h}, name, {image, text}) => (
       name.startsWith('image') ? <Image
         source={image}
@@ -43,6 +36,14 @@ export default ({stateNavigator}) => (
 );
 
 const styles = StyleSheet.create({
+  motion: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: 'transparent',
+  },
   priceLabel: {
     backgroundColor: 'rgba(0, 0, 0, .75)',
     paddingVertical: 7.5,
