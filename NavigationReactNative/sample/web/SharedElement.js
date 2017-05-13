@@ -25,7 +25,8 @@ class SharedElement extends React.Component {
                 if (this.ref) {
                     var {scrollY, scrollX} = window;
                     var {top, left, width: w, height: h} = this.ref.getBoundingClientRect();
-                    this.context.registerSharedElement(url, name, this.ref, {w, h, x: left + scrollX, y: top + scrollY}, data);
+                    var measurements = {w, h, x: left + scrollX, y: top + scrollY};
+                    this.context.registerSharedElement(url, name, this.ref, measurements, data);
                 }
             } else {
                 this.context.unregisterSharedElement(url, name);
