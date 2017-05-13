@@ -27,10 +27,10 @@ export default class Detail extends React.Component {
           data={{color, hide: true}}
           stateNavigator={stateNavigator}>
           <div
-            style={[
-              {backgroundColor: color},
-              styles.color
-            ]} />
+            style={{
+              backgroundColor: color,
+              ...styles.color
+            }} />
         </SharedElement>
         <SharedElement
           name={`text${color}`}
@@ -45,8 +45,10 @@ export default class Detail extends React.Component {
 
 const styles = {
   detail: {
-    flex: 1,
-    backgroundColor: '#fff',
+    width: '360px',
+    height: '460px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   back: {
     height: 50,
