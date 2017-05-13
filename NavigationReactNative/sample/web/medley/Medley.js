@@ -1,5 +1,5 @@
 import React from 'react';
-import NavigationMotion from './NavigationMotion';
+import NavigationMotion from '../NavigationMotion';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
