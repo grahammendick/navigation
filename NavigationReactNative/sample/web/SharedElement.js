@@ -23,8 +23,9 @@ class SharedElement extends React.Component {
             var {unshare, name, data} = this.props;
             if (!unshare) {
                 if (this.ref) {
-                    var {top: y, left: x, width: w, height: h} = this.ref.getBoundingClientRect();
-                    this.context.registerSharedElement(url, name, this.ref, {w, h, x, y}, data);
+                    var {scrollY, scrollX} = window;
+                    var {top, left, width: w, height: h} = this.ref.getBoundingClientRect();
+                    this.context.registerSharedElement(url, name, this.ref, {w, h, x: left + scrollX, y: top + scrollY}, data);
                 }
             } else {
                 this.context.unregisterSharedElement(url, name);
