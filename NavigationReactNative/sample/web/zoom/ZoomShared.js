@@ -9,7 +9,7 @@ export default (props) => (
     onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
     onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
-      !name.startsWith('text') ? <View
+      !name.startsWith('text') ? <div
         style={{
           position: 'absolute',
           left: x,
@@ -18,7 +18,7 @@ export default (props) => (
           height: h,
           backgroundColor: color,
         }}>
-      </View> : <Text          
+      </div> : <div          
         style={{
           position: 'absolute',
           left: x,
@@ -32,7 +32,7 @@ export default (props) => (
           zIndex: 1,
         }}>
           {color}
-        </Text>
+        </div>
     )}
   </SharedElementMotion>
 );

@@ -41,7 +41,7 @@ export default class Grid extends React.Component {
                     data={{color, fontSize: 20, fontColor: '#fff'}}
                     name={`text${color}`}
                     stateNavigator={stateNavigator}>
-                    <Text style={styles.text}>{color}</Text>
+                    <div style={styles.text}>{color}</div>
                   </SharedElement>
                 </div>
               </div>
