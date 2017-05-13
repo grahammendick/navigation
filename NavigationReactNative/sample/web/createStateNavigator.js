@@ -1,7 +1,6 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import Scene from './Scene';
-import spring from './spring';
 
 export default () => {
   const stateNavigator = new StateNavigator([
@@ -17,20 +16,20 @@ export default () => {
   sceneSouth.renderScene = (data, moveScene) => <Scene direction="South" color="green" stateNavigator={stateNavigator}/>;
   sceneWest.renderScene = (data, moveScene) => <Scene direction="West" color="black" stateNavigator={stateNavigator}/>;
 
-  sceneNorth.unmountedStyle = () => ({translateY: spring(-1, {stiffness: 90})});
-  sceneEast.unmountedStyle = () => ({translateX: spring(1, {stiffness: 90})});
-  sceneSouth.unmountedStyle = () => ({translateY: spring(1, {stiffness: 90})});
-  sceneWest.unmountedStyle = () => ({translateX: spring(-1, {stiffness: 90})});
+  sceneNorth.unmountedStyle = () => ({translateY: -1});
+  sceneEast.unmountedStyle = () => ({translateX: 1});
+  sceneSouth.unmountedStyle = () => ({translateY: 1});
+  sceneWest.unmountedStyle = () => ({translateX: -1});
 
-  sceneNorth.mountedStyle = () => ({translateY: spring(0, {stiffness: 90})});
-  sceneEast.mountedStyle = () => ({translateX: spring(0, {stiffness: 90})});
-  sceneSouth.mountedStyle = () => ({translateY: spring(0, {stiffness: 90})});
-  sceneWest.mountedStyle = () => ({translateX: spring(0, {stiffness: 90})});
+  sceneNorth.mountedStyle = () => ({translateY: 0});
+  sceneEast.mountedStyle = () => ({translateX: 0});
+  sceneSouth.mountedStyle = () => ({translateY: 0});
+  sceneWest.mountedStyle = () => ({translateX: 0});
 
-  sceneNorth.crumbStyle = () => ({translateY: spring(-.3, {stiffness: 90})});
-  sceneEast.crumbStyle = () => ({translateX: spring(.3, {stiffness: 90})});
-  sceneSouth.crumbStyle = () => ({translateY: spring(.3, {stiffness: 90})});
-  sceneWest.crumbStyle = () => ({translateX: spring(-.3, {stiffness: 90})});
+  sceneNorth.crumbStyle = () => ({translateY: -.3});
+  sceneEast.crumbStyle = () => ({translateX: .3});
+  sceneSouth.crumbStyle = () => ({translateY: .3});
+  sceneWest.crumbStyle = () => ({translateX: -.3});
   
   return stateNavigator;
 }

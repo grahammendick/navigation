@@ -7,31 +7,42 @@ const nextDirection = {
   West: 'North',
 };
 
-export default ({direction, color, stateNavigator}) => {
-  const {url, crumbs} = stateNavigator.stateContext;
-  return (
-    <div style={{
-        ...styles.scene,
-        backgroundColor: color
-      }}>
-      <div
-        style={styles.text}
-        onClick={() => {
-          if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigate(`scene${nextDirection[direction]}`);          
+export default class Scene extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    const {url, crumbs} = props.stateNavigator.stateContext;
+    this.url = url;
+    this.crumbs = crumbs;
+  }
+  shouldComponentUpdate(props) {
+    return this.url === props.stateNavigator.stateContext.url;
+  }
+  render() {
+    const {direction, color, stateNavigator} = this.props;
+    return (
+      <div style={{
+          ...styles.scene,
+          backgroundColor: color
         }}>
-        {direction} {crumbs.length}
+        <div
+          style={styles.text}
+          onClick={() => {
+            if (this.url === stateNavigator.stateContext.url)
+              stateNavigator.navigate(`scene${nextDirection[direction]}`);          
+          }}>
+          {direction} {this.crumbs.length}
+        </div>
+        {stateNavigator.canNavigateBack(1) && <div
+          style={styles.text}
+          onClick={() => {
+            if (this.url === stateNavigator.stateContext.url)
+              stateNavigator.navigateBack(1);
+          }}>
+          Back
+        </div>}
       </div>
-      {stateNavigator.canNavigateBack(1) && <div
-        style={styles.text}
-        onClick={() => {
-          if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigateBack(1);
-        }}>
-        Back
-      </div>}
-    </div>
-  )
+    )
+  };
 };
 
 const styles = {

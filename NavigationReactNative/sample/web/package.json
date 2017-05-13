@@ -10,7 +10,7 @@
     "navigation": "*",
     "react": "*",
     "react-dom": "*",
-    "react-motion": "*",
+    "react-move": "*",
     "webpack": "^1.12.10"
   },
   "scripts": {
