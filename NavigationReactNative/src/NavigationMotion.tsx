@@ -13,7 +13,6 @@ class NavigationMotion extends React.Component<any, any> {
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
-        this.getSharedElements = this.getSharedElements.bind(this);
         this.state = {scenes: {}, move: false, rest: false};
     }
     static defaultProps = {
