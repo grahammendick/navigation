@@ -45,7 +45,7 @@ export default class Detail extends React.Component {
 
 const styles = {
   detail: {
-    width: '360px',
+    width: '370px',
     height: '460px',
     display: 'flex',
     flexDirection: 'column',

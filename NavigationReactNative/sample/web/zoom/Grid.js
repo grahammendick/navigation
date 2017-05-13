@@ -55,7 +55,9 @@ export default class Grid extends React.Component {
 
 const styles = {
   grid: {
-    width: '360px',
+    width: '370px',
+    height: '460px',
+    overflow: 'auto',
   },
   colors: {
     display: 'flex',
