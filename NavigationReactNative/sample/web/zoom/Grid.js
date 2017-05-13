@@ -28,10 +28,10 @@ export default class Grid extends React.Component {
               data={{color}}
               stateNavigator={stateNavigator}>
               <div
-                style={[
-                  {backgroundColor: color},
-                  styles.color
-                ]}
+                style={{
+                  backgroundColor: color,
+                  ...styles.color
+                }}
                 onClick={() => {
                   if (this.url === stateNavigator.stateContext.url)
                     stateNavigator.navigate('detail', {color});
@@ -55,22 +55,24 @@ export default class Grid extends React.Component {
 
 const styles = {
   grid: {
-    flex: 1,
-    backgroundColor: '#fff',
+    width: '360px',
   },
   colors: {
+    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginTop: 50,
   },
   color: {
+    display: 'flex',
     width: 100,
     height: 150,
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 20,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     color: '#fff',
