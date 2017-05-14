@@ -1,8 +1,8 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-import { BackAndroid } from 'react-native';
+import { BackHandler } from 'react-native';
 
-class NavigationBackAndroid extends React.Component<any, any> {
+class NavigationBackHandler extends React.Component<any, any> {
     private url: string;
     constructor(props, context) {
         super(props, context);
@@ -16,10 +16,10 @@ class NavigationBackAndroid extends React.Component<any, any> {
         return this.props.stateNavigator || (this.context as any).stateNavigator;
     }
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.onBack);
+        BackHandler.addEventListener('hardwareBackPress', this.onBack);
     }
     componentWillUnmount() {
-        BackAndroid.removeEventListener('hardwareBackPress', this.onBack);
+        BackHandler.removeEventListener('hardwareBackPress', this.onBack);
     }
     onBack() {
         var stateNavigator = this.getStateNavigator();
@@ -40,4 +40,4 @@ class NavigationBackAndroid extends React.Component<any, any> {
     }
 }
 
-export default NavigationBackAndroid;
+export default NavigationBackHandler;
