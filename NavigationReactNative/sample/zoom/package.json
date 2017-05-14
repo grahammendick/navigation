@@ -10,7 +10,7 @@
 		"navigation": "^4.0.0",
 		"navigation-react-native": "^1.0.0",
 		"react": "16.0.0-alpha.6",
-		"react-native": "0.43.2"
+		"react-native": "0.44.0"
 	},
 	"devDependencies": {
 		"babel-jest": "19.0.0",
