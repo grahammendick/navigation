@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, ListView, Image, Text, TouchableWithoutFeedback, Animated} from 'react-native';
 import {SharedElement} from 'navigation-react-native';
-import ZoomShared from './ZoomShared';
 
 export default class List extends React.Component {
   constructor(props, context) {
@@ -98,7 +97,6 @@ export default class List extends React.Component {
     const {places, stateNavigator} = this.props;
     return (
       <View style={styles.container}>
-        <ZoomShared stateNavigator={stateNavigator} />
         <ListView
           contentContainerStyle={styles.contentContainer}
           dataSource={this.state.dataSource}

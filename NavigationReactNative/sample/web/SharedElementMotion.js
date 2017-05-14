@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Animate } from 'react-move';
-import { View, findNodeHandle } from 'react-native';
 
-class SharedElementMotion extends React.Component<any, any> {
+class SharedElementMotion extends React.Component {
     componentWillReceiveProps(nextProps) {
         var sharedElements = this.getSharedElements(nextProps.sharedElements);
         var prevSharedElements = this.getSharedElements(this.props.sharedElements);
@@ -14,9 +13,9 @@ class SharedElementMotion extends React.Component<any, any> {
             var from = fromSharedElements[name];
             var to = toSharedElements[name];
             if (!to || from.mountedElement.ref !== to.mountedElement.ref) {
-                if (action && this.isMounted(from.oldElement.ref))
+                if (action)
                     action(name, from.oldElement.ref, from.oldElement.data);
-                if (action && this.isMounted(from.mountedRef))
+                if (action)
                     action(name, from.mountedElement.ref, from.mountedElement.data);
             }
         }
@@ -24,21 +23,13 @@ class SharedElementMotion extends React.Component<any, any> {
     getSharedElements(sharedElements) {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
-    isMounted(ref) {
-        try {
-            findNodeHandle(ref);
-            return true;
-        } catch(e) {
-            return false;
-        }
-    }
     getStyle(name, {measurements, data, style}) {
         return this.props.elementStyle(name, {...measurements, ...data});
     }
     render() {
         var {sharedElements, style, children, duration, easing} = this.props;
         return (sharedElements.length !== 0 &&
-            <View style={style}>
+            <div style={style}>
                 {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
                     <Animate
                         key={name}
@@ -50,7 +41,7 @@ class SharedElementMotion extends React.Component<any, any> {
                         )}
                     </Animate>
                 ))}
-            </View>
+            </div>
         );
     }
 }

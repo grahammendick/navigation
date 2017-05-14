@@ -1,16 +1,15 @@
 import React from 'react';
-import {StyleSheet, Text, View, Platform} from 'react-native';
-import {SharedElementMotion} from 'navigation-react-native';
+import SharedElementMotion from '../SharedElementMotion';
 
 export default (props) => (
   <SharedElementMotion
     {...props}
     elementStyle={(name, data) => data}
     style={styles.motion}
-    onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
-    onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}>
+    onAnimating={(name, ref) => {ref.style.opacity = 0}}
+    onAnimated={(name, ref) => {ref.style.opacity = 1}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
-      !name.startsWith('text') ? <View
+      !name.startsWith('text') ? <div
         style={{
           position: 'absolute',
           left: x,
@@ -19,7 +18,7 @@ export default (props) => (
           height: h,
           backgroundColor: color,
         }}>
-      </View> : <Text          
+      </div> : <div          
         style={{
           position: 'absolute',
           left: x,
@@ -30,18 +29,15 @@ export default (props) => (
           textAlign: 'center',
           fontWeight: 'bold',
           color: fontColor,
-          ...Platform.select({
-            ios: {zIndex: 1},
-            android: {elevation: 1},
-          }),
+          zIndex: 1,
         }}>
           {color}
-        </Text>
+        </div>
     )}
   </SharedElementMotion>
 );
 
-const styles = StyleSheet.create({
+const styles = {
   motion: {
     position: 'absolute',
     left: 0,
@@ -50,5 +46,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'transparent',
   },
-});
+};
 

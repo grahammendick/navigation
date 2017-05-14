@@ -13,9 +13,7 @@ class NavigationMotion extends React.Component<any, any> {
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
-        this.movingSharedElement = this.movingSharedElement.bind(this);
-        this.getSharedElements = this.getSharedElements.bind(this);
-        this.state = {scenes: {}, move: false};
+        this.state = {scenes: {}, move: false, rest: false};
     }
     static defaultProps = {
         duration: 300,
@@ -26,16 +24,12 @@ class NavigationMotion extends React.Component<any, any> {
     }
     static childContextTypes = {
         registerSharedElement: React.PropTypes.func,
-        unregisterSharedElement: React.PropTypes.func,
-        movingSharedElement: React.PropTypes.func,
-        getSharedElements: React.PropTypes.func
+        unregisterSharedElement: React.PropTypes.func
     }
     getChildContext() {
         return {
             registerSharedElement: this.registerSharedElement,
-            unregisterSharedElement: this.unregisterSharedElement,
-            movingSharedElement: this.movingSharedElement,
-            getSharedElements: this.getSharedElements
+            unregisterSharedElement: this.unregisterSharedElement
         };
     }
     private getStateNavigator(): StateNavigator {
@@ -59,7 +53,7 @@ class NavigationMotion extends React.Component<any, any> {
             var {url} = this.getStateNavigator().stateContext;
             var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
             scenes[url] = {...scenes[url], element};
-            return {scenes, move: false};
+            return {scenes, move: false, rest: false};
         });
     }
     moveScene(url) {
@@ -78,9 +72,6 @@ class NavigationMotion extends React.Component<any, any> {
     unregisterSharedElement(url, name) {
         if (this.sharedElements[url])
             delete this.sharedElements[url][name];
-    }
-    movingSharedElement(url, name, style) {
-        this.sharedElements[url][name].style = style;
     }
     getSharedElements() {
         var {url, oldUrl} = this.getStateNavigator().stateContext;
@@ -111,7 +102,7 @@ class NavigationMotion extends React.Component<any, any> {
                     delete this.sharedElements[url];
                 }
             }
-            return {scenes};
+            return {scenes, rest: true};
         });
     }
     getScenes(){
@@ -128,11 +119,12 @@ class NavigationMotion extends React.Component<any, any> {
         return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
     }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing} = this.props;
+        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
+        var {move, rest} = this.state;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Transition
-                duration={!this.state.move ? duration : 50} easing={easing}
+                duration={!move ? duration : 50} easing={easing}
                 data={this.getScenes()}
                 getKey={sceneContext => sceneContext.url}
                 enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext)}
@@ -144,6 +136,10 @@ class NavigationMotion extends React.Component<any, any> {
                         {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, this.getSceneData(data, url))
                         ))}
+                        {sharedElementMotion && sharedElementMotion({
+                            sharedElements: !rest ? this.getSharedElements() : [],
+                            duration, easing
+                        })}
                     </View>
                 )}
             </Transition>

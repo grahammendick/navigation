@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import {NavigationBackAndroid, SharedElement} from 'navigation-react-native';
+import SharedElement from '../SharedElement';
 
 export default class Detail extends React.Component {
   constructor(props, context) {
@@ -15,41 +14,41 @@ export default class Detail extends React.Component {
   render() {
     const {color, stateNavigator} = this.props;
     return (
-      <View style={styles.detail}>
-        <NavigationBackAndroid stateNavigator={stateNavigator} />
-        <TouchableHighlight
-          underlayColor="#fff"
-          onPress={() => {
+      <div style={styles.detail}>
+        <div
+          onClick={() => {
             if (this.url === stateNavigator.stateContext.url)
               stateNavigator.navigateBack(1);
           }}>
-          <Text style={styles.back}>X</Text>
-        </TouchableHighlight>
+          X
+        </div>
         <SharedElement
           name={color}
           data={{color, hide: true}}
           stateNavigator={stateNavigator}>
-          <View
-            style={[
-              {backgroundColor: color},
-              styles.color
-            ]} />
+          <div
+            style={{
+              backgroundColor: color,
+              ...styles.color
+            }} />
         </SharedElement>
         <SharedElement
           name={`text${color}`}
           data={{color, fontSize: 80, fontColor: '#000', hide: true}}
           stateNavigator={stateNavigator}>
-          <Text style={styles.text}>{color}</Text>
+          <div style={styles.text}>{color}</div>
         </SharedElement>
-      </View>
+      </div>
     );
   }
 };
 
-const styles = StyleSheet.create({
+const styles = {
   detail: {
-    flex: 1,
-    backgroundColor: '#fff',
+    width: '370px',
+    height: '460px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   back: {
     height: 50,
@@ -71,4 +70,4 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontWeight: 'bold',
   },
-});
+};
