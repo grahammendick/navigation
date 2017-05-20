@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Animated, Platform} from 'react-native';
-import {NavigationBackAndroid, SharedElement} from 'navigation-react-native';
+import {NavigationBackHandler, SharedElement} from 'navigation-react-native';
 
 export default class Detail extends React.Component {
   constructor(props, context) {
@@ -54,7 +54,7 @@ export default class Detail extends React.Component {
     });
       return (
       <View style={{ flex: 1 }}>
-        <NavigationBackAndroid stateNavigator={stateNavigator} />
+        <NavigationBackHandler stateNavigator={stateNavigator} />
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.imageContainer}>
             <SharedElement
