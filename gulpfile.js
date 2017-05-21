@@ -71,7 +71,7 @@ var items = [
             'inferno-create-element': 'InfernoCreateElement' } },
         require('./build/npm/navigation-inferno/package.json')),
     Object.assign({ globals: { react: 'React', 'react-native': 'ReactNative',
-            'react-motion': 'ReactMotion' } },
+            'react-move': 'ReactMove' } },
         require('./build/npm/navigation-react-native/package.json'),
         require('./NavigationReactNative/src/tsconfig.json')),
 ];
