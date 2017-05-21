@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
-import {NavigationBackAndroid} from 'navigation-react-native';
+import {NavigationBackHandler} from 'navigation-react-native';
 
 const nextDirection = {
   North: 'East',
@@ -26,7 +26,7 @@ export default class Scene extends React.Component {
         styles.scene,
         {backgroundColor: color}
       ]}>
-        <NavigationBackAndroid stateNavigator={stateNavigator} />
+        <NavigationBackHandler stateNavigator={stateNavigator} />
         <TouchableHighlight
           underlayColor={color}
           onPress={() => {
