@@ -15,7 +15,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, any> {
     }
 
     static contextTypes = {
-        stateNavigator: React.PropTypes.object
+        stateNavigator: () => {}
     }
     
     private getStateNavigator(): StateNavigator {
