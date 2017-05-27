@@ -15,7 +15,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, any> {
     }
 
     static contextTypes = {
-        stateNavigator: React.PropTypes.object
+        stateNavigator: () => {}
     }
     
     private getStateNavigator(): StateNavigator {

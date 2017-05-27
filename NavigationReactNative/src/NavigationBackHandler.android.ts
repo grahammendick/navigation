@@ -10,7 +10,7 @@ class NavigationBackHandler extends React.Component<any, any> {
         this.url = this.getStateNavigator().stateContext.url;
     }
     static contextTypes = {
-        stateNavigator: React.PropTypes.object
+        stateNavigator: () => {}
     }
     private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || (this.context as any).stateNavigator;

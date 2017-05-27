@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Transition } from 'react-move';
 
 class NavigationMotion extends React.Component {
@@ -136,11 +136,11 @@ NavigationMotion.defaultProps = {
     easing: 'easeLinear'
 }
 NavigationMotion.contextTypes = {
-    stateNavigator: React.PropTypes.object
+    stateNavigator: () => {}
 }
 NavigationMotion.childContextTypes = {
-    registerSharedElement: React.PropTypes.func,
-    unregisterSharedElement: React.PropTypes.func
+    registerSharedElement: () => {},
+    unregisterSharedElement: () => {}
 }
 
 export default NavigationMotion;

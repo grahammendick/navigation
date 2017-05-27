@@ -20,11 +20,11 @@ class NavigationMotion extends React.Component<any, any> {
         easing: 'easeLinear'
     }
     static contextTypes = {
-        stateNavigator: React.PropTypes.object
+        stateNavigator: () => {}
     }
     static childContextTypes = {
-        registerSharedElement: React.PropTypes.func,
-        unregisterSharedElement: React.PropTypes.func
+        registerSharedElement: () => {},
+        unregisterSharedElement: () => {}
     }
     getChildContext() {
         return {
