@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Animate } from 'react-move';
 
 class SharedElementMotion extends React.Component {

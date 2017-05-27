@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 class SharedElement extends React.Component {
     constructor(props, context) {
@@ -44,9 +44,9 @@ class SharedElement extends React.Component {
 }
 
 SharedElement.contextTypes = {
-    stateNavigator: React.PropTypes.object,
-    registerSharedElement: React.PropTypes.func,
-    unregisterSharedElement: React.PropTypes.func
+    stateNavigator: () => {},
+    registerSharedElement: () => {},
+    unregisterSharedElement: () => {}
 }
 
 export default SharedElement;
