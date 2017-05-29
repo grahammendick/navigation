@@ -87,8 +87,10 @@ var url: string = stateNavigator.stateContext.url;
 var title: string = stateNavigator.stateContext.title;
 var page: number = stateNavigator.stateContext.data.page;
 state = stateNavigator.stateContext.oldState;
+url = stateNavigator.stateContext.oldUrl;
 page = stateNavigator.stateContext.oldData.page;
 state = stateNavigator.stateContext.previousState;
+url = stateNavigator.stateContext.previousUrl;
 page = stateNavigator.stateContext.previousData.page;
 
 // Navigation Data
