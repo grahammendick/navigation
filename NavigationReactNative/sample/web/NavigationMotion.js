@@ -7,8 +7,8 @@ class NavigationMotion extends React.Component {
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
-        this.state = {scenes: {}, move: false, rest: false};
-        this.sharedElements = {}
+        this.state = {scenes: {}, rest: false};
+        this.sharedElements = {};
     }
     getChildContext() {
         return {
@@ -35,19 +35,9 @@ class NavigationMotion extends React.Component {
         this.setState(({scenes: prevScenes}) => {
             var scenes = {...prevScenes};
             var {url} = this.getStateNavigator().stateContext;
-            var element = state.renderScene(this.getSceneData(data, url, prevScenes), this.moveScene(url));
-            scenes[url] = {...scenes[url], element};
-            return {scenes, move: false, rest: false};
+            scenes[url] = {...scenes[url], element: state.renderScene(data)};
+            return {scenes, rest: false};
         });
-    }
-    moveScene(url) {
-        return data => {
-            this.setState(({scenes: prevScenes}) => {
-                var scenes = {...prevScenes};
-                scenes[url] = {...scenes[url], data};
-                return {scenes, move: !!data};
-            });
-        };
     }
     registerSharedElement(url, name, ref, measurements, data) {
         this.sharedElements[url] = this.sharedElements[url] || {};
@@ -95,33 +85,28 @@ class NavigationMotion extends React.Component {
             {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
         ));
     }
-    getSceneData(data, url, prevScenes) {
-        var scene = (prevScenes || this.state.scenes)[url];
-        return {...data, ...(scene && scene.data)};
-    }
-    getStyle(styleProp, {state, data, url}) {
-        return typeof styleProp === 'function' ? styleProp(state, this.getSceneData(data, url)) : styleProp;
+    getStyle(styleProp, state, data) {
+        return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
-        var {move, rest} = this.state;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Transition
-                duration={!move ? duration : 50} easing={easing}
+                duration={duration} easing={easing}
                 data={this.getScenes()}
-                getKey={sceneContext => sceneContext.url}
-                enter={sceneContext => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, sceneContext)}
-                update={sceneContext => this.getStyle(sceneContext.mount ? mountedStyle : crumbStyle, sceneContext)}
-                leave={sceneContext => this.getStyle(unmountedStyle, sceneContext)}
+                getKey={({url}) => url}
+                enter={({state, data}) => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
+                update={({mount, state, data}) => this.getStyle(mount ? mountedStyle : crumbStyle, state, data)}
+                leave={({state, data}) => this.getStyle(unmountedStyle, state, data)}
                 onRest={() => this.clearScenes()}>
                 {tweenStyles => (
                     <div style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
-                            children(style, scene && scene.element, key, state, this.getSceneData(data, url))
+                            children(style, scene && scene.element, key, state, data)
                         ))}
                         {sharedElementMotion && sharedElementMotion({
-                            sharedElements: !rest ? this.getSharedElements() : [],
+                            sharedElements: !this.state.rest ? this.getSharedElements() : [],
                             duration, easing
                         })}
                     </div>
