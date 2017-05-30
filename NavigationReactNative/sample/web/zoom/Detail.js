@@ -1,46 +1,35 @@
 import React from 'react';
 import SharedElement from '../SharedElement';
 
-export default class Detail extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    const {url, crumbs} = props.stateNavigator.stateContext;
-    this.url = url;
-    this.crumbs = crumbs;
-  }
-  shouldComponentUpdate(props) {
-    return this.url === props.stateNavigator.stateContext.url;
-  }
-  render() {
-    const {color, stateNavigator} = this.props;
-    return (
-      <div style={styles.detail}>
-        <div
-          onClick={() => {
-            if (this.url === stateNavigator.stateContext.url)
-              stateNavigator.navigateBack(1);
-          }}>
-          X
-        </div>
-        <SharedElement
-          name={color}
-          data={{color, hide: true}}
-          stateNavigator={stateNavigator}>
-          <div
-            style={{
-              backgroundColor: color,
-              ...styles.color
-            }} />
-        </SharedElement>
-        <SharedElement
-          name={`text${color}`}
-          data={{color, fontSize: 80, fontColor: '#000', hide: true}}
-          stateNavigator={stateNavigator}>
-          <div style={styles.text}>{color}</div>
-        </SharedElement>
+export default ({color, stateNavigator}) => {
+  const {url} = stateNavigator.stateContext;
+  return (
+    <div style={styles.detail}>
+      <div
+        onClick={() => {
+          if (url === stateNavigator.stateContext.url)
+            stateNavigator.navigateBack(1);
+        }}>
+        X
       </div>
-    );
-  }
+      <SharedElement
+        name={color}
+        data={{color, hide: true}}
+        stateNavigator={stateNavigator}>
+        <div
+          style={{
+            backgroundColor: color,
+            ...styles.color
+          }} />
+      </SharedElement>
+      <SharedElement
+        name={`text${color}`}
+        data={{color, fontSize: 80, fontColor: '#000', hide: true}}
+        stateNavigator={stateNavigator}>
+        <div style={styles.text}>{color}</div>
+      </SharedElement>
+    </div>
+  );
 };
 
 const styles = {

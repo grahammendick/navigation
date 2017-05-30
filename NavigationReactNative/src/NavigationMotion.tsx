@@ -2,6 +2,7 @@ import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import { Transition } from 'react-move';
 import { View } from 'react-native';
+import Scene from './Scene';
 
 class NavigationMotion extends React.Component<any, any> {
     private sharedElements = {};
@@ -50,8 +51,10 @@ class NavigationMotion extends React.Component<any, any> {
     onNavigate(oldState, state, data) {
         this.setState(({scenes: prevScenes}) => {
             var scenes = {...prevScenes};
-            var {url} = this.getStateNavigator().stateContext;
-            scenes[url] = {...scenes[url], element: state.renderScene(data)};
+            var stateNavigator = this.getStateNavigator();
+            var {url} = stateNavigator.stateContext;
+            var element = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
+            scenes[url] = {...scenes[url], element};
             return {scenes, rest: false};
         });
     }

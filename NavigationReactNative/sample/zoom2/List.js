@@ -13,9 +13,6 @@ export default class List extends React.Component {
     });
     this.state = {dataSource: ds.cloneWithRows(props.places)};
   }
-  shouldComponentUpdate(props) {
-    return this.url === props.stateNavigator.stateContext.url;
-  }
   componentDidMount() {
     this.props.stateNavigator.onNavigate(this._onNavigate);
   }
