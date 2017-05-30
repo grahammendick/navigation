@@ -65,7 +65,7 @@ var items = [
         require('./build/npm/navigation-knockout/package.json')),
     Object.assign({ globals: { angular: 'angular' } },
         require('./build/npm/navigation-angular/package.json')),
-    Object.assign({ globals: { '@cycle/dom': 'CycleDOM', rx: 'Rx' } },
+    Object.assign({ globals: { 'cycle/dom': 'CycleDOM', rx: 'Rx' } },
         require('./build/npm/navigation-cycle/package.json')),
     Object.assign({ globals: { 'inferno-component': 'InfernoComponent',
             'inferno-create-element': 'InfernoCreateElement' } },
