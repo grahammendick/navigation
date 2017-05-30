@@ -13,9 +13,6 @@ export default class Detail extends React.Component {
       navbarAnimation: new Animated.Value(0),
     };
   }
-  shouldComponentUpdate(props) {
-    return this.url === props.stateNavigator.stateContext.url;
-  }
   componentDidMount() {
     this._animate(false);
     this.props.stateNavigator.onNavigate(this._onNavigate);
