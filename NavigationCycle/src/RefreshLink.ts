@@ -1,6 +1,6 @@
 import LinkUtility from './LinkUtility';
 import { StateNavigator } from 'navigation';
-import * as CycleDOM from '@cycle/dom';
+import * as CycleDOM from 'cycle/dom';
 
 var RefreshLink = (stateNavigator: StateNavigator, properties: any, children: any) => {
     var newProperties: any = {};
