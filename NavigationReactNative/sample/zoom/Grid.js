@@ -7,54 +7,43 @@ const colors = [
   'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
 ];
 
-export default class Grid extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    const {url, crumbs} = props.stateNavigator.stateContext;
-    this.url = url;
-    this.crumbs = crumbs;
-  }
-  shouldComponentUpdate(props) {
-    return this.url === props.stateNavigator.stateContext.url;
-  }
-  render() {
-    const {stateNavigator} = this.props;
-    return (
-      <View style={styles.grid}>
-        <ScrollView>
-          <View style={styles.colors}>
-            {colors.map(color => (
-              <SharedElement
-                key={color}
-                name={color}
-                data={{color}}
-                stateNavigator={stateNavigator}>
-                <TouchableHighlight
-                  style={[
-                    {backgroundColor: color},
-                    styles.color
-                  ]}
-                  underlayColor={color}
-                  onPress={() => {
-                    if (this.url === stateNavigator.stateContext.url)
-                      stateNavigator.navigate('detail', {color});
-                  }}>
-                  <View>
-                    <SharedElement
-                      data={{color, fontSize: 20, fontColor: '#fff'}}
-                      name={`text${color}`}
-                      stateNavigator={stateNavigator}>
-                      <Text style={styles.text}>{color}</Text>
-                    </SharedElement>
-                  </View>
-                </TouchableHighlight>
-              </SharedElement>
-            ))}
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
+export default ({stateNavigator}) => {
+  const {url} = stateNavigator.stateContext;
+  return (
+    <View style={styles.grid}>
+      <ScrollView>
+        <View style={styles.colors}>
+          {colors.map(color => (
+            <SharedElement
+              key={color}
+              name={color}
+              data={{color}}
+              stateNavigator={stateNavigator}>
+              <TouchableHighlight
+                style={[
+                  {backgroundColor: color},
+                  styles.color
+                ]}
+                underlayColor={color}
+                onPress={() => {
+                  if (url === stateNavigator.stateContext.url)
+                    stateNavigator.navigate('detail', {color});
+                }}>
+                <View>
+                  <SharedElement
+                    data={{color, fontSize: 20, fontColor: '#fff'}}
+                    name={`text${color}`}
+                    stateNavigator={stateNavigator}>
+                    <Text style={styles.text}>{color}</Text>
+                  </SharedElement>
+                </View>
+              </TouchableHighlight>
+            </SharedElement>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
