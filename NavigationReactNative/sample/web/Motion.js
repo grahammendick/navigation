@@ -19,12 +19,20 @@ class Motion extends React.Component {
         this.setState(({items: prevItems, update}) => {
             const items = update ? target(prevItems, this.props) : prevItems;
             // Interpolate styles
+            this.moveId = requestAnimationFrame(this.move);
             return {items, update: false};
         })
-        this.moveId = requestAnimationFrame(this.move);
     }
-    target(items, props) {
+    target(items, {data, enter, leave}) {
         // Set destinations
+        const dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
+        const itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
+        return items
+            .map(item => ({...item, style: !dataByKey[item.key] ? leave(item.data) : update(item.data)}))
+            .concat(data
+                .filter(dataItem => !itemsByKey[dataItem.key])
+                .map(dataItem => ({...dataItem, style: enter(dataItem)}))
+            );
     }
 }
 
