@@ -27,16 +27,28 @@ class Motion extends React.Component {
         const itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         return items
             .map(item => {
-                const end = !dataByKey[item.key] ? leave(item.data) : update(item.data);
-                return {...item, end, interpolators: this.getInterpolators(item.style, end)};
+                const end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
+                const interpolators = this.getInterpolators(item.style, end);
+                const progress = areEqual(item.style, end) ? progress : 0;
+                return {...item, end, interpolators, progress};
              })
             .concat(data
                 .filter(dataItem => !itemsByKey[dataItem.key])
                 .map(dataItem => {
                     const end = update(dataItem);
-                    return {...dataItem, end, interpolators: this.getInterpolators(enter(dataItem), end)};
+                    const interpolators = this.getInterpolators(enter(dataItem), end);
+                    return {...dataItem, end, interpolators, progress: 0};
                 })
             );
+    }
+    areEqual(from, to) {
+        if (Object.keys(from).length !== Object.keys(to).length)
+            return false;
+        for(var key in from) {
+            if (from[key] !== to[key])
+                return false;
+        }
+        return true;
     }
     getInterpolators(start, end) {
         const interpolators = {};
