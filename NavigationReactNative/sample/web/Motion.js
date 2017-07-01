@@ -31,14 +31,14 @@ class Motion extends React.Component {
                 const equal = areEqual(item.end, end);
                 var progress = equal ? item.progress : 0;
                 var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
-                return {...item, end, interpolators, progress, render: equal};
+                return {...item, end, interpolators, progress, tick: equal};
              })
             .concat(data
                 .filter(dataItem => !itemsByKey[dataItem.key])
                 .map(dataItem => {
                     var end = update(dataItem);
                     var interpolators = this.getInterpolators(enter(dataItem), end);
-                    return {...dataItem, end, interpolators, progress: 0, render: false};
+                    return {...dataItem, end, interpolators, progress: 0, tick: false};
                 })
             );
     }
