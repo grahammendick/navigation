@@ -15,7 +15,7 @@ class Motion extends React.Component {
     }
     move() {
         this.setState(({items: prevItems, update}) => {
-            const items = target(prevItems, this.props);
+            var items = target(prevItems, this.props);
             // Interpolate styles
             this.moveId = requestAnimationFrame(this.move);
             return {items};
@@ -23,21 +23,21 @@ class Motion extends React.Component {
     }
     target(items, {data, enter, leave}) {
         // Set destinations
-        const dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
-        const itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
+        var dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
+        var itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
         return items
             .map(item => {
-                const end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
-                const interpolators = this.getInterpolators(item.style, end);
-                const progress = areEqual(item.style, end) ? progress : 0;
-                return {...item, end, interpolators, progress};
+                var end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
+                var interpolators = this.getInterpolators(item.style, end);
+                const equal = areEqual(item.style, end);
+                return {...item, end, interpolators, progress: equal ? item.progress : 0, render: equal};
              })
             .concat(data
                 .filter(dataItem => !itemsByKey[dataItem.key])
                 .map(dataItem => {
-                    const end = update(dataItem);
-                    const interpolators = this.getInterpolators(enter(dataItem), end);
-                    return {...dataItem, end, interpolators, progress: 0};
+                    var end = update(dataItem);
+                    var interpolators = this.getInterpolators(enter(dataItem), end);
+                    return {...dataItem, end, interpolators, progress: 0, render: false};
                 })
             );
     }
@@ -51,7 +51,7 @@ class Motion extends React.Component {
         return true;
     }
     getInterpolators(start, end) {
-        const interpolators = {};
+        var interpolators = {};
         for(var key in start) {
             interpolators[key] = interpolate(start[key], end[key]);
         }
