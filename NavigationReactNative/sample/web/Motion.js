@@ -69,6 +69,9 @@ class Motion extends React.Component {
         }
         return style;
     }
+    render(){
+        this.props.children(this.state.items);
+    }
 }
 
 export default Motion;
