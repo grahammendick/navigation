@@ -1,5 +1,5 @@
 import React from 'react';
-import { Motion } from './Motion';
+import { Transition } from 'react-move';
 import Scene from './Scene';
 
 class NavigationMotion extends React.Component {
@@ -95,7 +95,7 @@ class NavigationMotion extends React.Component {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
-            <Motion
+            <Transition
                 duration={duration} easing={easing}
                 data={this.getScenes()}
                 getKey={({url}) => url}
@@ -105,12 +105,16 @@ class NavigationMotion extends React.Component {
                 onRest={() => this.clearScenes()}>
                 {tweenStyles => (
                     <div style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data, url}, style}) => (
+                        {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
                             children(style, scene && scene.element, key, state, data)
                         ))}
+                        {sharedElementMotion && sharedElementMotion({
+                            sharedElements: !this.state.rest ? this.getSharedElements() : [],
+                            duration, easing
+                        })}
                     </div>
                 )}
-            </Motion>
+            </Transition>
         );
     }
 }

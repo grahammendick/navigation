@@ -24,7 +24,7 @@ class Motion extends React.Component {
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
                     var equal = areEqual(item.end, end);
-                    var rest = item.progress === 1 && !item.rest ? true : item.rest;
+                    var rest = item.progress === 1 && !item.rest;
                     var progress = equal ? Math.max(Math.min((tick - item.tick) / 500, 1), 0) : 0; 
                     var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
                     var style = this.interpolateStyle(interpolators, end, progress);
