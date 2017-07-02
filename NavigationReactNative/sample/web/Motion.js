@@ -33,6 +33,7 @@ class Motion extends React.Component {
                     }
                     return {key: item.key, data: item.data, style, end, interpolators, progress, tick, rest};
                 })
+                filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
                     .map(item => {
