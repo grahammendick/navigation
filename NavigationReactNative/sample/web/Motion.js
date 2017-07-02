@@ -17,7 +17,7 @@ class Motion extends React.Component {
     move() {
         this.setState(({items: prevItems, update}) => {
             var {data, enter, leave} = this.props;
-            var dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
+            var dataByKey = data.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var tick = performance.now();
             var items = prevItems
@@ -30,12 +30,12 @@ class Motion extends React.Component {
                     return {...item, style, end, interpolators, progress, tick};
                 })
                 .concat(data
-                    .filter(dataItem => !itemsByKey[dataItem.key])
-                    .map(dataItem => {
-                        var style = enter(dataItem);
-                        var end = update(dataItem);
+                    .filter(item => !itemsByKey[item.key])
+                    .map(item => {
+                        var style = enter(item);
+                        var end = update(item);
                         var interpolators = this.getInterpolators(style, end);
-                        return {...dataItem, style, end, interpolators, progress: 0, tick};
+                        return {...item, style, end, interpolators, progress: 0, tick};
                     })
                 );
             this.moveId = requestAnimationFrame(this.move);
