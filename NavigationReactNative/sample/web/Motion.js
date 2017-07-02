@@ -15,32 +15,28 @@ class Motion extends React.Component {
     }
     move() {
         this.setState(({items: prevItems, update}) => {
-            var items = target(prevItems, this.props);
-            // Interpolate styles
+            var {data, enter, leave} = this.props;
+            var dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
+            var itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
+            var items = prevItems
+                .map(item => {
+                    var end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
+                    const equal = areEqual(item.end, end);
+                    var progress = equal ? item.progress : 0;
+                    var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
+                    return {...item, end, interpolators, progress, tick: equal};
+                })
+                .concat(data
+                    .filter(dataItem => !itemsByKey[dataItem.key])
+                    .map(dataItem => {
+                        var end = update(dataItem);
+                        var interpolators = this.getInterpolators(enter(dataItem), end);
+                        return {...dataItem, end, interpolators, progress: 0, tick: false};
+                    })
+                );
             this.moveId = requestAnimationFrame(this.move);
             return {items};
         })
-    }
-    target(items, {data, enter, leave}) {
-        // Set destinations
-        var dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
-        var itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
-        return items
-            .map(item => {
-                var end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
-                const equal = areEqual(item.end, end);
-                var progress = equal ? item.progress : 0;
-                var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
-                return {...item, end, interpolators, progress, tick: equal};
-             })
-            .concat(data
-                .filter(dataItem => !itemsByKey[dataItem.key])
-                .map(dataItem => {
-                    var end = update(dataItem);
-                    var interpolators = this.getInterpolators(enter(dataItem), end);
-                    return {...dataItem, end, interpolators, progress: 0, tick: false};
-                })
-            );
     }
     areEqual(from, to) {
         if (Object.keys(from).length !== Object.keys(to).length)
