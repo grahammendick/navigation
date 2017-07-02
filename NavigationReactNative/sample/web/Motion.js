@@ -1,5 +1,6 @@
 import React from 'react';
 import { interpolate } from 'd3-interpolate';
+import * as Easing from 'd3-ease';
 
 class Motion extends React.Component {
     constructor(props, context) {
@@ -18,20 +19,23 @@ class Motion extends React.Component {
             var {data, enter, leave} = this.props;
             var dataByKey = data.reduce((acc, dataItem) => ({...acc, [dataItem.key]: dataItem}), {});
             var itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
+            var tick = performance.now();
             var items = prevItems
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
                     const equal = areEqual(item.end, end);
-                    var progress = equal ? item.progress : 0;
+                    var progress = equal ? Math.max(Math.min((tick - item.tick) / 500, 1), 0) : 0; 
                     var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
-                    return {...item, end, interpolators, progress, tick: equal};
+                    var style = this.interpolateStyle(interpolators, end, progress);
+                    return {...item, style, end, interpolators, progress, tick};
                 })
                 .concat(data
                     .filter(dataItem => !itemsByKey[dataItem.key])
                     .map(dataItem => {
+                        var style = enter(dataItem);
                         var end = update(dataItem);
-                        var interpolators = this.getInterpolators(enter(dataItem), end);
-                        return {...dataItem, end, interpolators, progress: 0, tick: false};
+                        var interpolators = this.getInterpolators(style, end);
+                        return {...dataItem, style, end, interpolators, progress: 0, tick};
                     })
                 );
             this.moveId = requestAnimationFrame(this.move);
@@ -53,6 +57,13 @@ class Motion extends React.Component {
             interpolators[key] = interpolate(start[key], end[key]);
         }
         return interpolators;        
+    }
+    interpolateStyle(interpolators, end, progress) {
+        var style = {};
+        for(var key in end) {
+            style[key] = interpolators[key](Easing.easeLinear(progress))
+        }
+        return style;
     }
 }
 
