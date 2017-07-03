@@ -30,7 +30,7 @@ class Motion extends React.Component {
                     var equal = this.areEqual(item.end, end);
                     var rest = equal && item.progress === 1;
                     var progress = equal ? Math.min(item.progress + ((tick - item.tick) / 500), 1) : 0; 
-                    var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
+                    var interpolators = (equal && item.interpolators) ? item.interpolators : this.getInterpolators(item.style, end);
                     var style = this.interpolateStyle(interpolators, end, progress);
                     if (onRest && rest && !item.rest) {
                         onRest(item.data, item.key);
@@ -40,12 +40,7 @@ class Motion extends React.Component {
                 .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
-                    .map(item => {
-                        var style = enter(item);
-                        var end = update(item);
-                        var interpolators = this.getInterpolators(style, end);
-                        return {key: getKey(item), data: item, style, end, interpolators, progress: 0, tick, rest: false};
-                    })
+                    .map(item => ({key: getKey(item), data: item, style: enter(item), end: update(item), progress: 0, tick, rest: false}))
                 );
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
