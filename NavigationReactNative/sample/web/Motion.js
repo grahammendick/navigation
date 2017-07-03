@@ -63,16 +63,14 @@ class Motion extends React.Component {
     }
     getInterpolators(start, end) {
         var interpolators = {};
-        for(var key in start) {
+        for(var key in start)
             interpolators[key] = interpolate(start[key], end[key]);
-        }
         return interpolators;        
     }
     interpolateStyle(interpolators, end, progress) {
         var style = {};
-        for(var key in end) {
+        for(var key in end)
             style[key] = interpolators[key](Easing.easeLinear(progress))
-        }
         return style;
     }
     render() {
