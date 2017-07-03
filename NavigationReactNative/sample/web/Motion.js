@@ -8,11 +8,15 @@ class Motion extends React.Component {
         this.move = this.move.bind(this);
         this.state = {items: []};
     }
+    componentWillReceiveProps() {
+        cancelAnimationFrame(this.moveId);
+        this.moveId = requestAnimationFrame(this.move);
+    }
     componentDidMount() {
         this.moveId = requestAnimationFrame(this.move)
     }
     componentWillUnmount() {
-        cancelAnimationFrame(this.moveId);            
+        cancelAnimationFrame(this.moveId);
     }
     move() {
         this.setState(({items: prevItems, update}) => {
@@ -43,7 +47,8 @@ class Motion extends React.Component {
                         return {key: getKey(item), data: item, style, end, interpolators, progress: 0, tick, rest: false};
                     })
                 );
-            this.moveId = requestAnimationFrame(this.move);
+            if (items.filter(({rest}) => !rest).length !== 0)
+                this.moveId = requestAnimationFrame(this.move);
             return {items};
         })
     }
