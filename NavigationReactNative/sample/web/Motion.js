@@ -24,6 +24,7 @@ class Motion extends React.Component {
             var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var tick = performance.now();
+            var newItem = {progress: 0, tick, rest: false};
             var items = prevItems
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);                
@@ -40,7 +41,7 @@ class Motion extends React.Component {
                 .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
-                    .map(item => ({key: getKey(item), data: item, style: enter(item), end: update(item), progress: 0, tick, rest: false}))
+                    .map(item => ({...newItem, key: getKey(item), data: item, style: enter(item), end: update(item)}))
                 );
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
