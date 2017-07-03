@@ -9,8 +9,8 @@ class Motion extends React.Component {
         this.state = {items: []};
     }
     componentWillReceiveProps() {
-        // cancelAnimationFrame(this.moveId);
-        this.moveId = requestAnimationFrame(this.move);
+        if (!this.moveId)
+            this.moveId = requestAnimationFrame(this.move);
     }
     componentDidMount() {
         this.moveId = requestAnimationFrame(this.move)
@@ -47,6 +47,7 @@ class Motion extends React.Component {
                         return {key: getKey(item), data: item, style, end, interpolators, progress: 0, tick, rest: false};
                     })
                 );
+            this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
                 this.moveId = requestAnimationFrame(this.move);
             return {items};
