@@ -9,7 +9,7 @@ class Motion extends React.Component {
         this.state = {items: []};
     }
     componentWillReceiveProps() {
-        cancelAnimationFrame(this.moveId);
+        // cancelAnimationFrame(this.moveId);
         this.moveId = requestAnimationFrame(this.move);
     }
     componentDidMount() {

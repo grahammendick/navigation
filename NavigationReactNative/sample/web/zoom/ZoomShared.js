@@ -9,7 +9,7 @@ export default (props) => (
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
-      !name.startsWith('text') ? <div
+      !name.startsWith('text') ? <div key={name}
         style={{
           position: 'absolute',
           left: x,
@@ -18,7 +18,7 @@ export default (props) => (
           height: h,
           backgroundColor: color,
         }}>
-      </div> : <div          
+      </div> : <div key={name}     
         style={{
           position: 'absolute',
           left: x,

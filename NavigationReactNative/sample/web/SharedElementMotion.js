@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animate } from 'react-move';
+import Motion from './Motion';
 
 class SharedElementMotion extends React.Component {
     componentWillReceiveProps(nextProps) {
@@ -29,19 +29,19 @@ class SharedElementMotion extends React.Component {
     render() {
         var {sharedElements, style, children, duration, easing} = this.props;
         return (sharedElements.length !== 0 &&
-            <div style={style}>
-                {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
-                    <Animate
-                        key={name}
-                        duration={duration} easing={easing} immutable={false}
-                        data={this.getStyle(name, mounted)}
-                        default={this.getStyle(name, old)}>
-                        {tweenStyle => (
-                            children(tweenStyle, name, old.data, mounted.data)
-                        )}
-                    </Animate>
-                ))}
-            </div>
+            <Motion
+                data={sharedElements}
+                getKey={({name}) => name}
+                enter={({name, oldElement}) => this.getStyle(name, oldElement)}
+                update={({name, mountedElement}) => this.getStyle(name, mountedElement)}>
+                {tweenStyles => (
+                    <div style={style}>
+                        {tweenStyles.map(({data: {name, oldElement, mountedElement}, style}) => (
+                            children(style, name, oldElement.data, mountedElement.data)
+                        ))}
+                    </div>
+                )}
+            </Motion>
         );
     }
 }
