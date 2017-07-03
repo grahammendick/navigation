@@ -5,8 +5,8 @@ class SharedElementMotion extends React.Component {
     componentWillReceiveProps(nextProps) {
         var sharedElements = this.getSharedElements(nextProps.sharedElements);
         var prevSharedElements = this.getSharedElements(this.props.sharedElements);
-        this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
+        this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
     diff(fromSharedElements, toSharedElements, action) {
         for(var name in fromSharedElements) {
