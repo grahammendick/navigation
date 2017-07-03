@@ -16,14 +16,14 @@ class Motion extends React.Component {
     }
     move() {
         this.setState(({items: prevItems, update}) => {
-            var {data, enter, leave, getKey, onRest} = this.props;
+            var {data, enter, leave, update, getKey, onRest} = this.props;
             var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
-            var itemsByKey = items.reduce((acc, item) => ({...acc, [item.key]: item}), {});
+            var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var tick = performance.now();
             var items = prevItems
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(item.data);                
-                    var equal = areEqual(item.end, end);
+                    var equal = this.areEqual(item.end, end);
                     var rest = item.progress === 1;
                     var progress = equal ? Math.max(Math.min((tick - item.tick) / 500, 1), 0) : 0; 
                     var interpolators = equal ? item.interpolators : this.getInterpolators(item.style, end);
@@ -33,14 +33,14 @@ class Motion extends React.Component {
                     }
                     return {key: item.key, data: item.data, style, end, interpolators, progress, tick, rest};
                 })
-                filter(item => !item.rest || dataByKey[item.key])
+                .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
                     .map(item => {
                         var style = enter(item);
                         var end = update(item);
                         var interpolators = this.getInterpolators(style, end);
-                        return {key: getKey(data), data: item, style, end, interpolators, progress: 0, tick, rest: false};
+                        return {key: getKey(item), data: item, style, end, interpolators, progress: 0, tick, rest: false};
                     })
                 );
             this.moveId = requestAnimationFrame(this.move);
@@ -70,8 +70,8 @@ class Motion extends React.Component {
         }
         return style;
     }
-    render(){
-        this.props.children(this.state.items);
+    render() {
+        return this.props.children(this.state.items);
     }
 }
 
