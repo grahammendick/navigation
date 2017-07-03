@@ -35,7 +35,7 @@ class Motion extends React.Component {
                     if (onRest && rest && !item.rest) {
                         onRest(item.data, item.key);
                     }
-                    return {key: item.key, data: item.data, style, end, interpolators, progress, tick, rest};
+                    return {...item, style, end, interpolators, progress, tick, rest};
                 })
                 .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
