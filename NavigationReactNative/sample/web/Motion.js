@@ -21,10 +21,10 @@ class Motion extends React.Component {
     move() {
         this.setState(({items: prevItems}) => {
             var {data, enter, leave, update, getKey, onRest} = this.props;
-            var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
-            var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var tick = performance.now();
             var newItem = {progress: 0, tick, rest: false};
+            var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
+            var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);                
