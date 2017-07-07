@@ -29,7 +29,7 @@ class Motion extends React.Component {
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);                
                     var unchanged = this.areEqual(item.end, end);
-                    var reverse = this.areEqual(item.start, end);
+                    var reverse = !unchanged && this.areEqual(item.start, end);
                     var rest = unchanged && item.progress === 1;
                     var start = unchanged ? item.start : (reverse ? item.end : item.style);
                     var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / 5000), 1) : (reverse ? 1 - item.progress : 0); 
