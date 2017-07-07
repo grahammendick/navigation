@@ -37,8 +37,7 @@ class NavigationMotion extends React.Component {
             var scenes = {...prevScenes};
             var stateNavigator = this.getStateNavigator();
             var {url} = stateNavigator.stateContext;
-            var element = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
-            scenes[url] = {...scenes[url], element};
+            scenes[url] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
             return {scenes, rest: false};
         });
     }
@@ -102,7 +101,7 @@ class NavigationMotion extends React.Component {
                 {tweenStyles => (
                     <div style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
-                            children(tweenStyle, scene && scene.element, key, state, data)
+                            children(tweenStyle, scene, key, state, data)
                         ))}
                         {sharedElementMotion && sharedElementMotion({
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
