@@ -32,11 +32,11 @@ class Motion extends React.Component {
                     var reverse = !unchanged && this.areEqual(item.start, end);
                     var rest = unchanged && item.progress === 1;
                     var start = unchanged ? item.start : (reverse ? item.end : item.style);
-                    var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / 5000), 1) : (reverse ? 1 - item.progress : 0); 
+                    var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / 500), 1) : (reverse ? 1 - item.progress : 0); 
                     var interpolators = (unchanged && item.interpolators) || this.getInterpolators(start, end);
                     var style = this.interpolateStyle(interpolators, end, progress);
                     if (onRest && rest && !item.rest) {
-                        onRest(item);
+                        onRest(item.data);
                     }
                     return {...item, start, style, end, interpolators, progress, tick, rest};
                 })

@@ -66,20 +66,16 @@ class NavigationMotion extends React.Component {
         }
         return sharedElements;
     }
-    clearScenes() {
-        this.setState(({scenes: prevScenes}) => {
+    clearScene(url) {
+        this.setState(({scenes: prevScenes, rest: prevRest}) => {
             var scenes = {...prevScenes};
-            var urls = this.getScenes().reduce((urls, {url}) => {
-                urls[url] = true;
-                return urls;
-            }, {});
-            for(var url in prevScenes) {
-                if (!urls[url]) {
-                    delete scenes[url];
-                    delete this.sharedElements[url];
-                }
+            var scene = this.getScenes().filter(scene => scene.url === url)[0];
+            if (!scene) {
+                delete scenes[url];
+                delete this.sharedElements[url];
             }
-            return {scenes, rest: true};
+            var rest = prevRest || (scene && scene.mount);
+            return {scenes, rest};
         });
     }
     getScenes(){
@@ -102,7 +98,7 @@ class NavigationMotion extends React.Component {
                 enter={({state, data}) => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
                 update={({mount, state, data}) => this.getStyle(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getStyle(unmountedStyle, state, data)}
-                onRest={() => this.clearScenes()}>
+                onRest={({url}) => this.clearScene(url)}>
                 {tweenStyles => (
                     <div style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
