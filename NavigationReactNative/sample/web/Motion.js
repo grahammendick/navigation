@@ -28,12 +28,12 @@ class Motion extends React.Component {
             var items = prevItems
                 .map(item => {
                     var end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);                
-                    var equal = this.areEqual(item.end, end);
+                    var unchanged = this.areEqual(item.end, end);
                     var reverse = this.areEqual(item.start, end);
-                    var rest = equal && item.progress === 1;
-                    var start = equal ? item.start : (reverse ? item.end : item.style);
-                    var progress = equal ? Math.min(item.progress + ((tick - item.tick) / 5000), 1) : (reverse ? 1 - item.progress : 0); 
-                    var interpolators = (equal && item.interpolators) || this.getInterpolators(start, end);
+                    var rest = unchanged && item.progress === 1;
+                    var start = unchanged ? item.start : (reverse ? item.end : item.style);
+                    var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / 5000), 1) : (reverse ? 1 - item.progress : 0); 
+                    var interpolators = (unchanged && item.interpolators) || this.getInterpolators(start, end);
                     var style = this.interpolateStyle(interpolators, end, progress);
                     if (onRest && rest && !item.rest) {
                         onRest(item);
