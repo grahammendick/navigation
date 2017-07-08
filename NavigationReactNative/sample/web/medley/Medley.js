@@ -7,6 +7,7 @@ export default ({stateNavigator}) => (
     unmountedStyle={state => state.unmountedStyle()}
     mountedStyle={state => state.mountedStyle()}
     crumbStyle={state => state.crumbStyle()}
+    duration={state => state.duration()}
     stateNavigator={stateNavigator}>
     {({translateX  = 0, translateY = 0}, scene, url) => (
       <div

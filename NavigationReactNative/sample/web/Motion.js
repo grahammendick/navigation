@@ -20,7 +20,7 @@ class Motion extends React.Component {
     }
     move() {
         this.setState(({items: prevItems}) => {
-            var {data, enter, leave, update, getKey, onRest} = this.props;
+            var {data, enter, leave, update, getKey, duration, onRest} = this.props;
             var tick = performance.now();
             var newItem = {progress: 0, tick, rest: false};
             var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
@@ -32,7 +32,7 @@ class Motion extends React.Component {
                     var reverse = !unchanged && this.areEqual(item.start, end);
                     var rest = unchanged && item.progress === 1;
                     var start = unchanged ? item.start : (reverse ? item.end : item.style);
-                    var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / 500), 1) : (reverse ? 1 - item.progress : 0); 
+                    var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / duration(item.data)), 1) : (reverse ? 1 - item.progress : 0); 
                     var interpolators = (unchanged && item.interpolators) || this.getInterpolators(start, end);
                     var style = this.interpolateStyle(interpolators, end, progress);
                     if (onRest && rest && !item.rest) {

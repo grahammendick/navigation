@@ -83,20 +83,21 @@ class NavigationMotion extends React.Component {
             {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
         ));
     }
-    getStyle(styleProp, state, data) {
-        return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+    getPropValue(prop, state, data) {
+        return typeof prop === 'function' ? prop(state, data) : prop;
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
-                duration={duration} easing={easing}
+                easing={easing}
                 data={this.getScenes()}
                 getKey={({url}) => url}
-                enter={({state, data}) => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
-                update={({mount, state, data}) => this.getStyle(mount ? mountedStyle : crumbStyle, state, data)}
-                leave={({state, data}) => this.getStyle(unmountedStyle, state, data)}
+                enter={({state, data}) => this.getPropValue(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
+                update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
+                leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
+                duration={({state, data}) => this.getPropValue(duration, state, data)}
                 onRest={({url}) => this.clearScene(url)}>
                 {tweenStyles => (
                     <div style={style}>
