@@ -52,6 +52,8 @@ class SharedElementMotion extends React.Component {
 }
 
 SharedElementMotion.defaultProps = {
+    duration: 300,
+    easing: 'easeLinear',
     elementStyle: (name, data) => data
 }
 

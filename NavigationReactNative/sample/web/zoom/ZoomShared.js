@@ -1,9 +1,9 @@
 import React from 'react';
 import SharedElementMotion from '../SharedElementMotion';
 
-export default (props) => (
+export default ({sharedElements}) => (
   <SharedElementMotion
-    {...props}
+    sharedElements={sharedElements}
     style={styles.motion}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
