@@ -106,7 +106,8 @@ class NavigationMotion extends React.Component {
                         ))}
                         {sharedElementMotion && sharedElementMotion({
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
-                            duration, easing
+                            duration: this.getPropValue(duration, stateContext.state, stateContext.data),
+                            easing: this.getPropValue(easing, stateContext.state, stateContext.data)
                         })}
                     </div>
                 )}
