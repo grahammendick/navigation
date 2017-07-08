@@ -43,7 +43,7 @@ class Motion extends React.Component {
                         nextItem.interpolators = this.getInterpolators(nextItem.start, nextItem.end);
 
                     }
-                    nextItem.style = this.interpolateStyle(nextItem.interpolators, easing(item.data), nextItem.end, nextItem.progress);
+                    nextItem.style = this.interpolateStyle(nextItem, easing(item.data));
                     if (onRest && nextItem.rest && !item.rest) {
                         onRest(item.data);
                     }
@@ -81,10 +81,10 @@ class Motion extends React.Component {
             interpolators[key] = interpolate(start[key], end[key]);
         return interpolators;        
     }
-    interpolateStyle(interpolators, easing, end, progress) {
+    interpolateStyle(item, easing) {
         var style = {};
-        for(var key in end)
-            style[key] = interpolators[key](Easing[easing](progress))
+        for(var key in item.end)
+            style[key] = item.interpolators[key](Easing[easing](item.progress))
         return style;
     }
     render() {
