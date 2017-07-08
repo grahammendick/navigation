@@ -91,13 +91,13 @@ class NavigationMotion extends React.Component {
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
-                easing={easing}
                 data={this.getScenes()}
                 getKey={({url}) => url}
                 enter={({state, data}) => this.getPropValue(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
                 update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
                 duration={({state, data}) => this.getPropValue(duration, state, data)}
+                easing={({state, data}) => this.getPropValue(easing, state, data)}
                 onRest={({url}) => this.clearScene(url)}>
                 {tweenStyles => (
                     <div style={style}>

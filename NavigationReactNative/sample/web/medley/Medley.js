@@ -8,6 +8,7 @@ export default ({stateNavigator}) => (
     mountedStyle={state => state.mountedStyle()}
     crumbStyle={state => state.crumbStyle()}
     duration={state => state.duration()}
+    easing={state => state.easing()}
     stateNavigator={stateNavigator}>
     {({translateX  = 0, translateY = 0}, scene, url) => (
       <div
