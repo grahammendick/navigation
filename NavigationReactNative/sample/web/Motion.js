@@ -29,7 +29,6 @@ class Motion extends React.Component {
                     var nextItem = {key: item.key, data: item.data, tick};
                     nextItem.end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);
                     var unchanged = this.areEqual(item.end, nextItem.end);
-                    var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
                     if (unchanged) {
                         nextItem.rest = item.progress === 1;
                         nextItem.start = item.start;
@@ -38,6 +37,7 @@ class Motion extends React.Component {
                         nextItem.interpolators = item.interpolators;
                     } else {
                         nextItem.rest = false;
+                        var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
                         nextItem.start = reverse ? item.end : item.style;
                         nextItem.progress = reverse ? 1 - item.progress : 0;
                         nextItem.interpolators = this.getInterpolators(nextItem);
