@@ -41,7 +41,6 @@ class Motion extends React.Component {
                         nextItem.start = reverse ? item.end : item.style;
                         nextItem.progress = reverse ? 1 - item.progress : 0;
                         nextItem.interpolators = this.getInterpolators(nextItem.start, nextItem.end);
-
                     }
                     nextItem.style = this.interpolateStyle(nextItem, easing(item.data));
                     if (onRest && nextItem.rest && !item.rest) {
