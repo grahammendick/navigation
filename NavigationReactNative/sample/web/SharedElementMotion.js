@@ -51,4 +51,8 @@ class SharedElementMotion extends React.Component {
     }
 }
 
+SharedElementMotion.defaultProps = {
+    elementStyle: (name, data) => data
+}
+
 export default SharedElementMotion;
