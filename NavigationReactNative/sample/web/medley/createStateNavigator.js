@@ -37,9 +37,9 @@ export default () => {
   sceneWest.duration = 4000;
 
   sceneNorth.easing = 'easeLinear';
-  sceneEast.easing = 'easePolyIn';
-  sceneSouth.easing = 'easeQuadOut';
-  sceneWest.easing = 'easeCubicIn';
+  sceneEast.easing = 'easeExpIn';
+  sceneSouth.easing = 'easeExpOut';
+  sceneWest.easing = 'easeExpInOut';
   
   return stateNavigator;
 }
