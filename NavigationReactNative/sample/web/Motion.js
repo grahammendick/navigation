@@ -30,8 +30,8 @@ class Motion extends React.Component {
                     nextItem.end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);
                     var unchanged = this.areEqual(item.end, nextItem.end);
                     if (unchanged) {
-                        nextItem.rest = item.progress === 1;
                         nextItem.start = item.start;
+                        nextItem.rest = item.progress === 1;
                         var progressDelta = (nextItem.tick - item.tick) / duration(item.data);
                         nextItem.progress = Math.min(item.progress + progressDelta, 1);
                         nextItem.interpolators = item.interpolators;
