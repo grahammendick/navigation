@@ -22,28 +22,43 @@ class Motion extends React.Component {
         this.setState(({items: prevItems}) => {
             var {data, enter, leave, update, getKey, duration, easing, onRest} = this.props;
             var tick = performance.now();
-            var newItem = {progress: 0, tick, rest: false};
             var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
                 .map(item => {
-                    var end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);                
-                    var unchanged = this.areEqual(item.end, end);
-                    var reverse = !unchanged && this.areEqual(item.start, end);
-                    var rest = unchanged && item.progress === 1;
-                    var start = unchanged ? item.start : (reverse ? item.end : item.style);
-                    var progress = unchanged ? Math.min(item.progress + ((tick - item.tick) / duration(item.data)), 1) : (reverse ? 1 - item.progress : 0); 
-                    var interpolators = (unchanged && item.interpolators) || this.getInterpolators(start, end);
-                    var style = this.interpolateStyle(interpolators, easing(item.data), end, progress);
-                    if (onRest && rest && !item.rest) {
+                    var nextItem = {key: item.key, data: item.data, tick};
+                    nextItem.end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);
+                    var unchanged = this.areEqual(item.end, nextItem.end);
+                    var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
+                    if (unchanged) {
+                        nextItem.rest = item.progress === 1;
+                        nextItem.start = item.start;
+                        var progressDelta = (nextItem.tick - item.tick) / duration(item.data);
+                        nextItem.progress = Math.min(item.progress + progressDelta, 1);
+                        nextItem.interpolators = item.interpolators;
+                    } else {
+                        nextItem.rest = false;
+                        nextItem.start = reverse ? item.end : item.style;
+                        nextItem.progress = reverse ? 1 - item.progress : 0;
+                        nextItem.interpolators = this.getInterpolators(nextItem.start, nextItem.end);
+
+                    }
+                    nextItem.style = this.interpolateStyle(nextItem.interpolators, easing(item.data), nextItem.end, nextItem.progress);
+                    if (onRest && nextItem.rest && !item.rest) {
                         onRest(item.data);
                     }
-                    return {...item, start, style, end, interpolators, progress, tick, rest};
+                    return nextItem;
                 })
                 .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
-                    .map(item => ({...newItem, key: getKey(item), data: item, start: enter(item), style: enter(item), end: update(item)}))
+                    .map(item => {
+                        var newItem = {key: getKey(item), data: item, progress: 0, tick, rest: false};
+                        newItem.start = newItem.style = enter(item);
+                        newItem.end = update(item);
+                        newItem.interpolators = this.getInterpolators(newItem.start, newItem.end);
+                        return newItem;
+                    })
                 );
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
