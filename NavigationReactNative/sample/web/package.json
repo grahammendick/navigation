@@ -7,10 +7,11 @@
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
+    "d3-ease": "*",
+    "d3-interpolate": "*",
     "navigation": "*",
     "react": "*",
     "react-dom": "*",
-    "react-move": "*",
     "webpack": "^1.12.10"
   },
   "scripts": {
