@@ -43,9 +43,8 @@ class Motion extends React.Component {
                         nextItem.interpolators = this.getInterpolators(nextItem);
                     }
                     nextItem.style = this.interpolateStyle(nextItem, easing(item.data));
-                    if (onRest && nextItem.rest && !item.rest) {
+                    if (onRest && nextItem.rest && !item.rest)
                         onRest(item.data);
-                    }
                     return nextItem;
                 })
                 .filter(item => !item.rest || dataByKey[item.key])
