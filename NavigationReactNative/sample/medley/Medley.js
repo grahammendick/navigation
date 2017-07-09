@@ -5,9 +5,11 @@ import {NavigationMotion} from 'navigation-react-native';
 export default ({stateNavigator}) => (
   <NavigationMotion
     startStateKey="sceneNorth"
-    unmountedStyle={state => state.unmountedStyle()}
-    mountedStyle={state => state.mountedStyle()}
-    crumbStyle={state => state.crumbStyle()}
+    unmountedStyle={state => state.unmountedStyle}
+    mountedStyle={state => state.mountedStyle}
+    crumbStyle={state => state.crumbStyle}
+    duration={state => state.duration}
+    easing={state => state.easing}
     style={{flex: 1}}
     stateNavigator={stateNavigator}>
     {({translateX = 0, translateY = 0}, scene, url) => (
