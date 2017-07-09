@@ -18,10 +18,9 @@ class Motion extends React.Component {
     componentWillUnmount() {
         cancelAnimationFrame(this.moveId);
     }
-    move() {
+    move(tick) {
         this.setState(({items: prevItems}) => {
             var {data, enter, leave, update, getKey, duration, easing, onRest} = this.props;
-            var tick = performance.now();
             var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
