@@ -13,7 +13,8 @@
     "react-native"
   ],
   "dependencies": {
-    "react-move": "^1.1.5"
+    "d3-ease": "*",
+    "d3-interpolate": "*"
   },
   "peerDependencies": {
     "navigation": "*",
