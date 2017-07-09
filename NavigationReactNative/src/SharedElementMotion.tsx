@@ -1,13 +1,18 @@
 import * as React from 'react';
-import { Animate } from 'react-move';
+import Motion from './Motion';
 import { View, findNodeHandle } from 'react-native';
 
 class SharedElementMotion extends React.Component<any, any> {
+    static defaultProps = {
+        duration: 300,
+        easing: 'easeLinear',
+        elementStyle: (name, data) => data
+    }
     componentWillReceiveProps(nextProps) {
         var sharedElements = this.getSharedElements(nextProps.sharedElements);
         var prevSharedElements = this.getSharedElements(this.props.sharedElements);
-        this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
+        this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
     diff(fromSharedElements, toSharedElements, action) {
         for(var name in fromSharedElements) {
@@ -35,22 +40,27 @@ class SharedElementMotion extends React.Component<any, any> {
     getStyle(name, {measurements, data, style}) {
         return this.props.elementStyle(name, {...measurements, ...data});
     }
+    getPropValue(prop, name) {
+        return typeof prop === 'function' ? prop(name) : prop;
+    }
     render() {
         var {sharedElements, style, children, duration, easing} = this.props;
         return (sharedElements.length !== 0 &&
-            <View style={style}>
-                {sharedElements.map(({name, oldElement: old, mountedElement: mounted}) => (
-                    <Animate
-                        key={name}
-                        duration={duration} easing={easing} immutable={false}
-                        data={this.getStyle(name, mounted)}
-                        default={this.getStyle(name, old)}>
-                        {tweenStyle => (
-                            children(tweenStyle, name, old.data, mounted.data)
-                        )}
-                    </Animate>
-                ))}
-            </View>
+            <Motion
+                data={sharedElements}
+                getKey={({name}) => name}
+                enter={({name, oldElement}) => this.getStyle(name, oldElement)}
+                update={({name, mountedElement}) => this.getStyle(name, mountedElement)}
+                duration={({name}) => this.getPropValue(duration, name)}
+                easing={({name}) => this.getPropValue(easing, name)}>
+                {tweenStyles => (
+                    <View style={style}>
+                        {tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
+                            children(tweenStyle, name, oldElement.data, mountedElement.data)
+                        ))}
+                    </View>
+                )}
+            </Motion>
         );
     }
 }
