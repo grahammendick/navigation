@@ -51,7 +51,8 @@ class Motion extends React.Component {
                 .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
-                    .map((item, index) => {
+                    .map(item => {
+                        var index = dataByKey[getKey(item)].index;
                         var newItem = {key: getKey(item), data: item, progress: 0, tick, rest: false, index};
                         newItem.start = newItem.style = enter(item);
                         newItem.end = update(item);
