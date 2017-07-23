@@ -10,7 +10,7 @@ export default (props) => (
     onAnimating={(name, ref) => {ref.setNativeProps({style:{opacity: 0}})}}
     onAnimated={(name, ref) => {ref.setNativeProps({style:{opacity: 1}})}}>
     {({x, y, w, h}, name, {image, text}) => (
-      name.startsWith('image') ? <Image
+      name.startsWith('image') ? <Image key={name}
         source={image}
         style={{
           position: 'absolute',
@@ -19,7 +19,7 @@ export default (props) => (
           width: w,
           height: h,
         }}>
-      </Image> : <View
+      </Image> : <View key={name}
         style={[{
           position: 'absolute',
           left: x,
