@@ -22,12 +22,14 @@ class Motion extends React.Component<any, any> {
     move(tick) {
         this.setState(({items: prevItems}) => {
             var {data, enter, leave, update, getKey, duration, easing, onRest} = this.props;
-            var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
+            var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: { ...item, index }}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
-                .map(item => {
+                .map((item, index) => {
                     var nextItem: any = {key: item.key, data: item.data, tick};
-                    nextItem.end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);
+                    var matchedItem = dataByKey[item.key];
+                    nextItem.end = !matchedItem ? leave(item.data) : update(matchedItem);
+                    nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
                     var unchanged = this.areEqual(item.end, nextItem.end);
                     if (unchanged) {
                         nextItem.start = item.start;
@@ -51,13 +53,15 @@ class Motion extends React.Component<any, any> {
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
                     .map(item => {
-                        var newItem: any = {key: getKey(item), data: item, progress: 0, tick, rest: false};
+                        var index = dataByKey[getKey(item)].index;
+                        var newItem: any = {key: getKey(item), data: item, progress: 0, tick, rest: false, index};
                         newItem.start = newItem.style = enter(item);
                         newItem.end = update(item);
                         newItem.interpolators = this.getInterpolators(newItem);
                         return newItem;
                     })
-                );
+                )
+                .sort((a, b) => a.index - b.index);
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
                 this.moveId = requestAnimationFrame(this.move);
