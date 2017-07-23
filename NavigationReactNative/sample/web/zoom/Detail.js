@@ -14,7 +14,7 @@ export default ({color, stateNavigator}) => {
       </div>
       <SharedElement
         name={color}
-        data={{color, hide: true}}
+        data={{color}}
         stateNavigator={stateNavigator}>
         <div
           style={{
@@ -24,7 +24,7 @@ export default ({color, stateNavigator}) => {
       </SharedElement>
       <SharedElement
         name={`text${color}`}
-        data={{color, fontSize: 80, fontColor: '#000', hide: true}}
+        data={{color, fontSize: 80, fontColor: '#000'}}
         stateNavigator={stateNavigator}>
         <div style={styles.text}>{color}</div>
       </SharedElement>

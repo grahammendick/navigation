@@ -1,15 +1,14 @@
 import React from 'react';
 import SharedElementMotion from '../SharedElementMotion';
 
-export default (props) => (
+export default ({sharedElements}) => (
   <SharedElementMotion
-    {...props}
-    elementStyle={(name, data) => data}
+    sharedElements={sharedElements}
     style={styles.motion}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
-      !name.startsWith('text') ? <div
+      !name.startsWith('text') ? <div key={name}
         style={{
           position: 'absolute',
           left: x,
@@ -18,7 +17,7 @@ export default (props) => (
           height: h,
           backgroundColor: color,
         }}>
-      </div> : <div          
+      </div> : <div key={name}     
         style={{
           position: 'absolute',
           left: x,

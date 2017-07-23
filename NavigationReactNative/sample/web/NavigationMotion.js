@@ -1,5 +1,5 @@
 import React from 'react';
-import { Transition } from 'react-move';
+import Motion from './Motion';
 import Scene from './Scene';
 
 class NavigationMotion extends React.Component {
@@ -37,8 +37,7 @@ class NavigationMotion extends React.Component {
             var scenes = {...prevScenes};
             var stateNavigator = this.getStateNavigator();
             var {url} = stateNavigator.stateContext;
-            var element = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
-            scenes[url] = {...scenes[url], element};
+            scenes[url] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
             return {scenes, rest: false};
         });
     }
@@ -66,20 +65,16 @@ class NavigationMotion extends React.Component {
         }
         return sharedElements;
     }
-    clearScenes() {
-        this.setState(({scenes: prevScenes}) => {
+    clearScene(url) {
+        this.setState(({scenes: prevScenes, rest: prevRest}) => {
             var scenes = {...prevScenes};
-            var urls = this.getScenes().reduce((urls, {url}) => {
-                urls[url] = true;
-                return urls;
-            }, {});
-            for(var url in prevScenes) {
-                if (!urls[url]) {
-                    delete scenes[url];
-                    delete this.sharedElements[url];
-                }
+            var scene = this.getScenes().filter(scene => scene.url === url)[0];
+            if (!scene) {
+                delete scenes[url];
+                delete this.sharedElements[url];
             }
-            return {scenes, rest: true};
+            var rest = prevRest || (scene && scene.mount);
+            return {scenes, rest};
         });
     }
     getScenes(){
@@ -88,33 +83,35 @@ class NavigationMotion extends React.Component {
             {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
         ));
     }
-    getStyle(styleProp, state, data) {
-        return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+    getPropValue(prop, state, data) {
+        return typeof prop === 'function' ? prop(state, data) : prop;
     }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
-            <Transition
-                duration={duration} easing={easing}
+            <Motion
                 data={this.getScenes()}
                 getKey={({url}) => url}
-                enter={({state, data}) => this.getStyle(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
-                update={({mount, state, data}) => this.getStyle(mount ? mountedStyle : crumbStyle, state, data)}
-                leave={({state, data}) => this.getStyle(unmountedStyle, state, data)}
-                onRest={() => this.clearScenes()}>
+                enter={({state, data}) => this.getPropValue(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
+                update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
+                leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
+                duration={({state, data}) => this.getPropValue(duration, state, data)}
+                easing={({state, data}) => this.getPropValue(easing, state, data)}
+                onRest={({url}) => this.clearScene(url)}>
                 {tweenStyles => (
                     <div style={style}>
-                        {tweenStyles.map(({key, data: {scene, state, data, url}, state: style}) => (
-                            children(style, scene && scene.element, key, state, data)
+                        {tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
+                            children(tweenStyle, scene, key, state, data)
                         ))}
                         {sharedElementMotion && sharedElementMotion({
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
-                            duration, easing
+                            duration: this.getPropValue(duration, stateContext.state, stateContext.data),
+                            easing: this.getPropValue(easing, stateContext.state, stateContext.data)
                         })}
                     </div>
                 )}
-            </Transition>
+            </Motion>
         );
     }
 }
