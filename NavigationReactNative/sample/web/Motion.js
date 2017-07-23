@@ -21,12 +21,13 @@ class Motion extends React.Component {
     move(tick) {
         this.setState(({items: prevItems}) => {
             var {data, enter, leave, update, getKey, duration, easing, onRest} = this.props;
-            var dataByKey = data.reduce((acc, item) => ({...acc, [getKey(item)]: item}), {});
+            var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: { ...item, index }}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
-                .map(item => {
+                .map((item, index) => {
                     var nextItem = {key: item.key, data: item.data, tick};
                     nextItem.end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);
+                    nextItem.index = !dataByKey[item.key] ? data.length + index : dataByKey[item.key].index;
                     var unchanged = this.areEqual(item.end, nextItem.end);
                     if (unchanged) {
                         nextItem.start = item.start;
@@ -50,13 +51,15 @@ class Motion extends React.Component {
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
                     .map(item => {
-                        var newItem = {key: getKey(item), data: item, progress: 0, tick, rest: false};
+                        var index = dataByKey[getKey(item)].index;
+                        var newItem = {key: getKey(item), data: item, progress: 0, tick, rest: false, index};
                         newItem.start = newItem.style = enter(item);
                         newItem.end = update(item);
                         newItem.interpolators = this.getInterpolators(newItem);
                         return newItem;
                     })
-                );
+                )
+                .sort((a, b) => a.index - b.index);
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
                 this.moveId = requestAnimationFrame(this.move);
