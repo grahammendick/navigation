@@ -26,8 +26,9 @@ class Motion extends React.Component {
             var items = prevItems
                 .map((item, index) => {
                     var nextItem = {key: item.key, data: item.data, tick};
-                    nextItem.end = !dataByKey[item.key] ? leave(item.data) : update(dataByKey[item.key]);
-                    nextItem.index = !dataByKey[item.key] ? data.length + index : dataByKey[item.key].index;
+                    var matchedItem = dataByKey[item.key];
+                    nextItem.end = !matchedItem ? leave(item.data) : update(matchedItem);
+                    nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
                     var unchanged = this.areEqual(item.end, nextItem.end);
                     if (unchanged) {
                         nextItem.start = item.start;
@@ -50,8 +51,7 @@ class Motion extends React.Component {
                 .filter(item => !item.rest || dataByKey[item.key])
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
-                    .map(item => {
-                        var index = dataByKey[getKey(item)].index;
+                    .map((item, index) => {
                         var newItem = {key: getKey(item), data: item, progress: 0, tick, rest: false, index};
                         newItem.start = newItem.style = enter(item);
                         newItem.end = update(item);
