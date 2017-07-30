@@ -17,7 +17,7 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-typescript": "^0.8.1",
     "tslib": "^1.6.0",
-    "typescript": "^2.3.3"
+    "typescript": "^2.4.2"
   },
   "scripts": {
     "test": "gulp test",
