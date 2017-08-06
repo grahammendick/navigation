@@ -1195,6 +1195,20 @@ csurf@~1.8.3:
     csrf "~3.0.0"
     http-errors "~1.3.1"
 
+d3-color@1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.0.3.tgz#bc7643fca8e53a8347e2fbdaffa236796b58509b"
+
+d3-ease@*:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.3.tgz#68bfbc349338a380c44d8acc4fbc3304aa2d8c0e"
+
+d3-interpolate@*:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.1.5.tgz#69e099ff39214716e563c9aec3ea9d1ea4b8a79f"
+  dependencies:
+    d3-color "1"
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -2615,6 +2629,17 @@ mute-stream@0.0.5:
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
+
+navigation-react-native@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/navigation-react-native/-/navigation-react-native-2.0.0.tgz#8d519e50db4399f32d5972ee42a56106a20d76ef"
+  dependencies:
+    d3-ease "*"
+    d3-interpolate "*"
+
+navigation@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/navigation/-/navigation-4.0.1.tgz#e1896878c31ecc15f4475a43d979918ae069d31b"
 
 negotiator@0.5.3:
   version "0.5.3"
