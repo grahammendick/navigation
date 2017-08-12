@@ -1,29 +1,13 @@
 {
   "name": "twitter",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "description": "Hello Expo!",
+  "author": null,
   "private": true,
-  "devDependencies": {
-    "react-native-scripts": "0.0.20",
-    "jest-expo": "^0.2.1",
-    "react-test-renderer": "~15.4.0"
-  },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
-  "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
-  },
-  "jest": {
-    "preset": "jest-expo"
-  },
+  "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
-    "expo": "14.0.2",
-    "navigation": "^4.0.0",
-    "navigation-react-native": "^1.0.0",
-    "react": "~15.4.0",
-    "react-native": "0.41.2",
-    "react-native-scrollable-tab-view": "^0.7.3"
+    "expo": "^19.0.0",
+    "react": "16.0.0-alpha.12",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-19.0.0.tar.gz"
   }
 }
