@@ -11,6 +11,6 @@
     "navigation-react-native": "^2.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-19.0.0.tar.gz",
-    "react-native-scrollable-tab-view": "^0.6.7"
+    "react-native-scrollable-tab-view": "^0.6.6"
   }
 }
