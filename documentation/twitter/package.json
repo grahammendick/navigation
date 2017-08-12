@@ -7,7 +7,10 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "expo": "^19.0.0",
+    "navigation": "^4.0.1",
+    "navigation-react-native": "^2.0.0",
     "react": "16.0.0-alpha.12",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-19.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-19.0.0.tar.gz",
+    "react-native-scrollable-tab-view": "^0.6.7"
   }
 }
