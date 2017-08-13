@@ -1,19 +1,13 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
-import {NavigationMotion, spring} from 'navigation-react-native';
-
-const getStyle = (translate, scale, opacity) => ({
-  translate: spring(translate),
-  scale: spring(scale),
-  opacity: spring(opacity)
-});
+import {NavigationMotion} from 'navigation-react-native';
 
 export default ({stateNavigator, startStateKey, visible}) => (
   <NavigationMotion
     startStateKey={startStateKey}
-    unmountedStyle={getStyle(1, 1, 1)}
-    mountedStyle={getStyle(0, 1, 1)}
-    crumbStyle={getStyle(0.05, 0.9, 0)}
+    unmountedStyle={{translate: 1, scale: 1, opacity: 1}}
+    mountedStyle={{translate: 0, scale: 1, opacity: 1}}
+    crumbStyle={{translate: 0.05, scale: 0.9, opacity: 0}}
     style={{flex: +visible, backgroundColor: 'black'}}
     stateNavigator={stateNavigator}>
     {({translate, scale, opacity}, scene, url) => (

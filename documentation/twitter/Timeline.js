@@ -1,13 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, Image, ScrollView, View, TouchableHighlight} from 'react-native';
-import {NavigationBackAndroid} from 'navigation-react-native';
+import {NavigationBackHandler} from 'navigation-react-native';
 import Banner from './Banner';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
   followers, following, tweets}, stateNavigator}) => (
   <View style={{flex: 1}}>
-    <NavigationBackAndroid stateNavigator={stateNavigator} />
+    <NavigationBackHandler stateNavigator={stateNavigator} />
     <Banner title={name} stateNavigator={stateNavigator} />
     <ScrollView ref={el => {if (el) this.scrollView = el}} style={styles.view}>
       <View>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableHighlight, Text, View, Animated} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {NavigationBackAndroid} from 'navigation-react-native';
+import {NavigationBackHandler} from 'navigation-react-native';
 
 export default ({activeTab, goToPage, containerWidth, scrollValue, stateNavigator}) => {
   const tabUnderlineStyle = {
@@ -24,7 +24,7 @@ export default ({activeTab, goToPage, containerWidth, scrollValue, stateNavigato
   }  
   return (
     <View>
-      <NavigationBackAndroid stateNavigator={stateNavigator} navigating={navigating} />
+      <NavigationBackHandler stateNavigator={stateNavigator} navigating={navigating} />
       <View style={styles.banner}>
         <Text style={styles.title}>Home</Text>
       </View>

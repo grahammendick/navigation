@@ -5,7 +5,7 @@ import Twitter from './Twitter';
 
 const stateNavigator = createStateNavigator();
 
-export default App = () => (
+export default TwitterAndroid = () => (
   <Twitter
     stateNavigator={stateNavigator}
     startStateKey="home"

@@ -7,7 +7,7 @@ import Twitter from './Twitter';
 const timelineStateNavigator = createStateNavigator();
 const notificationsStateNavigator = createStateNavigator();
 
-export default class App extends Component {
+export default class TwitterIOS extends Component {
   constructor(props) {
     super(props);
     this.state = {activeTab: 'timeline'};
