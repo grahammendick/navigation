@@ -7,8 +7,8 @@ import Person from "./Person.js";
 import { StateNavigator } from "Navigation";
 
 /**
- * Configures the states for the two views. Adds the Relay Route and Component
- * to each state so that a generic function can render the Relay RootContainer.
+ * Configures the states for the two views. Adds the Relay query and Component
+ * to each state so that a generic function can render the Relay QueryRenderer.
  */
 var stateNavigator = new StateNavigator([
   {
