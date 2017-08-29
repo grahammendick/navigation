@@ -1,4 +1,4 @@
-# Navigation Relay (Modern)
+# Navigation Relay Modern
 Navigation doesn't own your components so it integrates well with other libraries, like Relay. This sample uses [relay modern](https://facebook.github.io/relay/docs/relay-modern.html)
 
 ## Run
