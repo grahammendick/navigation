@@ -46,7 +46,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, any> {
     }
     
     render() {
-        var props: any = { ref: (el) => this['el'] = el };
+        var props: any = {};
         for(var key in this.props) {
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];

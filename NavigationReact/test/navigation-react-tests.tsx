@@ -20,7 +20,7 @@ RefreshLinkTest = () => {
             disableActive={true}
             lazy={false}
             historyAction="replace"
-            navigating= {(e: MouseEvent, domId: string, link: string) => true}
+            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, domId: string, link: string) => true}
             stateNavigator={stateNavigator}
             target="_blank"
             aria-label="Go to the second page of people">
@@ -43,7 +43,7 @@ NavigationLinkTest = () => {
             disableActive={false}
             lazy={false}
             historyAction="add"
-            navigating= {(e: MouseEvent, domId: string, link: string) => true}
+            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, domId: string, link: string) => true}
             stateNavigator={stateNavigator}
             target="_blank"
             aria-label="View the person's details">
@@ -61,7 +61,7 @@ NavigationBackLinkTest = () => {
             distance={1}
             lazy={false}
             historyAction="none"
-            navigating= {(e: MouseEvent, domId: string, link: string) => true}
+            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, domId: string, link: string) => true}
             stateNavigator={stateNavigator}
             target="_blank"
             aria-label="Go back to the list of people">
