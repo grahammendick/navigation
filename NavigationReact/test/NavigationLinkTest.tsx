@@ -1430,9 +1430,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -1451,9 +1450,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ ctrlKey: true, preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, ctrlKey: true, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1472,9 +1470,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ shiftKey: true, preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, shiftKey: true, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1493,9 +1490,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ metaKey: true, preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, metaKey: true, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1514,9 +1510,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ altKey: true, preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, altKey: true, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1535,9 +1530,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ button: true, preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, button: true, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1557,9 +1551,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -1579,9 +1572,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1606,9 +1598,8 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            var evt = { preventDefault: () => {} };
+            var evt = { currentTarget: { href: link.props['href'] }, preventDefault: () => {} };
             link.props['onClick'](evt);
             assert.strictEqual(navigatingEvt, evt);
             assert.equal(navigatingLink, '/r');
@@ -1632,10 +1623,9 @@ describe('NavigationLinkTest', function () {
             );
             var link = renderer.getRenderOutput();
             var el = { href: null };
-            link['ref'](el);
             stateNavigator.navigate('s', { x: 'a' });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: el, preventDefault: () => {} });
             assert.equal(el.href, '#/r?x=a');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
             assert.equal(stateNavigator.stateContext.data.x, 'a');
@@ -1656,11 +1646,10 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var addHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
             assert.strictEqual(addHistory, true);
         })
     });
@@ -1680,11 +1669,10 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var replaceHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
             assert.strictEqual(replaceHistory, true);
         })
     });
@@ -1704,11 +1692,10 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>
             );
             var link = renderer.getRenderOutput();
-            link['ref']({ href: link.props['href'] });
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var noneHistory = true;
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
-            link.props['onClick']({ preventDefault: () => {} });
+            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
             assert.strictEqual(noneHistory, true);
         })
     });
