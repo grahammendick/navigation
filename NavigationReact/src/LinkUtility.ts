@@ -55,22 +55,21 @@ class LinkUtility {
             && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
     }
     
-    static addListeners(component: React.Component<any, any>, stateNavigator: StateNavigator, props: any, toProps: any, getLink: () => string) {
+    static addListeners(component: React.Component<any, any>, stateNavigator: StateNavigator, props: any, toProps: React.AnchorHTMLAttributes<HTMLAnchorElement>, getLink: () => string) {
         var lazy = !!props.lazy;
-        toProps.onClick = (e: MouseEvent, domId: string) => {
-            var element = <HTMLAnchorElement> component['el'];
-            var href = element.href;
+        toProps.onClick = (e) => {
+            var href = e.currentTarget.href;
             if (lazy) {
                 component.forceUpdate();
                 href = getLink();
                 if (href)
-                    element.href = href;
+                    e.currentTarget.href = href;
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (href) {
-                    var link = stateNavigator.historyManager.getUrl(element);
+                    var link = stateNavigator.historyManager.getUrl(e.currentTarget);
                     var navigating = this.getNavigating(props);
-                    if (navigating(e, domId, link)) {
+                    if (navigating(e, link)) {
                         e.preventDefault();
                         stateNavigator.navigateLink(link, props.historyAction);
                     }
@@ -78,14 +77,14 @@ class LinkUtility {
             }
         };
         if (lazy)
-            toProps.onContextMenu = (e: MouseEvent) => component.forceUpdate();
+            toProps.onContextMenu = () => component.forceUpdate();
     }
 
-    static getNavigating(props: any): (e: MouseEvent, domId: string, link: string) => boolean {
-        return (e: MouseEvent, domId: string, link: string) => {
+    static getNavigating(props: any): (e, link: string) => boolean {
+        return (e, link: string) => {
             var listener = props.navigating;
             if (listener)
-                return listener(e, domId, link);
+                return listener(e, undefined, link);
             return true;
         }
     }
