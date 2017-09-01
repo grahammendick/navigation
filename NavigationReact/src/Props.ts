@@ -1,10 +1,10 @@
 import { StateNavigator } from 'navigation';
-import { HTMLProps } from 'react';
+import { HTMLProps, MouseEvent } from 'react';
 
 interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     lazy?: boolean;
     historyAction?: 'add' | 'replace' | 'none';
-    navigating?: (e: MouseEvent, domId: string, link: string) => boolean;
+    navigating?: (e: MouseEvent<HTMLAnchorElement>, domId: string, link: string) => boolean;
     stateNavigator?: StateNavigator;
 }
 
