@@ -1,6 +1,5 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
-import { View } from 'react-native';
 
 class SharedElement extends React.Component<any, any> {
     private ref: Element;
