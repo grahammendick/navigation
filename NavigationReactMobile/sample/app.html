@@ -7,6 +7,14 @@
         table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
         ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
         .active{font-weight:bold;}
+        .scene {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
@@ -153,16 +161,10 @@
                 stateNavigator={stateNavigator}>
                 {({opacity, translate}, scene, url) => (
                     <div key={url}
+                        className="scene"
                         style={{
-                            position: 'absolute',
                             opacity,
                             transform: `translate(${translate * window.innerWidth}px)`,
-                            opacity,
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                            overflow: 'auto'
                         }}>
                         {scene}
                     </div>
