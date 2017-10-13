@@ -115,16 +115,15 @@ class NavigationMotion extends React.Component<any, any> {
                 easing={({state, data}) => this.getPropValue(easing, state, data)}
                 onRest={({url}) => this.clearScene(url)}>
                 {tweenStyles => (
-                    [
-                        ...tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
-                            children(tweenStyle, scene, key, state, data)
-                        )),
+                    tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
+                        children(tweenStyle, scene, key, state, data)
+                    )).concat(
                         sharedElementMotion && sharedElementMotion({
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
                             duration: this.getPropValue(duration, stateContext.state, stateContext.data),
                             easing: this.getPropValue(easing, stateContext.state, stateContext.data)
                         })
-                    ]
+                    )
                 )}
             </Motion>
         );
