@@ -19,6 +19,7 @@
   },
   "peerDependencies": {
     "navigation": "*",
+    "navigation-react": "*",
     "react": "*"
   },
   "author": "Graham Mendick",
