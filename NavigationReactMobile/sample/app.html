@@ -147,14 +147,16 @@
         ReactDOM.render(
             <NavigationReactMobile.NavigationMotion
                 startStateKey="people"
-                unmountedStyle={{opacity: 0}}
-                mountedStyle={{opacity: 1}}
-                crumbStyle={{opacity: 0}}
+                unmountedStyle={{opacity: 1, translate: 1}}
+                mountedStyle={{opacity: 1, translate: 0}}
+                crumbStyle={{opacity: 0, translate: 0}}
                 stateNavigator={stateNavigator}>
-                {({opacity}, scene, url) => (
+                {({opacity, translate}, scene, url) => (
                     <div key={url}
                         style={{
                             position: 'absolute',
+                            opacity,
+                            transform: `translate(${translate * window.innerWidth}px)`,
                             opacity,
                             left: 0,
                             right: 0,
