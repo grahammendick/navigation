@@ -10,9 +10,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     init(navigateHistory: (url?: string) => void) {
-        this.navigateHistory = e => {
-            navigateHistory(e.state != null ? e.state : undefined);
-        };
+        this.navigateHistory = e => navigateHistory(e.state || undefined);
         if (!this.disabled) {
             window.addEventListener('popstate', this.navigateHistory);
         }
