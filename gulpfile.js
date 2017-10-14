@@ -70,7 +70,7 @@ var items = [
     Object.assign({ globals: { 'inferno-component': 'InfernoComponent',
             'inferno-create-element': 'InfernoCreateElement' } },
         require('./build/npm/navigation-inferno/package.json')),
-    Object.assign({ globals: { react: 'React' } },
+    Object.assign({ globals: { navigation: 'Navigation', react: 'React' } },
         require('./build/npm/navigation-react-mobile/package.json'),
         require('./NavigationReactMobile/src/tsconfig.json')),
     Object.assign({ globals: { react: 'React', 'react-native': 'ReactNative',

@@ -1,7 +1,7 @@
 ﻿import HistoryManager from './HistoryManager';
 
 class HTML5HistoryManager implements HistoryManager {
-    private navigateHistory: () => void;
+    private navigateHistory: (e: PopStateEvent) => void;
     private applicationPath: string = '';
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
     
@@ -9,19 +9,22 @@ class HTML5HistoryManager implements HistoryManager {
         this.applicationPath = HTML5HistoryManager.prependSlash(applicationPath);
     }
 
-    init(navigateHistory: () => void) {
-        this.navigateHistory = navigateHistory;
-        if (!this.disabled)
+    init(navigateHistory: (url?: string) => void) {
+        this.navigateHistory = e => {
+            navigateHistory(e.state != null ? e.state : undefined);
+        };
+        if (!this.disabled) {
             window.addEventListener('popstate', this.navigateHistory);
+        }
     }
 
     addHistory(url: string, replace: boolean) {
         var href = this.getHref(url);
         if (!this.disabled && location.pathname + location.search !== href) {
             if (!replace)            
-                window.history.pushState(null, null, href);
+                window.history.pushState(url, null, href);
             else
-                window.history.replaceState(null, null, href);
+                window.history.replaceState(url, null, href);
         }
     }
 

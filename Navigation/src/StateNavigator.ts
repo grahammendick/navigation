@@ -25,10 +25,10 @@ class StateNavigator {
         if (this.historyManager)
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
-        this.historyManager.init(() => {
-            if (this.stateContext.url === this.historyManager.getCurrentUrl())
+        this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
+            if (this.stateContext.url === url)
                 return;
-            this.navigateLink(this.historyManager.getCurrentUrl(), undefined, true);
+            this.navigateLink(url, undefined, true);
         });
         var states = this.stateHandler.buildStates(stateInfos);
         this.states = {};
