@@ -51,8 +51,8 @@ class NavigationMotion extends React.Component<any, any> {
         this.setState(({scenes: prevScenes}) => {
             var scenes = {...prevScenes};
             var stateNavigator = this.getStateNavigator();
-            var {url} = stateNavigator.stateContext;
-            scenes[url] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
+            var {crumbs} = stateNavigator.stateContext;
+            scenes[crumbs.length] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
             return {scenes, rest: false};
         });
     }
@@ -80,13 +80,13 @@ class NavigationMotion extends React.Component<any, any> {
         }
         return sharedElements;
     }
-    clearScene(url) {
+    clearScene(index) {
         this.setState(({scenes: prevScenes, rest: prevRest}) => {
             var scenes = {...prevScenes};
-            var scene = this.getScenes().filter(scene => scene.url === url)[0];
+            var scene = this.getScenes().filter(scene => scene.key === index)[0];
             if (!scene) {
-                delete scenes[url];
-                delete this.sharedElements[url];
+                delete scenes[index];
+                delete this.sharedElements[index];
             }
             var rest = prevRest || (scene && scene.mount);
             return {scenes, rest};
@@ -94,8 +94,8 @@ class NavigationMotion extends React.Component<any, any> {
     }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        return crumbs.concat(nextCrumb).map(({state, data, url}) => (
-            {state, data, url, scene: this.state.scenes[url], mount: url === nextCrumb.url}
+        return crumbs.concat(nextCrumb).map(({state, data, url}, index) => (
+            {key: index, state, data, url, scene: this.state.scenes[index], mount: url === nextCrumb.url}
         ));
     }
     getPropValue(prop, state, data) {
@@ -107,13 +107,13 @@ class NavigationMotion extends React.Component<any, any> {
         return (stateContext.state &&
             <Motion
                 data={this.getScenes()}
-                getKey={({url}) => url}
+                getKey={({key}) => key}
                 enter={({state, data}) => this.getPropValue(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
                 update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
                 duration={({state, data}) => this.getPropValue(duration, state, data)}
                 easing={({state, data}) => this.getPropValue(easing, state, data)}
-                onRest={({url}) => this.clearScene(url)}>
+                onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
                         children(tweenStyle, scene, key, state, data)

@@ -26,8 +26,8 @@ class Motion extends React.Component<any, any> {
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
                 .map((item, index) => {
-                    var nextItem: any = {key: item.key, data: item.data, tick};
                     var matchedItem = dataByKey[item.key];
+                    var nextItem: any = {key: item.key, data: matchedItem || item.data, tick};
                     nextItem.end = !matchedItem ? leave(item.data) : update(matchedItem);
                     nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
                     var unchanged = this.areEqual(item.end, nextItem.end);
