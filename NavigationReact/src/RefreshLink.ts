@@ -5,13 +5,14 @@ import * as React from 'react';
 
 class RefreshLink extends React.Component<RefreshLinkProps, any> {
     private onNavigate = () => {
-        if (this.state.stateContext !== this.getStateNavigator().stateContext.url)
-            this.setState(this.getNextState());
+        var link = this.getRefreshLink();
+        if (this.state.link !== link)
+            this.setState({ link });
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = this.getNextState();
+        this.state = { link: this.getRefreshLink() };
     }
 
     static contextTypes = {
@@ -24,11 +25,11 @@ class RefreshLink extends React.Component<RefreshLinkProps, any> {
     
     private getRefreshLink(): string {
         var navigationData = LinkUtility.getData(this.getStateNavigator(), this.props.navigationData, this.props.includeCurrentData, this.props.currentDataKeys);
-        return LinkUtility.getLink(this.getStateNavigator(), () => this.getStateNavigator().getRefreshLink(navigationData));
-    }
-    
-    private getNextState() {
-        return { stateContext: this.getStateNavigator().stateContext.url };
+        try {
+            return this.getStateNavigator().getRefreshLink(navigationData);
+        } catch (e) {
+            return null;
+        }
     }
 
     componentDidMount() {
@@ -37,7 +38,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, any> {
     }
 
     componentWillReceiveProps() {
-        this.setState(this.getNextState());
+        this.setState({ link: this.getRefreshLink() });
     }
 
     componentWillUnmount() {
@@ -51,8 +52,8 @@ class RefreshLink extends React.Component<RefreshLinkProps, any> {
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];
         }
-        props.href = this.getRefreshLink();
-        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getRefreshLink());
+        props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
+        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getRefreshLink(), this.state.link);
         LinkUtility.setActive(this.getStateNavigator(), this.props, props);
         return React.createElement('a', props, this.props.children);
     }

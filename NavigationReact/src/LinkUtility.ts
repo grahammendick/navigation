@@ -2,14 +2,6 @@
 import * as React from 'react';
 
 class LinkUtility {
-    static getLink(stateNavigator: StateNavigator, linkAccessor: () => string): string {
-        try {
-            return stateNavigator.historyManager.getHref(linkAccessor());
-        } catch (e) {
-            return null;
-        }
-    }
-
     static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
         if (currentDataKeys)
             navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
@@ -55,19 +47,17 @@ class LinkUtility {
             && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
     }
     
-    static addListeners(component: React.Component<any, any>, stateNavigator: StateNavigator, props: any, toProps: React.AnchorHTMLAttributes<HTMLAnchorElement>, getLink: () => string) {
+    static addListeners(component: React.Component<any, any>, stateNavigator: StateNavigator, props: any, toProps: React.AnchorHTMLAttributes<HTMLAnchorElement>, getLink: () => string, link: string) {
         var lazy = !!props.lazy;
         toProps.onClick = (e) => {
-            var href = e.currentTarget.href;
             if (lazy) {
                 component.forceUpdate();
-                href = getLink();
-                if (href)
-                    e.currentTarget.href = href;
+                link = getLink();
+                if (link)
+                    e.currentTarget.href = stateNavigator.historyManager.getHref(link);
             }
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                if (href) {
-                    var link = stateNavigator.historyManager.getUrl(e.currentTarget);
+                if (link) {
                     var navigating = this.getNavigating(props);
                     if (navigating(e, link)) {
                         e.preventDefault();

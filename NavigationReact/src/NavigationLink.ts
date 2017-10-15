@@ -5,13 +5,14 @@ import * as React from 'react';
 
 class NavigationLink extends React.Component<NavigationLinkProps, any> {
     private onNavigate = () => {
-        if (this.state.stateContext !== this.getStateNavigator().stateContext.url)
-            this.setState(this.getNextState());
+        var link = this.getNavigationLink();
+        if (this.state.link !== link)
+            this.setState({ link });
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = this.getNextState();
+        this.state = { link: this.getNavigationLink() };
     }
 
     static contextTypes = {
@@ -24,20 +25,20 @@ class NavigationLink extends React.Component<NavigationLinkProps, any> {
     
     private getNavigationLink(): string {
         var navigationData = LinkUtility.getData(this.getStateNavigator(), this.props.navigationData, this.props.includeCurrentData, this.props.currentDataKeys);
-        return LinkUtility.getLink(this.getStateNavigator(), () => this.getStateNavigator().getNavigationLink(this.props.stateKey, navigationData));
+        try {
+            return this.getStateNavigator().getNavigationLink(this.props.stateKey, navigationData);
+        } catch (e) {
+            return null;
+        }
     }
     
-    private getNextState() {
-        return { stateContext: this.getStateNavigator().stateContext.url };
-    }
-
     componentDidMount() {
         if (!this.props.lazy)
             this.getStateNavigator().onNavigate(this.onNavigate);
     }
 
     componentWillReceiveProps() {
-        this.setState(this.getNextState());
+        this.setState({ link: this.getNavigationLink() });
     }
 
     componentWillUnmount() {
@@ -51,8 +52,8 @@ class NavigationLink extends React.Component<NavigationLinkProps, any> {
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];
         }
-        props.href = this.getNavigationLink();
-        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getNavigationLink());
+        props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
+        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getNavigationLink(), this.state.link);
         if (this.getStateNavigator().stateContext.state && this.getStateNavigator().stateContext.state.key === this.props.stateKey)
             LinkUtility.setActive(this.getStateNavigator(), this.props, props);
         return React.createElement('a', props, this.props.children);
