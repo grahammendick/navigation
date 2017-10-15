@@ -159,8 +159,8 @@
                 mountedStyle={{opacity: 1, translate: 0}}
                 crumbStyle={{opacity: 0, translate: 0}}
                 stateNavigator={stateNavigator}>
-                {({opacity, translate}, scene, url) => (
-                    <div key={url}
+                {({opacity, translate}, scene, key) => (
+                    <div key={key}
                         className="scene"
                         style={{
                             opacity,
