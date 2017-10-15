@@ -24,7 +24,8 @@ class RefreshLink extends React.Component<RefreshLinkProps, any> {
     }
     
     private getRefreshLink(): string {
-        var navigationData = LinkUtility.getData(this.getStateNavigator(), this.props.navigationData, this.props.includeCurrentData, this.props.currentDataKeys);
+        var { navigationData, includeCurrentData, currentDataKeys } = this.props;
+        var navigationData = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
         try {
             return this.getStateNavigator().getRefreshLink(navigationData);
         } catch (e) {
