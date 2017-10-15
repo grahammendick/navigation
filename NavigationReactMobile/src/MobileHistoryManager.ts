@@ -9,7 +9,19 @@ class MobileHistoryManager extends HTML5HistoryManager {
     }
 
     getHref(url: string): string {
-        // remove crumbs from url
+        var queryIndex = url.indexOf('?');
+        if (queryIndex >= 0) {
+            var path = url.substring(0, queryIndex);            
+            var query = url.substring(queryIndex + 1);
+            var params = query.split('&');
+            var crumblessParams = [];
+            for (var i = 0; i < params.length; i++) {
+                if (params[i].substring(0, 6) !== 'crumb=') {
+                    crumblessParams.push(params[i])
+                }
+            }
+            url = `${path}?${crumblessParams.join('&')}`;
+        }
         return !this.hash ? super.getHref(url) : '#' + url;
     }
 
