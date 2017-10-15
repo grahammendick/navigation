@@ -155,7 +155,6 @@
         }
         ReactDOM.render(
             <NavigationReactMobile.NavigationMotion
-                startStateKey="people"
                 unmountedStyle={{opacity: 1, translate: 1}}
                 mountedStyle={{opacity: 1, translate: 0}}
                 crumbStyle={{opacity: 0, translate: 0}}
@@ -173,6 +172,11 @@
             </NavigationReactMobile.NavigationMotion>,
             document.getElementById('content')
         );
+        var { state, data } = stateNavigator.parseLink(stateNavigator.historyManager.getCurrentUrl());
+        var link = stateNavigator.fluent()
+            .navigate('people')
+            .navigate(state.key, data).url;
+        stateNavigator.start(link);
     </script>
 </body>
 </html>

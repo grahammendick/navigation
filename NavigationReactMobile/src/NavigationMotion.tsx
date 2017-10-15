@@ -36,13 +36,7 @@ class NavigationMotion extends React.Component<any, any> {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
-        var stateNavigator = this.getStateNavigator();
-        stateNavigator.onNavigate(this.onNavigate);
-        var {startStateKey, startNavigationData} = this.props;
-        if (startStateKey) {
-            stateNavigator.stateContext.clear();
-            stateNavigator.navigate(startStateKey, startNavigationData);
-        }
+        this.getStateNavigator().onNavigate(this.onNavigate);
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.onNavigate);
