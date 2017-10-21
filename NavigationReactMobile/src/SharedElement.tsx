@@ -25,6 +25,13 @@ class SharedElement extends React.Component<any, any> {
     componentDidMount() {
         this.register();
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.name !== this.props.name) {
+            this.context.unregisterSharedElement(this.crumb, prevProps.name);
+            this.register();
+        }
+    
+    }
     componentWillUnmount() {
         this.context.unregisterSharedElement(this.crumb, this.props.name);
     }
