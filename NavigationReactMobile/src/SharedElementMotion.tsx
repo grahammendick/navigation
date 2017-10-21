@@ -28,7 +28,7 @@ class SharedElementMotion extends React.Component<any, any> {
     getSharedElements(sharedElements) {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
-    getStyle(name, {ref, data, style}) {
+    getStyle(name, {ref, data}) {
         return this.props.elementStyle(name, {...ref.getBoundingClientRect(), ...data});
     }
     getPropValue(prop, name) {
