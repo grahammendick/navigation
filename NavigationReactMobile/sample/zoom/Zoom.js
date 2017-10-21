@@ -8,7 +8,6 @@ export default ({stateNavigator}) => (
     unmountedStyle={{opacity: 0}}
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
-    style={{flex: 1}}
     sharedElementMotion={props => <ZoomShared {...props} />}
     stateNavigator={stateNavigator}>
     {({opacity}, scene, key) => (

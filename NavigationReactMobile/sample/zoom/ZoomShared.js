@@ -4,7 +4,6 @@ import {SharedElementMotion} from 'navigation-react-mobile';
 export default ({sharedElements}) => (
   <SharedElementMotion
     sharedElements={sharedElements}
-    style={styles.motion}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
     {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
