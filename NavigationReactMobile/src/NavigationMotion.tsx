@@ -60,7 +60,9 @@ class NavigationMotion extends React.Component<any, any> {
     }
     getSharedElements() {
         var {crumbs, oldUrl} = this.getStateNavigator().stateContext;
-        var oldSharedElements = this.sharedElements[oldUrl && oldUrl.split('crumb=').length - 1];
+        if (!oldUrl || crumbs.length === oldUrl.split('crumb=').length - 1)
+            return [];
+        var oldSharedElements = this.sharedElements[oldUrl.split('crumb=').length - 1];
         var mountedSharedElements = this.sharedElements[crumbs.length];
         var sharedElements = [];
         for(var name in mountedSharedElements) {
