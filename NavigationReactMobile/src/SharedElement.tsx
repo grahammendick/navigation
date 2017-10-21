@@ -30,7 +30,6 @@ class SharedElement extends React.Component<any, any> {
             this.context.unregisterSharedElement(this.crumb, prevProps.name);
             this.register();
         }
-    
     }
     componentWillUnmount() {
         this.context.unregisterSharedElement(this.crumb, this.props.name);
@@ -48,12 +47,7 @@ class SharedElement extends React.Component<any, any> {
         }
     }
     render() {
-        return React.cloneElement(this.props.children, {
-            ref: comp => {
-                this.ref = comp;
-                this.register();
-            }
-        });
+        return React.cloneElement(this.props.children, {ref: el => this.ref = el});
     }
 }
 
