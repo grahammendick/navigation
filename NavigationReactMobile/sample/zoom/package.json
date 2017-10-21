@@ -9,6 +9,7 @@
     "babel-preset-react": "^6.11.1",
     "navigation": "*",
     "navigation-react": "*",
+    "navigation-react-mobile": "*",
     "react": "*",
     "react-dom": "*",
     "webpack": "^1.12.10"
