@@ -16,20 +16,22 @@ export default ({stateNavigator}) => (
           name={color}
           data={{color}}
           stateNavigator={stateNavigator}>
-          <NavigationLink
-            style={{backgroundColor: color}}
-            stateKey="detail"
-            navigationData={{color}}
-            stateNavigator={stateNavigator}>
-            <div>
-              <SharedElement
-                data={{color, fontSize: 20, fontColor: '#fff'}}
-                name={`text${color}`}
-                stateNavigator={stateNavigator}>
-                <div>{color}</div>
-              </SharedElement>
-            </div>
-          </NavigationLink>
+          <div>
+            <NavigationLink
+              style={{backgroundColor: color}}
+              stateKey="detail"
+              navigationData={{color}}
+              stateNavigator={stateNavigator}>
+              <div>
+                <SharedElement
+                  data={{color, fontSize: 20, fontColor: '#fff'}}
+                  name={`text${color}`}
+                  stateNavigator={stateNavigator}>
+                  <div>{color}</div>
+                </SharedElement>
+              </div>
+            </NavigationLink>
+          </div>
         </SharedElement>
       ))}
     </div>
