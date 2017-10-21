@@ -69,6 +69,8 @@
             constructor(props) {
                 super(props);
                 this.state = {name: props.initialName};
+                this.nameChange = this.nameChange.bind(this);
+                this.nameBlur = this.nameBlur.bind(this);
             }
             componentWillReceiveProps(nextProps) {
                 this.setState({ name: nextProps.initialName });
