@@ -50,9 +50,9 @@ class NavigationMotion extends React.Component<any, any> {
             return {scenes, rest: false};
         });
     }
-    registerSharedElement(scene, name, ref, measurements, data) {
+    registerSharedElement(scene, name, ref, data) {
         this.sharedElements[scene] = this.sharedElements[scene] || {};
-        this.sharedElements[scene][name] = {ref, measurements, data};
+        this.sharedElements[scene][name] = {ref, data};
     }
     unregisterSharedElement(scene, name) {
         if (this.sharedElements[scene])

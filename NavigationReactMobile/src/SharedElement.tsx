@@ -6,7 +6,7 @@ class SharedElement extends React.Component<any, any> {
     private crumb: number;
     context: {
         stateNavigator: StateNavigator,
-        registerSharedElement: (url, name, ref, measurements, data) => void,
+        registerSharedElement: (url, name, ref, data) => void,
         unregisterSharedElement: (url, name) => void
     }
     constructor(props, context) {
@@ -35,7 +35,7 @@ class SharedElement extends React.Component<any, any> {
             var {unshare, name, data} = this.props;
             if (!unshare) {
                 if (this.ref)
-                    this.context.registerSharedElement(this.crumb, name, this.ref, this.ref.getBoundingClientRect(), data);
+                    this.context.registerSharedElement(this.crumb, name, this.ref, data);
             } else {
                 this.context.unregisterSharedElement(this.crumb, name);
             }
