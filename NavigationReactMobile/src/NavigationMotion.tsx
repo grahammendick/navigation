@@ -50,18 +50,18 @@ class NavigationMotion extends React.Component<any, any> {
             return {scenes, rest: false};
         });
     }
-    registerSharedElement(url, name, ref, measurements, data) {
-        this.sharedElements[url] = this.sharedElements[url] || {};
-        this.sharedElements[url][name] = {ref, measurements, data};
+    registerSharedElement(scene, name, ref, measurements, data) {
+        this.sharedElements[scene] = this.sharedElements[scene] || {};
+        this.sharedElements[scene][name] = {ref, measurements, data};
     }
-    unregisterSharedElement(url, name) {
-        if (this.sharedElements[url])
-            delete this.sharedElements[url][name];
+    unregisterSharedElement(scene, name) {
+        if (this.sharedElements[scene])
+            delete this.sharedElements[scene][name];
     }
     getSharedElements() {
-        var {url, oldUrl} = this.getStateNavigator().stateContext;
-        var oldSharedElements = this.sharedElements[oldUrl];
-        var mountedSharedElements = this.sharedElements[url];
+        var {crumbs, oldUrl} = this.getStateNavigator().stateContext;
+        var oldSharedElements = this.sharedElements[oldUrl.split('crumb=').length - 1];
+        var mountedSharedElements = this.sharedElements[crumbs.length];
         var sharedElements = [];
         for(var name in mountedSharedElements) {
             if (oldSharedElements && oldSharedElements[name]) {

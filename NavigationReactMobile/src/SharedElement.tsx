@@ -3,6 +3,7 @@ import * as React from 'react';
 
 class SharedElement extends React.Component<any, any> {
     private ref: Element;
+    private crumb: number;
     context: {
         stateNavigator: StateNavigator,
         registerSharedElement: (url, name, ref, measurements, data) => void,
@@ -10,7 +11,7 @@ class SharedElement extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = {url: this.getStateNavigator().stateContext.url};
+        this.crumb = this.getStateNavigator().stateContext.crumbs.length;
         this.register = this.register.bind(this);
     }
     static contextTypes = {
@@ -26,18 +27,17 @@ class SharedElement extends React.Component<any, any> {
     }
     componentWillUnmount() {
         this.getStateNavigator().offNavigate(this.register);
-        this.context.unregisterSharedElement(this.state.url, this.props.name);
+        this.context.unregisterSharedElement(this.crumb, this.props.name);
     }
     register() {
-        var {url} = this.state;
-        if (url === this.getStateNavigator().stateContext.url
-            || url === this.getStateNavigator().stateContext.oldUrl) {
+        var { crumbs, oldUrl } = this.getStateNavigator().stateContext;
+        if (this.crumb === crumbs.length || this.crumb === oldUrl.split('crumb=').length - 1) {
             var {unshare, name, data} = this.props;
             if (!unshare) {
                 if (this.ref)
-                    this.context.registerSharedElement(url, name, this.ref, this.ref.getBoundingClientRect(), data);
+                    this.context.registerSharedElement(this.crumb, name, this.ref, this.ref.getBoundingClientRect(), data);
             } else {
-                this.context.unregisterSharedElement(url, name);
+                this.context.unregisterSharedElement(this.crumb, name);
             }
         }
     }
