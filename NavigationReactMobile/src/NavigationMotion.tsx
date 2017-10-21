@@ -113,6 +113,7 @@ class NavigationMotion extends React.Component<any, any> {
                         children(tweenStyle, scene, key, state, data)
                     )).concat(
                         sharedElementMotion && sharedElementMotion({
+                            key: 'sharedElements',
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
                             duration: this.getPropValue(duration, stateContext.state, stateContext.data),
                             easing: this.getPropValue(easing, stateContext.state, stateContext.data)
