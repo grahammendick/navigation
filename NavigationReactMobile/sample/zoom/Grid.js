@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavigationLink} from 'navigation-react';
 import {SharedElement} from 'navigation-react-mobile';
 
 const colors = [
@@ -6,35 +7,32 @@ const colors = [
   'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
 ];
 
-export default ({stateNavigator}) => {
-  const {url} = stateNavigator.stateContext;
-  return (
+export default ({stateNavigator}) => (
+  <div>
     <div>
-      <div>
-        {colors.map(color => (
-          <SharedElement
-            key={color}
-            name={color}
-            data={{color}}
+      {colors.map(color => (
+        <SharedElement
+          key={color}
+          name={color}
+          data={{color}}
+          stateNavigator={stateNavigator}>
+          <NavigationLink
+            style={{backgroundColor: color}}
+            stateKey="details"
+            navigationData={{color}}
             stateNavigator={stateNavigator}>
-            <div
-              style={{backgroundColor: color}}
-              onClick={() => {
-                if (url === stateNavigator.stateContext.url)
-                  stateNavigator.navigate('detail', {color});
-              }}>
-              <div>
-                <SharedElement
-                  data={{color, fontSize: 20, fontColor: '#fff'}}
-                  name={`text${color}`}
-                  stateNavigator={stateNavigator}>
-                  <div>{color}</div>
-                </SharedElement>
-              </div>
+            <div>
+              <SharedElement
+                data={{color, fontSize: 20, fontColor: '#fff'}}
+                name={`text${color}`}
+                stateNavigator={stateNavigator}>
+                <div>{color}</div>
+              </SharedElement>
             </div>
-          </SharedElement>
-        ))}
-      </div>
+          </NavigationLink>
+        </SharedElement>
+      ))}
     </div>
-  );
-};
+  </div>
+);
+
