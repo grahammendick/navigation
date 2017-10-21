@@ -23,10 +23,9 @@ class SharedElement extends React.Component<any, any> {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
-        this.getStateNavigator().onNavigate(this.register);
+        this.register();
     }
     componentWillUnmount() {
-        this.getStateNavigator().offNavigate(this.register);
         this.context.unregisterSharedElement(this.crumb, this.props.name);
     }
     register() {
