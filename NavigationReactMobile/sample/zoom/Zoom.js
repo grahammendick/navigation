@@ -11,8 +11,8 @@ export default ({stateNavigator}) => (
     style={{flex: 1}}
     sharedElementMotion={props => <ZoomShared {...props} />}
     stateNavigator={stateNavigator}>
-    {({opacity}, scene, url) => (
-      <div key={url}
+    {({opacity}, scene, key) => (
+      <div key={key}
         style={{
           position: 'absolute',
           opacity
