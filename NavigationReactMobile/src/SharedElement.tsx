@@ -30,7 +30,7 @@ class SharedElement extends React.Component<any, any> {
         this.context.unregisterSharedElement(this.crumb, this.props.name);
     }
     register() {
-        var { crumbs, oldUrl } = this.getStateNavigator().stateContext;
+        var {crumbs, oldUrl} = this.getStateNavigator().stateContext;
         if (this.crumb === crumbs.length || this.crumb === oldUrl.split('crumb=').length - 1) {
             var {unshare, name, data} = this.props;
             if (!unshare) {
