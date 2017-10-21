@@ -18,7 +18,7 @@ export default ({stateNavigator}) => (
           stateNavigator={stateNavigator}>
           <NavigationLink
             style={{backgroundColor: color}}
-            stateKey="details"
+            stateKey="detail"
             navigationData={{color}}
             stateNavigator={stateNavigator}>
             <div>
