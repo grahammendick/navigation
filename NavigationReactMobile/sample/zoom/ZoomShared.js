@@ -6,23 +6,23 @@ export default ({sharedElements}) => (
     sharedElements={sharedElements}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
-    {({x, y, w, h, fontSize, fontColor}, name, {color}) => (
+    {({left, top, width, height, fontSize, fontColor}, name, {color}) => (
       !name.startsWith('text') ? <div key={name}
         style={{
           position: 'absolute',
-          left: x,
-          top: y,
-          width: w,
-          height: h,
+          left,
+          top,
+          width,
+          height,
           backgroundColor: color,
         }}>
       </div> : <div key={name}     
         style={{
           position: 'absolute',
-          left: x,
-          top: y,
-          width: w,
-          height: h,
+          left,
+          top,
+          width,
+          height,
           fontSize,
           textAlign: 'center',
           fontWeight: 'bold',

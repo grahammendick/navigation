@@ -34,9 +34,8 @@ class SharedElement extends React.Component<any, any> {
             || url === this.getStateNavigator().stateContext.oldUrl) {
             var {unshare, name, data} = this.props;
             if (!unshare) {
-                (this.ref as any).measure((ox, oy, w, h, x, y) => {
-                    this.context.registerSharedElement(url, name, this.ref, {w, h, x, y}, data);
-                });
+                if (this.ref)
+                    this.context.registerSharedElement(url, name, this.ref, this.ref.getBoundingClientRect(), data);
             } else {
                 this.context.unregisterSharedElement(url, name);
             }
@@ -44,8 +43,10 @@ class SharedElement extends React.Component<any, any> {
     }
     render() {
         return React.cloneElement(this.props.children, {
-            onLayout: this.register,
-            ref: comp => {this.ref = comp}
+            ref: comp => {
+                this.ref = comp;
+                this.register();
+            }
         });
     }
 }
