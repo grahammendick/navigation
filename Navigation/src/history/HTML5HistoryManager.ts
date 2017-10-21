@@ -18,7 +18,7 @@ class HTML5HistoryManager implements HistoryManager {
 
     addHistory(url: string, replace: boolean) {
         var href = this.getHref(url);
-        if (!this.disabled && location.pathname + location.search !== href) {
+        if (!this.disabled && this.getHref(this.getUrl(location)) !== href) {
             if (!replace)            
                 window.history.pushState(url, null, href);
             else
