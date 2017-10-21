@@ -9,8 +9,8 @@ const colors = [
 export default ({stateNavigator}) => {
   const {url} = stateNavigator.stateContext;
   return (
-    <div style={styles.grid}>
-      <div style={styles.colors}>
+    <div>
+      <div>
         {colors.map(color => (
           <SharedElement
             key={color}
@@ -18,10 +18,7 @@ export default ({stateNavigator}) => {
             data={{color}}
             stateNavigator={stateNavigator}>
             <div
-              style={{
-                backgroundColor: color,
-                ...styles.color
-              }}
+              style={{backgroundColor: color}}
               onClick={() => {
                 if (url === stateNavigator.stateContext.url)
                   stateNavigator.navigate('detail', {color});
@@ -31,7 +28,7 @@ export default ({stateNavigator}) => {
                   data={{color, fontSize: 20, fontColor: '#fff'}}
                   name={`text${color}`}
                   stateNavigator={stateNavigator}>
-                  <div style={styles.text}>{color}</div>
+                  <div>{color}</div>
                 </SharedElement>
               </div>
             </div>
@@ -40,35 +37,4 @@ export default ({stateNavigator}) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  grid: {
-    width: '370px',
-    height: '460px',
-    overflow: 'auto',
-  },
-  colors: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginTop: 50,
-  },
-  color: {
-    display: 'flex',
-    width: 100,
-    height: 150,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  }
 };
