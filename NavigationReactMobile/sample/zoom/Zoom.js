@@ -1,5 +1,5 @@
 import React from 'react';
-import NavigationMotion from '../NavigationMotion';
+import {NavigationMotion} from 'navigation-react-mobile';
 import ZoomShared from './ZoomShared';
 
 export default ({stateNavigator}) => (

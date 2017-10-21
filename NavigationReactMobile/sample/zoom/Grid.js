@@ -1,5 +1,5 @@
 import React from 'react';
-import SharedElement from '../SharedElement';
+import {SharedElement} from 'navigation-react-mobile';
 
 const colors = [
   'maroon', 'red', 'crimson', 'orange', 'brown', 'sienna', 'olive',

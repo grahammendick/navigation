@@ -1,5 +1,5 @@
 import React from 'react';
-import SharedElement from '../SharedElement';
+import {SharedElement} from 'navigation-react-mobile';
 
 export default ({color, stateNavigator}) => {
   const {url} = stateNavigator.stateContext;

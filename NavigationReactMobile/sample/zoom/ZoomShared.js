@@ -1,5 +1,5 @@
 import React from 'react';
-import SharedElementMotion from '../SharedElementMotion';
+import {SharedElementMotion} from 'navigation-react-mobile';
 
 export default ({sharedElements}) => (
   <SharedElementMotion
