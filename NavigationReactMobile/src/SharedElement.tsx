@@ -11,13 +11,16 @@ class SharedElement extends React.Component<any, any> {
     }
     constructor(props, context) {
         super(props, context);
-        this.scene = this.context.stateNavigator.stateContext.crumbs.length;
+        this.scene = this.getStateNavigator().stateContext.crumbs.length;
         this.register = this.register.bind(this);
     }
     static contextTypes = {
         stateNavigator: () => {},
         registerSharedElement: () => {},
         unregisterSharedElement: () => {}
+    }
+    private getStateNavigator(): StateNavigator {
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
         this.register();
@@ -32,7 +35,7 @@ class SharedElement extends React.Component<any, any> {
         this.context.unregisterSharedElement(this.scene, this.props.name);
     }
     register() {
-        var {crumbs, oldUrl} = this.context.stateNavigator.stateContext;
+        var {crumbs, oldUrl} = this.getStateNavigator().stateContext;
         if (this.scene === crumbs.length || (oldUrl && this.scene === oldUrl.split('crumb=').length - 1)) {
             var {unshare, name, data} = this.props;
             if (!unshare) {

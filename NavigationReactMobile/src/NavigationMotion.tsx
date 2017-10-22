@@ -23,13 +23,11 @@ class NavigationMotion extends React.Component<any, any> {
         stateNavigator: () => {}
     }
     static childContextTypes = {
-        stateNavigator: () => {},
         registerSharedElement: () => {},
         unregisterSharedElement: () => {}
     }
     getChildContext() {
         return {
-            stateNavigator: this.getStateNavigator(),
             registerSharedElement: this.registerSharedElement,
             unregisterSharedElement: this.unregisterSharedElement
         };
@@ -48,7 +46,7 @@ class NavigationMotion extends React.Component<any, any> {
             var scenes = {...prevScenes};
             var stateNavigator = this.getStateNavigator();
             var {crumbs} = stateNavigator.stateContext;
-            scenes[crumbs.length] = <Scene>{state.renderScene(data)}</Scene>;
+            scenes[crumbs.length] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
             return {scenes, rest: false};
         });
     }

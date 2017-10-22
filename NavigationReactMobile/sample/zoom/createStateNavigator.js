@@ -11,8 +11,8 @@ export default () => {
   ], new MobileHistoryManager('', true));
 
   const { grid, detail } = stateNavigator.states;
-  grid.renderScene = data => <Grid/>;
-  detail.renderScene = data => <Detail {...data}/>;
+  grid.renderScene = data => <Grid stateNavigator={stateNavigator}/>;
+  detail.renderScene = data => <Detail {...data} stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }
