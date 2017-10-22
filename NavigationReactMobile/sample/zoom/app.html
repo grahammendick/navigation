@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Navigation React Mobile Zoom</title>
     <meta name="viewport" content="width=device-width">
     <style>
-        .scene {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            padding: 5%;
-            overflow: auto;
-        }
+      .scene {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        padding: 5%;
+        overflow: auto;
+      }
+      ul {
+        padding: 0;
+      }
+      li {
+        list-style-type: none;
+        float: left;
+        margin: 5px;
+      }
+      li a {
+        color: #fff;
+        font-size: 150%;
+        text-decoration: none;
+        width: 120px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     </style>
-</head>
-<body style="margin: 0">
+  </head>
+  <body style="margin: 0">
     <div id="content" style="width: 300px;"></div>
     <script src="app.js"></script>
-</body>
+  </body>
+</html>

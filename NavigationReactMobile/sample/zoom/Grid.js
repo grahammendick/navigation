@@ -8,33 +8,30 @@ const colors = [
 ];
 
 export default ({stateNavigator}) => (
-  <div>
-    <div>
-      {colors.map(color => (
-        <SharedElement
-          key={color}
-          name={color}
-          data={{color}}
-          stateNavigator={stateNavigator}>
-          <div>
-            <NavigationLink
-              style={{backgroundColor: color}}
-              stateKey="detail"
-              navigationData={{color}}
-              stateNavigator={stateNavigator}>
-              <div>
-                <SharedElement
-                  data={{color, fontSize: 20, fontColor: '#fff'}}
-                  name={`text${color}`}
-                  stateNavigator={stateNavigator}>
-                  <div>{color}</div>
-                </SharedElement>
-              </div>
-            </NavigationLink>
-          </div>
-        </SharedElement>
-      ))}
-    </div>
-  </div>
+  <ul>
+    {colors.map(color => (
+      <SharedElement
+        key={color}
+        name={color}
+        data={{color}}
+        stateNavigator={stateNavigator}>
+        <li style={{backgroundColor: color}}>
+          <NavigationLink            
+            stateKey="detail"
+            navigationData={{color}}
+            stateNavigator={stateNavigator}>
+            <div>
+              <SharedElement
+                data={{color, fontSize: 20, fontColor: '#fff'}}
+                name={`text${color}`}
+                stateNavigator={stateNavigator}>
+                <div>{color}</div>
+              </SharedElement>
+            </div>
+          </NavigationLink>
+        </li>
+      </SharedElement>
+    ))}
+  </ul>
 );
 
