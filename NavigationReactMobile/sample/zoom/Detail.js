@@ -3,7 +3,7 @@ import {NavigationBackLink} from 'navigation-react';
 import {SharedElement} from 'navigation-react-mobile';
 
 export default ({color, stateNavigator}) => (
-  <div>
+  <div className="color">
     <NavigationBackLink
       distance={1}
       stateNavigator={stateNavigator}>
