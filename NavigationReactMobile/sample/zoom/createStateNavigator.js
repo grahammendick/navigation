@@ -6,7 +6,7 @@ import Detail from './Detail';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'grid'},
+    {key: 'grid', route: ''},
     {key: 'detail', trackCrumbTrail: true},
   ], new MobileHistoryManager('', true));
 
