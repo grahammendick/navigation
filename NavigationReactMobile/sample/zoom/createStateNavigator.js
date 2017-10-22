@@ -8,7 +8,12 @@ export default () => {
   const stateNavigator = new StateNavigator([
     {key: 'grid', route: ''},
     {key: 'detail', trackCrumbTrail: true},
-  ], new MobileHistoryManager('', true));
+  ], new MobileHistoryManager(url => {
+    var {state, data} = stateNavigator.parseLink(url);
+    return stateNavigator.fluent()
+        .navigate('grid')
+        .navigate(state.key, data).url;
+  }));
 
   const { grid, detail } = stateNavigator.states;
   grid.renderScene = data => <Grid stateNavigator={stateNavigator}/>;

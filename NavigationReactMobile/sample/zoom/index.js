@@ -10,8 +10,4 @@ ReactDOM.render(
   document.getElementById('content')
 )
 
-var {state, data} = stateNavigator.parseLink(stateNavigator.historyManager.getCurrentUrl());
-var link = stateNavigator.fluent()
-    .navigate('grid')
-    .navigate(state.key, data).url;
-stateNavigator.start(link);
+stateNavigator.start();
