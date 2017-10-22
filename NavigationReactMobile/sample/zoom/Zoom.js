@@ -4,7 +4,6 @@ import ZoomShared from './ZoomShared';
 
 export default ({stateNavigator}) => (
   <NavigationMotion
-    startStateKey="grid"
     unmountedStyle={{opacity: 0}}
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
