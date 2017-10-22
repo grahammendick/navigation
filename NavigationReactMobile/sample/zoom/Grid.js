@@ -22,7 +22,7 @@ export default ({stateNavigator}) => (
             stateNavigator={stateNavigator}>
             <div>
               <SharedElement
-                data={{color, fontSize: 20, fontColor: '#fff'}}
+                data={{color, fontSize: '150%', fontColor: '#fff'}}
                 name={`text${color}`}
                 stateNavigator={stateNavigator}>
                 <div>{color}</div>
