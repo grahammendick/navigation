@@ -28,7 +28,7 @@ class Motion extends React.Component<any, any> {
                 .map((item, index) => {
                     var matchedItem = dataByKey[item.key];
                     var nextItem: any = {key: item.key, data: matchedItem || item.data, tick};
-                    nextItem.end = !matchedItem ? leave(item.data) : update(matchedItem);
+                    nextItem.end = !matchedItem ? (leave || update)(item.data) : update(matchedItem);
                     nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
                     var unchanged = this.areEqual(item.end, nextItem.end);
                     if (unchanged) {
@@ -49,7 +49,7 @@ class Motion extends React.Component<any, any> {
                         onRest(item.data);
                     return nextItem;
                 })
-                .filter(item => !item.rest || dataByKey[item.key])
+                .filter(item => dataByKey[item.key] || (!item.rest && leave))
                 .concat(data
                     .filter(item => !itemsByKey[getKey(item)])
                     .map(item => {
