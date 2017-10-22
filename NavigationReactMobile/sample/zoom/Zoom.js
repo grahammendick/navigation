@@ -12,10 +12,7 @@ export default ({stateNavigator}) => (
     {({opacity}, scene, key) => (
       <div key={key}
         className="scene"
-        style={{
-          position: 'absolute',
-          opacity
-        }}>
+        style={{opacity}}>
         {scene}
       </div>
     )}
