@@ -4,10 +4,10 @@ class MobileHistoryManager extends HTML5HistoryManager {
     private hash = false;
     private buildCurrentUrl: (url: string) => string; 
 
-    constructor(buildCurrentUrl: (url: string) => string, applicationPath = '', hash = false) {
-        super(applicationPath);
+    constructor(buildCurrentUrl: (url: string) => string, applicationPath) {
+        super(applicationPath || '');
         this.buildCurrentUrl = buildCurrentUrl;
-        this.hash = hash;
+        this.hash = applicationPath === undefined;
     }
 
     getHref(url: string): string {

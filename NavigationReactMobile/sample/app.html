@@ -151,7 +151,7 @@
             return stateNavigator.fluent()
                 .navigate('people')
                 .navigate(state.key, data).url;
-        }, '', true));
+        }));
 
         var states = stateNavigator.states;
         states.people.renderScene = function (data) {
