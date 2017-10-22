@@ -11,8 +11,8 @@ export default () => {
   ], new MobileHistoryManager(url => {
     var {state, data} = stateNavigator.parseLink(url);
     return stateNavigator.fluent()
-        .navigate('grid')
-        .navigate(state.key, data).url;
+      .navigate('grid')
+      .navigate(state.key, data).url;
   }));
 
   const {grid, detail} = stateNavigator.states;
