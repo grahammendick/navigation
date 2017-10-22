@@ -146,7 +146,12 @@
         var stateNavigator = new Navigation.StateNavigator([
             { key: 'people', route: '{startRowIndex?}/{maximumRows?}/{sortExpression?}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
             { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
-        ], new NavigationReactMobile.MobileHistoryManager('', true));
+        ], new NavigationReactMobile.MobileHistoryManager(url => {
+            var { state, data } = stateNavigator.parseLink(url);
+            return stateNavigator.fluent()
+                .navigate('people')
+                .navigate(state.key, data).url;
+        }, '', true));
 
         var states = stateNavigator.states;
         states.people.renderScene = function (data) {
@@ -174,11 +179,7 @@
             </NavigationReactMobile.NavigationMotion>,
             document.getElementById('content')
         );
-        var { state, data } = stateNavigator.parseLink(stateNavigator.historyManager.getCurrentUrl());
-        var link = stateNavigator.fluent()
-            .navigate('people')
-            .navigate(state.key, data).url;
-        stateNavigator.start(link);
+        stateNavigator.start();
     </script>
 </body>
 </html>

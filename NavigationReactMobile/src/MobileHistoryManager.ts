@@ -2,9 +2,11 @@ import { HTML5HistoryManager } from 'navigation';
 
 class MobileHistoryManager extends HTML5HistoryManager {
     private hash = false;
+    private buildCurrentUrl: (url: string) => string; 
 
-    constructor(applicationPath = '', hash = false) {
+    constructor(buildCurrentUrl: (url: string) => string, applicationPath = '', hash = false) {
         super(applicationPath);
+        this.buildCurrentUrl = buildCurrentUrl;
         this.hash = hash;
     }
 
@@ -27,6 +29,13 @@ class MobileHistoryManager extends HTML5HistoryManager {
 
     getUrl(hrefElement: HTMLAnchorElement | Location) {
         return !this.hash ? super.getUrl(hrefElement) : hrefElement.hash.substring(1);
+    }
+
+    getCurrentUrl(): string {
+        var url = this.getUrl(location);
+        if (this.buildCurrentUrl)
+            url = this.buildCurrentUrl(url);
+        return url;
     }
 }
 
