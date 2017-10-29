@@ -10,7 +10,7 @@ const nextDirection = {
 };
 
 export default ({direction, color, stateNavigator}) => {
-  const {url, crumbs} = stateNavigator.stateContext;
+  const {crumbs} = stateNavigator.stateContext;
   return (
     <div style={{backgroundColor: color}}>
       <NavigationLink
