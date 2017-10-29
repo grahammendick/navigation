@@ -4,17 +4,17 @@ import {MobileHistoryManager} from 'navigation-react-mobile';
 import Scene from './Scene';
 
 export default () => {
-  const stateNavigator = new StateNavigator([
+  const states = [
     {key: 'sceneNorth', route: '', trackCrumbTrail: true},
     {key: 'sceneEast', trackCrumbTrail: true},
     {key: 'sceneSouth', trackCrumbTrail: true},
     {key: 'sceneWest', trackCrumbTrail: true},
-  ], new MobileHistoryManager(url => {
+  ];
+  const stateNavigator = new StateNavigator(states, new MobileHistoryManager(url => {
     var {state} = stateNavigator.parseLink(url);
     var fluentNavigator = stateNavigator.fluent();
-    var stateKeys = ['sceneNorth', 'sceneEast', 'sceneSouth', 'sceneWest'];
-    for(var i = 0; i < stateKeys.length && stateKeys[i] !== state.key; i++)
-      fluentNavigator = fluentNavigator.navigate(stateKeys[i]);
+    for(var i = 0; i < states.length && states[i].key !== state.key; i++)
+      fluentNavigator = fluentNavigator.navigate(states[i].key);
     return fluentNavigator.navigate(state.key).url;
   }));
 
