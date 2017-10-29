@@ -14,7 +14,7 @@ export default ({direction, color, stateNavigator}) => {
   return (
     <div style={{backgroundColor: color}}>
       <NavigationLink
-        key={`scene${nextDirection[direction]}`}
+        stateKey={`scene${nextDirection[direction]}`}
         stateNavigator={stateNavigator}>
         {direction} {crumbs.length}
       </NavigationLink>
