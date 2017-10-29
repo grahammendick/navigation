@@ -9,20 +9,18 @@ const nextDirection = {
   West: 'North',
 };
 
-export default ({direction, color, index, stateNavigator}) => {
-  const {crumbs} = stateNavigator.stateContext;
-  return (
-    <div style={{backgroundColor: color}}>
-      <NavigationLink
-        stateKey={`scene${nextDirection[direction]}`}
-        stateNavigator={stateNavigator}>
-        {direction} {index}
-      </NavigationLink>
-      {index > 0 && <NavigationBackLink
-        distance={1}
-        stateNavigator={stateNavigator}>
-        Back
-      </NavigationBackLink>}
-    </div>
-  );
-};
+export default ({direction, color, index, stateNavigator}) => (
+  <div style={{backgroundColor: color}}>
+    <NavigationLink
+      stateKey={`scene${nextDirection[direction]}`}
+      stateNavigator={stateNavigator}>
+      {direction} {index}
+    </NavigationLink>
+    {index > 0 && <NavigationBackLink
+      distance={1}
+      stateNavigator={stateNavigator}>
+      Back
+    </NavigationBackLink>}
+  </div>
+);
+
