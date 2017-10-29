@@ -5,7 +5,7 @@ import Scene from './Scene';
 
 export default () => {
   const stateNavigator = new StateNavigator([
-    {key: 'sceneNorth', trackCrumbTrail: true},
+    {key: 'sceneNorth', route: '', trackCrumbTrail: true},
     {key: 'sceneEast', trackCrumbTrail: true},
     {key: 'sceneSouth', trackCrumbTrail: true},
     {key: 'sceneWest', trackCrumbTrail: true},
