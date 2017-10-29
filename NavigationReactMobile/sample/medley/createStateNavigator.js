@@ -11,13 +11,13 @@ export default () => {
     {key: 'sceneWest', trackCrumbTrail: true},
   ], new MobileHistoryManager(url => {
     var {state} = stateNavigator.parseLink(url);
-    const fluentNavigator = stateNavigator.fluent();
-    for(var i = 0; i < stateNavigator.states.length; i++){
-      var stateKey = stateNavigator.states[i].key;
-      if (stateKey !== state.key)
-        fluentNavigator.navigate(stateKey);
+    var fluentNavigator = stateNavigator.fluent();
+    var stateKeys = ['sceneNorth', 'sceneEast', 'sceneSouth', 'sceneWest'];
+    for(var i = 0; i < stateKeys.length; i++){
+      if (stateKeys[i] !== state.key)
+        fluentNavigator = fluentNavigator.navigate(stateKeys[i]);
     }
-    return fluentNavigator .navigate(state.key).url;
+    return fluentNavigator.navigate(state.key).url;
   }));
 
   const { sceneNorth, sceneEast, sceneSouth, sceneWest } = stateNavigator.states;
