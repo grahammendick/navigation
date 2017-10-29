@@ -13,10 +13,8 @@ export default () => {
     var {state} = stateNavigator.parseLink(url);
     var fluentNavigator = stateNavigator.fluent();
     var stateKeys = ['sceneNorth', 'sceneEast', 'sceneSouth', 'sceneWest'];
-    for(var i = 0; i < stateKeys.length; i++){
-      if (stateKeys[i] !== state.key)
-        fluentNavigator = fluentNavigator.navigate(stateKeys[i]);
-    }
+    for(var i = 0; i < stateKeys.length && stateKeys[i] !== state.key; i++)
+      fluentNavigator = fluentNavigator.navigate(stateKeys[i]);
     return fluentNavigator.navigate(state.key).url;
   }));
 
