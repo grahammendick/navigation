@@ -12,7 +12,7 @@ export default ({stateNavigator}) => (
     {({translateX  = 0, translateY = 0}, scene, key) => (
       <div key={key}
         className="scene"
-        style={{transform: `translate(${translateX * 300}px, ${translateY * 460}px)`}}>
+        style={{transform: `translate(${translateX * window.innerWidth}px, ${translateY * window.innerHeight}px)`}}>
         {scene}
       </div>
     )}
