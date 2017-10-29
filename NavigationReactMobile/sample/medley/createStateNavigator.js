@@ -21,10 +21,18 @@ export default () => {
   }));
 
   const { sceneNorth, sceneEast, sceneSouth, sceneWest } = stateNavigator.states;
-  sceneNorth.renderScene = () => <Scene direction="North" color="blue" stateNavigator={stateNavigator}/>;
-  sceneEast.renderScene = () => <Scene direction="East" color="red" stateNavigator={stateNavigator}/>;
-  sceneSouth.renderScene = () => <Scene direction="South" color="green" stateNavigator={stateNavigator}/>;
-  sceneWest.renderScene = () => <Scene direction="West" color="black" stateNavigator={stateNavigator}/>;
+  sceneNorth.renderScene = () => renderScene('North', 'blue', stateNavigator);
+  sceneEast.renderScene = () => renderScene('East', 'red', stateNavigator);
+  sceneSouth.renderScene = () => renderScene('South', 'green', stateNavigator);
+  sceneWest.renderScene = () => renderScene('West', 'black', stateNavigator);
+
+  const renderScene = (direction, color, stateNavigator) => (
+    <Scene
+      direction={direction}
+      color={color}
+      index={stateNavigator.stateContext.crumbs.length}
+      stateNavigator={stateNavigator}/>
+  )
 
   sceneNorth.unmountedStyle = {translateY: -1};
   sceneEast.unmountedStyle = {translateX: 1};
