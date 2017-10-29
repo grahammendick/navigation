@@ -1,4 +1,6 @@
 import React from 'react';
+import {NavigationLink} from 'navigation-react';
+import {NavigationBackLink} from 'navigation-react';
 
 const nextDirection = {
   North: 'East',
@@ -11,20 +13,16 @@ export default ({direction, color, stateNavigator}) => {
   const {url, crumbs} = stateNavigator.stateContext;
   return (
     <div style={{backgroundColor: color}}>
-      <div
-        onClick={() => {
-          if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigate(`scene${nextDirection[direction]}`);          
-        }}>
+      <NavigationLink
+        key={`scene${nextDirection[direction]}`}
+        stateNavigator={stateNavigator}>
         {direction} {crumbs.length}
-      </div>
-      {stateNavigator.canNavigateBack(1) && <div
-        onClick={() => {
-          if (url === stateNavigator.stateContext.url)
-            stateNavigator.navigateBack(1);
-        }}>
+      </NavigationLink>
+      {stateNavigator.canNavigateBack(1) && <NavigationBackLink
+        distance={1}
+        stateNavigator={stateNavigator}>
         Back
-      </div>}
+      </NavigationBackLink>}
     </div>
   );
 };
