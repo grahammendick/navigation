@@ -9,3 +9,5 @@ ReactDOM.render(
   <Medley stateNavigator={stateNavigator} />,
   document.getElementById('content')
 )
+
+stateNavigator.start();
