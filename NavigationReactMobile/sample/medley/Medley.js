@@ -9,7 +9,7 @@ export default ({stateNavigator}) => (
     duration={state => state.duration}
     easing={state => state.easing}
     stateNavigator={stateNavigator}>
-    {({translateX  = 0, translateY = 0}, scene, key) => (
+    {({translateX = 0, translateY = 0}, scene, key) => (
       <div key={key}
         className="scene"
         style={{transform: `translate(${translateX * window.innerWidth}px, ${translateY * window.innerHeight}px)`}}>
