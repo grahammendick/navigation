@@ -1,5 +1,6 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
+import {MobileHistoryManager} from 'navigation-react-mobile';
 import Scene from './Scene';
 
 export default () => {
@@ -8,13 +9,22 @@ export default () => {
     {key: 'sceneEast', trackCrumbTrail: true},
     {key: 'sceneSouth', trackCrumbTrail: true},
     {key: 'sceneWest', trackCrumbTrail: true},
-  ]);
+  ], new MobileHistoryManager(url => {
+    var {state} = stateNavigator.parseLink(url);
+    const fluentNavigator = stateNavigator.fluent();
+    for(var i = 0; i < stateNavigator.states.length; i++){
+      var stateKey = stateNavigator.states[i].key;
+      if (stateKey !== state.key)
+        fluentNavigator.navigate(stateKey);
+    }
+    return fluentNavigator .navigate(state.key).url;
+  }));
 
   const { sceneNorth, sceneEast, sceneSouth, sceneWest } = stateNavigator.states;
-  sceneNorth.renderScene = (data, moveScene) => <Scene direction="North" color="blue" stateNavigator={stateNavigator}/>;
-  sceneEast.renderScene = (data, moveScene) => <Scene direction="East" color="red" stateNavigator={stateNavigator}/>;
-  sceneSouth.renderScene = (data, moveScene) => <Scene direction="South" color="green" stateNavigator={stateNavigator}/>;
-  sceneWest.renderScene = (data, moveScene) => <Scene direction="West" color="black" stateNavigator={stateNavigator}/>;
+  sceneNorth.renderScene = () => <Scene direction="North" color="blue" stateNavigator={stateNavigator}/>;
+  sceneEast.renderScene = () => <Scene direction="East" color="red" stateNavigator={stateNavigator}/>;
+  sceneSouth.renderScene = () => <Scene direction="South" color="green" stateNavigator={stateNavigator}/>;
+  sceneWest.renderScene = () => <Scene direction="West" color="black" stateNavigator={stateNavigator}/>;
 
   sceneNorth.unmountedStyle = {translateY: -1};
   sceneEast.unmountedStyle = {translateX: 1};
