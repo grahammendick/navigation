@@ -41,7 +41,9 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         var { crumbs } = this.getStateNavigator().stateContext;
         if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
-        var link = this.getStateNavigator().getNavigationBackLink(props.distance);
+        var { distance } = props;
+        var canNavigateBack = this.getStateNavigator().canNavigateBack(distance);
+        var link = canNavigateBack ? this.getStateNavigator().getNavigationBackLink(distance) : null;
         return { link };
     }
 
@@ -51,7 +53,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];
         }
-        props.href = this.getStateNavigator().historyManager.getHref(this.state.link);
+        props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         return React.createElement('a', props, this.props.children);
     }

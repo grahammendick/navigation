@@ -39,13 +39,13 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     }
     
     getComponentState(props): RefreshLinkState {
-        var { crumbs } = this.getStateNavigator().stateContext;
+        var { crumbs, state } = this.getStateNavigator().stateContext;
         if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
         var { navigationData, includeCurrentData, currentDataKeys } = props;
-        var navigationData = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
-        var link = this.getStateNavigator().getRefreshLink(navigationData);
-        var active = LinkUtility.isActive(this.getStateNavigator(), props.navigationData);
+        var data = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
+        var link = state && this.getStateNavigator().getRefreshLink(data);
+        var active = LinkUtility.isActive(this.getStateNavigator(), navigationData);
         return { link, active };
     }
 
@@ -55,7 +55,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];
         }
-        props.href = this.getStateNavigator().historyManager.getHref(this.state.link);
+        props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         LinkUtility.setActive(this.getStateNavigator(), this.state.active, this.props, props);
         return React.createElement('a', props, this.props.children);

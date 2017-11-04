@@ -46,26 +46,6 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Invalid Navigation Link', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
-                <NavigationLink
-                    stateKey="x"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
-            );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
-        })
-    });
-
     describe('Attributes Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
