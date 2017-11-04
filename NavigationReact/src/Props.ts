@@ -23,4 +23,5 @@ interface NavigationLinkProps extends RefreshLinkProps {
 interface NavigationBackLinkProps extends LinkProps {
     distance: number;
 }
+
 export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps }
