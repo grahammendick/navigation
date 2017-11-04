@@ -39,9 +39,9 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
     
     getComponentState(props): NavigationBackLinkState {
         var { crumbs } = this.getStateNavigator().stateContext;
-        var { acrossCrumbs, distance } = props;
-        if (!acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
+        if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
+        var { distance } = props;
         var canNavigateBack = this.getStateNavigator().canNavigateBack(distance);
         var link = canNavigateBack ? this.getStateNavigator().getNavigationBackLink(distance) : null;
         return { link };

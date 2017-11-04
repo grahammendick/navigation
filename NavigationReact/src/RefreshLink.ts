@@ -40,9 +40,9 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     
     getComponentState(props): RefreshLinkState {
         var { crumbs, state } = this.getStateNavigator().stateContext;
-        var { acrossCrumbs, navigationData, includeCurrentData, currentDataKeys } = props;
-        if (!acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
+        if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
+        var { navigationData, includeCurrentData, currentDataKeys } = props;
         var data = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
         var link = state && this.getStateNavigator().getRefreshLink(data);
         var active = LinkUtility.isActive(this.getStateNavigator(), navigationData);
