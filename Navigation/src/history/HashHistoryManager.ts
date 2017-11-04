@@ -10,7 +10,7 @@ class HashHistoryManager implements HistoryManager {
     }
 
     init(navigateHistory) {
-        this.navigateHistory = navigateHistory;
+        this.navigateHistory = () => navigateHistory();
         if (!this.disabled) {
             if (window.addEventListener)
                 window.addEventListener('hashchange', this.navigateHistory);
