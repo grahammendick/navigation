@@ -7,7 +7,7 @@ type NavigationLinkState = { link: string, active: boolean };
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
     private crumb: number;
     private onNavigate = () => {
-        var componentState = this.getComponentState(this.props);
+        var componentState = this.getComponentState();
         if (this.state.link !== componentState.link)
             this.setState(componentState);
     }
@@ -26,6 +26,16 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
+    private getNavigationLink(props = this.props): string {
+        var { navigationData, includeCurrentData, currentDataKeys } = props;
+        var navigationData = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
+        try {
+            return this.getStateNavigator().getNavigationLink(props.stateKey, navigationData);
+        } catch (e) {
+            return null;
+        }
+    }
+    
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.onNavigate);
     }
@@ -38,13 +48,11 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
 
-    getComponentState(props): NavigationLinkState {
+    getComponentState(props = this.props): NavigationLinkState {
         var { crumbs, state } = this.getStateNavigator().stateContext;
         if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
-        var { navigationData, includeCurrentData, currentDataKeys } = props;
-        var navigationData = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
-        var link = this.getStateNavigator().getNavigationLink(props.stateKey, navigationData);
+        var link = this.getNavigationLink(props);
         var active = state && state.key === props.stateKey && LinkUtility.isActive(this.getStateNavigator(), props.navigationData);
         return { link, active };
     }
@@ -55,7 +63,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];
         }
-        props.href = this.getStateNavigator().historyManager.getHref(this.state.link);
+        props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         LinkUtility.setActive(this.getStateNavigator(), this.state.active, this.props, props);
         return React.createElement('a', props, this.props.children);
