@@ -40,10 +40,11 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
 
     private getComponentState(props = this.props): NavigationLinkState {
         var { crumbs, state } = this.getStateNavigator().stateContext;
-        if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
+        var { acrossCrumbs, navigationData, stateKey } = props;
+        if (!acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
         var link = this.getNavigationLink(props);
-        var active = state && state.key === props.stateKey && LinkUtility.isActive(this.getStateNavigator(), props.navigationData);
+        var active = state && state.key === stateKey && LinkUtility.isActive(this.getStateNavigator(), navigationData);
         return { link, active };
     }
 
