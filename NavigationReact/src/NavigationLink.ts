@@ -26,16 +26,6 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
-    private getNavigationLink(props = this.props): string {
-        var { navigationData, includeCurrentData, currentDataKeys } = props;
-        var navigationData = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
-        try {
-            return this.getStateNavigator().getNavigationLink(props.stateKey, navigationData);
-        } catch (e) {
-            return null;
-        }
-    }
-    
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.onNavigate);
     }
@@ -48,13 +38,23 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
 
-    getComponentState(props = this.props): NavigationLinkState {
+    private getComponentState(props = this.props): NavigationLinkState {
         var { crumbs, state } = this.getStateNavigator().stateContext;
         if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
         var link = this.getNavigationLink(props);
         var active = state && state.key === props.stateKey && LinkUtility.isActive(this.getStateNavigator(), props.navigationData);
         return { link, active };
+    }
+
+    private getNavigationLink(props): string {
+        var { navigationData, includeCurrentData, currentDataKeys } = props;
+        var navigationData = LinkUtility.getData(this.getStateNavigator(), navigationData, includeCurrentData, currentDataKeys);
+        try {
+            return this.getStateNavigator().getNavigationLink(props.stateKey, navigationData);
+        } catch (e) {
+            return null;
+        }
     }
 
     render() {

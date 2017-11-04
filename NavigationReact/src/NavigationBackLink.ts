@@ -26,14 +26,6 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
-    private getNavigationBackLink(props = this.props): string {
-        try {
-            return this.getStateNavigator().getNavigationBackLink(props.distance);
-        } catch (e) {
-            return null;
-        }
-    }
-
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.onNavigate);
     }
@@ -45,12 +37,20 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
     
-    getComponentState(props = this.props): NavigationBackLinkState {
+    private getComponentState(props = this.props): NavigationBackLinkState {
         var { crumbs } = this.getStateNavigator().stateContext;
         if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
         var link = this.getNavigationBackLink(props);
         return { link };
+    }
+
+    private getNavigationBackLink(props): string {
+        try {
+            return this.getStateNavigator().getNavigationBackLink(props.distance);
+        } catch (e) {
+            return null;
+        }
     }
 
     render() {
