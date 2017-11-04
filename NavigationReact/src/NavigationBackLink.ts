@@ -2,17 +2,18 @@
 import { StateNavigator } from 'navigation';
 import { NavigationBackLinkProps } from './Props';
 import * as React from 'react';
+type NavigationBackLinkState = { link: string };
 
-class NavigationBackLink extends React.Component<NavigationBackLinkProps, any> {
+class NavigationBackLink extends React.Component<NavigationBackLinkProps, NavigationBackLinkState> {
     private onNavigate = () => {
-        var link = this.getNavigationBackLink();
-        if (this.state.link !== link)
-            this.setState({ link });
+        var componentState = this.getComponentState();
+        if (this.state.link !== componentState.link)
+            this.setState(componentState);
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { link: this.getNavigationBackLink() };
+        this.state = this.getComponentState(props);
     }
 
     static contextTypes = {
@@ -23,9 +24,9 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, any> {
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
-    private getNavigationBackLink(): string {
+    private getNavigationBackLink(props = this.props): string {
         try {
-            return this.getStateNavigator().getNavigationBackLink(this.props.distance);
+            return this.getStateNavigator().getNavigationBackLink(props.distance);
         } catch (e) {
             return null;
         }
@@ -36,14 +37,19 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, any> {
             this.getStateNavigator().onNavigate(this.onNavigate);
     }
     
-    componentWillReceiveProps() {
-        this.setState({ link: this.getNavigationBackLink() });
+    componentWillReceiveProps(nextProps) {
+        this.setState(this.getComponentState(nextProps))
     }
     componentWillUnmount() {
         if (!this.props.lazy)
             this.getStateNavigator().offNavigate(this.onNavigate);
     }
     
+    getComponentState(props = this.props): NavigationBackLinkState {
+        var link = this.getNavigationBackLink(props);
+        return { link };
+    }
+
     render() {
         var props: any = {};
         for(var key in this.props) {

@@ -10,14 +10,18 @@ class LinkUtility {
         return navigationData;
     }
 
-    static setActive(stateNavigator: StateNavigator, props: any, toProps: any) {
-        if (!props.activeCssClass && !props.disableActive)
-            return;
-        var active = !!toProps.href;
-        for (var key in props.navigationData) {
-            var val = props.navigationData[key];
+    static isActive(stateNavigator: StateNavigator, navigationData: any): boolean {
+        var active = true;
+        for (var key in navigationData) {
+            var val = navigationData[key];
             active = active && (val == null || this.areEqual(val, stateNavigator.stateContext.data[key]));
         }
+        return active;
+    }
+
+    static setActive(stateNavigator: StateNavigator, active: boolean, props: any, toProps: any) {
+        if (!props.activeCssClass && !props.disableActive)
+            return;
         if (active && props.activeCssClass)
             toProps.className = !toProps.className ? props.activeCssClass : toProps.className + ' ' + props.activeCssClass;
         if (active && props.disableActive)
