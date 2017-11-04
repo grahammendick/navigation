@@ -5,6 +5,7 @@ import * as React from 'react';
 type NavigationLinkState = { link: string, active: boolean };
 
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
+    private crumb: number;
     private onNavigate = () => {
         var componentState = this.getComponentState();
         if (this.state.link !== componentState.link)
@@ -14,6 +15,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     constructor(props, context) {
         super(props, context);
         this.state = this.getComponentState(props);
+        this.crumb = this.getStateNavigator().stateContext.crumbs.length;
     }
 
     static contextTypes = {
@@ -49,8 +51,10 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     }
 
     getComponentState(props = this.props): NavigationLinkState {
+        var { crumbs, state } = this.getStateNavigator().stateContext;
+        if (this.crumb !== undefined && this.crumb !== crumbs.length)
+            return this.state;
         var link = this.getNavigationLink(props);
-        var state = this.getStateNavigator().stateContext.state;
         var active = state && state.key === props.stateKey && LinkUtility.isActive(this.getStateNavigator(), props.navigationData);
         return { link, active };
     }

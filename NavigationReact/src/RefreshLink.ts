@@ -5,6 +5,7 @@ import * as React from 'react';
 type RefreshLinkState = { link: string, active: boolean };
 
 class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
+    private crumb: number;
     private onNavigate = () => {
         var componentState = this.getComponentState();
         if (this.state.link !== componentState.link)
@@ -14,6 +15,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     constructor(props, context) {
         super(props, context);
         this.state = this.getComponentState(props);
+        this.crumb = this.getStateNavigator().stateContext.crumbs.length;
     }
 
     static contextTypes = {
@@ -49,6 +51,9 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     }
     
     getComponentState(props = this.props): RefreshLinkState {
+        var { crumbs } = this.getStateNavigator().stateContext;
+        if (this.crumb !== undefined && this.crumb !== crumbs.length)
+            return this.state;
         var link = this.getRefreshLink(props);
         var active = LinkUtility.isActive(this.getStateNavigator(), props.navigationData);
         return { link, active };
