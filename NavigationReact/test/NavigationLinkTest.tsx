@@ -80,7 +80,6 @@ describe('NavigationLinkTest', function () {
                     currentDataKeys="y"
                     activeCssClass="active"
                     disableActive={true}
-                    lazy={false}
                     historyAction='replace'
                     navigating={() => false}
                     aria-label="z"
@@ -1603,32 +1602,6 @@ describe('NavigationLinkTest', function () {
             link.props['onClick'](evt);
             assert.strictEqual(navigatingEvt, evt);
             assert.equal(navigatingLink, '/r');
-        })
-    });
-
-    describe('Lazy Click Navigation Link', function () {
-        it('should navigate', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
-                <NavigationLink
-                    stateKey="s"
-                    includeCurrentData={true}
-                    lazy={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
-            );
-            var link = renderer.getRenderOutput();
-            var el = { href: null };
-            stateNavigator.navigate('s', { x: 'a' });
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: el, preventDefault: () => {} });
-            assert.equal(el.href, '#/r?x=a');
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
-            assert.equal(stateNavigator.stateContext.data.x, 'a');
         })
     });
 

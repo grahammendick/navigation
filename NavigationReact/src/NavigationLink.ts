@@ -37,8 +37,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     }
     
     componentDidMount() {
-        if (!this.props.lazy)
-            this.getStateNavigator().onNavigate(this.onNavigate);
+        this.getStateNavigator().onNavigate(this.onNavigate);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -46,8 +45,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     }
 
     componentWillUnmount() {
-        if (!this.props.lazy)
-            this.getStateNavigator().offNavigate(this.onNavigate);
+        this.getStateNavigator().offNavigate(this.onNavigate);
     }
 
     getComponentState(props = this.props): NavigationLinkState {
@@ -66,7 +64,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
                 props[key] = this.props[key];
         }
         props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
-        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getNavigationLink(), this.state.link);
+        props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         LinkUtility.setActive(this.getStateNavigator(), this.state.active, this.props, props);
         return React.createElement('a', props, this.props.children);
     }

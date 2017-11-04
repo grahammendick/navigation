@@ -35,16 +35,14 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
     }
 
     componentDidMount() {
-        if (!this.props.lazy)
-            this.getStateNavigator().onNavigate(this.onNavigate);
+        this.getStateNavigator().onNavigate(this.onNavigate);
     }
     
     componentWillReceiveProps(nextProps) {
         this.setState(this.getComponentState(nextProps))
     }
     componentWillUnmount() {
-        if (!this.props.lazy)
-            this.getStateNavigator().offNavigate(this.onNavigate);
+        this.getStateNavigator().offNavigate(this.onNavigate);
     }
     
     getComponentState(props = this.props): NavigationBackLinkState {
@@ -62,7 +60,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
                 props[key] = this.props[key];
         }
         props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
-        LinkUtility.addListeners(this, this.getStateNavigator(), this.props, props, () => this.getNavigationBackLink(), this.state.link);
+        props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         return React.createElement('a', props, this.props.children);
     }
 };

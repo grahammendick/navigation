@@ -51,15 +51,8 @@ class LinkUtility {
             && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
     }
     
-    static addListeners(component: React.Component<any, any>, stateNavigator: StateNavigator, props: any, toProps: React.AnchorHTMLAttributes<HTMLAnchorElement>, getLink: () => string, link: string) {
-        var lazy = !!props.lazy;
-        toProps.onClick = (e) => {
-            if (lazy) {
-                component.forceUpdate();
-                link = getLink();
-                if (link)
-                    e.currentTarget.href = stateNavigator.historyManager.getHref(link);
-            }
+    static getOnClick(stateNavigator: StateNavigator, props: any, link: string) {
+        return (e) => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (link) {
                     var navigating = this.getNavigating(props);
@@ -70,8 +63,6 @@ class LinkUtility {
                 }
             }
         };
-        if (lazy)
-            toProps.onContextMenu = () => component.forceUpdate();
     }
 
     static getNavigating(props: any): (e, link: string) => boolean {
