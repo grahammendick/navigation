@@ -7,7 +7,7 @@ type NavigationBackLinkState = { link: string };
 class NavigationBackLink extends React.Component<NavigationBackLinkProps, NavigationBackLinkState> {
     private crumb: number;
     private onNavigate = () => {
-        var componentState = this.getComponentState();
+        var componentState = this.getComponentState(this.props);
         if (this.state.link !== componentState.link)
             this.setState(componentState);
     }
@@ -26,14 +26,6 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         return this.props.stateNavigator || (<any> this.context).stateNavigator;
     }
     
-    private getNavigationBackLink(props = this.props): string {
-        try {
-            return this.getStateNavigator().getNavigationBackLink(props.distance);
-        } catch (e) {
-            return null;
-        }
-    }
-
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.onNavigate);
     }
@@ -45,11 +37,11 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         this.getStateNavigator().offNavigate(this.onNavigate);
     }
     
-    getComponentState(props = this.props): NavigationBackLinkState {
+    getComponentState(props): NavigationBackLinkState {
         var { crumbs } = this.getStateNavigator().stateContext;
         if (!props.acrossCrumbs && this.crumb !== undefined && this.crumb !== crumbs.length)
             return this.state;
-        var link = this.getNavigationBackLink(props);
+        var link = this.getStateNavigator().getNavigationBackLink(props.distance);
         return { link };
     }
 
@@ -59,7 +51,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
             if (LinkUtility.isValidAttribute(key))
                 props[key] = this.props[key];
         }
-        props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
+        props.href = this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         return React.createElement('a', props, this.props.children);
     }
