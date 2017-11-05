@@ -4,7 +4,7 @@ import { HTMLProps, MouseEvent } from 'react';
 interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     acrossCrumbs?: boolean;
     historyAction?: 'add' | 'replace' | 'none';
-    navigating?: (e: MouseEvent<HTMLAnchorElement>, domId: string, link: string) => boolean;
+    navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
     stateNavigator?: StateNavigator;
 }
 

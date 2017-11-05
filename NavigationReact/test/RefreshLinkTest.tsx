@@ -1532,7 +1532,7 @@ describe('RefreshLinkTest', function () {
             var navigatingEvt, navigatingLink;
             renderer.render(
                 <RefreshLink
-                    navigating={(e, domId, link) => {
+                    navigating={(e, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
                         return true;

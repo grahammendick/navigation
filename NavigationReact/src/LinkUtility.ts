@@ -55,7 +55,7 @@ class LinkUtility {
         return (e) => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (link) {
-                    if (!props.navigating || props.navigating(e, undefined, link)) {
+                    if (!props.navigating || props.navigating(e, link)) {
                         e.preventDefault();
                         stateNavigator.navigateLink(link, props.historyAction);
                     }

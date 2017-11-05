@@ -305,7 +305,7 @@ describe('NavigationBackLinkTest', function () {
             renderer.render(
                 <NavigationBackLink
                     distance={1}
-                    navigating={(e, domId, link) => {
+                    navigating={(e, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
                         return true;
