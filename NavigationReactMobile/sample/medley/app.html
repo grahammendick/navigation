@@ -4,27 +4,28 @@
     <title>Navigation React Mobile Medley</title>
     <meta name="viewport" content="width=device-width">
     <style>
-      .scene {
+      body {
+        overflow: hidden;
+      }
+      .scene, .scene div:first-child{
         position: absolute;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
         overflow: auto;
-        display: flex;
-        justify-content: center;
       }
-      .scene div{
-        flex: 0 0 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+      .scene div:first-child{
+        padding-top: 100px;
       }
       .scene a{
         color: #fff;
         font-size: 300%;
         font-weight: bold;
+        display: block;
+        margin: 0 auto;
+        width: 20%;
+        text-align: center;
       }
     </style>
   </head>
