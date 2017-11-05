@@ -1,5 +1,4 @@
 ﻿import { StateNavigator } from 'navigation';
-import * as React from 'react';
 
 class LinkUtility {
     static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
