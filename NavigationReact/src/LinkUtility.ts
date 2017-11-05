@@ -55,23 +55,13 @@ class LinkUtility {
         return (e) => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
                 if (link) {
-                    var navigating = this.getNavigating(props);
-                    if (navigating(e, link)) {
+                    if (!props.navigating || props.navigating(e, undefined, link)) {
                         e.preventDefault();
                         stateNavigator.navigateLink(link, props.historyAction);
                     }
                 }
             }
         };
-    }
-
-    static getNavigating(props: any): (e, link: string) => boolean {
-        return (e, link: string) => {
-            var listener = props.navigating;
-            if (listener)
-                return listener(e, undefined, link);
-            return true;
-        }
     }
 }
 export default LinkUtility;
