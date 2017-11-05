@@ -13,9 +13,6 @@
     "react",
     "mobile"
   ],
-  "dependencies": {
-    "d3-interpolate": "*"
-  },
   "peerDependencies": {
     "navigation": "*",
     "navigation-react": "*",
