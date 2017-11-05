@@ -46,9 +46,10 @@ class LinkUtility {
     }
 
     static isValidAttribute(attr: string): boolean {
-        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData' && attr !== 'includeCurrentData'
-            && attr !== 'currentDataKeys' && attr !== 'activeCssClass' && attr !== 'disableActive' && attr !== 'distance'
-            && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
+        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
+            && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
+            && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
+            && attr !== 'navigating' && attr !== 'children';
     }
     
     static getOnClick(stateNavigator: StateNavigator, props: any, link: string) {
