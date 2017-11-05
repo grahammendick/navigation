@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { interpolate } from 'd3-interpolate';
-import * as Easing from 'd3-ease';
 
 class Motion extends React.Component<any, any> {
     private moveId: number;
@@ -21,7 +20,7 @@ class Motion extends React.Component<any, any> {
     }
     move(tick) {
         this.setState(({items: prevItems}) => {
-            var {data, enter, leave, update, getKey, duration, easing, onRest} = this.props;
+            var {data, enter, leave, update, getKey, duration, onRest} = this.props;
             var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
@@ -44,7 +43,7 @@ class Motion extends React.Component<any, any> {
                         nextItem.progress = reverse ? 1 - item.progress : 0;
                         nextItem.interpolators = this.getInterpolators(nextItem);
                     }
-                    nextItem.style = this.interpolateStyle(nextItem, easing(item.data));
+                    nextItem.style = this.interpolateStyle(nextItem);
                     if (onRest && nextItem.rest && !item.rest)
                         onRest(item.data);
                     return nextItem;
@@ -83,10 +82,10 @@ class Motion extends React.Component<any, any> {
             interpolators[key] = interpolate(start[key], end[key]);
         return interpolators;
     }
-    interpolateStyle({interpolators, end, progress}, easing) {
+    interpolateStyle({interpolators, end, progress}) {
         var style = {};
         for(var key in end)
-            style[key] = interpolators[key](Easing[easing](progress))
+            style[key] = interpolators[key](progress);
         return style;
     }
     render() {

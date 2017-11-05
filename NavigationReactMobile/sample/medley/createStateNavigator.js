@@ -46,11 +46,6 @@ export default () => {
   sceneEast.crumbStyle = {translateX: .3};
   sceneSouth.crumbStyle = {translateY: .3};
   sceneWest.crumbStyle = {translateX: -.3};
-
-  sceneNorth.easing = 'easeLinear';
-  sceneEast.easing = 'easeExpIn';
-  sceneSouth.easing = 'easeExpOut';
-  sceneWest.easing = 'easeExpInOut';
   
   return stateNavigator;
 }

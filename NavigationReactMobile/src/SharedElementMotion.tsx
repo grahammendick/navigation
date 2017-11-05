@@ -4,7 +4,6 @@ import Motion from './Motion';
 class SharedElementMotion extends React.Component<any, any> {
     static defaultProps = {
         duration: 300,
-        easing: 'easeLinear',
         elementStyle: (name, ref, data) => data
     }
     componentWillReceiveProps(nextProps) {
@@ -43,8 +42,7 @@ class SharedElementMotion extends React.Component<any, any> {
                 getKey={({name}) => name}
                 enter={({name, oldElement}) => this.getStyle(name, oldElement)}
                 update={({name, mountedElement}) => this.getStyle(name, mountedElement)}
-                duration={duration}
-                easing={({name}) => this.getPropValue(easing, name)}>
+                duration={duration}>
                 {tweenStyles => (
                     tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
                         children(tweenStyle, name, oldElement.data, mountedElement.data)

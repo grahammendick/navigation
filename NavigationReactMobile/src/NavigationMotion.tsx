@@ -17,7 +17,6 @@ class NavigationMotion extends React.Component<any, any> {
     }
     static defaultProps = {
         duration: 300,
-        easing: 'easeLinear'
     }
     static contextTypes = {
         stateNavigator: () => {}
@@ -98,7 +97,7 @@ class NavigationMotion extends React.Component<any, any> {
         return typeof prop === 'function' ? prop(state, data) : prop;
      }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, easing, sharedElementMotion} = this.props;
+        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, sharedElementMotion} = this.props;
         var {stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
@@ -108,7 +107,6 @@ class NavigationMotion extends React.Component<any, any> {
                 update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
                 duration={duration}
-                easing={({state, data}) => this.getPropValue(easing, state, data)}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
@@ -118,7 +116,6 @@ class NavigationMotion extends React.Component<any, any> {
                             key: 'sharedElements',
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
                             duration,
-                            easing: this.getPropValue(easing, stateContext.state, stateContext.data)
                         })
                     )
                 )}
