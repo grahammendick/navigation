@@ -23,7 +23,7 @@ class LinkUtility {
         if (!props.activeCssClass && !props.disableActive)
             return;
         if (active && props.activeCssClass)
-            toProps.className = !toProps.className ? props.activeCssClass : toProps.className + ' ' + props.activeCssClass;
+            toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
         if (active && props.disableActive)
             toProps.href = null;        
     }
