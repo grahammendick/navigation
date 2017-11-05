@@ -47,11 +47,6 @@ export default () => {
   sceneSouth.crumbStyle = {translateY: .3};
   sceneWest.crumbStyle = {translateX: -.3};
 
-  sceneNorth.duration = 500;
-  sceneEast.duration = 1000;
-  sceneSouth.duration = 2000;
-  sceneWest.duration = 4000;
-
   sceneNorth.easing = 'easeLinear';
   sceneEast.easing = 'easeExpIn';
   sceneSouth.easing = 'easeExpOut';

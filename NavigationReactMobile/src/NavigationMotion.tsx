@@ -107,7 +107,7 @@ class NavigationMotion extends React.Component<any, any> {
                 enter={({state, data}) => this.getPropValue(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
                 update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
-                duration={({state, data}) => this.getPropValue(duration, state, data)}
+                duration={duration}
                 easing={({state, data}) => this.getPropValue(easing, state, data)}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
@@ -117,7 +117,7 @@ class NavigationMotion extends React.Component<any, any> {
                         sharedElementMotion && sharedElementMotion({
                             key: 'sharedElements',
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
-                            duration: this.getPropValue(duration, stateContext.state, stateContext.data),
+                            duration,
                             easing: this.getPropValue(easing, stateContext.state, stateContext.data)
                         })
                     )

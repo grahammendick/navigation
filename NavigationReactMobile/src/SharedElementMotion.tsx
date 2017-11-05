@@ -43,7 +43,7 @@ class SharedElementMotion extends React.Component<any, any> {
                 getKey={({name}) => name}
                 enter={({name, oldElement}) => this.getStyle(name, oldElement)}
                 update={({name, mountedElement}) => this.getStyle(name, mountedElement)}
-                duration={({name}) => this.getPropValue(duration, name)}
+                duration={duration}
                 easing={({name}) => this.getPropValue(easing, name)}>
                 {tweenStyles => (
                     tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
