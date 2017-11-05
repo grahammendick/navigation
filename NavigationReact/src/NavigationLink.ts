@@ -66,7 +66,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         }
         props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
-        LinkUtility.setActive(this.getStateNavigator(), this.state.active, this.props, props);
+        LinkUtility.setActive(this.state.active, this.props, props);
         return React.createElement('a', props, this.props.children);
     }
 };
