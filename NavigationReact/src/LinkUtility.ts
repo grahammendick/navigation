@@ -3,10 +3,10 @@ import * as React from 'react';
 
 class LinkUtility {
     static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
-        if (currentDataKeys)
-            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
-        if (includeCurrentData)
-            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData);
+        if (currentDataKeys || includeCurrentData) {
+            var keys = includeCurrentData ? undefined : currentDataKeys.trim().split(/\s*,\s*/);
+            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, keys);
+        }
         return navigationData;
     }
 
