@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { interpolate } from 'd3-interpolate';
 
 class Motion extends React.Component<any, any> {
     private moveId: number;
@@ -35,13 +34,11 @@ class Motion extends React.Component<any, any> {
                         nextItem.rest = item.progress === 1;
                         var progressDelta = (nextItem.tick - item.tick) / duration;
                         nextItem.progress = Math.min(item.progress + progressDelta, 1);
-                        nextItem.interpolators = item.interpolators;
                     } else {
                         nextItem.rest = false;
                         var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
                         nextItem.start = reverse ? item.end : item.style;
                         nextItem.progress = reverse ? 1 - item.progress : 0;
-                        nextItem.interpolators = this.getInterpolators(nextItem);
                     }
                     nextItem.style = this.interpolateStyle(nextItem);
                     if (onRest && nextItem.rest && !item.rest)
@@ -56,7 +53,6 @@ class Motion extends React.Component<any, any> {
                         var newItem: any = {key: getKey(item), data: item, progress: 0, tick, rest: false, index};
                         newItem.start = newItem.style = enter(item);
                         newItem.end = update(item);
-                        newItem.interpolators = this.getInterpolators(newItem);
                         return newItem;
                     })
                 )
@@ -76,16 +72,10 @@ class Motion extends React.Component<any, any> {
         }
         return true;
     }
-    getInterpolators({start, end}) {
-        var interpolators = {};
-        for(var key in start)
-            interpolators[key] = interpolate(start[key], end[key]);
-        return interpolators;
-    }
-    interpolateStyle({interpolators, end, progress}) {
+    interpolateStyle({start, end, progress}) {
         var style = {};
         for(var key in end)
-            style[key] = interpolators[key](progress);
+            style[key] = start[key] + (progress * (end[key] - start[key]));
         return style;
     }
     render() {
