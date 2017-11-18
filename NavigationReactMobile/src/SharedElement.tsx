@@ -26,10 +26,8 @@ class SharedElement extends React.Component<any, any> {
         this.register();
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.name !== this.props.name) {
-            this.context.unregisterSharedElement(this.scene, prevProps.name);
-            this.register();
-        }
+        this.context.unregisterSharedElement(this.scene, prevProps.name);
+        this.register();
     }
     componentWillUnmount() {
         this.context.unregisterSharedElement(this.scene, this.props.name);
