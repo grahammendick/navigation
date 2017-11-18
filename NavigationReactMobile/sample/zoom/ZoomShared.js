@@ -1,9 +1,9 @@
 import React from 'react';
 import {SharedElementMotion} from 'navigation-react-mobile';
 
-export default ({sharedElements}) => (
+export default (props) => (
   <SharedElementMotion
-    sharedElements={sharedElements}
+    {...props}
     onAnimating={(name, ref) => {ref.style.opacity = 0}}
     onAnimated={(name, ref) => {ref.style.opacity = 1}}>
     {({left, top, width, height, fontSize, fontColor}, name, {color}) => (
@@ -26,7 +26,7 @@ export default ({sharedElements}) => (
           fontSize: `${fontSize}%`,
           textAlign: 'center',
           fontWeight: 'bold',
-          color: fontColor,
+          color: `rgb(${Array(3).fill(Math.round(fontColor)).join(',')})`,
           zIndex: 1,
         }}>
           {color}
