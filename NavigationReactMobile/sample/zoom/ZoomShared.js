@@ -23,7 +23,7 @@ export default ({sharedElements}) => (
           top,
           width,
           height,
-          fontSize,
+          fontSize: `${fontSize}%`,
           textAlign: 'center',
           fontWeight: 'bold',
           color: fontColor,
