@@ -99,6 +99,7 @@ class NavigationMotion extends React.Component<any, any> {
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, sharedElementMotion} = this.props;
         var {stateContext} = this.getStateNavigator();
+        var crumbs = stateContext.crumbs;
         var navigationProgress = 0;
         return (stateContext.state &&
             <Motion
@@ -111,8 +112,7 @@ class NavigationMotion extends React.Component<any, any> {
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, progress, style: tweenStyle}) => {
-                        if (stateContext.crumbs.length === key)
-                            navigationProgress = progress;
+                        navigationProgress = crumbs.length === key ? progress : navigationProgress;
                         return (children as any)(tweenStyle, scene, key, state, data)
                     }).concat(
                         sharedElementMotion && sharedElementMotion({
