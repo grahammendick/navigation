@@ -25,7 +25,6 @@ export default (props) => (
           height,
           fontSize: `${fontSize}%`,
           textAlign: 'center',
-          fontWeight: 'bold',
           color: `rgb(${Array(3).fill(Math.round(fontColor)).join(',')})`,
           zIndex: 1,
         }}>
