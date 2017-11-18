@@ -7,6 +7,9 @@ class Motion extends React.Component<any, any> {
         this.move = this.move.bind(this);
         this.state = {items: []};
     }
+    static defaultProps = {
+        progress: 0,
+    }
     componentWillReceiveProps() {
         if (!this.moveId)
             this.moveId = requestAnimationFrame(this.move);
@@ -19,7 +22,7 @@ class Motion extends React.Component<any, any> {
     }
     move(tick) {
         this.setState(({items: prevItems}) => {
-            var {data, enter, leave, update, getKey, duration, onRest} = this.props;
+            var {data, enter, leave, update, progress, getKey, duration, onRest} = this.props;
             var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...item, index}}), {});
             var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
             var items = prevItems
@@ -50,7 +53,7 @@ class Motion extends React.Component<any, any> {
                     .filter(item => !itemsByKey[getKey(item)])
                     .map(item => {
                         var index = dataByKey[getKey(item)].index;
-                        var newItem: any = {key: getKey(item), data: item, progress: 0, tick, rest: false, index};
+                        var newItem: any = {key: getKey(item), data: item, progress, tick, rest: false, index};
                         newItem.start = newItem.style = enter(item);
                         newItem.end = update(item);
                         return newItem;
