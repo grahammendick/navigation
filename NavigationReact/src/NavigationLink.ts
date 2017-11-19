@@ -7,8 +7,9 @@ type NavigationLinkState = { link: string, active: boolean };
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
     private crumb: number;
     private onNavigate = () => {
+        var { link, active } = this.state;
         var componentState = this.getComponentState();
-        if (this.state.link !== componentState.link)
+        if (link !== componentState.link || active !== componentState.active)
             this.setState(componentState);
     }
 
