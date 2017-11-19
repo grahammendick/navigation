@@ -118,7 +118,7 @@ class NavigationMotion extends React.Component<any, any> {
                         sharedElementMotion && sharedElementMotion({
                             key: 'sharedElements',
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
-                            progress: navigationProgress,
+                            enterProgress: () => navigationProgress,
                             duration,
                         })
                     )
