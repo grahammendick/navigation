@@ -22,7 +22,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     crumblessParams.push(params[i])
                 }
             }
-            url = `${path}?${crumblessParams.join('&')}`;
+            var crumblessQuery = crumblessParams.join('&');
+            url = `${path}${crumblessQuery && '?'}${crumblessQuery}`;
         }
         return !this.hash ? super.getHref(url) : '#' + url;
     }
