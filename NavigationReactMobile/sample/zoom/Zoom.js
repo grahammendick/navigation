@@ -9,10 +9,13 @@ export default ({stateNavigator}) => (
     crumbStyle={{opacity: 0}}
     sharedElementMotion={props => <ZoomShared {...props} />}
     stateNavigator={stateNavigator}>
-    {({opacity}, scene, key) => (
+    {({opacity}, scene, key, active) => (
       <div key={key}
         className="scene"
-        style={{opacity}}>
+        style={{
+          overflow: active ? 'auto' : 'hidden',
+          opacity
+        }}>
         {scene}
       </div>
     )}

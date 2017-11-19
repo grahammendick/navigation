@@ -8,10 +8,13 @@ export default ({stateNavigator}) => (
     crumbStyle={state => state.crumbStyle}
     duration={1000}
     stateNavigator={stateNavigator}>
-    {({translateX = 0, translateY = 0}, scene, key) => (
+    {({translateX = 0, translateY = 0}, scene, key, active) => (
       <div key={key}
         className="scene"
-        style={{transform: `translate(${translateX * window.innerWidth}px, ${translateY * window.innerHeight}px)`}}>
+        style={{
+          overflow: active ? 'auto' : 'hidden',
+          transform: `translate(${translateX * innerWidth}px, ${translateY * innerHeight}px)`
+        }}>
         {scene}
       </div>
     )}
