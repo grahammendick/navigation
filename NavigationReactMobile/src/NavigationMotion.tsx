@@ -57,8 +57,7 @@ class NavigationMotion extends React.Component<any, any> {
         if (this.sharedElements[scene])
             delete this.sharedElements[scene][name];
     }
-    getSharedElements() {
-        var {crumbs, oldUrl} = this.getStateNavigator().stateContext;
+    getSharedElements(crumbs, oldUrl) {
         if (!oldUrl || crumbs.length === oldUrl.split('crumb=').length - 1)
             return [];
         var oldSharedElements = this.sharedElements[oldUrl.split('crumb=').length - 1];
@@ -98,25 +97,24 @@ class NavigationMotion extends React.Component<any, any> {
      }
     render() {
         var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, sharedElementMotion} = this.props;
-        var {stateContext} = this.getStateNavigator();
-        var index = stateContext.crumbs.length;
+        var {stateContext: {crumbs, oldUrl, oldState}, stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={({state, data}) => this.getPropValue(stateContext.oldState ? unmountedStyle : mountedStyle, state, data)}
+                enter={({state, data}) => this.getPropValue(oldState ? unmountedStyle : mountedStyle, state, data)}
                 update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
                 duration={duration}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, progress, style: tweenStyle}) => (
-                        (children as any)(tweenStyle, scene, key, index === key, state, data)
+                        (children as any)(tweenStyle, scene, key, crumbs.length === key, state, data)
                     )).concat(
                         sharedElementMotion && sharedElementMotion({
                             key: 'sharedElements',
-                            sharedElements: !this.state.rest ? this.getSharedElements() : [],
-                            progress: tweenStyles[index] && tweenStyles[index].progress,
+                            sharedElements: !this.state.rest ? this.getSharedElements(crumbs, oldUrl) : [],
+                            progress: tweenStyles[crumbs.length] && tweenStyles[crumbs.length].progress,
                             duration,
                         })
                     )
