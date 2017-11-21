@@ -80,7 +80,6 @@ describe('RefreshLinkTest', function () {
                     currentDataKeys="y"
                     activeCssClass="active"
                     disableActive={true}
-                    lazy={false}
                     historyAction='replace'
                     navigating={() => false}
                     aria-label="z"
@@ -1533,7 +1532,7 @@ describe('RefreshLinkTest', function () {
             var navigatingEvt, navigatingLink;
             renderer.render(
                 <RefreshLink
-                    navigating={(e, domId, link) => {
+                    navigating={(e, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
                         return true;
@@ -1548,32 +1547,6 @@ describe('RefreshLinkTest', function () {
             link.props['onClick'](evt);
             assert.strictEqual(navigatingEvt, evt);
             assert.equal(navigatingLink, '/r');
-        })
-    });
-
-    describe('Lazy Click Refresh Link', function () {
-        it('should navigate', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
-                <RefreshLink
-                    includeCurrentData={true}
-                    lazy={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </RefreshLink>
-            );
-            var link = renderer.getRenderOutput();
-            var el = { href: null };
-            stateNavigator.navigate('s', { x: 'a' });
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: el, preventDefault: () => {} });
-            assert.equal(el.href, '#/r?x=a');
-            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
-            assert.equal(stateNavigator.stateContext.data.x, 'a');
         })
     });
 

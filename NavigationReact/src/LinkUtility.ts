@@ -1,33 +1,28 @@
 ﻿import { StateNavigator } from 'navigation';
-import * as React from 'react';
 
 class LinkUtility {
-    static getLink(stateNavigator: StateNavigator, linkAccessor: () => string): string {
-        try {
-            return stateNavigator.historyManager.getHref(linkAccessor());
-        } catch (e) {
-            return null;
-        }
-    }
-
     static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string): any {
-        if (currentDataKeys)
-            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, currentDataKeys.trim().split(/\s*,\s*/));
-        if (includeCurrentData)
-            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData);
+        if (currentDataKeys || includeCurrentData) {
+            var keys = includeCurrentData ? undefined : currentDataKeys.trim().split(/\s*,\s*/);
+            navigationData = stateNavigator.stateContext.includeCurrentData(navigationData, keys);
+        }
         return navigationData;
     }
 
-    static setActive(stateNavigator: StateNavigator, props: any, toProps: any) {
-        if (!props.activeCssClass && !props.disableActive)
-            return;
-        var active = !!toProps.href;
-        for (var key in props.navigationData) {
-            var val = props.navigationData[key];
+    static isActive(stateNavigator: StateNavigator, navigationData: any): boolean {
+        var active = true;
+        for (var key in navigationData) {
+            var val = navigationData[key];
             active = active && (val == null || this.areEqual(val, stateNavigator.stateContext.data[key]));
         }
+        return active;
+    }
+
+    static setActive(active: boolean, props: any, toProps: any) {
+        if (!props.activeCssClass && !props.disableActive)
+            return;
         if (active && props.activeCssClass)
-            toProps.className = !toProps.className ? props.activeCssClass : toProps.className + ' ' + props.activeCssClass;
+            toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
         if (active && props.disableActive)
             toProps.href = null;        
     }
@@ -50,43 +45,23 @@ class LinkUtility {
     }
 
     static isValidAttribute(attr: string): boolean {
-        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData' && attr !== 'includeCurrentData'
-            && attr !== 'currentDataKeys' && attr !== 'activeCssClass' && attr !== 'disableActive' && attr !== 'distance'
-            && attr !== 'lazy' && attr !== 'historyAction' && attr !== 'navigating' && attr !== 'children';
+        return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
+            && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
+            && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
+            && attr !== 'navigating' && attr !== 'children';
     }
     
-    static addListeners(component: React.Component<any, any>, stateNavigator: StateNavigator, props: any, toProps: React.AnchorHTMLAttributes<HTMLAnchorElement>, getLink: () => string) {
-        var lazy = !!props.lazy;
-        toProps.onClick = (e) => {
-            var href = e.currentTarget.href;
-            if (lazy) {
-                component.forceUpdate();
-                href = getLink();
-                if (href)
-                    e.currentTarget.href = href;
-            }
+    static getOnClick(stateNavigator: StateNavigator, props: any, link: string) {
+        return e => {
             if (!e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey && !e.button) {
-                if (href) {
-                    var link = stateNavigator.historyManager.getUrl(e.currentTarget);
-                    var navigating = this.getNavigating(props);
-                    if (navigating(e, link)) {
+                if (link) {
+                    if (!props.navigating || props.navigating(e, link)) {
                         e.preventDefault();
                         stateNavigator.navigateLink(link, props.historyAction);
                     }
                 }
             }
         };
-        if (lazy)
-            toProps.onContextMenu = () => component.forceUpdate();
-    }
-
-    static getNavigating(props: any): (e, link: string) => boolean {
-        return (e, link: string) => {
-            var listener = props.navigating;
-            if (listener)
-                return listener(e, undefined, link);
-            return true;
-        }
     }
 }
 export default LinkUtility;

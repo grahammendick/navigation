@@ -1,0 +1,27 @@
+{
+  "name": "navigation-react-mobile",
+  "version": "1.0.0",
+  "description": "React Mobile plugin for the Navigation router",
+  "main": "navigation-react-mobile.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grahammendick/navigation"
+  },
+  "keywords": [
+    "router",
+    "navigation",
+    "react",
+    "mobile"
+  ],
+  "peerDependencies": {
+    "navigation": "*",
+    "navigation-react": "*",
+    "react": "*"
+  },
+  "author": "Graham Mendick",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/grahammendick/navigation/issues"
+  },
+  "homepage": "http://grahammendick.github.io/navigation/"
+}

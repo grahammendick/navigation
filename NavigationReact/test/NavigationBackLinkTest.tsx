@@ -87,7 +87,6 @@ describe('NavigationBackLinkTest', function () {
             renderer.render(
                 <NavigationBackLink
                     distance={1}
-                    lazy={false}
                     historyAction='replace'
                     navigating={() => false}
                     aria-label="z"
@@ -306,7 +305,7 @@ describe('NavigationBackLinkTest', function () {
             renderer.render(
                 <NavigationBackLink
                     distance={1}
-                    navigating={(e, domId, link) => {
+                    navigating={(e, link) => {
                         navigatingEvt = e;
                         navigatingLink = link;
                         return true;
@@ -321,33 +320,6 @@ describe('NavigationBackLinkTest', function () {
             link.props['onClick'](evt);
             assert.strictEqual(navigatingEvt, evt);
             assert.equal(navigatingLink, '/r0');
-        })
-    });
-
-    describe('Lazy Click Navigation Back Link', function () {
-        it('should navigate', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
-                <NavigationBackLink
-                    distance={1}
-                    includeCurrentData={true}
-                    lazy={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
-            );
-            var link = renderer.getRenderOutput();
-            var el = { href: null };
-            stateNavigator.navigate('s1');
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: el, preventDefault: () => {} });
-            assert.equal(el.href, '#/r0');
-            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
         })
     });
 

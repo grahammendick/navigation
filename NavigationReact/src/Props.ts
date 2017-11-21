@@ -2,9 +2,9 @@ import { StateNavigator } from 'navigation';
 import { HTMLProps, MouseEvent } from 'react';
 
 interface LinkProps extends HTMLProps<HTMLAnchorElement> {
-    lazy?: boolean;
+    acrossCrumbs?: boolean;
     historyAction?: 'add' | 'replace' | 'none';
-    navigating?: (e: MouseEvent<HTMLAnchorElement>, domId: string, link: string) => boolean;
+    navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
     stateNavigator?: StateNavigator;
 }
 
@@ -20,7 +20,8 @@ interface NavigationLinkProps extends RefreshLinkProps {
     stateKey: string;
 }
 
-interface NavigationBackLinkProps extends RefreshLinkProps {
+interface NavigationBackLinkProps extends LinkProps {
     distance: number;
 }
+
 export { LinkProps, RefreshLinkProps, NavigationLinkProps, NavigationBackLinkProps }
