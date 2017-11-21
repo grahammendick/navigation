@@ -7,6 +7,9 @@
         table{border-collapse:collapse;}table,td,th{border:1px #000 solid;}
         ul{list-style-type:none;padding:0;margin:0;}li{float:left;padding-right:3px;}
         .active{font-weight:bold;}
+        body {
+            overflow: hidden;
+        }
         .scene {
             position: absolute;
             left: 0;
@@ -14,7 +17,6 @@
             top: 0;
             bottom: 0;
             padding: 10px;
-            overflow: auto;
         }
     </style>
 </head>
@@ -166,11 +168,12 @@
                 mountedStyle={{opacity: 1, translate: 0}}
                 crumbStyle={{opacity: 0, translate: 0}}
                 stateNavigator={stateNavigator}>
-                {({opacity, translate}, scene, key) => (
+                {({opacity, translate}, scene, key, active) => (
                     <div key={key}
                         className="scene"
                         style={{
                             opacity,
+                            overflow: active ? 'auto' : 'hidden',
                             transform: `translate(${translate * window.innerWidth}px)`,
                         }}>
                         {scene}
