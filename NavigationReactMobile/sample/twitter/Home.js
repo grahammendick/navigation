@@ -15,24 +15,23 @@ export default ({tweets, stateNavigator}) => (
       {tweets.map(({account: {id: accountId, name, logo}, id, text}) => (
         <li key={id} className="tweet">
           <NavigationLink
+            className="logo"
+            stateKey="timeline"
+            navigationData={{id: accountId}}
+            navigating={e => {
+              e.stopPropagation();
+              return true;
+            }}
+            stateNavigator={stateNavigator}>
+            <img src={logo} alt={name}/>
+          </NavigationLink>
+          <NavigationLink
+            className="details"
             stateKey="tweet"
             navigationData={{id}}
             stateNavigator={stateNavigator}>
-            <NavigationLink
-              className="logo"
-              stateKey="timeline"
-              navigationData={{id: accountId}}
-              navigating={e => {
-                e.stopPropagation();
-                return true;
-              }}
-              stateNavigator={stateNavigator}>
-              <img src={logo} alt={name}/>
-            </NavigationLink>
-            <div className="details">
               <div className="name">{name}</div>
               <div>{text}</div>
-            </div>
           </NavigationLink>
         </li>
       ))}
