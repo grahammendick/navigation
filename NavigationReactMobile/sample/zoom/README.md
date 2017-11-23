@@ -2,7 +2,7 @@
 Navigation lets you share elements between scenes. The SharedElementMotion component gives you control over how they animate.
 
 ## Run
-Once you've cloned the repository, you can install the dependencies and start the Redux example:
+Once you've cloned the repository, you can install the dependencies and start the Zoom example:
 
     npm install
     npm run build
