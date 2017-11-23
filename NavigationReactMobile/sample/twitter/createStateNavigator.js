@@ -1,6 +1,9 @@
 import React from 'react';
 import {StateNavigator} from 'navigation';
 import {MobileHistoryManager} from 'navigation-react-mobile';
+import Home from './Home';
+import Tweet from './Tweet';
+import Timeline from './Timeline';
 
 export default () => {
   const stateNavigator = new StateNavigator([
@@ -15,9 +18,9 @@ export default () => {
   }));
 
   const {home, tweet, timeline} = stateNavigator.states;
-  home.renderScene = data => null;
-  tweet.renderScene = data => null;
-  timeline.renderScene = data => null;
+  home.renderScene = data => <Home stateNavigator={stateNavigator}/>;
+  tweet.renderScene = data => <Tweet stateNavigator={stateNavigator}/>;
+  timeline.renderScene = data => <Timeline stateNavigator={stateNavigator}/>;
   
   return stateNavigator;
 }
