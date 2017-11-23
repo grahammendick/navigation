@@ -13,7 +13,7 @@ export default ({tweets, stateNavigator}) => (
     </div>
     <ul>
       {tweets.map(({account: {id: accountId, name, logo}, id, text}) => (
-        <li className="tweet">
+        <li key={id} className="tweet">
           <NavigationLink
             stateKey="tweet"
             navigationData={{id}}
