@@ -13,7 +13,7 @@ export default ({stateNavigator}) => (
         className="scene"
         style={{
           overflow: active ? 'auto' : 'hidden',
-          transform: `translate(${translateX * clientWidth}px) scale(${scale}, ${scale})`,
+          transform: `translate(${translate * clientWidth}px) scale(${scale}, ${scale})`,
           opacity
         }}>
         {scene}
