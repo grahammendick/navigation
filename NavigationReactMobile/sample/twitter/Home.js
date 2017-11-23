@@ -14,8 +14,12 @@ export default ({tweets, stateNavigator}) => (
             <NavigationLink
               stateKey="timeline"
               navigationData={{id: accountId}}
+              navigating={e => {
+                e.stopPropagation();
+                return true;
+              }}
               stateNavigator={stateNavigator}>
-              <img src={logo}/>
+              <img src={logo} alt={name}/>
             </NavigationLink>
           </NavigationLink>
         </li>
