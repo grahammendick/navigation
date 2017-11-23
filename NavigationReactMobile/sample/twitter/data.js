@@ -2,7 +2,7 @@ const accounts = {
   1: {
     name: 'Preethi Kasireddy',
     username: '@iam_preethi',
-    logo: require('./iam_preethi.jpeg'),
+    logo: './iam_preethi.jpg',
     bio: 'Software Engineer @coinbase. Previously @a16z & @GoldmanSachs. Besides doing nerdy things, I love running & reading. I believe in the magic of thinking big :)',
     following: 763,
     followers: 6722,
@@ -11,7 +11,7 @@ const accounts = {
   2: {
     name: 'Sebastian Markbåge',
     username: '@sebmarkbage',
-    logo: require('./sebmarkbage.jpg'),
+    logo: './sebmarkbage.jpg',
     bio: 'React JS · TC39 · The Facebook · Tweets are personal',
     following: 354,
     followers: 14319,
@@ -20,7 +20,7 @@ const accounts = {
   3: {
     name: 'Dan Abramov',
     username: '@dan_abramov',
-    logo: require('./dan_abramov.jpeg'),
+    logo: './dan_abramov.jpg',
     bio: 'Co-authored Redux, Create React App, React Hot Loader, React DnD. Helping improve @reactjs. Personal opinions. #juniordevforlife',
     following: 1576,
     followers: 52822,
