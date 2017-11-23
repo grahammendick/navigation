@@ -16,10 +16,6 @@
         bottom: 0;
         background-color: #fff;
       }
-      .tweet img{
-        width: 13%;
-        border-radius: 9999px;
-      }
       ul {
         list-style-type: none;
         padding: 0;
@@ -28,6 +24,18 @@
       .tweet > a{
         display: block;
         padding: 5px 2%;
+        display: flex;
+        flex-direction: row;
+      }
+      .tweet .details{
+        flex: 1;
+      }
+      .tweet a.logo{
+        width:13%;
+      }
+      .tweet img{
+        width: 100%;
+        border-radius: 9999px;
       }
     </style>
   </head>
