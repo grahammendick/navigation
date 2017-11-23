@@ -2,11 +2,13 @@
 <html>
   <head>
     <title>Navigation React Mobile Twitter</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       body {
         overflow: hidden;
         background-color: #000;
+        font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
       }
       .scene {
         position: absolute;
@@ -26,9 +28,17 @@
         padding: 5px 2%;
         display: flex;
         flex-direction: row;
+        text-decoration: none;
+        color: rgb(20, 23, 26);
+        font-size: .9em;
+      }
+      .tweet .name{
+        font-weight: bold;
+        margin-bottom: 2px;
       }
       .tweet .details{
         flex: 1;
+        margin-left: 3%;
       }
       .tweet a.logo{
         width:13%;

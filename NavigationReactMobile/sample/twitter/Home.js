@@ -23,7 +23,7 @@ export default ({tweets, stateNavigator}) => (
               <img src={logo} alt={name}/>
             </NavigationLink>
             <div className="details">
-              <div>{name}</div>
+              <div className="name">{name}</div>
               <div>{text}</div>
             </div>
           </NavigationLink>
