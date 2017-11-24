@@ -15,25 +15,30 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         </svg>
       </NavigationBackLink>
       <h1>Tweet</h1>
-  </div>
-  <div className="heading">
-    <NavigationLink
-      className="logo"
-      stateKey="timeline"
-      navigationData={{id: accountId}}
-      stateNavigator={stateNavigator}>
-      <img src={logo} alt={name}/>
-    </NavigationLink>
-    <div className="details">
-      <div className="name">{name}</div>
-      <div className="username">{username}</div>
     </div>
-  </div>
-  <NavigationLink
-      stateKey="timeline"
-      stateNavigator={stateNavigator}>
-      Timeline
-    </NavigationLink>
+    <div className="tweet">
+      <div className="heading">
+        <NavigationLink
+          className="logo"
+          stateKey="timeline"
+          navigationData={{id: accountId}}
+          stateNavigator={stateNavigator}>
+          <img src={logo} alt={name}/>
+        </NavigationLink>
+        <div className="details">
+          <div className="name">{name}</div>
+          <div className="username">{username}</div>
+        </div>
+      </div>
+      <div className="text">{text}</div>
+      <div className="time">{time}</div>
+      <div className="interactions">
+        <div className="count">{retweets}</div>
+        <div className="interaction">retweets</div>
+        <div className="count">{likes}</div>
+        <div className="interaction">likes</div>
+      </div>
+    </div>
   </div>
 );
 
