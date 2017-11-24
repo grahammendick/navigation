@@ -1,14 +1,11 @@
 import React from 'react';
 import {NavigationLink} from 'navigation-react';
+import Banner from './Banner';
 
-export default ({stateNavigator}) => (
+export default ({timeline: {id, name, username, logo, bio, 
+  followers, following, tweets}, stateNavigator}) => (
   <div>
-    <h1>Timeline</h1>
-    <NavigationLink
-      stateKey="tweet"
-      stateNavigator={stateNavigator}>
-      Tweet
-    </NavigationLink>
+    <Banner title={name} stateNavigator={stateNavigator} />
   </div>
 );
 
