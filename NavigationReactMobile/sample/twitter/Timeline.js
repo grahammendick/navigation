@@ -7,7 +7,7 @@ export default ({timeline: {id, name, username, logo, bio,
   followers, following, tweets}, stateNavigator}) => {
   var container;
   return (
-    <div ref={el => container = container || el}>
+    <div ref={el => container = el}>
       <Banner title={name} stateNavigator={stateNavigator} />
       <div className="profile">
         <div className="pic" />
