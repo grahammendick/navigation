@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavigationLink} from 'navigation-react';
 import Banner from './Banner';
+import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
   followers, following, tweets}, stateNavigator}) => (
@@ -21,6 +22,7 @@ export default ({timeline: {id, name, username, logo, bio,
         <div className="interaction">Followers</div>
       </div>
     </div>
+    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
   </div>
 );
 
