@@ -13,8 +13,14 @@ export default ({timeline: {id, name, username, logo, bio,
         <div className="name">{name}</div>
         <div className="username">{username}</div>
         <div className="bio">{bio}</div>
-        </div>
       </div>
+      <div className="interactions">
+        <div className="count">{following.toLocaleString()}</div>
+        <div className="interaction">Following</div>
+        <div className="count">{followers.toLocaleString()}</div>
+        <div className="interaction">Followers</div>
+      </div>
+    </div>
   </div>
 );
 
