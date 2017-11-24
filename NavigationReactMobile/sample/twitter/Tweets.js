@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationLink} from 'navigation-react';
 
-export default ({tweets, stateNavigator}) => (
+export default ({tweets, onTimeline, stateNavigator}) => (
   <ul>
     {tweets.map(({account: {id: accountId, name, logo}, id, text}) => (
       <li key={id} className="tweet">
@@ -9,6 +9,7 @@ export default ({tweets, stateNavigator}) => (
           className="logo"
           stateKey="timeline"
           navigationData={{id: accountId}}
+          navigating={e => !onTimeline || onTimeline(e, accountId)}
           stateNavigator={stateNavigator}>
           <img src={logo} alt={name}/>
         </NavigationLink>
