@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavigationLink} from 'navigation-react';
+import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (
   <div>
@@ -11,27 +12,7 @@ export default ({tweets, stateNavigator}) => (
         </g>
       </svg>
     </div>
-    <ul>
-      {tweets.map(({account: {id: accountId, name, logo}, id, text}) => (
-        <li key={id} className="tweet">
-          <NavigationLink
-            className="logo"
-            stateKey="timeline"
-            navigationData={{id: accountId}}
-            stateNavigator={stateNavigator}>
-            <img src={logo} alt={name}/>
-          </NavigationLink>
-          <NavigationLink
-            className="details"
-            stateKey="tweet"
-            navigationData={{id}}
-            stateNavigator={stateNavigator}>
-              <div className="name">{name}</div>
-              <div>{text}</div>
-          </NavigationLink>
-        </li>
-      ))}
-    </ul>
+    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
   </div>
 );
 
