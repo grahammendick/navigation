@@ -34,9 +34,9 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
       <div className="time">{time}</div>
       <div className="interactions">
         <div className="count">{retweets}</div>
-        <div className="interaction">retweets</div>
+        <div className="interaction">Retweets</div>
         <div className="count">{likes}</div>
-        <div className="interaction">likes</div>
+        <div className="interaction">Likes</div>
       </div>
     </div>
   </div>
