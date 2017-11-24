@@ -32,20 +32,20 @@ export default () => {
       stateNavigator={stateNavigator}/>
   )
 
-  sceneNorth.unmountedStyle = {translateY: -1};
-  sceneEast.unmountedStyle = {translateX: 1};
-  sceneSouth.unmountedStyle = {translateY: 1};
-  sceneWest.unmountedStyle = {translateX: -1};
+  sceneNorth.unmountedStyle = {translateY: -100};
+  sceneEast.unmountedStyle = {translateX: 100};
+  sceneSouth.unmountedStyle = {translateY: 100};
+  sceneWest.unmountedStyle = {translateX: -100};
 
   sceneNorth.mountedStyle = {translateY: 0};
   sceneEast.mountedStyle = {translateX: 0};
   sceneSouth.mountedStyle = {translateY: 0};
   sceneWest.mountedStyle = {translateX: 0};
 
-  sceneNorth.crumbStyle = {translateY: -.3};
-  sceneEast.crumbStyle = {translateX: .3};
-  sceneSouth.crumbStyle = {translateY: .3};
-  sceneWest.crumbStyle = {translateX: -.3};
+  sceneNorth.crumbStyle = {translateY: -30};
+  sceneEast.crumbStyle = {translateX: 30};
+  sceneSouth.crumbStyle = {translateY: 30};
+  sceneWest.crumbStyle = {translateX: -30};
   
   return stateNavigator;
 }
