@@ -4,7 +4,7 @@ import Tweets from './Tweets';
 
 export default ({tweets, stateNavigator}) => (
   <div>
-    <div className="banner">
+    <div className="tabs">
       <h1>Home</h1>
       <svg className="home" viewBox="0 0 24 24">
         <g>

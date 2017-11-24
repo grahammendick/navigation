@@ -5,7 +5,7 @@ import Tweets from './Tweets';
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
   text, time, retweets, likes, replies}, stateNavigator}) => (
   <div>
-    <div className="subBanner">
+    <div className="banner">
       <NavigationBackLink
         distance={1}
         stateNavigator={stateNavigator}>
