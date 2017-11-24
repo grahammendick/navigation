@@ -1,7 +1,8 @@
 import React from 'react';
 import {NavigationBackLink, NavigationLink} from 'navigation-react';
 
-export default ({stateNavigator}) => (
+export default ({tweet: {account: {id: accountId, name, username, logo}, 
+  text, time, retweets, likes, replies}, stateNavigator}) => (
   <div>
     <div className="subBanner">
       <NavigationBackLink
@@ -14,6 +15,19 @@ export default ({stateNavigator}) => (
         </svg>
       </NavigationBackLink>
       <h1>Tweet</h1>
+  </div>
+  <div className="heading">
+    <NavigationLink
+      className="logo"
+      stateKey="timeline"
+      navigationData={{id: accountId}}
+      stateNavigator={stateNavigator}>
+      <img src={logo} alt={name}/>
+    </NavigationLink>
+    <div className="details">
+      <div className="name">{name}</div>
+      <div className="username">{username}</div>
+    </div>
   </div>
   <NavigationLink
       stateKey="timeline"
