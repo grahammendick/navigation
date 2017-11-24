@@ -11,10 +11,7 @@ export default ({stateNavigator}) => (
     {({translateX = 0, translateY = 0}, scene, key, active) => (
       <div key={key}
         className="scene"
-        style={{
-          overflow: active ? 'auto' : 'hidden',
-          transform: `translate(${translateX}%, ${translateY}%)`
-        }}>
+        style={{transform: `translate(${translateX}%, ${translateY}%)`}}>
         {scene}
       </div>
     )}

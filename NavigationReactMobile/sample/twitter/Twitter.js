@@ -11,7 +11,6 @@ export default ({stateNavigator}) => (
       <div key={key}
         className="scene"
         style={{
-          overflow: active ? 'auto' : 'hidden',
           transform: `translate(${translate}%, 0) scale(${scale}, ${scale})`,
           opacity
         }}>

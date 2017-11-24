@@ -12,10 +12,7 @@ export default ({stateNavigator}) => (
     {({opacity}, scene, key, active) => (
       <div key={key}
         className="scene"
-        style={{
-          overflow: active ? 'auto' : 'hidden',
-          opacity
-        }}>
+        style={{opacity}}>
         {scene}
       </div>
     )}
