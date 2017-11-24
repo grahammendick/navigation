@@ -39,6 +39,27 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         <div className="interaction">Likes</div>
       </div>
     </div>
+    <ul>
+      {replies.map(({account: {id: accountId, name, logo}, id, text}) => (
+        <li key={id} className="tweet">
+          <NavigationLink
+            className="logo"
+            stateKey="timeline"
+            navigationData={{id: accountId}}
+            stateNavigator={stateNavigator}>
+            <img src={logo} alt={name}/>
+          </NavigationLink>
+          <NavigationLink
+            className="details"
+            stateKey="tweet"
+            navigationData={{id}}
+            stateNavigator={stateNavigator}>
+              <div className="name">{name}</div>
+              <div>{text}</div>
+          </NavigationLink>
+        </li>
+      ))}
+    </ul>
   </div>
 );
 
