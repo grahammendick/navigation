@@ -141,11 +141,6 @@ const getHome = () => {
   return homeTweets.map(id => fetchTweet(id));
 };
 
-const getFollows = () => {
-  const notifications = [1, 2, 3];
-  return notifications.map(id => ({...accounts[id], id}));
-};
-
 const getTweet = id => {
   const tweet = fetchTweet(id);
   tweet.replies = tweet.replies.map(replyId => fetchTweet(replyId));
@@ -158,4 +153,4 @@ const getTimeline = id => {
   return timeline;
 };
 
-export {getHome, getFollows, getTweet, getTimeline};
+export {getHome, getTweet, getTimeline};
