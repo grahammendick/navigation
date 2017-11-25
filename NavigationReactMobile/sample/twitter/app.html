@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Navigation React Mobile Twitter</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        overflow: hidden;
+        background-color: rgb(20, 23, 26);
+        font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue";
+      }
+      .scene {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: auto;
+        background-color: #fff;
+        filter: grayscale(0%);
+      }
+      .tabs{
+        box-shadow: rgb(101, 119, 134) 0px 0px 4px 0px;
+        padding-top: 13px;
+        position: sticky;
+        top: -50px;
+        background-color: #fff;
+      }
+      .banner{
+        box-shadow: rgb(101, 119, 134) 0px 0px 4px 0px;
+        padding: 13px 0 8px 0;
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        display: flex;
+      }
+      .banner a{
+        width: 25px;
+        padding-left: 3%;        
+      }
+      .banner h1 {
+        flex: 1;
+        margin: 0 8%;        
+      }
+      h1 {
+        font-size: 1.1em;
+        margin: 0 19%;        
+      }
+      svg.home {
+        width:25px;
+        padding: 25px 9% 9px 9%;
+        border-bottom: 2px solid rgb(29, 161, 242);
+        margin-bottom: -4px;
+      }
+      svg path{
+        fill: rgb(29, 161, 242);
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+      li.tweet{
+        border-bottom: 1px solid rgb(230, 236, 240);
+        padding: 14px 3%;
+        display: flex;
+      }
+      .details{
+        flex: 1;
+        text-decoration: none;
+        color: rgb(20, 23, 26);
+        font-size: .9em;
+      }
+      .details .name{
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+      .details{
+        margin-left: 3%;
+      }
+      .logo{
+        width:40px;
+      }
+      .logo img{
+        width:100%;
+        border-radius: 9999px;
+      }
+      .heading{
+        display: flex;
+      }
+      div.tweet {
+        padding: 15px 3% 0 3%;
+      }
+      .details .username{
+        color: rgb(101, 119, 134);
+      }
+      .text {
+        font-size: 1.1em;
+        line-height: 1.5em;
+        color: rgb(20, 23, 26);
+        padding-bottom: 12px;
+      }
+      .time{
+        color: rgb(101, 119, 134);
+        font-size: .9em;        
+      }
+      .interactions{
+        font-size: .9em;        
+        display: flex;
+        border-bottom: 1px solid rgb(230, 236, 240);
+        border-top: 1px solid rgb(230, 236, 240);
+        margin: 12px 0;
+        padding: 12px 0;
+      }
+      .count {
+        color: rgb(20, 23, 26);
+        font-weight: bold;
+        padding-right: 5px;
+      }
+      .interaction {
+        color: rgb(101, 119, 134);
+        padding-right: 20px;
+      }
+      .profile img{
+        width:66px;
+        border-radius: 9999px;
+        border: 2px solid #fff;
+        position: absolute;
+        top: 120px;
+        margin-left: 3%;
+      }
+      .pic {
+        height: 100px;
+        background-color: rgb(29, 161, 242)
+      }
+      .profile .details{
+        margin-top: 50px;
+        margin-right: 3%;
+      }
+      .profile .name{
+        font-size: 1.2em;
+        line-height: 1.4em;
+        margin-bottom: 0;       
+      }
+      .bio{
+        padding-top: 8px;
+        line-height: 1.4em;      
+      }
+      .profile .interactions{
+        border-top: 0;
+        margin: 0 3%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

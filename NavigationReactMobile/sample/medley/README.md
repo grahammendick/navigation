@@ -2,7 +2,7 @@
 Navigation gives you complete control over your animation. Use the State information to decide how each scene mounts and unmounts.
 
 ## Run
-Once you've cloned the repository, you can install the dependencies and start the Redux example:
+Once you've cloned the repository, you can install the dependencies and start the Medley example:
 
     npm install
     npm run build
