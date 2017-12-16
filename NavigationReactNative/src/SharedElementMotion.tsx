@@ -56,7 +56,7 @@ class SharedElementMotion extends React.Component<any, any> {
                 {tweenStyles => (
                     <View style={style}>
                         {tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
-                            children(tweenStyle, name, oldElement.data, mountedElement.data)
+                            (children as any)(tweenStyle, name, oldElement.data, mountedElement.data)
                         ))}
                     </View>
                 )}

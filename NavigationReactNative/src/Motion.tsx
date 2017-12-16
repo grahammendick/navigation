@@ -90,7 +90,7 @@ class Motion extends React.Component<any, any> {
         return style;
     }
     render() {
-        return this.props.children(this.state.items);
+        return (this.props.children as any)(this.state.items);
     }
 }
 

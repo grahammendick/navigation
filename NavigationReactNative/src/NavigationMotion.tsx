@@ -118,7 +118,7 @@ class NavigationMotion extends React.Component<any, any> {
                 {tweenStyles => (
                     <View style={style}>
                         {tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
-                            children(tweenStyle, scene, key, state, data)
+                            (children as any)(tweenStyle, scene, key, state, data)
                         ))}
                         {sharedElementMotion && sharedElementMotion({
                             sharedElements: !this.state.rest ? this.getSharedElements() : [],
