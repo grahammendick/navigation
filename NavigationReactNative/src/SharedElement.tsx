@@ -44,7 +44,7 @@ class SharedElement extends React.Component<any, any> {
         }
     }
     render() {
-        return React.cloneElement(this.props.children, {
+        return React.cloneElement((this.props.children as any), {
             onLayout: this.register,
             ref: comp => {this.ref = comp}
         });
