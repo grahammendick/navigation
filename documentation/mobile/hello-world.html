@@ -1,48 +1,114 @@
 <html>
-    <head>
-        <title>Hello World</title>
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="../../css/prism.css">
-        <link rel="stylesheet" href="../../css/navigation.css">
-    </head>
-    <body>
-        <div id="banner">
-            <div>
-                <a href="../../index.html">Navigation</a>
-                <a href="../hello-world.html" class="selected">Docs</a>
-                <a href="../../download/index.html">Download</a>
-                <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
-            </div>
+<head>
+    <title>Hello World</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
         </div>
-        <div id="content">
-            <div id="menu">
-                <a href="../hello-world.html">Hello World</a>
-                <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
-                <div class="separator"></div>
-                <h2>THE ABC</h2>
-                <a href="../state-navigation.html">A. State Navigation</a>
-                <a href="../navigation-data.html">B. Navigation Data</a>
-                <a href="../routes.html">C. Routes</a>
-                <a href="../email-example.html">Email Example</a>
-                <div class="separator"></div>
-                <h2>FURTHER GUIDES</h2>
-                <a href="../current-data.html">Current Data</a>
-                <a href="../html5-history.html">HTML5 History</a>
-                <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
-                <a href="../reusable-components.html">Reusable Components</a>
-                <div class="separator"></div>
-                <h2>MOBILE</h2>
-                <a href="hello-world.html" class="selected">Hello World</a>
-                <a href="animated-navigation.html">Animated Navigation</a>
-                <a href="non-animated-navigation.html">Non-Animated Navigation</a>
-                <a href="clean-urls.html">Clean Urls</a>
-                <a href="shared-element-navigation.html">Shared Element Navigation</a>
-                <a href="email-example.html">Email Example</a>
-            </div>
-            <div id="article">
-                <h1>Hello World</h1>
-            </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../email-example.html">Email Example</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="hello-world.html" class="selected">Hello World</a>
+            <a href="animated-navigation.html">Animated Navigation</a>
+            <a href="non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="clean-urls.html">Clean Urls</a>
+            <a href="shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="email-example.html">Email Example</a>
         </div>
-        <script type="text/javascript" src="../../js/prism.js"></script>
-    </body>
-    </html>
+        <div id="article">
+            <h1>Hello World</h1>
+            <p>
+                The Navigation router helps you build web applications with native-like navigation. You can animate views as they enter and leave and the user can step back through a stack of visited views. Let's build an example to see what native-like navigation on the web looks like. The example will have two views or scenes. The first scene will display a Hyperlink that says 'Hello'. Clicking the Hyperlink will animate the first scene off screen to the left and animate the second in from the right. The second scene will display a Hyperlink that says 'World'. Clicking this Hyperlink will run the animations in reverse and return you to the first scene.
+            </p>
+            <p>
+                We'll begin by creating a <code>StateNavigator</code> with one <code>State</code> per scene. Our first step to achieve native-like navigation is to enable the 'breadcrumb trail'. Named after the trail of breadcrumbs Hansel and Gretel dropped in the woods so they could safely retrace their steps, the breadcrumb trail keeps track of the scenes a user visits. When we click the 'Hello' Hyperlink, the Navigation router drops a breadcrumb so that we can return to the 'hello' Scene later on. We'll enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true on the 'world' State.
+            </p>
+        <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'hello', route: ''},
+  {key: 'world', trackCrumbTrail: true}
+]);</code></pre>
+            <p>
+                We'll create the content of each scene inside a <code>renderScene</code> function attached to the corresponding <code>State</code>. The 'hello' Scene consists of a Hyperlink that navigates to the 'world' <code>State</code>.
+            </p>
+        <pre><code class="language-jsx">stateNavigator.states.hello.renderScene = function() {
+  return (
+    &lt;NavigationReact.NavigationLink
+      stateKey="world"
+      stateNavigator={stateNavigator}>
+      Hello
+    &lt;/NavigationReact.NavigationLink>
+  );
+};</code></pre>
+        <p>
+            For now, we'll populate the 'world' scene with a placeholder. Later on, we'll use the breadcrumb trail to replace this div with a Hyperlink that navigates back to the 'hello' Scene.                    
+        </p>
+        <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
+  return &lt;div>World&lt;/div>;
+};</code></pre>
+            <h2>Animation</h2>
+            <p>
+                We'll use the <code>NavigationMotion</code> component to animate the scenes as they come and go. Each scene can exist in one of three stages - unmounted, mounted or crumb. At the start, the 'home' scene is mounted and the 'world' scene is unmounted. When we click the 'home' Hyperlink the 'home' scene becomes a crumb (in the breadcrumb trail) and the 'world' scene is mounted.
+            </p>
+            <p>
+                We'll assign each of these stages a different translation style <code>prop</code>. The <code>NavigationMotion</code> component provides a child callback function that lets us animate between these styles as a scene moves from one stage to another. We'll use the callback's parameters to style the scene with the interpolated translation value. A value of 100% for the <code>unmountedStyle</code>, for example, means the 'world' scene will slide in from the right.
+            </p>
+        <pre><code class="language-jsx">ReactDOM.render(
+  &lt;NavigationReactMobile.NavigationMotion
+    unmountedStyle={{translate: 100}}
+    mountedStyle={{translate: 0}}
+    crumbStyle={{translate: -10}}
+    stateNavigator={stateNavigator}>
+    {(style, scene, key) => (
+      &lt;div
+        key={key}
+        style={{transform: `translate(${style.translate}%)`}}>
+        {scene}
+      &lt;/div>
+    )}
+  &lt;/NavigationReactMobile.NavigationMotion>,
+  document.getElementById('app')
+);</code></pre>
+            <h2>Breadcrumbs</h2>
+            <p>
+                You'll remember that the Navigation router drops a breadcrumb when we click the 'hello' Hyperlink. We can use this crumb to build a Hyperlink that returns us to the 'hello' scene. We'll replace the div in the 'world' scene with a <code>NavigationBackLink</code> component that navigates back a distance of 1 breadcrumb along the trail. When we click this Hyperlink, the <code>NavigationMotion</code> component plays the animations in reverse as the 'home' scene mounts and the 'world' scene unmounts.
+            </p>
+        <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
+  return (
+    &lt;NavigationReact.NavigationBackLink
+      distance={1}
+      stateNavigator={stateNavigator}>
+      World
+    &lt;/NavigationReact.NavigationBackLink>
+  );
+};</code></pre>
+            <h2>Try It Out</h2>
+            <iframe width="100%" height="600" src="//jsfiddle.net/sx5btysy/11/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
