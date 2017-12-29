@@ -60,10 +60,10 @@
     mountedStyle={{opacity: 1}}
     crumbStyle={{opacity: 0}}
     stateNavigator={stateNavigator}>
-    {({opacity}, scene, key) => (
+    {(style, scene, key) => (
       &lt;div
         key={key}
-        style={{opacity}}>
+        style={{opacity: style.opacity}}>
         {scene}
       &lt;/div>
     )}
