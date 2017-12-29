@@ -41,6 +41,49 @@
         </div>
         <div id="article">
             <h1>Animated Navigation</h1>
+            <h2>Dropping Breadcrumbs</h2>
+            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', trackCrumbTrail: true}
+]);</code></pre>
+            <h2>Rendering Scenes</h2>
+            <pre><code class="language-jsx">stateNavigator.states.inbox.renderScene = function(data) {
+  return &lt;Inbox />;
+};</code></pre>
+            <pre><code class="language-jsx">stateNavigator.states.mail.renderScene = function(data) {
+  return &lt;Mail mailId={data.id} />;
+};</code></pre>
+            <h2>Animating</h2>
+            <pre><code class="language-jsx">ReactDOM.render(
+  &lt;NavigationMotion
+    unmountedStyle={{opacity: 0}}
+    mountedStyle={{opacity: 1}}
+    crumbStyle={{opacity: 0}}
+    stateNavigator={stateNavigator}>
+    {({opacity}, scene, key) => (
+      &lt;div
+        key={key}
+        style={{opacity}}>
+        {scene}
+      &lt;/div>
+    )}
+  &lt;/NavigationMotion>,
+  document.getElementById('app')
+);</code></pre>
+            <pre><code class="language-css">div {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+}</code></pre>
+            <h2>Navigating Back</h2>
+            <pre><code class="language-jsx">&lt;NavigationBackLink
+  distance={1}
+  stateNavigator={stateNavigator}>
+  Back to Inbox
+&lt;/NavigationBackLink></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
