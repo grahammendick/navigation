@@ -47,14 +47,14 @@
             <p>
                 We'll begin by creating a <code>StateNavigator</code> with one <code>State</code> per scene. Our first step to achieve native-like navigation is to enable the 'breadcrumb trail'. Named after the trail of breadcrumbs Hansel and Gretel dropped in the woods so they could safely retrace their steps, the breadcrumb trail keeps track of the scenes a user visits. When we click the 'Hello' Hyperlink, the Navigation router drops a breadcrumb so that we can return to the 'hello' Scene later on. We'll enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true on the 'world' State.
             </p>
-        <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'hello', route: ''},
   {key: 'world', trackCrumbTrail: true}
 ]);</code></pre>
             <p>
                 We'll create the content of each scene inside a <code>renderScene</code> function attached to the corresponding <code>State</code>. The 'hello' Scene consists of a Hyperlink that navigates to the 'world' <code>State</code>.
             </p>
-        <pre><code class="language-jsx">stateNavigator.states.hello.renderScene = function() {
+            <pre><code class="language-jsx">stateNavigator.states.hello.renderScene = function() {
   return (
     &lt;NavigationReact.NavigationLink
       stateKey="world"
@@ -63,10 +63,10 @@
     &lt;/NavigationReact.NavigationLink>
   );
 };</code></pre>
-        <p>
-            For now, we'll populate the 'world' scene with a placeholder. Later on, we'll use the breadcrumb trail to replace this div with a Hyperlink that navigates back to the 'hello' Scene.                    
-        </p>
-        <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
+            <p>
+                For now, we'll populate the 'world' scene with a placeholder. Later on, we'll use the breadcrumb trail to replace this div with a Hyperlink that navigates back to the 'hello' Scene.                    
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
   return &lt;div>World&lt;/div>;
 };</code></pre>
             <h2>Animation</h2>
@@ -76,7 +76,7 @@
             <p>
                 We'll assign each of these stages a different translation style <code>prop</code>. The <code>NavigationMotion</code> component provides a child callback function that lets us animate between these styles as a scene moves from one stage to another. We'll use the callback's parameters to style the scene with the interpolated translation value. A value of 100% for the <code>unmountedStyle</code>, for example, means the 'world' scene will slide in from the right.
             </p>
-        <pre><code class="language-jsx">ReactDOM.render(
+            <pre><code class="language-jsx">ReactDOM.render(
   &lt;NavigationReactMobile.NavigationMotion
     unmountedStyle={{translate: 100}}
     mountedStyle={{translate: 0}}
@@ -96,7 +96,7 @@
             <p>
                 You'll remember that the Navigation router drops a breadcrumb when we click the 'hello' Hyperlink. We can use this crumb to build a Hyperlink that returns us to the 'hello' scene. We'll replace the div in the 'world' scene with a <code>NavigationBackLink</code> component that navigates back a distance of 1 breadcrumb along the trail. When we click this Hyperlink, the <code>NavigationMotion</code> component plays the animations in reverse as the 'home' scene mounts and the 'world' scene unmounts.
             </p>
-        <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
+            <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
   return (
     &lt;NavigationReact.NavigationBackLink
       distance={1}
