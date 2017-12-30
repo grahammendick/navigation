@@ -51,7 +51,7 @@
 ]);</code></pre>
             <h2>Defining Scenes</h2>
             <p>
-                You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When you navigate to a <code>State</code>, the Navigation router creates the scene by calling the corresponding <code>renderScene</code> function, passing in any navigation data. It pops the new scene onto the top of the stack. We define the two scenes in our email example from <code>Inbox</code> and <code>Mail</code> components.
+                You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When you navigate to a <code>State</code>, the Navigation router creates the scene by calling the corresponding <code>renderScene</code> function, passing in any navigation data. It pops the new scene onto the top of the stack. We can define the two scenes in the email example using our <code>Inbox</code> and <code>Mail</code> components.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.renderScene = function() {
   return &lt;Inbox />;
