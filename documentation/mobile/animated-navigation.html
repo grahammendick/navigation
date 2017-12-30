@@ -50,10 +50,14 @@
   {key: 'mail', trackCrumbTrail: true}
 ]);</code></pre>
             <h2>Rendering Scenes</h2>
+            <p>
+                You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When a <code>State</code> becomes active the Navigation router calls its <code>renderScene</code> function, passing in any navigation data, and adds the returned component to the top of the stack. We create the two scenes in our email example from <code>Inbox</code> and <code>Mail</code> components.
+            </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.renderScene = function() {
   return &lt;Inbox />;
-};</code></pre>
-            <pre><code class="language-jsx">stateNavigator.states.mail.renderScene = function(data) {
+};
+
+stateNavigator.states.mail.renderScene = function(data) {
   return &lt;Mail mailId={data.id} />;
 };</code></pre>
             <h2>Animating</h2>
