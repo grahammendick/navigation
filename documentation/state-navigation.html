@@ -50,7 +50,7 @@
   {key: 'mail'},
   {key: 'compose'}
 ]);</code></pre>
-            <h2>Rendering Views</h2>
+            <h2 id="rendering-views">Rendering Views</h2>
             <p>
                 The Navigation router doesn't render views for you because React natively supports loading components. Calling <code>ReactDOM.render</code> unmounts the old component and mounts the new component in its place. The Navigation router notifies you when a <code>State</code> becomes active and it's your job to render the relevant component for the active <code>State</code>. You receive the notification by attaching a function to the <code>navigated</code> property of the <code>State</code>. In the email example, we render our <code>Inbox</code> component into the 'app' placeholder when the 'inbox' <code>State</code> is active.
             </p>
