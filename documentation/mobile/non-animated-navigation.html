@@ -43,10 +43,10 @@
             <h1>Non-Animated Navigation</h1>
             <h2>Picking Up A Breadcrumb</h2>
             <p>
-                You don’t always want a navigation to add a crumb to the breadcrumb trail because it triggers the animation cycle. If the user’s filtering a list of items, for example, you don’t want to animate out the unfiltered scene and animate in the filtered one. The user is filtering the list, not changing scenes. You could call <code>setState</code> inside the scene instead of navigating, but that wouldn’t add to the browser history. The user expects that pressing the browser/mobile back button will return them to the unfiltered list.
+                You don't always want a navigation to add a crumb to the breadcrumb trail because it triggers the animation cycle. If the user's filtering a list of items, for example, you don't want to animate out the unfiltered scene and animate in the filtered one. The user is filtering the list, not changing scenes. You could call <code>setState</code> inside the scene instead of navigating, but that wouldn't add to the browser history. The user expects that pressing the browser/mobile back button will return them to the unfiltered list.
             </p>
             <p>
-                You can stop a crumb from making it onto the breadcrumb trail during a navigation. You attach a function to the <code>truncateCrumbTrail</code> property of the <code>State</code> you’re navigating to. The Navigation router passes this function the proposed breadcrumb trail with the new crumb included and you return the truncated breadcrumb trail with the new crumb excluded.
+                You can stop a crumb from making it onto the breadcrumb trail during a navigation. You attach a function to the <code>truncateCrumbTrail</code> property of the <code>State</code> you're navigating to. The Navigation router passes this function the proposed breadcrumb trail with the new crumb included and you return the truncated breadcrumb trail with the new crumb excluded.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.truncateCrumbTrail = function(state, data, crumbs) {
   var lastCrumb = crumbs[crumbs.length - 1];
