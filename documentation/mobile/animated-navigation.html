@@ -85,7 +85,7 @@ stateNavigator.states.mail.renderScene = function(data) {
 );</code></pre>
             <h2>Navigating Back</h2>
             <p>
-                The user can navigate back they way they came, along the breadcrumb trail, as Hansel and Gretel intended. You navigate back using the <code>NavigationBackLink</code> component specifying the distance you want to travel. In our email example, we add a <code>NavigationBackLink</code> component to the 'mail' scene so the user can return to their inbox. When they click the Hyperlink, the 'mail' scene fades out as it’s unmounted and the 'inbox' scene fades back in as it’s mounted.
+                The user can navigate back to visited scenes, along the breadcrumb trail, as Hansel and Gretel intended. You navigate back using the <code>NavigationBackLink</code> component specifying the distance you want to travel. In our email example, we add a <code>NavigationBackLink</code> component to the 'mail' scene so the user can return to their inbox. When they click the Hyperlink, the 'mail' scene fades out as it’s unmounted and the 'inbox' scene fades back in as it’s mounted.
             </p>
             <pre><code class="language-jsx">&lt;NavigationBackLink
   distance={1}
