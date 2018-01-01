@@ -41,15 +41,15 @@
         </div>
         <div id="article">
             <h1>Non-Animated Navigation</h1>
-            <h2>Removing Breadcrumbs</h2>
             <p>
-                You don't always want a navigation to add a crumb to the breadcrumb trail because it triggers the animation cycle. If the user's filtering a list of items, for example, you don't want to animate out the unfiltered scene and animate in the filtered one. The user is filtering the list, not changing scenes. You could call <code>setState</code> inside the scene instead of navigating, but that wouldn't add to the browser history. The user expects that pressing the browser/mobile back button will return them to the unfiltered list.
+                By default, all navigations add a scene to the breadcrumb trail and trigger the animation cycle. This is desirable when the scene changes, like going from the 'inbox' to the 'mail' scene when the user opens an email in our example app. But the animation is often undesirable when the scene doesn’t change, like staying on the 'mail' scene when the user expands an email to read the full conversation. This animation would cause a flicker as it fades out the scene with the email collapsed and fades in the scene with the email expanded.
+            </p>
+            <h2>Picking Up Breadcrumbs</h2>
+            <p>
+                You can prevent the animation from running by stopping the breadcrumb trail from growing. You should only drop a breadcrumb once a scene’s been visited. To stop the breadcrumb trail from growing during a navigation, you attach a function to the <code>truncateCrumbTrail</code> property of the destination <code>State</code>. The Navigation router passes in the proposed breadcrumb trail array that includes the new crumb and you return the truncated breadcrumb trail that excludes it.
             </p>
             <p>
-                You can stop a crumb from making it onto the breadcrumb trail during a navigation. You attach a function to the <code>truncateCrumbTrail</code> property of the <code>State</code> you're navigating to. The Navigation router passes this function the proposed breadcrumb trail with the new crumb included and you return the truncated breadcrumb trail with the new crumb excluded.
-            </p>
-            <p>
-                Returning to the email example, we add a <code>NavigationLink</code> to the 'mail' scene that expands the email thread so the user can read the full conversation. If we add a breadcrumb when it's clicked, there'll be a flicker as the unexpanded scene fades out and the expanded one fades in. We avoid this by truncating the breadcrumb trail when the user expands the email. We attach a <code>truncateCrumbTrail</code> function to the 'mail' <code>State</code> and check if the latest crumb matches the 'inbox' State. If it does then the user is opening an email and we leave the breadcrumb trail alone. If it doesn't then the user is expanding an email and we remove the latest crumb.
+                When the user expands the email in our example app, we shouldn't drop a breadcrumb because the 'mail' scene is still the current one. We attach a <code>truncateCrumbTrail</code> function to the 'mail' State and check if the latest crumb in the breadcrumb trail matches the 'inbox' <code>State</code>. If it does then the user is opening an email and we leave the breadcrumb trail alone. If it doesn't then the user is expanding an email and we remove the latest crumb.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.truncateCrumbTrail = function(state, data, crumbs) {
   var latestCrumb = crumbs[crumbs.length - 1];
