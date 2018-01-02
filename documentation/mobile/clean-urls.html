@@ -57,7 +57,7 @@
                 Removing the breadcrumb trail from the Url breaks bookmarking. A user visiting a bookmarked email will find that the Hyperlink taking them back to their inbox is disabled. The bookmark takes the user straight to their open email, bypassing the inbox, so the breadcrumb trail is empty and they can't navigate back.
             </p>
             <p>
-                We can re-enable the Hyperlink by prepopulating the breadcrumb trail so it looks like the user came from the 'inbox' scene. For example, when a user clicks on a bookmarked Url of '/mail?id=12' we start the application with the Url of '/mail?id=12&amp;crumb=%2F' instead. We can build this Url using the <code>stateNavigator</code>'s fluent navigation to simulate the user opening the email from their inbox.
+                We can re-enable the Hyperlink by prepopulating the breadcrumb trail so it looks like the user came from the 'inbox' scene. For example, when a user clicks on a bookmarked Url of '/mail?id=12' we start the application with the Url of '/mail?id=12&amp;crumb=%2F' instead. We can build this Url by using the Navigation router's fluent navigation to simulate the user opening the email from their inbox.
             </p>
             <pre><code class="language-jsx">var url = stateNavigator.fluent()
   .navigate('inbox')
