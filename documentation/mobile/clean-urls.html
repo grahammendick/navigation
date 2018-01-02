@@ -41,6 +41,18 @@
         </div>
         <div id="article">
             <h1>Clean Urls</h1>
+            <h2>Hiding the Breadcrumb Trail</h2>
+            <p>
+                When the user opens and email in our example app, we drop a breadcrumb at the 'inbox' scene so that the user can revisit it. By default, the Navigation router stores the breadcrumb trail in the Url. For example, the Url for opening an email with an id of 12 is '/mail?id=12&crumb=%2F'. The <code>crumb</code> parameter in the query string holds the Url that returns the user to their inbox.
+            </p>
+            <p>
+                Storing the crumbs in the Url has the advantage that when a user bookmarks a scene they also bookmark the breadcrumb trail. But one of the disadvantages is that it makes the Url scruffy. We hide the breadcrumb trail from the Url by passing a <code>MobileHistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>MobileHistoryManager</code> turns the Url that opens the email with an id of 12 into '/mail?id=12'. 
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
+], new NavigationReactMobile.MobileHistoryManager());
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
