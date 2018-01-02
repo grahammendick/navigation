@@ -63,7 +63,7 @@
   .navigate('inbox')
   .navigate('mail', {id: 12}).url;</code></pre>
             <p>
-                We change the startup Url by passing a function into the <code>MobileHistoryManager</code> constructor. The function receives the browser Url and we use fluent navigation to return the new Url with the 'inbox' breadcrumb prepopulated. We extract the email Id from the incoming Url using the <code>parseLink</code> function on the <code>stateNavigator</code>. 
+                We change the startup Url by passing a function into the <code>MobileHistoryManager</code> constructor. The function receives the browser Url and we use fluent navigation to return the new Url with the 'inbox' breadcrumb prepopulated. We extract the bookmarked email Id from the incoming Url using the <code>parseLink</code> function on the <code>stateNavigator</code>. 
             </p>
             <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
   var {state, data} = stateNavigator.parseLink(url);
