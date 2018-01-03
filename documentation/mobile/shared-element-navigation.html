@@ -41,6 +41,57 @@
         </div>
         <div id="article">
             <h1>Shared Element Navigation</h1>
+            <h2>Sharing Elements</h2>
+            <pre><code class="language-jsx">&lt;SharedElement
+  data={{size: 14, title: mail.subject}}
+  name={`mail${mail.id}`}
+  stateNavigator={stateNavigator}>
+  &lt;div>{mail.subject}&lt;/div>
+&lt;/SharedElement></code></pre>
+            <pre><code class="language-jsx">&lt;SharedElement
+  data={{size: 20, title: mail.subject}}
+  name={`mail${mail.id}`}
+  stateNavigator={stateNavigator}>
+  &lt;h1>{mail.subject}&lt;/h1>
+&lt;/SharedElement></code></pre>
+            <h2>Animating</h2>
+            <pre><code class="language-jsx">var MailShared = function(props) {
+  return (
+    &lt;SharedElementMotion
+      {...props}
+      onAnimating={(name, ref) => {ref.style.opacity = 0}}
+      onAnimated={(name, ref) => {ref.style.opacity = 1}}>
+      {(style, name, data) => (
+        &lt;div
+          key={name}
+          style={{
+            fontSize: `${size}px`,
+            left: style.left,
+            top: style.top,
+            width: style.width,
+            height: style.height,
+            position: 'absolute',
+          }}>
+          {data.title}
+        &lt;/div>
+      )}
+    &lt;/SharedElementMotion>
+  );
+}</code></pre>
+            <pre><code class="language-jsx">&lt;NavigationMotion
+  unmountedStyle={{opacity: 0}}
+  mountedStyle={{opacity: 1}}
+  crumbStyle={{opacity: 0}}
+  sharedElementMotion={props => &lt;MailShared {...props} />}
+  stateNavigator={stateNavigator}>
+  {(style, scene, key) => (
+    &lt;div
+      key={key}
+      style={{opacity: style.opacity}}>
+      {scene}
+    &lt;/div>
+  )}
+&lt;/NavigationMotion></code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
