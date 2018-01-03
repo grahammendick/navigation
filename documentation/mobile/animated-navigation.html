@@ -65,7 +65,7 @@ stateNavigator.states.mail.renderScene = function(data) {
                 The <code>NavigationMotion</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. A scene is said to be either unmounted, mounted or a crumb. It's unmounted when it's not on the stack; it's mounted when it's at the top of the stack; and it's a crumb when it's anywhere else in the stack (in the breadcrumb trail).
             </p>
             <p>
-                You assign a style prop to each of these three stages and the <code>NavigationMotion</code> component calls you back with the interpolated values so you can animate the scenes. In our email example, we'll give the unmounted and crumb styles an opacity of 0 and the mounted style an opacity of 1. When the user opens a mail, the 'inbox' scene fades out as it becomes a crumb and the 'mail' scene fades in as it's mounted.
+                You assign a style <code>prop</code> to each of these three stages and the <code>NavigationMotion</code> component calls you back with the interpolated values so you can animate the scenes. In our email example, we'll give the unmounted and crumb styles an opacity of 0 and the mounted style an opacity of 1. When the user opens a mail, the 'inbox' scene fades out as it becomes a crumb and the 'mail' scene fades in as it's mounted.
             </p>
             <pre><code class="language-jsx">ReactDOM.render(
   &lt;NavigationReactMobile.NavigationMotion
