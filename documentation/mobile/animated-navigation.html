@@ -45,7 +45,7 @@
             <p>
                 The Navigation router brings native-like navigation to the web. It builds a stack of the scenes a user visits. You can navigate back to any scene in the stack and animate the scenes as they move through and off the stack. The Navigation router remembers the visited scenes by dropping a breadcrumb at each one, like the fairy-tale characters Hansel and Gretel. You enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true against each <code>State</code>. In an email application, we set <code>trackCrumbTrail</code> to true on the 'mail' <code>State</code> so that we can animate out the 'inbox' scene and animate in the 'mail' scene when the user opens an email.
             </p>
-            <pre><code class="language-jsx">var stateNavigator = new StateNavigator([
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
   {key: 'inbox', route: ''},
   {key: 'mail', trackCrumbTrail: true}
 ]);</code></pre>
