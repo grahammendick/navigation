@@ -52,7 +52,7 @@
   {key: 'inbox', route: ''},
   {key: 'mail', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
 ], new NavigationReactMobile.MobileHistoryManager());</code></pre>
-            <h2>Patching Bookmarks</h2>
+            <h3>Patching Bookmarks</h3>
             <p>
                 Removing the breadcrumb trail from the Url breaks bookmarking. A user visiting a bookmarked email will find that the Hyperlink taking them back to their inbox is disabled. The bookmark takes the user straight to their open email, bypassing the inbox, so the breadcrumb trail is empty and they can't navigate back.
             </p>
@@ -71,6 +71,20 @@
     .navigate('inbox')
     .navigate(state.key, data).url;
 })</code></pre>
+            <h2>Removing Hashes</h2>
+            <p>
+                By default, the <code>MobileHistoryManager</code> operates in hash mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=12'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=12', we pass an empty string as the second parameter to the <code>MobileHistoryManager</code> constructor. If we wanted Url's that look like 'https://domain/app/mail?id=12', we’d pass the 'app' base path as the second parameter instead.
+            </p>
+            <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
+  var {state, data} = stateNavigator.parseLink(url);
+  return stateNavigator.fluent()
+    .navigate('inbox')
+    .navigate(state.key, data).url;
+}, '')</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                You should beware using the <code>MobileHistoryManager</code> in hash mode in production because not all browsers fire the popstate event when the hash changes
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
