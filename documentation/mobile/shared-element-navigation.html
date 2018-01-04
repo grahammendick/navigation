@@ -48,13 +48,15 @@
             <p>
                 In our email example app, we can smooth out the navigation when a user opens an email by sharing the subject of the email between the 'inbox' scene and the 'mail' scene. We wrap the subject elements on each scene inside a <code>SharedComponent</code>. The font size of the subject is smaller in the inbox than on the open email, 14px as compared to 20px. Because we need to grow the text during the navigation, we pass these font sizes, along with the subject line, into the <code>data props</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReactMobile.SharedElement
+            <pre><code class="language-jsx">// The 'inbox' scene
+&lt;NavigationReactMobile.SharedElement
   data={{size: 14, title: mail.subject}}
   name={`mail${mail.id}`}
   stateNavigator={stateNavigator}>
   &lt;div>{mail.subject}&lt;/div>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
-            <pre><code class="language-jsx">&lt;NavigationReactMobile.SharedElement
+            <pre><code class="language-jsx">// The 'mail' scene
+&lt;NavigationReactMobile.SharedElement
   data={{size: 20, title: mail.subject}}
   name={`mail${mail.id}`}
   stateNavigator={stateNavigator}>
