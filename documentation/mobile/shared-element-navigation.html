@@ -50,14 +50,14 @@
             </p>
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;NavigationReactMobile.SharedElement
-  data={{size: 14, title: mail.subject}}
+  data={{size: 14, subject: mail.subject}}
   name={`mail${mail.id}`}
   stateNavigator={stateNavigator}>
   &lt;div>{mail.subject}&lt;/div>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
 &lt;NavigationReactMobile.SharedElement
-  data={{size: 20, title: mail.subject}}
+  data={{size: 20, subject: mail.subject}}
   name={`mail${mail.id}`}
   stateNavigator={stateNavigator}>
   &lt;h1>{mail.subject}&lt;/h1>
@@ -80,7 +80,7 @@
             height: style.height,
             position: 'absolute',
           }}>
-          {data.title}
+          {data.subject}
         &lt;/div>
       )}
     &lt;/NavigationReactMobile.SharedElementMotion>
