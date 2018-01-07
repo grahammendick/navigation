@@ -1,6 +1,6 @@
 {
   "name": "navigation",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "The data-first JavaScript router",
   "main": "navigation.js",
   "repository": {

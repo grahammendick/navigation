@@ -18,9 +18,9 @@ RefreshLinkTest = () => {
             currentDataKeys="sort"
             activeCssClass="active"
             disableActive={true}
-            lazy={false}
+            acrossCrumbs={false}
             historyAction="replace"
-            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, domId: string, link: string) => true}
+            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, link: string) => true}
             stateNavigator={stateNavigator}
             target="_blank"
             aria-label="Go to the second page of people">
@@ -41,9 +41,9 @@ NavigationLinkTest = () => {
             currentDataKeys=""
             activeCssClass=""
             disableActive={false}
-            lazy={false}
+            acrossCrumbs={false}
             historyAction="add"
-            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, domId: string, link: string) => true}
+            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, link: string) => true}
             stateNavigator={stateNavigator}
             target="_blank"
             aria-label="View the person's details">
@@ -59,9 +59,9 @@ NavigationBackLinkTest = () => {
     return (
         <NavigationBackLink
             distance={1}
-            lazy={false}
+            acrossCrumbs={false}
             historyAction="none"
-            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, domId: string, link: string) => true}
+            navigating= {(e: React.MouseEvent<HTMLAnchorElement>, link: string) => true}
             stateNavigator={stateNavigator}
             target="_blank"
             aria-label="Go back to the list of people">
