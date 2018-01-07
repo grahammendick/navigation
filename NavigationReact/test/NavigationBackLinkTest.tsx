@@ -87,6 +87,7 @@ describe('NavigationBackLinkTest', function () {
             renderer.render(
                 <NavigationBackLink
                     distance={1}
+                    acrossCrumbs={false}
                     historyAction='replace'
                     navigating={() => false}
                     aria-label="z"
