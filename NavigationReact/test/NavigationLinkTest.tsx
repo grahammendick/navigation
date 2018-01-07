@@ -80,6 +80,7 @@ describe('NavigationLinkTest', function () {
                     currentDataKeys="y"
                     activeCssClass="active"
                     disableActive={true}
+                    acrossCrumbs={false}
                     historyAction='replace'
                     navigating={() => false}
                     aria-label="z"
