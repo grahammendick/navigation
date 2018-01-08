@@ -58,7 +58,7 @@ class NavigationMotion extends React.Component<any, any> {
             delete this.sharedElements[scene][name];
     }
     getSharedElements(crumbs, oldUrl) {
-        if (!oldUrl || crumbs.length === oldUrl.split('crumb=').length - 1)
+        if (oldUrl === null || crumbs.length === oldUrl.split('crumb=').length - 1)
             return [];
         var oldSharedElements = this.sharedElements[oldUrl.split('crumb=').length - 1];
         var mountedSharedElements = this.sharedElements[crumbs.length];

@@ -66,7 +66,7 @@ class Motion extends React.Component<any, any> {
             return {items};
         })
     }
-    areEqual(from, to) {
+    areEqual(from = {}, to = {}) {
         if (Object.keys(from).length !== Object.keys(to).length)
             return false;
         for(var key in from) {
