@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Non-Animated Navigation</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../email-example.html">Email Example</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="hello-world.html">Hello World</a>
+            <a href="animated-navigation.html">Animated Navigation</a>
+            <a href="non-animated-navigation.html" class="selected">Non-Animated Navigation</a>
+            <a href="clean-urls.html">Clean Urls</a>
+            <a href="shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="email-example.html">Email Example</a>
+        </div>
+        <div id="article">
+            <h1>Non-Animated Navigation</h1>
+            <p>
+                By default, all navigations add a scene to the breadcrumb trail and trigger the animation cycle. This is desirable if the scene changes, like going from the 'inbox' to the 'mail' scene when the user opens an email in our example app. But the animation may be undesirable if the scene doesn’t change, like staying on the 'mail' scene when the user expands an email thread to read the full conversation. This animation would cause a flicker as it fades out the scene with the email collapsed and fades in the scene with the email expanded.
+            </p>
+            <h2>Picking Up Breadcrumbs</h2>
+            <p>
+                You can prevent the animation from running by stopping the breadcrumb trail from growing. You should only drop a breadcrumb once a scene’s been visited. To stop the breadcrumb trail from growing during a navigation, you attach a function to the <code>truncateCrumbTrail</code> property of the destination <code>State</code>. The Navigation router passes in the proposed breadcrumb trail array that includes the new crumb and you return the truncated breadcrumb trail that excludes it.
+            </p>
+            <p>
+                When the user expands the email in our example app, we shouldn't drop a breadcrumb because the 'mail' scene is still the current one. We attach a <code>truncateCrumbTrail</code> function to the 'mail' State and check if the latest crumb in the breadcrumb trail matches the 'inbox' <code>State</code>. If it does then the user is opening an email and we leave the breadcrumb trail alone. If it doesn't then the user is expanding an email and we remove the latest crumb.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.mail.truncateCrumbTrail = function(state, data, crumbs) {
+  var latestCrumb = crumbs[crumbs.length - 1];
+  return latestCrumb.state.key === 'inbox' ? crumbs : crumbs.slice(0, -1); 
+};</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>

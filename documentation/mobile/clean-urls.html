@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>Clean Urls</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../email-example.html">Email Example</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="hello-world.html">Hello World</a>
+            <a href="animated-navigation.html">Animated Navigation</a>
+            <a href="non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="clean-urls.html" class="selected">Clean Urls</a>
+            <a href="shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="email-example.html">Email Example</a>
+        </div>
+        <div id="article">
+            <h1>Clean Urls</h1>
+            <h2>Hiding the Breadcrumb Trail</h2>
+            <p>
+                When the user opens and email in our example app, we drop a breadcrumb at the 'inbox' scene so that the user can revisit it. By default, the Navigation router stores the breadcrumb trail in the Url. For example, the Url for opening an email with an id of 12 is '/mail?id=12&crumb=%2F'. The <code>crumb</code> parameter in the query string holds the Url that returns the user to their inbox.
+            </p>
+            <p>
+                Storing the crumbs in the Url has the advantage that when a user bookmarks a scene they also bookmark the breadcrumb trail. But one of the disadvantages is that it makes the Url scruffy. We hide the breadcrumb trail from the Url by passing a <code>MobileHistoryManager</code> into the <code>StateNavigator</code> constructor. The <code>MobileHistoryManager</code> turns the Url that opens the email with an id of 12 into '/mail?id=12'. 
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', trackCrumbTrail: true, defaultTypes: {id: 'number'}}
+], new NavigationReactMobile.MobileHistoryManager());</code></pre>
+            <h3>Patching Bookmarks</h3>
+            <p>
+                Removing the breadcrumb trail from the Url breaks bookmarking. A user visiting a bookmarked email will find that the Hyperlink taking them back to their inbox is disabled. The bookmark takes the user straight to their open email, bypassing the inbox, so the breadcrumb trail is empty and they can't navigate back.
+            </p>
+            <p>
+                We can re-enable the Hyperlink by prepopulating the breadcrumb trail so it looks like the user came from the 'inbox' scene. For example, when a user clicks on a bookmarked Url of '/mail?id=12' we start the application with the Url of '/mail?id=12&amp;crumb=%2F' instead. We can build this Url by using the Navigation router's fluent navigation to simulate the user opening the email from their inbox.
+            </p>
+            <pre><code class="language-jsx">var url = stateNavigator.fluent()
+  .navigate('inbox')
+  .navigate('mail', {id: 12}).url;</code></pre>
+            <p>
+                We change the startup Url by passing a function into the <code>MobileHistoryManager</code> constructor. The function receives the browser Url and we use fluent navigation to return the new Url with the 'inbox' breadcrumb included. We extract the bookmarked email Id from the incoming Url using the <code>parseLink</code> function on the <code>stateNavigator</code>. 
+            </p>
+            <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
+  var {state, data} = stateNavigator.parseLink(url);
+  return stateNavigator.fluent()
+    .navigate('inbox')
+    .navigate(state.key, data).url;
+})</code></pre>
+            <h2>Removing Hashes</h2>
+            <p>
+                By default, the <code>MobileHistoryManager</code> operates in hash history mode. For example, the full Url that opens an email of id 12 is 'https://domain/#/mail?id=12'. To remove the hash and clean up the Url so it reads 'https://domain/mail?id=12', we pass an empty string as the second parameter to the <code>MobileHistoryManager</code> constructor. If we wanted our Url to look like 'https://domain/app/mail?id=12', we’d pass the 'app' base path as the second parameter instead.
+            </p>
+            <pre><code class="language-jsx">new NavigationReactMobile.MobileHistoryManager(function(url) {
+  var {state, data} = stateNavigator.parseLink(url);
+  return stateNavigator.fluent()
+    .navigate('inbox')
+    .navigate(state.key, data).url;
+}, '')</code></pre>
+            <div class="Note">
+                <h2>Note</h2>
+                You should beware of using the <code>MobileHistoryManager</code> in hash history mode in production because not all browsers fire the <code>popstate</code> event when the hash changes
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>

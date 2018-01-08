@@ -1,0 +1,103 @@
+<html>
+<head>
+    <title>Animated Navigation</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../css/prism.css">
+    <link rel="stylesheet" href="../../css/navigation.css">
+</head>
+<body>
+    <div id="banner">
+        <div>
+            <a href="../../index.html">Navigation</a>
+            <a href="../hello-world.html" class="selected">Docs</a>
+            <a href="../../download/index.html">Download</a>
+            <a id="github" href="https://github.com/grahammendick/navigation">GitHub source</a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="menu">
+            <a href="../hello-world.html">Hello World</a>
+            <a href="../thinking-in-navigation.html">Thinking in Navigation</a>
+            <div class="separator"></div>
+            <h2>THE ABC</h2>
+            <a href="../state-navigation.html">A. State Navigation</a>
+            <a href="../navigation-data.html">B. Navigation Data</a>
+            <a href="../routes.html">C. Routes</a>
+            <a href="../email-example.html">Email Example</a>
+            <div class="separator"></div>
+            <h2>FURTHER GUIDES</h2>
+            <a href="../current-data.html">Current Data</a>
+            <a href="../html5-history.html">HTML5 History</a>
+            <a href="../navigation-lifecycle.html">Navigation Lifecycle</a>
+            <a href="../reusable-components.html">Reusable Components</a>
+            <div class="separator"></div>
+            <h2>MOBILE</h2>
+            <a href="hello-world.html">Hello World</a>
+            <a href="animated-navigation.html" class="selected">Animated Navigation</a>
+            <a href="non-animated-navigation.html">Non-Animated Navigation</a>
+            <a href="clean-urls.html">Clean Urls</a>
+            <a href="shared-element-navigation.html">Shared Element Navigation</a>
+            <a href="email-example.html">Email Example</a>
+        </div>
+        <div id="article">
+            <h1>Animated Navigation</h1>
+            <h2>Dropping Breadcrumbs</h2>
+            <p>
+                The Navigation router brings native-like navigation to the web. It builds a stack of the scenes a user visits. You can navigate back to any scene in the stack and animate the scenes as they move through and off the stack. The Navigation router remembers the visited scenes by dropping a breadcrumb at each one, like the fairy-tale characters Hansel and Gretel. You enable the breadcrumb trail by setting <code>trackCrumbTrail</code> to true against each <code>State</code>. In an email application, we set <code>trackCrumbTrail</code> to true on the 'mail' <code>State</code> so that we can animate out the 'inbox' scene and animate in the 'mail' scene when the user opens an email.
+            </p>
+            <pre><code class="language-jsx">var stateNavigator = new Navigation.StateNavigator([
+  {key: 'inbox', route: ''},
+  {key: 'mail', trackCrumbTrail: true}
+]);</code></pre>
+            <h2>Defining Scenes</h2>
+            <p>
+                Instead of <a href="../state-navigation.html#rendering-views">rendering views</a>, you define scenes and let the Navigation router render them (see the <code>NavigationMotion</code> component below). You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When you navigate to a <code>State</code>, the Navigation router creates the scene by calling the corresponding <code>renderScene</code> function, passing in any navigation data. It pops the new scene onto the top of the stack and renders it. We can define the two scenes in the email example using our <code>Inbox</code> and <code>Mail</code> components.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.states.inbox.renderScene = function() {
+  return &lt;Inbox />;
+};
+
+stateNavigator.states.mail.renderScene = function(data) {
+  return &lt;Mail mailId={data.id} />;
+};</code></pre>
+            <h2>Animating</h2>
+            <p>
+                The <code>NavigationMotion</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. A scene is said to be either unmounted, mounted or a crumb. It's unmounted when it's not on the stack; it's mounted when it's at the top of the stack; and it's a crumb when it's anywhere else in the stack (in the breadcrumb trail).
+            </p>
+            <p>
+                You assign a style <code>prop</code> to each of these three stages and the <code>NavigationMotion</code> component calls you back with the interpolated values so you can animate the scenes. In our email example, we'll give the unmounted and crumb styles an opacity of 0 and the mounted style an opacity of 1. When the user opens a mail, the 'inbox' scene fades out as it becomes a crumb and the 'mail' scene fades in as it's mounted.
+            </p>
+            <pre><code class="language-jsx">ReactDOM.render(
+  &lt;NavigationReactMobile.NavigationMotion
+    unmountedStyle={{opacity: 0}}
+    mountedStyle={{opacity: 1}}
+    crumbStyle={{opacity: 0}}
+    stateNavigator={stateNavigator}>
+    {(style, scene, key) => (
+      &lt;div
+        key={key}
+        style={{opacity: style.opacity}}>
+        {scene}
+      &lt;/div>
+    )}
+  &lt;/NavigationReactMobile.NavigationMotion>,
+  document.getElementById('app')
+);</code></pre>
+            <h2>Navigating Back</h2>
+            <p>
+                The user can navigate back to visited scenes, along the breadcrumb trail, as Hansel and Gretel intended. You navigate back using the <code>NavigationBackLink</code> component specifying the distance you want to travel. In our email example, we add a <code>NavigationBackLink</code> component to the 'mail' scene so the user can return to their inbox. When they click the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.
+            </p>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink
+  distance={1}
+  stateNavigator={stateNavigator}>
+  Back to Inbox
+&lt;/NavigationReact.NavigationBackLink></code></pre>
+            <p>
+                You can navigate back programatically by passing the distance into the <code>navigateBack</code> function on the <code>stateNavigator</code>.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.navigateBack(1);</code></pre>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</body>
+</html>
