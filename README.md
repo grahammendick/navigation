@@ -21,6 +21,7 @@ The Navigation router is made up of two npm packages: `navigation`, for the core
 ```
 var Navigation = require('navigation');
 var NavigationReact = require('navigation-react');
+var NavigationReactMobile = require('navigation-react-mobile');
 ```
 
 ## Example
