@@ -17,7 +17,7 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cros
 You'll find the Navigation router source code in the Navigation folder. It's written in TypeScript and is built on top of node.js. The NavigationReact folder contains the source code for the Hyperlink components.
 
 ## Download
-The Navigation router is made up of two npm packages: `navigation`, for the core router, and `navigation-react`, for the Hyperlink components.
+The Navigation router is made up of two npm packages: `navigation`, for the core router, `navigation-react`, for the Hyperlink components, and `navigation-react-mobile`, for native-like navigation.
 ```
 var Navigation = require('navigation');
 var NavigationReact = require('navigation-react');
