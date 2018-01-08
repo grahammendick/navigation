@@ -1,5 +1,5 @@
 /**
- * Navigation React v2.0.5
+ * Navigation React v3.0.0
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/
  * License: Apache-2.0
  */
@@ -60,7 +60,7 @@ function __await(v) {
     return this instanceof __await ? (this.v = v, this) : new __await(v);
 }
 
-var LinkUtility = (function () {
+var LinkUtility =  (function () {
     function LinkUtility() {
     }
     LinkUtility.getData = function (stateNavigator, navigationData, includeCurrentData, currentDataKeys) {
@@ -107,7 +107,7 @@ var LinkUtility = (function () {
         return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
             && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
             && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
-            && attr !== 'navigating' && attr !== 'children';
+            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children';
     };
     LinkUtility.getOnClick = function (stateNavigator, props, link) {
         return function (e) {
@@ -124,7 +124,7 @@ var LinkUtility = (function () {
     return LinkUtility;
 }());
 
-var NavigationBackLink = (function (_super) {
+var NavigationBackLink =  (function (_super) {
     __extends(NavigationBackLink, _super);
     function NavigationBackLink(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -182,7 +182,7 @@ var NavigationBackLink = (function (_super) {
     return NavigationBackLink;
 }(React.Component));
 
-var NavigationLink = (function (_super) {
+var NavigationLink =  (function (_super) {
     __extends(NavigationLink, _super);
     function NavigationLink(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -245,7 +245,7 @@ var NavigationLink = (function (_super) {
     return NavigationLink;
 }(React.Component));
 
-var RefreshLink = (function (_super) {
+var RefreshLink =  (function (_super) {
     __extends(RefreshLink, _super);
     function RefreshLink(props, context) {
         var _this = _super.call(this, props, context) || this;

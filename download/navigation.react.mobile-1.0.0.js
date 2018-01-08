@@ -66,7 +66,7 @@ function __await(v) {
     return this instanceof __await ? (this.v = v, this) : new __await(v);
 }
 
-var MobileHistoryManager = (function (_super) {
+var MobileHistoryManager =  (function (_super) {
     __extends(MobileHistoryManager, _super);
     function MobileHistoryManager(buildCurrentUrl, applicationPath) {
         var _this = _super.call(this, applicationPath || '') || this;
@@ -104,7 +104,7 @@ var MobileHistoryManager = (function (_super) {
     return MobileHistoryManager;
 }(navigation.HTML5HistoryManager));
 
-var Motion = (function (_super) {
+var Motion =  (function (_super) {
     __extends(Motion, _super);
     function Motion(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -180,6 +180,8 @@ var Motion = (function (_super) {
         });
     };
     Motion.prototype.areEqual = function (from, to) {
+        if (from === void 0) { from = {}; }
+        if (to === void 0) { to = {}; }
         if (Object.keys(from).length !== Object.keys(to).length)
             return false;
         for (var key in from) {
@@ -204,7 +206,7 @@ var Motion = (function (_super) {
     return Motion;
 }(React.Component));
 
-var Scene = (function (_super) {
+var Scene =  (function (_super) {
     __extends(Scene, _super);
     function Scene(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -220,7 +222,7 @@ var Scene = (function (_super) {
     return Scene;
 }(React.Component));
 
-var NavigationMotion = (function (_super) {
+var NavigationMotion =  (function (_super) {
     __extends(NavigationMotion, _super);
     function NavigationMotion(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -266,7 +268,7 @@ var NavigationMotion = (function (_super) {
             delete this.sharedElements[scene][name];
     };
     NavigationMotion.prototype.getSharedElements = function (crumbs, oldUrl) {
-        if (!oldUrl || crumbs.length === oldUrl.split('crumb=').length - 1)
+        if (oldUrl === null || crumbs.length === oldUrl.split('crumb=').length - 1)
             return [];
         var oldSharedElements = this.sharedElements[oldUrl.split('crumb=').length - 1];
         var mountedSharedElements = this.sharedElements[crumbs.length];
@@ -350,7 +352,7 @@ var NavigationMotion = (function (_super) {
     return NavigationMotion;
 }(React.Component));
 
-var SharedElement = (function (_super) {
+var SharedElement =  (function (_super) {
     __extends(SharedElement, _super);
     function SharedElement(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -396,7 +398,7 @@ var SharedElement = (function (_super) {
     return SharedElement;
 }(React.Component));
 
-var SharedElementMotion = (function (_super) {
+var SharedElementMotion =  (function (_super) {
     __extends(SharedElementMotion, _super);
     function SharedElementMotion() {
         return _super !== null && _super.apply(this, arguments) || this;

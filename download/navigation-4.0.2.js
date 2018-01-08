@@ -1,12 +1,12 @@
 /**
- * Navigation v4.0.1
+ * Navigation v4.0.2
  * (c) Graham Mendick - http://grahammendick.github.io/navigation/
  * License: Apache-2.0
  */
 (function (exports) {
 'use strict';
 
-var StateContext = (function () {
+var StateContext =  (function () {
     function StateContext() {
         this.oldState = null;
         this.oldData = {};
@@ -51,7 +51,7 @@ var StateContext = (function () {
     return StateContext;
 }());
 
-var Crumb = (function () {
+var Crumb =  (function () {
     function Crumb(data, state, url, crumblessUrl, last) {
         this.data = data ? data : {};
         this.state = state;
@@ -105,7 +105,7 @@ function createFluentNavigator(states, stateHandler, stateContext) {
     };
 }
 
-var HashHistoryManager = (function () {
+var HashHistoryManager =  (function () {
     function HashHistoryManager(replaceQueryIdentifier) {
         if (replaceQueryIdentifier === void 0) { replaceQueryIdentifier = false; }
         this.replaceQueryIdentifier = false;
@@ -222,7 +222,7 @@ function __await(v) {
     return this instanceof __await ? (this.v = v, this) : new __await(v);
 }
 
-var TypeConverter = (function () {
+var TypeConverter =  (function () {
     function TypeConverter(key, name) {
         this.key = key;
         this.name = name;
@@ -237,7 +237,7 @@ var TypeConverter = (function () {
     return TypeConverter;
 }());
 
-var ArrayConverter = (function (_super) {
+var ArrayConverter =  (function (_super) {
     __extends$1(ArrayConverter, _super);
     function ArrayConverter(converter, key) {
         var _this = _super.call(this, key, converter.name + 'array') || this;
@@ -290,7 +290,7 @@ var ArrayConverter = (function (_super) {
     return ArrayConverter;
 }(TypeConverter));
 
-var BooleanConverter = (function (_super) {
+var BooleanConverter =  (function (_super) {
     __extends$1(BooleanConverter, _super);
     function BooleanConverter(key) {
         return _super.call(this, key, 'boolean') || this;
@@ -306,7 +306,7 @@ var BooleanConverter = (function (_super) {
     return BooleanConverter;
 }(TypeConverter));
 
-var DateConverter = (function (_super) {
+var DateConverter =  (function (_super) {
     __extends$1(DateConverter, _super);
     function DateConverter(key) {
         return _super.call(this, key, 'date') || this;
@@ -329,7 +329,7 @@ var DateConverter = (function (_super) {
     return DateConverter;
 }(TypeConverter));
 
-var NumberConverter = (function (_super) {
+var NumberConverter =  (function (_super) {
     __extends$1(NumberConverter, _super);
     function NumberConverter(key) {
         return _super.call(this, key, 'number') || this;
@@ -345,7 +345,7 @@ var NumberConverter = (function (_super) {
     return NumberConverter;
 }(TypeConverter));
 
-var StringConverter = (function (_super) {
+var StringConverter =  (function (_super) {
     __extends$1(StringConverter, _super);
     function StringConverter(key) {
         return _super.call(this, key, 'string') || this;
@@ -361,7 +361,7 @@ var StringConverter = (function (_super) {
     return StringConverter;
 }(TypeConverter));
 
-var ConverterFactory = (function () {
+var ConverterFactory =  (function () {
     function ConverterFactory() {
         this.keyToConverterList = {};
         this.nameToKeyList = {};
@@ -390,7 +390,7 @@ var ConverterFactory = (function () {
     return ConverterFactory;
 }());
 
-var NavigationDataManager = (function () {
+var NavigationDataManager =  (function () {
     function NavigationDataManager() {
         this.converterFactory = new ConverterFactory();
     }
@@ -517,7 +517,7 @@ var NavigationDataManager = (function () {
     return NavigationDataManager;
 }());
 
-var State = (function () {
+var State =  (function () {
     function State() {
         this.defaults = {};
         this.defaultTypes = {};
@@ -555,7 +555,7 @@ var State = (function () {
     return State;
 }());
 
-var Segment = (function () {
+var Segment =  (function () {
     function Segment(path, optional, defaults) {
         this.pattern = '';
         this.params = [];
@@ -633,7 +633,7 @@ var Segment = (function () {
     return Segment;
 }());
 
-var Route = (function () {
+var Route =  (function () {
     function Route(path, defaults) {
         this.segments = [];
         this.params = [];
@@ -703,7 +703,7 @@ var Route = (function () {
     return Route;
 }());
 
-var Router = (function () {
+var Router =  (function () {
     function Router() {
         this.routes = [];
     }
@@ -737,7 +737,7 @@ var Router = (function () {
     return Router;
 }());
 
-var StateRouter = (function () {
+var StateRouter =  (function () {
     function StateRouter() {
     }
     StateRouter.prototype.getData = function (path, fromRoute) {
@@ -882,7 +882,7 @@ var StateRouter = (function () {
     return StateRouter;
 }());
 
-var StateHandler = (function () {
+var StateHandler =  (function () {
     function StateHandler() {
         this.navigationDataManager = new NavigationDataManager();
         this.router = new StateRouter();
@@ -1021,7 +1021,7 @@ var StateHandler = (function () {
     return StateHandler;
 }());
 
-var StateNavigator = (function () {
+var StateNavigator =  (function () {
     function StateNavigator(states, historyManager) {
         this.NAVIGATE_HANDLER_ID = 'navigateHandlerId';
         this.navigateHandlerId = 1;
@@ -1171,7 +1171,7 @@ var StateNavigator = (function () {
         return StateNavigator;
 }());
 
-var HTML5HistoryManager = (function () {
+var HTML5HistoryManager =  (function () {
     function HTML5HistoryManager(applicationPath) {
         if (applicationPath === void 0) { applicationPath = ''; }
         this.applicationPath = '';
