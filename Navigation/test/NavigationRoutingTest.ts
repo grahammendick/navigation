@@ -4373,6 +4373,7 @@ describe('MatchTest', function () {
         
         it('should not build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [''] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', null, 'cd'] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: [null, 'ab', 'cd'] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', null] }));
@@ -4487,13 +4488,14 @@ describe('MatchTest', function () {
         
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s'), '/');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [''] }), '/');
+            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [] }), '/');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd'], y: 'efg' }), '/ab/cd?y=efg');
         });
         
         it('should not build', function() {
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [''] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', null, 'cd'] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: [null, 'ab', 'cd'] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', null] }));
