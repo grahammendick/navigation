@@ -990,16 +990,15 @@ describe('Navigation Data', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}/d/{*array_blank}' },
+                { key: 's0', route: 'r0/{*array_string}/a/{*array_boolean}/b/{*array_number}/c/{*array_date}' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
         });
         var data = {};
         data['array_string'] = ['He-llo', 'World'];
-        data['array_boolean'] = ['', true, false];
-        data['array_number'] = [1, null, undefined, 2];
+        data['array_boolean'] = [true, false];
+        data['array_number'] = [1, 2.5, -3];
         data['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
-        data['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
             beforeEach(function() {
@@ -1039,23 +1038,17 @@ describe('Navigation Data', function () {
                 assert.strictEqual(stateNavigator.stateContext.data['array_string'][0], 'He-llo');
                 assert.strictEqual(stateNavigator.stateContext.data['array_string'][1], 'World');
                 assert.strictEqual(stateNavigator.stateContext.data['array_string'].length, 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][0], null);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][1], true);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][2], false);
-                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'].length, 3);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][0], true);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'][1], false);
+                assert.strictEqual(stateNavigator.stateContext.data['array_boolean'].length, 2);
                 assert.strictEqual(stateNavigator.stateContext.data['array_number'][0], 1);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][1], null);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][2], null);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'][3], 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_number'].length, 4);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][1], 2.5);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'][2], -3);
+                assert.strictEqual(stateNavigator.stateContext.data['array_number'].length, 3);
                 assert.strictEqual(+stateNavigator.stateContext.data['array_date'][0], +new Date(2010, 3, 7));
                 assert.strictEqual(+stateNavigator.stateContext.data['array_date'][1], +new Date(2011, 7, 3));
                 assert.strictEqual(stateNavigator.stateContext.data['array_date'].length, 2);
-                assert.strictEqual(stateNavigator.stateContext.data['array_blank'][0], null);
-                assert.strictEqual(stateNavigator.stateContext.data['array_blank'][1], null);
-                assert.strictEqual(stateNavigator.stateContext.data['array_blank'][2], null);
-                assert.strictEqual(stateNavigator.stateContext.data['array_blank'].length, 3);
-                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 5);
+                assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 4);
             });
         }
     });
