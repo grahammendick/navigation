@@ -43,7 +43,7 @@ class ArrayConverter extends TypeConverter {
                 arr.push(convertedValue);
                 vals.push(convertedValue.replace(/-/g, '0-'));
             } else {
-                throw Error('Navigation data arrays cannnot contain null, undefined or empty string values');
+                throw Error('Invalid navigation data, arrays cannnot contain null, undefined or empty string');
             }
         }
         return { val: vals.join(ArrayConverter.SEPARATOR), arrayVal: arr };
