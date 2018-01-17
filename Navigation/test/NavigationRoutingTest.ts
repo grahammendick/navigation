@@ -6515,4 +6515,30 @@ describe('MatchTest', function () {
             assert.strictEqual(state.key, 's1');
         });
     });
+
+    describe('Crumb Trail String Malicious', function() {
+        it ('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: 'r/1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
+            stateNavigator.navigateBack(1);
+            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
+            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url .*is invalid/);
+        });
+    });
+
+    describe('Crumb Trail String Array Malicious', function() {
+        it ('should throw error', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: '{*x}/0', defaultTypes: { x: 'stringarray' } },
+                { key: 's1', route: 'r/1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com/0');
+            stateNavigator.navigateBack(1);
+            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
+            //assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=%2F%2Fwww.google.com/0'), /Url .*is invalid/);
+        });
+    });
 });
