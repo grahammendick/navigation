@@ -3259,7 +3259,7 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x.length, 1);
         });
         
-        it.only('should not match', function() {
+        it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/?x='), /The Url .+ is invalid/);
         });
 
