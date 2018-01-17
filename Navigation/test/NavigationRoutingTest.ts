@@ -6456,7 +6456,7 @@ describe('MatchTest', function () {
             stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com/0');
             stateNavigator.navigateBack(1);
             assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
-            //assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=%2F%2Fwww.google.com/0'), /Url .*is invalid/);
+            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=%2F%2Fwww.google.com/0'), /Url .*is invalid/);
         });
     });
 });
