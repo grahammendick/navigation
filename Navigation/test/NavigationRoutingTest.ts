@@ -4356,41 +4356,26 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x[0], 'ab');
             assert.strictEqual(data.x[1], 'cd');
             assert.strictEqual(data.y, 'efg');
-            var { data } = stateNavigator.parseLink('/ab//cd');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x.length, 3);
-            assert.strictEqual(data.x[0], 'ab');
-            assert.strictEqual(data.x[1], null);
-            assert.strictEqual(data.x[2], 'cd');
-            var { data } = stateNavigator.parseLink('//ab/cd');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x.length, 3);
-            assert.strictEqual(data.x[0], null);
-            assert.strictEqual(data.x[1], 'ab');
-            assert.strictEqual(data.x[2], 'cd');
-            var { data } = stateNavigator.parseLink('/ab/cd//');
-            assert.strictEqual(Object.keys(data).length, 1);
-            assert.strictEqual(data.x.length, 3);
-            assert.strictEqual(data.x[0], 'ab');
-            assert.strictEqual(data.x[1], 'cd');
-            assert.strictEqual(data.x[2], null);
         });
 
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/ab//cd'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/cd'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/ab/cd//'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['abcd'] }), '/abcd');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd'] }), '/ab/cd');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd'], y: 'efg' }), '/ab/cd?y=efg');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', null, 'cd'] }), '/ab//cd');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [null, 'ab', 'cd'] }), '//ab/cd');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', null] }), '/ab/cd//');
         });
-
+        
         it('should not build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', null, 'cd'] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [null, 'ab', 'cd'] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', null] }));
         });
     });
 
