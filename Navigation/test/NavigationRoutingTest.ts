@@ -4732,14 +4732,6 @@ describe('MatchTest', function () {
             assert.strictEqual(data.y.length, 2);
             assert.strictEqual(data.y[0], 'hij');
             assert.strictEqual(data.y[1], 'kl');
-            var { data } = stateNavigator.parseLink('//cd/ab/efg//');
-            assert.strictEqual(Object.keys(data).length, 2);
-            assert.strictEqual(data.x.length, 2);
-            assert.strictEqual(data.x[0], null);
-            assert.strictEqual(data.x[1], 'cd');
-            assert.strictEqual(data.y.length, 2);
-            assert.strictEqual(data.y[0], 'efg');
-            assert.strictEqual(data.y[1], null);
         });
 
         it('should not match', function() {
@@ -4748,6 +4740,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/cd/ab'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/cd/efg/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//cd/ab/efg//'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
@@ -4755,13 +4748,13 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd', 'efg'], y: ['hi'] }), '/cd/efg/ab/hi');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd'], y: ['efg', 'hi'] }), '/cd/ab/efg/hi');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd', 'efg'], y: ['hij', 'kl'] }), '/cd/efg/ab/hij/kl');
-            assert.strictEqual(stateNavigator.getNavigationLink('s', { x: [null, 'cd'], y: ['efg', null] }), '//cd/ab/efg//');
         });
 
         it('should not build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s'), null);
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['cd'] }), null);
             assert.strictEqual(stateNavigator.getNavigationLink('s', { y: ['cd'] }), null);
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [null, 'cd'], y: ['efg', null] }));
         });
     });
     
