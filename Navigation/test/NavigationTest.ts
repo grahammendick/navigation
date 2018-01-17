@@ -4625,7 +4625,7 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            assert.throws(() => stateNavigator.navigate('s2'), /is not a valid crumb/);
+            assert.throws(() => stateNavigator.navigate('s2'), /Invalid navigation data/);
         });
     });
     
