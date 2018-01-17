@@ -6608,19 +6608,17 @@ describe('Navigation Data', function () {
             ]);
             stateNavigator.states['s'].validate = (data) => (
                 data['array_string'].length !== 2 || data['array_string'][0] !== 'He-llo' || data['array_string'][1] !== 'World'
-                || data['array_boolean'].length !== 3 || data['array_boolean'][0] !== null || data['array_boolean'][1] !== true || data['array_boolean'][2] !== false
-                || data['array_number'].length !== 4 || data['array_number'][0] !== 1 || data['array_number'][1] !== null || data['array_number'][2] !== null || data['array_number'][3] !== 2
+                || data['array_boolean'].length !== 2 || data['array_boolean'][0] !== true || data['array_boolean'][1] !== false
+                || data['array_number'].length !== 3 || data['array_number'][0] !== 1 || data['array_number'][1] !== 2.5 || data['array_number'][2] !== -3
                 || data['array_date'].length !== 2 || +data['array_date'][0] !== +new Date(2010, 3, 7) || +data['array_date'][1] !== +new Date(2011, 7, 3)
-                || data['array_blank'].length !== 3 || data['array_blank'][0] !== null || data['array_blank'][1] !== null || data['array_blank'][2] !== null
-                || Object.keys(data).length !== 5
+                || Object.keys(data).length !== 4
             );
         });
         var arrayNavigationData = {};
         arrayNavigationData['array_string'] = ['He-llo', 'World'];
-        arrayNavigationData['array_boolean'] = ['', true, false];
-        arrayNavigationData['array_number'] = [1, null, undefined, 2];
+        arrayNavigationData['array_boolean'] = [true, false];
+        arrayNavigationData['array_number'] = [1, 2.5, -3];
         arrayNavigationData['array_date'] = [new Date(2010, 3, 7), new Date(2011, 7, 3)];
-        arrayNavigationData['array_blank'] = ['', null, undefined];
         
         describe('Navigate', function() {
             it('should throw error', function() {
