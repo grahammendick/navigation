@@ -3259,6 +3259,10 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x.length, 1);
         });
         
+        it.only('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('/?x='), /The Url .+ is invalid/);
+        });
+
         it('should build', function() {
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['Hello', 'World'] }), '/?x=Hello&x=World');
             assert.strictEqual(stateNavigator.getNavigationLink('s', { x: ['H1-ello', 'W2-orld'] }), '/?x=H1-ello&x=W2-orld');

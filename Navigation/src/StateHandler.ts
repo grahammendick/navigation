@@ -132,7 +132,7 @@ class StateHandler {
         var len = crumbTrail ? crumbTrail.length : 0;
         for(var i = 0; i < len; i++) {
             var crumblessUrl = crumbTrail[i];
-            if (!crumblessUrl || crumblessUrl.substring(0, 1) !== '/')
+            if (crumblessUrl.substring(0, 1) !== '/')
                 throw new Error(crumblessUrl + ' is not a valid crumb');
             var { state, data } = this.parseLink(crumblessUrl);
             delete data[state.crumbTrailKey];

@@ -21,6 +21,8 @@ class ArrayConverter extends TypeConverter {
                         throw Error('\'\' is not a valid array item');
                 }
             } else {
+                if (!val)
+                    throw Error('\'\' is not a valid array item');
                 arr.push(this.converter.convertFrom(val));
             }
         } else {
