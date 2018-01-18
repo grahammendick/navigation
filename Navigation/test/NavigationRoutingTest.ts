@@ -5339,7 +5339,8 @@ describe('MatchTest', function () {
             assert.strictEqual(stateNavigator0.stateContext.data.x, 'cde');
             stateNavigator1.navigateLink('/cd/efg');
             assert.strictEqual(Object.keys(stateNavigator1.stateContext.data).length, 1);
-            assert.strictEqual(stateNavigator1.stateContext.data.x, 'efg');        });
+            assert.strictEqual(stateNavigator1.stateContext.data.x, 'efg');
+        });
         
         it('should not match', function() {
             assert.throws(() => stateNavigator0.navigateLink('/cd/efg'), /Url .*is invalid/, '');
@@ -5540,48 +5541,45 @@ describe('MatchTest', function () {
     });
     
     describe('Crumb Trail Malicious', function() {
-        it ('should throw error', function() {
+        it ('should build', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'ab/c', trackCrumbTrail: true }
             ]);
-            assert.throws(() => stateNavigator.parseLink('/ab/c?crumb=www.google.com'), /The Url .+ is invalid/);
+            stateNavigator.navigateLink('/ab/c?crumb=www.google.com');
+            assert.strictEqual(stateNavigator.getNavigationBackLink(1), '/www.google.com');
         });
     });
     
     describe('Custom Crumb Trail Key Malicious', function() {
-        it ('should throw error', function() {
+        it ('should build', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'ab/c', trackCrumbTrail: 'xx' }
             ]);
-            assert.throws(() => stateNavigator.parseLink('/ab/c?xx=www.google.com'), /The Url .+ is invalid/);
+            stateNavigator.navigateLink('/ab/c?xx=www.google.com');
+            assert.strictEqual(stateNavigator.getNavigationBackLink(1), '/www.google.com');
         });
     });
 
     describe('Crumb Trail String Malicious', function() {
-        it ('should throw error', function() {
+        it ('should build', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{x}' },
                 { key: 's1', route: 'r/1', trackCrumbTrail: true }
             ]);
-            stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
-            stateNavigator.navigateBack(1);
-            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
-            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url .*is invalid/);
+            stateNavigator.navigateLink('/r/1?crumb=www.google.com');
+            assert.strictEqual(stateNavigator.getNavigationBackLink(1), '/www.google.com');
         });
     });
 
     describe('Crumb Trail String Array Malicious', function() {
-        it ('should throw error', function() {
+        it ('should not match', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: '{*x}/0', defaultTypes: { x: 'stringarray' } },
                 { key: 's1', route: 'r/1', trackCrumbTrail: true }
             ]);
-            stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com/0');
-            stateNavigator.navigateBack(1);
-            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
-            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=%2F%2Fwww.google.com/0'), /Url .*is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/r/1?crumb=%2F%2Fwww.google.com/0'), /Url .*is invalid/);
         });
     });
 
