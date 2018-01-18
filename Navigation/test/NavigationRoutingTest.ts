@@ -5583,6 +5583,17 @@ describe('MatchTest', function () {
         });
     });
 
+    describe('Crumb Trail Blank', function() {
+        it ('should not match', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: '{x}' },
+                { key: 's1', route: 'ab/c', trackCrumbTrail: true }
+            ]);
+            assert.throws(() => stateNavigator.parseLink('/ab/c?crumb=www.google.com&crumb='), /Url .*is invalid/);
+            assert.throws(() => stateNavigator.parseLink('/ab/c?crumb='), /Url .*is invalid/);
+        });
+    });
+    
     describe('Param Constraint', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function () {
