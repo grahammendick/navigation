@@ -912,6 +912,9 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab//'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//cde'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
@@ -952,6 +955,9 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab//'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//cde'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
