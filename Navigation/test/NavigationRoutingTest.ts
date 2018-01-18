@@ -4440,6 +4440,9 @@ describe('MatchTest', function () {
 
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ef/ghi/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/cd/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
@@ -4474,6 +4477,13 @@ describe('MatchTest', function () {
             assert.strictEqual(data.x.length, 2);
             assert.strictEqual(data.x[0], 'ab');
             assert.strictEqual(data.x[1], 'cd');
+        });
+
+        it('should not match', function() {
+            assert.throws(() => stateNavigator.parseLink('//ab/cd/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ef/ghi/'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
@@ -4517,6 +4527,8 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/ab//cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('//ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab/cd//'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//'), /The Url .+ is invalid/);
         });
         
         it('should build', function() {
@@ -4529,9 +4541,17 @@ describe('MatchTest', function () {
         
         it('should not build', function() {
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: [''] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [null] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [undefined] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', '', 'cd'] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['', 'ab', 'cd'] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', ''] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', null, 'cd'] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: [null, 'ab', 'cd'] }));
             assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', null] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', undefined, 'cd'] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: [undefined, 'ab', 'cd'] }));
+            assert.throws(() => stateNavigator.getNavigationLink('s', { x: ['ab', 'cd', undefined] }));
         });
     });
 
