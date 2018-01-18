@@ -57,6 +57,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/ab/c'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/adc'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/aabc'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//abc'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -91,6 +92,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abc'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ad/c'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/aab/c'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/c'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -121,6 +123,7 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab//'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//a'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/a?x=b'), /The Url .+ is invalid/);
         });
@@ -161,6 +164,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/abd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/cab/d'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -199,6 +203,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/aa/bbb/e'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/aa//'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/aa'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//aa/bbb'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -243,6 +248,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/ab//efg'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('//cd/efg'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/cd/efg'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -286,6 +292,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/ab/c'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab/b/c//d'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab//b/c/d'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/yy/c/xyz'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -328,6 +335,8 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/ab//'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
@@ -368,6 +377,7 @@ describe('MatchTest', function () {
             assert.throws(() => stateNavigator.parseLink('/a/b/d'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/abd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/cab/d'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//ab/cd'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/'), /The Url .+ is invalid/);
         });
 
@@ -414,6 +424,9 @@ describe('MatchTest', function () {
         it('should not match', function() {
             assert.throws(() => stateNavigator.parseLink('/aa/bbb/e'), /The Url .+ is invalid/);
             assert.throws(() => stateNavigator.parseLink('/aa//'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//aa/bbb'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('//aa'), /The Url .+ is invalid/);
+            assert.throws(() => stateNavigator.parseLink('///aa'), /The Url .+ is invalid/);
         });
 
         it('should build', function() {
