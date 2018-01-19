@@ -354,19 +354,81 @@ describe('Navigation Data', function () {
     });
 
     describe('Invalid Array Data', function () {
-        it('should throw error', function() {
-            var stateNavigator = new StateNavigator([
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1' }
             ]);
             stateNavigator.navigate('s0');
-            var data = {}
-            data['item'] = [{}];
-            assert.throws(() => stateNavigator.navigate('s1', data));
+        });
+        var data = {}
+        data['item'] = [{}];
+    
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.navigate('s1', data));
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.getNavigationLink('s1', data));
+            });
+        });
+
+        describe('Fluent Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', data));
+            });
         });
     });
 
-    describe('Individual Data Refresh', function() {
+    describe('Blank Array Data', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.navigate('s0');
+        });
+
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.navigate('s1', { item: [''] }));
+                assert.throws(() => stateNavigator.navigate('s1', { item: [null] }));
+                assert.throws(() => stateNavigator.navigate('s1', { item: [undefined] }));
+                assert.throws(() => stateNavigator.navigate('s1', { item: ['a', ''] }));
+                assert.throws(() => stateNavigator.navigate('s1', { item: ['a', null] }));
+                assert.throws(() => stateNavigator.navigate('s1', { item: ['a', undefined] }));
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.getNavigationLink('s1', { item: [''] }));
+                assert.throws(() => stateNavigator.getNavigationLink('s1', { item: [null] }));
+                assert.throws(() => stateNavigator.getNavigationLink('s1', { item: [undefined] }));
+                assert.throws(() => stateNavigator.getNavigationLink('s1', { item: ['a', ''] }));
+                assert.throws(() => stateNavigator.getNavigationLink('s1', { item: ['a', null] }));
+                assert.throws(() => stateNavigator.getNavigationLink('s1', { item: ['a', undefined] }));
+            });
+        });
+
+        describe('Fluent Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', { item: [''] }));
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', { item: [null] }));
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', { item: [undefined] }));
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', { item: ['a', ''] }));
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', { item: ['a', null] }));
+                assert.throws(() => stateNavigator.fluent(true).navigate('s1', { item: ['a', undefined] }));
+            });
+        });
+    });
+
+    describe('Invalid Data Refresh', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -395,7 +457,7 @@ describe('Navigation Data', function () {
         });
     });
 
-    describe('Individual Refresh Data', function() {
+    describe('Invalid Refresh Data', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
@@ -419,6 +481,49 @@ describe('Navigation Data', function () {
         describe('Fluent Navigate', function() {
             it('should throw error', function () {
                 assert.throws(() => stateNavigator.fluent(true).refresh({ item: {} }));
+            });
+        });
+    });
+
+    describe('Blank Array Refresh Data', function () {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+        });
+
+        describe('Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.refresh({ item: [''] }));
+                assert.throws(() => stateNavigator.refresh({ item: [null] }));
+                assert.throws(() => stateNavigator.refresh({ item: [undefined] }));
+                assert.throws(() => stateNavigator.refresh({ item: ['a', ''] }));
+                assert.throws(() => stateNavigator.refresh({ item: ['a', null] }));
+                assert.throws(() => stateNavigator.refresh({ item: ['a', undefined] }));
+            });
+        });
+
+        describe('Navigate Link', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.getRefreshLink({ item: [''] }));
+                assert.throws(() => stateNavigator.getRefreshLink({ item: [null] }));
+                assert.throws(() => stateNavigator.getRefreshLink({ item: [undefined] }));
+                assert.throws(() => stateNavigator.getRefreshLink({ item: ['a', ''] }));
+                assert.throws(() => stateNavigator.getRefreshLink({ item: ['a', null] }));
+                assert.throws(() => stateNavigator.getRefreshLink({ item: ['a', undefined] }));
+            });
+        });
+
+        describe('Fluent Navigate', function() {
+            it('should throw error', function () {
+                assert.throws(() => stateNavigator.fluent(true).refresh({ item: [''] }));
+                assert.throws(() => stateNavigator.fluent(true).refresh({ item: [null] }));
+                assert.throws(() => stateNavigator.fluent(true).refresh({ item: [undefined] }));
+                assert.throws(() => stateNavigator.fluent(true).refresh({ item: ['a', ''] }));
+                assert.throws(() => stateNavigator.fluent(true).refresh({ item: ['a', null] }));
+                assert.throws(() => stateNavigator.fluent(true).refresh({ item: ['a', undefined] }));
             });
         });
     });
