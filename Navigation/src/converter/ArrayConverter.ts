@@ -18,17 +18,20 @@ class ArrayConverter extends TypeConverter {
                     if (vals[i].length !== 0)
                         arr.push(this.converter.convertFrom(vals[i].replace(/0-/g, '-')));
                     else
-                        arr.push(null);
+                        throw Error('\'\' is not a valid array item');
                 }
             } else {
-                arr.push(this.converter.convertFrom(val));
+                if (val.length !== 0)
+                    arr.push(this.converter.convertFrom(val));
+                else
+                    throw Error('\'\' is not a valid array item');
             }
         } else {
             for(var i = 0; i < val.length; i++) {
                 if (val[i].length !== 0)
                     arr.push(this.converter.convertFrom(val[i]));
                 else
-                    arr.push(null);
+                    throw Error('\'\' is not a valid array item');
             }
         }
         return arr;
@@ -43,8 +46,7 @@ class ArrayConverter extends TypeConverter {
                 arr.push(convertedValue);
                 vals.push(convertedValue.replace(/-/g, '0-'));
             } else {
-                arr.push('');
-                vals.push('');
+                throw Error('Invalid navigation data, arrays cannnot contain null, undefined or empty string');
             }
         }
         return { val: vals.join(ArrayConverter.SEPARATOR), arrayVal: arr };

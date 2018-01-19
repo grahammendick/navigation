@@ -4625,7 +4625,7 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            assert.throws(() => stateNavigator.navigate('s2'), /is not a valid crumb/);
+            assert.throws(() => stateNavigator.navigate('s2'), /Invalid navigation data/);
         });
     });
     
@@ -4778,19 +4778,6 @@ describe('Navigation', function () {
         }
     });
 
-    describe('Crumb Trail Malicious', function() {
-        it ('should throw error', function() {
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: '{x}' },
-                { key: 's1', route: 'r/1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigateLink('/r/1?crumb=%2Fwww.google.com');
-            stateNavigator.navigateBack(1);
-            assert.equal(stateNavigator.stateContext.data.x, 'www.google.com');
-            assert.throws(() => stateNavigator.navigateLink('/r/1?crumb=www.google.com'), /Url .*is invalid/);
-        });
-    });
-    
     describe('Crumb Trail Invalid', function() {
         it ('should throw error', function() {
             var stateNavigator = new StateNavigator([

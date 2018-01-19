@@ -11,7 +11,7 @@ class NavigationDataManager {
         var arrayData: { [index: string]: string[] } = {};
         for (var key in navigationData) {
             var val = navigationData[key]; 
-            if (val != null && val.toString())
+            if (val != null && val.length !== 0)
                 this.formatDataItem(state, key, val, data, arrayData);
         }
         if (state.trackCrumbTrail && crumbTrail.length > 0)
