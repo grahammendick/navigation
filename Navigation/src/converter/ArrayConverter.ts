@@ -21,9 +21,10 @@ class ArrayConverter extends TypeConverter {
                         throw Error('\'\' is not a valid array item');
                 }
             } else {
-                if (!val)
+                if (val.length !== 0)
+                    arr.push(this.converter.convertFrom(val));
+                else
                     throw Error('\'\' is not a valid array item');
-                arr.push(this.converter.convertFrom(val));
             }
         } else {
             for(var i = 0; i < val.length; i++) {
