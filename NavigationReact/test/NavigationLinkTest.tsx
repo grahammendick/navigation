@@ -25,13 +25,14 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            assert.equal(wrapper.find('a').prop('href'), '#/r');
-            assert.equal(wrapper.find('a').prop('children'), 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r');
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
     describe('Context Navigation Link', function () {
-        it.only('should render', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
@@ -42,8 +43,9 @@ describe('NavigationLinkTest', function () {
                 </NavigationLink>,
                 { context: { stateNavigator: stateNavigator }}
             );
-            assert.equal(wrapper.find('a').prop('href'), '#/r');
-            assert.equal(wrapper.find('a').prop('children'), 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r');
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
@@ -52,18 +54,16 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="x"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
@@ -72,8 +72,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'a'}}
@@ -90,24 +89,22 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['children'], 'link text');
-            assert.notEqual(link.props['onClick'], null);
-            assert.equal(link.props['aria-label'], 'z');
-            assert.equal(link.props['target'], '_blank');
-            assert.equal(Object.keys(link.props).length, 5);
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('children'), 'link text');
+            assert.notEqual(link.prop('onClick'), null);
+            assert.equal(link.prop('aria-label'), 'z');
+            assert.equal(link.prop('target'), '_blank');
+            assert.equal(Object.keys(link.props()).length, 5);
         })
     });
 
     describe('Navigation Data Navigation Link', function () {
-        it('should render', function(){
+        it.only('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'a'}}
@@ -115,10 +112,9 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
