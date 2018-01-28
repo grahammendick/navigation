@@ -1128,7 +1128,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Active Add Css Class Navigation Link', function () {
-        it.only('should render', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
@@ -1156,8 +1156,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'c'}}
@@ -1167,11 +1166,10 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=c');
-            assert.equal(link.props['className'], 'link');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=c');
+            assert.equal(link.prop('className'), 'link');
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
@@ -1180,17 +1178,15 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -1200,17 +1196,15 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, ctrlKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { ctrlKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1220,17 +1214,15 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, shiftKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { shiftKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1240,17 +1232,15 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, metaKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { metaKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1260,37 +1250,33 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, altKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { altKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
 
     describe('Button + Click Navigation Link', function () {
-        it('should not navigate', function(){
+        it.only('should not navigate', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, button: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { button: true });
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
