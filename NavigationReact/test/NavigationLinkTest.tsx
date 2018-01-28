@@ -1264,7 +1264,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Button + Click Navigation Link', function () {
-        it.only('should not navigate', function(){
+        it('should not navigate', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
@@ -1286,8 +1286,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigating={() => true}
@@ -1295,9 +1294,8 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
         })
     });
@@ -1307,8 +1305,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigating={() => false}
@@ -1316,9 +1313,8 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, null);
         })
     });
@@ -1328,9 +1324,8 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
             var navigatingEvt, navigatingLink;
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigating={(e, link) => {
@@ -1342,11 +1337,9 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            var evt = { currentTarget: { href: link.props['href'] }, preventDefault: () => {} };
-            link.props['onClick'](evt);
-            assert.strictEqual(navigatingEvt, evt);
+            var link = wrapper.find('a');
+            link.simulate('click', { hello: 'world' });
+            assert.strictEqual(navigatingEvt.hello, 'world');
             assert.equal(navigatingLink, '/r');
         })
     });
@@ -1356,19 +1349,17 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var link = wrapper.find('a');
             var addHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(addHistory, true);
         })
     });
@@ -1378,8 +1369,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     historyAction="replace"
@@ -1387,11 +1377,10 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var link = wrapper.find('a');
             var replaceHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(replaceHistory, true);
         })
     });
@@ -1401,8 +1390,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     historyAction="none"
@@ -1410,11 +1398,10 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var link = wrapper.find('a');
             var noneHistory = true;
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(noneHistory, true);
         })
     });
