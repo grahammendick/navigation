@@ -30,7 +30,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -49,7 +48,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -67,7 +65,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -100,7 +97,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('aria-label'), 'z');
             assert.equal(link.prop('target'), '_blank');
             assert.equal(Object.keys(link.props()).length, 5);
-            wrapper.unmount();
         })
     });
 
@@ -120,7 +116,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -141,7 +136,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -162,7 +156,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=a&z=c');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -183,7 +176,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=b&x=a');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -204,7 +196,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -225,7 +216,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=a&z=c');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -247,7 +237,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a&z=c');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -269,7 +258,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=b');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -290,7 +278,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -311,7 +298,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=b');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -333,7 +319,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -355,7 +340,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -377,7 +361,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -398,7 +381,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -419,7 +401,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -440,7 +421,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -462,7 +442,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=1');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -484,7 +463,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -506,7 +484,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=true');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -528,7 +505,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=false');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -550,7 +526,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2011-02-03');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -572,7 +547,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2010-02-03');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -593,7 +567,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -614,7 +587,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -635,7 +607,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -656,7 +627,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=false');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -677,7 +647,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -698,7 +667,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2010-02-03');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -720,7 +688,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=1');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -741,7 +708,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -763,7 +729,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a&x=b');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -785,7 +750,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a&x=d');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -807,7 +771,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=1&x=2');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -829,7 +792,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=1&x=3');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -851,7 +813,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=true&x=false');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -873,7 +834,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=true&x=true');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -896,7 +856,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2012-03-04');
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -918,7 +877,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -939,7 +897,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -960,7 +917,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=d');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -981,7 +937,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1002,7 +957,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1&x=3');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1023,7 +977,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1044,7 +997,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=true&x=true');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1066,7 +1018,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1087,7 +1038,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1109,7 +1059,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1130,7 +1079,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1153,7 +1101,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('className'), 'link active');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1176,7 +1123,6 @@ describe('RefreshLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=c');
             assert.equal(link.prop('className'), 'link');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -1195,7 +1141,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
-            wrapper.unmount();
         })
     });
 
@@ -1214,7 +1159,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { ctrlKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
-            wrapper.unmount();
         })
     });
 
@@ -1233,7 +1177,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { shiftKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
-            wrapper.unmount();
         })
     });
 
@@ -1252,7 +1195,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { metaKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
-            wrapper.unmount();
         })
     });
 
@@ -1271,7 +1213,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { altKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
-            wrapper.unmount();
         })
     });
 
@@ -1290,7 +1231,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { button: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
-            wrapper.unmount();
         })
     });
 
@@ -1310,7 +1250,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
-            wrapper.unmount();
         })
     });
 
@@ -1330,7 +1269,6 @@ describe('RefreshLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.oldState, null);
-            wrapper.unmount();
         })
     });
 
@@ -1356,7 +1294,6 @@ describe('RefreshLinkTest', function () {
             link.simulate('click', { hello: 'world' });
             assert.strictEqual(navigatingEvt.hello, 'world');
             assert.equal(navigatingLink, '/r');
-            wrapper.unmount();
         })
     });
 
@@ -1377,7 +1314,6 @@ describe('RefreshLinkTest', function () {
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
             link.simulate('click');
             assert.strictEqual(addHistory, true);
-            wrapper.unmount();
         })
     });
 
@@ -1399,7 +1335,6 @@ describe('RefreshLinkTest', function () {
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
             link.simulate('click');
             assert.strictEqual(replaceHistory, true);
-            wrapper.unmount();
         })
     });
 
@@ -1421,7 +1356,6 @@ describe('RefreshLinkTest', function () {
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
             link.simulate('click');
             assert.strictEqual(noneHistory, true);
-            wrapper.unmount();
         })
     });
 });

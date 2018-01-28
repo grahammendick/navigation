@@ -32,7 +32,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -54,7 +53,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -76,7 +74,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
-            wrapper.unmount();
         })
     });
 
@@ -107,7 +104,6 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(link.prop('aria-label'), 'z');
             assert.equal(link.prop('target'), '_blank');
             assert.equal(Object.keys(link.props()).length, 5);
-            wrapper.unmount();
         })
     });
 
@@ -129,7 +125,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
-            wrapper.unmount();
         })
     });
 
@@ -151,7 +146,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { ctrlKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            wrapper.unmount();
         })
     });
 
@@ -173,7 +167,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { shiftKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            wrapper.unmount();
         })
     });
 
@@ -195,7 +188,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { metaKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            wrapper.unmount();
         })
     });
 
@@ -217,7 +209,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { altKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            wrapper.unmount();
         })
     });
 
@@ -239,7 +230,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click', { button: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            wrapper.unmount();
         })
     });
 
@@ -262,7 +252,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
-            wrapper.unmount();
         })
     });
 
@@ -285,7 +274,6 @@ describe('NavigationBackLinkTest', function () {
             var link = wrapper.find('a');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
-            wrapper.unmount();
         })
     });
 
@@ -314,7 +302,6 @@ describe('NavigationBackLinkTest', function () {
             link.simulate('click', { hello: 'world' });
             assert.strictEqual(navigatingEvt.hello, 'world');
             assert.equal(navigatingLink, '/r0');
-            wrapper.unmount();
         })
     });
 
@@ -338,7 +325,6 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
             link.simulate('click');
             assert.strictEqual(addHistory, true);
-            wrapper.unmount();
         })
     });
 
@@ -363,7 +349,6 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
             link.simulate('click');
             assert.strictEqual(replaceHistory, true);
-            wrapper.unmount();
         })
     });
 
@@ -388,7 +373,6 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
             link.simulate('click');
             assert.strictEqual(noneHistory, true);
-            wrapper.unmount();
         })
     });
 });
