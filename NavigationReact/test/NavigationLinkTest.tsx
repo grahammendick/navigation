@@ -29,6 +29,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -48,6 +49,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -67,6 +69,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -100,6 +103,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('target'), '_blank');
             assert.equal(Object.keys(link.props()).length, 5);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -120,6 +124,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -142,6 +147,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -164,6 +170,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?y=a&z=c');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -186,6 +193,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?y=b&x=a');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -208,6 +216,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -230,6 +239,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?y=a&z=c');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -253,6 +263,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -276,6 +287,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -298,6 +310,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -320,6 +333,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=b');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -343,6 +357,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -366,6 +381,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -389,6 +405,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -411,6 +428,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -433,6 +451,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -455,6 +474,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -478,6 +498,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -501,6 +522,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -524,6 +546,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -547,6 +570,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -570,6 +594,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -593,6 +618,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -615,6 +641,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -637,6 +664,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -659,6 +687,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -681,6 +710,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=false');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -703,6 +733,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -725,6 +756,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2010-02-03');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -748,6 +780,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -770,6 +803,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=1');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -793,6 +827,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -816,6 +851,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -839,6 +875,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -862,6 +899,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -885,6 +923,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -908,6 +947,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -931,6 +971,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -954,6 +995,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -976,6 +1018,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -998,6 +1041,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a&x=d');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1020,6 +1064,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1042,6 +1087,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=1&x=3');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1064,6 +1110,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1086,6 +1133,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=true&x=true');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1109,6 +1157,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1131,6 +1180,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1154,6 +1204,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), null);
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1176,6 +1227,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1200,6 +1252,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'link active');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1224,6 +1277,7 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('className'), 'link');
             assert.equal(link.prop('children'), 'link text');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1243,6 +1297,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1262,6 +1317,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click', { ctrlKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1281,6 +1337,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click', { shiftKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1300,6 +1357,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click', { metaKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1319,6 +1377,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click', { altKey: true });
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1338,6 +1397,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click', { button: true });
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1358,6 +1418,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1378,6 +1439,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, null);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1404,6 +1466,7 @@ describe('NavigationLinkTest', function () {
             assert.strictEqual(navigatingEvt.hello, 'world');
             assert.equal(navigatingLink, '/r');
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1425,6 +1488,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click');
             assert.strictEqual(addHistory, true);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1447,6 +1511,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click');
             assert.strictEqual(replaceHistory, true);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1469,6 +1534,7 @@ describe('NavigationLinkTest', function () {
             link.simulate('click');
             assert.strictEqual(noneHistory, true);
             stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 });
