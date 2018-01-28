@@ -1435,7 +1435,6 @@ describe('RefreshLinkTest', function () {
                 </RefreshLink>
             );
             var link = wrapper.find('a');
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var addHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
             link.simulate('click');
@@ -1459,7 +1458,6 @@ describe('RefreshLinkTest', function () {
                 </RefreshLink>
             );
             var link = wrapper.find('a');
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var replaceHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
             link.simulate('click');
@@ -1483,7 +1481,6 @@ describe('RefreshLinkTest', function () {
                 </RefreshLink>
             );
             var link = wrapper.find('a');
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var noneHistory = true;
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
             link.simulate('click');

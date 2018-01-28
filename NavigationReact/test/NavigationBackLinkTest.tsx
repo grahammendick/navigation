@@ -3,7 +3,14 @@ import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { NavigationBackLink } from '../src/NavigationReact';
 import * as React from 'react';
-import * as ReactTestUtils from 'react-addons-test-utils';
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import { JSDOM } from 'jsdom';
+
+configure({ adapter: new Adapter() });
+var { window } = new JSDOM('<!doctype html><html><body></body></html>');
+(global as any).window = window;
+(global as any).document = window.document;
 
 describe('NavigationBackLinkTest', function () {
     describe('Navigation Back Link', function () {
@@ -14,18 +21,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r0');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -37,18 +44,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}>
                     link text
                 </NavigationBackLink>,
-                { stateNavigator: stateNavigator }
+                { context: { stateNavigator: stateNavigator }}
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r0');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -60,18 +67,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={2}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -83,8 +90,7 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     acrossCrumbs={false}
@@ -96,14 +102,15 @@ describe('NavigationBackLinkTest', function () {
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r0');
-            assert.equal(link.props['children'], 'link text');
-            assert.notEqual(link.props['onClick'], null);
-            assert.equal(link.props['aria-label'], 'z');
-            assert.equal(link.props['target'], '_blank');
-            assert.equal(Object.keys(link.props).length, 5);
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+            assert.equal(link.prop('children'), 'link text');
+            assert.notEqual(link.prop('onClick'), null);
+            assert.equal(link.prop('aria-label'), 'z');
+            assert.equal(link.prop('target'), '_blank');
+            assert.equal(Object.keys(link.props()).length, 5);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -115,18 +122,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -138,18 +145,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, ctrlKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { ctrlKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -161,18 +168,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, shiftKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { shiftKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -184,18 +191,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, metaKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { metaKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -207,18 +214,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, altKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { altKey: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -230,18 +237,18 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, button: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { button: true });
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -253,8 +260,7 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     navigating={() => true}
@@ -262,10 +268,11 @@ describe('NavigationBackLinkTest', function () {
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -277,8 +284,7 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     navigating={() => false}
@@ -286,10 +292,11 @@ describe('NavigationBackLinkTest', function () {
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s1']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -301,9 +308,8 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
             var navigatingEvt, navigatingLink;
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     navigating={(e, link) => {
@@ -315,12 +321,12 @@ describe('NavigationBackLinkTest', function () {
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            var evt = { currentTarget: { href: link.props['href'] }, preventDefault: () => {} };
-            link.props['onClick'](evt);
-            assert.strictEqual(navigatingEvt, evt);
+            var link = wrapper.find('a');
+            link.simulate('click', { hello: 'world' });
+            assert.strictEqual(navigatingEvt.hello, 'world');
             assert.equal(navigatingLink, '/r0');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -332,20 +338,20 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var link = wrapper.find('a');
             var addHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(addHistory, true);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -357,8 +363,7 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     historyAction="replace"
@@ -366,12 +371,13 @@ describe('NavigationBackLinkTest', function () {
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var link = wrapper.find('a');
             var replaceHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(replaceHistory, true);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -383,8 +389,7 @@ describe('NavigationBackLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationBackLink
                     distance={1}
                     historyAction="none"
@@ -392,12 +397,13 @@ describe('NavigationBackLinkTest', function () {
                     link text
                 </NavigationBackLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
+            var link = wrapper.find('a');
             var noneHistory = true;
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(noneHistory, true);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 });
