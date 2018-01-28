@@ -3,7 +3,14 @@ import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { RefreshLink } from '../src/NavigationReact';
 import * as React from 'react';
-import * as ReactTestUtils from 'react-addons-test-utils';
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import { JSDOM } from 'jsdom';
+
+configure({ adapter: new Adapter() });
+var { window } = new JSDOM('<!doctype html><html><body></body></html>');
+(global as any).window = window;
+(global as any).document = window.document;
 
 describe('RefreshLinkTest', function () {
     describe('Refresh Link', function () {
@@ -13,17 +20,17 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -33,17 +40,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink>
                     link text
                 </RefreshLink>,
-                { stateNavigator: stateNavigator }
+                { context: { stateNavigator: stateNavigator }}
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -52,17 +59,17 @@ describe('RefreshLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -72,8 +79,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a'}}
                     includeCurrentData={true}
@@ -89,14 +95,15 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['children'], 'link text');
-            assert.notEqual(link.props['onClick'], null);
-            assert.equal(link.props['aria-label'], 'z');
-            assert.equal(link.props['target'], '_blank');
-            assert.equal(Object.keys(link.props).length, 5);
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('children'), 'link text');
+            assert.notEqual(link.prop('onClick'), null);
+            assert.equal(link.prop('aria-label'), 'z');
+            assert.equal(link.prop('target'), '_blank');
+            assert.equal(Object.keys(link.props()).length, 5);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -106,18 +113,18 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a'}}
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -127,8 +134,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a'}}
                     includeCurrentData={true}
@@ -136,10 +142,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?y=b&z=c&x=a');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -149,8 +156,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{y: 'a'}}
                     includeCurrentData={true}
@@ -158,10 +164,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?y=a&z=c');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?y=a&z=c');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -171,8 +178,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a'}}
                     currentDataKeys="y"
@@ -180,10 +186,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?y=b&x=a');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?y=b&x=a');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -193,8 +200,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a'}}
                     currentDataKeys="y,z"
@@ -202,10 +208,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?y=b&z=c&x=a');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -215,8 +222,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{y: 'a'}}
                     currentDataKeys="y,z"
@@ -224,10 +230,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?y=a&z=c');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?y=a&z=c');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -237,8 +244,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', z: 'c'}}
                     activeCssClass="active"
@@ -246,11 +252,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&z=c');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&z=c');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -260,8 +267,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'b'}}
                     activeCssClass="active"
@@ -269,11 +275,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=b');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=b');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -283,8 +290,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', z: 'c'}}
                     disableActive={true}
@@ -292,10 +298,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -305,8 +312,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'b'}}
                     disableActive={true}
@@ -314,10 +320,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=b');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=b');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -327,8 +334,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', y: null}}
                     activeCssClass="active"
@@ -336,11 +342,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -350,8 +357,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', y: undefined}}
                     activeCssClass="active"
@@ -359,11 +365,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -373,8 +380,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', y: ''}}
                     activeCssClass="active"
@@ -382,11 +388,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -396,8 +403,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', y: null}}
                     disableActive={true}
@@ -405,10 +411,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -418,8 +425,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', y: undefined}}
                     disableActive={true}
@@ -427,10 +433,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -440,8 +447,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a', y: ''}}
                     disableActive={true}
@@ -449,10 +455,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -462,8 +469,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 1}}
                     activeCssClass="active"
@@ -471,11 +477,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=1');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=1');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -485,8 +492,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 2}}
                     activeCssClass="active"
@@ -494,11 +500,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -508,8 +515,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: true}}
                     activeCssClass="active"
@@ -517,11 +523,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=true');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=true');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -531,8 +538,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: false}}
                     activeCssClass="active"
@@ -540,11 +546,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=false');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=false');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -554,8 +561,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: new Date(2011, 1, 3)}}
                     activeCssClass="active"
@@ -563,11 +569,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2011-02-03');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2011-02-03');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -577,8 +584,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: new Date(2010, 1, 3)}}
                     activeCssClass="active"
@@ -586,11 +592,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2010-02-03');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2010-02-03');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -600,8 +607,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 1}}
                     disableActive={true}
@@ -609,10 +615,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -622,8 +629,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 2}}
                     disableActive={true}
@@ -631,10 +637,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -644,8 +651,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: true}}
                     disableActive={true}
@@ -653,10 +659,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -666,8 +673,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'boolean'} }
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: false}}
                     disableActive={true}
@@ -675,10 +681,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=false');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=false');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -688,8 +695,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: new Date(2011, 1, 3)}}
                     disableActive={true}
@@ -697,10 +703,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -710,8 +717,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'date'} }
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: new Date(2010, 1, 3)}}
                     disableActive={true}
@@ -719,10 +725,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2010-02-03');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2010-02-03');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -732,8 +739,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 1}}
                     activeCssClass="active"
@@ -741,11 +747,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=1');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=1');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -755,8 +762,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'number'} }
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 1}}
                     disableActive={true}
@@ -764,10 +770,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=1');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=1');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -777,8 +784,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: ['a', 'b']}}
                     activeCssClass="active"
@@ -786,11 +792,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&x=b');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&x=b');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -800,8 +807,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: ['a', 'd']}}
                     activeCssClass="active"
@@ -809,11 +815,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&x=d');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&x=d');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -823,8 +830,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [1, 2]}}
                     activeCssClass="active"
@@ -832,11 +838,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=1&x=2');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=1&x=2');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -846,8 +853,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [1, 3]}}
                     activeCssClass="active"
@@ -855,11 +861,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=1&x=3');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=1&x=3');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -869,8 +876,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [true, false]}}
                     activeCssClass="active"
@@ -878,11 +884,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=true&x=false');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=true&x=false');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -892,8 +899,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [true, true]}}
                     activeCssClass="active"
@@ -901,11 +907,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=true&x=true');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=true&x=true');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -916,8 +923,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
                     activeCssClass="active"
@@ -925,11 +931,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2011-02-03&x=2012-03-04');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2012-03-04');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -939,8 +946,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
                     activeCssClass="active"
@@ -948,11 +954,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2011-02-03&x=2010-03-04');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -962,8 +969,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: ['a', 'b']}}
                     disableActive={true}
@@ -971,10 +977,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -984,8 +991,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: ['a', 'd']}}
                     disableActive={true}
@@ -993,10 +999,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&x=d');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&x=d');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1006,8 +1013,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [1, 2]}}
                     disableActive={true}
@@ -1015,10 +1021,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1028,8 +1035,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'numberarray'} }
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [1, 3]}}
                     disableActive={true}
@@ -1037,10 +1043,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=1&x=3');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=1&x=3');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1050,8 +1057,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [true, false]}}
                     disableActive={true}
@@ -1059,10 +1065,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1072,8 +1079,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'booleanarray'} }
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [true, true]}}
                     disableActive={true}
@@ -1081,10 +1087,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=true&x=true');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=true&x=true');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1095,8 +1102,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
                     disableActive={true}
@@ -1104,10 +1110,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1117,8 +1124,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'datearray'} }
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
                     disableActive={true}
@@ -1126,10 +1132,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=2011-02-03&x=2010-03-04');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1139,8 +1146,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: ['a', 'b', 'c']}}
                     activeCssClass="active"
@@ -1148,11 +1154,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&x=b&x=c');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1162,8 +1169,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r', defaultTypes: {x: 'stringarray'} }
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: ['a', 'b', 'c']}}
                     disableActive={true}
@@ -1171,10 +1177,11 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&x=b&x=c');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1184,8 +1191,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'a'}}
                     activeCssClass="active"
@@ -1194,11 +1200,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a');
-            assert.equal(link.props['className'], 'link active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a');
+            assert.equal(link.prop('className'), 'link active');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1208,8 +1215,7 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigationData={{x: 'c'}}
                     activeCssClass="active"
@@ -1218,11 +1224,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=c');
-            assert.equal(link.props['className'], 'link');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=c');
+            assert.equal(link.prop('className'), 'link');
+            assert.equal(link.prop('children'), 'link text');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1232,17 +1239,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1252,17 +1259,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, ctrlKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { ctrlKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1272,17 +1279,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, shiftKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { shiftKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1292,17 +1299,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, metaKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { metaKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1312,17 +1319,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, altKey: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { altKey: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1332,17 +1339,17 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, button: true, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click', { button: true });
             assert.equal(stateNavigator.stateContext.oldState, null);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1352,18 +1359,18 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigating={() => true}
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s']);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1373,18 +1380,18 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigating={() => false}
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            var link = wrapper.find('a');
+            link.simulate('click');
             assert.equal(stateNavigator.stateContext.oldState, null);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1394,9 +1401,8 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
             var navigatingEvt, navigatingLink;
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     navigating={(e, link) => {
                         navigatingEvt = e;
@@ -1407,12 +1413,12 @@ describe('RefreshLinkTest', function () {
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
-            stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
-            var evt = { currentTarget: { href: link.props['href'] }, preventDefault: () => {} };
-            link.props['onClick'](evt);
-            assert.strictEqual(navigatingEvt, evt);
+            var link = wrapper.find('a');
+            link.simulate('click', { hello: 'world' });
+            assert.strictEqual(navigatingEvt.hello, 'world');
             assert.equal(navigatingLink, '/r');
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1422,19 +1428,20 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
+            var link = wrapper.find('a');
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var addHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { addHistory = !replace };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(addHistory, true);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1444,20 +1451,21 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     historyAction="replace"
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
+            var link = wrapper.find('a');
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var replaceHistory;
             stateNavigator.historyManager.addHistory = (url, replace) => { replaceHistory = replace };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(replaceHistory, true);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 
@@ -1467,20 +1475,21 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <RefreshLink
                     historyAction="none"
                     stateNavigator={stateNavigator}>
                     link text
                 </RefreshLink>
             );
-            var link = renderer.getRenderOutput();
+            var link = wrapper.find('a');
             stateNavigator.historyManager.getUrl = (el) => el.href.substring(1);
             var noneHistory = true;
             stateNavigator.historyManager.addHistory = () => { noneHistory = false };
-            link.props['onClick']({ currentTarget: { href: link.props['href'] }, preventDefault: () => {} });
+            link.simulate('click');
             assert.strictEqual(noneHistory, true);
+            stateNavigator.historyManager.stop();
+            wrapper.unmount();
         })
     });
 });

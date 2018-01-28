@@ -12,7 +12,7 @@ var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
 var tests = [
-    { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' }
+    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
 ];
 function rollupTestTask(name, file, to) {
     return rollup.rollup({
