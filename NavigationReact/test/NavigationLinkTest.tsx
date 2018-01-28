@@ -203,7 +203,7 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Current Data Keys Override Navigation Link', function () {
-        it.only('should render', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
@@ -229,8 +229,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'a', z: 'c'}}
@@ -239,11 +238,10 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=a&z=c');
-            assert.equal(link.props['className'], 'active');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=a&z=c');
+            assert.equal(link.prop('className'), 'active');
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
@@ -253,8 +251,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'b'}}
@@ -263,11 +260,10 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=b');
-            assert.equal(link.props['className'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=b');
+            assert.equal(link.prop('className'), null);
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
@@ -277,8 +273,7 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'a', z: 'c'}}
@@ -287,21 +282,19 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], null);
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
     describe('Disable Inactive Navigation Link', function () {
-        it('should render', function(){
+        it.only('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     navigationData={{x: 'b'}}
@@ -310,10 +303,9 @@ describe('NavigationLinkTest', function () {
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r?x=b');
-            assert.equal(link.props['children'], 'link text');
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r?x=b');
+            assert.equal(link.prop('children'), 'link text');
         })
     });
 
