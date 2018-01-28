@@ -14,7 +14,7 @@ var { window } = new JSDOM('<!doctype html><html><body></body></html>');
 
 describe('NavigationLinkTest', function () {
     describe('Navigation Link', function () {
-        it.only('should render', function(){
+        it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
@@ -31,22 +31,19 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Context Navigation Link', function () {
-        it('should render', function(){
+        it.only('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s">
                     link text
                 </NavigationLink>,
-                { stateNavigator: stateNavigator }
+                { context: { stateNavigator: stateNavigator }}
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r');
-            assert.equal(link.props['children'], 'link text');
+            assert.equal(wrapper.find('a').prop('href'), '#/r');
+            assert.equal(wrapper.find('a').prop('children'), 'link text');
         })
     });
 
