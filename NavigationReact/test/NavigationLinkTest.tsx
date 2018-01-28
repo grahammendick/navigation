@@ -3,26 +3,30 @@ import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
 import { NavigationLink } from '../src/NavigationReact';
 import * as React from 'react';
-import * as ReactTestUtils from 'react-addons-test-utils';
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import { JSDOM } from 'jsdom';
+
+configure({ adapter: new Adapter() });
+var { window } = new JSDOM('<!doctype html><html><body></body></html>');
+(global as any).window = window;
+(global as any).document = window.document;
 
 describe('NavigationLinkTest', function () {
     describe('Navigation Link', function () {
-        it('should render', function(){
+        it.only('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var renderer = ReactTestUtils.createRenderer();
-            renderer.render(
+            var wrapper = mount(
                 <NavigationLink
                     stateKey="s"
                     stateNavigator={stateNavigator}>
                     link text
                 </NavigationLink>
             );
-            var link = renderer.getRenderOutput();
-            assert.equal(link.type, 'a');
-            assert.equal(link.props['href'], '#/r');
-            assert.equal(link.props['children'], 'link text');
+            assert.equal(wrapper.find('a').prop('href'), '#/r');
+            assert.equal(wrapper.find('a').prop('children'), 'link text');
         })
     });
 

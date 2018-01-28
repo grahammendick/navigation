@@ -12,19 +12,12 @@ var typescript = require('typescript');
 var uglify = require('gulp-uglify');
 
 var tests = [
-    { name: 'NavigationRouting', to: 'navigationRouting.test.js' },
-    { name: 'StateConfig', to: 'stateConfig.test.js' },
-    { name: 'Navigation', to: 'navigation.test.js' },
-    { name: 'NavigationData', to: 'navigationData.test.js' },
-    { name: 'FluentNavigation', to: 'fluentNavigation.test.js' },
-    { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'NavigationBackLink', to: 'navigationBackLink.test.js', folder: 'React', ext: 'tsx' },
-    { name: 'RefreshLink', to: 'refreshLink.test.js', folder: 'React', ext: 'tsx' }
+    { name: 'NavigationLink', to: 'navigationLink.test.js', folder: 'React', ext: 'tsx' }
 ];
 function rollupTestTask(name, file, to) {
     return rollup.rollup({
         entry: file,
-        external: ['assert', 'react', 'react-addons-test-utils'],
+        external: ['assert', 'react', 'enzyme', 'enzyme-adapter-react-16', 'jsdom'],
         plugins: [
             rollupTypescript({
                 typescript: typescript,
