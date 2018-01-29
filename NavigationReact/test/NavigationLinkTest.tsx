@@ -1482,4 +1482,26 @@ describe('NavigationLinkTest', function () {
             assert.equal(link.prop('href'), '#/r0?y=b&x=a');
         })
     });
+
+    describe('Click Custom Href Navigation Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.historyManager.getHref = () => '#/hello/world'
+            var wrapper = mount(
+                <NavigationLink
+                    stateKey="s"
+                    navigationData={{x: 'a'}}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/hello/world');
+            link.simulate('click');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+        })
+    });
 });
