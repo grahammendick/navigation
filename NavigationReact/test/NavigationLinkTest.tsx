@@ -1488,7 +1488,7 @@ describe('NavigationLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.historyManager.getHref = () => '#/hello/world'
+            stateNavigator.historyManager.getHref = () => '#/hello/world';
             var wrapper = mount(
                 <NavigationLink
                     stateKey="s"

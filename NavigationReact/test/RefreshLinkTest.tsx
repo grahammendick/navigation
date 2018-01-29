@@ -1436,7 +1436,7 @@ describe('RefreshLinkTest', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            stateNavigator.historyManager.getHref = () => '#/hello/world'
+            stateNavigator.historyManager.getHref = () => '#/hello/world';
             stateNavigator.navigate('s');
             var wrapper = mount(
                 <RefreshLink
