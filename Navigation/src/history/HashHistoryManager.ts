@@ -21,16 +21,16 @@ class HashHistoryManager implements HistoryManager {
 
     addHistory(url: string, replace: boolean) {
         var href = this.getHref(url);
-        if (!this.disabled && location.hash !== href) {
+        if (!this.disabled && window.location.hash !== href) {
             if (!replace)            
-                location.hash = href;
+                window.location.hash = href;
             else
-                location.replace(href);
+                window.location.replace(href);
         }
     }
 
     getCurrentUrl(): string {
-        return this.getUrl(location);
+        return this.getUrl(window.location);
     }
 
     getHref(url: string): string {

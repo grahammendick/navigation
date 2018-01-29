@@ -18,7 +18,7 @@ class HTML5HistoryManager implements HistoryManager {
 
     addHistory(url: string, replace: boolean) {
         var href = this.getHref(url);
-        if (!this.disabled && this.getHref(this.getUrl(location)) !== href) {
+        if (!this.disabled && this.getHref(this.getUrl(window.location)) !== href) {
             if (!replace)            
                 window.history.pushState(url, null, href);
             else
@@ -27,7 +27,7 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     getCurrentUrl(): string {
-        return this.getUrl(location);
+        return this.getUrl(window.location);
     }
 
     getHref(url: string): string {

@@ -24,7 +24,7 @@ var tests = [
 function rollupTestTask(name, file, to) {
     return rollup.rollup({
         entry: file,
-        external: ['assert', 'react', 'react-addons-test-utils'],
+        external: ['assert', 'react', 'enzyme', 'enzyme-adapter-react-16', 'jsdom'],
         plugins: [
             rollupTypescript({
                 typescript: typescript,
