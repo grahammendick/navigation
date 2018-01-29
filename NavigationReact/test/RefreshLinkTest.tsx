@@ -1358,4 +1358,98 @@ describe('RefreshLinkTest', function () {
             assert.strictEqual(noneHistory, true);
         })
     });
+    describe('Navigate Refresh Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.navigate('s0');
+            var wrapper = mount(
+                <RefreshLink
+                    navigationData={{x: 'a'}}
+                    includeCurrentData={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+            stateNavigator.navigate('s1', {y: 'b'});
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r1?y=b&x=a');
+        })
+    });
+
+    describe('Crumb Trail Navigate Refresh Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            var wrapper = mount(
+                <RefreshLink
+                    navigationData={{x: 'a'}}
+                    includeCurrentData={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+            stateNavigator.navigate('s1', {y: 'b'});
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+        })
+    });
+
+    describe('Across Crumbs Crumb Trail Navigate Refresh Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            var wrapper = mount(
+                <RefreshLink
+                    acrossCrumbs={true}
+                    navigationData={{x: 'a'}}
+                    includeCurrentData={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+            stateNavigator.navigate('s1', {y: 'b'});
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r1?y=b&x=a&crumb=%2Fr0&crumb=%2Fr1%3Fy%3Db');
+        })
+    });
+
+    describe('Click Custom Href Refresh Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.historyManager.getHref = () => '#/hello/world'
+            stateNavigator.navigate('s');
+            var wrapper = mount(
+                <RefreshLink
+                    navigationData={{x: 'a'}}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/hello/world');
+            link.simulate('click');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+            assert.equal(stateNavigator.stateContext.data.x, 'a');
+        })
+    });
 });
