@@ -1431,6 +1431,104 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Active Css Class Navigate Refresh Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <RefreshLink
+                    navigationData={{x: 'a'}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('className'), 'active');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('className'), 'active');
+        })
+    });
+
+    describe('Across Crumbs Active Css Class Navigate Refresh Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <RefreshLink
+                    acrossCrumbs={true}
+                    navigationData={{x: 'a'}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('className'), 'active');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('className'), null);
+        })
+    });
+
+    describe('Disable Active Navigate Refresh Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <RefreshLink
+                    navigationData={{x: 'a'}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+        })
+    });
+
+    describe('Across Crumbs Disable Active Navigate Refresh Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <RefreshLink
+                    acrossCrumbs={true}
+                    navigationData={{x: 'a'}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r1?x=a&crumb=%2Fr0%3Fx%3Da&crumb=%2Fr1');
+        })
+    });
+
     describe('Click Custom Href Refresh Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([
