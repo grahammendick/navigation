@@ -1483,6 +1483,108 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Active Css Class Navigate Navigation Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <NavigationLink
+                    stateKey="s0"
+                    navigationData={{x: 'a'}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('className'), 'active');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('className'), 'active');
+        })
+    });
+
+    describe('Across Crumbs Active Css Class Navigate Navigation Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <NavigationLink
+                    stateKey="s0"
+                    acrossCrumbs={true}
+                    navigationData={{x: 'a'}}
+                    activeCssClass="active"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('className'), 'active');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('className'), null);
+        })
+    });
+
+    describe('Disable Active Navigate Navigation Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <NavigationLink
+                    stateKey="s0"
+                    navigationData={{x: 'a'}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+        })
+    });
+
+    describe('Across Crumbs Disable Active Navigate Navigation Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0', {x: 'a'});
+            var wrapper = mount(
+                <NavigationLink
+                    stateKey="s0"
+                    acrossCrumbs={true}
+                    navigationData={{x: 'a'}}
+                    disableActive={true}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+        })
+    });
+
     describe('Click Custom Href Navigation Link', function () {
         it('should navigate', function(){
             var stateNavigator = new StateNavigator([
