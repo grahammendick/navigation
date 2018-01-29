@@ -375,4 +375,76 @@ describe('NavigationBackLinkTest', function () {
             assert.strictEqual(noneHistory, true);
         })
     });
+
+    describe('Crumb Trail Navigate Navigation Back Link', function () {
+        it('should not update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var wrapper = mount(
+                <NavigationBackLink
+                    distance={1}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationBackLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+        })
+    });
+
+    describe('Across Crumbs Crumb Trail Navigate Navigation Back Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var wrapper = mount(
+                <NavigationBackLink
+                    acrossCrumbs={true}
+                    distance={1}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationBackLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r1?crumb=%2Fr0');
+        })
+    });
+
+    describe('Click Custom Href Navigation Back Link', function () {
+        it('should navigate', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.historyManager.getHref = () => '#/hello/world';
+            var wrapper = mount(
+                <NavigationBackLink
+                    distance={1}
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationBackLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/hello/world');
+            link.simulate('click');
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        })
+    });
 });
