@@ -1,4 +1,4 @@
-import { Provider } from './NavigationContext';
+import NavigationContext from './NavigationContext';
 import * as React from 'react';
 
 class NavigationHandler extends React.Component<any, any> {
@@ -18,9 +18,9 @@ class NavigationHandler extends React.Component<any, any> {
         var { children, stateNavigator } = this.props;
         var { oldState, state, data, asyncData } = stateNavigator.stateContext;
         return (
-            <Provider value={{ oldState, state, data, asyncData, stateNavigator }}>
+            <NavigationContext.Provider value={{ oldState, state, data, asyncData, stateNavigator }}>
                 {children}
-            </Provider>
+            </NavigationContext.Provider>
         );
     }
 }
