@@ -841,6 +841,41 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Async Data', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.states.s.navigating = (data, url, navigate) => {
+                navigate({s: 1});
+            }
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['s'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.asyncData['s'], 1);
+            });
+        }
+    });
+
     describe('Navigate Data Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
