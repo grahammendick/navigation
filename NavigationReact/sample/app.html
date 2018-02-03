@@ -132,10 +132,10 @@
 
         var states = stateNavigator.states;
         states.people.renderView = function (data) {
-            return <List stateNavigator={stateNavigator} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />;
+            return <List name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />;
         };
         states.person.renderView = function (data) {
-            return <Details stateNavigator={stateNavigator} id={data.id} />;
+            return <Details id={data.id} />;
         }
         stateNavigator.start();
 
