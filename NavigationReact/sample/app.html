@@ -38,7 +38,7 @@
                 return (
                     <div>
                         <NavigationReact.NavigationContext.Consumer>
-                            {({ stateNavigator }) => <Filter stateNavigator={stateNavigator} initialName={this.props.name || ''} />}
+                            {({ stateNavigator, data }) => <Filter stateNavigator={stateNavigator} name={data.name} />}
                         </NavigationReact.NavigationContext.Consumer>
                         <table>
                             <thead>
@@ -58,20 +58,12 @@
         class Filter extends React.Component {
             constructor(props) {
                 super(props);
-                this.state = {name: props.initialName};
                 this.nameChange = this.nameChange.bind(this);
-                this.nameBlur = this.nameBlur.bind(this);
             }
-            componentWillReceiveProps(nextProps) {
-                this.setState({ name: nextProps.initialName });
-            }
-            shouldComponentUpdate(nextProps, nextState) {
-                return nextState.name !== this.state.name;
+            shouldComponentUpdate(nextProps) {
+                return nextProps.name !== this.props.name;
             } 
             nameChange(event) {
-                this.setState({name: event.target.value});
-            }
-            nameBlur(event) {
                 this.props.stateNavigator.refresh(this.props.stateNavigator.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
             }
             render() {
@@ -79,7 +71,7 @@
                     <div>
                         <div>
                             <label htmlFor="name">Name</label>
-                            <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
+                            <input id="name" value={this.props.name || ''} onChange={this.nameChange} />
                         </div>
                         Page size&nbsp;
                         <NavigationReact.RefreshLink navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
