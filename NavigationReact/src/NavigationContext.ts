@@ -1,3 +1,8 @@
 import * as React from 'react';
 
-export default React.createContext(null);
+var navigationContext;
+if (React.createContext)
+  navigationContext = React.createContext(null); 
+else
+  navigationContext = { Provider: null, Consumer: ({children}) => children(null)}
+export default navigationContext;
