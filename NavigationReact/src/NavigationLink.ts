@@ -29,7 +29,8 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     }
     
     componentDidMount() {
-        this.getStateNavigator().onNavigate(this.onNavigate);
+        if (!this.props.navigationContext)
+            this.getStateNavigator().onNavigate(this.onNavigate);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,7 +38,8 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     }
 
     componentWillUnmount() {
-        this.getStateNavigator().offNavigate(this.onNavigate);
+        if (!this.props.navigationContext)
+            this.getStateNavigator().offNavigate(this.onNavigate);
     }
 
     private getComponentState(props = this.props): NavigationLinkState {

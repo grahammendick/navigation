@@ -29,7 +29,8 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     }
     
     componentDidMount() {
-        this.getStateNavigator().onNavigate(this.onNavigate);
+        if (!this.props.navigationContext)
+            this.getStateNavigator().onNavigate(this.onNavigate);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,7 +38,8 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     }
 
     componentWillUnmount() {
-        this.getStateNavigator().offNavigate(this.onNavigate);
+        if (!this.props.navigationContext)
+            this.getStateNavigator().offNavigate(this.onNavigate);
     }
     
     private getComponentState(props = this.props): RefreshLinkState {
