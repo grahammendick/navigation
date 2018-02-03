@@ -18,10 +18,10 @@
     <script src="../../build/dist/navigation.react.js"></script>
     <script type="text/jsx">
         class List extends React.Component {
-            shouldComponentUpdate(nextProps) {
+            /* shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.sortExpression !== this.props.sortExpression || nextProps.name !== this.props.name;
-            }
+            } */
             render() {
                 var people = personSearch.search(this.props.name, this.props.sortExpression);
                 var totalRowCount = people.length;
