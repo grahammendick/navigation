@@ -6146,6 +6146,9 @@ describe('Navigation Data', function () {
             stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
+            stateNavigator.states.s.navigating = (data, url, navigate) => {
+                navigate({x: 'a'});
+            };
         });
         var data = {};
         data['s'] = 'Hello';
@@ -6185,6 +6188,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.oldData).length, 0);
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.previousData).length, 0);
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 0);
+                assert.strictEqual(stateNavigator.stateContext.asyncData, undefined);
             });
         }
     });
