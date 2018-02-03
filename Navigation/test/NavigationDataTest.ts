@@ -906,7 +906,7 @@ describe('Navigation Data', function () {
         });
 
         function test() {
-            it('should populate data', function () {
+            it('should not populate data', function () {
                 assert.strictEqual(stateNavigator.stateContext.asyncData, undefined);
             });
         }
