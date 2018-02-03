@@ -7,6 +7,7 @@ type NavigationLinkState = { link: string, active: boolean };
 
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
     private crumb: number;
+    context: { stateNavigator: StateNavigator };
     private onNavigate = () => {
         var { link, active } = this.state;
         var componentState = this.getComponentState();
@@ -25,7 +26,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
     }
     
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || (<any> this.context).stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     
     componentDidMount() {
@@ -71,7 +72,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
         LinkUtility.setActive(this.state.active, this.props, props);
-        return React.createElement('a', props, this.props.children);
+        return <a {...props}>{this.props.children}</a>;
     }
 };
 export default withStateNavigator(NavigationLink);

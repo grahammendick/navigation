@@ -7,6 +7,7 @@ type NavigationBackLinkState = { link: string };
 
 class NavigationBackLink extends React.Component<NavigationBackLinkProps, NavigationBackLinkState> {
     private crumb: number;
+    context: { stateNavigator: StateNavigator };
     private onNavigate = () => {
         var componentState = this.getComponentState();
         if (this.state.link !== componentState.link)
@@ -24,7 +25,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
     }
     
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || (<any> this.context).stateNavigator;
+        return this.props.stateNavigator || this.context.stateNavigator;
     }
     
     componentDidMount() {
@@ -66,7 +67,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         }
         props.href = this.state.link && this.getStateNavigator().historyManager.getHref(this.state.link);
         props.onClick = LinkUtility.getOnClick(this.getStateNavigator(), this.props, this.state.link);
-        return React.createElement('a', props, this.props.children);
+        return <a {...props}>{this.props.children}</a>;
     }
 };
 export default withStateNavigator(NavigationBackLink);
