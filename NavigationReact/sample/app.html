@@ -149,9 +149,9 @@
         ReactDOM.render(
             <NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
                 <NavigationReact.NavigationContext.Consumer>
-                   {({ state, data }) => state.renderView(data)}
+                    {({ state, data }) => state.renderView(data)}
                 </NavigationReact.NavigationContext.Consumer>
-              </NavigationReact.NavigationHandler>,
+            </NavigationReact.NavigationHandler>,
             document.getElementById('content')
         );
 </script>
