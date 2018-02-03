@@ -3458,7 +3458,7 @@ describe('Navigation', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
         });
 
@@ -3475,7 +3475,7 @@ describe('Navigation', function () {
                 var link = stateNavigator.getNavigationLink('s');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getRefreshLink();
-                stateNavigator.navigateLink(link);
+                stateNavigator.navigateLink(link, undefined, true);
             });            
             test();
         });
@@ -3488,6 +3488,7 @@ describe('Navigation', function () {
                 assert.strictEqual(stateNavigator.stateContext.state, null);
                 assert.strictEqual(stateNavigator.stateContext.url, null);
                 assert.strictEqual(stateNavigator.stateContext.title, null);
+                assert.strictEqual(stateNavigator.stateContext.history, false);
                 assert.strictEqual(stateNavigator.stateContext.crumbs.length, 0);
                 assert.strictEqual(stateNavigator.stateContext.nextCrumb, null);
             });
