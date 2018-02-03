@@ -27,28 +27,29 @@
                 var totalRowCount = people.length;
                 people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
-                var stateNavigator = this.props.stateNavigator;
                 people = people.map(function (person) {
                     return (
                         <tr key={person.id}>
-                            <td><NavigationReact.NavigationLink stateNavigator={stateNavigator} stateKey="person" navigationData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                            <td><NavigationReact.NavigationLink stateKey="person" navigationData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
                     );
                 });
                 return (
                     <div>
-                        <Filter stateNavigator={this.props.stateNavigator} initialName={this.props.name || ''} />
+                        <NavigationReact.NavigationContext.Consumer>
+                            {({ stateNavigator }) => <Filter stateNavigator={stateNavigator} initialName={this.props.name || ''} />}
+                        </NavigationReact.NavigationContext.Consumer>
                         <table>
                             <thead>
                                 <tr>
-                                    <th><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
+                                    <th><NavigationReact.RefreshLink navigationData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
                                     <th>Date of Birth</th>
                                 </tr>
                             </thead>
                             <tbody>{people}</tbody>
                         </table>
-                        <Pager stateNavigator={this.props.stateNavigator} startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
+                        <Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
                     </div>
                 );
             }
@@ -81,8 +82,8 @@
                             <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
                         </div>
                         Page size&nbsp;
-                        <NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
-                        <NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
+                        <NavigationReact.RefreshLink navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
+                        <NavigationReact.RefreshLink navigationData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
                     </div>
                 );
             }
@@ -103,10 +104,10 @@
                 return (
                     <div>
                         <ul>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink navigationData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink navigationData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink navigationData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
+                            <li><NavigationReact.RefreshLink navigationData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
                         </ul>
                         Total Count {this.props.totalRowCount}
                     </div>
@@ -122,7 +123,7 @@
                 var person = personSearch.getDetails(this.props.id);
                 return (
                     <div>
-                        <NavigationReact.NavigationBackLink stateNavigator={this.props.stateNavigator} distance={1}>Person Search</NavigationReact.NavigationBackLink>
+                        <NavigationReact.NavigationBackLink distance={1}>Person Search</NavigationReact.NavigationBackLink>
                         <div>
                             Name: {person.name}<br />
                             Date of Birth: {person.dateOfBirth}
