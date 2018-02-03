@@ -138,19 +138,22 @@
         ]);
 
         var states = stateNavigator.states;
-        states.people.navigated = function (data) {
-            ReactDOM.render(
-                <List stateNavigator={stateNavigator} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
-                document.getElementById('content')
-            );
+        states.people.renderView = function (data) {
+            return <List stateNavigator={stateNavigator} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />;
         };
-        states.person.navigated = function (data) {
-            ReactDOM.render(
-                <Details stateNavigator={stateNavigator} id={data.id} />,
-                document.getElementById('content')
-            );
+        states.person.renderView = function (data) {
+            return <Details stateNavigator={stateNavigator} id={data.id} />;
         }
         stateNavigator.start();
-    </script>
+
+        ReactDOM.render(
+            <NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+                <NavigationReact.NavigationContext.Consumer>
+                   {({ state, data }) => state.renderView(data)}
+                </NavigationReact.NavigationContext.Consumer>
+              </NavigationReact.NavigationHandler>,
+            document.getElementById('content')
+        );
+</script>
 </body>
 </html>
