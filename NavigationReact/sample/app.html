@@ -17,11 +17,11 @@
     <script src="../../build/dist/navigation.js"></script>
     <script src="../../build/dist/navigation.react.js"></script>
     <script type="text/jsx">
-        var List = React.createClass({
+        class List extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.sortExpression !== this.props.sortExpression || nextProps.name !== this.props.name;
-            },
+            }
             render() {
                 var people = personSearch.search(this.props.name, this.props.sortExpression);
                 var totalRowCount = people.length;
@@ -52,24 +52,27 @@
                     </div>
                 );
             }
-        });
+        };
 
-        var Filter = React.createClass({
-            getInitialState() {
-                return {name: this.props.initialName};
-            },
+        class Filter extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {name: props.initialName};
+                this.nameChange = this.nameChange.bind(this);
+                this.nameBlur = this.nameBlur.bind(this);
+            }
             componentWillReceiveProps(nextProps) {
                 this.setState({ name: nextProps.initialName });
-            },
+            }
             shouldComponentUpdate(nextProps, nextState) {
                 return nextState.name !== this.state.name;
-            }, 
+            } 
             nameChange(event) {
                 this.setState({name: event.target.value});
-            },
+            }
             nameBlur(event) {
                 this.props.stateNavigator.refresh(this.props.stateNavigator.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
-            },
+            }
             render() {
                 return (
                     <div>
@@ -83,13 +86,13 @@
                     </div>
                 );
             }
-        });
+        };
 
-        var Pager = React.createClass({
+        class Pager extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.totalRowCount !== this.props.totalRowCount;
-            },
+            }
             render() {
                 var remainder = this.props.totalRowCount % this.props.maximumRows;
                 var previous = Math.max(0, this.props.startRowIndex - this.props.maximumRows);
@@ -109,12 +112,12 @@
                     </div>
                 );
             }
-        });
+        };
 
-        var Details = React.createClass({
+        class Details extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.id !== this.props.id;
-            },
+            }
             render() {
                 var person = personSearch.getDetails(this.props.id);
                 return (
@@ -127,7 +130,7 @@
                     </div>
                 );
             }
-        });
+        };
 
         var stateNavigator = new Navigation.StateNavigator([
             { key: 'people', route: '{startRowIndex?}/{maximumRows?}/{sortExpression?}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
