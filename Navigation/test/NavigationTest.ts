@@ -29,6 +29,7 @@ describe('Navigation', function () {
         function test(){
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.history, false);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -92,6 +93,58 @@ describe('Navigation', function () {
         function test(){
             it('should populate context', function() {
                 assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
+    describe('History State', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link, undefined, true);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.history, true);
+                assert.equal(stateNavigator.stateContext.crumbs.length, 0);
+            });
+        }
+    });
+
+    describe('Not History State', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link, undefined, true);
+                link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+            });            
+            test();
+        });
+        
+        function test(){
+            it('should populate context', function() {
+                assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
+                assert.equal(stateNavigator.stateContext.history, false);
                 assert.equal(stateNavigator.stateContext.crumbs.length, 0);
             });
         }
@@ -3458,7 +3511,7 @@ describe('Navigation', function () {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
             stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
+                { key: 's', route: 'r', trackCrumbTrail: true }
             ]);
         });
 
@@ -3475,7 +3528,7 @@ describe('Navigation', function () {
                 var link = stateNavigator.getNavigationLink('s');
                 stateNavigator.navigateLink(link);
                 link = stateNavigator.getRefreshLink();
-                stateNavigator.navigateLink(link);
+                stateNavigator.navigateLink(link, undefined, true);
             });            
             test();
         });
@@ -3488,6 +3541,7 @@ describe('Navigation', function () {
                 assert.strictEqual(stateNavigator.stateContext.state, null);
                 assert.strictEqual(stateNavigator.stateContext.url, null);
                 assert.strictEqual(stateNavigator.stateContext.title, null);
+                assert.strictEqual(stateNavigator.stateContext.history, false);
                 assert.strictEqual(stateNavigator.stateContext.crumbs.length, 0);
                 assert.strictEqual(stateNavigator.stateContext.nextCrumb, null);
             });

@@ -11,7 +11,9 @@ class StateContext {
     state: State = null;
     data: any = {};
     url: string = null;
+    asyncData: any = undefined;
     title: string = null;
+    history = false;
     crumbs: Crumb[] = [];
     nextCrumb: Crumb = null;
 
@@ -25,7 +27,9 @@ class StateContext {
         this.state = null;
         this.data = {};
         this.url = null;
+        this.asyncData = undefined;
         this.title = null;
+        this.history = false;
         this.crumbs = [];
         this.nextCrumb = null;
     }

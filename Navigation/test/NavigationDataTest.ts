@@ -841,6 +841,77 @@ describe('Navigation Data', function () {
         }
     });
 
+    describe('Async Data', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.states.s.navigating = (data, url, navigate) => {
+                navigate({s: 1});
+            }
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.data['s'], undefined);
+                assert.strictEqual(stateNavigator.stateContext.asyncData['s'], 1);
+            });
+        }
+    });
+
+    describe('No Async Data', function() {
+        var stateNavigator: StateNavigator;
+        beforeEach(function() {
+            stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            stateNavigator.states.s0.navigating = (data, url, navigate) => {
+                navigate({s: 1});
+            }
+        });
+        
+        describe('Navigate', function() {
+            beforeEach(function() {
+                stateNavigator.navigate('s0');
+                stateNavigator.navigate('s1');
+            });
+            test();
+        });
+
+        describe('Navigate Link', function() {
+            beforeEach(function() {
+                var link = stateNavigator.getNavigationLink('s0');
+                stateNavigator.navigateLink(link);
+                link = stateNavigator.getNavigationLink('s1');
+                stateNavigator.navigateLink(link);
+            });
+            test();
+        });
+
+        function test() {
+            it('should not populate data', function () {
+                assert.strictEqual(stateNavigator.stateContext.asyncData, undefined);
+            });
+        }
+    });
+
     describe('Navigate Data Back', function() {
         var stateNavigator: StateNavigator;
         beforeEach(function() {
@@ -6146,6 +6217,9 @@ describe('Navigation Data', function () {
             stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
+            stateNavigator.states.s.navigating = (data, url, navigate) => {
+                navigate({x: 'a'});
+            };
         });
         var data = {};
         data['s'] = 'Hello';
@@ -6185,6 +6259,7 @@ describe('Navigation Data', function () {
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.oldData).length, 0);
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.previousData).length, 0);
                 assert.strictEqual(Object.keys(stateNavigator.stateContext.data).length, 0);
+                assert.strictEqual(stateNavigator.stateContext.asyncData, undefined);
             });
         }
     });

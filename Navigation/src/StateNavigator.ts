@@ -36,13 +36,15 @@ class StateNavigator {
             this.states[states[i].key] = states[i];
     }
 
-    private setStateContext(state: State, data: any, url: string) {
+    private setStateContext(state: State, data: any, url: string, asyncData: any, history: boolean) {
         this.stateContext.oldState = this.stateContext.state;
         this.stateContext.oldData = this.stateContext.data;
         this.stateContext.oldUrl = this.stateContext.url;
         this.stateContext.state = state;
         this.stateContext.url = url;
+        this.stateContext.asyncData = asyncData;
         this.stateContext.title = state.title;
+        this.stateContext.history = history;
         this.stateContext.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
         this.stateContext.data = data;
@@ -117,7 +119,7 @@ class StateNavigator {
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
-        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction);
+        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
                 state.navigating(data, url, navigateContinuation, history);
@@ -128,10 +130,10 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none'): () => void {
+    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                this.setStateContext(state, data, url);
+                this.setStateContext(state, data, url, asyncData, history);
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
                 state.navigated(this.stateContext.data, asyncData);
