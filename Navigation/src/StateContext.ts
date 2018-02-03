@@ -11,7 +11,7 @@ class StateContext {
     state: State = null;
     data: any = {};
     url: string = null;
-    asyncData: any;
+    asyncData: any = undefined;
     title: string = null;
     history = false;
     crumbs: Crumb[] = [];
