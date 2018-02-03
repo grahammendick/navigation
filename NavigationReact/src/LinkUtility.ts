@@ -48,7 +48,7 @@ class LinkUtility {
         return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
             && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
             && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
-            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children';
+            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'navigationContext' && attr !== 'children';
     }
     
     static getOnClick(stateNavigator: StateNavigator, props: any, link: string) {
