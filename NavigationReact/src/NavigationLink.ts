@@ -1,4 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
+import withStateNavigator from './withStateNavigator';
 import { StateNavigator } from 'navigation';
 import { NavigationLinkProps } from './Props';
 import * as React from 'react';
@@ -71,4 +72,4 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         return React.createElement('a', props, this.props.children);
     }
 };
-export default NavigationLink;
+export default withStateNavigator(NavigationLink);

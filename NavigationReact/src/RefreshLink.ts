@@ -1,4 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
+import withStateNavigator from './withStateNavigator';
 import { StateNavigator } from 'navigation';
 import { RefreshLinkProps } from './Props';
 import * as React from 'react';
@@ -71,4 +72,4 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
         return React.createElement('a', props, this.props.children);
     }
 };
-export default RefreshLink;
+export default withStateNavigator(RefreshLink);
