@@ -33,7 +33,6 @@ app.get('*', function(req, res) {
         if (req.get('content-type') === 'application/json') {
             res.send(JSON.stringify(asyncData));
         } else {
-            var props = safeStringify(asyncData);
             res.send(`<html>
                 <head>
                     <title>Isomorphic Navigation</title>
@@ -51,7 +50,7 @@ app.get('*', function(req, res) {
                             </NavigationContext.Consumer>        
                         </NavigationHandler>
                     )}</div>
-                    <script>var serverProps = ${props};</script>
+                    <script>var serverProps = ${safeStringify(asyncData)};</script>
                     <script src="/app.js" ></script>
                 </body>
             </html>`);
