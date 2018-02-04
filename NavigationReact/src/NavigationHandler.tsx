@@ -1,7 +1,8 @@
 import NavigationContext from './NavigationContext';
+import { StateNavigator } from 'navigation';
 import * as React from 'react';
 
-class NavigationHandler extends React.Component<any, any> {
+class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, any> {
     private onNavigate = () => {
         this.forceUpdate();
     }
