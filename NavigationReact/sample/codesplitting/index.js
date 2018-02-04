@@ -1,6 +1,6 @@
 /**
- * Adds React and Data modules to prevent them from appearing in the People
- * and Person component webpack bundles
+ * Adds Data module to prevent it from appearing in the People and Person
+ * component webpack bundles
  */
 import Data from './Data';
 import { StateNavigator } from 'navigation';
