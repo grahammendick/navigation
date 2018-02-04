@@ -11,6 +11,7 @@ import getStateNavigator from './NavigationShared';
 var stateNavigator = getStateNavigator();
 
 var hydrate = () => {
+    stateNavigator.offNavigate(hydrate);
     ReactDOM.hydrate(
         <NavigationHandler stateNavigator={stateNavigator}>
             <NavigationContext.Consumer>
@@ -19,7 +20,6 @@ var hydrate = () => {
         </NavigationHandler>,
         document.getElementById('content')
     );
-    stateNavigator.offNavigate(hydrate);
 }
 
 registerControllers(stateNavigator);
