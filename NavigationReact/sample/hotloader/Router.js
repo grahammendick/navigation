@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 function configure(stateNavigator) {
     stateNavigator.configure([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
-        {key: 'person', route: 'person/{id}', defaults: {id: 0 }}
+        {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
     ]);
     
     stateNavigator.states.people.renderView = ({pageNumber}) => (

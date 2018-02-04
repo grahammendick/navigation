@@ -20,6 +20,11 @@ ReactDOM.render(
 if (module.hot) {
     module.hot.accept('./Router', function() {
         require('./Router').configure(stateNavigator);
-        stateNavigator.navigate(stateNavigator.stateContext.state.key, stateNavigator.stateContext.includeCurrentData({}));
+        var fluent = stateNavigator.fluent()
+        var { crumbs, state, data } = stateNavigator.stateContext;
+        for(var i = 0; i < crumbs.length; i++) {
+            fluent = fluent.navigate(crumbs[i].state.key, crumbs[i].data)
+        }
+        stateNavigator.navigateLink(fluent.navigate(state.key, data).url);
     });
 }

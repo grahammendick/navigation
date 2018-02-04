@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationLink, RefreshLink } from 'navigation-react';
+import { NavigationLink, RefreshLink, NavigationBackLink } from 'navigation-react';
 
 var People = ({ people }) => {
     var rows = people.map((person) => (
@@ -44,10 +44,9 @@ var People = ({ people }) => {
 
 var Person = ({ person }) => (
     <div>
-        <NavigationLink
-            stateKey="people">
+        <NavigationBackLink distance={1}>
             People
-        </NavigationLink>
+        </NavigationBackLink>
         <div>
             <h2>{person.name}</h2>
             <div className="label">Date of Birth</div>
