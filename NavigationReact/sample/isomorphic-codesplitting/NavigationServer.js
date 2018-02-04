@@ -10,34 +10,7 @@ import { registerComponent as registerPersonComponent } from './Person';
 
 var app = express();
 
-/**
- * Dynamically runs webpack to slow down the JavaScript and make the isomorphic
- * functionality clearly visible. Don't copy this, webpack should be part of
- * the build step. 
- */
-app.get('/app.js', function(req, res) {
-    webpack({
-        entry: "./NavigationClient.js",
-        output: {
-            path: __dirname,
-            publicPath: '/',
-            filename: "app.js"
-        },
-        module: {
-            loaders: [
-                { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
-            ]
-        }
-    }, function(err, stats) {
-        fs.createReadStream('./app.js')
-            .pipe(res);
-    })
-});
-
-app.get('/:id(\\d+).app.js', function(req, res) {
-    fs.createReadStream('./' + req.params.id + '.app.js')
-        .pipe(res);
-});
+app.use(express.static('js'))
 
 app.get('/favicon.ico', function(req, res) {
     res.statusCode = 404;
