@@ -23,8 +23,7 @@ ReactDOM.hydrate(
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
  * just before the State becomes active, issues an AJAX request for the data -
- * the same Urls are used for HTML and AJAX requests. The onNavigation handler,
- * fired when the State is active, renders the data returned.
+ * the same Urls are used for HTML and AJAX requests.
  */
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = 
