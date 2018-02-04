@@ -3,10 +3,11 @@ import fs from 'fs';
 import webpack from 'webpack';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { NavigationContext, NavigationHandler } from 'navigation-react';
 import getStateNavigator from './NavigationShared';
 import { searchPeople, getPerson } from './Data';
-import { registerComponent as registerPeopleComponent } from './People';
-import { registerComponent as registerPersonComponent } from './Person';
+import { registerView as registerPeopleView } from './People';
+import { registerView as registerPersonView } from './Person';
 
 var app = express();
 
@@ -29,16 +30,13 @@ app.get('/favicon.ico', function(req, res) {
 app.get('*', function(req, res) {
     var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);
-    registerPeopleComponent(stateNavigator);
-    registerPersonComponent(stateNavigator);    
+    registerPeopleView(stateNavigator);
+    registerPersonView(stateNavigator);    
     stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
         res.set('vary', 'content-type');
         if (req.get('content-type') === 'application/json') {
             res.send(JSON.stringify(asyncData));
         } else {
-            var props = safeStringify(asyncData);
-            asyncData.stateNavigator = stateNavigator;
-            var component = state.createComponent(asyncData);
             res.send(`<html>
                 <head>
                     <title>Isomorphic Navigation Code Splitting</title>
@@ -49,8 +47,14 @@ app.get('*', function(req, res) {
                     </style>
                 </head>
                 <body>
-                    <div id="content">${ReactDOMServer.renderToString(component)}</div>
-                    <script>var serverProps = ${props};</script>
+                    <div id="content">${ReactDOMServer.renderToString(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationContext.Consumer>
+                                {({ state, asyncData }) => state.renderView(asyncData)}
+                            </NavigationContext.Consumer>        
+                        </NavigationHandler>
+                    )}</div>
+                    <script>var serverProps = ${safeStringify(asyncData)};</script>
                     <script src="/app.js" ></script>
                 </body>
             </html>`);

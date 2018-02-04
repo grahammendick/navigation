@@ -4,6 +4,7 @@ module.exports = {
     entry: "./NavigationClient.js",
     output: {
         path: path.join(__dirname, "js"),
+        publicPath: "/",
         filename: "app.js"
     },
     module: {

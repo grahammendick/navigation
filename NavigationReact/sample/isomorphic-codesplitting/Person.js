@@ -2,19 +2,15 @@ import React from 'react';
 import { NavigationBackLink } from 'navigation-react';
 
 /**
- * Registers the component creator for the Details State.
+ * Registers the view for the Details State.
  */
-function registerComponent(stateNavigator) {
-    stateNavigator.states.person.createComponent = function(data) {
-        return <Details {...data} />;
-    }
+function registerView(stateNavigator) {
+    stateNavigator.states.person.renderView = data => <Details {...data} />;
 }
 
-var Details = ({ person, stateNavigator }) => (
+var Details = ({ person }) => (
     <div>
-        <NavigationBackLink
-            distance={1}
-            stateNavigator={stateNavigator}>
+        <NavigationBackLink distance={1}>
             Person Search
         </NavigationBackLink>
         <div>
@@ -29,4 +25,4 @@ var Details = ({ person, stateNavigator }) => (
     </div>
 );
 
-export { registerComponent };
+export { registerView };

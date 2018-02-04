@@ -1,6 +1,7 @@
 import NavigationReact from 'navigation-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { NavigationContext, NavigationHandler } from 'navigation-react';
 import getStateNavigator from './NavigationShared';
 
 /**
@@ -10,6 +11,15 @@ import getStateNavigator from './NavigationShared';
 var stateNavigator = getStateNavigator();
 registerControllers(stateNavigator);
 stateNavigator.start();
+
+ReactDOM.hydrate(
+    <NavigationHandler stateNavigator={stateNavigator}>
+        <NavigationContext.Consumer>
+            {({ state, asyncData }) => state && state.renderView(asyncData)}
+        </NavigationContext.Consumer>        
+    </NavigationHandler>,
+    document.getElementById('content')
+);
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
@@ -21,23 +31,16 @@ stateNavigator.start();
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
         require.ensure(['./People'], function(require) {
-            require('./People').registerComponent(stateNavigator);
+            require('./People').registerView(stateNavigator);
             fetchData(url, navigate);
         });
     }
     stateNavigator.states.person.navigating = function(data, url, navigate) {
         require.ensure(['./Person'], function(require) {
-            require('./Person').registerComponent(stateNavigator);
+            require('./Person').registerView(stateNavigator);
             fetchData(url, navigate);
         });
     }
-    stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
-        asyncData.stateNavigator = stateNavigator;
-        ReactDOM.render(
-            stateNavigator.stateContext.state.createComponent(asyncData),
-            document.getElementById('content')
-        );
-    });
 }
 
 function fetchData(url, navigate) {
