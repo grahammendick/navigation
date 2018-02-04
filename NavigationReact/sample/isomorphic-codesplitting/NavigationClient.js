@@ -9,17 +9,22 @@ import getStateNavigator from './NavigationShared';
  * an initial render for the current State and props returned from the server. 
  */
 var stateNavigator = getStateNavigator();
-registerControllers(stateNavigator);
-stateNavigator.start();
 
-ReactDOM.hydrate(
-    <NavigationHandler stateNavigator={stateNavigator}>
-        <NavigationContext.Consumer>
-            {({ state, asyncData }) => state && state.renderView(asyncData)}
-        </NavigationContext.Consumer>        
-    </NavigationHandler>,
-    document.getElementById('content')
-);
+var hydrate = () => {
+    ReactDOM.hydrate(
+        <NavigationHandler stateNavigator={stateNavigator}>
+            <NavigationContext.Consumer>
+                {({ state, asyncData }) => state && state.renderView(asyncData)}
+            </NavigationContext.Consumer>        
+        </NavigationHandler>,
+        document.getElementById('content')
+    );
+    stateNavigator.offNavigate(hydrate);
+}
+
+registerControllers(stateNavigator);
+stateNavigator.onNavigate(hydrate);
+stateNavigator.start();
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
