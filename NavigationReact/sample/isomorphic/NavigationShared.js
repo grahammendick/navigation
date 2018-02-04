@@ -7,22 +7,15 @@ import Person from './Person';
  * Configures the states for the two views.
  */
 function getStateNavigator() {
-    return new StateNavigator([
+    var stateNavigator = new StateNavigator([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},
         {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
     ], new HTML5HistoryManager());
+
+    var { people, person } = stateNavigator.states;
+    people.renderView = data => <People {...data} />;
+    person.renderView = data => <Person {...data} />;
+    return stateNavigator;
 }
 
-/**
- * Registers the components creators for the States.
- */
-function registerComponents(stateNavigator) {
-    stateNavigator.states.people.renderView = function(data) {
-        return <People {...data} />;
-    }
-    stateNavigator.states.person.renderView = function(data) {
-        return <Person {...data} />;
-    }
-}
-
-export { getStateNavigator, registerComponents }
+export { getStateNavigator }

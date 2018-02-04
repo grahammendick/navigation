@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { getStateNavigator, registerComponents } from './NavigationShared';
+import { getStateNavigator } from './NavigationShared';
 
 /**
  * Creates a State Navigator and, after registering the controllers, triggers
@@ -9,7 +9,6 @@ import { getStateNavigator, registerComponents } from './NavigationShared';
  */
 var stateNavigator = getStateNavigator();
 registerControllers(stateNavigator);
-registerComponents(stateNavigator);
 stateNavigator.start();
 
 ReactDOM.hydrate(

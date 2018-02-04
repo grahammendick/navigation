@@ -4,7 +4,7 @@ import webpack from 'webpack';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { getStateNavigator, registerComponents } from './NavigationShared';
+import { getStateNavigator } from './NavigationShared';
 import { searchPeople, getPerson } from './Data';
 
 var app = express();
@@ -49,7 +49,6 @@ app.get('/favicon.ico', function(req, res) {
 app.get('*', function(req, res) {
     var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);
-    registerComponents(stateNavigator);
     stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
         res.set('vary', 'content-type');
         if (req.get('content-type') === 'application/json') {
