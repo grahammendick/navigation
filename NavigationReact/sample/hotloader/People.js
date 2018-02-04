@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavigationLink, RefreshLink, NavigationBackLink } from 'navigation-react';
+import { NavigationLink, RefreshLink } from 'navigation-react';
 
-var People = ({ people }) => {
+export default ({ people }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
@@ -41,22 +41,3 @@ var People = ({ people }) => {
         </div>
     );
 };
-
-var Person = ({ person }) => (
-    <div>
-        <NavigationBackLink distance={1}>
-            People
-        </NavigationBackLink>
-        <div>
-            <h2>{person.name}</h2>
-            <div className="label">Date of Birth</div>
-            <div>{person.dateOfBirth}</div>
-            <div className="label">Email</div>
-            <div>{person.email}</div>
-            <div className="label">Phone</div>
-            <div>{person.phone}</div>
-        </div>
-    </div>
-);
-
-export { People, Person };
