@@ -18,7 +18,6 @@ function configure(stateNavigator) {
     stateNavigator.states.person.renderView = ({id}) => (
         <Person person={getPerson(id)} />
     );
-    return stateNavigator;
 }
 
 export { configure };
