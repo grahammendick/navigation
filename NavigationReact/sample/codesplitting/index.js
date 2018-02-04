@@ -4,7 +4,7 @@
  */
 import Data from './Data';
 import { StateNavigator } from 'navigation';
-import NavigationReact from 'navigation-react';
+import { NavigationContext, NavigationHandler } from 'navigation-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -19,26 +19,29 @@ var stateNavigator = new StateNavigator([
 /**
  * Attaches the navigating hooks to the two States. Fired just before the State
  * becomes active, it uses webpack's code splitting to load the respective
- * component on demand. When the component returns it registers the components
+ * component on demand. When the component returns it registers the views
  * and then continues with the navigation.
  */
 stateNavigator.states.people.navigating = function(data, url, navigate) {
     require.ensure(['./People'], function(require) {
-        require('./People').registerComponent(stateNavigator);
+        require('./People').registerView(stateNavigator);
         navigate();
     });
 }
 stateNavigator.states.person.navigating = function(data, url, navigate) {
     require.ensure(['./Person'], function(require) {
-        require('./Person').registerComponent(stateNavigator);
+        require('./Person').registerView(stateNavigator);
         navigate();
     });
 }
-stateNavigator.onNavigate(function(oldState, state, data) {
-    ReactDOM.render(
-        stateNavigator.stateContext.state.createComponent(data),
-        document.getElementById('content')
-    );
-});
 
 stateNavigator.start();
+
+ReactDOM.render(
+    <NavigationHandler stateNavigator={stateNavigator}>
+        <NavigationContext.Consumer>
+            {({ state, data }) => state && state.renderView(data)}
+        </NavigationContext.Consumer>        
+    </NavigationHandler>,
+    document.getElementById('content')
+);

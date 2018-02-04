@@ -4,23 +4,21 @@ import ReactDOM from 'react-dom';
 import { NavigationLink, RefreshLink } from 'navigation-react';
 
 /**
- * Registers the component creator for the Listing State.
+ * Registers the view for the Listing State.
  */
-function registerComponent(stateNavigator) {
-    stateNavigator.states.people.createComponent = function(data) {
-        var people = searchPeople(data.pageNumber);
-        return <Listing people={people} stateNavigator={stateNavigator} />
-    }
+function registerView(stateNavigator) {
+    stateNavigator.states.people.renderView = ({pageNumber}) => (
+        <Listing people={searchPeople(pageNumber)} />
+    );
 }
 
-var Listing = ({ people, stateNavigator }) => {
+var Listing = ({ people }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
                 <NavigationLink
                     stateKey="person"
-                    navigationData={{ id: person.id }}
-                    stateNavigator={stateNavigator}>
+                    navigationData={{ id: person.id }}>
                     {person.name}
                 </NavigationLink>
             </td>
@@ -42,14 +40,12 @@ var Listing = ({ people, stateNavigator }) => {
                 Go to page
                 <RefreshLink
                     navigationData={{ pageNumber: 1 }}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
+                    disableActive={true}>
                     1
                 </RefreshLink>
                 <RefreshLink
                     navigationData={{ pageNumber: 2 }}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
+                    disableActive={true}>
                     2
                 </RefreshLink>                    
             </div>
@@ -57,4 +53,4 @@ var Listing = ({ people, stateNavigator }) => {
     );
 };
 
-export { registerComponent };
+export { registerView };
