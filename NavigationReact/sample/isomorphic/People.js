@@ -1,14 +1,13 @@
 import React from 'react';
 import { NavigationLink, RefreshLink } from 'navigation-react';
 
-export default ({ people, stateNavigator }) => {
+export default ({ people }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
                 <NavigationLink
                     stateKey="person"
-                    navigationData={{ id: person.id }}
-                    stateNavigator={stateNavigator}>
+                    navigationData={{ id: person.id }}>
                     {person.name}
                 </NavigationLink>
             </td>
@@ -30,14 +29,12 @@ export default ({ people, stateNavigator }) => {
                 Go to page
                 <RefreshLink
                     navigationData={{ pageNumber: 1 }}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
+                    disableActive={true}>
                     1
                 </RefreshLink>
                 <RefreshLink
                     navigationData={{ pageNumber: 2 }}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
+                    disableActive={true}>
                     2
                 </RefreshLink>                    
             </div>

@@ -17,10 +17,10 @@ function getStateNavigator() {
  * Registers the components creators for the States.
  */
 function registerComponents(stateNavigator) {
-    stateNavigator.states.people.createComponent = function(data) {
+    stateNavigator.states.people.renderView = function(data) {
         return <People {...data} />;
     }
-    stateNavigator.states.person.createComponent = function(data) {
+    stateNavigator.states.person.renderView = function(data) {
         return <Person {...data} />;
     }
 }

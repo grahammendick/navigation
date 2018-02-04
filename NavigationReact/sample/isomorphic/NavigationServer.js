@@ -3,6 +3,7 @@ import fs from 'fs';
 import webpack from 'webpack';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { getStateNavigator, registerComponents } from './NavigationShared';
 import { searchPeople, getPerson } from './Data';
 
@@ -55,8 +56,6 @@ app.get('*', function(req, res) {
             res.send(JSON.stringify(asyncData));
         } else {
             var props = safeStringify(asyncData);
-            asyncData.stateNavigator = stateNavigator;
-            var component = state.createComponent(asyncData);
             res.send(`<html>
                 <head>
                     <title>Isomorphic Navigation</title>
@@ -67,7 +66,13 @@ app.get('*', function(req, res) {
                     </style>
                 </head>
                 <body>
-                    <div id="content">${ReactDOMServer.renderToString(component)}</div>
+                    <div id="content">${ReactDOMServer.renderToString(
+                        <NavigationHandler stateNavigator={stateNavigator}>
+                            <NavigationContext.Consumer>
+                                {({ state, asyncData }) => state.renderView(asyncData)}
+                            </NavigationContext.Consumer>        
+                        </NavigationHandler>
+                    )}</div>
                     <script>var serverProps = ${props};</script>
                     <script src="/app.js" ></script>
                 </body>

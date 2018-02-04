@@ -1,11 +1,9 @@
 import React from 'react';
 import { NavigationBackLink } from 'navigation-react';
 
-export default ({ person, stateNavigator }) => (
+export default ({ person }) => (
     <div>
-        <NavigationBackLink
-            distance={1}
-            stateNavigator={stateNavigator}>
+        <NavigationBackLink distance={1}>
             Person Search
         </NavigationBackLink>
         <div>

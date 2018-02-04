@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { NavigationContext, NavigationHandler } from 'navigation-react';
 import { getStateNavigator, registerComponents } from './NavigationShared';
 
 /**
@@ -10,6 +11,15 @@ var stateNavigator = getStateNavigator();
 registerControllers(stateNavigator);
 registerComponents(stateNavigator);
 stateNavigator.start();
+
+ReactDOM.hydrate(
+    <NavigationHandler stateNavigator={stateNavigator}>
+        <NavigationContext.Consumer>
+            {({ state, asyncData }) => state.renderView(asyncData)}
+        </NavigationContext.Consumer>        
+    </NavigationHandler>,
+    document.getElementById('content')
+);
 
 /**
  * Attaches the navigation hooks to the two States. The navigating hook, fired
@@ -22,13 +32,6 @@ function registerControllers(stateNavigator) {
     stateNavigator.states.person.navigating = function(data, url, navigate) {
         fetchData(url, navigate);
     }
-    stateNavigator.onNavigate(function(oldState, state, data, asyncData) {
-        asyncData.stateNavigator = stateNavigator;
-        ReactDOM.render(
-            stateNavigator.stateContext.state.createComponent(asyncData),
-            document.getElementById('content')
-        );
-    });
 }
 
 function fetchData(url, navigate) {
