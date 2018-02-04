@@ -18,15 +18,6 @@ app.get('/favicon.ico', function(req, res) {
     res.end();
 });
 
-/**
- * A single set of routes handles both the HTML and AJAX requests. Uses
- * content negotiation, based on the content-type header, to decide 
- * whether to return HTML or JSON.
- * Creates a State Navigator, passes it the current Url and then retrieves
- * the props for the current State. If it's an AJAX request it returns the
- * props as JSON. If it's an HTML request it creates the component for the
- * current State and returns the rendered HTML with the JSON props inlined.
- */
 app.get('*', function(req, res) {
     var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);

@@ -1,9 +1,6 @@
 import React from 'react';
 import { NavigationBackLink } from 'navigation-react';
 
-/**
- * Registers the view for the Details State.
- */
 function registerView(stateNavigator) {
     stateNavigator.states.person.renderView = data => <Details {...data} />;
 }
