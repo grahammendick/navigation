@@ -4,7 +4,7 @@ import webpack from 'webpack';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import { getStateNavigator } from './NavigationShared';
+import getStateNavigator from './NavigationShared';
 import { searchPeople, getPerson } from './Data';
 
 var app = express();

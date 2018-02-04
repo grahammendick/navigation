@@ -18,4 +18,4 @@ function getStateNavigator() {
     return stateNavigator;
 }
 
-export { getStateNavigator }
+export default getStateNavigator;
