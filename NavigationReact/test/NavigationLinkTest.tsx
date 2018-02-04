@@ -32,7 +32,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe.only('Context Navigation Link', function () {
+    describe('Context Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
