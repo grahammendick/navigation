@@ -3,9 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavigationBackLink } from 'navigation-react';
 
-/**
- * Registers the view for the Details State.
- */
 function registerView(stateNavigator) {
     stateNavigator.states.person.renderView = ({id}) => (
         <Details person={getPerson(id)} />

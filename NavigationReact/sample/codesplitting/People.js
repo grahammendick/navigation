@@ -3,9 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavigationLink, RefreshLink } from 'navigation-react';
 
-/**
- * Registers the view for the Listing State.
- */
 function registerView(stateNavigator) {
     stateNavigator.states.people.renderView = ({pageNumber}) => (
         <Listing people={searchPeople(pageNumber)} />

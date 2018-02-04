@@ -8,20 +8,11 @@ import { NavigationContext, NavigationHandler } from 'navigation-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-/**
- * Configures the states for the two views.
- */
 var stateNavigator = new StateNavigator([
     {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
     {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);
 
-/**
- * Attaches the navigating hooks to the two States. Fired just before the State
- * becomes active, it uses webpack's code splitting to load the respective
- * component on demand. When the component returns it registers the views
- * and then continues with the navigation.
- */
 stateNavigator.states.people.navigating = function(data, url, navigate) {
     require.ensure(['./People'], function(require) {
         require('./People').registerView(stateNavigator);
