@@ -10,21 +10,13 @@ function configure(stateNavigator) {
         {key: 'person', route: 'person/{id}', defaults: {id: 0 }}
     ]);
     
-    stateNavigator.states.people.navigated = function(data) {
-        var people = searchPeople(data.pageNumber);
-        ReactDOM.render(
-            <People people={people} stateNavigator={stateNavigator} />,
-            document.getElementById('content')
-        );		
-    }
+    stateNavigator.states.people.renderView = ({pageNumber}) => (
+        <People people={searchPeople(pageNumber)} />
+    );
 
-    stateNavigator.states.person.navigated = function(data) {
-        var person = getPerson(data.id);
-        ReactDOM.render(
-            <Person person={person} stateNavigator={stateNavigator} />,
-            document.getElementById('content')
-        );		
-    }
+    stateNavigator.states.person.renderView = ({id}) => (
+        <Person person={getPerson(id)} />
+    );
     return stateNavigator;
 }
 
