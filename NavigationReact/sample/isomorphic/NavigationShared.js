@@ -3,9 +3,6 @@ import { StateNavigator, HTML5HistoryManager } from 'navigation';
 import People from './People';
 import Person from './Person';
 
-/**
- * Configures the states for the two views.
- */
 function getStateNavigator() {
     var stateNavigator = new StateNavigator([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1}},

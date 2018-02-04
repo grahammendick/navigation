@@ -16,15 +16,6 @@ app.get('/favicon.ico', function(req, res) {
     res.end();
 });
 
-/**
- * A single set of routes handles both the HTML and AJAX requests. Uses
- * content negotiation, based on the content-type header, to decide 
- * whether to return HTML or JSON.
- * Creates a State Navigator, passes it the current Url and then retrieves
- * the props for the current State. If it's an AJAX request it returns the
- * props as JSON. If it's an HTML request it creates the component for the
- * current State and returns the rendered HTML with the JSON props inlined.
- */
 app.get('*', function(req, res) {
     var stateNavigator = getStateNavigator();
     registerControllers(stateNavigator);
@@ -61,11 +52,6 @@ app.get('*', function(req, res) {
 
 app.listen(8080);
 
-/**
- * Attaches the navigation hooks to the two States. The navigating hook, fired
- * just before the State becomes active, calls into the data layer and passes 
- * on the retrieved person data onto the state 
- */
 function registerControllers(stateNavigator) {
     stateNavigator.states.people.navigating = function(data, url, navigate) {
         searchPeople(data.pageNumber, function(people) {
