@@ -26,6 +26,7 @@ var PersonQuery = graphql`
         }
     }
 `;
+
 var PersonContainer = createFragmentContainer(Person, {
     person: graphql`
         fragment Person_person on Person {
