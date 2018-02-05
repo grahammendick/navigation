@@ -1,6 +1,4 @@
 import express from 'express';
-import fs from 'fs';
-import webpack from 'webpack';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
