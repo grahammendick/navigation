@@ -55,15 +55,9 @@ ReactDOM.render(
                     environment={modernEnvironment}
                     query={state.query}
                     variables={data}
-                    render={({ error, props }) => {
-                        if (props) {
-                            return (
-                                <state.component {...props} />
-                            );
-                        } else {
-                            return <div>Loading</div>;
-                        }
-                    }}
+                    render={({ error, props }) => (
+                        props ? <state.component {...props} /> : <div>Loading</div>
+                    )}
                 />                
             )}
         </NavigationContext.Consumer>        
