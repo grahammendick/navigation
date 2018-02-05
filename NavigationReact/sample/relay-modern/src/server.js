@@ -7,17 +7,13 @@ import webpack from 'webpack';
 
 const app = express();
 
-/**
- * Creates up the graphql server
- */
+app.use(express.static('src/js'))
+
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     graphiql: true
 }));
 
-/**
- * Returns the HTML shell.
- */
 app.get('/', function (req, res) {
     res.send(`<html>
         <head>
@@ -33,28 +29,6 @@ app.get('/', function (req, res) {
             <script src="/app.js" ></script>
         </body>
     </html>`);
-});
-
-/**
- * Dynamically runs webpack to return the JavaScript. Don't copy this, webpack
- * should be part of the build step. 
- */
-app.get('/app.js', function (req, res) {
-    webpack({
-        entry: "./src/index.js",
-        output: {
-            path: __dirname,
-            filename: "app.js"
-        },
-        module: {
-            loaders: [
-                { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
-            ]
-        }
-    }, function(err, stats) {
-        fs.createReadStream('./src/app.js')
-            .pipe(res);
-    })
 });
 
 app.listen(8080);

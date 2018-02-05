@@ -22,6 +22,7 @@
         "webpack": "^3.5.5"
     },
     "scripts": {
+        "build": "webpack",
         "start": "babel-node ./src/server.js",
         "updateSchema": "babel-node ./updateSchema.js",
         "relay": "relay-compiler --src src --schema ./schema.json"
