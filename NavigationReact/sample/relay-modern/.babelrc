@@ -1,9 +1,7 @@
 {
     "passPerPreset": true,
+    "plugins": ["relay"],
     "presets": [
-        {
-            "plugins": ["relay"]
-        },
         "react",
         "es2015",
         "stage-0"
