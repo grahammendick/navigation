@@ -1,9 +1,6 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
-import fs from 'fs';
-import { graphql } from 'graphql';
 import schema from './schema';
-import webpack from 'webpack';
 
 const app = express();
 
