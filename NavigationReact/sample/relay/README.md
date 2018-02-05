@@ -1,5 +1,5 @@
 # Navigation Relay Modern
-Navigation doesn't own your components so it integrates well with other libraries, like Relay. This sample uses [relay modern](https://facebook.github.io/relay/docs/relay-modern.html)
+Navigation doesn't own your components so it integrates well with other libraries, like Relay.
 
 ## Run
 Once you've cloned the repository, you can install the dependencies, generate the graphql files and start the Relay example:
