@@ -1,4 +1,5 @@
 import { Listing, Details } from './Component';
+import People from './People';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import React from 'react';
@@ -12,7 +13,7 @@ var stateNavigator = new StateNavigator([
     {key: 'person', route: 'person/{id}', defaults: {id: 0 }, trackCrumbTrail: true}
 ]);
 
-stateNavigator.states.people.renderView = ({pageNumber}) => <Listing pageNumber={pageNumber} />
+stateNavigator.states.people.renderView = ({pageNumber}) => <People pageNumber={pageNumber} />
 stateNavigator.states.person.renderView = data => <Details person={person} />
 
 stateNavigator.start();
