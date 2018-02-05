@@ -2,11 +2,9 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { NavigationBackLink } from 'navigation-react';
 
-var Person = ({ person, stateNavigator }) => (
+var Person = ({ person }) => (
     <div>
-        <NavigationBackLink
-            distance={1}
-            stateNavigator={stateNavigator}>
+        <NavigationBackLink distance={1}>
             Person Search
         </NavigationBackLink>
         <div>

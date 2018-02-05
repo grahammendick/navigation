@@ -5,6 +5,7 @@ import { Environment, Network, RecordSource, Store } from "relay-runtime";
 import { PeopleQuery, PeopleContainer } from "./People.js";
 import { PersonQuery, PersonContainer } from "./Person.js";
 import { StateNavigator } from "Navigation";
+import { NavigationContext, NavigationHandler } from 'navigation-react';
 
 var stateNavigator = new StateNavigator([
     {
@@ -44,25 +45,28 @@ const modernEnvironment = new Environment({
     store: new Store(new RecordSource())
 });
 
-stateNavigator.onNavigate((oldState, state, data) => {
-    var Component = state.component;
-    ReactDOM.render(
-        <QueryRenderer
-            environment={modernEnvironment}
-            query={state.query}
-            variables={data}
-            render={({ error, props }) => {
-                if (props) {
-                    return (
-                        <Component {...props} stateNavigator={stateNavigator} />
-                    );
-                } else {
-                    return <div>Loading</div>;
-                }
-            }}
-        />,
-        document.getElementById("content")
-    );
-});
-
 stateNavigator.start();
+
+ReactDOM.render(
+    <NavigationHandler stateNavigator={stateNavigator}>
+        <NavigationContext.Consumer>
+            {({ state, data }) => (
+                <QueryRenderer
+                    environment={modernEnvironment}
+                    query={state.query}
+                    variables={data}
+                    render={({ error, props }) => {
+                        if (props) {
+                            return (
+                                <state.component {...props} />
+                            );
+                        } else {
+                            return <div>Loading</div>;
+                        }
+                    }}
+                />                
+            )}
+        </NavigationContext.Consumer>        
+    </NavigationHandler>,
+    document.getElementById('content')
+);

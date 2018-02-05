@@ -8,14 +8,13 @@ import {
     RefreshLink
 } from 'navigation-react';
 
-var People = ({ people, stateNavigator }) => {
+var People = ({ people }) => {
     var rows = people.persons.map((person) => (
         <tr key={person.id}>
             <td>
                 <NavigationLink
                     stateKey="person"
-                    navigationData={{ id: +person.id }}
-                    stateNavigator={stateNavigator}>
+                    navigationData={{ id: +person.id }}>
                     {person.name}
                 </NavigationLink>
             </td>
@@ -37,14 +36,12 @@ var People = ({ people, stateNavigator }) => {
                 Go to page
                 <RefreshLink
                     navigationData={{ pageNumber: 1 }}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
+                    disableActive={true}>
                     1
                 </RefreshLink>
                 <RefreshLink
                     navigationData={{ pageNumber: 2 }}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
+                    disableActive={true}>
                     2
                 </RefreshLink>                    
             </div>
