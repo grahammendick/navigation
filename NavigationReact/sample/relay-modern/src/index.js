@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { QueryRenderer } from "react-relay";
-import { Environment, Network, RecordSource, Store } from "relay-runtime";
-import { PeopleQuery, PeopleContainer } from "./People.js";
-import { PersonQuery, PersonContainer } from "./Person.js";
-import { StateNavigator } from "Navigation";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { QueryRenderer } from 'react-relay';
+import { Environment, Network, RecordSource, Store } from 'relay-runtime';
+import { PeopleQuery, PeopleContainer } from './People.js';
+import { PersonQuery, PersonContainer } from './Person.js';
+import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 
 var stateNavigator = new StateNavigator([
