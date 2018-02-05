@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-    createFragmentContainer,
-    graphql
-} from 'react-relay';
-import {
-    NavigationLink,
-    RefreshLink
-} from 'navigation-react';
+import { createFragmentContainer, graphql } from 'react-relay';
+import { NavigationLink, RefreshLink} from 'navigation-react';
 
 var People = ({ people }) => {
     var rows = people.persons.map((person) => (
