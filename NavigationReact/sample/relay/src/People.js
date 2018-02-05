@@ -8,7 +8,7 @@ var People = ({ people }) => {
             <td>
                 <NavigationLink
                     stateKey="person"
-                    navigationData={{ id: +person.id }}>
+                    navigationData={{ id: person.id }}>
                     {person.name}
                 </NavigationLink>
             </td>
