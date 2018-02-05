@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import schema from './schema.js'
+import schema from './src/schema'
 import { graphql } from 'graphql'
 import { introspectionQuery } from 'graphql/utilities'
 

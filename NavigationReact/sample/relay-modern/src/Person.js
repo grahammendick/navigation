@@ -21,7 +21,14 @@ var Person = ({ person, stateNavigator }) => (
     </div>
 );
 
-export default createFragmentContainer(Person, {
+var PersonQuery = graphql`
+    query PersonQuery($id: Int!) {
+        person(id: $id) {
+            ...Person_person
+        }
+    }
+`;
+var PersonContainer = createFragmentContainer(Person, {
     person: graphql`
         fragment Person_person on Person {
             name,
@@ -31,3 +38,5 @@ export default createFragmentContainer(Person, {
         }
     `,
 });
+
+export { PersonQuery, PersonContainer };

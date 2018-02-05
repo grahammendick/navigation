@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { QueryRenderer } from "react-relay";
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
-import People from "./People.js";
-import Person from "./Person.js";
+import { PeopleQuery, PeopleContainer } from "./People.js";
+import { PersonQuery, PersonContainer } from "./Person.js";
 import { StateNavigator } from "Navigation";
 
 /**
@@ -15,28 +15,16 @@ var stateNavigator = new StateNavigator([
         key: "people",
         route: "{pageNumber?}",
         defaults: { pageNumber: 1 },
-        component: People,
-        query: graphql`
-            query relayModernPeopleQuery($pageNumber: Int) {
-                people(pageNumber: $pageNumber) {
-                    ...People_people
-                }
-            }
-        `
+        component: PeopleContainer,
+        query: PeopleQuery
     },
     {
         key: "person",
         route: "person/{id}",
         defaults: { id: 0 },
         trackCrumbTrail: true,
-        component: Person,
-        query: graphql`
-            query relayModernPersonQuery($id: Int!) {
-                person(id: $id) {
-                    ...Person_person
-                }
-            }
-        `
+        component: PersonContainer,
+        query: PersonQuery
     }
 ]);
 

@@ -41,7 +41,7 @@ app.get('/', function (req, res) {
  */
 app.get('/app.js', function (req, res) {
     webpack({
-        entry: "./index.js",
+        entry: "./src/index.js",
         output: {
             path: __dirname,
             filename: "app.js"
@@ -52,7 +52,7 @@ app.get('/app.js', function (req, res) {
             ]
         }
     }, function(err, stats) {
-        fs.createReadStream('./app.js')
+        fs.createReadStream('./src/app.js')
             .pipe(res);
     })
 });

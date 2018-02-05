@@ -52,7 +52,15 @@ var People = ({ people, stateNavigator }) => {
     );
 };
 
-export default createFragmentContainer(People, {
+var PeopleQuery = graphql`
+    query PeopleQuery($pageNumber: Int) {
+        people(pageNumber: $pageNumber) {
+            ...People_people
+        }
+    }
+`;
+
+var PeopleContainer = createFragmentContainer(People, {
     people: graphql`
         fragment People_people on People {
             persons {
@@ -63,3 +71,5 @@ export default createFragmentContainer(People, {
         }
     `,
 });
+
+export { PeopleQuery, PeopleContainer };
