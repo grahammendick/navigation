@@ -2,7 +2,7 @@ import NavigationReact from 'navigation-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
-import getStateNavigator from './NavigationShared';
+import getStateNavigator from './getStateNavigator';
 
 var stateNavigator = getStateNavigator();
 

@@ -16,6 +16,6 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "babel-node NavigationServer.js"
+    "start": "babel-node server.js"
   }
 }
