@@ -1,5 +1,5 @@
-import { Listing, Details } from './Component';
 import People from './People';
+import Person from './Person';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationHandler } from 'navigation-react';
 import React from 'react';
@@ -14,7 +14,7 @@ var stateNavigator = new StateNavigator([
 ]);
 
 stateNavigator.states.people.renderView = ({pageNumber}) => <People pageNumber={pageNumber} />
-stateNavigator.states.person.renderView = data => <Details person={person} />
+stateNavigator.states.person.renderView = ({id}) => <Person id={id} />
 
 stateNavigator.start();
 
@@ -30,26 +30,3 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('content')
 );
-
-/**
- * Finds the person from the people in the store and id in the navigation data.
- * Renders the Details Component with the person.
- */
-stateNavigator.states.person.render = function(data, store) {
-    var people = store.getState();
-    var person = people.filter((person) => person.id === data.id)[0];
-    var handleChange = (name) => {
-        store.dispatch({
-            type: 'EDIT',
-            id: person.id,
-            name: name
-        });
-    };
-    ReactDOM.render(
-        <Details
-            person={person}
-            handleChange={handleChange}
-            stateNavigator={stateNavigator} />,
-        document.getElementById('content')
-    );
-};

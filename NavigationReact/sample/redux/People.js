@@ -7,9 +7,9 @@ var mapStateToProps = (people, { pageNumber }) => {
     return {
       people: people.slice(start, start + 10)
     }
-  }
+};
 
-var Listing = ({ people }) => {
+var People = ({ people }) => {
     var rows = people.map((person) => (
         <tr key={person.id}>
             <td>
@@ -50,4 +50,4 @@ var Listing = ({ people }) => {
     );
 };
 
-export default connect(mapStateToProps)(Listing);
+export default connect(mapStateToProps)(People);
