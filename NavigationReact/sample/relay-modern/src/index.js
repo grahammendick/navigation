@@ -6,10 +6,6 @@ import { PeopleQuery, PeopleContainer } from "./People.js";
 import { PersonQuery, PersonContainer } from "./Person.js";
 import { StateNavigator } from "Navigation";
 
-/**
- * Configures the states for the two views. Adds the Relay query and Component
- * to each state so that a generic function can render the Relay QueryRenderer.
- */
 var stateNavigator = new StateNavigator([
     {
         key: "people",
@@ -48,11 +44,6 @@ const modernEnvironment = new Environment({
     store: new Store(new RecordSource())
 });
 
-/**
- * Listens for navigation events and renders the root of Relay tree. It fetches
- * the data specified with the query in the state and renders the Component on
- * render callback.
- */
 stateNavigator.onNavigate((oldState, state, data) => {
     var Component = state.component;
     ReactDOM.render(
