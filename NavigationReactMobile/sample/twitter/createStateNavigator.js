@@ -19,9 +19,9 @@ export default () => {
   }));
 
   const {home, tweet, timeline} = stateNavigator.states;
-  home.renderScene = () => <Home tweets={getHome()} stateNavigator={stateNavigator}/>;
-  tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} stateNavigator={stateNavigator}/>;
-  timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} stateNavigator={stateNavigator}/>;
+  home.renderScene = () => <Home tweets={getHome()} />;
+  tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} />;
+  timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} />;
   
   return stateNavigator;
 }

@@ -4,9 +4,9 @@ import Banner from './Banner';
 import Tweets from './Tweets';
 
 export default ({timeline: {id, name, username, logo, bio, 
-  followers, following, tweets}, stateNavigator}) => (
+  followers, following, tweets}}) => (
   <div>
-    <Banner title={name} stateNavigator={stateNavigator} />
+    <Banner title={name} />
     <div className="profile">
       <div className="pic" />
       <img src={logo} alt={name}/>
@@ -30,8 +30,7 @@ export default ({timeline: {id, name, username, logo, bio,
           e.target.closest('.scene').scrollTop = 0;
         }
         return accountId !== id;
-      }}
-      stateNavigator={stateNavigator} />
+      }} />
   </div>
 );
 

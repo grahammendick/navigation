@@ -4,16 +4,15 @@ import Banner from './Banner';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
-  text, time, retweets, likes, replies}, stateNavigator}) => (
+  text, time, retweets, likes, replies}}) => (
   <div>
-    <Banner title="Tweet" stateNavigator={stateNavigator} />
+    <Banner title="Tweet" />
     <div className="tweet">
       <div className="heading">
         <NavigationLink
           className="logo"
           stateKey="timeline"
-          navigationData={{id: accountId}}
-          stateNavigator={stateNavigator}>
+          navigationData={{id: accountId}}>
           <img src={logo} alt={name}/>
         </NavigationLink>
         <div className="details">
@@ -30,7 +29,7 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         <div className="interaction">Likes</div>
       </div>
     </div>
-    <Tweets tweets={replies} stateNavigator={stateNavigator} />
+    <Tweets tweets={replies} />
   </div>
 );
 
