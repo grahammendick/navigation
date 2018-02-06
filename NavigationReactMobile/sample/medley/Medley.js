@@ -1,13 +1,12 @@
 import React from 'react';
 import {NavigationMotion} from 'navigation-react-mobile';
 
-export default ({stateNavigator}) => (
+export default () => (
   <NavigationMotion
     unmountedStyle={state => state.unmountedStyle}
     mountedStyle={state => state.mountedStyle}
     crumbStyle={state => state.crumbStyle}
-    duration={1000}
-    stateNavigator={stateNavigator}>
+    duration={1000}>
     {({translateX = 0, translateY = 0}, scene, key, active) => (
       <div key={key}
         className="scene"
