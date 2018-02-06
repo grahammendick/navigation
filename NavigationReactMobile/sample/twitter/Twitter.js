@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationMotion} from 'navigation-react-mobile';
 
-export default ({stateNavigator}) => (
+export default () => (
   <NavigationMotion
     unmountedStyle={{translate: 100, scale: 1, opacity: 1}}
     mountedStyle={{translate: 0, scale: 1, opacity: 1}}
