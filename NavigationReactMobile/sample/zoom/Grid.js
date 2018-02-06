@@ -7,24 +7,21 @@ const colors = [
   'purple', 'fuchsia', 'indigo', 'green', 'navy', 'blue', 'teal', 'black'
 ];
 
-export default ({stateNavigator}) => (
+export default () => (
   <ul>
     {colors.map(color => (
       <SharedElement
         key={color}
         name={color}
-        data={{color}}
-        stateNavigator={stateNavigator}>
+        data={{color}}>
         <li style={{backgroundColor: color}}>
           <NavigationLink            
             stateKey="detail"
-            navigationData={{color}}
-            stateNavigator={stateNavigator}>
+            navigationData={{color}}>
             <div>
               <SharedElement
                 data={{color, fontSize: 150, fontColor: 255}}
-                name={`text${color}`}
-                stateNavigator={stateNavigator}>
+                name={`text${color}`}>
                 <div>{color}</div>
               </SharedElement>
             </div>
