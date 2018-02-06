@@ -36,11 +36,11 @@ class NavigationMotion extends React.Component<any, any> {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
-        if (!this.props.navigationContext)
+        //if (!this.props.navigationContext)
             this.getStateNavigator().onNavigate(this.onNavigate);
     }
     componentWillUnmount() {
-        if (!this.props.navigationContext)
+        //if (!this.props.navigationContext)
             this.getStateNavigator().offNavigate(this.onNavigate);
     }
     onNavigate(oldState, state, data) {
