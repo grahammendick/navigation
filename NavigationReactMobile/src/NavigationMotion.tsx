@@ -2,6 +2,7 @@ import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import Motion from './Motion';
 import Scene from './Scene';
+import withStateNavigator from './withStateNavigator';
 
 class NavigationMotion extends React.Component<any, any> {
     private sharedElements = {};
@@ -35,10 +36,12 @@ class NavigationMotion extends React.Component<any, any> {
         return this.props.stateNavigator || this.context.stateNavigator;
     }
     componentDidMount() {
-        this.getStateNavigator().onNavigate(this.onNavigate);
+        if (!this.props.navigationContext)
+            this.getStateNavigator().onNavigate(this.onNavigate);
     }
     componentWillUnmount() {
-        this.getStateNavigator().offNavigate(this.onNavigate);
+        if (!this.props.navigationContext)
+            this.getStateNavigator().offNavigate(this.onNavigate);
     }
     onNavigate(oldState, state, data) {
         this.setState(({scenes: prevScenes}) => {
@@ -124,4 +127,4 @@ class NavigationMotion extends React.Component<any, any> {
     }
 }
 
-export default NavigationMotion;
+export default withStateNavigator(NavigationMotion);
