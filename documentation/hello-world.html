@@ -52,50 +52,53 @@
   {key: 'world'}
 ]);</code></pre>
             <p>
-                We can get notified when the 'hello' <code>State</code> is navigated to by attaching a function to its <code>navigated</code> property. Whenever that State becomes active this function is called. Inside the function we'll render a Hyperlink that navigates to the 'world' <code>State</code>. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. 
+                We render the view for the 'hello' <code>State</code> inside a function attached to its <code>renderView</code> property. Inside the function we'll render a Hyperlink that navigates to the 'world' <code>State</code>. We'll let the <code>NavigationLink</code> component handle the rendering. It has a <code>stateKey prop</code> that holds the key of the destination State. 
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
-  ReactDOM.render(
-    &lt;NavigationReact.NavigationLink 
-      stateKey="world"
-      stateNavigator={stateNavigator}>
+            <pre><code class="language-jsx">stateNavigator.states.hello.renderView = function() {
+  return (
+    &lt;NavigationReact.NavigationLink stateKey="world">
       Hello
-    &lt;/NavigationReact.NavigationLink>,
-    document.getElementById('app'));
+    &lt;/NavigationReact.NavigationLink>
+  );
 };</code></pre>
             <p>
-                We'll also add a <code>navigated</code> function to the 'world' <code>State</code> so we can render the div after the Hyperlink is clicked. React will take care of unmounting the Hyperlink and mounting the div in its place.
+                We'll also add a <code>renderView</code> function to the 'world' <code>State</code> so we can render the div after the Hyperlink is clicked.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.world.navigated = function() {
-  ReactDOM.render(
-    &lt;div>World&lt;/div>,
-    document.getElementById('app'));
-};</code></pre>
+            <pre><code class="language-jsx">stateNavigator.states.world.renderView = function() {
+  return &lt;div>World&lt;/div>;
+}</code></pre>
             <p>
                 To get the example going we'll call <code>start</code> on the <code>stateNavigator</code>. This navigates to the <code>State</code> whose route matches the browser Url. The empty route we assigned to the 'hello' <code>State</code> means we'll render the Hyperlink when the page first loads.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
+            <pre><code class="language-jsx">ReactDOM.render(
+  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+    &lt;NavigationReact.NavigationContext.Consumer>
+      {({ state, data }) => state.renderView(data)}
+    &lt;/NavigationReact.NavigationContext.Consumer>
+  &lt;/NavigationReact.NavigationHandler>,
+  document.getElementById('app')
+);</code></pre>
             <h2>Data First</h2>
             <p>
                 We'll change the Hyperlink to pass across a number that will become the font-size of the div. With other routers, we'd have to decide now whether to pass it as a route or query string parameter. With the Navigation router, we can leave this decision to the end. The <code>NavigationLink</code> component has a <code>navigationData prop</code> that holds the data to pass to the destination <code>State</code>. We'll pass the number 20 as the <code>size</code> to the 'world' <code>State</code>.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.hello.navigated = function() {
-  ReactDOM.render(
+            <pre><code class="language-jsx">stateNavigator.states.hello.renderView = function() {
+  return (
     &lt;NavigationReact.NavigationLink 
       stateKey="world"
-      navigationData={{size: 20}}
-      stateNavigator={stateNavigator}>
+      navigationData={{size: 20}}>
       Hello
-    &lt;/NavigationReact.NavigationLink>,
-    document.getElementById('app'));
+    &lt;/NavigationReact.NavigationLink>
+  );
 };</code></pre>
             <p>
                 We'll change the 'world' <code>State's navigated</code> function to accept the data as a parameter and use the number passed in to set the div's font-size.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.world.navigated = function(data) {
-  ReactDOM.render(
+            <pre><code class="language-jsx">stateNavigator.states.world.renderView = function(data) {
+  return (
     &lt;div style={{fontSize: data.size}}>World&lt;/div>,
-    document.getElementById('app'));
+  );
 };</code></pre>
             <h2>Routes Last</h2>
             <p>
