@@ -73,11 +73,9 @@ stateNavigator.start();</code></pre>
     <script>
 var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
 
-stateNavigator.states.example.navigated = function (data) {
-    render(data);
-};
-
+renderView();
 stateNavigator.start(location.hash ? '/' : '');
+render();
 
 document.getElementById('route').addEventListener('keyup', reconfigure);
 document.getElementById('defType').addEventListener('change', reconfigure);
@@ -88,25 +86,41 @@ function reconfigure() {
         stateNavigator.configure([
             {key: 'example', route: document.getElementById('route').value, defaultTypes: { 'like': document.getElementById('defType').value }}
         ]);
-        stateNavigator.states.example.navigated = render;
+        renderView();
         stateNavigator.navigate('example', navigationData);
     } catch(ex) {
-        render(navigationData);
+        render();
     }    
 }
 
-function render(data) {
+function renderView() {
+    stateNavigator.states.example.renderView = function(data) {
+        return React.createElement(
+            NavigationReact.NavigationLink,
+            {
+                stateKey: 'example',
+                navigationData: { like: !data.like }
+            },
+            'You ',
+            data.like ? 'like' : 'haven\'t liked',
+            ' this. Click to toggle.'
+        );
+    };
+}
+
+function render() {
     ReactDOM.render(React.createElement(
-        NavigationReact.NavigationLink,
-        {
-            stateKey: 'example',
-            navigationData: { like: !data.like },
-            stateNavigator: stateNavigator },
-        'You ',
-        data.like ? 'like' : 'haven\'t liked',
-        ' this. Click to toggle.'
+        NavigationReact.NavigationHandler,
+        { stateNavigator: stateNavigator },
+        React.createElement(
+            NavigationReact.NavigationContext.Consumer,
+            null,
+            function (context) {
+                return context.state.renderView(context.data);
+            }
+        )
     ), document.getElementById('app'));
-};
+}
     </script>
 </body>
 </html>
