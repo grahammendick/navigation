@@ -47,18 +47,25 @@
   </select><code class="language-jsx">}}
 ]);
 
-stateNavigator.states.example.navigated = function(data) {
-  ReactDOM.render(
-    &lt;NavigationReact.NavigationLink 
-      stateKey="example"
-      navigationData={{like: !data.like}}
-      stateNavigator={stateNavigator}>
-      You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
-    &lt;/NavigationReact.NavigationLink>,
-    document.getElementById('app'));
-};
+stateNavigator.states.example.renderView = data => (
+  &lt;NavigationReact.NavigationLink 
+    stateKey="example"
+    navigationData={{like: !data.like}}>
+    You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
+  &lt;/NavigationReact.NavigationLink>
+);
 
-stateNavigator.start();</code></pre>
+stateNavigator.start();
+
+ReactDOM.render(
+  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+      &lt;NavigationReact.NavigationContext.Consume>
+        {({ state, data }) => state.renderView(data)}
+      &lt;/NavigationReact.NavigationContext.Consume>
+  &lt;/NavigationReact.NavigationLink>,
+  document.getElementById('app')
+);
+</code></pre>
         </div>
         <div id="app"/>
     </div>
