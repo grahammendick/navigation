@@ -65,10 +65,11 @@
             <p>
                 The Navigation router passes this asynchronous data along in the second parameter of the 'mail' <code>State's navigated</code> function.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.navigated = function(data, asyncData) {
-  ReactDOM.render(
-    &lt;Mail mail={asyncData.mail} />,
-    document.getElementById('app'));
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
+  {({ state, data, asyncData }) => state.renderView(data, asyncData)}
+&lt;/NavigationReact.NavigationContext.Consumer></code></pre>
+            <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data, asyncData) {
+  return &lt;Mail mail={asyncData.mail} />;
 };</code></pre>
         </div>
     </div>
