@@ -72,7 +72,7 @@
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
             <p>
-                We'll set up the Navigation context so that we can render the view of the active <code>State</code>. We'll render a context <code>Consumer</code> component and assign it a child render function. Whenever the active State changes, the <code>Consumer</code> calls our function and we return the matching view. Keep reading to find out why we're passing a <code>data</code> parameter into the <code>renderView</code> function.
+                We'll set up the Navigation context so that we can render the view for the active <code>State</code>. We'll render a context <code>Consumer</code> component and assign it a child render function. Whenever the active State changes, the <code>Consumer</code> calls our function and we return the matching view.
             </p>
             <pre><code class="language-jsx">ReactDOM.render(
   &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
