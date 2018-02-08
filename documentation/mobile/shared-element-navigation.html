@@ -51,15 +51,13 @@
             <pre><code class="language-jsx">// The 'inbox' scene
 &lt;NavigationReactMobile.SharedElement
   data={{size: 14, subject: mail.subject}}
-  name={`mail${mail.id}`}
-  stateNavigator={stateNavigator}>
+  name={`mail${mail.id}`}>
   &lt;div>{mail.subject}&lt;/div>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <pre><code class="language-jsx">// The 'mail' scene
 &lt;NavigationReactMobile.SharedElement
   data={{size: 20, subject: mail.subject}}
-  name={`mail${mail.id}`}
-  stateNavigator={stateNavigator}>
+  name={`mail${mail.id}`}>
   &lt;h1>{mail.subject}&lt;/h1>
 &lt;/NavigationReactMobile.SharedElement></code></pre>
             <h2>Animating</h2>
@@ -99,7 +97,6 @@
   unmountedStyle={{opacity: 0}}
   mountedStyle={{opacity: 1}}
   crumbStyle={{opacity: 0}}
-  stateNavigator={stateNavigator}
   sharedElementMotion={props => &lt;MailShared {...props} />}>
   {(style, scene, key) => (
     &lt;div
