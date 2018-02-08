@@ -68,7 +68,7 @@
             </p>
             <h2>Receiving Data</h2>
             <p>
-                You'll recall that the Navigation router notifies you when a <code>State</code> becomes active by calling the function you assigned to the <code>navigated</code> property of that <code>State</code>. When it calls this function it passes in a parameter holding the navigation data. In the email example, when the mail <code>State</code> is active we use the <code>id</code> and <code>expand</code> data items passed in to set the respective <code>props</code> on our <code>Mail</code> component.
+                You'll recall that the <code>NavigationContext Consumer</code> notifies you when a <code>State</code> becomes active. Along with the new <code>State</code>, the Consumer passes you the associated navigation data. It’s your job to call the function assigned to the <code>renderView</code> property of the active <code>State</code> and pass in the navigation data. In the email example, when the mail <code>State</code> is active we use the <code>id</code> and <code>expand</code> data items passed in to set the respective <code>props</code> on our <code>Mail</code> component.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data) {
   return &lt;Mail id={data.id} expand={data.expand} />;
