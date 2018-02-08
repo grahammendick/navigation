@@ -52,7 +52,7 @@
 ]);</code></pre>
             <h2 id="defining-views">Defining Views</h2>
             <p>
-                The Navigation router doesn't render views for you because React natively supports loading components. Calling <code>ReactDOM.render</code> unmounts the old component and mounts the new component in its place. The Navigation router notifies you when a <code>State</code> becomes active and it's your job to render the relevant component for the active <code>State</code>. You receive the notification by attaching a function to the <code>navigated</code> property of the <code>State</code>. In the email example, we render our <code>Inbox</code> component into the 'app' placeholder when the 'inbox' <code>State</code> is active.
+                You define your views in functions attached to the <code>renderView</code> property of each <code>State</code>. We can define two of the views in the email example using our <code>Inbox</code> and <code>Compose</code> components.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.renderView = function() {
   return &lt;Inbox />;
@@ -61,6 +61,19 @@
 stateNavigator.states.compose.renderView = function() {
   return &lt;Compose />;
 };</code></pre>
+            <p>
+                Calling <code>start</code> on the <code>stateNavigator</code> activates a <code>State</code> when the page loads. It triggers a navigation to the <code>State</code> whose route matches with the browser Url. In our example, the 'inbox' <code>State</code> will be active on first load.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.start();</code></pre>
+            <h2>Rendering Views</h2>
+            <pre><code class="language-jsx">ReactDOM.render(
+  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+    &lt;NavigationReact.NavigationContext.Consumer>
+      {({ state, data }) => state.renderView(data)}
+    &lt;/NavigationReact.NavigationContext.Consumer>
+  &lt;/NavigationReact.NavigationHandler>,
+  document.getElementById('app')
+);</code></pre>
             <h2>Navigating</h2>
             <p>
                 <code>States</code> become active when you navigate to them. One way to navigate to a <code>State</code> is with a Hyperlink. The Navigation router encourages you to think about <code>States</code> rather than Urls. You can build Hyperlinks using the <code>NavigationLink</code> component, passing in the destination <code>State</code> via the <code>stateKey prop</code>.
@@ -77,19 +90,6 @@ stateNavigator.states.compose.renderView = function() {
   )}
 &lt;/NavigationReact.NavigationContext.Consumer>
 </code></pre>
-            <h2>Rendering Views</h2>
-            <p>
-                Calling <code>start</code> on the <code>stateNavigator</code> activates a <code>State</code> when the page loads. It triggers a navigation to the <code>State</code> whose route matches with the browser Url and ensures the <code>State</code> assigned the empty route is displayed first.
-            </p>
-            <pre><code class="language-jsx">stateNavigator.start();</code></pre>
-            <pre><code class="language-jsx">ReactDOM.render(
-  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
-    &lt;NavigationReact.NavigationContext.Consumer>
-      {({ state, data }) => state.renderView(data)}
-    &lt;/NavigationReact.NavigationContext.Consumer>
-  &lt;/NavigationReact.NavigationHandler>,
-  document.getElementById('app')
-);</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
