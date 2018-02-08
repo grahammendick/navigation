@@ -71,6 +71,9 @@
                 To get the example going we'll call <code>start</code> on the <code>stateNavigator</code>. This navigates to the <code>State</code> whose route matches the browser Url. The 'hello' <code>State</code> will be active when the page first loads because we assigned it the empty route.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
+            <p>
+                We’ll set up the Navigation context so that we can render the view of the active <code>State</code>. We’ll render a context <code>Consumer</code> component and assign it a child render function. Whenever the active State changes, the <code>Consumer</code> calls our function and we return the matching view.
+            </p>
             <pre><code class="language-jsx">ReactDOM.render(
   &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
     &lt;NavigationReact.NavigationContext.Consumer>
@@ -93,7 +96,7 @@
   );
 };</code></pre>
             <p>
-                We'll change the 'world' <code>State's navigated</code> function to accept the data as a parameter and use the number passed in to set the div's font-size.
+                We'll change the 'world' <code>State's renderView</code> function to accept the data as a parameter and use the number passed in to set the div's font-size.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.world.renderView = function(data) {
   return (
