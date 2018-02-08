@@ -63,11 +63,14 @@
   });
 };</code></pre>
             <p>
-                The Navigation router passes this asynchronous data along in the second parameter of the 'mail' <code>State's navigated</code> function.
+                Update the <code>Consumer's</code> child render <code>prop</code> to pass this asynchronous data along in the second parameter of the call to the active <code>State's renderView</code> function.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
   {({ state, data, asyncData }) => state.renderView(data, asyncData)}
 &lt;/NavigationReact.NavigationContext.Consumer></code></pre>
+            <p>
+                The 'mail' <code>State's renderView</code> function passes the asynchronous mail data as a <code>prop</code> to the <code>Mail</code> component.
+            </p>
             <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data, asyncData) {
   return &lt;Mail mail={asyncData.mail} />;
 };</code></pre>
