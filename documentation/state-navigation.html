@@ -52,7 +52,7 @@
 ]);</code></pre>
             <h2 id="defining-views">Defining Views</h2>
             <p>
-                Each <code>State</code> has a matching view which you’ll display when that <code>State</code> is active. You define the view in a function attached to the <code>renderView</code> property of the <code>State</code>. We can define two of the views in the email example using <code>Inbox</code> and <code>Compose</code> components.
+                Each <code>State</code> needs a matching view which you’ll display when that <code>State</code> is active. You define the view in a function attached to the <code>renderView</code> property of the <code>State</code>. We can define two of the views in the email example using <code>Inbox</code> and <code>Compose</code> components.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.renderView = function() {
   return &lt;Inbox />;
