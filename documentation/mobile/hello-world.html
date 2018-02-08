@@ -56,9 +56,7 @@
             </p>
             <pre><code class="language-jsx">stateNavigator.states.hello.renderScene = function() {
   return (
-    &lt;NavigationReact.NavigationLink
-      stateKey="world"
-      stateNavigator={stateNavigator}>
+    &lt;NavigationReact.NavigationLink stateKey="world">
       Hello
     &lt;/NavigationReact.NavigationLink>
   );
@@ -77,19 +75,21 @@
                 We'll assign each of these stages a different translation style <code>prop</code>. The <code>NavigationMotion</code> component provides a child callback function that lets us animate between these styles as a scene moves from one stage to another. We'll use the callback's parameters to style the scene with the interpolated translation value. A value of 100% for the <code>unmountedStyle</code>, for example, means the 'world' scene will slide in from the right.
             </p>
             <pre><code class="language-jsx">ReactDOM.render(
-  &lt;NavigationReactMobile.NavigationMotion
-    unmountedStyle={{translate: 100}}
-    mountedStyle={{translate: 0}}
-    crumbStyle={{translate: -10}}
-    stateNavigator={stateNavigator}>
-    {(style, scene, key) => (
-      &lt;div
-        key={key}
-        style={{transform: `translate(${style.translate}%)`}}>
-        {scene}
-      &lt;/div>
-    )}
-  &lt;/NavigationReactMobile.NavigationMotion>,
+  &lt;NavigationHandler stateNavigator={stateNavigator}>
+    &lt;NavigationReactMobile.NavigationMotion
+      unmountedStyle={{translate: 100}}
+      mountedStyle={{translate: 0}}
+      crumbStyle={{translate: -10}}
+      stateNavigator={stateNavigator}>
+      {(style, scene, key) => (
+        &lt;div
+          key={key}
+          style={{transform: `translate(${style.translate}%)`}}>
+          {scene}
+        &lt;/div>
+      )}
+    &lt;/NavigationReactMobile.NavigationMotion>
+  &lt;/NavigationHandler>,
   document.getElementById('app')
 );</code></pre>
             <h2>Breadcrumbs</h2>
@@ -98,9 +98,7 @@
             </p>
             <pre><code class="language-jsx">stateNavigator.states.world.renderScene = function() {
   return (
-    &lt;NavigationReact.NavigationBackLink
-      distance={1}
-      stateNavigator={stateNavigator}>
+    &lt;NavigationReact.NavigationBackLink distance={1}>
       World
     &lt;/NavigationReact.NavigationBackLink>
   );
