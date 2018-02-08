@@ -85,7 +85,7 @@ stateNavigator.states.compose.renderView = function() {
   Compose Mail
 &lt;/NavigationReact.NavigationLink></code></pre>
             <p>
-                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>.
+                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>. You can access the <code>stateNavigator</code> inside the child render <code>prop</code> of a <code>NavigationContext Consumer</code>.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
   {({ stateNavigator }) => (
