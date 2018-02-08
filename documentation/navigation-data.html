@@ -50,14 +50,19 @@
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
   stateKey="mail"
-  navigationData={{id: 12, expand: false}}
-  stateNavigator={stateNavigator}>
+  navigationData={{id: 12, expand: false}}>
   Open Mail
 &lt;/NavigationReact.NavigationLink></code></pre>
             <p>
                 For navigating without Hyperlinks, you can pass data in the second parameter of the <code>navigate</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">stateNavigator.navigate('mail', {id: 12, expand: false});</code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
+  {({ stateNavigator }) => (
+    &lt;div onClick={() => stateNavigator.navigate('mail', {id: 12, expand: false})}>
+      Open Mail
+    &lt;/div>
+  )}
+&lt;/NavigationReact.NavigationContext.Consumer></code></pre>
             <p>
                 You can even pass along arrays of strings, numbers, booleans or dates. So, instead of expanding and collapsing the whole thread in our email application, we could pass along an array of ids that identify which mails in the thread to expand. 
             </p>
@@ -65,10 +70,8 @@
             <p>
                 You'll recall that the Navigation router notifies you when a <code>State</code> becomes active by calling the function you assigned to the <code>navigated</code> property of that <code>State</code>. When it calls this function it passes in a parameter holding the navigation data. In the email example, when the mail <code>State</code> is active we use the <code>id</code> and <code>expand</code> data items passed in to set the respective <code>props</code> on our <code>Mail</code> component.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.mail.navigated = function(data) {
-  ReactDOM.render(
-    &lt;Mail id={data.id} expand={data.expand} />,
-    document.getElementById('app'));
+            <pre><code class="language-jsx">stateNavigator.states.mail.renderView = function(data) {
+  return &lt;Mail id={data.id} expand={data.expand} />;
 };</code></pre>
             <p>
                 You don't have to convert the data from strings because the Navigation router remembers their original types. Adding <code>prop type</code> validation to the <code>Mail</code> component, for example, wouldn't raise an exception.
