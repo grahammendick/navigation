@@ -61,11 +61,11 @@
 stateNavigator.states.compose.renderView = function() {
   return &lt;Compose />;
 };</code></pre>
-            <h2>Rendering</h2>
             <p>
                 Calling <code>start</code> on the <code>stateNavigator</code> activates the <code>State</code> whose route matches with the browser Url. In our example, the 'inbox' <code>State</code> will be active on first load.
             </p>
             <pre><code class="language-jsx">stateNavigator.start();</code></pre>
+            <h2>Rendering</h2>
             <p>
                 It's your job to keep the UI up to date by calling the <code>renderView</code> function on the active <code>State</code>. You render a <code>NavigationContext Consumer</code> with a child <code>prop</code> that returns the view of the passed in <code>State</code>. Wrapping the <code>Consumer</code> inside a <code>NavigationHandler</code> ensures that every time the <code>State</code> changes your child render <code>prop</code> is called with the new <code>State</code>. Make sure you pass <code>data</code> into the <code>renderView</code> function otherwise this rendering code will break when it comes to passing <a href="navigation-data.html">navigation data</a> between States.
             </p>

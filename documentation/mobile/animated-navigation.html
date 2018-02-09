@@ -59,7 +59,9 @@
 
 stateNavigator.states.mail.renderScene = function(data) {
   return &lt;Mail mailId={data.id} />;
-};</code></pre>
+};
+
+stateNavigator.start();</code></pre>
             <h2>Animating</h2>
             <p>
                 The <code>NavigationMotion</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. A scene is said to be either unmounted, mounted or a crumb. It's unmounted when it's not on the stack; it's mounted when it's at the top of the stack; and it's a crumb when it's anywhere else in the stack (in the breadcrumb trail).
