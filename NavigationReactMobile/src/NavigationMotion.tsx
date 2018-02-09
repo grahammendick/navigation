@@ -14,7 +14,12 @@ class NavigationMotion extends React.Component<any, any> {
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
-        this.state = {scenes: {}, rest: false};
+        var scenes = {};
+        var stateNavigator = this.getStateNavigator();
+        var {state, data, crumbs} = stateNavigator.stateContext;
+        if (state)
+            scenes[crumbs.length] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
+        this.state = {scenes, rest: false};
     }
     static defaultProps = {
         duration: 300,
