@@ -6,11 +6,11 @@ import Medley from './Medley';
 
 const stateNavigator = createStateNavigator();
 
+stateNavigator.start();
+
 ReactDOM.render(
   <NavigationHandler stateNavigator={stateNavigator}>
     <Medley />
   </NavigationHandler>,
   document.getElementById('content')
 )
-
-stateNavigator.start();

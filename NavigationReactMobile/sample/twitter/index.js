@@ -6,11 +6,11 @@ import Twitter from './Twitter';
 
 const stateNavigator = createStateNavigator();
 
+stateNavigator.start();
+
 ReactDOM.render(
   <NavigationHandler stateNavigator={stateNavigator}>
     <Twitter />
   </NavigationHandler>,
   document.getElementById('content')
 )
-
-stateNavigator.start();

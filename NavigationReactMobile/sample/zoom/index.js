@@ -6,11 +6,11 @@ import Zoom from './Zoom';
 
 const stateNavigator = createStateNavigator();
 
+stateNavigator.start();
+
 ReactDOM.render(
   <NavigationHandler stateNavigator={stateNavigator}>
     <Zoom />
   </NavigationHandler>,
   document.getElementById('content')
 )
-
-stateNavigator.start();
