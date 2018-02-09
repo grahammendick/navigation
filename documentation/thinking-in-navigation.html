@@ -67,6 +67,7 @@
                 The author, in the subsequent two steps, identifies which component owns the data and inversely flows the data up the hierarchy to this common owner. But these steps no longer make sense now we know that the data's owned by the Navigation router and not a React component. I'll rewrite steps 4 and 5 in light of the new conclusion to step 3.
             </p>
             <h2>Step 4: Add Navigation to the one-way data flow</h2>
+            <!-- https://jsfiddle.net/zcbe0Lfo/2/ -->
             <iframe width="100%" height="600" src="//jsfiddle.net/navigation/v45484L2/1/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
             <p>
                 So far, we've built an app that renders correctly as a function of props flowing down the hierarchy. Now it's time to add the Navigation router into this one-way data flow.
