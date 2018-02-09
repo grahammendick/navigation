@@ -232,7 +232,12 @@ var NavigationMotion =  (function (_super) {
         _this.onNavigate = _this.onNavigate.bind(_this);
         _this.registerSharedElement = _this.registerSharedElement.bind(_this);
         _this.unregisterSharedElement = _this.unregisterSharedElement.bind(_this);
-        _this.state = { scenes: {}, rest: false };
+        var scenes = {};
+        var stateNavigator = _this.getStateNavigator();
+        var _a = stateNavigator.stateContext, state = _a.state, data = _a.data, crumbs = _a.crumbs;
+        if (state)
+            scenes[crumbs.length] = React.createElement(Scene, { stateNavigator: stateNavigator }, state.renderScene(data));
+        _this.state = { scenes: scenes, rest: false };
         return _this;
     }
     NavigationMotion.prototype.getChildContext = function () {
