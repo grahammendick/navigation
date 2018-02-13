@@ -1,9 +1,9 @@
 import { NavigationContext } from 'navigation-react';
 import * as React from 'react';
 
-export default Link => props => (
+export default Component => props => (
     <NavigationContext.Consumer>
-        {value => <Link stateNavigator={value && value.stateNavigator} {...props} />}
+        {value => <Component stateNavigator={value && value.stateNavigator} {...props} />}
     </NavigationContext.Consumer>
 );
   
