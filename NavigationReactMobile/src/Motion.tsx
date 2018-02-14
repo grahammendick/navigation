@@ -6,7 +6,11 @@ class Motion extends React.Component<any, any> {
         super(props, context);
         this.move = this.move.bind(this);
         var {data, enter, getKey} = this.props;
-        var items = data.map(item => ({key: getKey(item), data: item, style: enter(item)}));
+        var items = data.map(item => {
+            var newItem: any = {key: getKey(item), data: item, progress: 1, tick: 0};
+            newItem.start = newItem.end = newItem.style = enter(item);
+            return newItem;
+        });
         this.state = {items};
     }
     static defaultProps = {
