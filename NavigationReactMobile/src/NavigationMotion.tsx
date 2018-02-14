@@ -104,7 +104,7 @@ class NavigationMotion extends React.Component<any, any> {
         return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
      }
     render() {
-        var {style, children, duration, sharedElementMotion} = this.props;
+        var {children, duration, sharedElementMotion} = this.props;
         var {stateContext: {crumbs, oldUrl, oldState}, stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
@@ -116,7 +116,7 @@ class NavigationMotion extends React.Component<any, any> {
                 duration={duration}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
-                    tweenStyles.map(({key, data: {scene, state, data, url}, progress, style: tweenStyle}) => (
+                    tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
                         (children as any)(tweenStyle, scene, key, crumbs.length === key, state, data)
                     )).concat(
                         sharedElementMotion && sharedElementMotion({
