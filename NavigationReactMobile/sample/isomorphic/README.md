@@ -1,5 +1,5 @@
-# Isomorphic Mobile Navigation
-Navigation works just as well on the server as it does on the client. Use it with React and Node to write SEO-friendly apps with fast initial load times.
+# Isomorphic Navigation Mobile
+Navigation works just as well on the server as it does on the client. Use it with React and Node to write SEO-friendly mobile apps with fast initial load times.
 
 ## Run
 Once you've cloned the repository, you can install the dependencies and start the isomorphic example:
