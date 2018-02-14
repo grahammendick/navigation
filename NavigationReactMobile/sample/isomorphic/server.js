@@ -20,7 +20,7 @@ app.get('*', function(req, res) {
     stateNavigator.start(req.url);
     res.send(`<html>
         <head>
-            <title>Isomorphic Mobile Navigation</title>
+            <title>Isomorphic Navigation Mobile</title>
             <style>
                 table{border-collapse:collapse;}
                 table,td,th{border:1px #000 solid;}
