@@ -12,6 +12,7 @@
         }
         .scene {
             position: absolute;
+            overflow: auto;
             left: 0;
             right: 0;
             top: 0;
@@ -164,7 +165,7 @@
         ReactDOM.render(
             <NavigationHandler stateNavigator={stateNavigator}>
                 <NavigationMotion
-                    unmountedStyle={{opacity: 1, translate: 1}}
+                    unmountedStyle={{opacity: 1, translate: 100}}
                     mountedStyle={{opacity: 1, translate: 0}}
                     crumbStyle={{opacity: 0, translate: 0}}>
                     {({opacity, translate}, scene, key, active) => (
@@ -172,8 +173,7 @@
                             className="scene"
                             style={{
                                 opacity,
-                                overflow: active ? 'auto' : 'hidden',
-                                transform: `translate(${translate * window.innerWidth}px)`,
+                                transform: `translate(${translate}%)`,
                             }}>
                             {scene}
                         </div>
