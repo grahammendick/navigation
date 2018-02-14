@@ -17,7 +17,11 @@ app.get('/favicon.ico', function(req, res) {
 
 app.get('*', function(req, res) {
     var stateNavigator = getStateNavigator();
-    stateNavigator.start(req.url);
+    var { state, data } = stateNavigator.parseLink(req.url);
+    var url = stateNavigator.fluent()
+        .navigate('people')
+        .navigate(state.key, data).url;
+    stateNavigator.start(url);
     res.send(`<html>
         <head>
             <title>Isomorphic Navigation Mobile</title>
