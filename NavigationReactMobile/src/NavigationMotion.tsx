@@ -108,7 +108,7 @@ class NavigationMotion extends React.Component<any, any> {
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={({state, data}) => this.getPropValue(oldState ? unmountedStyle : mountedStyle, state, data)}
+                enter={({mount, state, data}) => this.getPropValue(oldState ? unmountedStyle : (mount ? mountedStyle : crumbStyle), state, data)}
                 update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
                 leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
                 duration={duration}
