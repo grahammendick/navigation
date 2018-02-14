@@ -98,19 +98,21 @@ class NavigationMotion extends React.Component<any, any> {
             {key: index, state, data, url, scene: this.state.scenes[index], mount: url === nextCrumb.url}
         ));
     }
-    getPropValue(prop, state, data) {
+    getPropValue(mounted, mount, state, data) {
+        var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
+        var prop = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle)
         return typeof prop === 'function' ? prop(state, data) : prop;
      }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, sharedElementMotion} = this.props;
+        var {style, children, duration, sharedElementMotion} = this.props;
         var {stateContext: {crumbs, oldUrl, oldState}, stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={({mount, state, data}) => this.getPropValue(oldState ? unmountedStyle : (mount ? mountedStyle : crumbStyle), state, data)}
-                update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
-                leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
+                enter={({mount, state, data}) => this.getPropValue(!oldState, mount, state, data)}
+                update={({mount, state, data}) => this.getPropValue(true, mount, state, data)}
+                leave={({state, data}) => this.getPropValue(false, false, state, data)}
                 duration={duration}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
