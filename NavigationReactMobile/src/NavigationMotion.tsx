@@ -116,8 +116,8 @@ class NavigationMotion extends React.Component<any, any> {
                 enter={scene => this.getStyle(!oldState, scene.mount, scene)}
                 update={scene => this.getStyle(true, scene.mount, scene)}
                 leave={scene => this.getStyle(false, false, scene)}
-                duration={duration}
-                onRest={({key}) => this.clearScene(key)}>
+                onRest={({key}) => this.clearScene(key)}
+                duration={duration}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
                         (children as any)(tweenStyle, scene, key, crumbs.length === key, state, data)
