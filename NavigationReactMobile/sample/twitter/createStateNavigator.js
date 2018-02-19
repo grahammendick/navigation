@@ -24,7 +24,7 @@ export default () => {
   home.renderScene = () => <Home tweets={getHome()} />;
   tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} />;
   timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} />;
-  photo.renderScene = ({id, index}) => <Photo photo={getTweet(id).photos[index]} />;
+  photo.renderScene = ({id}) => <Photo photo={getTweet(id).photo} />;
   
   return stateNavigator;
 }
