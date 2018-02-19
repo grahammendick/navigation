@@ -10,7 +10,8 @@ export default () => {
   const stateNavigator = new StateNavigator([
     {key: 'home', route: ''},
     {key: 'tweet', trackCrumbTrail: true},
-    {key: 'timeline', trackCrumbTrail: true}
+    {key: 'timeline', trackCrumbTrail: true},
+    {key: 'photo', trackCrumbTrail: true}
   ], new MobileHistoryManager(url => {
     var {state, data} = stateNavigator.parseLink(url);
     return stateNavigator.fluent()
@@ -18,10 +19,11 @@ export default () => {
       .navigate(state.key, data).url;
   }));
 
-  const {home, tweet, timeline} = stateNavigator.states;
+  const {home, tweet, timeline, photo} = stateNavigator.states;
   home.renderScene = () => <Home tweets={getHome()} />;
   tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} />;
   timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} />;
+  photo.renderScene = ({id, index}) => <photo photo={getTweet(id).photos[index]} />;
   
   return stateNavigator;
 }
