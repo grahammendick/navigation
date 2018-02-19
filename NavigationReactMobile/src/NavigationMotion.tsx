@@ -94,14 +94,17 @@ class NavigationMotion extends React.Component<any, any> {
     }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        return crumbs.concat(nextCrumb).map(({state, data, url}, index) => (
-            {key: index, state, data, url, scene: this.state.scenes[index], mount: url === nextCrumb.url}
-        ));
+        return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
+            var previousCrumbs = crumbsAndNext.slice(0, index - 1);
+            var nextCrumb = crumbsAndNext[index + 1];
+            return {key: index, state, data, url, crumbs: previousCrumbs, nextState: nextCrumb && nextCrumb.state,
+                nextData: nextCrumb && nextCrumb.data, scene: this.state.scenes[index], mount: url === nextCrumb.url};
+        });
     }
-    getStyle(mounted, mount, state, data) {
+    getStyle(mounted, mount, {state, data, crumbs, nextState, nextData}) {
         var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
         var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle)
-        return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+        return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
      }
     render() {
         var {children, duration, sharedElementMotion} = this.props;
@@ -110,9 +113,9 @@ class NavigationMotion extends React.Component<any, any> {
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={({mount, state, data}) => this.getStyle(!oldState, mount, state, data)}
-                update={({mount, state, data}) => this.getStyle(true, mount, state, data)}
-                leave={({state, data}) => this.getStyle(false, false, state, data)}
+                enter={scene => this.getStyle(!oldState, scene.mount, scene)}
+                update={scene => this.getStyle(true, scene.mount, scene)}
+                leave={scene => this.getStyle(false, false, scene)}
                 duration={duration}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
