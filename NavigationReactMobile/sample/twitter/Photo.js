@@ -12,7 +12,7 @@ export default ({photo}) => (
       </svg>
     </NavigationBackLink>
     <SharedElement
-      data={{src: photo}}
+      data={{src: photo, enable: true}}
       name={photo}>
       <img src={photo}/>
     </SharedElement>
