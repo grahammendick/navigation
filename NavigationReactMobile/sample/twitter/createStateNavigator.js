@@ -4,6 +4,7 @@ import {MobileHistoryManager} from 'navigation-react-mobile';
 import Home from './Home';
 import Tweet from './Tweet';
 import Timeline from './Timeline';
+import Photo from './Photo';
 import {getHome, getTweet, getTimeline} from './data';
 
 export default () => {
@@ -23,7 +24,7 @@ export default () => {
   home.renderScene = () => <Home tweets={getHome()} />;
   tweet.renderScene = ({id}) => <Tweet tweet={getTweet(id)} />;
   timeline.renderScene = ({id}) => <Timeline timeline={getTimeline(id)} />;
-  photo.renderScene = ({id, index}) => <photo photo={getTweet(id).photos[index]} />;
+  photo.renderScene = ({id, index}) => <Photo photo={getTweet(id).photos[index]} />;
   
   return stateNavigator;
 }
