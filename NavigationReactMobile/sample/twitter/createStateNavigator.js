@@ -15,9 +15,10 @@ export default () => {
     {key: 'photo', trackCrumbTrail: true}
   ], new MobileHistoryManager(url => {
     var {state, data} = stateNavigator.parseLink(url);
-    return stateNavigator.fluent()
-      .navigate('home')
-      .navigate(state.key, data).url;
+    var fluent = stateNavigator.fluent().navigate('home');
+    if (state.key === 'photo')
+      fluent = fluent.navigate('tweet', {id: data.id})
+    return fluent.navigate(state.key, data).url;
   }));
 
   const {home, tweet, timeline, photo} = stateNavigator.states;
