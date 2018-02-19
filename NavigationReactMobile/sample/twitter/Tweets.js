@@ -22,7 +22,7 @@ export default ({tweets, onTimeline}) => (
         {photo && <NavigationLink
           className="photo"
           stateKey="photo"
-          navigationData={{id: accountId}}>
+          navigationData={{id}}>
           <img src={photo}/>
         </NavigationLink>}
       </li>
