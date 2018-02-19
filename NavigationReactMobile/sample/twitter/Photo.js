@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavigationBackLink} from 'navigation-react';
+import {SharedElement} from 'navigation-react-mobile';
 
 export default ({photo}) => (
   <div className="photo">
@@ -10,7 +11,11 @@ export default ({photo}) => (
         </g>
       </svg>
     </NavigationBackLink>
-    <img src={photo}/>
+    <SharedElement
+      data={{src: photo}}
+      name={photo}>
+      <img src={photo}/>
+    </SharedElement>
   </div>
 );
 

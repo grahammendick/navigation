@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavigationLink} from 'navigation-react';
+import {SharedElement} from 'navigation-react-mobile';
 
 export default ({tweets, onTimeline}) => (
   <ul>
@@ -23,7 +24,11 @@ export default ({tweets, onTimeline}) => (
           className="photo"
           stateKey="photo"
           navigationData={{id}}>
-          <img src={photo}/>
+            <SharedElement
+              data={{src: photo}}
+              name={photo}>
+              <img src={photo}/>
+            </SharedElement>
         </NavigationLink>}
       </li>
     ))}
