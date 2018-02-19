@@ -95,10 +95,10 @@ class NavigationMotion extends React.Component<any, any> {
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
         return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
-            var previousCrumbs = crumbsAndNext.slice(0, index - 1);
-            var nextCrumb = crumbsAndNext[index + 1];
-            return {key: index, state, data, url, crumbs: previousCrumbs, nextState: nextCrumb && nextCrumb.state,
-                nextData: nextCrumb && nextCrumb.data, scene: this.state.scenes[index], mount: url === nextCrumb.url};
+            var preCrumbs = crumbsAndNext.slice(0, index - 1);
+            var postCrumb = crumbsAndNext[index + 1];
+            return {key: index, state, data, url, crumbs: preCrumbs, nextState: postCrumb && postCrumb.state,
+                nextData: postCrumb && postCrumb.data, scene: this.state.scenes[index], mount: url === nextCrumb.url};
         });
     }
     getStyle(mounted, mount, {state, data, crumbs, nextState, nextData}) {
