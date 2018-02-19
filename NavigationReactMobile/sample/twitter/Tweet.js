@@ -21,12 +21,12 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         </div>
       </div>
       <div className="text">{text}</div>
-      <NavigationLink
+      {photo && <NavigationLink
         className="photo"
         stateKey="photo"
         navigationData={{id}}>
           <img src={photo}/>
-      </NavigationLink>
+      </NavigationLink>}
       <div className="time">{time}</div>
       <div className="interactions">
         <div className="count">{retweets}</div>
