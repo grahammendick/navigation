@@ -4,9 +4,11 @@ import PhotoZoom from './PhotoZoom';
 
 export default () => (
   <NavigationMotion
-    unmountedStyle={(state) => (
-      state.key !== 'photo' ? {translate: 100, scale: 1, opacity: 1} : {translate: 0, scale: 1, opacity: 0}
-    )}
+    unmountedStyle={(state, data, crumbs) => {
+      var previousCrumb = crumbs[crumbs.length - 1];
+      var fromSameTweet = previousCrumb && previousCrumb.state.key === 'tweet' && previousCrumb.data.id === data.id;
+      return (state.key !== 'photo' || fromSameTweet) ? {translate: 100, scale: 1, opacity: 1} : {translate: 0, scale: 1, opacity: 0}
+    }}
     mountedStyle={{translate: 0, scale: 1, opacity: 1}}
     crumbStyle={(state, data, crumbs, nextState) => (
       nextState.key !== 'photo' ? {translate: 5, scale: 0.9, opacity: 0} : {translate: 0, scale: 1, opacity: 0}
