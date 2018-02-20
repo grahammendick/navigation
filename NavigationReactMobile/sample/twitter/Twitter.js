@@ -17,7 +17,7 @@ export default () => (
       sharedElements = sharedElements.filter(share => share.oldElement.data.enable || share.mountedElement.data.enable);
       return <PhotoZoom {...props} sharedElements={sharedElements} />;
     }}>
-    {({translate, scale, opacity}, scene, key, active) => (
+    {({translate, scale, opacity}, scene, key) => (
       <div key={key}
         className="scene"
         style={{
