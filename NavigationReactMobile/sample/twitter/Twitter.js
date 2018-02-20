@@ -5,7 +5,7 @@ import PhotoZoom from './PhotoZoom';
 export default () => (
   <NavigationMotion
     unmountedStyle={(state, data, crumbs) => {
-      var { state: previousState, data: previousData } = crumbs[crumbs.length - 1] || {};
+      var {state: previousState, data: previousData} = crumbs[crumbs.length - 1] || {};
       var sharePhoto = state.key === 'photo' && !(previousState.key === 'tweet' && previousData.id === data.id);
       return !sharePhoto ? {translate: 100, scale: 1, opacity: 1} : {translate: 0, scale: 1, opacity: 0};
     }}
