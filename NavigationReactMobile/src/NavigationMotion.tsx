@@ -101,7 +101,7 @@ class NavigationMotion extends React.Component<any, any> {
                 nextData: postCrumb && postCrumb.data, scene: this.state.scenes[index], mount: url === nextCrumb.url};
         });
     }
-    getStyle(mounted, mount, {state, data, crumbs, nextState, nextData}) {
+    getStyle(mounted, {state, data, crumbs, nextState, nextData, mount}) {
         var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
         var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle)
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
@@ -113,9 +113,9 @@ class NavigationMotion extends React.Component<any, any> {
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={scene => this.getStyle(!oldState, scene.mount, scene)}
-                update={scene => this.getStyle(true, scene.mount, scene)}
-                leave={scene => this.getStyle(false, false, scene)}
+                enter={scene => this.getStyle(!oldState, scene)}
+                update={scene => this.getStyle(true, scene)}
+                leave={scene => this.getStyle(false, scene)}
                 onRest={({key}) => this.clearScene(key)}
                 duration={duration}>
                 {tweenStyles => (
