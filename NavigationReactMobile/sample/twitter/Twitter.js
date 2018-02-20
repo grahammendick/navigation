@@ -24,7 +24,7 @@ export default () => (
       <div key={key}
         className="scene"
         style={{
-          transform: `translate(${translate}%, 0) scale(${scale}, ${scale})`,
+          transform: `translate(${translate}%) scale(${scale}, ${scale})`,
           opacity
         }}>
         {scene}
