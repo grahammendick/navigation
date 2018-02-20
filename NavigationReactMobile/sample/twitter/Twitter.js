@@ -8,7 +8,7 @@ export default () => (
       var previousCrumb = crumbs[crumbs.length - 1];
       var fromSameTweet = previousCrumb && previousCrumb.state.key === 'tweet' && previousCrumb.data.id === data.id;
       var sharePhoto = state.key === 'photo' && !fromSameTweet;
-      return !sharePhoto ? {translate: 100, scale: 1, opacity: 1} : {translate: 0, scale: 1, opacity: 0}
+      return !sharePhoto ? {translate: 100, scale: 1, opacity: 1} : {translate: 0, scale: 1, opacity: 0};
     }}
     mountedStyle={{translate: 0, scale: 1, opacity: 1}}
     crumbStyle={(state, data, crumbs, nextState) => (
@@ -18,7 +18,7 @@ export default () => (
       var filteredSharedElements = sharedElements.filter(({oldElement, mountedElement}) => (
         oldElement.data.enable || mountedElement.data.enable
       ));
-      return <PhotoZoom {...props} sharedElements={filteredSharedElements} />
+      return <PhotoZoom {...props} sharedElements={filteredSharedElements} />;
     }}>
     {({translate, scale, opacity}, scene, key, active) => (
       <div key={key}
