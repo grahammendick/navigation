@@ -13,7 +13,7 @@ export default () => (
     crumbStyle={(state, data, crumbs, nextState) => (
       nextState.key !== 'photo' ? {translate: 5, scale: 0.9, opacity: 0} : {translate: 0, scale: 1, opacity: 0}
     )}
-    sharedElementMotion={({sharedElements,...props}) => {
+    sharedElementMotion={({sharedElements, ...props}) => {
       sharedElements = sharedElements.filter(share => share.oldElement.data.enable || share.mountedElement.data.enable);
       return <PhotoZoom {...props} sharedElements={sharedElements} />;
     }}>
