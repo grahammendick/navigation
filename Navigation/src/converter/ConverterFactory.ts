@@ -11,7 +11,8 @@ class ConverterFactory {
     constructor() {
         var converterArray: TypeConverter[] = [
             new StringConverter('0'), new BooleanConverter('1'), 
-            new NumberConverter('2'), new DateConverter('3')];
+            new NumberConverter('2'), new DateConverter('3')
+        ];
         for (var i = 0; i < converterArray.length; i++) {
             var converter = converterArray[i];
             var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)
