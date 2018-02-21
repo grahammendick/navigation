@@ -7,7 +7,7 @@ import TypeConverter from './TypeConverter';
 
 class ConverterFactory {
     private keyToConverterList: { [index: string]: TypeConverter } = {};
-    private nameToKeyList: { [index: string]: string } = {};
+    private nameToConverterList: { [index: string]: TypeConverter } = {};
     constructor() {
         var converterArray: TypeConverter[] = [
             new StringConverter('0'), new BooleanConverter('1'), 
@@ -17,8 +17,8 @@ class ConverterFactory {
             var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)
             this.keyToConverterList[converter.key] = converter;
             this.keyToConverterList[arrayConverter.key] = arrayConverter;
-            this.nameToKeyList[converter.name] = converter.key;
-            this.nameToKeyList[arrayConverter.name] = arrayConverter.key;
+            this.nameToConverterList[converter.name] = converter;
+            this.nameToConverterList[arrayConverter.name] = arrayConverter;
         }
     }
     
@@ -27,10 +27,10 @@ class ConverterFactory {
     }
     
     getConverterFromName(name: string): TypeConverter {
-        var key = this.nameToKeyList[name];
-        if (!key)
+        var converter = this.nameToConverterList[name];
+        if (!converter)
             throw new Error('No TypeConverter found for ' + name);
-        return this.getConverterFromKey(key);
+        return converter;
     }
 }
 export default ConverterFactory;
