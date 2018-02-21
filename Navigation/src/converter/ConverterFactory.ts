@@ -15,10 +15,8 @@ class ConverterFactory {
         for (var i = 0; i < converterArray.length; i++) {
             var converter = converterArray[i];
             var arrayConverter = new ArrayConverter(converter, 'a' + converter.key)
-            this.keyToConverterList[converter.key] = converter;
-            this.keyToConverterList[arrayConverter.key] = arrayConverter;
-            this.nameToConverterList[converter.name] = converter;
-            this.nameToConverterList[arrayConverter.name] = arrayConverter;
+            this.keyToConverterList[converter.key] = this.nameToConverterList[converter.name] = converter;
+            this.keyToConverterList[arrayConverter.key] = this.nameToConverterList[arrayConverter.name] = arrayConverter;
         }
     }
     
