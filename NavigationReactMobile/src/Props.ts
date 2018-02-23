@@ -7,7 +7,7 @@ interface NavigationMotionProps {
     mountedStyle: any;
     crumbStyle: any;
     duration: number;
-    sharedElementMotion: (props: SharedElementNavigationMotionProps) => SharedElementMotion;
+    sharedElementMotion: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     stateNavigator?: StateNavigator;
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
