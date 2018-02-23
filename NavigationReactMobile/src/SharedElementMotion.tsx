@@ -13,7 +13,9 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
         this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
-    diff(fromSharedElements: { [name: string]: SharedElement }, toSharedElements: { [name: string]: SharedElement }, action: (name: string, ref: HTMLElement, data: any) => void) {
+    diff(fromSharedElements: { [name: string]: SharedElement },
+        toSharedElements: { [name: string]: SharedElement },
+        action: (name: string, ref: HTMLElement, data: any) => void) {
         for(var name in fromSharedElements) {
             var from = fromSharedElements[name];
             var to = toSharedElements[name];
