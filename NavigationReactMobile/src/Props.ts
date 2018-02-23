@@ -1,4 +1,5 @@
 import { StateNavigator, State } from 'navigation';
+import SharedElementMotion from './SharedElementMotion';
 import * as React from 'react';
 
 interface NavigationMotionProps {
@@ -6,10 +7,23 @@ interface NavigationMotionProps {
     mountedStyle: any;
     crumbStyle: any;
     duration: number;
-    sharedElementMotion: (props: any) => any;
+    sharedElementMotion: (props: SharedElementNavigationMotionProps) => SharedElementMotion;
     stateNavigator?: StateNavigator;
     children: (style: any, scene: React.ReactNode, key: number, active: boolean, state: State, data: any) => React.ReactNode;
 }
 
-export { NavigationMotionProps }
+interface SharedElementNavigationMotionProps {
+    sharedElements: any[];
+    progress: number;
+    duration: number;
+}
+
+interface SharedElementMotionProps {
+    onAnimated: (name: string, ref: HTMLElement, data: any) => void;
+    onAnimating: (name: string, ref: HTMLElement, data: any) => void;
+    elementStyle: (name: string, ref: HTMLElement, data: any) => any;
+    children: (style: any, name: string, oldElementData: any, mountedElementData: any) => React.ReactNode;
+}
+
+export { NavigationMotionProps, SharedElementNavigationMotionProps, SharedElementMotionProps }
 

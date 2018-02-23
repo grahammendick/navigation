@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Motion from './Motion';
+import { SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
 
-class SharedElementMotion extends React.Component<any, any> {
+class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {
         duration: 300,
         elementStyle: (name, ref, data) => data
@@ -35,7 +36,7 @@ class SharedElementMotion extends React.Component<any, any> {
         return typeof prop === 'function' ? prop(name) : prop;
     }
     render() {
-        var {sharedElements, style, children, progress, duration} = this.props;
+        var {sharedElements, children, progress, duration} = this.props;
         return (sharedElements.length !== 0 &&
             <Motion
                 data={sharedElements}
