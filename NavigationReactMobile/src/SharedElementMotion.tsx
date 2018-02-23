@@ -27,7 +27,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
             }
         }
     }
-    getSharedElements(sharedElements: SharedElement[]) {
+    getSharedElements(sharedElements: SharedElement[]): { [name: string]: SharedElement } {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
     getStyle(name, {ref, data}) {
