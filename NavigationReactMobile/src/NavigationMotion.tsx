@@ -3,8 +3,9 @@ import * as React from 'react';
 import Motion from './Motion';
 import Scene from './Scene';
 import withStateNavigator from './withStateNavigator';
+import { NavigationMotionProps } from './Props';
 
-class NavigationMotion extends React.Component<any, any> {
+class NavigationMotion extends React.Component<NavigationMotionProps, any> {
     private sharedElements = {};
     context: {
         stateNavigator: StateNavigator
@@ -120,7 +121,7 @@ class NavigationMotion extends React.Component<any, any> {
                 duration={duration}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
-                        (children as any)(tweenStyle, scene, key, crumbs.length === key, state, data)
+                        children(tweenStyle, scene, key, crumbs.length === key, state, data)
                     )).concat(
                         sharedElementMotion && sharedElementMotion({
                             key: 'sharedElements',
