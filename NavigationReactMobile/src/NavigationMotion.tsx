@@ -25,7 +25,7 @@ class NavigationMotion extends React.Component<any, any> {
         duration: 300,
     }
     static contextTypes = {
-        stateNavigator: () => {}
+        stateNavigator: () => null
     }
     static childContextTypes = {
         registerSharedElement: () => {},

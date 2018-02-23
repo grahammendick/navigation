@@ -16,9 +16,9 @@ class SharedElement extends React.Component<any, any> {
         this.register = this.register.bind(this);
     }
     static contextTypes = {
-        stateNavigator: () => {},
-        registerSharedElement: () => {},
-        unregisterSharedElement: () => {}
+        stateNavigator: () => null,
+        registerSharedElement: () => null,
+        unregisterSharedElement: () => null
     }
     private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || this.context.stateNavigator;
