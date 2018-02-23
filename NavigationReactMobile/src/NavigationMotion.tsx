@@ -105,7 +105,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                 nextData: postCrumb && postCrumb.data, scene: this.state.scenes[index], mount: url === nextCrumb.url};
         });
     }
-    getStyle(mounted, {state, data, crumbs, nextState, nextData, mount}) {
+    getStyle(mounted: boolean, {state, data, crumbs, nextState, nextData, mount}: SceneContext) {
         var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
         var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle)
         return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
