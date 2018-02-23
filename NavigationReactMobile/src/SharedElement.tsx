@@ -1,8 +1,9 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import withStateNavigator from './withStateNavigator';
+import { SharedElementProps } from './Props';
 
-class SharedElement extends React.Component<any, any> {
+class SharedElement extends React.Component<SharedElementProps, any> {
     private ref: Element;
     private scene: number;
     context: {

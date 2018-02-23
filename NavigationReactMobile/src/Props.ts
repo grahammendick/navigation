@@ -12,6 +12,13 @@ interface NavigationMotionProps {
     children: (style: any, scene: React.ReactNode, key: number, active: boolean, state: State, data: any) => React.ReactNode;
 }
 
+interface SharedElementProps {
+    name: string;
+    data: any;
+    unshare: boolean;
+    stateNavigator?: StateNavigator;
+}
+
 interface SharedElement {
     name: string;
     oldElement: { ref: HTMLElement; data: any };
@@ -31,5 +38,5 @@ interface SharedElementMotionProps {
     children: (style: any, name: string, oldElementData: any, mountedElementData: any) => React.ReactNode;
 }
 
-export { NavigationMotionProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps }
+export { NavigationMotionProps, SharedElementProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps }
 
