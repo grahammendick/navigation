@@ -47,7 +47,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         }
     }
     render() {
-        return React.cloneElement((this.props.children as any), {ref: el => this.ref = el});
+        return React.cloneElement(this.props.children, {ref: el => this.ref = el});
     }
 }
 
