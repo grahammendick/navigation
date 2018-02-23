@@ -6,4 +6,4 @@ const stateNavigator = new StateNavigator([
     { key: 'person', route: 'person/{id}', trackCrumbTrail: true }
 ]);
 
-stateNavigator.states.people.renderScene = () => {};
+//stateNavigator.states.people.renderScene = () => {};
