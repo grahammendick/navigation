@@ -9,8 +9,8 @@ interface MotionProps<T> {
     enter: (item: T) => any;
     update: (item: T) => any;
     leave?: (item: T) => any;
-    progress?: number;
     onRest?: (item: T) => void;
+    progress?: number;
     children: (items: {style: any, data: T, key: string | number, progress: number }[]) => ReactElement<any>[];
 }
 
