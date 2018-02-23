@@ -10,7 +10,7 @@ interface MotionProps<T> {
     update: (item: T) => any;
     leave?: (item: T) => any;
     progress?: number;
-    onRest?: any;
+    onRest?: (item: T) => void;
     children: (items: {style: any, data: T, key: string | number, progress: number }[]) => ReactElement<any>[];
 }
 
