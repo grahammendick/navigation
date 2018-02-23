@@ -4,8 +4,9 @@ import Motion from './Motion';
 import Scene from './Scene';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps, SharedElement } from './Props';
+type NavigationMotionState = { scenes: { [crumbs: number]: React.ReactElement<Scene> }, rest: boolean };
 
-class NavigationMotion extends React.Component<NavigationMotionProps, any> {
+class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
     context: {
         stateNavigator: StateNavigator
