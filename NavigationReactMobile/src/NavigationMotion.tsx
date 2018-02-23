@@ -6,7 +6,7 @@ import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps, SharedElement } from './Props';
 
 class NavigationMotion extends React.Component<NavigationMotionProps, any> {
-    private sharedElements = {};
+    private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
     context: {
         stateNavigator: StateNavigator
     }
