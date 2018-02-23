@@ -22,7 +22,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     }
 
     static contextTypes = {
-        stateNavigator: () => {}
+        stateNavigator: () => null
     }
     
     private getStateNavigator(): StateNavigator {
