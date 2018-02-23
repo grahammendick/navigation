@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { MotionProps } from './Props';
 
-class Motion extends React.Component<any, any> {
+class Motion extends React.Component<MotionProps, any> {
     private moveId: number;
     constructor(props, context) {
         super(props, context);
@@ -88,7 +89,7 @@ class Motion extends React.Component<any, any> {
         return style;
     }
     render() {
-        return (this.props.children as any)(this.state.items);
+        return this.props.children(this.state.items);
     }
 }
 

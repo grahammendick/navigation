@@ -2,6 +2,18 @@ import { StateNavigator, State } from 'navigation';
 import SharedElementMotion from './SharedElementMotion';
 import { ReactElement } from 'react';
 
+interface MotionProps {
+    data: any[];
+    getKey: (item: any) => string;
+    duration: number;
+    enter: (item: any) => any;
+    update: (item: any) => any;
+    leave?: (item: any) => any;
+    progress?: number;
+    onRest?: any;
+    children: (items: any[]) => ReactElement<any>[];
+}
+
 interface NavigationMotionProps {
     unmountedStyle: any;
     mountedStyle: any;
@@ -39,5 +51,5 @@ interface SharedElementMotionProps {
     children: (style: any, name: string, oldElementData: any, mountedElementData: any) => ReactElement<any>;
 }
 
-export { NavigationMotionProps, SharedElementProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps }
+export { MotionProps, NavigationMotionProps, SharedElementProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps }
 
