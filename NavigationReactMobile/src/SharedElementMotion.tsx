@@ -47,7 +47,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
                 duration={duration}>
                 {tweenStyles => (
                     tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
-                        (children as any)(tweenStyle, name, oldElement.data, mountedElement.data)
+                        children(tweenStyle, name, oldElement.data, mountedElement.data)
                     ))
                 )}
             </Motion>
