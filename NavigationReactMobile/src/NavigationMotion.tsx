@@ -5,7 +5,8 @@ import Scene from './Scene';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps, SharedElement } from './Props';
 type NavigationMotionState = { scenes: { [crumbs: number]: React.ReactElement<Scene> }, rest: boolean };
-type SceneContext = {key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, scene: React.ReactElement<Scene>, mount: boolean};
+type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State,
+    nextData: any, scene: React.ReactElement<Scene>, mount: boolean };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
