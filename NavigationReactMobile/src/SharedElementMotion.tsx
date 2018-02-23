@@ -35,7 +35,7 @@ class SharedElementMotion extends React.Component<any, any> {
         return typeof prop === 'function' ? prop(name) : prop;
     }
     render() {
-        var {sharedElements, style, children, progress, duration, easing} = this.props;
+        var {sharedElements, style, children, progress, duration} = this.props;
         return (sharedElements.length !== 0 &&
             <Motion
                 data={sharedElements}
