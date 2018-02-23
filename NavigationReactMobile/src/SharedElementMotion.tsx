@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Motion from './Motion';
-import { SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
+import { SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
 
 class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {
@@ -13,7 +13,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
         this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
-    diff(fromSharedElements, toSharedElements, action) {
+    diff(fromSharedElements: { [name: string]: SharedElement }, toSharedElements: { [name: string]: SharedElement }, action: (name: string, ref: HTMLElement, data: any) => void) {
         for(var name in fromSharedElements) {
             var from = fromSharedElements[name];
             var to = toSharedElements[name];
@@ -25,7 +25,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
             }
         }
     }
-    getSharedElements(sharedElements) {
+    getSharedElements(sharedElements: SharedElement[]) {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
     getStyle(name, {ref, data}) {
