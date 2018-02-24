@@ -58,7 +58,8 @@ var App = () => (
     <NavigationMotion
         unmountedStyle={{opacity: 1, translate: 100}}
         mountedStyle={{opacity: 1, translate: 0}}
-        crumbStyle={{opacity: 0, translate: 0}}>
+        crumbStyle={{opacity: 0, translate: 0}}
+        sharedElementMotion={props => <Zoom {...props} />}>
         {({ opacity, translate }, scene, key) => (
             <div
                 key={key}
