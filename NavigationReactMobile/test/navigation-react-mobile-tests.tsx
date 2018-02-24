@@ -1,6 +1,6 @@
 import { StateNavigator } from 'navigation';
 import { NavigationLink } from 'navigation-react';
-import { NavigationMotion, MobileHistoryManager, SharedElement } from 'navigation-react-mobile';
+import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion, SharedElementNavigationMotionProps } from 'navigation-react-mobile';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', route: 'people/{page}' },
@@ -35,6 +35,24 @@ var Person = ({ id }) => (
 var { people, person } = stateNavigator.states;
 people.renderScene = ({ page }) => <People page={page}/>;
 person.renderScene = ({ id }) => <Person id={id}/>;
+
+var Zoom = (props: SharedElementNavigationMotionProps) => (
+    <SharedElementMotion
+        {...props}
+        onAnimating={(name, ref) => {ref.style.opacity = '0'}}
+        onAnimated={(name, ref) => {ref.style.opacity = '1'}}>
+        {({ left, top, width, height, size }, name, { id }) => (
+            <div
+                key={name}
+                style={{
+                    position: 'absolute',
+                    left, top, width, height,
+                }}>
+                {id}
+            </div>
+        )}
+    </SharedElementMotion>
+);
 
 var App = () => (
     <NavigationMotion
