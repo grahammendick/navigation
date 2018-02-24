@@ -1,4 +1,5 @@
 import { StateNavigator } from 'navigation';
+import { NavigationLink } from 'navigation-react';
 import { NavigationMotion, MobileHistoryManager, SharedElement } from 'navigation-react-mobile';
 
 const stateNavigator: StateNavigator = new StateNavigator([
@@ -13,18 +14,20 @@ const stateNavigator: StateNavigator = new StateNavigator([
 
 var People = ({ page }) => (
     <ul>
-        {['Bob', 'Brenda'].map(name => (
+        {['Bob', 'Brenda'].map(id => (
             <li>
-                <SharedElement name={name} data={{ name }}>
-                    <div>Bob</div>
-                </SharedElement>
+                <NavigationLink stateKey="person" navigationData={{ id }}>
+                    <SharedElement name={id} data={{ id }}>
+                        <div>Bob</div>
+                    </SharedElement>
+                </NavigationLink>
             </li>
         ))}
     </ul>
 );
 
 var Person = ({ id }) => (
-    <SharedElement name="Bob" data={{ name: 'Bob' }}>
+    <SharedElement name={id} data={{ id }}>
         <div>Bob</div>
     </SharedElement>    
 );
