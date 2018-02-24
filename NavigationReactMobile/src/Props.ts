@@ -15,19 +15,19 @@ interface MotionProps<T> {
 }
 
 interface NavigationMotionProps {
-    unmountedStyle: any;
-    mountedStyle: any;
-    crumbStyle: any;
-    duration: number;
-    sharedElementMotion: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
+    unmountedStyle?: any;
+    mountedStyle?: any;
+    crumbStyle?: any;
+    duration?: number;
+    sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     stateNavigator?: StateNavigator;
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
 interface SharedElementProps {
     name: string;
-    data: any;
-    unshare: boolean;
+    data?: any;
+    unshare?: boolean;
     stateNavigator?: StateNavigator;
     children: ReactElement<any>;
 }
@@ -45,9 +45,9 @@ interface SharedElementNavigationMotionProps {
 }
 
 interface SharedElementMotionProps {
-    onAnimated: (name: string, ref: HTMLElement, data: any) => void;
-    onAnimating: (name: string, ref: HTMLElement, data: any) => void;
-    elementStyle: (name: string, ref: HTMLElement, data: any) => any;
+    onAnimated?: (name: string, ref: HTMLElement, data: any) => void;
+    onAnimating?: (name: string, ref: HTMLElement, data: any) => void;
+    elementStyle?: (name: string, ref: HTMLElement, data: any) => any;
     children: (style: any, name: string, oldElementData: any, mountedElementData: any) => ReactElement<any>;
 }
 
