@@ -1,10 +1,15 @@
 import { StateNavigator } from 'navigation';
-import { NavigationMotion } from 'navigation-react-mobile';
+import { NavigationMotion, MobileHistoryManager } from 'navigation-react-mobile';
 
-const stateNavigator = new StateNavigator([
+const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', route: 'people/{page}' },
     { key: 'person', route: 'person/{id}', trackCrumbTrail: true }
-]);
+], new MobileHistoryManager(url => {
+    var { state, data } = stateNavigator.parseLink(url);
+    return stateNavigator.fluent()
+        .navigate('people')
+        .navigate(state.key, data).url;
+}));
 
 var People = ({ page }) => null;
 var Person = ({ id }) => null;
