@@ -3,7 +3,7 @@ import * as React from 'react';
 import Motion from './Motion';
 import Scene from './Scene';
 import withStateNavigator from './withStateNavigator';
-import { NavigationMotionProps, SharedElement } from './Props';
+import { NavigationMotionProps, SharedItem } from './Props';
 type NavigationMotionState = { scenes: { [crumbs: number]: React.ReactElement<Scene> }, rest: boolean };
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State,
     nextData: any, scene: React.ReactElement<Scene>, mount: boolean };
@@ -72,7 +72,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
             return [];
         var oldSharedElements = this.sharedElements[oldUrl.split('crumb=').length - 1];
         var mountedSharedElements = this.sharedElements[crumbs.length];
-        var sharedElements: SharedElement[] = [];
+        var sharedElements: SharedItem[] = [];
         for(var name in mountedSharedElements) {
             if (oldSharedElements && oldSharedElements[name]) {
                 sharedElements.push({

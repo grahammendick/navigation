@@ -22,14 +22,14 @@ interface SharedElementProps {
     children: ReactElement<any>;
 }
 
-interface SharedElement {
+interface SharedItem {
     name: string;
     oldElement: {ref: HTMLElement; data: any};
     mountedElement: {ref: HTMLElement; data: any};
 }
 
 interface SharedElementNavigationMotionProps {
-    sharedElements: SharedElement[];
+    sharedElements: SharedItem[];
     progress: number;
     duration: number;
 }
@@ -51,5 +51,5 @@ interface NavigationMotionProps {
     children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
 }
 
-export { MotionProps, SharedElementProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps }
+export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps }
 

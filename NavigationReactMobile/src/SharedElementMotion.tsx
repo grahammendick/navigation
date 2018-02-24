@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Motion from './Motion';
-import { SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
+import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
 
 class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {
@@ -13,8 +13,8 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
         this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
-    diff(fromSharedElements: { [name: string]: SharedElement },
-        toSharedElements: { [name: string]: SharedElement },
+    diff(fromSharedElements: { [name: string]: SharedItem },
+        toSharedElements: { [name: string]: SharedItem },
         action: (name: string, ref: HTMLElement, data: any) => void) {
         for(var name in fromSharedElements) {
             var from = fromSharedElements[name];
@@ -27,7 +27,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
             }
         }
     }
-    getSharedElements(sharedElements: SharedElement[]): { [name: string]: SharedElement } {
+    getSharedElements(sharedElements: SharedItem[]): { [name: string]: SharedItem } {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
     getStyle(name, {ref, data}) {
@@ -39,7 +39,7 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
     }
     render() {
         var {sharedElements, children, progress, duration} = this.props;
-        var ElementMotion: new() => Motion<SharedElement> = Motion as any;
+        var ElementMotion: new() => Motion<SharedItem> = Motion as any;
         return (sharedElements.length !== 0 &&
             <ElementMotion
                 data={sharedElements}
