@@ -14,16 +14,6 @@ interface MotionProps<T> {
     children: (items: {style: any, data: T, key: string | number, progress: number }[]) => ReactElement<any>[];
 }
 
-interface NavigationMotionProps {
-    unmountedStyle?: any;
-    mountedStyle?: any;
-    crumbStyle?: any;
-    duration?: number;
-    sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
-    stateNavigator?: StateNavigator;
-    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
-}
-
 interface SharedElementProps {
     name: string;
     data?: any;
@@ -51,5 +41,15 @@ interface SharedElementMotionProps {
     children: (style: any, name: string, oldElementData: any, mountedElementData: any) => ReactElement<any>;
 }
 
-export { MotionProps, NavigationMotionProps, SharedElementProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps }
+interface NavigationMotionProps {
+    unmountedStyle?: any;
+    mountedStyle?: any;
+    crumbStyle?: any;
+    duration?: number;
+    sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
+    stateNavigator?: StateNavigator;
+    children: (style: any, scene: ReactElement<any>, key: number, active: boolean, state: State, data: any) => ReactElement<any>;
+}
+
+export { MotionProps, SharedElementProps, SharedElement, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps }
 
