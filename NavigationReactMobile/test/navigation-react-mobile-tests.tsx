@@ -19,9 +19,17 @@ people.renderScene = ({ page }) => <People page={page}/>;
 person.renderScene = ({ id }) => <Person id={id}/>;
 
 var App = () => (
-    <NavigationMotion>
-        {(style, scene, key) => (
-            <div key={key}>
+    <NavigationMotion
+        unmountedStyle={{opacity: 1, translate: 100}}
+        mountedStyle={{opacity: 1, translate: 0}}
+        crumbStyle={{opacity: 0, translate: 0}}>
+        {({ opacity, translate }, scene, key) => (
+            <div
+                key={key}
+                style={{
+                    opacity,
+                    transform: `translate(${translate}%)`,
+                }}>
                 {scene}
             </div>
         )}
