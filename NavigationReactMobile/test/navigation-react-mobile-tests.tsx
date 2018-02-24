@@ -1,6 +1,7 @@
 import { StateNavigator } from 'navigation';
 import { NavigationLink } from 'navigation-react';
 import { NavigationMotion, MobileHistoryManager, SharedElement, SharedElementMotion, SharedElementNavigationMotionProps } from 'navigation-react-mobile';
+import * as React from 'react';
 
 const stateNavigator: StateNavigator = new StateNavigator([
     { key: 'people', route: 'people/{page}' },
