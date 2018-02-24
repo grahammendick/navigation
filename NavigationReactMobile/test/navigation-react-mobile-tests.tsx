@@ -37,6 +37,8 @@ var { people, person } = stateNavigator.states;
 people.renderScene = ({ page }) => <People page={page}/>;
 person.renderScene = ({ id }) => <Person id={id}/>;
 
+stateNavigator.start();
+
 var Zoom = (props) => (
     <SharedElementMotion
         {...props}
