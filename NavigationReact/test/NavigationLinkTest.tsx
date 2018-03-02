@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
-import { NavigationLink } from '../src/NavigationReact';
+import { NavigationLink, NavigationHandler } from '../src/NavigationReact';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -38,14 +38,12 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s">
-                    link text
-                </NavigationLink>,
-                {
-                    context: { stateNavigator: stateNavigator },
-                    childContextTypes: { stateNavigator: () => {}}
-                }
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
@@ -1418,13 +1416,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1468,14 +1468,16 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1512,21 +1514,23 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Across Crumbs Active Css Class Navigate Navigation Link', function () {
-        it('should not update', function(){
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active"
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('className'), 'active');
@@ -1563,21 +1567,23 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Across Crumbs Disable Active Navigate Navigation Link', function () {
-        it('should not update', function(){
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        disableActive={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
