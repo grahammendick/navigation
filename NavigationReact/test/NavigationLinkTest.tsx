@@ -1420,8 +1420,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s0"
                         navigationData={{x: 'a'}}
-                        includeCurrentData={true}
-                        stateNavigator={stateNavigator}>
+                        includeCurrentData={true}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1447,8 +1446,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s0"
                         navigationData={{x: 'a'}}
-                        includeCurrentData={true}
-                        stateNavigator={stateNavigator}>
+                        includeCurrentData={true}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1475,8 +1473,7 @@ describe('NavigationLinkTest', function () {
                         stateKey="s0"
                         acrossCrumbs={true}
                         navigationData={{x: 'a'}}
-                        includeCurrentData={true}
-                        stateNavigator={stateNavigator}>
+                        includeCurrentData={true}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1502,8 +1499,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s0"
                         navigationData={{x: 'a'}}
-                        activeCssClass="active"
-                        stateNavigator={stateNavigator}>
+                        activeCssClass="active">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1530,8 +1526,7 @@ describe('NavigationLinkTest', function () {
                         stateKey="s0"
                         acrossCrumbs={true}
                         navigationData={{x: 'a'}}
-                        activeCssClass="active"
-                        stateNavigator={stateNavigator}>
+                        activeCssClass="active">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1557,8 +1552,7 @@ describe('NavigationLinkTest', function () {
                     <NavigationLink
                         stateKey="s0"
                         navigationData={{x: 'a'}}
-                        disableActive={true}
-                        stateNavigator={stateNavigator}>
+                        disableActive={true}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1585,8 +1579,7 @@ describe('NavigationLinkTest', function () {
                         stateKey="s0"
                         acrossCrumbs={true}
                         navigationData={{x: 'a'}}
-                        disableActive={true}
-                        stateNavigator={stateNavigator}>
+                        disableActive={true}>
                         link text
                     </NavigationLink>
                 </NavigationHandler>
