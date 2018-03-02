@@ -1,6 +1,5 @@
 ﻿import LinkUtility from './LinkUtility';
 import withStateNavigator from './withStateNavigator';
-import { StateNavigator } from 'navigation';
 import { NavigationLinkProps } from './Props';
 import * as React from 'react';
 type NavigationLinkState = { link?: string, active?: boolean, crumb?: number };
