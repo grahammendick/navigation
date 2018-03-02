@@ -8,9 +8,7 @@ type NavigationLinkState = { link?: string, active?: boolean, crumb?: number };
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
     constructor(props, context) {
         super(props, context);
-        var { stateNavigator } = props;
-        var { crumbs } = stateNavigator.stateContext;
-        this.state = { crumb: crumbs.length };
+        this.state = { crumb: props.stateNavigator.stateContext.crumbs.length };
     }
 
     static getDerivedStateFromProps({ acrossCrumbs, stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator }, { crumb }): NavigationLinkState {
