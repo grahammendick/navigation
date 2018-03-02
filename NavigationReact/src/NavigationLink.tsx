@@ -15,7 +15,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
 
     static getDerivedStateFromProps({ acrossCrumbs, stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator }, { crumb }) {
         var { crumbs, state } = stateNavigator.stateContext;
-        if (!acrossCrumbs && crumb !== undefined && crumb !== crumbs.length)
+        if (!acrossCrumbs && crumb !== crumbs.length)
             return null;
         try {
             var link = stateNavigator.getNavigationLink(stateKey, LinkUtility.getData(stateNavigator, navigationData, includeCurrentData, currentDataKeys));
