@@ -6,8 +6,8 @@ import * as React from 'react';
 type NavigationLinkState = { link?: string, active?: boolean, crumb?: number };
 
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.state = { crumb: props.stateNavigator.stateContext.crumbs.length };
     }
 
