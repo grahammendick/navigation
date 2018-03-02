@@ -3,17 +3,17 @@ import withStateNavigator from './withStateNavigator';
 import { StateNavigator } from 'navigation';
 import { NavigationLinkProps } from './Props';
 import * as React from 'react';
-type NavigationLinkState = { link: string, active: boolean, crumb: number };
+type NavigationLinkState = { link?: string, active?: boolean, crumb?: number };
 
 class NavigationLink extends React.Component<NavigationLinkProps, NavigationLinkState> {
     constructor(props, context) {
         super(props, context);
         var { stateNavigator } = props;
         var { crumbs } = stateNavigator.stateContext;
-        this.state = { link: undefined, active: false, crumb: crumbs.length };
+        this.state = { crumb: crumbs.length };
     }
 
-    static getDerivedStateFromProps({ acrossCrumbs, stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator }, { crumb }) {
+    static getDerivedStateFromProps({ acrossCrumbs, stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator }, { crumb }): NavigationLinkState {
         var { crumbs, state } = stateNavigator.stateContext;
         if (!acrossCrumbs && crumb !== crumbs.length)
             return null;
