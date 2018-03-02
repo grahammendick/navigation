@@ -1443,13 +1443,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1496,13 +1498,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active"
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('className'), 'active');
@@ -1549,13 +1553,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        disableActive={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
