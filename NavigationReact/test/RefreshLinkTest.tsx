@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
-import { RefreshLink } from '../src/NavigationReact';
+import { RefreshLink, NavigationHandler } from '../src/NavigationReact';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -40,13 +40,11 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s');
             var wrapper = mount(
-                <RefreshLink>
-                    link text
-                </RefreshLink>,
-                {
-                    context: { stateNavigator: stateNavigator },
-                    childContextTypes: { stateNavigator: () => {}}
-                }
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
@@ -1369,12 +1367,14 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <RefreshLink
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </RefreshLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1417,13 +1417,15 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <RefreshLink
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </RefreshLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1466,13 +1468,15 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <RefreshLink
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </RefreshLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active"
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('className'), 'active');
@@ -1515,13 +1519,15 @@ describe('RefreshLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <RefreshLink
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </RefreshLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <RefreshLink
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        disableActive={true}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </RefreshLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
