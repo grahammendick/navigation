@@ -24,7 +24,7 @@ class LinkUtility {
         if (active && props.activeCssClass)
             toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
         if (active && props.disableActive)
-            toProps.href = null;        
+            toProps.href = null;
     }
 
     private static areEqual(val: any, currentVal: any): boolean {
