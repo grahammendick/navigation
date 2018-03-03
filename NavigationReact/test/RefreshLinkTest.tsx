@@ -34,18 +34,16 @@ describe('RefreshLinkTest', function () {
         })
     });
 
-    describe('Context Refresh Link', function () {
+    describe('Props Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
             var wrapper = mount(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <RefreshLink>
-                        link text
-                    </RefreshLink>
-                </NavigationHandler>
+                <RefreshLink stateNavigator={stateNavigator}>
+                    link text
+                </RefreshLink>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
