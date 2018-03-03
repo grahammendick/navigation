@@ -21,8 +21,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1234,8 +1233,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1253,8 +1251,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1272,8 +1269,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1291,8 +1287,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1310,8 +1305,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1329,8 +1323,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
@@ -1414,8 +1407,7 @@ describe('NavigationLinkTest', function () {
             ]);
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
+                    <NavigationLink stateKey="s">
                         link text
                     </NavigationLink>
                 </NavigationHandler>
