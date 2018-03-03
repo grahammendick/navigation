@@ -1459,7 +1459,7 @@ describe('RefreshLinkTest', function () {
     });
 
     describe('Across Crumbs Active Css Class Navigate Refresh Link', function () {
-        it('should not update', function(){
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
@@ -1508,7 +1508,7 @@ describe('RefreshLinkTest', function () {
     });
 
     describe('Across Crumbs Disable Active Navigate Refresh Link', function () {
-        it('should not update', function(){
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
