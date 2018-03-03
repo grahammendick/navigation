@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
-import { NavigationBackLink } from '../src/NavigationReact';
+import { NavigationBackLink, NavigationHandler } from '../src/NavigationReact';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -44,14 +44,12 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}>
-                    link text
-                </NavigationBackLink>,
-                {
-                    context: { stateNavigator: stateNavigator },
-                    childContextTypes: { stateNavigator: () => {}}
-                }
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
@@ -412,12 +410,14 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    acrossCrumbs={true}
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        acrossCrumbs={true}
+                        distance={1}
+                        stateNavigator={stateNavigator}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
