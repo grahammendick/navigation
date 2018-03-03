@@ -10,7 +10,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, NavigationLink
         this.state = { crumb: props.stateNavigator.stateContext.crumbs.length };
     }
 
-    static getDerivedStateFromProps(props, { crumb }): NavigationLinkState {
+    static getDerivedStateFromProps(props, { crumb }) {
         var { acrossCrumbs, stateKey, navigationData, includeCurrentData, currentDataKeys, stateNavigator } = props;
         var { crumbs, state } = stateNavigator.stateContext;
         if (!acrossCrumbs && crumb !== crumbs.length)

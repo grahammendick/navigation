@@ -10,7 +10,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
         this.state = { crumb: props.stateNavigator.stateContext.crumbs.length };
     }
 
-    static getDerivedStateFromProps(props, { crumb }): RefreshLinkState {
+    static getDerivedStateFromProps(props, { crumb }) {
         var { acrossCrumbs, navigationData, includeCurrentData, currentDataKeys, stateNavigator } = props;
         var { crumbs, state } = stateNavigator.stateContext;
         if (!acrossCrumbs && crumb !== crumbs.length)

@@ -10,7 +10,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
         this.state = { crumb: props.stateNavigator.stateContext.crumbs.length };
     }
 
-    static getDerivedStateFromProps(props, { crumb }): NavigationBackLinkState {
+    static getDerivedStateFromProps(props, { crumb }) {
         var { acrossCrumbs, distance, stateNavigator } = props;
         var { crumbs, state } = stateNavigator.stateContext;
         if (!acrossCrumbs && crumb !== crumbs.length)
