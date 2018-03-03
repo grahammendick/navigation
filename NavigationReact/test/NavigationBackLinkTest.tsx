@@ -23,11 +23,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
@@ -45,8 +45,7 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationBackLink
-                        distance={1}>
+                    <NavigationBackLink distance={1}>
                         link text
                     </NavigationBackLink>
                 </NavigationHandler>
@@ -66,11 +65,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={2}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={2}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -87,16 +86,17 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    acrossCrumbs={false}
-                    historyAction='replace'
-                    navigating={() => false}
-                    aria-label="z"
-                    target="_blank"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        acrossCrumbs={false}
+                        historyAction='replace'
+                        navigating={() => false}
+                        aria-label="z"
+                        target="_blank">
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
@@ -117,11 +117,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click');
@@ -138,11 +138,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { ctrlKey: true });
@@ -159,11 +159,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { shiftKey: true });
@@ -180,11 +180,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { metaKey: true });
@@ -201,11 +201,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { altKey: true });
@@ -222,11 +222,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { button: true });
@@ -243,12 +243,13 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    navigating={() => true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        navigating={() => true}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click');
@@ -265,12 +266,13 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    navigating={() => false}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        navigating={() => false}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click');
@@ -288,16 +290,17 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             var navigatingEvt, navigatingLink;
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    navigating={(e, link) => {
-                        navigatingEvt = e;
-                        navigatingLink = link;
-                        return true;
-                    }}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        navigating={(e, link) => {
+                            navigatingEvt = e;
+                            navigatingLink = link;
+                            return true;
+                        }}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { hello: 'world' });
@@ -315,11 +318,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             var addHistory;
@@ -338,12 +341,13 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    historyAction="replace"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        historyAction="replace">
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             var replaceHistory;
@@ -362,12 +366,13 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    historyAction="none"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink
+                        distance={1}
+                        historyAction="none">
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             var noneHistory = true;
@@ -386,11 +391,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');
@@ -438,11 +443,11 @@ describe('NavigationBackLinkTest', function () {
             stateNavigator.navigate('s1');
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationBackLink distance={1}>
+                        link text
+                    </NavigationBackLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/hello/world');
