@@ -128,6 +128,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                         children(tweenStyle, scene, key, crumbs.length === key, state, data)
                     )).concat(
                         sharedElementMotion && sharedElementMotion({
+                            key: 'sharedElements',
                             sharedElements: !this.state.rest ? this.getSharedElements(crumbs, oldUrl) : [],
                             progress: tweenStyles[crumbs.length] && tweenStyles[crumbs.length].progress,
                             duration,

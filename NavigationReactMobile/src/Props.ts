@@ -29,6 +29,7 @@ interface SharedItem {
 }
 
 interface SharedElementNavigationMotionProps {
+    key: string;
     sharedElements: SharedItem[];
     progress: number;
     duration: number;
