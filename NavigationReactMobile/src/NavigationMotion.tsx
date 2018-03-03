@@ -2,6 +2,7 @@ import { StateNavigator, State, Crumb } from 'navigation';
 import * as React from 'react';
 import Motion from './Motion';
 import Scene from './Scene';
+import SharedElementContext from './SharedElementContext';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps, SharedItem } from './Props';
 type NavigationMotionState = { scenes: { [crumbs: number]: React.ReactElement<Scene> }, rest: boolean };
@@ -10,14 +11,17 @@ type SceneContext = { key: number, state: State, data: any, url: string, crumbs:
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
     private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
+    private sharedElementContext: any;
     context: {
         stateNavigator: StateNavigator
     }
     constructor(props, context) {
         super(props, context);
         this.onNavigate = this.onNavigate.bind(this);
-        this.registerSharedElement = this.registerSharedElement.bind(this);
-        this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
+        this.sharedElementContext = {
+            registerSharedElement: this.registerSharedElement.bind(this),
+            unregisterSharedElement: this.unregisterSharedElement.bind(this),
+        }
         var scenes = {};
         var stateNavigator = this.getStateNavigator();
         var {state, data, crumbs} = stateNavigator.stateContext;
@@ -30,16 +34,6 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
     }
     static contextTypes = {
         stateNavigator: () => null
-    }
-    static childContextTypes = {
-        registerSharedElement: () => null,
-        unregisterSharedElement: () => null
-    }
-    getChildContext() {
-        return {
-            registerSharedElement: this.registerSharedElement,
-            unregisterSharedElement: this.unregisterSharedElement
-        };
     }
     private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || this.context.stateNavigator;
@@ -115,26 +109,29 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         var {stateContext: {crumbs, oldUrl, oldState}, stateContext} = this.getStateNavigator();
         var SceneMotion: new() => Motion<SceneContext> = Motion as any;
         return (stateContext.state &&
-            <SceneMotion
-                data={this.getScenes()}
-                getKey={({key}) => key}
-                enter={scene => this.getStyle(!oldState, scene)}
-                update={scene => this.getStyle(true, scene)}
-                leave={scene => this.getStyle(false, scene)}
-                onRest={({key}) => this.clearScene(key)}
-                duration={duration}>
-                {tweenStyles => (
-                    tweenStyles.map(({data: {key, scene, state, data, url}, style: tweenStyle}) => (
-                        children(tweenStyle, scene, key, crumbs.length === key, state, data)
-                    )).concat(
-                        sharedElementMotion && sharedElementMotion({
-                            sharedElements: !this.state.rest ? this.getSharedElements(crumbs, oldUrl) : [],
-                            progress: tweenStyles[crumbs.length] && tweenStyles[crumbs.length].progress,
-                            duration,
-                        })
-                    )
-                )}
-            </SceneMotion>
+            <SharedElementContext.Provider value={this.sharedElementContext}>
+                <SceneMotion
+                    data={this.getScenes()}
+                    getKey={({key}) => key}
+                    enter={scene => this.getStyle(!oldState, scene)}
+                    update={scene => this.getStyle(true, scene)}
+                    leave={scene => this.getStyle(false, scene)}
+                    onRest={({key}) => this.clearScene(key)}
+                    duration={duration}>
+                    {tweenStyles => (
+                        tweenStyles.map(({data: {key, scene, state, data, url}, style: tweenStyle}) => (
+                            children(tweenStyle, scene, key, crumbs.length === key, state, data)
+                        )).concat(
+                            sharedElementMotion && sharedElementMotion({
+                                key: 'sharedElements',
+                                sharedElements: !this.state.rest ? this.getSharedElements(crumbs, oldUrl) : [],
+                                progress: tweenStyles[crumbs.length] && tweenStyles[crumbs.length].progress,
+                                duration,
+                            })
+                        )
+                    )}
+                </SceneMotion>
+            </SharedElementContext.Provider>
         );
     }
 }
