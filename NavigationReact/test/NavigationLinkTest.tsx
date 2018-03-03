@@ -33,18 +33,17 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Context Navigation Link', function () {
+    describe('Props Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationHandler stateNavigator={stateNavigator}>
-                    <NavigationLink
-                        stateKey="s">
-                        link text
-                    </NavigationLink>
-                </NavigationHandler>
+                <NavigationLink
+                    stateKey="s"
+                    stateNavigator={stateNavigator}>
+                    link text
+                </NavigationLink>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
