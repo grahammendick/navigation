@@ -19,8 +19,14 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         super(props, context);
         this.onNavigate = this.onNavigate.bind(this);
         this.sharedElementContext = {
-            registerSharedElement: this.registerSharedElement.bind(this),
-            unregisterSharedElement: this.unregisterSharedElement.bind(this),
+            registerSharedElement: (scene, name, ref, data) => {
+                this.sharedElements[scene] = this.sharedElements[scene] || {};
+                this.sharedElements[scene][name] = {ref, data};
+            },
+            unregisterSharedElement: (scene, name) => {
+                if (this.sharedElements[scene])
+                    delete this.sharedElements[scene][name];
+            },
         }
         var scenes = {};
         var stateNavigator = this.getStateNavigator();
@@ -52,14 +58,6 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
             scenes[crumbs.length] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
             return {scenes, rest: false};
         });
-    }
-    registerSharedElement(scene, name, ref, data) {
-        this.sharedElements[scene] = this.sharedElements[scene] || {};
-        this.sharedElements[scene][name] = {ref, data};
-    }
-    unregisterSharedElement(scene, name) {
-        if (this.sharedElements[scene])
-            delete this.sharedElements[scene][name];
     }
     getSharedElements(crumbs, oldUrl) {
         if (oldUrl === null || crumbs.length === oldUrl.split('crumb=').length - 1)
