@@ -7,9 +7,9 @@ class SharedElementMotion extends React.Component<SharedElementNavigationMotionP
         duration: 300,
         elementStyle: (name, ref, data) => data
     }
-    componentWillReceiveProps(nextProps) {
-        var sharedElements = this.getSharedElements(nextProps.sharedElements);
-        var prevSharedElements = this.getSharedElements(this.props.sharedElements);
+    componentDidUpdate(prevProps) {
+        var prevSharedElements = this.getSharedElements(prevProps.sharedElements);
+        var sharedElements = this.getSharedElements(this.props.sharedElements);
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
         this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
