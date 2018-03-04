@@ -1,4 +1,4 @@
-import { StateNavigator, State, Crumb } from 'navigation';
+import { State, Crumb } from 'navigation';
 import * as React from 'react';
 import Motion from './Motion';
 import Scene from './Scene';
