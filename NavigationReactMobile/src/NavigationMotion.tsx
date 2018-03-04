@@ -26,7 +26,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         this.state = {scene: this.props.stateNavigator.stateContext.crumbs.length, rest: false};
     }
     static defaultProps = {
-        duration: 300,
+        duration: 300
     }
     static getDerivedStateFromProps({stateNavigator}, prevState) {
         var scene = stateNavigator.stateContext.crumbs.length;
