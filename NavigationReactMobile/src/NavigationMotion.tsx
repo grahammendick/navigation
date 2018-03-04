@@ -44,7 +44,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     name,
                     oldElement: oldSharedElements[name],
                     mountedElement: mountedSharedElements[name]
-                })
+                });
             }
         }
         return sharedElements;
