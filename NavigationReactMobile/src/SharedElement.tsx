@@ -40,7 +40,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
 
 export default withStateNavigator(props => (
     <SharedElementContext.Consumer>
-        {({ registerSharedElement, unregisterSharedElement }) => (
+        {({registerSharedElement, unregisterSharedElement}) => (
             <SharedElement {...props}
                 registerSharedElement={registerSharedElement}
                 unregisterSharedElement={unregisterSharedElement} />
