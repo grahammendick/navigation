@@ -5,11 +5,11 @@ import Scene from './Scene';
 import SharedElementContext from './SharedElementContext';
 import withStateNavigator from './withStateNavigator';
 import { NavigationMotionProps, SharedItem } from './Props';
-type NavigationMotionState = { crumb: number, rest: boolean };
+type NavigationMotionState = { scene?: number, rest: boolean };
 type SceneContext = { key: number, state: State, data: any, url: string, crumbs: Crumb[], nextState: State, nextData: any, mount: boolean };
 
 class NavigationMotion extends React.Component<NavigationMotionProps, NavigationMotionState> {
-    private sharedElements: { [crumb: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
+    private sharedElements: { [scene: number]: { [name: string]: { ref: HTMLElement; data: any }; }; } = {};
     private sharedElementContext: any;
     constructor(props) {
         super(props);
@@ -23,13 +23,14 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
                     delete this.sharedElements[scene][name];
             },
         }
-        this.state = {crumb: this.props.stateNavigator.stateContext.crumbs.length, rest: false};
+        this.state = {scene: this.props.stateNavigator.stateContext.crumbs.length, rest: false};
     }
     static defaultProps = {
         duration: 300,
     }
-    static getDerivedStateFromProps({stateNavigator}, {crumb, rest}) {
-        return {rest: crumb === stateNavigator.stateContext.crumbs.length && rest};
+    static getDerivedStateFromProps({stateNavigator}, prevState) {
+        var scene = stateNavigator.stateContext.crumbs.length;
+        return {scene, rest: prevState.scene === scene && prevState.rest};
     }
     getSharedElements(crumbs, oldUrl) {
         if (oldUrl === null || crumbs.length === oldUrl.split('crumb=').length - 1)
