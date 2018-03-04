@@ -55,7 +55,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
             if (!scene)
                 delete this.sharedElements[index];
             var rest = prevRest || (scene && scene.mount);
-            return rest ? {rest} : null;
+            return rest !== prevRest ? {rest} : null;
         });
     }
     getScenes(): SceneContext[]{
