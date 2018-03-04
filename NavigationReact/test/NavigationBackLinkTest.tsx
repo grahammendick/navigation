@@ -35,27 +35,6 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
-    describe('Props Navigation Back Link', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            var wrapper = mount(
-                <NavigationBackLink
-                    distance={1}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationBackLink>
-            );
-            var link = wrapper.find('a');
-            assert.equal(link.prop('href'), '#/r0');
-            assert.equal(link.prop('children'), 'link text');
-        })
-    });
-
     describe('Invalid Navigation Back Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([

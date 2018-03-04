@@ -32,24 +32,6 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Props Navigation Link', function () {
-        it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
-            );
-            var link = wrapper.find('a');
-            assert.equal(link.prop('href'), '#/r');
-            assert.equal(link.prop('children'), 'link text');
-        })
-    });
-
     describe('Invalid Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
