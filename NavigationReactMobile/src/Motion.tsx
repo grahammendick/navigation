@@ -3,8 +3,8 @@ import { MotionProps } from './Props';
 
 class Motion<T> extends React.Component<MotionProps<T>, any> {
     private moveId: number;
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.move = this.move.bind(this);
         var {data, enter, getKey} = this.props;
         var items = data.map(item => {
