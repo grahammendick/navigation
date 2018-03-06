@@ -17,65 +17,61 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
     static defaultProps = {
         progress: 0,
     }
-    componentDidUpdate() {
-        if (!this.moveId && this.getItems(this.state.items, 0).changed)
+    componentWillReceiveProps() {
+        if (!this.moveId)
             this.moveId = requestAnimationFrame(this.move);
+    }
+    componentDidMount() {
+        this.moveId = requestAnimationFrame(this.move)
     }
     componentWillUnmount() {
         cancelAnimationFrame(this.moveId);
     }
     move(tick) {
         this.setState(({items: prevItems}) => {
-            var {items} = this.getItems(prevItems, tick);
+            var {data, enter, leave, update, progress, getKey, duration, onRest} = this.props;
+            var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...(item as any), index}}), {});
+            var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
+            var items = prevItems
+                .map((item, index) => {
+                    var matchedItem = dataByKey[item.key];
+                    var nextItem: any = {key: item.key, data: matchedItem || item.data, tick};
+                    nextItem.end = !matchedItem ? (leave || update)(item.data) : update(matchedItem);
+                    nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
+                    var unchanged = this.areEqual(item.end, nextItem.end);
+                    if (unchanged) {
+                        nextItem.start = item.start;
+                        nextItem.rest = item.progress === 1;
+                        var progressDelta = (nextItem.tick - item.tick) / duration;
+                        nextItem.progress = Math.min(item.progress + progressDelta, 1);
+                    } else {
+                        nextItem.rest = false;
+                        var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
+                        nextItem.start = reverse ? item.end : (!progress ? item.style : item.start);
+                        nextItem.progress = reverse ? 1 - item.progress : progress;
+                    }
+                    nextItem.style = this.interpolateStyle(nextItem);
+                    if (onRest && nextItem.rest && !item.rest)
+                        onRest(item.data);
+                    return nextItem;
+                })
+                .filter(item => dataByKey[item.key] || (!item.rest && leave))
+                .concat(data
+                    .filter(item => !itemsByKey[getKey(item)])
+                    .map(item => {
+                        var index = dataByKey[getKey(item)].index;
+                        var newItem: any = {key: getKey(item), data: item, progress, tick, rest: false, index};
+                        newItem.start = newItem.style = enter(item);
+                        newItem.end = update(item);
+                        return newItem;
+                    })
+                )
+                .sort((a, b) => a.index - b.index);
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
                 this.moveId = requestAnimationFrame(this.move);
             return {items};
         })
-    }
-    getItems(prevItems, tick) {
-        var {data, enter, leave, update, progress, getKey, duration, onRest} = this.props;
-        var dataByKey = data.reduce((acc, item, index) => ({...acc, [getKey(item)]: {...(item as any), index}}), {});
-        var itemsByKey = prevItems.reduce((acc, item) => ({...acc, [item.key]: item}), {});
-        var changed = false;
-        var items = prevItems
-            .map((item, index) => {
-                var matchedItem = dataByKey[item.key];
-                var nextItem: any = {key: item.key, data: matchedItem || item.data, tick};
-                nextItem.end = !matchedItem ? (leave || update)(item.data) : update(matchedItem);
-                nextItem.index = !matchedItem ? data.length + index : matchedItem.index;
-                var unchanged = this.areEqual(item.end, nextItem.end);
-                if (unchanged) {
-                    nextItem.start = item.start;
-                    nextItem.rest = item.progress === 1;
-                    var progressDelta = (nextItem.tick - item.tick) / duration;
-                    nextItem.progress = Math.min(item.progress + progressDelta, 1);
-                } else {
-                    changed = true;
-                    nextItem.rest = false;
-                    var reverse = !unchanged && this.areEqual(item.start, nextItem.end);
-                    nextItem.start = reverse ? item.end : (!progress ? item.style : item.start);
-                    nextItem.progress = reverse ? 1 - item.progress : progress;
-                }
-                nextItem.style = this.interpolateStyle(nextItem);
-                if (tick && onRest && nextItem.rest && !item.rest)
-                    onRest(item.data);
-                return nextItem;
-            })
-            .filter(item => dataByKey[item.key] || (!item.rest && leave))
-            .concat(data
-                .filter(item => !itemsByKey[getKey(item)])
-                .map(item => {
-                    changed = true;
-                    var index = dataByKey[getKey(item)].index;
-                    var newItem: any = {key: getKey(item), data: item, progress, tick, rest: false, index};
-                    newItem.start = newItem.style = enter(item);
-                    newItem.end = update(item);
-                    return newItem;
-                })
-            )
-            .sort((a, b) => a.index - b.index);
-        return {items, changed};
     }
     areEqual(from = {}, to = {}) {
         if (Object.keys(from).length !== Object.keys(to).length)
