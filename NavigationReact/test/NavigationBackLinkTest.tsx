@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
-import { NavigationBackLink, NavigationHandler } from '../src/NavigationReact';
+import { NavigationBackLink, NavigationHandler, NavigationContext } from '../src/NavigationReact';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -432,6 +432,36 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(link.prop('href'), '#/hello/world');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s0']);
+        })
+    });
+
+    describe('Consumer Navigation Back Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            s0.renderView = ({hello}) => <h1>{hello}</h1>
+            s1.renderView = () => (
+                <NavigationBackLink distance={1}>
+                    link text
+                </NavigationBackLink>
+            );
+            stateNavigator.navigate('s0', {hello: 'world'});
+            stateNavigator.navigate('s1');
+            var wrapper = mount(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data}) => state.renderView(data)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>
+            );
+            var link = wrapper.find('a');
+            link.simulate('click');
+            wrapper.update();
+            var header = wrapper.find('h1');
+            assert.equal(header.prop('children'), 'world');
         })
     });
 });
