@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from '../../Navigation/src/Navigation';
-import { RefreshLink, NavigationHandler } from '../src/NavigationReact';
+import { RefreshLink, NavigationHandler, NavigationContext } from '../src/NavigationReact';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -1601,6 +1601,36 @@ describe('RefreshLinkTest', function () {
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
             assert.equal(stateNavigator.stateContext.data.x, 'a');
+        })
+    });
+
+    describe('Consumer Refresh Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var {s} = stateNavigator.states;
+            s.renderView = ({hello}) => (
+                <div>
+                    <h1>{hello}</h1>
+                    <RefreshLink navigationData={{hello: 'world'}}>
+                        link text
+                    </RefreshLink>
+                </div>
+            );
+            stateNavigator.navigate('s');
+            var wrapper = mount(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data}) => state.renderView(data)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>
+            );
+            var link = wrapper.find('a');
+            link.simulate('click');
+            wrapper.update();
+            var header = wrapper.find('h1');
+            assert.equal(header.prop('children'), 'world');
         })
     });
 });
