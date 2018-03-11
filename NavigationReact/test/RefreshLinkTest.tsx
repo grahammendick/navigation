@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
-import { StateNavigator } from '../../Navigation/src/Navigation';
-import { RefreshLink, NavigationHandler, NavigationContext } from '../src/NavigationReact';
+import { StateNavigator } from 'navigation';
+import { RefreshLink, NavigationHandler, NavigationContext } from 'navigation-react';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';

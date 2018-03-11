@@ -29,7 +29,10 @@ function rollupTestTask(name, file, to) {
             rollupTypescript({
                 typescript: typescript,
                 baseUrl: '.',
-                paths: { navigation: ['Navigation/src/Navigation'] },
+                paths: {
+                    navigation: ['Navigation/src/Navigation'],
+                    'navigation-react': ['NavigationReact/src/NavigationReact']
+                },
                 importHelpers: true,
                 target: 'es3',
                 module: 'es6',
