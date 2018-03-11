@@ -20,7 +20,6 @@ describe('RefreshLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             stateNavigator.navigate('s');
-            stateNavigator.navigate('s');
             var wrapper = mount(
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <RefreshLink>
@@ -30,6 +29,23 @@ describe('RefreshLinkTest', function () {
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
+            assert.equal(link.prop('children'), 'link text');
+        })
+    });
+
+    describe('Without Context Refresh Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            stateNavigator.navigate('s');
+            var wrapper = mount(
+                <RefreshLink>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
         })
     });
