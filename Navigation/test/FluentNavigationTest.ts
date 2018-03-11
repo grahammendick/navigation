@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
-import { StateNavigator } from '../src/Navigation';
+import { StateNavigator } from 'navigation';
 
 describe('Fluent', function () {
     describe('State', function () {
