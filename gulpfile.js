@@ -28,6 +28,8 @@ function rollupTestTask(name, file, to) {
         plugins: [
             rollupTypescript({
                 typescript: typescript,
+                baseUrl: '.',
+                paths: { navigation: ['Navigation/src/Navigation'] },
                 importHelpers: true,
                 target: 'es3',
                 module: 'es6',

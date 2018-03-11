@@ -32,6 +32,22 @@ describe('NavigationLinkTest', function () {
         })
     });
 
+    describe('Without Context Navigation Link', function () {
+        it('should render', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's', route: 'r' }
+            ]);
+            var wrapper = mount(
+                <NavigationLink stateKey="s">
+                    link text
+                </NavigationLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+        })
+    });
+
     describe('Invalid Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
