@@ -64,7 +64,7 @@ gulp.task('test', testTasks);
 
 var items = [
     require('./build/npm/navigation/package.json'),
-    Object.assign({ globals: { react: 'React' } }, 
+    Object.assign({ globals: { navigation: 'Navigation', react: 'React' } }, 
         require('./build/npm/navigation-react/package.json'),
         require('./NavigationReact/src/tsconfig.json')),
     Object.assign({ globals: { knockout: 'ko' } },
