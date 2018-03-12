@@ -151,15 +151,24 @@ class StateNavigator {
         };
     }
     
-    parseLink(url: string): { state: State, data: any } {
+    parseLink(url: string, includeCrumbTrail = false): { state: State, data: any } {
         var { state, data } = this.stateHandler.parseLink(url);
-        delete data[state.crumbTrailKey];
+        if (!includeCrumbTrail)
+            delete data[state.crumbTrailKey];
         return { state, data };
     }
 
     fluent(withContext = false): FluentNavigator {
         var stateContext = !withContext ? undefined : this.stateContext;
         return createFluentNavigator(this.states, this.stateHandler, stateContext);
+    }
+
+    clone() {
+        var stateNavigator = new StateNavigator();
+        stateNavigator.states = this.states;
+        stateNavigator.stateHandler = this.stateHandler;
+        stateNavigator.historyManager = this.historyManager;
+        return stateNavigator;
     }
     
     start(url?: string) {
