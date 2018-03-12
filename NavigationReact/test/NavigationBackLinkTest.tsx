@@ -416,8 +416,7 @@ describe('NavigationBackLinkTest', function () {
                 <NavigationHandler stateNavigator={stateNavigator}>
                     <NavigationBackLink
                         acrossCrumbs={true}
-                        distance={1}
-                        stateNavigator={stateNavigator}>
+                        distance={1}>
                         link text
                     </NavigationBackLink>
                 </NavigationHandler>
