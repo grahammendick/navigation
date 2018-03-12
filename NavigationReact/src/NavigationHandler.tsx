@@ -10,38 +10,12 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.state = {stateNavigator: this.props.stateNavigator};
     }
 
-    private getStateContext(state: State, data: any, url: string, asyncData: any, history: boolean) {
-        var stateContext = new StateContext();
-        stateContext.oldState = this.state.stateNavigator.stateContext.state;
-        stateContext.oldData = this.state.stateNavigator.stateContext.data;
-        stateContext.oldUrl = this.state.stateNavigator.stateContext.url;
-        stateContext.state = state;
-        stateContext.url = url;
-        stateContext.asyncData = asyncData;
-        stateContext.title = state.title;
-        stateContext.history = history;
-        stateContext.crumbs = data[state.crumbTrailKey];
-        delete data[state.crumbTrailKey];
-        stateContext.data = data;
-        stateContext.nextCrumb = new Crumb(data, state, url, this.props.stateNavigator.fluent().navigate(state.key, data).url, false);
-        stateContext.previousState = null;
-        stateContext.previousData = {};
-        stateContext.previousUrl = null;
-        if (stateContext.crumbs.length > 0) {
-            var previousStateCrumb = stateContext.crumbs.slice(-1)[0];
-            stateContext.previousState = previousStateCrumb.state;
-            stateContext.previousData = previousStateCrumb.data;
-            stateContext.previousUrl = previousStateCrumb.url;
-        }
-        return stateContext;
-    }
-
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             this.setState(({stateNavigator: prevStateNavigator}) => {
                 if (oldUrl === prevStateNavigator.stateContext.url) {
                     var stateNavigator = this.props.stateNavigator.clone();
-                    stateNavigator.stateContext = this.getStateContext(state, data, url, asyncData, history);
+                    this.state.stateNavigator.setStateContext(state, data, url, asyncData, history, stateNavigator.stateContext);
                     stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
                     return {stateNavigator};
                 }

@@ -35,27 +35,27 @@ class StateNavigator {
             this.states[states[i].key] = states[i];
     }
 
-    private setStateContext(state: State, data: any, url: string, asyncData: any, history: boolean) {
-        this.stateContext.oldState = this.stateContext.state;
-        this.stateContext.oldData = this.stateContext.data;
-        this.stateContext.oldUrl = this.stateContext.url;
-        this.stateContext.state = state;
-        this.stateContext.url = url;
-        this.stateContext.asyncData = asyncData;
-        this.stateContext.title = state.title;
-        this.stateContext.history = history;
-        this.stateContext.crumbs = data[state.crumbTrailKey];
+    setStateContext(state: State, data: any, url: string, asyncData: any, history: boolean, stateContext = this.stateContext) {
+        stateContext.oldState = this.stateContext.state;
+        stateContext.oldData = this.stateContext.data;
+        stateContext.oldUrl = this.stateContext.url;
+        stateContext.state = state;
+        stateContext.url = url;
+        stateContext.asyncData = asyncData;
+        stateContext.title = state.title;
+        stateContext.history = history;
+        stateContext.crumbs = data[state.crumbTrailKey];
         delete data[state.crumbTrailKey];
-        this.stateContext.data = data;
-        this.stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
-        this.stateContext.previousState = null;
-        this.stateContext.previousData = {};
-        this.stateContext.previousUrl = null;
-        if (this.stateContext.crumbs.length > 0) {
-            var previousStateCrumb = this.stateContext.crumbs.slice(-1)[0];
-            this.stateContext.previousState = previousStateCrumb.state;
-            this.stateContext.previousData = previousStateCrumb.data;
-            this.stateContext.previousUrl = previousStateCrumb.url;
+        stateContext.data = data;
+        stateContext.nextCrumb = new Crumb(data, state, url, this.stateHandler.getLink(state, data), false);
+        stateContext.previousState = null;
+        stateContext.previousData = {};
+        stateContext.previousUrl = null;
+        if (stateContext.crumbs.length > 0) {
+            var previousStateCrumb = stateContext.crumbs.slice(-1)[0];
+            stateContext.previousState = previousStateCrumb.state;
+            stateContext.previousData = previousStateCrumb.data;
+            stateContext.previousUrl = previousStateCrumb.url;
         }
     }
     
