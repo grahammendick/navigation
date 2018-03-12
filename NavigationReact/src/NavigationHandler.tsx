@@ -5,10 +5,11 @@ import * as React from 'react';
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
     constructor(props) {
         super(props);
+        var { stateNavigator } = props;
         this.getNavigateContinuation = this.getNavigateContinuation.bind(this);
-        this.props.stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
-        this.props.stateNavigator.historyManager.init = () => {};
-        this.state = { stateNavigator: this.props.stateNavigator };
+        stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
+        stateNavigator.historyManager.init = () => {};
+        this.state = { stateNavigator };
     }
 
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
