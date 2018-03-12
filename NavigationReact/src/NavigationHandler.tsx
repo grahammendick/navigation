@@ -7,6 +7,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         super(props);
         this.getNavigateContinuation = this.getNavigateContinuation.bind(this);
         this.props.stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
+        this.props.stateNavigator.historyManager.init = () => {};
         this.state = { stateNavigator: this.props.stateNavigator };
     }
 
@@ -14,7 +15,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         return (asyncData?: any) => {
             this.setState(({ stateNavigator: prevStateNavigator }) => {
                 if (oldUrl === prevStateNavigator.stateContext.url) {
-                    var stateNavigator = prevStateNavigator.clone();
+                    var stateNavigator = prevStateNavigator.clone(prevStateNavigator.historyManager);
                     stateNavigator.stateContext = prevStateNavigator.getStateContext(state, data, url, asyncData, history);
                     stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
                     return { stateNavigator };

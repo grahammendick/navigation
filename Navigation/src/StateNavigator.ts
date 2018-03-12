@@ -164,11 +164,14 @@ class StateNavigator {
         return createFluentNavigator(this.states, this.stateHandler, stateContext);
     }
 
-    clone() {
+    clone(historyManager?: HistoryManager) {
         var stateNavigator = new StateNavigator();
         stateNavigator.states = this.states;
         stateNavigator.stateHandler = this.stateHandler;
-        stateNavigator.historyManager = this.historyManager;
+        stateNavigator.historyManager = historyManager ? historyManager : new HashHistoryManager();
+        stateNavigator.historyManager.init((url = stateNavigator.historyManager.getCurrentUrl()) => {
+            stateNavigator.navigateLink(url, undefined, true);
+        });
         return stateNavigator;
     }
     
