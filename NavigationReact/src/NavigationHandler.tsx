@@ -5,18 +5,18 @@ import * as React from 'react';
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
     constructor(props) {
         super(props);
-        this.getNavigateContinuation = this.getNavigateContinuation.bind(this);
-        this.props.stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
+        this.getNavigateCompletion = this.getNavigateCompletion.bind(this);
+        this.props.stateNavigator.getNavigateContinuation = this.getNavigateCompletion;
         this.state = {stateNavigator: this.props.stateNavigator};
     }
 
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
+    private getNavigateCompletion(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             this.setState(({stateNavigator: prevStateNavigator}) => {
                 if (oldUrl === prevStateNavigator.stateContext.url) {
                     var stateNavigator = prevStateNavigator.clone();
                     prevStateNavigator.setStateContext(state, data, url, asyncData, history, stateNavigator.stateContext);
-                    stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
+                    stateNavigator.getNavigateContinuation = this.getNavigateCompletion;
                     return {stateNavigator};
                 }
                 return null;
