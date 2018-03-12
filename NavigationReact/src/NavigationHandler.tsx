@@ -62,6 +62,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 }
                 return null;    
             }, () => {
+                this.props.stateNavigator.stateContext = this.state.stateContext;
                 if (this.state.stateContext.oldState && this.state.stateContext.oldState !== state)
                     this.state.stateContext.oldState.dispose();
                 state.navigated(this.state.stateContext.data, asyncData);
