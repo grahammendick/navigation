@@ -7,22 +7,22 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         super(props);
         this.getNavigateCompletion = this.getNavigateCompletion.bind(this);
         this.props.stateNavigator.getNavigateContinuation = this.getNavigateCompletion;
-        this.state = {stateNavigator: this.props.stateNavigator};
+        this.state = { stateNavigator: this.props.stateNavigator };
     }
 
     private getNavigateCompletion(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
-            this.setState(({stateNavigator: prevStateNavigator}) => {
+            this.setState(({ stateNavigator: prevStateNavigator }) => {
                 if (oldUrl === prevStateNavigator.stateContext.url) {
                     var stateNavigator = prevStateNavigator.clone();
                     stateNavigator.stateContext = prevStateNavigator.getStateContext(state, data, url, asyncData, history);
                     stateNavigator.getNavigateContinuation = this.getNavigateCompletion;
-                    return {stateNavigator};
+                    return { stateNavigator };
                 }
                 return null;
             }, () => {
-                var {stateNavigator} = this.state;
-                var {stateContext} = stateNavigator;
+                var { stateNavigator } = this.state;
+                var { stateContext } = stateNavigator;
                 this.props.stateNavigator.stateContext = stateContext;
                 if (stateContext.oldState && stateContext.oldState !== state)
                     stateContext.oldState.dispose();
