@@ -2,19 +2,19 @@ import NavigationContext from './NavigationContext';
 import { StateNavigator, StateContext, State, Crumb } from 'navigation';
 import * as React from 'react';
 
-class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateContext: StateContext }> {
+class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
     constructor(props) {
         super(props);
         this.getNavigateContinuation = this.getNavigateContinuation.bind(this);
         this.props.stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
-        this.state = {stateContext: this.props.stateNavigator.stateContext};
+        this.state = {stateNavigator: this.props.stateNavigator};
     }
 
     private getStateContext(state: State, data: any, url: string, asyncData: any, history: boolean) {
         var stateContext = new StateContext();
-        stateContext.oldState = this.state.stateContext.state;
-        stateContext.oldData = this.state.stateContext.data;
-        stateContext.oldUrl = this.state.stateContext.url;
+        stateContext.oldState = this.state.stateNavigator.stateContext.state;
+        stateContext.oldData = this.state.stateNavigator.stateContext.data;
+        stateContext.oldUrl = this.state.stateNavigator.stateContext.url;
         stateContext.state = state;
         stateContext.url = url;
         stateContext.asyncData = asyncData;
@@ -38,32 +38,33 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
 
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
-            this.setState(({stateContext: prevStateContext}) => {
-                if (oldUrl === prevStateContext.url) {
-                    var stateContext = this.getStateContext(state, data, url, asyncData, history);
-                    return {stateContext};
+            this.setState(({stateNavigator: prevStateNavigator}) => {
+                if (oldUrl === prevStateNavigator.stateContext.url) {
+                    var stateNavigator = this.props.stateNavigator.clone();
+                    stateNavigator.stateContext = this.getStateContext(state, data, url, asyncData, history);
+                    stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
+                    return {stateNavigator};
                 }
                 return null;    
             }, () => {
-                this.props.stateNavigator.stateContext = this.state.stateContext;
-                if (this.state.stateContext.oldState && this.state.stateContext.oldState !== state)
-                    this.state.stateContext.oldState.dispose();
-                state.navigated(this.state.stateContext.data, asyncData);
-                if (url === this.state.stateContext.url) {
+                var {stateContext} = this.state.stateNavigator;
+                this.props.stateNavigator.stateContext = stateContext;
+                if (stateContext.oldState && stateContext.oldState !== state)
+                    stateContext.oldState.dispose();
+                state.navigated(stateContext.data, asyncData);
+                if (url === stateContext.url) {
                     if (historyAction !== 'none')
                         this.props.stateNavigator.historyManager.addHistory(url, historyAction === 'replace');
-                    if (this.state.stateContext.title && (typeof document !== 'undefined'))
-                        document.title = this.state.stateContext.title;
+                    if (stateContext.title && (typeof document !== 'undefined'))
+                        document.title = stateContext.title;
                 }
             });
         };
     }
 
     render() {
-        var { oldState, state, data, asyncData } = this.state.stateContext;
-        var stateNavigator = this.props.stateNavigator.clone();
-        stateNavigator.stateContext = this.state.stateContext;
-        stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
+        var { stateNavigator } = this.state;
+        var { oldState, state, data, asyncData } = stateNavigator.stateContext;
         return (
             <NavigationContext.Provider value={{ oldState, state, data, asyncData, stateNavigator }}>
                 {this.props.children}
