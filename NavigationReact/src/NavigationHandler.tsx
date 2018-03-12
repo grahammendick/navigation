@@ -77,14 +77,13 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     }
 
     render() {
-        var { children } = this.props;
         var { oldState, state, data, asyncData } = this.state.stateContext;
         var stateNavigator = this.props.stateNavigator.clone();
         stateNavigator.stateContext = this.state.stateContext;
         stateNavigator.navigateLink = this.navigateLink;
         return (
             <NavigationContext.Provider value={{ oldState, state, data, asyncData, stateNavigator }}>
-                {children}
+                {this.props.children}
             </NavigationContext.Provider>
         );
     }
