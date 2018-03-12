@@ -19,7 +19,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                     stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
                     return {stateNavigator};
                 }
-                return null;    
+                return null;
             }, () => {
                 var {stateContext} = this.state.stateNavigator;
                 this.props.stateNavigator.stateContext = stateContext;
