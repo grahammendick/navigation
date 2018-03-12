@@ -38,6 +38,8 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
+        if (history && this.state.stateContext.url === url)
+            return;
         var oldUrl = this.state.stateContext.url;
         var { state, data } = this.props.stateNavigator.parseLink(url, true);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);

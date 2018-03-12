@@ -26,8 +26,6 @@ class StateNavigator {
             this.historyManager.stop();
         this.historyManager = historyManager ? historyManager : new HashHistoryManager();
         this.historyManager.init((url = this.historyManager.getCurrentUrl()) => {
-            if (this.stateContext.url === url)
-                return;
             this.navigateLink(url, undefined, true);
         });
         var states = this.stateHandler.buildStates(stateInfos);
@@ -117,6 +115,8 @@ class StateNavigator {
     }
 
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
+        if (history && this.stateContext.url === url)
+            return;
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
