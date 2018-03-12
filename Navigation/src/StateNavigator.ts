@@ -35,7 +35,8 @@ class StateNavigator {
             this.states[states[i].key] = states[i];
     }
 
-    setStateContext(state: State, data: any, url: string, asyncData: any, history: boolean, stateContext = this.stateContext) {
+    getStateContext(state: State, data: any, url: string, asyncData: any, history: boolean): StateContext {
+        var stateContext = new StateContext();
         stateContext.oldState = this.stateContext.state;
         stateContext.oldData = this.stateContext.data;
         stateContext.oldUrl = this.stateContext.url;
@@ -57,6 +58,7 @@ class StateNavigator {
             stateContext.previousData = previousStateCrumb.data;
             stateContext.previousUrl = previousStateCrumb.url;
         }
+        return stateContext;
     }
     
     onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
@@ -134,7 +136,7 @@ class StateNavigator {
     private getNavigateCompletion(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                this.setStateContext(state, data, url, asyncData, history);
+                this.stateContext =  this.getStateContext(state, data, url, asyncData, history);
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
                 state.navigated(this.stateContext.data, asyncData);
