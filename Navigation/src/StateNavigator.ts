@@ -136,7 +136,7 @@ class StateNavigator {
     private getNavigateCompletion(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                this.stateContext =  this.getStateContext(state, data, url, asyncData, history);
+                this.stateContext = this.getStateContext(state, data, url, asyncData, history);
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
                 state.navigated(this.stateContext.data, asyncData);
