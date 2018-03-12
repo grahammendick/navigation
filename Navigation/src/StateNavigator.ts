@@ -15,7 +15,6 @@ class StateNavigator {
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
-    getNavigateContinuation = this.getNavigateCompletion;
     
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
@@ -133,7 +132,7 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private getNavigateCompletion(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
+    getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
                 this.stateContext = this.getStateContext(state, data, url, asyncData, history);
