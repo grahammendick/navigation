@@ -5,9 +5,8 @@ import * as React from 'react';
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateContext: StateContext }> {
     constructor(props) {
         super(props);
-        this.navigateLink = this.navigateLink.bind(this);
-        this.props.stateNavigator.navigateLink = this.navigateLink;
         this.getNavigateContinuation = this.getNavigateContinuation.bind(this);
+        this.props.stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
         this.state = {stateContext: this.props.stateNavigator.stateContext};
     }
 
@@ -37,22 +36,6 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         return stateContext;
     }
 
-    navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
-        if (history && this.state.stateContext.url === url)
-            return;
-        var oldUrl = this.state.stateContext.url;
-        var { state, data } = this.props.stateNavigator.parseLink(url, true);
-        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
-        var unloadContinuation = () => {
-            if (oldUrl === this.state.stateContext.url)
-                state.navigating(data, url, navigateContinuation, history);
-        };
-        if (this.state.stateContext.state)
-            this.state.stateContext.state.unloading(state, data, url, unloadContinuation, history);
-        else
-            state.navigating(data, url, navigateContinuation, history);
-    }
-
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             this.setState(({stateContext: prevStateContext}) => {
@@ -80,7 +63,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         var { oldState, state, data, asyncData } = this.state.stateContext;
         var stateNavigator = this.props.stateNavigator.clone();
         stateNavigator.stateContext = this.state.stateContext;
-        stateNavigator.navigateLink = this.navigateLink;
+        stateNavigator.getNavigateContinuation = this.getNavigateContinuation;
         return (
             <NavigationContext.Provider value={{ oldState, state, data, asyncData, stateNavigator }}>
                 {this.props.children}
