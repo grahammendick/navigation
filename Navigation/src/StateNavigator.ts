@@ -152,10 +152,9 @@ class StateNavigator {
         };
     }
     
-    parseLink(url: string, includeCrumbTrail = false): { state: State, data: any } {
+    parseLink(url: string): { state: State, data: any } {
         var { state, data } = this.stateHandler.parseLink(url);
-        if (!includeCrumbTrail)
-            delete data[state.crumbTrailKey];
+        delete data[state.crumbTrailKey];
         return { state, data };
     }
 
