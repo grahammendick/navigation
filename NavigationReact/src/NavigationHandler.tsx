@@ -14,12 +14,13 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             this.setState(() => {
-                if (oldUrl === this.props.stateNavigator.stateContext.url) {
-                    var stateNavigator = this.props.stateNavigator.clone(this.props.stateNavigator.historyManager);
-                    stateNavigator.stateContext = this.props.stateNavigator.getStateContext(state, data, url, asyncData, history);
-                    stateNavigator.configure = (stateInfos, historyManager) => this.props.stateNavigator.configure(stateInfos, historyManager);
-                    stateNavigator.getNavigateContinuation = this.props.stateNavigator.getNavigateContinuation;
-                    return { stateNavigator };
+                var { stateNavigator } = this.props;
+                if (oldUrl === stateNavigator.stateContext.url) {
+                    var clonedNavigator = stateNavigator.clone(stateNavigator.historyManager);
+                    clonedNavigator.stateContext = stateNavigator.getStateContext(state, data, url, asyncData, history);
+                    clonedNavigator.configure = (stateInfos, historyManager) => stateNavigator.configure(stateInfos, historyManager);
+                    clonedNavigator.getNavigateContinuation = stateNavigator.getNavigateContinuation;
+                    return { stateNavigator: clonedNavigator };
                 }
                 return null;
             }, () => {
