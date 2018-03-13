@@ -136,12 +136,12 @@ class StateNavigator {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
                 this.stateContext = this.createStateContext(state, data, url, asyncData, history);
-                this.signalNavigation(historyAction);
+                this.dispatchNavigation(historyAction);
             }
         };
     }
     
-    signalNavigation(historyAction) {
+    dispatchNavigation(historyAction) {
         var {oldState, state, data, asyncData, url, title} = this.stateContext;
         if (oldState && oldState !== state)
             oldState.dispose();
