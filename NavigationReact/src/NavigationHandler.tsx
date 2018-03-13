@@ -3,17 +3,20 @@ import { StateNavigator, State } from 'navigation';
 import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
+    private navigateHandler: any;
     constructor(props) {
         super(props);
         var { stateNavigator } = props;
+        this.navigateHandler = (() => this.forceUpdate()).bind(this);
+        stateNavigator.onNavigate(this.navigateHandler);
         stateNavigator.getNavigateContinuation = this.getNavigateContinuation.bind(this);
         this.state = { stateNavigator };
     }
 
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
+        var { stateNavigator } = this.props;
         return (asyncData?: any) => {
             this.setState(() => {
-                var { stateNavigator } = this.props;
                 if (oldUrl === stateNavigator.stateContext.url) {
                     stateNavigator.historyManager.init = () => {};
                     var nextNavigator: StateNavigator = stateNavigator.clone(stateNavigator.historyManager);
@@ -26,8 +29,9 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 }
                 return null;
             }, () => {
-                this.props.stateNavigator.stateContext = this.state.stateNavigator.stateContext;
-                this.props.stateNavigator.notify(historyAction);
+                stateNavigator.stateContext = this.state.stateNavigator.stateContext;
+                stateNavigator.offNavigate(this.navigateHandler);
+                stateNavigator.notify(historyAction);
             });
         };
     }
