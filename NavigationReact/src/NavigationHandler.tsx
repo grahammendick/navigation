@@ -27,7 +27,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 return null;
             }, () => {
                 this.props.stateNavigator.stateContext = this.state.stateNavigator.stateContext;
-                this.props.stateNavigator.completeNavigation(historyAction);
+                this.props.stateNavigator.signalNavigation(historyAction);
             });
         };
     }
