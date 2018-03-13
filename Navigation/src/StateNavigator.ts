@@ -71,8 +71,10 @@ class StateNavigator {
     }
 
     offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
-        delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
-        delete handler[this.NAVIGATE_HANDLER_ID];
+        if (handler[this.NAVIGATE_HANDLER_ID]) {
+            delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
+            delete handler[this.NAVIGATE_HANDLER_ID];
+        }
     }
 
     navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
