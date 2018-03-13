@@ -59,6 +59,24 @@ class StateNavigator {
         }
         return stateContext;
     }
+
+    setStateContext(stateContext: StateContext, historyAction) {
+        this.stateContext = stateContext;
+        var {oldState, state, data, asyncData, url, title} = stateContext;
+        if (oldState && oldState !== state)
+            oldState.dispose();
+        state.navigated(data, asyncData);
+        for (var id in this.navigateHandlers) {
+            if (url === this.stateContext.url)
+                this.navigateHandlers[id](oldState, state, data, asyncData);
+        }
+        if (url === this.stateContext.url) {
+            if (historyAction !== 'none')
+                this.historyManager.addHistory(url, historyAction === 'replace');
+            if (title && (typeof document !== 'undefined'))
+                document.title = this.stateContext.title;
+        }
+    }
     
     onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
         if (!handler[this.NAVIGATE_HANDLER_ID]) {
@@ -135,20 +153,8 @@ class StateNavigator {
     getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                this.stateContext = this.getStateContext(state, data, url, asyncData, history);
-                if (this.stateContext.oldState && this.stateContext.oldState !== state)
-                    this.stateContext.oldState.dispose();
-                state.navigated(this.stateContext.data, asyncData);
-                for (var id in this.navigateHandlers) {
-                    if (url === this.stateContext.url)
-                        this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
-                }
-                if (url === this.stateContext.url) {
-                    if (historyAction !== 'none')
-                        this.historyManager.addHistory(url, historyAction === 'replace');
-                    if (this.stateContext.title && (typeof document !== 'undefined'))
-                        document.title = this.stateContext.title;
-                }
+                var stateContext = this.getStateContext(state, data, url, asyncData, history);
+                this.setStateContext(stateContext, historyAction);
             }
         };
     }

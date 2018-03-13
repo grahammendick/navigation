@@ -10,32 +10,23 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.state = { stateNavigator };
     }
 
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: string, history: boolean): () => void {
+    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             this.setState(() => {
                 var { stateNavigator } = this.props;
                 if (oldUrl === stateNavigator.stateContext.url) {
                     stateNavigator.historyManager.init = () => {};
-                    var clonedNavigator = stateNavigator.clone(stateNavigator.historyManager);
+                    var clonedNavigator: StateNavigator = stateNavigator.clone(stateNavigator.historyManager);
                     clonedNavigator.stateContext = stateNavigator.getStateContext(state, data, url, asyncData, history);
                     clonedNavigator.configure = stateNavigator.configure.bind(stateNavigator);
+                    clonedNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
+                    clonedNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
                     clonedNavigator.getNavigateContinuation = stateNavigator.getNavigateContinuation;
                     return { stateNavigator: clonedNavigator };
                 }
                 return null;
             }, () => {
-                var { stateNavigator } = this.state;
-                var { stateContext } = stateNavigator;
-                this.props.stateNavigator.stateContext = stateContext;
-                if (stateContext.oldState && stateContext.oldState !== state)
-                    stateContext.oldState.dispose();
-                state.navigated(stateContext.data, asyncData);
-                if (url === stateContext.url) {
-                    if (historyAction !== 'none')
-                        stateNavigator.historyManager.addHistory(url, historyAction === 'replace');
-                    if (stateContext.title && (typeof document !== 'undefined'))
-                        document.title = stateContext.title;
-                }
+                this.props.stateNavigator.setStateContext(this.state.stateNavigator.stateContext, historyAction);
             });
         };
     }
