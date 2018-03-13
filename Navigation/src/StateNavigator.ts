@@ -34,7 +34,7 @@ class StateNavigator {
             this.states[states[i].key] = states[i];
     }
 
-    getStateContext(state: State, data: any, url: string, asyncData: any, history: boolean): StateContext {
+    createStateContext(state: State, data: any, url: string, asyncData: any, history: boolean): StateContext {
         var stateContext = new StateContext();
         stateContext.oldState = this.stateContext.state;
         stateContext.oldData = this.stateContext.data;
@@ -153,7 +153,7 @@ class StateNavigator {
     getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                var stateContext = this.getStateContext(state, data, url, asyncData, history);
+                var stateContext = this.createStateContext(state, data, url, asyncData, history);
                 this.setStateContext(stateContext, historyAction);
             }
         };

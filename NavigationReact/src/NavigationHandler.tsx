@@ -17,7 +17,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 if (oldUrl === stateNavigator.stateContext.url) {
                     stateNavigator.historyManager.init = () => {};
                     var clonedNavigator: StateNavigator = stateNavigator.clone(stateNavigator.historyManager);
-                    clonedNavigator.stateContext = stateNavigator.getStateContext(state, data, url, asyncData, history);
+                    clonedNavigator.stateContext = stateNavigator.createStateContext(state, data, url, asyncData, history);
                     clonedNavigator.configure = stateNavigator.configure.bind(stateNavigator);
                     clonedNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
                     clonedNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
