@@ -60,24 +60,6 @@ class StateNavigator {
         return stateContext;
     }
 
-    setStateContext(stateContext: StateContext, historyAction) {
-        this.stateContext = stateContext;
-        var {oldState, state, data, asyncData, url, title} = stateContext;
-        if (oldState && oldState !== state)
-            oldState.dispose();
-        state.navigated(data, asyncData);
-        for (var id in this.navigateHandlers) {
-            if (url === this.stateContext.url)
-                this.navigateHandlers[id](oldState, state, data, asyncData);
-        }
-        if (url === this.stateContext.url) {
-            if (historyAction !== 'none')
-                this.historyManager.addHistory(url, historyAction === 'replace');
-            if (title && (typeof document !== 'undefined'))
-                document.title = this.stateContext.title;
-        }
-    }
-    
     onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
         if (!handler[this.NAVIGATE_HANDLER_ID]) {
             var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
@@ -154,11 +136,29 @@ class StateNavigator {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
                 var stateContext = this.createStateContext(state, data, url, asyncData, history);
-                this.setStateContext(stateContext, historyAction);
+                this.completeNavigation(stateContext, historyAction);
             }
         };
     }
     
+    completeNavigation(stateContext: StateContext, historyAction) {
+        this.stateContext = stateContext;
+        var {oldState, state, data, asyncData, url, title} = stateContext;
+        if (oldState && oldState !== state)
+            oldState.dispose();
+        state.navigated(data, asyncData);
+        for (var id in this.navigateHandlers) {
+            if (url === this.stateContext.url)
+                this.navigateHandlers[id](oldState, state, data, asyncData);
+        }
+        if (url === this.stateContext.url) {
+            if (historyAction !== 'none')
+                this.historyManager.addHistory(url, historyAction === 'replace');
+            if (title && (typeof document !== 'undefined'))
+                document.title = this.stateContext.title;
+        }
+    }
+
     parseLink(url: string): { state: State, data: any } {
         var { state, data } = this.stateHandler.parseLink(url);
         delete data[state.crumbTrailKey];
