@@ -135,15 +135,14 @@ class StateNavigator {
     getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
-                var stateContext = this.createStateContext(state, data, url, asyncData, history);
-                this.completeNavigation(stateContext, historyAction);
+                this.stateContext = this.createStateContext(state, data, url, asyncData, history);
+                this.completeNavigation(historyAction);
             }
         };
     }
     
-    completeNavigation(stateContext: StateContext, historyAction) {
-        this.stateContext = stateContext;
-        var {oldState, state, data, asyncData, url, title} = stateContext;
+    completeNavigation(historyAction) {
+        var {oldState, state, data, asyncData, url, title} = this.stateContext;
         if (oldState && oldState !== state)
             oldState.dispose();
         state.navigated(data, asyncData);
