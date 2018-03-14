@@ -7,7 +7,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     constructor(props) {
         super(props);
         var { stateNavigator } = props;
-        this.navigateHandler = (() => this.forceUpdate()).bind(this);
+        this.navigateHandler = () => this.forceUpdate();
         stateNavigator.onNavigate(this.navigateHandler);
         stateNavigator.getNavigateContinuation = this.getNavigateContinuation.bind(this);
         this.state = { stateNavigator };
