@@ -29,9 +29,11 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 }
                 return null;
             }, () => {
-                stateNavigator.stateContext = this.state.stateNavigator.stateContext;
-                stateNavigator.offNavigate(this.navigateHandler);
-                stateNavigator.notify(historyAction);
+                if (url === this.state.stateNavigator.stateContext.url) {
+                    stateNavigator.stateContext = this.state.stateNavigator.stateContext;
+                    stateNavigator.offNavigate(this.navigateHandler);
+                    stateNavigator.notify(historyAction);
+                }
             });
         };
     }
