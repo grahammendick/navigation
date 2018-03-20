@@ -53,7 +53,7 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Without Navigator Navigation Link', function () {
+    describe('Without State Navigator Navigation Link', function () {
         it('should render', function(){
             var wrapper = mount(
                 <NavigationLink stateKey="s">
