@@ -7,10 +7,11 @@ import * as ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
+declare var global: any;
 var { window } = new JSDOM('<!doctype html><html><body></body></html>');
 window.addEventListener = () => {};
-(global as any).window = window;
-(global as any).document = window.document;
+global.window = window;
+global.document = window.document;
 
 describe('NavigationBackLinkTest', function () {
     describe('Navigation Back Link', function () {
