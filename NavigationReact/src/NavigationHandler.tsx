@@ -6,7 +6,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     private navigateHandler: any;
     constructor(props) {
         super(props);
-        var { stateNavigator } = props;
+        var { stateNavigator } = this.props;
         this.navigateHandler = () => this.forceUpdate();
         stateNavigator.onNavigate(this.navigateHandler);
         stateNavigator.historyManager.init = () => {};
