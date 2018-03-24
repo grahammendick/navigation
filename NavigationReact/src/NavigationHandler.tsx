@@ -24,7 +24,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                     nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
                     nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
                     nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
-                    nextNavigator.getNavigateContinuation = stateNavigator.getNavigateContinuation;
+                    nextNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
                     return { stateNavigator: nextNavigator };
                 }
                 return null;
