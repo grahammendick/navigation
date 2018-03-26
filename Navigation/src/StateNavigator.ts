@@ -34,16 +34,16 @@ class EventHandlerCache<Handler> {
 }
 
 class StateNavigator {
-    private navigateHandlerCache = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
-    private beforeNavigateHandlerCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandlerId');
     private stateHandler = new StateHandler();
+    private navigateHandlers = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
+    private beforeNavigateHandlers = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandlerId');
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
-    onNavigate = (handler: NavigateHandler) => this.navigateHandlerCache.onEvent(handler);
-    offNavigate = (handler: NavigateHandler) => this.navigateHandlerCache.offEvent(handler);
-    onBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlerCache.onEvent(handler);
-    offBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlerCache.offEvent(handler);
+    onNavigate = (handler: NavigateHandler) => this.navigateHandlers.onEvent(handler);
+    offNavigate = (handler: NavigateHandler) => this.navigateHandlers.offEvent(handler);
+    onBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlers.onEvent(handler);
+    offBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlers.offEvent(handler);
     
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
@@ -133,8 +133,8 @@ class StateNavigator {
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
-        for (var id in this.beforeNavigateHandlerCache.handlers) {
-            var handler = this.beforeNavigateHandlerCache.handlers[id];
+        for (var id in this.beforeNavigateHandlers.handlers) {
+            var handler = this.beforeNavigateHandlers.handlers[id];
             if (oldUrl !== this.stateContext.url || handler(this.stateContext.state, state, data, url) === false)
                 return;
         }
@@ -156,9 +156,9 @@ class StateNavigator {
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
                 state.navigated(this.stateContext.data, asyncData);
-                for (var id in this.navigateHandlerCache.handlers) {
+                for (var id in this.navigateHandlers.handlers) {
                     if (url === this.stateContext.url)
-                        this.navigateHandlerCache.handlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
+                        this.navigateHandlers.handlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
                 }
                 if (url === this.stateContext.url) {
                     if (historyAction !== 'none')
