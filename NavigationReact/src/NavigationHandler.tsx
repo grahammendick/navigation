@@ -11,8 +11,8 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.navigateHandler = () => this.forceUpdate();
         stateNavigator.onNavigate(this.navigateHandler);
         stateNavigator.historyManager.init = () => {};
-        this.originalGetNavigateContinuation = stateNavigator.getNavigateContinuation;
-        stateNavigator.getNavigateContinuation = this.getNavigateContinuation.bind(this);
+        this.originalGetNavigateContinuation = stateNavigator['getNavigateContinuation'];
+        stateNavigator['getNavigateContinuation'] = this.getNavigateContinuation.bind(this);
         this.state = { stateNavigator };
     }
 
@@ -21,8 +21,11 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         return (asyncData?: any) => {
             this.setState(() => {
                 if (oldUrl === stateNavigator.stateContext.url) {
-                    var nextNavigator = stateNavigator.clone(stateNavigator.historyManager);
-                    nextNavigator.stateContext = stateNavigator.createStateContext(state, data, url, asyncData, history);
+                    var nextNavigator = new StateNavigator();
+                    nextNavigator.stateContext = stateNavigator['createStateContext'](state, data, url, asyncData, history);
+                    nextNavigator.states = stateNavigator.states;
+                    nextNavigator.historyManager = stateNavigator.historyManager;
+                    nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
                     nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
                     nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
                     nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
@@ -34,7 +37,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 if (url === this.state.stateNavigator.stateContext.url) {
                     stateNavigator.stateContext = this.state.stateNavigator.stateContext;
                     stateNavigator.offNavigate(this.navigateHandler);
-                    stateNavigator.notify(historyAction);
+                    stateNavigator['notify'](historyAction);
                 }
             });
         };
