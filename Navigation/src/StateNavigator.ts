@@ -6,6 +6,7 @@ import State from './config/State';
 import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
+type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
 
 class EventHandlerCache<Handler> {
     private name: string;
@@ -29,17 +30,16 @@ class EventHandlerCache<Handler> {
         delete this.handlers[handler[this.name]];
         delete handler[this.name];
     }
-
 }
 
 class StateNavigator {
-    private navigateHandlerCache = new EventHandlerCache<(oldState: State, state: State, data: any, asyncData: any) => void>('navigateHandlerId');
+    private navigateHandlerCache = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
     private stateHandler = new StateHandler();
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
-    onNavigate = handler => this.navigateHandlerCache.onEvent(handler);
-    offNavigate = handler => this.navigateHandlerCache.offEvent(handler);
+    onNavigate = (handler: NavigateHandler) => this.navigateHandlerCache.onEvent(handler);
+    offNavigate = (handler: NavigateHandler) => this.navigateHandlerCache.offEvent(handler);
     
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
