@@ -4,7 +4,7 @@ import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
     private navigateHandler: any;
-    private originalGetNavigateContinuation: any;
+    private originalGetNavigateContinuation;
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;
