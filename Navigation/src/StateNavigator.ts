@@ -35,15 +35,15 @@ class EventHandlerCache<Handler> {
 
 class StateNavigator {
     private stateHandler = new StateHandler();
-    private navigateHandlers = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
     private beforeNavigateHandlers = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandlerId');
+    private navigateHandlers = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
-    onNavigate = (handler: NavigateHandler) => this.navigateHandlers.onEvent(handler);
-    offNavigate = (handler: NavigateHandler) => this.navigateHandlers.offEvent(handler);
     onBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlers.onEvent(handler);
     offBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlers.offEvent(handler);
+    onNavigate = (handler: NavigateHandler) => this.navigateHandlers.onEvent(handler);
+    offNavigate = (handler: NavigateHandler) => this.navigateHandlers.offEvent(handler);
 
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
