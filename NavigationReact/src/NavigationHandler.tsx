@@ -4,12 +4,14 @@ import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
     private navigateHandler: any;
+    private originalGetNavigateContinuation: any;
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;
         this.navigateHandler = () => this.forceUpdate();
         stateNavigator.onNavigate(this.navigateHandler);
         stateNavigator.historyManager.init = () => {};
+        this.originalGetNavigateContinuation = stateNavigator.getNavigateContinuation;
         stateNavigator.getNavigateContinuation = this.getNavigateContinuation.bind(this);
         this.state = { stateNavigator };
     }
@@ -36,6 +38,10 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 }
             });
         };
+    }
+
+    componentWillUnmount() {
+        this.state.stateNavigator.getNavigateContinuation = this.originalGetNavigateContinuation;
     }
 
     render() {
