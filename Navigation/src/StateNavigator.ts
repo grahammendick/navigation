@@ -7,6 +7,7 @@ import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
+type BeforeNavigateHandler = (oldState: State, state: State, data: any, url: string) => boolean;
 
 class EventHandlerCache<Handler> {
     private name: string;
@@ -34,12 +35,15 @@ class EventHandlerCache<Handler> {
 
 class StateNavigator {
     private navigateHandlerCache = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
+    private beforeNavigateHandlerCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandlerId');
     private stateHandler = new StateHandler();
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
     onNavigate = (handler: NavigateHandler) => this.navigateHandlerCache.onEvent(handler);
     offNavigate = (handler: NavigateHandler) => this.navigateHandlerCache.offEvent(handler);
+    onBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlerCache.onEvent(handler);
+    offBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlerCache.offEvent(handler);
     
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
@@ -129,6 +133,11 @@ class StateNavigator {
     navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false) {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
+        for (var id in this.beforeNavigateHandlerCache.handlers) {
+            var handler = this.beforeNavigateHandlerCache.handlers[id];
+            if (oldUrl !== this.stateContext.url || handler(this.stateContext.state, state, data, url) === false)
+                return;
+        }
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
