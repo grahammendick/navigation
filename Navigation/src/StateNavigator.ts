@@ -44,12 +44,12 @@ class StateNavigator {
     offNavigate = (handler: NavigateHandler) => this.navigateHandlers.offEvent(handler);
     onBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlers.onEvent(handler);
     offBeforeNavigate = (handler: BeforeNavigateHandler) => this.beforeNavigateHandlers.offEvent(handler);
-    
+
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
             this.configure(states, historyManager);
     }
-    
+
     configure(stateInfos: StateInfo[], historyManager?: HistoryManager) {
         if (this.historyManager)
             this.historyManager.stop();
@@ -148,7 +148,7 @@ class StateNavigator {
         else
             state.navigating(data, url, navigateContinuation, history);
     }
-    
+
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
         return (asyncData?: any) => {
             if (oldUrl === this.stateContext.url) {
@@ -169,7 +169,7 @@ class StateNavigator {
             }
         };
     }
-    
+
     parseLink(url: string): { state: State, data: any } {
         var { state, data } = this.stateHandler.parseLink(url);
         delete data[state.crumbTrailKey];
