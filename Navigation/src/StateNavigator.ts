@@ -7,14 +7,39 @@ import StateInfo from './config/StateInfo';
 import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 
+class EventHandlerCache<Handler> {
+    private name: string;
+    private handlerId = 1;
+    handlers: { [index: string]: Handler } = {};
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    onEvent(handler: Handler) {
+        if (!handler[this.name]) {
+            var id = this.name + this.handlerId++;
+            handler[this.name] = id;
+            this.handlers[id] = handler;
+        } else {
+            throw new Error('Cannot add the same handler more than once');
+        }
+    }
+
+    offEvent(handler: Handler) {
+        delete this.handlers[handler[this.name]];
+        delete handler[this.name];
+    }
+
+}
+
 class StateNavigator {
-    private NAVIGATE_HANDLER_ID = 'navigateHandlerId';
-    private navigateHandlerId = 1;
-    private navigateHandlers: { [index: string]: (oldState: State, state: State, data: any, asyncData: any) => void } = {};
+    private navigateHandlerCache = new EventHandlerCache<(oldState: State, state: State, data: any, asyncData: any) => void>('navigateHandlerId');
     private stateHandler = new StateHandler();
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
+    onNavigate = handler => this.navigateHandlerCache.onEvent(handler);
+    offNavigate = handler => this.navigateHandlerCache.offEvent(handler);
     
     constructor(states?: StateInfo[], historyManager?: HistoryManager) {
         if (states)
@@ -58,21 +83,6 @@ class StateNavigator {
             this.stateContext.previousData = previousStateCrumb.data;
             this.stateContext.previousUrl = previousStateCrumb.url;
         }
-    }
-    
-    onNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
-        if (!handler[this.NAVIGATE_HANDLER_ID]) {
-            var id = this.NAVIGATE_HANDLER_ID + this.navigateHandlerId++;
-            handler[this.NAVIGATE_HANDLER_ID] = id;
-            this.navigateHandlers[id] = handler;
-        } else {
-            throw new Error('Cannot add the same handler more than once');
-        }
-    }
-
-    offNavigate(handler: (oldState: State, state: State, data: any, asyncData: any) => void) {
-        delete this.navigateHandlers[handler[this.NAVIGATE_HANDLER_ID]];
-        delete handler[this.NAVIGATE_HANDLER_ID];
     }
 
     navigate(stateKey: string, navigationData?: any, historyAction?: 'add' | 'replace' | 'none') {
@@ -137,9 +147,9 @@ class StateNavigator {
                 if (this.stateContext.oldState && this.stateContext.oldState !== state)
                     this.stateContext.oldState.dispose();
                 state.navigated(this.stateContext.data, asyncData);
-                for (var id in this.navigateHandlers) {
+                for (var id in this.navigateHandlerCache.handlers) {
                     if (url === this.stateContext.url)
-                        this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
+                        this.navigateHandlerCache.handlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
                 }
                 if (url === this.stateContext.url) {
                     if (historyAction !== 'none')
