@@ -14,7 +14,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.state = { stateNavigator };
     }
 
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): () => void {
+    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): (asyncData?: any) => void {
         var { stateNavigator } = this.props;
         return (asyncData?: any) => {
             this.setState(() => {
