@@ -12,8 +12,8 @@ type BeforeNavigateHandler = (oldState: State, state: State, data: any, url: str
 
 class StateNavigator {
     private stateHandler = new StateHandler();
-    private onBeforeNavigateCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandlerId');
-    private onNavigateCache = new EventHandlerCache<NavigateHandler>('navigateHandlerId');
+    private onBeforeNavigateCache = new EventHandlerCache<BeforeNavigateHandler>('beforeNavigateHandler');
+    private onNavigateCache = new EventHandlerCache<NavigateHandler>('navigateHandler');
     stateContext = new StateContext();
     historyManager: HistoryManager;
     states: { [index: string]: State } = {};
