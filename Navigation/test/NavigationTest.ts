@@ -3347,6 +3347,28 @@ describe('Navigation', function () {
         });
     });
 
+    describe('On Before Navigate Cancel', function () {
+        it('should not call unloading', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+            ]);
+            stateNavigator.navigate('s0');
+            var hits = 0;
+            stateNavigator.states['s0'].unloading = (state, data, url, unload) => {
+                hits++;
+                unload();
+            }
+            var beforeNavigateHandler = () => {
+                return false;
+            };
+            stateNavigator.onBeforeNavigate(beforeNavigateHandler);
+            stateNavigator.navigate('s1');
+            stateNavigator.offBeforeNavigate(beforeNavigateHandler);
+            assert.equal(hits, 0);
+        });
+    });
+
     describe('Unloading Navigate On Before Navigate', function () {
         it('should call onBeforeNavigate listener twice', function() {
             var stateNavigator = new StateNavigator([
