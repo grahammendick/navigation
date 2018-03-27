@@ -3184,6 +3184,49 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Multiple Off Before Navigate', function () {
+        it('should individually stop calling onBeforeNavigate listeners', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var oldStates1 = [];
+            var states1 = [];
+            var oldStates2 = [];
+            var states2 = [];
+            stateNavigator.navigate('s0');
+            var navigatedHandler1 = (oldState, state, data, url) => {
+                oldStates1.push(oldState);
+                states1.push(state);
+                return true;
+            };
+            var navigatedHandler2 = (oldState, state, data, url) => {
+                oldStates2.push(oldState);
+                states2.push(state);
+                return true;
+            };
+            stateNavigator.onBeforeNavigate(navigatedHandler1);
+            stateNavigator.onBeforeNavigate(navigatedHandler2);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.offBeforeNavigate(navigatedHandler1);
+            stateNavigator.navigate('s2');
+            stateNavigator.offBeforeNavigate(navigatedHandler2);
+            assert.equal(oldStates1[0], stateNavigator.states['s0']);
+            assert.equal(states1[0], stateNavigator.states['s1']);
+            assert.equal(oldStates2[0], stateNavigator.states['s0']);
+            assert.equal(states2[0], stateNavigator.states['s1']);
+            assert.equal(oldStates2[1], stateNavigator.states['s1']);
+            assert.equal(states2[1], stateNavigator.states['s2']);
+            assert.equal(oldStates1.length, 1);
+            assert.equal(states1.length, 1);
+            assert.equal(oldStates2.length, 2);
+            assert.equal(states2.length, 2);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Multiple Off Navigate', function () {
         it('should individually stop calling onNavigate listeners', function() {
             var stateNavigator = new StateNavigator([
