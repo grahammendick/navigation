@@ -1,4 +1,5 @@
 ﻿import Crumb from './config/Crumb';
+import EventHandlerCache from './EventHandlerCache';
 import { FluentNavigator, createFluentNavigator } from './FluentNavigator';
 import HashHistoryManager from './history/HashHistoryManager';
 import HistoryManager from './history/HistoryManager';
@@ -8,30 +9,6 @@ import StateContext from './StateContext';
 import StateHandler from './StateHandler';
 type NavigateHandler = (oldState: State, state: State, data: any, asyncData: any) => void;
 type BeforeNavigateHandler = (oldState: State, state: State, data: any, url: string) => boolean;
-
-class EventHandlerCache<Handler> {
-    private name: string;
-    private handlerId = 1;
-    handlers: { [index: string]: Handler } = {};
-    constructor(name: string) {
-        this.name = name;
-    }
-
-    onEvent(handler: Handler) {
-        if (!handler[this.name]) {
-            var id = this.name + this.handlerId++;
-            handler[this.name] = id;
-            this.handlers[id] = handler;
-        } else {
-            throw new Error('Cannot add the same handler more than once');
-        }
-    }
-
-    offEvent(handler: Handler) {
-        delete this.handlers[handler[this.name]];
-        delete handler[this.name];
-    }
-}
 
 class StateNavigator {
     private stateHandler = new StateHandler();
