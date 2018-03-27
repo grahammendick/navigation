@@ -3382,24 +3382,38 @@ describe('Navigation', function () {
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
-            var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatingData, navigatingUrl;
+            var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData, navigatingData, navigatingUrl,
+                beforeNavigatedOldState, beforeNavigatedState, beforeNavigatedData, beforeNavigatedUrl;
             stateNavigator.states['s'].navigating = (data, url, navigating) => {
                 navigatingData = data;
                 navigatingUrl = url;
                 navigating('World');
             }
+            var beforeNavigatedHandler = (oldState, state, data, url) => {
+                beforeNavigatedOldState = oldState;
+                beforeNavigatedState = state;
+                beforeNavigatedData = data;
+                beforeNavigatedUrl = url;
+                return true;
+            };
             var navigatedHandler = (oldState, state, data, asyncData) => {
                 navigatedOldState = oldState;
                 navigatedState = state;
                 navigatedData = data;
                 navigatedAsyncData = asyncData;
             };
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler);
             stateNavigator.onNavigate(navigatedHandler);
             var url = stateNavigator.getNavigationLink('s', { s: 'Hello' });
             stateNavigator.navigate('s', { s: 'Hello' });
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler);
             stateNavigator.offNavigate(navigatedHandler);
             assert.strictEqual(navigatingData.s, 'Hello');
             assert.strictEqual(navigatingUrl, url);
+            assert.strictEqual(beforeNavigatedOldState, null);
+            assert.strictEqual(beforeNavigatedState, stateNavigator.states['s']);
+            assert.strictEqual(beforeNavigatedData.s, 'Hello');
+            assert.strictEqual(beforeNavigatedUrl, url);
             assert.strictEqual(navigatedOldState, null);
             assert.strictEqual(navigatedState, stateNavigator.states['s']);
             assert.strictEqual(navigatedData.s, 'Hello');
