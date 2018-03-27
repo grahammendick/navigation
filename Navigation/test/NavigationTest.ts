@@ -2959,6 +2959,47 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Copy On Before Navigate', function () {
+        it('should call both onBeforeNavigate listeners', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var oldStates = [];
+            var states = [];
+            stateNavigator.navigate('s0');
+            var beforeNavigatedHandler1 = (oldState, state, data) => {
+                oldStates.push(oldState);
+                states.push(state);
+                return true;
+            };
+            var beforeNavigatedHandler2 = (oldState, state, data) => {
+                oldStates.push(oldState);
+                states.push(state);
+                return true;
+            };
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler1);
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler2);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.navigate('s2');
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler1);
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler2);
+            assert.equal(oldStates[0], stateNavigator.states['s0']);
+            assert.equal(states[0], stateNavigator.states['s1']);
+            assert.equal(oldStates[1], stateNavigator.states['s0']);
+            assert.equal(states[1], stateNavigator.states['s1']);
+            assert.equal(oldStates[2], stateNavigator.states['s1']);
+            assert.equal(states[2], stateNavigator.states['s2']);
+            assert.equal(oldStates[3], stateNavigator.states['s1']);
+            assert.equal(states[3], stateNavigator.states['s2']);
+            assert.equal(oldStates.length, 4);
+            assert.equal(states.length, 4);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Copy On Navigate', function () {
         it('should call both onNavigate listeners', function() {
             var stateNavigator = new StateNavigator([
