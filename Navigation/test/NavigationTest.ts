@@ -3127,6 +3127,35 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Off Before Navigate', function () {
+        it('should stop calling onBeforeNavigate listener', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var oldStates = [];
+            var states = [];
+            stateNavigator.navigate('s0');
+            var beforeNavigatedHandler = (oldState, state, data, url) => {
+                oldStates.push(oldState);
+                states.push(state);
+                return true;
+            };
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler);
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler);
+            stateNavigator.navigate('s2');
+            assert.equal(oldStates[0], stateNavigator.states['s0']);
+            assert.equal(states[0], stateNavigator.states['s1']);
+            assert.equal(oldStates.length, 1);
+            assert.equal(states.length, 1);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
     describe('Off Navigate', function () {
         it('should stop calling onNavigate listener', function() {
             var stateNavigator = new StateNavigator([
