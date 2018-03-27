@@ -3484,8 +3484,8 @@ describe('Navigation', function () {
             ]);
             var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData;
             var beforeNavigateHandler = (oldState, state, data, url) => {
-                if (state.key === 's0')
-                    stateNavigator.navigate('s1', { s: 'Hello' });
+                stateNavigator.offBeforeNavigate(beforeNavigateHandler);
+                stateNavigator.navigate('s1', { s: 'Hello' });
                 return true;
             };
             stateNavigator.states['s1'].navigating = (data, url, navigating) => {
