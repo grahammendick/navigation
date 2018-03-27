@@ -2969,12 +2969,12 @@ describe('Navigation', function () {
             var oldStates = [];
             var states = [];
             stateNavigator.navigate('s0');
-            var beforeNavigatedHandler1 = (oldState, state, data) => {
+            var beforeNavigatedHandler1 = (oldState, state, data, url) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
             };
-            var beforeNavigatedHandler2 = (oldState, state, data) => {
+            var beforeNavigatedHandler2 = (oldState, state, data, url) => {
                 oldStates.push(oldState);
                 states.push(state);
                 return true;
@@ -3035,6 +3035,51 @@ describe('Navigation', function () {
             assert.equal(states[3], stateNavigator.states['s2']);
             assert.equal(oldStates.length, 4);
             assert.equal(states.length, 4);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
+        });
+    });
+
+    describe('Multiple On Before Navigate', function () {
+        it('should call multiple onBeforeNavigate listeners', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' },
+                { key: 's2', route: 'r2' }
+            ]);
+            var oldStates1 = [];
+            var states1 = [];
+            var oldStates2 = [];
+            var states2 = [];
+            stateNavigator.navigate('s0');
+            var beforeNavigatedHandler1 = (oldState, state, data, url) => {
+                oldStates1.push(oldState);
+                states1.push(state);
+                return true;
+            };
+            var beforeNavigatedHandler2 = (oldState, state, data, url) => {
+                oldStates2.push(oldState);
+                states2.push(state);
+                return true;
+            };
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler1);
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler2);
+            var link = stateNavigator.getNavigationLink('s1');
+            stateNavigator.navigateLink(link);
+            stateNavigator.navigate('s2');
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler1);
+            stateNavigator.offBeforeNavigate(beforeNavigatedHandler2);
+            assert.equal(oldStates1[0], stateNavigator.states['s0']);
+            assert.equal(states1[0], stateNavigator.states['s1']);
+            assert.equal(oldStates2[0], stateNavigator.states['s0']);
+            assert.equal(states2[0], stateNavigator.states['s1']);
+            assert.equal(oldStates1[1], stateNavigator.states['s1']);
+            assert.equal(states1[1], stateNavigator.states['s2']);
+            assert.equal(oldStates2[1], stateNavigator.states['s1']);
+            assert.equal(states2[1], stateNavigator.states['s2']);
+            assert.equal(oldStates1.length, 2);
+            assert.equal(states1.length, 2);
+            assert.equal(oldStates2.length, 2);
+            assert.equal(states2.length, 2);
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s2']);
         });
     });
