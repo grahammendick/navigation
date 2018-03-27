@@ -3476,6 +3476,38 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Before Navigate Navigate Params Navigated', function () {
+        it('should pass State and Data', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var navigatedOldState, navigatedState, navigatedData, navigatedAsyncData;
+            var beforeNavigatedHandler = (oldState, state, data, url) => {
+                if (state.key === 's0')
+                    stateNavigator.navigate('s1', { s: 'Hello' });
+                return true;
+            };
+            stateNavigator.states['s1'].navigating = (data, url, navigating) => {
+                navigating('World');
+            }
+            var navigatedHandler = (oldState, state, data, asyncData) => {
+                stateNavigator.offNavigate(navigatedHandler);
+                navigatedOldState = oldState;
+                navigatedState = state;
+                navigatedData = data;
+                navigatedAsyncData = asyncData;
+            };
+            stateNavigator.onBeforeNavigate(beforeNavigatedHandler);
+            stateNavigator.onNavigate(navigatedHandler);
+            stateNavigator.navigate('s0');
+            assert.equal(navigatedOldState, null);
+            assert.strictEqual(navigatedState, stateNavigator.states['s1']);
+            assert.strictEqual(navigatedData.s, 'Hello');
+            assert.strictEqual(navigatedAsyncData, 'World');
+        });
+    });
+
     describe('Navigating Navigate Params Navigated', function () {
         it('should pass State and Data', function() {
             var stateNavigator = new StateNavigator([
