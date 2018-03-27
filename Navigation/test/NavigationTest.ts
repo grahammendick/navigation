@@ -3347,7 +3347,7 @@ describe('Navigation', function () {
         });
     });
 
-    describe('Navigated Navigating On Before Navigate', function () {
+    describe('Unloading Navigate On Before Navigate', function () {
         it('should call onBeforeNavigate listener twice', function() {
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
@@ -3357,8 +3357,10 @@ describe('Navigation', function () {
             ]);
             stateNavigator.navigate('s0');
             stateNavigator.navigate('s1');
-            stateNavigator.states['s2'].navigating = () => {
-                stateNavigator.navigate('s3');
+            stateNavigator.states['s1'].unloading = (state, data, url, unload) => {
+                if (state.key == 's2')
+                    stateNavigator.navigate('s3');
+                unload();
             }
             var navigatedState;
             var hits = 0;
