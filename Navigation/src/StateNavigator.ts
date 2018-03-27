@@ -135,7 +135,7 @@ class StateNavigator {
         var { state, data } = this.stateHandler.parseLink(url);
         for (var id in this.onBeforeNavigateCache.handlers) {
             var handler = this.onBeforeNavigateCache.handlers[id];
-            if (oldUrl !== this.stateContext.url || handler(this.stateContext.state, state, data, url) === false)
+            if (oldUrl !== this.stateContext.url || !handler(this.stateContext.state, state, data, url))
                 return;
         }
         var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
