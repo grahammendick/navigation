@@ -3347,6 +3347,37 @@ describe('Navigation', function () {
         });
     });
 
+    describe('Navigated Navigating On Before Navigate', function () {
+        it('should call onBeforeNavigate listener twice', function() {
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true },
+                { key: 's2', route: 'r2' },
+                { key: 's3', route: 'r3', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            stateNavigator.states['s2'].navigating = () => {
+                stateNavigator.navigate('s3');
+            }
+            var navigatedState;
+            var hits = 0;
+            var beforeNavigateHandler = (oldState, state, data) => {
+                navigatedState = state;
+                hits++;
+                return true;
+            };
+            stateNavigator.onBeforeNavigate(beforeNavigateHandler);
+            stateNavigator.navigate('s2');
+            stateNavigator.offBeforeNavigate(beforeNavigateHandler);
+            assert.equal(hits, 2);
+            assert.equal(navigatedState, stateNavigator.stateContext.state);
+            assert.equal(stateNavigator.stateContext.oldState, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.previousState, stateNavigator.states['s1']);
+            assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s3']);
+        });
+    });
+
     describe('Navigated Navigate On Navigate', function () {
         it('should call onNavigate listener once', function() {
             var stateNavigator = new StateNavigator([
