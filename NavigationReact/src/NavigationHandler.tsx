@@ -14,6 +14,15 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.state = { stateNavigator };
     }
 
+    componentDidMount() {
+        this.props.stateNavigator.onNavigate(this.navigateHandler);
+    }
+
+    componentWillUnmount() {
+        this.props.stateNavigator.offNavigate(this.navigateHandler);
+        this.state.stateNavigator['getNavigateContinuation'] = this.originalGetNavigateContinuation;
+    }
+
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): (asyncData?: any) => void {
         var { stateNavigator } = this.props;
         return (asyncData?: any) => {
@@ -39,15 +48,6 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 }
             });
         };
-    }
-
-    componentDidMount() {
-        this.props.stateNavigator.onNavigate(this.navigateHandler);
-    }
-
-    componentWillUnmount() {
-        this.props.stateNavigator.offNavigate(this.navigateHandler);
-        this.state.stateNavigator['getNavigateContinuation'] = this.originalGetNavigateContinuation;
     }
 
     render() {
