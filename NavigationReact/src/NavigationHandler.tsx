@@ -3,7 +3,7 @@ import { StateNavigator, State } from 'navigation';
 import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
-    private navigateHandler: any;
+    private navigateHandler;
     private originalGetNavigateContinuation;
     constructor(props) {
         super(props);
