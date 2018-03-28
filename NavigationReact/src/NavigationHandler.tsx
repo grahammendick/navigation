@@ -4,49 +4,43 @@ import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
     private navigateHandler;
-    private originalGetNavigateContinuation;
+    private originalResumeNavigation;
     constructor(props) {
         super(props);
-        this.navigateHandler = () => this.forceUpdate();
-        this.originalGetNavigateContinuation = this.props.stateNavigator['getNavigateContinuation'];
+        this.originalResumeNavigation = this.props.stateNavigator['resumeNavigation'];
         this.state = { stateNavigator: this.props.stateNavigator };
     }
 
     componentDidMount() {
-        this.props.stateNavigator.onNavigate(this.navigateHandler);
-        this.props.stateNavigator['getNavigateContinuation'] = this.getNavigateContinuation.bind(this);
+        this.props.stateNavigator['resumeNavigation'] = this.resumeNavigation.bind(this);
     }
 
     componentWillUnmount() {
-        this.props.stateNavigator.offNavigate(this.navigateHandler);
-        this.props.stateNavigator['getNavigateContinuation'] = this.originalGetNavigateContinuation;
+        this.props.stateNavigator['resumeNavigation'] = this.originalResumeNavigation;
     }
 
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): (asyncData?: any) => void {
+    private resumeNavigation(oldUrl, state, data, asyncData, url, historyAction, history) {
         var { stateNavigator } = this.props;
-        return (asyncData?: any) => {
-            this.setState(() => {
-                if (oldUrl === stateNavigator.stateContext.url) {
-                    var nextNavigator = new StateNavigator();
-                    nextNavigator.states = stateNavigator.states;
-                    nextNavigator.historyManager = stateNavigator.historyManager;
-                    nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
-                    nextNavigator.stateContext = stateNavigator['createStateContext'](state, data, url, asyncData, history);
-                    nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
-                    nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
-                    nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
-                    nextNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-                    return { stateNavigator: nextNavigator };
-                }
-                return null;
-            }, () => {
-                if (url === this.state.stateNavigator.stateContext.url) {
-                    stateNavigator.stateContext = this.state.stateNavigator.stateContext;
-                    stateNavigator.offNavigate(this.navigateHandler);
-                    stateNavigator['notify'](historyAction);
-                }
-            });
-        };
+        this.setState(() => {
+            if (oldUrl === stateNavigator.stateContext.url) {
+                var nextNavigator = new StateNavigator();
+                nextNavigator.states = stateNavigator.states;
+                nextNavigator.historyManager = stateNavigator.historyManager;
+                nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
+                nextNavigator.stateContext = stateNavigator['createStateContext'](state, data, url, asyncData, history);
+                nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
+                nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
+                nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
+                nextNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+                return { stateNavigator: nextNavigator };
+            }
+            return null;
+        }, () => {
+            if (url === this.state.stateNavigator.stateContext.url) {
+                stateNavigator.stateContext = this.state.stateNavigator.stateContext;
+                stateNavigator['notify'](historyAction);
+            }
+        });
     }
 
     render() {

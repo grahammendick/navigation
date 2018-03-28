@@ -123,7 +123,9 @@ class StateNavigator {
             return;
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
-        var navigateContinuation =  this.getNavigateContinuation(oldUrl, state, data, url, historyAction, history);
+        var navigateContinuation =  (asyncData?: any) => {
+            this.resumeNavigation(oldUrl, state, data, asyncData, url, historyAction, history);
+        };
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
                 state.navigating(data, url, navigateContinuation, history);
@@ -134,13 +136,11 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): (asyncData?: any) => void {
-        return (asyncData?: any) => {
-            if (oldUrl === this.stateContext.url) {
-                this.stateContext = this.createStateContext(state, data, url, asyncData, history);
-                this.notify(historyAction);
-            }
-        };
+    private resumeNavigation(oldUrl: string, state: State, data: any, asyncData: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean) {
+        if (oldUrl === this.stateContext.url) {
+            this.stateContext = this.createStateContext(state, data, url, asyncData, history);
+            this.notify(historyAction);
+        }
     }
     
     private notify(historyAction) {
