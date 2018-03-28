@@ -34,7 +34,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
             return { stateNavigator: nextNavigator };
         }, () => {
             if (stateContext.url === this.state.stateNavigator.stateContext.url)
-                this.originalResumeNavigation.bind(stateNavigator)(stateContext, historyAction);
+                this.originalResumeNavigation.call(stateNavigator, stateContext, historyAction);
         });
     }
 
