@@ -21,8 +21,8 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     }
 
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
-        var { stateNavigator } = this.props;
         this.setState(() => {
+            var { stateNavigator } = this.props;
             var nextNavigator = new StateNavigator();
             nextNavigator.states = stateNavigator.states;
             nextNavigator.historyManager = stateNavigator.historyManager;
