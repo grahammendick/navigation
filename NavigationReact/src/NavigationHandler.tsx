@@ -1,5 +1,5 @@
 import NavigationContext from './NavigationContext';
-import { StateNavigator, State, StateContext } from 'navigation';
+import { StateNavigator, StateContext } from 'navigation';
 import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
