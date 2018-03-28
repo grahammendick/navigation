@@ -10,17 +10,17 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         var { stateNavigator } = this.props;
         this.navigateHandler = () => this.forceUpdate();
         this.originalGetNavigateContinuation = stateNavigator['getNavigateContinuation'];
-        stateNavigator['getNavigateContinuation'] = this.getNavigateContinuation.bind(this);
         this.state = { stateNavigator };
     }
 
     componentDidMount() {
         this.props.stateNavigator.onNavigate(this.navigateHandler);
+        this.props.stateNavigator['getNavigateContinuation'] = this.getNavigateContinuation.bind(this);
     }
 
     componentWillUnmount() {
         this.props.stateNavigator.offNavigate(this.navigateHandler);
-        this.state.stateNavigator['getNavigateContinuation'] = this.originalGetNavigateContinuation;
+        this.props.stateNavigator['getNavigateContinuation'] = this.originalGetNavigateContinuation;
     }
 
     private getNavigateContinuation(oldUrl: string, state: State, data: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean): (asyncData?: any) => void {
