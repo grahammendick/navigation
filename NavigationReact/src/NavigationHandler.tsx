@@ -1,5 +1,5 @@
 import NavigationContext from './NavigationContext';
-import { StateNavigator, State } from 'navigation';
+import { StateNavigator, State, StateContext } from 'navigation';
 import * as React from 'react';
 
 class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator }, { stateNavigator: StateNavigator }> {
@@ -20,7 +20,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.props.stateNavigator['resumeNavigation'] = this.originalResumeNavigation;
     }
 
-    private resumeNavigation(oldUrl, state, data, asyncData, url, historyAction, history) {
+    private resumeNavigation(stateContext: StateContext, oldUrl: string, historyAction: 'add' | 'replace' | 'none') {
         var { stateNavigator } = this.props;
         this.setState(() => {
             if (oldUrl === stateNavigator.stateContext.url) {
@@ -28,7 +28,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 nextNavigator.states = stateNavigator.states;
                 nextNavigator.historyManager = stateNavigator.historyManager;
                 nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
-                nextNavigator.stateContext = stateNavigator['createStateContext'](state, {...data}, url, asyncData, history);
+                nextNavigator.stateContext = stateContext;
                 nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
                 nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
                 nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
@@ -37,7 +37,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
             }
             return null;
         }, () => {
-            this.originalResumeNavigation(oldUrl, state, data, asyncData, url, historyAction, history);
+            this.originalResumeNavigation(stateContext, oldUrl, historyAction);
         });
     }
 

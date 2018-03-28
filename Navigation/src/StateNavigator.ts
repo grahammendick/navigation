@@ -124,7 +124,7 @@ class StateNavigator {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
         var navigateContinuation =  (asyncData?: any) => {
-            this.resumeNavigation(oldUrl, state, data, asyncData, url, historyAction, history);
+            this.resumeNavigation(this.createStateContext(state, data, url, asyncData, history), oldUrl, historyAction);
         };
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -136,15 +136,16 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private resumeNavigation(oldUrl: string, state: State, data: any, asyncData: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean) {
+    private resumeNavigation(stateContext: StateContext, oldUrl: string, historyAction: 'add' | 'replace' | 'none') {
         if (oldUrl === this.stateContext.url) {
-            this.stateContext = this.createStateContext(state, data, url, asyncData, history);
+            this.stateContext = stateContext;
+            var { oldState, state, data, asyncData, url } = stateContext;
             if (this.stateContext.oldState && this.stateContext.oldState !== state)
                 this.stateContext.oldState.dispose();
             state.navigated(this.stateContext.data, asyncData);
             for (var id in this.navigateHandlers) {
                 if (url === this.stateContext.url)
-                    this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
+                    this.navigateHandlers[id](oldState, state, data, asyncData);
             }
             if (url === this.stateContext.url) {
                 if (historyAction !== 'none')
