@@ -20,24 +20,22 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         this.props.stateNavigator['resumeNavigation'] = this.originalResumeNavigation;
     }
 
-    private resumeNavigation(stateContext: StateContext, oldUrl: string, historyAction: 'add' | 'replace' | 'none') {
+    private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
         var { stateNavigator } = this.props;
         this.setState(() => {
-            if (oldUrl === stateNavigator.stateContext.url) {
-                var nextNavigator = new StateNavigator();
-                nextNavigator.states = stateNavigator.states;
-                nextNavigator.historyManager = stateNavigator.historyManager;
-                nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
-                nextNavigator.stateContext = stateContext;
-                nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
-                nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
-                nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
-                nextNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
-                return { stateNavigator: nextNavigator };
-            }
-            return null;
+            var nextNavigator = new StateNavigator();
+            nextNavigator.states = stateNavigator.states;
+            nextNavigator.historyManager = stateNavigator.historyManager;
+            nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
+            nextNavigator.stateContext = stateContext;
+            nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
+            nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
+            nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
+            nextNavigator.navigateLink = stateNavigator.navigateLink.bind(stateNavigator);
+            return { stateNavigator: nextNavigator };
         }, () => {
-            this.originalResumeNavigation(stateContext, oldUrl, historyAction);
+            if (stateContext.url === this.state.stateNavigator.stateContext.url)
+                this.originalResumeNavigation(stateContext, historyAction);
         });
     }
 

@@ -124,7 +124,8 @@ class StateNavigator {
         var oldUrl = this.stateContext.url;
         var { state, data } = this.stateHandler.parseLink(url);
         var navigateContinuation =  (asyncData?: any) => {
-            this.resumeNavigation(this.createStateContext(state, data, url, asyncData, history), oldUrl, historyAction);
+            if (oldUrl === this.stateContext.url)
+                this.resumeNavigation(this.createStateContext(state, data, url, asyncData, history), historyAction);
         };
         var unloadContinuation = () => {
             if (oldUrl === this.stateContext.url)
@@ -136,23 +137,21 @@ class StateNavigator {
             state.navigating(data, url, navigateContinuation, history);
     }
     
-    private resumeNavigation(stateContext: StateContext, oldUrl: string, historyAction: 'add' | 'replace' | 'none') {
-        if (oldUrl === this.stateContext.url) {
-            this.stateContext = stateContext;
-            var { oldState, state, data, asyncData, url } = stateContext;
-            if (this.stateContext.oldState && this.stateContext.oldState !== state)
-                this.stateContext.oldState.dispose();
-            state.navigated(this.stateContext.data, asyncData);
-            for (var id in this.navigateHandlers) {
-                if (url === this.stateContext.url)
-                    this.navigateHandlers[id](oldState, state, data, asyncData);
-            }
-            if (url === this.stateContext.url) {
-                if (historyAction !== 'none')
-                    this.historyManager.addHistory(url, historyAction === 'replace');
-                if (this.stateContext.title && (typeof document !== 'undefined'))
-                    document.title = this.stateContext.title;
-            }
+    private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
+        this.stateContext = stateContext;
+        var { oldState, state, data, asyncData, url } = stateContext;
+        if (this.stateContext.oldState && this.stateContext.oldState !== state)
+            this.stateContext.oldState.dispose();
+        state.navigated(this.stateContext.data, asyncData);
+        for (var id in this.navigateHandlers) {
+            if (url === this.stateContext.url)
+                this.navigateHandlers[id](oldState, state, data, asyncData);
+        }
+        if (url === this.stateContext.url) {
+            if (historyAction !== 'none')
+                this.historyManager.addHistory(url, historyAction === 'replace');
+            if (this.stateContext.title && (typeof document !== 'undefined'))
+                document.title = this.stateContext.title;
         }
     }
 
