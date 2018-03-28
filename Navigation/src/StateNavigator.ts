@@ -139,24 +139,19 @@ class StateNavigator {
     private resumeNavigation(oldUrl: string, state: State, data: any, asyncData: any, url: string, historyAction: 'add' | 'replace' | 'none', history: boolean) {
         if (oldUrl === this.stateContext.url) {
             this.stateContext = this.createStateContext(state, data, url, asyncData, history);
-            this.notify(historyAction);
-        }
-    }
-    
-    private notify(historyAction) {
-        var {oldState, state, data, asyncData, url, title} = this.stateContext;
-        if (oldState && oldState !== state)
-            oldState.dispose();
-        state.navigated(data, asyncData);
-        for (var id in this.navigateHandlers) {
-            if (url === this.stateContext.url)
-                this.navigateHandlers[id](oldState, state, data, asyncData);
-        }
-        if (url === this.stateContext.url) {
-            if (historyAction !== 'none')
-                this.historyManager.addHistory(url, historyAction === 'replace');
-            if (title && (typeof document !== 'undefined'))
-                document.title = this.stateContext.title;
+            if (this.stateContext.oldState && this.stateContext.oldState !== state)
+                this.stateContext.oldState.dispose();
+            state.navigated(this.stateContext.data, asyncData);
+            for (var id in this.navigateHandlers) {
+                if (url === this.stateContext.url)
+                    this.navigateHandlers[id](this.stateContext.oldState, state, this.stateContext.data, asyncData);
+            }
+            if (url === this.stateContext.url) {
+                if (historyAction !== 'none')
+                    this.historyManager.addHistory(url, historyAction === 'replace');
+                if (this.stateContext.title && (typeof document !== 'undefined'))
+                    document.title = this.stateContext.title;
+            }
         }
     }
 

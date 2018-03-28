@@ -7,8 +7,9 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     private originalResumeNavigation;
     constructor(props) {
         super(props);
-        this.originalResumeNavigation = this.props.stateNavigator['resumeNavigation'];
-        this.state = { stateNavigator: this.props.stateNavigator };
+        var { stateNavigator } = this.props;
+        this.originalResumeNavigation = stateNavigator['resumeNavigation'].bind(stateNavigator);
+        this.state = { stateNavigator };
     }
 
     componentDidMount() {
@@ -27,7 +28,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
                 nextNavigator.states = stateNavigator.states;
                 nextNavigator.historyManager = stateNavigator.historyManager;
                 nextNavigator['stateHandler'] = stateNavigator['stateHandler'];
-                nextNavigator.stateContext = stateNavigator['createStateContext'](state, data, url, asyncData, history);
+                nextNavigator.stateContext = stateNavigator['createStateContext'](state, {...data}, url, asyncData, history);
                 nextNavigator.configure = stateNavigator.configure.bind(stateNavigator);
                 nextNavigator.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
                 nextNavigator.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
@@ -36,10 +37,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
             }
             return null;
         }, () => {
-            if (url === this.state.stateNavigator.stateContext.url) {
-                stateNavigator.stateContext = this.state.stateNavigator.stateContext;
-                stateNavigator['notify'](historyAction);
-            }
+            this.originalResumeNavigation(oldUrl, state, data, asyncData, url, historyAction, history);
         });
     }
 
