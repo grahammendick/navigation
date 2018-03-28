@@ -9,7 +9,6 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         super(props);
         var { stateNavigator } = this.props;
         this.navigateHandler = () => this.forceUpdate();
-        stateNavigator.onNavigate(this.navigateHandler);
         this.originalGetNavigateContinuation = stateNavigator['getNavigateContinuation'];
         stateNavigator['getNavigateContinuation'] = this.getNavigateContinuation.bind(this);
         this.state = { stateNavigator };
@@ -42,7 +41,12 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         };
     }
 
+    componentDidMount() {
+        this.props.stateNavigator.onNavigate(this.navigateHandler);
+    }
+
     componentWillUnmount() {
+        this.props.stateNavigator.offNavigate(this.navigateHandler);
         this.state.stateNavigator['getNavigateContinuation'] = this.originalGetNavigateContinuation;
     }
 
