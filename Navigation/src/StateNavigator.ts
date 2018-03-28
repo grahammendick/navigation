@@ -100,7 +100,7 @@ class StateNavigator {
         this.navigateLink(url, historyAction);
     }
 
-    private getNavigationBackLink(distance: number): string {
+    getNavigationBackLink(distance: number): string {
         if (!this.canNavigateBack(distance))
             throw new Error('The distance parameter must be greater than zero and less than or equal to the number of Crumbs (' + this.stateContext.crumbs.length + ')');
         return this.stateContext.crumbs[this.stateContext.crumbs.length - distance].url;
