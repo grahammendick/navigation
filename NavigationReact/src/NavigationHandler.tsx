@@ -8,7 +8,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     constructor(props) {
         super(props);
         var { stateNavigator } = this.props;
-        this.originalResumeNavigation = stateNavigator['resumeNavigation'].bind(stateNavigator);
+        this.originalResumeNavigation = stateNavigator['resumeNavigation'];
         this.state = { stateNavigator };
     }
 
@@ -21,8 +21,8 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
     }
 
     private resumeNavigation(stateContext: StateContext, historyAction: 'add' | 'replace' | 'none') {
+        var { stateNavigator } = this.props;
         this.setState(() => {
-            var { stateNavigator } = this.props;
             var nextNavigator = new StateNavigator();
             nextNavigator.states = stateNavigator.states;
             nextNavigator.historyManager = stateNavigator.historyManager;
@@ -35,7 +35,7 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
             return { stateNavigator: nextNavigator };
         }, () => {
             if (stateContext.url === this.state.stateNavigator.stateContext.url)
-                this.originalResumeNavigation(stateContext, historyAction);
+                this.originalResumeNavigation.bind(stateNavigator)(stateContext, historyAction);
         });
     }
 
