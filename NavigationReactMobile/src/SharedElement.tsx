@@ -1,8 +1,9 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import withStateNavigator from './withStateNavigator';
+import { SharedElementProps } from './Props';
 
-class SharedElement extends React.Component<any, any> {
+class SharedElement extends React.Component<SharedElementProps, any> {
     private ref: Element;
     private scene: number;
     context: {
@@ -16,9 +17,9 @@ class SharedElement extends React.Component<any, any> {
         this.register = this.register.bind(this);
     }
     static contextTypes = {
-        stateNavigator: () => {},
-        registerSharedElement: () => {},
-        unregisterSharedElement: () => {}
+        stateNavigator: () => null,
+        registerSharedElement: () => null,
+        unregisterSharedElement: () => null
     }
     private getStateNavigator(): StateNavigator {
         return this.props.stateNavigator || this.context.stateNavigator;
@@ -46,7 +47,7 @@ class SharedElement extends React.Component<any, any> {
         }
     }
     render() {
-        return React.cloneElement((this.props.children as any), {ref: el => this.ref = el});
+        return React.cloneElement(this.props.children, {ref: el => this.ref = el});
     }
 }
 

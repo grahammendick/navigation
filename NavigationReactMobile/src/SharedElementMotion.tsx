@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Motion from './Motion';
+import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
 
-class SharedElementMotion extends React.Component<any, any> {
+class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {
         duration: 300,
         elementStyle: (name, ref, data) => data
@@ -12,7 +13,9 @@ class SharedElementMotion extends React.Component<any, any> {
         this.diff(prevSharedElements, sharedElements, this.props.onAnimated);
         this.diff(sharedElements, prevSharedElements, this.props.onAnimating);
     }
-    diff(fromSharedElements, toSharedElements, action) {
+    diff(fromSharedElements: { [name: string]: SharedItem },
+        toSharedElements: { [name: string]: SharedItem },
+        action: (name: string, ref: HTMLElement, data: any) => void) {
         for(var name in fromSharedElements) {
             var from = fromSharedElements[name];
             var to = toSharedElements[name];
@@ -24,7 +27,7 @@ class SharedElementMotion extends React.Component<any, any> {
             }
         }
     }
-    getSharedElements(sharedElements) {
+    getSharedElements(sharedElements: SharedItem[]): { [name: string]: SharedItem } {
         return sharedElements.reduce((elements, element) => ({...elements, [element.name]: element}), {});
     }
     getStyle(name, {ref, data}) {
@@ -35,9 +38,10 @@ class SharedElementMotion extends React.Component<any, any> {
         return typeof prop === 'function' ? prop(name) : prop;
     }
     render() {
-        var {sharedElements, style, children, progress, duration, easing} = this.props;
+        var {sharedElements, children, progress, duration} = this.props;
+        var ElementMotion: new() => Motion<SharedItem> = Motion as any;
         return (sharedElements.length !== 0 &&
-            <Motion
+            <ElementMotion
                 data={sharedElements}
                 getKey={({name}) => name}
                 enter={({name, oldElement}) => this.getStyle(name, oldElement)}
@@ -46,10 +50,10 @@ class SharedElementMotion extends React.Component<any, any> {
                 duration={duration}>
                 {tweenStyles => (
                     tweenStyles.map(({data: {name, oldElement, mountedElement}, style: tweenStyle}) => (
-                        (children as any)(tweenStyle, name, oldElement.data, mountedElement.data)
+                        children(tweenStyle, name, oldElement.data, mountedElement.data)
                     ))
                 )}
-            </Motion>
+            </ElementMotion>
         );
     }
 }
