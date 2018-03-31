@@ -1,4 +1,4 @@
-﻿/** @license React v16.3.0-alpha.3
+﻿/** @license React v16.3.0
  * react.development.js
  *
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -108,7 +108,7 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.3.0-alpha.3';
+var ReactVersion = '16.3.0';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -1271,6 +1271,12 @@ var describeComponentFrame = function (name, source, ownerName) {
   return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
 };
 
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' ||
+  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_ASYNC_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+}
+
 function getComponentName(fiber) {
   var type = fiber.type;
 
@@ -1585,9 +1591,7 @@ function validateFragmentProps(fragment) {
 }
 
 function createElementWithValidation(type, props, children) {
-  var validType = typeof type === 'string' || typeof type === 'function' ||
-  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_ASYNC_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+  var validType = isValidElementType(type);
 
   // We warn in this case but don't throw. We expect the element creation to
   // succeed and there will likely be errors in render.
