@@ -98,23 +98,25 @@ class NavigationMotion extends React.Component<any, any> {
             {key: index, state, data, url, scene: this.state.scenes[index], mount: url === nextCrumb.url}
         ));
     }
-    getPropValue(prop, state, data) {
-        return typeof prop === 'function' ? prop(state, data) : prop;
+    getStyle(mounted, mount, state, data) {
+        var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
+        var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle)
+        return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
      }
     render() {
-        var {unmountedStyle, mountedStyle, crumbStyle, style, children, duration, sharedElementMotion} = this.props;
+        var {children, duration, sharedElementMotion} = this.props;
         var {stateContext: {crumbs, oldUrl, oldState}, stateContext} = this.getStateNavigator();
         return (stateContext.state &&
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={({state, data}) => this.getPropValue(oldState ? unmountedStyle : mountedStyle, state, data)}
-                update={({mount, state, data}) => this.getPropValue(mount ? mountedStyle : crumbStyle, state, data)}
-                leave={({state, data}) => this.getPropValue(unmountedStyle, state, data)}
+                enter={({mount, state, data}) => this.getStyle(!oldState, mount, state, data)}
+                update={({mount, state, data}) => this.getStyle(true, mount, state, data)}
+                leave={({state, data}) => this.getStyle(false, false, state, data)}
                 duration={duration}
                 onRest={({key}) => this.clearScene(key)}>
                 {tweenStyles => (
-                    tweenStyles.map(({key, data: {scene, state, data, url}, progress, style: tweenStyle}) => (
+                    tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
                         (children as any)(tweenStyle, scene, key, crumbs.length === key, state, data)
                     )).concat(
                         sharedElementMotion && sharedElementMotion({
