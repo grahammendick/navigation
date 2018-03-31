@@ -8,11 +8,8 @@ class NavigationHandler extends React.Component<{ stateNavigator: StateNavigator
         super(props);
         var { stateNavigator } = this.props;
         this.originalResumeNavigation = stateNavigator['resumeNavigation'];
-        this.state = { stateNavigator };
-    }
-
-    componentDidMount() {
         this.props.stateNavigator['resumeNavigation'] = this.resumeNavigation.bind(this);
+        this.state = { stateNavigator };
     }
 
     componentWillUnmount() {
