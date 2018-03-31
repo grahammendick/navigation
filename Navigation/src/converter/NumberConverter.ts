@@ -12,7 +12,7 @@ class NumberConverter extends TypeConverter {
     }
 
     convertTo(val: any): { val: string, arrayVal?: string[] } {
-        return { val: val.toString() };
+        return { val: '' + val };
     }
 }
 export default NumberConverter;

@@ -38,7 +38,7 @@ class NavigationDataManager {
 
     formatURLObject(key: string, urlObject: any, state: State, encode = false): { val: string, arrayVal?: string[] } {
         encode = encode || state.trackTypes;
-        var defaultType: string = state.defaultTypes[key] ? state.defaultTypes[key] : 'string';
+        var defaultType: string = state.defaultTypes[key] || 'string';
         var converter = this.getConverter(urlObject);
         var convertedValue = converter.convertTo(urlObject);
         var formattedValue = convertedValue.val;
