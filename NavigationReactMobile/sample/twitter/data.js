@@ -95,10 +95,11 @@ const tweets = {
   },
   9: {
     account: 3,
-    text: 'Code is not just a static snapshot of the requirements and tradeoffs, but a living collaborative document pulled into many directions.',
-    time: '5:29 PM - 31 Oct 2016',
-    retweets: 27,
-    likes: 63,
+    text: 'Time for a confession.',
+    photo: './confession.jpg',
+    time: '12:27 AM - 25 Dec 2017',
+    retweets: 184,
+    likes: 917,
     replies: [7]
   },
   10: {

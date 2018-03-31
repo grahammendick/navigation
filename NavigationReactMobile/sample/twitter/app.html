@@ -67,9 +67,10 @@
         border-bottom: 1px solid rgb(230, 236, 240);
         padding: 14px 3%;
         display: flex;
+        flex-wrap: wrap;
       }
       .details{
-        flex: 1;
+        flex: 1 50%;
         text-decoration: none;
         color: rgb(20, 23, 26);
         font-size: .9em;
@@ -80,6 +81,12 @@
       }
       .details{
         margin-left: 3%;
+      }
+      a.photo img{
+        width: 100%;
+        border: 1px solid rgb(204, 214, 221);
+        border-radius: 1rem;
+        margin-top: 7px;
       }
       .logo{
         width:40px;
@@ -93,6 +100,9 @@
       }
       div.tweet {
         padding: 15px 3% 0 3%;
+      }
+      div.tweet .photo img{
+        margin-bottom: 15px;
       }
       .details .username{
         color: rgb(101, 119, 134);
@@ -152,6 +162,32 @@
       .profile .interactions{
         border-top: 0;
         margin: 0 3%;
+      }
+      div.photo{
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgb(43, 53, 64);
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+      div.photo a{
+        position: absolute;
+        top: 13px;
+        left: 18px;
+      }
+      div.photo img{
+        width: 100%;
+      }
+      .photo svg{
+        width: 25px;
+        height: 25px; 
+      }
+      .photo svg path{
+        fill: #fff;
       }
     </style>
   </head>

@@ -4,7 +4,7 @@ import Banner from './Banner';
 import Tweets from './Tweets';
 
 export default ({tweet: {account: {id: accountId, name, username, logo}, 
-  text, time, retweets, likes, replies}}) => (
+  id, text, photo, time, retweets, likes, replies}}) => (
   <div>
     <Banner title="Tweet" />
     <div className="tweet">
@@ -21,6 +21,12 @@ export default ({tweet: {account: {id: accountId, name, username, logo},
         </div>
       </div>
       <div className="text">{text}</div>
+      {photo && <NavigationLink
+        className="photo"
+        stateKey="photo"
+        navigationData={{id}}>
+          <img src={photo}/>
+      </NavigationLink>}
       <div className="time">{time}</div>
       <div className="interactions">
         <div className="count">{retweets}</div>

@@ -94,14 +94,17 @@ class NavigationMotion extends React.Component<any, any> {
     }
     getScenes(){
         var {crumbs, nextCrumb} = this.getStateNavigator().stateContext;
-        return crumbs.concat(nextCrumb).map(({state, data, url}, index) => (
-            {key: index, state, data, url, scene: this.state.scenes[index], mount: url === nextCrumb.url}
-        ));
+        return crumbs.concat(nextCrumb).map(({state, data, url}, index, crumbsAndNext) => {
+            var preCrumbs = crumbsAndNext.slice(0, index);
+            var postCrumb = crumbsAndNext[index + 1];
+            return {key: index, state, data, url, crumbs: preCrumbs, nextState: postCrumb && postCrumb.state,
+                nextData: postCrumb && postCrumb.data, scene: this.state.scenes[index], mount: url === nextCrumb.url};
+        });
     }
-    getStyle(mounted, mount, state, data) {
+    getStyle(mounted, {state, data, crumbs, nextState, nextData, mount}) {
         var {unmountedStyle, mountedStyle, crumbStyle} = this.props;
         var styleProp = !mounted ? unmountedStyle : (mount ? mountedStyle : crumbStyle)
-        return typeof styleProp === 'function' ? styleProp(state, data) : styleProp;
+        return typeof styleProp === 'function' ? styleProp(state, data, crumbs, nextState, nextData) : styleProp;
      }
     render() {
         var {children, duration, sharedElementMotion} = this.props;
@@ -110,11 +113,11 @@ class NavigationMotion extends React.Component<any, any> {
             <Motion
                 data={this.getScenes()}
                 getKey={({key}) => key}
-                enter={({mount, state, data}) => this.getStyle(!oldState, mount, state, data)}
-                update={({mount, state, data}) => this.getStyle(true, mount, state, data)}
-                leave={({state, data}) => this.getStyle(false, false, state, data)}
-                duration={duration}
-                onRest={({key}) => this.clearScene(key)}>
+                enter={scene => this.getStyle(!oldState, scene)}
+                update={scene => this.getStyle(true, scene)}
+                leave={scene => this.getStyle(false, scene)}
+                onRest={({key}) => this.clearScene(key)}
+                duration={duration}>
                 {tweenStyles => (
                     tweenStyles.map(({key, data: {scene, state, data, url}, style: tweenStyle}) => (
                         (children as any)(tweenStyle, scene, key, crumbs.length === key, state, data)
