@@ -26,7 +26,7 @@ class RefreshLink extends React.Component<RefreshLinkProps, RefreshLinkState> {
     }
     
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || this.context.stateNavigator;
+        return this.context.stateNavigator || this.props.stateNavigator;
     }
     
     componentDidMount() {

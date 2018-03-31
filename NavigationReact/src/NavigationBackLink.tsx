@@ -25,7 +25,7 @@ class NavigationBackLink extends React.Component<NavigationBackLinkProps, Naviga
     }
     
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || this.context.stateNavigator;
+        return this.context.stateNavigator || this.props.stateNavigator;
     }
     
     componentDidMount() {
