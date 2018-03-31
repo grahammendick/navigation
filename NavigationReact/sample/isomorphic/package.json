@@ -15,6 +15,7 @@
     "webpack": "^1.13.2"
   },
   "scripts": {
-    "start": "babel-node NavigationServer.js"
+    "build": "webpack",
+    "start": "babel-node server.js"
   }
 }

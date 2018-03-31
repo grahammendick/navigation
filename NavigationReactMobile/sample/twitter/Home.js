@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationLink} from 'navigation-react';
 import Tweets from './Tweets';
 
-export default ({tweets, stateNavigator}) => (
+export default ({tweets}) => (
   <div>
     <div className="tabs">
       <h1>Home</h1>
@@ -12,7 +12,7 @@ export default ({tweets, stateNavigator}) => (
         </g>
       </svg>
     </div>
-    <Tweets tweets={tweets} stateNavigator={stateNavigator} />
+    <Tweets tweets={tweets} />
   </div>
 );
 

@@ -1,5 +1,6 @@
 import { StateNavigator } from 'navigation';
 import * as React from 'react';
+import withStateNavigator from './withStateNavigator';
 
 class SharedElement extends React.Component<any, any> {
     private ref: Element;
@@ -49,4 +50,4 @@ class SharedElement extends React.Component<any, any> {
     }
 }
 
-export default SharedElement;
+export default withStateNavigator(SharedElement);

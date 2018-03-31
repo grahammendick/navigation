@@ -11,7 +11,8 @@
             overflow: hidden;
         }
         .scene {
-            position: absolute;
+            position: fixed;
+            overflow: auto;
             left: 0;
             right: 0;
             top: 0;
@@ -30,6 +31,10 @@
     <script src="../../build/dist/navigation.react.js"></script>
     <script src="../../build/dist/navigation.react.mobile.js"></script>
     <script type="text/jsx">
+        var { StateNavigator } = Navigation;
+        var { NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink } = NavigationReact;
+        var { MobileHistoryManager, NavigationMotion } = NavigationReactMobile;
+
         class List extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
@@ -40,28 +45,29 @@
                 var totalRowCount = people.length;
                 people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
-                var stateNavigator = this.props.stateNavigator;
                 people = people.map(function (person) {
                     return (
                         <tr key={person.id}>
-                            <td><NavigationReact.NavigationLink stateNavigator={stateNavigator} stateKey="person" navigationData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                            <td><NavigationLink stateKey="person" navigationData={{ id: person.id }}>{person.name}</NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
                     );
                 });
                 return (
                     <div>
-                        <Filter stateNavigator={this.props.stateNavigator} initialName={this.props.name || ''} />
+                        <NavigationContext.Consumer>
+                            {({ stateNavigator, data }) => <Filter stateNavigator={stateNavigator} name={data.name} />}
+                        </NavigationContext.Consumer>
                         <table>
                             <thead>
                                 <tr>
-                                    <th><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
+                                    <th><RefreshLink navigationData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</RefreshLink></th>
                                     <th>Date of Birth</th>
                                 </tr>
                             </thead>
                             <tbody>{people}</tbody>
                         </table>
-                        <Pager stateNavigator={this.props.stateNavigator} startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
+                        <Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
                     </div>
                 );
             }
@@ -70,20 +76,12 @@
         class Filter extends React.Component {
             constructor(props) {
                 super(props);
-                this.state = {name: props.initialName};
                 this.nameChange = this.nameChange.bind(this);
-                this.nameBlur = this.nameBlur.bind(this);
             }
-            componentWillReceiveProps(nextProps) {
-                this.setState({ name: nextProps.initialName });
-            }
-            shouldComponentUpdate(nextProps, nextState) {
-                return nextState.name !== this.state.name;
+            shouldComponentUpdate(nextProps) {
+                return nextProps.name !== this.props.name;
             } 
             nameChange(event) {
-                this.setState({name: event.target.value});
-            }
-            nameBlur(event) {
                 this.props.stateNavigator.refresh(this.props.stateNavigator.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
             }
             render() {
@@ -91,11 +89,11 @@
                     <div>
                         <div>
                             <label htmlFor="name">Name</label>
-                            <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
+                            <input id="name" value={this.props.name || ''} onChange={this.nameChange} />
                         </div>
                         Page size&nbsp;
-                        <NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
-                        <NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
+                        <RefreshLink navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</RefreshLink>&nbsp;
+                        <RefreshLink navigationData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</RefreshLink>
                     </div>
                 );
             }
@@ -116,10 +114,10 @@
                 return (
                     <div>
                         <ul>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</RefreshLink></li>
                         </ul>
                         Total Count {this.props.totalRowCount}
                     </div>
@@ -135,7 +133,7 @@
                 var person = personSearch.getDetails(this.props.id);
                 return (
                     <div>
-                        <NavigationReact.NavigationBackLink stateNavigator={this.props.stateNavigator} distance={1}>Person Search</NavigationReact.NavigationBackLink>
+                        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
                         <div>
                             Name: {person.name}<br />
                             Date of Birth: {person.dateOfBirth}
@@ -148,7 +146,7 @@
         var stateNavigator = new Navigation.StateNavigator([
             { key: 'people', route: '{startRowIndex?}/{maximumRows?}/{sortExpression?}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
             { key: 'person', route: 'person', defaultTypes: { id: 'number' }, trackTypes: false, trackCrumbTrail: true, title: 'Person Details' }
-        ], new NavigationReactMobile.MobileHistoryManager(url => {
+        ], new MobileHistoryManager(url => {
             var { state, data } = stateNavigator.parseLink(url);
             return stateNavigator.fluent()
                 .navigate('people')
@@ -157,32 +155,33 @@
 
         var states = stateNavigator.states;
         states.people.renderScene = function (data) {
-            return <List stateNavigator={stateNavigator} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />;
+            return <List name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />;
         };
         states.person.renderScene = function (data) {
-            return <Details stateNavigator={stateNavigator} id={data.id} />;
+            return <Details id={data.id} />;
         }
+        stateNavigator.start();
+
         ReactDOM.render(
-            <NavigationReactMobile.NavigationMotion
-                unmountedStyle={{opacity: 1, translate: 1}}
-                mountedStyle={{opacity: 1, translate: 0}}
-                crumbStyle={{opacity: 0, translate: 0}}
-                stateNavigator={stateNavigator}>
-                {({opacity, translate}, scene, key, active) => (
-                    <div key={key}
-                        className="scene"
-                        style={{
-                            opacity,
-                            overflow: active ? 'auto' : 'hidden',
-                            transform: `translate(${translate * window.innerWidth}px)`,
-                        }}>
-                        {scene}
-                    </div>
-                )}
-            </NavigationReactMobile.NavigationMotion>,
+            <NavigationHandler stateNavigator={stateNavigator}>
+                <NavigationMotion
+                    unmountedStyle={{opacity: 1, translate: 100}}
+                    mountedStyle={{opacity: 1, translate: 0}}
+                    crumbStyle={{opacity: 0, translate: 0}}>
+                    {({opacity, translate}, scene, key, active) => (
+                        <div key={key}
+                            className="scene"
+                            style={{
+                                opacity,
+                                transform: `translate(${translate}%)`,
+                            }}>
+                            {scene}
+                        </div>
+                    )}
+                </NavigationMotion>
+            </NavigationHandler>,
             document.getElementById('content')
         );
-        stateNavigator.start();
     </script>
 </body>
 </html>

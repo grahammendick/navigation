@@ -10,6 +10,7 @@
     "navigation-react": "*",
     "react": "*",
     "react-dom": "*",
+    "react-redux": "^5.0.6",
     "redux": "^3.6.0",
     "webpack": "^1.12.10"
   },

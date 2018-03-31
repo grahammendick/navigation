@@ -2,6 +2,7 @@ import { StateNavigator } from 'navigation';
 import * as React from 'react';
 import Motion from './Motion';
 import Scene from './Scene';
+import withStateNavigator from './withStateNavigator';
 
 class NavigationMotion extends React.Component<any, any> {
     private sharedElements = {};
@@ -13,7 +14,12 @@ class NavigationMotion extends React.Component<any, any> {
         this.onNavigate = this.onNavigate.bind(this);
         this.registerSharedElement = this.registerSharedElement.bind(this);
         this.unregisterSharedElement = this.unregisterSharedElement.bind(this);
-        this.state = {scenes: {}, rest: false};
+        var scenes = {};
+        var stateNavigator = this.getStateNavigator();
+        var {state, data, crumbs} = stateNavigator.stateContext;
+        if (state)
+            scenes[crumbs.length] = <Scene stateNavigator={stateNavigator}>{state.renderScene(data)}</Scene>;
+        this.state = {scenes, rest: false};
     }
     static defaultProps = {
         duration: 300,
@@ -124,4 +130,4 @@ class NavigationMotion extends React.Component<any, any> {
     }
 }
 
-export default NavigationMotion;
+export default withStateNavigator(NavigationMotion);

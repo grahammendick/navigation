@@ -5,6 +5,7 @@ Navigation works just as well on the server as it does on the client. Use it wit
 Once you've cloned the repository, you can install the dependencies and start the isomorphic example:
 
     npm install
+    npm run build
     npm run start
 	
-Then visit http://localhost:8080/ in your browser to see isomorphic Navigation in action. If you click a Hyperlink before the JavaScript loads, the navigation happens on the server. If you click a Hyperlink after the JavaScript loads, the navigation happens on the client. 
+Then visit http://localhost:8080/ in your browser to see isomorphic Navigation in action. If you click a Hyperlink before the JavaScript loads (use dev tools to slow down your connection), the navigation happens on the server. If you click a Hyperlink after the JavaScript loads, the navigation happens on the client. 

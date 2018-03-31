@@ -6,6 +6,7 @@ interface LinkProps extends HTMLProps<HTMLAnchorElement> {
     historyAction?: 'add' | 'replace' | 'none';
     navigating?: (e: MouseEvent<HTMLAnchorElement>, link: string) => boolean;
     stateNavigator?: StateNavigator;
+    navigationContext?: boolean;
 }
 
 interface RefreshLinkProps extends LinkProps {

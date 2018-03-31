@@ -17,79 +17,78 @@
     <script src="../../build/dist/navigation.js"></script>
     <script src="../../build/dist/navigation.react.js"></script>
     <script type="text/jsx">
-        var List = React.createClass({
+        var { StateNavigator } = Navigation;
+        var { NavigationContext, NavigationHandler, NavigationLink, RefreshLink, NavigationBackLink } = NavigationReact;
+
+        class List extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.sortExpression !== this.props.sortExpression || nextProps.name !== this.props.name;
-            },
+            }
             render() {
                 var people = personSearch.search(this.props.name, this.props.sortExpression);
                 var totalRowCount = people.length;
                 people = people.slice(this.props.startRowIndex, this.props.startRowIndex + this.props.maximumRows);
                 var sortExpression = this.props.sortExpression.indexOf('DESC') === -1 ? 'Name DESC' : 'Name';
-                var stateNavigator = this.props.stateNavigator;
                 people = people.map(function (person) {
                     return (
                         <tr key={person.id}>
-                            <td><NavigationReact.NavigationLink stateNavigator={stateNavigator} stateKey="person" navigationData={{ id: person.id }}>{person.name}</NavigationReact.NavigationLink></td>
+                            <td><NavigationLink stateKey="person" navigationData={{ id: person.id }}>{person.name}</NavigationLink></td>
                             <td>{person.dateOfBirth}</td>
                         </tr>
                     );
                 });
                 return (
                     <div>
-                        <Filter stateNavigator={this.props.stateNavigator} initialName={this.props.name || ''} />
+                        <NavigationContext.Consumer>
+                            {({ stateNavigator, data }) => <Filter stateNavigator={stateNavigator} name={data.name} />}
+                        </NavigationContext.Consumer>
                         <table>
                             <thead>
                                 <tr>
-                                    <th><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</NavigationReact.RefreshLink></th>
+                                    <th><RefreshLink navigationData={{ sortExpression: sortExpression }} includeCurrentData={true}>Name</RefreshLink></th>
                                     <th>Date of Birth</th>
                                 </tr>
                             </thead>
                             <tbody>{people}</tbody>
                         </table>
-                        <Pager stateNavigator={this.props.stateNavigator} startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
+                        <Pager startRowIndex={this.props.startRowIndex} maximumRows={this.props.maximumRows} totalRowCount={totalRowCount} />
                     </div>
                 );
             }
-        });
+        };
 
-        var Filter = React.createClass({
-            getInitialState() {
-                return {name: this.props.initialName};
-            },
-            componentWillReceiveProps(nextProps) {
-                this.setState({ name: nextProps.initialName });
-            },
-            shouldComponentUpdate(nextProps, nextState) {
-                return nextState.name !== this.state.name;
-            }, 
+        class Filter extends React.Component {
+            constructor(props) {
+                super(props);
+                this.nameChange = this.nameChange.bind(this);
+            }
+            shouldComponentUpdate(nextProps) {
+                return nextProps.name !== this.props.name;
+            } 
             nameChange(event) {
-                this.setState({name: event.target.value});
-            },
-            nameBlur(event) {
                 this.props.stateNavigator.refresh(this.props.stateNavigator.stateContext.includeCurrentData({ name: event.target.value, startRowIndex: null }));
-            },
+            }
             render() {
                 return (
                     <div>
                         <div>
                             <label htmlFor="name">Name</label>
-                            <input id="name" value={this.state.name} onChange={this.nameChange} onBlur={this.nameBlur} />
+                            <input id="name" value={this.props.name || ''} onChange={this.nameChange} />
                         </div>
                         Page size&nbsp;
-                        <NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</NavigationReact.RefreshLink>&nbsp;
-                        <NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</NavigationReact.RefreshLink>
+                        <RefreshLink navigationData={{ maximumRows: 5, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">5</RefreshLink>&nbsp;
+                        <RefreshLink navigationData={{ maximumRows: 10, startRowIndex: null }} includeCurrentData={true} activeCssClass="active">10</RefreshLink>
                     </div>
                 );
             }
-        });
+        };
 
-        var Pager = React.createClass({
+        class Pager extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.startRowIndex !== this.props.startRowIndex || nextProps.maximumRows !== this.props.maximumRows
                     || nextProps.totalRowCount !== this.props.totalRowCount;
-            },
+            }
             render() {
                 var remainder = this.props.totalRowCount % this.props.maximumRows;
                 var previous = Math.max(0, this.props.startRowIndex - this.props.maximumRows);
@@ -100,26 +99,26 @@
                 return (
                     <div>
                         <ul>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</NavigationReact.RefreshLink></li>
-                            <li><NavigationReact.RefreshLink stateNavigator={this.props.stateNavigator} navigationData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</NavigationReact.RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: 0 }} includeCurrentData={true} disableActive={true}>First</RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: previous }} includeCurrentData={true} disableActive={true}>Previous</RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: next }} includeCurrentData={true} disableActive={true}>Next</RefreshLink></li>
+                            <li><RefreshLink navigationData={{ startRowIndex: last }} includeCurrentData={true} disableActive={true}>Last</RefreshLink></li>
                         </ul>
                         Total Count {this.props.totalRowCount}
                     </div>
                 );
             }
-        });
+        };
 
-        var Details = React.createClass({
+        class Details extends React.Component {
             shouldComponentUpdate(nextProps) {
                 return nextProps.id !== this.props.id;
-            },
+            }
             render() {
                 var person = personSearch.getDetails(this.props.id);
                 return (
                     <div>
-                        <NavigationReact.NavigationBackLink stateNavigator={this.props.stateNavigator} distance={1}>Person Search</NavigationReact.NavigationBackLink>
+                        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
                         <div>
                             Name: {person.name}<br />
                             Date of Birth: {person.dateOfBirth}
@@ -127,7 +126,7 @@
                     </div>
                 );
             }
-        });
+        };
 
         var stateNavigator = new Navigation.StateNavigator([
             { key: 'people', route: '{startRowIndex?}/{maximumRows?}/{sortExpression?}', defaults: { startRowIndex: 0, maximumRows: 10, sortExpression: 'Name'}, trackTypes: false, title: 'Person Search' },
@@ -135,19 +134,22 @@
         ]);
 
         var states = stateNavigator.states;
-        states.people.navigated = function (data) {
-            ReactDOM.render(
-                <List stateNavigator={stateNavigator} name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />,
-                document.getElementById('content')
-            );
+        states.people.renderView = function (data) {
+            return <List name={data.name} startRowIndex={data.startRowIndex} maximumRows={data.maximumRows} sortExpression={data.sortExpression} />;
         };
-        states.person.navigated = function (data) {
-            ReactDOM.render(
-                <Details stateNavigator={stateNavigator} id={data.id} />,
-                document.getElementById('content')
-            );
+        states.person.renderView = function (data) {
+            return <Details id={data.id} />;
         }
         stateNavigator.start();
-    </script>
+
+        ReactDOM.render(
+            <NavigationHandler stateNavigator={stateNavigator}>
+                <NavigationContext.Consumer>
+                    {({ state, data }) => state.renderView(data)}
+                </NavigationContext.Consumer>
+            </NavigationHandler>,
+            document.getElementById('content')
+        );
+</script>
 </body>
 </html>

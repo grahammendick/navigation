@@ -9,16 +9,12 @@ const nextDirection = {
   West: 'North',
 };
 
-export default ({direction, color, index, stateNavigator}) => (
+export default ({direction, color, index}) => (
   <div style={{backgroundColor: color}}>
-    <NavigationLink
-      stateKey={`scene${nextDirection[direction]}`}
-      stateNavigator={stateNavigator}>
+    <NavigationLink stateKey={`scene${nextDirection[direction]}`}>
       {direction} {index}
     </NavigationLink>
-    {index > 0 && <NavigationBackLink
-      distance={1}
-      stateNavigator={stateNavigator}>
+    {index > 0 && <NavigationBackLink distance={1}>
       Back
     </NavigationBackLink>}
   </div>

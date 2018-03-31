@@ -4,21 +4,17 @@ import {SharedElement} from 'navigation-react-mobile';
 
 export default ({color, stateNavigator}) => (
   <div className="color">
-    <NavigationBackLink
-      distance={1}
-      stateNavigator={stateNavigator}>
+    <NavigationBackLink distance={1}>
       X
     </NavigationBackLink>
     <SharedElement
       name={color}
-      data={{color}}
-      stateNavigator={stateNavigator}>
+      data={{color}}>
       <div style={{backgroundColor: color}} />
     </SharedElement>
     <SharedElement
       name={`text${color}`}
-      data={{color, fontSize: 300, fontColor: 0}}
-      stateNavigator={stateNavigator}>
+      data={{color, fontSize: 300, fontColor: 0}}>
       <div>{color}</div>
     </SharedElement>
   </div>

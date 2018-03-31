@@ -42,7 +42,10 @@ describe('NavigationLinkTest', function () {
                     stateKey="s">
                     link text
                 </NavigationLink>,
-                { context: { stateNavigator: stateNavigator }}
+                {
+                    context: { stateNavigator: stateNavigator },
+                    childContextTypes: { stateNavigator: () => {}}
+                }
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');

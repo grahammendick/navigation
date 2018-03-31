@@ -1,4 +1,5 @@
-import { People, Person } from './Component';
+import People from './People';
+import Person from './Person';
 import { searchPeople, getPerson } from './Data';
 import Navigation from 'navigation';
 import React from 'react';
@@ -7,25 +8,16 @@ import ReactDOM from 'react-dom';
 function configure(stateNavigator) {
     stateNavigator.configure([
         {key: 'people', route: '{pageNumber?}', defaults: {pageNumber: 1 }},
-        {key: 'person', route: 'person/{id}', defaults: {id: 0 }}
+        {key: 'person', route: 'person/{id}', defaults: {id: 0}, trackCrumbTrail: true}
     ]);
     
-    stateNavigator.states.people.navigated = function(data) {
-        var people = searchPeople(data.pageNumber);
-        ReactDOM.render(
-            <People people={people} stateNavigator={stateNavigator} />,
-            document.getElementById('content')
-        );		
-    }
+    stateNavigator.states.people.renderView = ({pageNumber}) => (
+        <People people={searchPeople(pageNumber)} />
+    );
 
-    stateNavigator.states.person.navigated = function(data) {
-        var person = getPerson(data.id);
-        ReactDOM.render(
-            <Person person={person} stateNavigator={stateNavigator} />,
-            document.getElementById('content')
-        );		
-    }
-    return stateNavigator;
+    stateNavigator.states.person.renderView = ({id}) => (
+        <Person person={getPerson(id)} />
+    );
 }
 
 export { configure };
