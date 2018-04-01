@@ -17,7 +17,7 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for their help with cros
 You'll find the Navigation router source code in the Navigation folder. It's written in TypeScript and is built on top of node.js. The NavigationReact folder contains the source code for the Hyperlink components.
 
 ## Download
-The Navigation router is made up of two npm packages: `navigation`, for the core router, `navigation-react`, for the Hyperlink components, and `navigation-react-mobile`, for native-like navigation.
+The Navigation router is made up of three npm packages: `navigation`, for the core router, `navigation-react`, for the Hyperlink components, and `navigation-react-mobile`, for native-like navigation.
 ```
 var Navigation = require('navigation');
 var NavigationReact = require('navigation-react');
@@ -33,25 +33,30 @@ var stateNavigator = new Navigation.StateNavigator([
   {key: 'world'}
 ]);
 
-stateNavigator.states.hello.navigated = function() {
-  ReactDOM.render(
+stateNavigator.states.hello.renderView = function() {
+  return (
     <NavigationReact.NavigationLink 
       stateKey="world"
-      navigationData={{size: 20}}
-      stateNavigator={stateNavigator}>
+      navigationData={{size: 20}}>
       Hello
-    </NavigationReact.NavigationLink>,
-    document.getElementById('app'));
+    </NavigationReact.NavigationLink>
+  );
 };
 
-stateNavigator.states.world.navigated = function(data) {
-  ReactDOM.render(
-    <div style={{fontSize: data.size}}>World</div>,
-    document.getElementById('app'));
+stateNavigator.states.world.renderView = function(data) {
+  return  <div style={{fontSize: data.size}}>World</div>;
 };
 
 stateNavigator.start();
 
+ReactDOM.render(
+  <NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+    <NavigationReact.NavigationContext.Consumer>
+      {({ state, data }) => state.renderView(data)}
+    </NavigationReact.NavigationContext.Consumer>
+  </NavigationReact.NavigationHandler>,
+  document.getElementById('app')
+);
 ```
 
 
