@@ -49,22 +49,27 @@
                 In the email example, when the user opens an email we can add a Hyperlink that expands the mail so they can view the full conversation. When they click the Hyperlink, we change the <code>expand</code> data item to true and stay on the 'mail' <code>State</code>. Because we’re not changing <code>State</code>, we use the <code>RefreshLink</code> component to build the Hyperlink.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
-  navigationData={{id: 12, expand: true}}
-  stateNavigator={stateNavigator}>
+  navigationData={{id: 12, expand: true}}>
   Expand Thread
 &lt;/NavigationReact.RefreshLink></code></pre>
             <p>
                 Alternatively, you can programmatically pass the new data into the <code>refresh</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">stateNavigator.refresh({id: 12, expand: false});</code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
+  {({ stateNavigator }) => (
+    &lt;div onClick={() => stateNavigator.refresh({id: 12, expand: false})}>
+      Expand Thread
+    &lt;/div>
+  )}
+&lt;/NavigationReact.NavigationContext.Consumer>
+</code></pre>
             <h2>Remembering Data</h2>
             <p>
                 When you navigate to the same <code>State</code>, you often want to keep most of the current data unchanged. Instead of manually passing all these current data values into the <code>navigationData prop</code>, you can get the <code>RefreshLink</code> component to remember them for you. When you set <code>includeCurrentData</code> to true, the <code>RefreshLink</code> adds the current data to your navigation data and builds the Hyperlink out of the combined data. In the email example, the Hyperlink that expands the email must remember the current email id. We set <code>includeCurrentData</code> to true so we only have to pass the new <code>expand</code> value into the navigation data.
             </p>
             <pre><code class="language-jsx">&lt;NavigationReact.RefreshLink 
   navigationData={{expand: true}}
-  includeCurrentData={true}
-  stateNavigator={stateNavigator}>
+  includeCurrentData={true}>
   Expand Thread
 &lt;/NavigationReact.RefreshLink>
 </code></pre>

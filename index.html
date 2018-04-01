@@ -47,18 +47,25 @@
   </select><code class="language-jsx">}}
 ]);
 
-stateNavigator.states.example.navigated = function(data) {
-  ReactDOM.render(
-    &lt;NavigationReact.NavigationLink 
-      stateKey="example"
-      navigationData={{like: !data.like}}
-      stateNavigator={stateNavigator}>
-      You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
-    &lt;/NavigationReact.NavigationLink>,
-    document.getElementById('app'));
-};
+stateNavigator.states.example.renderView = data => (
+  &lt;NavigationReact.NavigationLink 
+    stateKey="example"
+    navigationData={{like: !data.like}}>
+    You {data.like ? 'like' : 'haven\'t liked'} this. Click to toggle.
+  &lt;/NavigationReact.NavigationLink>
+);
 
-stateNavigator.start();</code></pre>
+stateNavigator.start();
+
+ReactDOM.render(
+  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+      &lt;NavigationReact.NavigationContext.Consume>
+        {({ state, data }) => state.renderView(data)}
+      &lt;/NavigationReact.NavigationContext.Consume>
+  &lt;/NavigationReact.NavigationLink>,
+  document.getElementById('app')
+);
+</code></pre>
         </div>
         <div id="app"/>
     </div>
@@ -66,18 +73,16 @@ stateNavigator.start();</code></pre>
         Thanks to <a href="https://www.browserstack.com/">BrowserStack</a> for their help with cross browser testing
     </div>
     <script src="js/prism.js"></script>
-    <script src="https://unpkg.com/react@16.2.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16.2.0/umd/react-dom.development.js"></script>
-    <script src="download/navigation-5.0.0.js"></script>
-    <script src="download/navigation.react-3.0.0.js"></script>
+    <script src="https://unpkg.com/react@16.3.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.3.0/umd/react-dom.development.js"></script>
+    <script src="download/navigation-5.0.1.js"></script>
+    <script src="download/navigation.react-3.1.0.js"></script>
     <script>
 var stateNavigator = new Navigation.StateNavigator([{ key: 'example', route: '' }]);
 
-stateNavigator.states.example.navigated = function (data) {
-    render(data);
-};
-
+renderView();
 stateNavigator.start(location.hash ? '/' : '');
+render();
 
 document.getElementById('route').addEventListener('keyup', reconfigure);
 document.getElementById('defType').addEventListener('change', reconfigure);
@@ -88,25 +93,41 @@ function reconfigure() {
         stateNavigator.configure([
             {key: 'example', route: document.getElementById('route').value, defaultTypes: { 'like': document.getElementById('defType').value }}
         ]);
-        stateNavigator.states.example.navigated = render;
+        renderView();
         stateNavigator.navigate('example', navigationData);
     } catch(ex) {
-        render(navigationData);
+        render();
     }    
 }
 
-function render(data) {
+function renderView() {
+    stateNavigator.states.example.renderView = function(data) {
+        return React.createElement(
+            NavigationReact.NavigationLink,
+            {
+                stateKey: 'example',
+                navigationData: { like: !data.like }
+            },
+            'You ',
+            data.like ? 'like' : 'haven\'t liked',
+            ' this. Click to toggle.'
+        );
+    };
+}
+
+function render() {
     ReactDOM.render(React.createElement(
-        NavigationReact.NavigationLink,
-        {
-            stateKey: 'example',
-            navigationData: { like: !data.like },
-            stateNavigator: stateNavigator },
-        'You ',
-        data.like ? 'like' : 'haven\'t liked',
-        ' this. Click to toggle.'
+        NavigationReact.NavigationHandler,
+        { stateNavigator: stateNavigator },
+        React.createElement(
+            NavigationReact.NavigationContext.Consumer,
+            null,
+            function (context) {
+                return context.state.renderView(context.data);
+            }
+        )
     ), document.getElementById('app'));
-};
+}
     </script>
 </body>
 </html>

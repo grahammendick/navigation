@@ -50,32 +50,49 @@
   {key: 'mail'},
   {key: 'compose'}
 ]);</code></pre>
-            <h2 id="rendering-views">Rendering Views</h2>
+            <h2 id="defining-views">Defining Views</h2>
             <p>
-                The Navigation router doesn't render views for you because React natively supports loading components. Calling <code>ReactDOM.render</code> unmounts the old component and mounts the new component in its place. The Navigation router notifies you when a <code>State</code> becomes active and it's your job to render the relevant component for the active <code>State</code>. You receive the notification by attaching a function to the <code>navigated</code> property of the <code>State</code>. In the email example, we render our <code>Inbox</code> component into the 'app' placeholder when the 'inbox' <code>State</code> is active.
+                Each <code>State</code> needs a matching view which you’ll display when that <code>State</code> is active. You define the view in a function attached to the <code>renderView</code> property of the <code>State</code>. We can define two of the views in the email example using <code>Inbox</code> and <code>Compose</code> components.
             </p>
-            <pre><code class="language-jsx">stateNavigator.states.inbox.navigated = function() {
-  ReactDOM.render(
-    &lt;Inbox />,
-    document.getElementById('app'));
+            <pre><code class="language-jsx">stateNavigator.states.inbox.renderView = function() {
+  return &lt;Inbox />;
+};
+
+stateNavigator.states.compose.renderView = function() {
+  return &lt;Compose />;
 };</code></pre>
+            <p>
+                Calling <code>start</code> on the <code>stateNavigator</code> activates the <code>State</code> whose route matches with the browser Url. In our example, the 'inbox' <code>State</code> will be active on first load.
+            </p>
+            <pre><code class="language-jsx">stateNavigator.start();</code></pre>
+            <h2>Rendering</h2>
+            <p>
+                It's your job to keep the UI up to date by calling the <code>renderView</code> function on the active <code>State</code>. You render a <code>NavigationContext Consumer</code> with a child <code>prop</code> that returns the view of the passed in <code>State</code>. Wrapping the <code>Consumer</code> inside a <code>NavigationHandler</code> ensures that every time the <code>State</code> changes your child render <code>prop</code> is called with the new <code>State</code>. Make sure you pass <code>data</code> into the <code>renderView</code> function otherwise this rendering code will break when it comes to passing <a href="navigation-data.html">navigation data</a> between States.
+            </p>
+            <pre><code class="language-jsx">ReactDOM.render(
+  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+    &lt;NavigationReact.NavigationContext.Consumer>
+      {({ state, data }) => state.renderView(data)}
+    &lt;/NavigationReact.NavigationContext.Consumer>
+  &lt;/NavigationReact.NavigationHandler>,
+  document.getElementById('app')
+);</code></pre>
             <h2>Navigating</h2>
             <p>
-                <code>States</code> become active when you navigate to them. One way to navigate to a <code>State</code> is with a Hyperlink. The Navigation router encourages you to think about <code>States</code> rather than Urls. You can build Hyperlinks using the <code>NavigationLink</code> component, passing in the destination <code>State</code> via the <code>stateKey prop</code>. There's another <code>prop</code> for the <code>stateNavigator</code>, but you can pass it implicitly using the React <code>context</code> if you prefer.
+                <code>States</code> become active when you navigate to them. One way to navigate to a <code>State</code> is with a Hyperlink. The Navigation router encourages you to think about <code>States</code> rather than Urls. You can build Hyperlinks using the <code>NavigationLink</code> component, passing in the destination <code>State</code> via the <code>stateKey prop</code>.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink 
-  stateKey="compose"
-  stateNavigator={stateNavigator}>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationLink stateKey="compose">
   Compose Mail
 &lt;/NavigationReact.NavigationLink></code></pre>
             <p>
-                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>.
+                When Hyperlinks aren't appropriate, you can navigate programmatically by passing the <code>State key</code> into the <code>navigate</code> function on the <code>stateNavigator</code>. You can access the <code>stateNavigator</code> inside the child render <code>prop</code> of a <code>NavigationContext Consumer</code>.
             </p>
-            <pre><code class="language-jsx">stateNavigator.navigate('compose');</code></pre>
-            <p>
-                Calling <code>start</code> on the <code>stateNavigator</code> activates a <code>State</code> when the page loads. It triggers a navigation to the <code>State</code> whose route matches with the browser Url and ensures the <code>State</code> assigned the empty route is displayed first.
-            </p>
-            <pre><code class="language-jsx">stateNavigator.start();</code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
+  {({ stateNavigator }) => (
+    &lt;div onClick={() => stateNavigator.navigate('compose')}>Compose Mail&lt;/div>
+  )}
+&lt;/NavigationReact.NavigationContext.Consumer>
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>

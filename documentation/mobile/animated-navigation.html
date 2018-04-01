@@ -51,7 +51,7 @@
 ]);</code></pre>
             <h2>Defining Scenes</h2>
             <p>
-                Instead of <a href="../state-navigation.html#rendering-views">rendering views</a>, you define scenes and let the Navigation router render them (see the <code>NavigationMotion</code> component below). You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When you navigate to a <code>State</code>, the Navigation router creates the scene by calling the corresponding <code>renderScene</code> function, passing in any navigation data. It pops the new scene onto the top of the stack and renders it. We can define the two scenes in the email example using our <code>Inbox</code> and <code>Mail</code> components.
+                Instead of <a href="../state-navigation.html#defining-views">defining views</a>, you define scenes and let the Navigation router render them (see the <code>NavigationMotion</code> component below). You define the scenes in functions attached to the <code>renderScene</code> property of each <code>State</code>. When you navigate to a <code>State</code>, the Navigation router creates the scene by calling the corresponding <code>renderScene</code> function, passing in any navigation data. It pops the new scene onto the top of the stack and renders it. We can define the two scenes in the email example using our <code>Inbox</code> and <code>Mail</code> components.
             </p>
             <pre><code class="language-jsx">stateNavigator.states.inbox.renderScene = function() {
   return &lt;Inbox />;
@@ -59,7 +59,9 @@
 
 stateNavigator.states.mail.renderScene = function(data) {
   return &lt;Mail mailId={data.id} />;
-};</code></pre>
+};
+
+stateNavigator.start();</code></pre>
             <h2>Animating</h2>
             <p>
                 The <code>NavigationMotion</code> component renders the scenes in the stack. It lets you animate the scenes as they progress through the stack. A scene is said to be either unmounted, mounted or a crumb. It's unmounted when it's not on the stack; it's mounted when it's at the top of the stack; and it's a crumb when it's anywhere else in the stack (in the breadcrumb trail).
@@ -68,34 +70,38 @@ stateNavigator.states.mail.renderScene = function(data) {
                 You assign a style <code>prop</code> to each of these three stages and the <code>NavigationMotion</code> component calls you back with the interpolated values so you can animate the scenes. In our email example, we'll give the unmounted and crumb styles an opacity of 0 and the mounted style an opacity of 1. When the user opens a mail, the 'inbox' scene fades out as it becomes a crumb and the 'mail' scene fades in as it's mounted.
             </p>
             <pre><code class="language-jsx">ReactDOM.render(
-  &lt;NavigationReactMobile.NavigationMotion
-    unmountedStyle={{opacity: 0}}
-    mountedStyle={{opacity: 1}}
-    crumbStyle={{opacity: 0}}
-    stateNavigator={stateNavigator}>
-    {(style, scene, key) => (
-      &lt;div
-        key={key}
-        style={{opacity: style.opacity}}>
-        {scene}
-      &lt;/div>
-    )}
-  &lt;/NavigationReactMobile.NavigationMotion>,
+  &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
+    &lt;NavigationReactMobile.NavigationMotion
+      unmountedStyle={{opacity: 0}}
+      mountedStyle={{opacity: 1}}
+      crumbStyle={{opacity: 0}}>
+      {(style, scene, key) => (
+        &lt;div
+          key={key}
+          style={{opacity: style.opacity}}>
+          {scene}
+        &lt;/div>
+      )}
+    &lt;/NavigationReactMobile.NavigationMotion>
+  &lt;/NavigationReact.NavigationHandler>,
   document.getElementById('app')
 );</code></pre>
             <h2>Navigating Back</h2>
             <p>
                 The user can navigate back to visited scenes, along the breadcrumb trail, as Hansel and Gretel intended. You navigate back using the <code>NavigationBackLink</code> component specifying the distance you want to travel. In our email example, we add a <code>NavigationBackLink</code> component to the 'mail' scene so the user can return to their inbox. When they click the Hyperlink, the 'mail' scene fades out as it's unmounted and the 'inbox' scene fades back in as it's mounted.
             </p>
-            <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink
-  distance={1}
-  stateNavigator={stateNavigator}>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationBackLink distance={1}>
   Back to Inbox
 &lt;/NavigationReact.NavigationBackLink></code></pre>
             <p>
                 You can navigate back programatically by passing the distance into the <code>navigateBack</code> function on the <code>stateNavigator</code>.
             </p>
-            <pre><code class="language-jsx">stateNavigator.navigateBack(1);</code></pre>
+            <pre><code class="language-jsx">&lt;NavigationReact.NavigationContext.Consumer>
+  {({ stateNavigator }) => (
+    &lt;div onClick={() => >stateNavigator.navigateBack(1)}>Back to Inbox&lt;/div>
+  )}
+&lt;/NavigationReact.NavigationContext.Consumer>
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../../js/prism.js"></script>
