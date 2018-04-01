@@ -3,7 +3,7 @@ import * as React from 'react';
 
 export default Component => props => (
     <NavigationContext.Consumer>
-        {value => <Component stateNavigator={value && value.stateNavigator} {...props} />}
+        {({ stateNavigator }) => <Component stateNavigator={stateNavigator} {...props} />}
     </NavigationContext.Consumer>
 );
   

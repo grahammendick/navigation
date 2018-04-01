@@ -42,7 +42,7 @@ class NavigationMotion extends React.Component<NavigationMotionProps, Navigation
         };
     }
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || this.context.stateNavigator;
+        return this.context.stateNavigator || this.props.stateNavigator;
     }
     componentDidMount() {
         this.getStateNavigator().onNavigate(this.onNavigate);

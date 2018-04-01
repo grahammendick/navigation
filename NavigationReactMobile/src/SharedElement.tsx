@@ -22,7 +22,7 @@ class SharedElement extends React.Component<SharedElementProps, any> {
         unregisterSharedElement: () => null
     }
     private getStateNavigator(): StateNavigator {
-        return this.props.stateNavigator || this.context.stateNavigator;
+        return this.context.stateNavigator || this.props.stateNavigator;
     }
     componentDidMount() {
         this.register();
