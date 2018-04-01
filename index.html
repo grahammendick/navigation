@@ -59,9 +59,9 @@ stateNavigator.start();
 
 ReactDOM.render(
   &lt;NavigationReact.NavigationHandler stateNavigator={stateNavigator}>
-      &lt;NavigationReact.NavigationContext.Consume>
+      &lt;NavigationReact.NavigationContext.Consumer>
         {({ state, data }) => state.renderView(data)}
-      &lt;/NavigationReact.NavigationContext.Consume>
+      &lt;/NavigationReact.NavigationContext.Consumer>
   &lt;/NavigationReact.NavigationLink>,
   document.getElementById('app')
 );
