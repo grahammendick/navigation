@@ -54,6 +54,19 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
+    describe('Without State Navigator Navigation Back Link', function () {
+        it('should render', function(){
+            var wrapper = mount(
+                <NavigationBackLink distance={1}>
+                    link text
+                </NavigationBackLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+        })
+    });
+
     describe('Invalid Navigation Back Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -421,6 +434,34 @@ describe('NavigationBackLinkTest', function () {
                         link text
                     </NavigationBackLink>
                 </NavigationHandler>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0');
+            stateNavigator.navigate('s1');
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r1?crumb=%2Fr0');
+        })
+    });
+
+    describe('Context Across Crumbs Crumb Trail Navigate Navigation Back Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1', trackCrumbTrail: true }
+            ]);
+            stateNavigator.navigate('s0');
+            stateNavigator.navigate('s1');
+            var wrapper = mount(
+                <NavigationBackLink
+                    acrossCrumbs={true}
+                    distance={1}>
+                    link text
+                </NavigationBackLink>,
+                {
+                    context: { stateNavigator: stateNavigator },
+                    childContextTypes: { stateNavigator: () => {}}
+                }
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0');

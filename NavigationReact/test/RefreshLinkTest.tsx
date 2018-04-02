@@ -50,6 +50,19 @@ describe('RefreshLinkTest', function () {
         })
     });
 
+    describe('Without State Navigator Refresh Link', function () {
+        it('should render', function(){
+            var wrapper = mount(
+                <RefreshLink>
+                    link text
+                </RefreshLink>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), null);
+            assert.equal(link.prop('children'), 'link text');
+        })
+    });
+
     describe('Invalid Refresh Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
@@ -1416,6 +1429,7 @@ describe('RefreshLinkTest', function () {
             assert.strictEqual(noneHistory, true);
         })
     });
+
     describe('Navigate Refresh Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([
@@ -1432,6 +1446,33 @@ describe('RefreshLinkTest', function () {
                         link text
                     </RefreshLink>
                 </NavigationHandler>
+            );
+            var link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r0?x=a');
+            stateNavigator.navigate('s1', {y: 'b'});
+            wrapper.update();
+            link = wrapper.find('a');
+            assert.equal(link.prop('href'), '#/r1?y=b&x=a');
+        })
+    });
+
+    describe('Context Navigate Refresh Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            stateNavigator.navigate('s0');
+            var wrapper = mount(
+                <RefreshLink
+                    navigationData={{x: 'a'}}
+                    includeCurrentData={true}>
+                    link text
+                </RefreshLink>,
+                {
+                    context: { stateNavigator: stateNavigator },
+                    childContextTypes: { stateNavigator: () => {}}
+                }
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
