@@ -37,14 +37,8 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
-    describe('Without Context Navigation Back Link', function () {
+    describe('Without State Navigator Navigation Back Link', function () {
         it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationBackLink distance={1}>

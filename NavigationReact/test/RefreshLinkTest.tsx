@@ -35,12 +35,8 @@ describe('RefreshLinkTest', function () {
         })
     });
 
-    describe('Without Context Refresh Link', function () {
+    describe('Without State Navigator Refresh Link', function () {
         it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
-            stateNavigator.navigate('s');
             var container = document.createElement('div');
             ReactDOM.render(
                 <RefreshLink>
@@ -1548,6 +1544,7 @@ describe('RefreshLinkTest', function () {
             assert.strictEqual(noneHistory, true);
         })
     });
+
     describe('Navigate Refresh Link', function () {
         it('should update', function(){
             var stateNavigator = new StateNavigator([

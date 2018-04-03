@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 6967d18647e14a90b75103dd6374c0cb
+ * @relayHash f41a8626833fb19c5f9e4859513580a1
  */
 
 /* eslint-disable */
@@ -8,9 +8,15 @@
 'use strict';
 
 /*::
-import type {ConcreteBatch} from 'relay-runtime';
+import type { ConcreteRequest } from 'relay-runtime';
+type Person_person$ref = any;
+export type PersonQueryVariables = {|
+  id: number,
+|};
 export type PersonQueryResponse = {|
-  +person: ?{| |};
+  +person: ?{|
+    +$fragmentRefs: Person_person$ref,
+  |},
 |};
 */
 
@@ -21,6 +27,7 @@ query PersonQuery(
 ) {
   person(id: $id) {
     ...Person_person
+    id
   }
 }
 
@@ -32,33 +39,44 @@ fragment Person_person on Person {
 }
 */
 
-const batch /*: ConcreteBatch*/ = {
+const node/*: ConcreteRequest*/ = (function(){
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "id",
+    "type": "Int!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id",
+    "type": "Int"
+  }
+];
+return {
+  "kind": "Request",
+  "operationKind": "query",
+  "name": "PersonQuery",
+  "id": null,
+  "text": "query PersonQuery(\n  $id: Int!\n) {\n  person(id: $id) {\n    ...Person_person\n    id\n  }\n}\n\nfragment Person_person on Person {\n  name\n  dateOfBirth\n  email\n  phone\n}\n",
+  "metadata": {},
   "fragment": {
-    "argumentDefinitions": [
-      {
-        "kind": "LocalArgument",
-        "name": "id",
-        "type": "Int!",
-        "defaultValue": null
-      }
-    ],
     "kind": "Fragment",
-    "metadata": null,
     "name": "PersonQuery",
+    "type": "Query",
+    "metadata": null,
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "id",
-            "variableName": "id",
-            "type": "Int"
-          }
-        ],
-        "concreteType": "Person",
         "name": "person",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "Person",
         "plural": false,
         "selections": [
           {
@@ -66,78 +84,64 @@ const batch /*: ConcreteBatch*/ = {
             "name": "Person_person",
             "args": null
           }
-        ],
-        "storageKey": null
+        ]
       }
-    ],
-    "type": "Query"
+    ]
   },
-  "id": null,
-  "kind": "Batch",
-  "metadata": {},
-  "name": "PersonQuery",
-  "query": {
-    "argumentDefinitions": [
-      {
-        "kind": "LocalArgument",
-        "name": "id",
-        "type": "Int!",
-        "defaultValue": null
-      }
-    ],
-    "kind": "Root",
+  "operation": {
+    "kind": "Operation",
     "name": "PersonQuery",
-    "operation": "query",
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "id",
-            "variableName": "id",
-            "type": "Int"
-          }
-        ],
-        "concreteType": "Person",
         "name": "person",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "Person",
         "plural": false,
         "selections": [
           {
             "kind": "ScalarField",
             "alias": null,
-            "args": null,
             "name": "name",
+            "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "args": null,
             "name": "dateOfBirth",
+            "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "args": null,
             "name": "email",
+            "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "args": null,
             "name": "phone",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
             "storageKey": null
           }
-        ],
-        "storageKey": null
+        ]
       }
     ]
-  },
-  "text": "query PersonQuery(\n  $id: Int!\n) {\n  person(id: $id) {\n    ...Person_person\n  }\n}\n\nfragment Person_person on Person {\n  name\n  dateOfBirth\n  email\n  phone\n}\n"
+  }
 };
-
-module.exports = batch;
+})();
+(node/*: any*/).hash = 'da6e83492141e1ca71180b85c883cfa6';
+module.exports = node;

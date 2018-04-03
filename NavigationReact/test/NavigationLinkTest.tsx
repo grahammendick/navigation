@@ -34,11 +34,8 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Without Context Navigation Link', function () {
+    describe('Without State Navigator Navigation Link', function () {
         it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's', route: 'r' }
-            ]);
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationLink stateKey="s">

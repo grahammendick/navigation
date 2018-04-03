@@ -1,4 +1,4 @@
-/** @license React v16.3.0-alpha.0
+/** @license React v16.3.0
  * react.development.js
  *
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -108,7 +108,7 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.3.0-alpha.0';
+var ReactVersion = '16.3.0';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -123,6 +123,7 @@ var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol['for']('react.strict_mode') : 0x
 var REACT_PROVIDER_TYPE = hasSymbol ? Symbol['for']('react.provider') : 0xeacd;
 var REACT_CONTEXT_TYPE = hasSymbol ? Symbol['for']('react.context') : 0xeace;
 var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol['for']('react.async_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol['for']('react.forward_ref') : 0xead0;
 
 var MAYBE_ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator';
@@ -557,6 +558,17 @@ pureComponentPrototype.constructor = PureComponent;
 objectAssign(pureComponentPrototype, Component.prototype);
 pureComponentPrototype.isPureReactComponent = true;
 
+// an immutable object with a single mutable value
+function createRef() {
+  var refObject = {
+    current: null
+  };
+  {
+    Object.seal(refObject);
+  }
+  return refObject;
+}
+
 /**
  * Keeps track of the current owner.
  *
@@ -657,7 +669,7 @@ function defineRefPropWarningGetter(props, displayName) {
  */
 var ReactElement = function (type, key, ref, self, source, owner, props) {
   var element = {
-    // This tag allow us to uniquely identify this as a React Element
+    // This tag allows us to uniquely identify this as a React Element
     $$typeof: REACT_ELEMENT_TYPE,
 
     // Built-in properties that belong on the element
@@ -1222,10 +1234,10 @@ function createContext(defaultValue, calculateChangedBits) {
 
   var context = {
     $$typeof: REACT_CONTEXT_TYPE,
-    calculateChangedBits: calculateChangedBits,
-    defaultValue: defaultValue,
-    currentValue: defaultValue,
-    changedBits: 0,
+    _calculateChangedBits: calculateChangedBits,
+    _defaultValue: defaultValue,
+    _currentValue: defaultValue,
+    _changedBits: 0,
     // These are circular
     Provider: null,
     Consumer: null
@@ -1244,9 +1256,26 @@ function createContext(defaultValue, calculateChangedBits) {
   return context;
 }
 
+function forwardRef(render) {
+  {
+    warning_1(typeof render === 'function', 'forwardRef requires a render function but was given %s.', render === null ? 'null' : typeof render);
+  }
+
+  return {
+    $$typeof: REACT_FORWARD_REF_TYPE,
+    render: render
+  };
+}
+
 var describeComponentFrame = function (name, source, ownerName) {
   return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
 };
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' ||
+  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_ASYNC_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+}
 
 function getComponentName(fiber) {
   var type = fiber.type;
@@ -1545,31 +1574,12 @@ function validatePropTypes(element) {
 function validateFragmentProps(fragment) {
   currentlyValidatingElement = fragment;
 
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = Object.keys(fragment.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var key = _step.value;
-
-      if (!VALID_FRAGMENT_PROPS.has(key)) {
-        warning_1(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum());
-        break;
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator['return']) {
-        _iterator['return']();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
+  var keys = Object.keys(fragment.props);
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (!VALID_FRAGMENT_PROPS.has(key)) {
+      warning_1(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum());
+      break;
     }
   }
 
@@ -1581,9 +1591,7 @@ function validateFragmentProps(fragment) {
 }
 
 function createElementWithValidation(type, props, children) {
-  var validType = typeof type === 'string' || typeof type === 'function' ||
-  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_ASYNC_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE);
+  var validType = isValidElementType(type);
 
   // We warn in this case but don't throw. We expect the element creation to
   // succeed and there will likely be errors in render.
@@ -1680,10 +1688,12 @@ var React = {
     only: onlyChild
   },
 
+  createRef: createRef,
   Component: Component,
   PureComponent: PureComponent,
 
   createContext: createContext,
+  forwardRef: forwardRef,
 
   Fragment: REACT_FRAGMENT_TYPE,
   StrictMode: REACT_STRICT_MODE_TYPE,
