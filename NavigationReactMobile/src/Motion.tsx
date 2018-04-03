@@ -12,19 +12,19 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
             newItem.start = newItem.end = newItem.style = enter(item);
             return newItem;
         });
-        this.state = {items, update: false};
+        this.state = {items, restart: false};
     }
     static defaultProps = {
         progress: 0,
     }
     static getDerivedStateFromProps() {
-        return {update: true};
+        return {restart: true};
     }
     componentDidMount() {
         this.moveId = requestAnimationFrame(this.move)
     }
     componentDidUpdate() {
-        if (!this.moveId && this.state.update)
+        if (!this.moveId && this.state.restart)
             this.moveId = requestAnimationFrame(this.move);
     }
     componentWillUnmount() {
@@ -73,7 +73,7 @@ class Motion<T> extends React.Component<MotionProps<T>, any> {
             this.moveId = null;
             if (items.filter(({rest}) => !rest).length !== 0)
                 this.moveId = requestAnimationFrame(this.move);
-            return {items, update: false};
+            return {items, restart: false};
         })
     }
     areEqual(from = {}, to = {}) {

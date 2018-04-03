@@ -1,4 +1,5 @@
 import {
+    GraphQLID,
     GraphQLInt,
     GraphQLList,
     GraphQLObjectType,
@@ -24,7 +25,7 @@ var PEOPLE = [
 var PersonType = new GraphQLObjectType({
     name: 'Person',
     fields: () => ({
-        id: {type: GraphQLString},
+        id: {type: GraphQLID},
         name: {type: GraphQLString},
         dateOfBirth: {type: GraphQLString},
         email: {type: GraphQLString},
