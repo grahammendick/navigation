@@ -37,14 +37,8 @@ describe('NavigationBackLinkTest', function () {
         })
     });
 
-    describe('Without Context Navigation Back Link', function () {
+    describe('Without State Navigator Navigation Back Link', function () {
         it('should render', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
             var container = document.createElement('div');
             ReactDOM.render(
                 <NavigationBackLink distance={1}>
@@ -55,19 +49,6 @@ describe('NavigationBackLinkTest', function () {
             var link = container.querySelector<HTMLAnchorElement>('a');
             assert.equal(link.hash, '');
             assert.equal(link.innerHTML, 'link text');
-        })
-    });
-
-    describe('Without State Navigator Navigation Back Link', function () {
-        it('should render', function(){
-            var wrapper = mount(
-                <NavigationBackLink distance={1}>
-                    link text
-                </NavigationBackLink>
-            );
-            var link = wrapper.find('a');
-            assert.equal(link.prop('href'), null);
-            assert.equal(link.prop('children'), 'link text');
         })
     });
 
@@ -473,34 +454,6 @@ describe('NavigationBackLinkTest', function () {
             assert.equal(link.hash, '#/r0');
             stateNavigator.navigate('s1');
             assert.equal(link.hash, '#/r1?crumb=%2Fr0');
-        })
-    });
-
-    describe('Context Across Crumbs Crumb Trail Navigate Navigation Back Link', function () {
-        it('should update', function(){
-            var stateNavigator = new StateNavigator([
-                { key: 's0', route: 'r0' },
-                { key: 's1', route: 'r1', trackCrumbTrail: true }
-            ]);
-            stateNavigator.navigate('s0');
-            stateNavigator.navigate('s1');
-            var wrapper = mount(
-                <NavigationBackLink
-                    acrossCrumbs={true}
-                    distance={1}>
-                    link text
-                </NavigationBackLink>,
-                {
-                    context: { stateNavigator: stateNavigator },
-                    childContextTypes: { stateNavigator: () => {}}
-                }
-            );
-            var link = wrapper.find('a');
-            assert.equal(link.prop('href'), '#/r0');
-            stateNavigator.navigate('s1');
-            wrapper.update();
-            link = wrapper.find('a');
-            assert.equal(link.prop('href'), '#/r1?crumb=%2Fr0');
         })
     });
 
