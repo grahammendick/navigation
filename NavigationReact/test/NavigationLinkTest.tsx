@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as mocha from 'mocha';
-import { StateNavigator } from '../../Navigation/src/Navigation';
-import { NavigationLink } from '../src/NavigationReact';
+import { StateNavigator } from 'navigation';
+import { NavigationLink, NavigationHandler, NavigationContext } from 'navigation-react';
 import * as React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -20,11 +20,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r');
@@ -32,23 +32,18 @@ describe('NavigationLinkTest', function () {
         })
     });
 
-    describe('Context Navigation Link', function () {
+    describe('Without Context Navigation Link', function () {
         it('should render', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s">
+                <NavigationLink stateKey="s">
                     link text
-                </NavigationLink>,
-                {
-                    context: { stateNavigator: stateNavigator },
-                    childContextTypes: { stateNavigator: () => {}}
-                }
+                </NavigationLink>
             );
             var link = wrapper.find('a');
-            assert.equal(link.prop('href'), '#/r');
+            assert.equal(link.prop('href'), null);
             assert.equal(link.prop('children'), 'link text');
         })
     });
@@ -72,11 +67,12 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="x"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="x">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -90,21 +86,22 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    currentDataKeys="y"
-                    activeCssClass="active"
-                    disableActive={true}
-                    acrossCrumbs={false}
-                    historyAction='replace'
-                    navigating={() => false}
-                    aria-label="z"
-                    target="_blank"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}
+                        currentDataKeys="y"
+                        activeCssClass="active"
+                        disableActive={true}
+                        acrossCrumbs={false}
+                        historyAction='replace'
+                        navigating={() => false}
+                        aria-label="z"
+                        target="_blank">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -122,12 +119,13 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -142,13 +140,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
@@ -163,13 +162,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{y: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{y: 'a'}}
+                        includeCurrentData={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=a&z=c');
@@ -184,13 +184,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    currentDataKeys="y"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}
+                        currentDataKeys="y">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=b&x=a');
@@ -205,13 +206,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    currentDataKeys="y,z"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}
+                        currentDataKeys="y,z">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=b&z=c&x=a');
@@ -226,13 +228,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {y: 'b', z: 'c', w: 'd'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{y: 'a'}}
-                    currentDataKeys="y,z"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{y: 'a'}}
+                        currentDataKeys="y,z">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?y=a&z=c');
@@ -247,13 +250,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', z: 'c'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', z: 'c'}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&z=c');
@@ -269,13 +273,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'b'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'b'}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=b');
@@ -291,13 +296,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b', z: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', z: 'c'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', z: 'c'}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -312,13 +318,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'b'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'b'}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=b');
@@ -333,13 +340,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', y: null}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: null}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -355,13 +363,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', y: undefined}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: undefined}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -377,13 +386,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', y: ''}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: ''}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -399,13 +409,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', y: null}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: null}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -420,13 +431,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', y: undefined}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: undefined}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -441,13 +453,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a', y: ''}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a', y: ''}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -462,13 +475,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 1}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 1}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1');
@@ -484,13 +498,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 2}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 2}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2');
@@ -506,13 +521,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: true}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: true}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=true');
@@ -528,13 +544,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: false}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: false}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=false');
@@ -550,13 +567,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: new Date(2011, 1, 3)}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: new Date(2011, 1, 3)}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2011-02-03');
@@ -572,13 +590,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: new Date(2010, 1, 3)}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: new Date(2010, 1, 3)}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2010-02-03');
@@ -594,13 +613,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 1}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 1}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -615,13 +635,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 1, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 2}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 2}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2');
@@ -636,13 +657,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: true}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: true}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -657,13 +679,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: true, y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: false}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: false}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=false');
@@ -678,13 +701,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: new Date(2011, 1, 3)}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: new Date(2011, 1, 3)}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -699,13 +723,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: new Date(2011, 1, 3), y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: new Date(2010, 1, 3)}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: new Date(2010, 1, 3)}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2010-02-03');
@@ -720,13 +745,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 1}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 1}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1');
@@ -742,13 +768,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: '1', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 1}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 1}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1');
@@ -763,13 +790,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: ['a', 'b']}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'b']}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=b');
@@ -785,13 +813,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: ['a', 'd']}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'd']}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=d');
@@ -807,13 +836,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [1, 2]}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [1, 2]}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1&x=2');
@@ -829,13 +859,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [1, 3]}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [1, 3]}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1&x=3');
@@ -851,13 +882,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [true, false]}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [true, false]}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=true&x=false');
@@ -873,13 +905,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [true, true]}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [true, true]}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=true&x=true');
@@ -895,13 +928,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2012-03-04');
@@ -917,13 +951,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
@@ -939,13 +974,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: ['a', 'b']}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'b']}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -960,13 +996,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: ['a', 'd']}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'd']}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=d');
@@ -981,13 +1018,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [1, 2]}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [1, 2]}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -1002,13 +1040,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [1, 2], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [1, 3]}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [1, 3]}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=1&x=3');
@@ -1023,13 +1062,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [true, false]}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [true, false]}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -1044,13 +1084,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [true, false], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [true, true]}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [true, true]}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=true&x=true');
@@ -1066,13 +1107,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [new Date(2011, 1, 3), new Date(2012, 2, 4)]}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -1087,13 +1129,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: [new Date(2011, 1, 3), new Date(2012, 2, 4)], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: [new Date(2011, 1, 3), new Date(2010, 2, 4)]}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=2011-02-03&x=2010-03-04');
@@ -1108,13 +1151,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: ['a', 'b', 'c']}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'b', 'c']}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
@@ -1130,13 +1174,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: ['a', 'b'], y: 'c'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: ['a', 'b', 'c']}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: ['a', 'b', 'c']}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a&x=b&x=c');
@@ -1151,14 +1196,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    activeCssClass="active"
-                    className="link"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active"
+                        className="link">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=a');
@@ -1174,14 +1220,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s', {x: 'a', y: 'b'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'c'}}
-                    activeCssClass="active"
-                    className="link"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'c'}}
+                        activeCssClass="active"
+                        className="link">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r?x=c');
@@ -1196,11 +1243,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click');
@@ -1214,11 +1261,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { ctrlKey: true });
@@ -1232,11 +1279,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { shiftKey: true });
@@ -1250,11 +1297,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { metaKey: true });
@@ -1268,11 +1315,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { altKey: true });
@@ -1286,11 +1333,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { button: true });
@@ -1304,12 +1351,13 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigating={() => true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigating={() => true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click');
@@ -1323,12 +1371,13 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigating={() => false}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigating={() => false}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click');
@@ -1343,16 +1392,17 @@ describe('NavigationLinkTest', function () {
             ]);
             var navigatingEvt, navigatingLink;
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigating={(e, link) => {
-                        navigatingEvt = e;
-                        navigatingLink = link;
-                        return true;
-                    }}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigating={(e, link) => {
+                            navigatingEvt = e;
+                            navigatingLink = link;
+                            return true;
+                        }}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             link.simulate('click', { hello: 'world' });
@@ -1367,11 +1417,11 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink stateKey="s">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             var addHistory;
@@ -1387,12 +1437,13 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    historyAction="replace"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        historyAction="replace">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             var replaceHistory;
@@ -1408,12 +1459,13 @@ describe('NavigationLinkTest', function () {
                 { key: 's', route: 'r' }
             ]);
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    historyAction="none"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        historyAction="none">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             var noneHistory = true;
@@ -1431,13 +1483,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1484,13 +1537,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1509,14 +1563,15 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0');
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    includeCurrentData={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        includeCurrentData={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/r0?x=a');
@@ -1535,13 +1590,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('className'), 'active');
@@ -1553,21 +1609,22 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Across Crumbs Active Css Class Navigate Navigation Link', function () {
-        it('should not update', function(){
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    activeCssClass="active"
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        activeCssClass="active">
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('className'), 'active');
@@ -1586,13 +1643,14 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    navigationData={{x: 'a'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        navigationData={{x: 'a'}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -1604,21 +1662,22 @@ describe('NavigationLinkTest', function () {
     });
 
     describe('Across Crumbs Disable Active Navigate Navigation Link', function () {
-        it('should not update', function(){
+        it('should update', function(){
             var stateNavigator = new StateNavigator([
                 { key: 's0', route: 'r0' },
                 { key: 's1', route: 'r1', trackCrumbTrail: true }
             ]);
             stateNavigator.navigate('s0', {x: 'a'});
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s0"
-                    acrossCrumbs={true}
-                    navigationData={{x: 'a'}}
-                    disableActive={true}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s0"
+                        acrossCrumbs={true}
+                        navigationData={{x: 'a'}}
+                        disableActive={true}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), null);
@@ -1636,18 +1695,50 @@ describe('NavigationLinkTest', function () {
             ]);
             stateNavigator.historyManager.getHref = () => '#/hello/world';
             var wrapper = mount(
-                <NavigationLink
-                    stateKey="s"
-                    navigationData={{x: 'a'}}
-                    stateNavigator={stateNavigator}>
-                    link text
-                </NavigationLink>
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationLink
+                        stateKey="s"
+                        navigationData={{x: 'a'}}>
+                        link text
+                    </NavigationLink>
+                </NavigationHandler>
             );
             var link = wrapper.find('a');
             assert.equal(link.prop('href'), '#/hello/world');
             link.simulate('click');
             assert.equal(stateNavigator.stateContext.state, stateNavigator.states['s']);
             assert.equal(stateNavigator.stateContext.data.x, 'a');
+        })
+    });
+
+    describe('Consumer Navigation Link', function () {
+        it('should update', function(){
+            var stateNavigator = new StateNavigator([
+                { key: 's0', route: 'r0' },
+                { key: 's1', route: 'r1' }
+            ]);
+            var {s0, s1} = stateNavigator.states;
+            s0.renderView = () => (
+                <NavigationLink
+                    stateKey="s1"
+                    navigationData={{hello: 'world'}}>
+                    link text
+                </NavigationLink>
+            );
+            s1.renderView = ({hello}) => <h1>{hello}</h1>
+            stateNavigator.navigate('s0');
+            var wrapper = mount(
+                <NavigationHandler stateNavigator={stateNavigator}>
+                    <NavigationContext.Consumer>
+                        {({state, data}) => state.renderView(data)}
+                    </NavigationContext.Consumer>
+                </NavigationHandler>
+            );
+            var link = wrapper.find('a');
+            link.simulate('click');
+            wrapper.update();
+            var header = wrapper.find('h1');
+            assert.equal(header.prop('children'), 'world');
         })
     });
 });

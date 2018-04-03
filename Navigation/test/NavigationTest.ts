@@ -1,6 +1,6 @@
 ﻿import * as assert from 'assert';
 import * as mocha from 'mocha';
-import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from '../src/Navigation';
+import { StateNavigator, HashHistoryManager, HTML5HistoryManager } from 'navigation';
 
 describe('Navigation', function () {
     describe('State', function() {

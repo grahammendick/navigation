@@ -4,7 +4,7 @@ import { LinkProps } from './Props';
 
 export default <T extends LinkProps>(Link: React.ComponentType<T>) => (props: T) => (
     <NavigationContext.Consumer>
-        {({ stateNavigator, defaultValue }) => <Link stateNavigator={stateNavigator} navigationContext={!defaultValue} {...props} />}
+        {({ stateNavigator }) => <Link stateNavigator={stateNavigator} {...props} />}
     </NavigationContext.Consumer>
 );
   

@@ -24,7 +24,7 @@ class LinkUtility {
         if (active && props.activeCssClass)
             toProps.className = (!toProps.className ? '' : toProps.className + ' ') + props.activeCssClass;
         if (active && props.disableActive)
-            toProps.href = null;        
+            toProps.href = null;
     }
 
     private static areEqual(val: any, currentVal: any): boolean {
@@ -48,7 +48,7 @@ class LinkUtility {
         return attr !== 'stateNavigator' && attr !== 'stateKey' && attr !== 'navigationData'
             && attr !== 'includeCurrentData' && attr !== 'currentDataKeys' && attr !== 'activeCssClass'
             && attr !== 'disableActive' && attr !== 'distance' && attr !== 'historyAction'
-            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'navigationContext' && attr !== 'children';
+            && attr !== 'acrossCrumbs' && attr !== 'navigating' && attr !== 'children';
     }
     
     static getOnClick(stateNavigator: StateNavigator, props: any, link: string) {
